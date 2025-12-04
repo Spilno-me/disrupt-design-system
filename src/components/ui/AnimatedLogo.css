@@ -1,0 +1,11 @@
+.animated-logo-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.animated-logo {
+  overflow: visible;
+}

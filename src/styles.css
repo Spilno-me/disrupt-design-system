@@ -1,0 +1,902 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@font-face {
+  font-family: 'Pilat Extended';
+  src: url('./fonts/PilatExtended-Regular.woff2') format('woff2'),
+       url('./fonts/PilatExtended-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pilat Extended';
+  src: url('./fonts/PilatExtended-Bold.woff2') format('woff2'),
+       url('./fonts/PilatExtended-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fixel';
+  src: url('./fonts/FixelText-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fixel';
+  src: url('./fonts/FixelText-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fixel';
+  src: url('./fonts/FixelText-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* Fonts */
+  --font-display: "Pilat Extended", "Arial", "sans-serif";
+  --font-sans: "Fixel", "system-ui", "sans-serif";
+
+  /* Custom animations */
+  --animate-spin-slow: spin-slow 3s linear infinite;
+
+  /* Brand Colors */
+  --color-primary: #2D3142;         /* Dark - primary text/buttons */
+  --color-accent: #08A4BD;          /* Teal - links/accents */
+  --color-ferrari-red: #F70D1A;     /* Brand red */
+  --color-secondary: #9333ea;
+
+  /* Background Colors */
+  --color-cream: #FBFBF3;           /* Main background */
+  --color-background: #FBFBF3;
+  --color-surface: #FFFFFF;
+
+  /* Text Colors */
+  --color-dark: #2D3142;            /* Primary text */
+  --color-muted: #5E4F7E;           /* Secondary/paragraph text */
+  --color-text-secondary: #5E4F7E;  /* Alias for muted */
+  --color-text-primary: #2D3142;
+  --color-slate: #CBD5E1;           /* Disabled/inactive */
+
+  /* Semantic Colors */
+  --color-teal: #08A4BD;            /* Accent color */
+  --color-error: #F70D1A;
+  --color-linkedin: #0A66C2;
+
+  /* Feature Card Circle Colors */
+  --color-circle-blue: #3B82F6;     /* Automate */
+  --color-circle-red: #EF4444;      /* Advice */
+  --color-circle-yellow: #EAB308;   /* Adapt */
+  --color-circle-green: #22C55E;    /* Scale */
+
+  /* Layout Max Widths */
+  --max-width-container: 1358px;    /* Main container max-width */
+  --max-width-hero: 1358px;         /* Hero frame max-width */
+  --max-width-header: 1358px;       /* Header max-width */
+
+  /* Spacing (using Tailwind's spacing scale) */
+  --spacing: 0.25rem;               /* Base spacing unit (4px) */
+
+  /* Border Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-normal: 200ms;
+  --transition-smooth: 300ms;
+
+  /* Typography - Font Sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+  --font-size-5xl: 48px;
+  --font-size-6xl: 60px;
+  --font-size-7xl: 72px;
+  --font-size-8xl: 96px;
+  --font-size-9xl: 128px;
+
+  /* Line Heights */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
+  /* Border Widths */
+  --border-width-0: 0px;
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+  --border-width-4: 4px;
+  --border-width-8: 8px;
+
+  /* Z-Index Layers */
+  --z-index-0: 0;
+  --z-index-10: 10;
+  --z-index-20: 20;
+  --z-index-30: 30;
+  --z-index-40: 40;
+  --z-index-50: 50;
+  --z-index-100: 100;
+}
+
+/* Glass morphism header styling - Figma design */
+.glass-header {
+  backdrop-filter: blur(10px);
+  background: rgba(251, 251, 243, 0.3);
+  border-bottom: 1px solid #08A4BD;
+  box-shadow: 0px 2px 4px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* NOTE: Simple color/text utilities converted to Tailwind:
+   - bg-cream → bg-[#FBFBF3]
+   - bg-dark → bg-[#2D3142]
+   - text-teal → text-[#08A4BD]
+   - section-tag → inline-flex py-1 px-3 border border-[#2D3142] rounded-full text-sm font-medium text-[#2D3142]
+   - border-b-teal → border-b border-[#08A4BD]
+*/
+
+
+
+/* Chevron pattern for header */
+.chevron-pattern {
+  position: relative;
+}
+
+.chevron-pattern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='100' viewBox='0 0 14 100'%3E%3Cpath d='M1 0l12 50-12 50' fill='none' stroke='%2364748b' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 14px 100%;
+  background-repeat: repeat-x;
+  background-position: center;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: #5E4F7E;
+  --color-muted-foreground: #5E4F7E;
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Brand colors */
+:root {
+  --brand-secondary: #08A4BD;
+  --brand-base: #FBFBF3;
+  --color-dashed-border: #08A4BD;
+}
+
+/* Custom dashed border utility - 4px dash, 4px gap (per Figma) */
+.border-custom-dash {
+  position: relative;
+}
+
+.border-custom-dash::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x top,
+    linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x bottom,
+    linear-gradient(0deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-y left,
+    linear-gradient(0deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-y right;
+  background-size: 8px 1px, 8px 1px, 1px 8px, 1px 8px;
+  pointer-events: none;
+}
+
+.border-custom-dash-left {
+  position: relative;
+}
+
+.border-custom-dash-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(0deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-y;
+  background-size: 1px 8px;
+  z-index: 10;
+}
+
+.border-custom-dash-right {
+  position: relative;
+}
+
+.border-custom-dash-right::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(0deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-y;
+  background-size: 1px 8px;
+  z-index: 10;
+}
+
+.border-custom-dash-t {
+  position: relative;
+}
+
+.border-custom-dash-t::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x;
+  background-size: 8px 1px;
+}
+
+.border-custom-dash-b {
+  position: relative;
+}
+
+.border-custom-dash-b::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x;
+  background-size: 8px 1px;
+}
+
+/* Custom component styles */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.hero-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.contact-form-wrapper {
+  display: flex;
+  width: 100%;
+  padding: 96px 24px;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+}
+
+.contact-info-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 96px 24px;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  background-color: #F9FBFD;
+}
+
+.border-dashed-sides {
+  position: relative;
+}
+
+.border-dashed-sides::before {
+  content: '';
+  position: absolute;
+  inset-y: 0;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(0deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-y;
+  background-size: 1px 8px;
+  opacity: 1;
+}
+
+.border-dashed-sides::after {
+  content: '';
+  position: absolute;
+  inset-y: 0;
+  right: 0;
+  width: 1px;
+  background: linear-gradient(0deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-y;
+  background-size: 1px 8px;
+  opacity: 1;
+}
+
+.border-dashed-bottom {
+  position: relative;
+}
+
+.border-dashed-bottom::after {
+  content: '';
+  position: absolute;
+  inset-x: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x;
+  background-size: 8px 1px;
+}
+
+.border-dashed-top {
+  position: relative;
+}
+
+.border-dashed-top::before {
+  content: '';
+  position: absolute;
+  inset-x: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x;
+  background-size: 8px 1px;
+}
+
+.border-dashed-bottom-none {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .lg\\:border-dashed-bottom-none::after {
+    display: none;
+  }
+}
+
+.border-dashed-top-none {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .lg\\:border-dashed-top-none::before {
+    display: none;
+  }
+}
+
+/* Semantic styles for components */
+.footer-background {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.feature-description-text {
+  color: #E6E8E6;
+}
+
+.features-background {
+  background-color: #2D3142;
+}
+
+.dashed-border-vertical {
+  background: linear-gradient(0deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-y;
+  background-size: 1px 8px;
+}
+
+.dashed-border-horizontal {
+  background: linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x;
+  background-size: 8px 1px;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+[dir="rtl"] .text-center {
+  text-align: center;
+}
+
+/* RTL margin and padding utilities */
+[dir="rtl"] .ml-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+/* RTL flex utilities */
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+/* RTL positioning */
+[dir="rtl"] .left-0 {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .right-0 {
+  right: auto;
+  left: 0;
+}
+
+/* Arabic/RTL text improvements */
+[dir="rtl"] {
+  font-family: "Fixel", "Tahoma", "Arial", sans-serif;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
+  font-family: "Pilat Extended", "Tahoma", "Arial", sans-serif;
+}
+
+/* RTL form improvements */
+[dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select {
+  text-align: right;
+}
+
+[dir="rtl"] input[type="email"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* RTL language switcher improvements */
+[dir="rtl"] select {
+  background-position: left 8px center;
+  padding-left: 32px;
+  padding-right: 12px;
+}
+
+[dir="ltr"] select {
+  background-position: right 8px center;
+  padding-right: 32px;
+  padding-left: 12px;
+}
+
+/* Parallax performance optimizations */
+.parallax-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.parallax-element {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Dashed borders for features section - stitches effect */
+.features-dashed-border-top::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x;
+  background-size: 8px 1px;
+}
+
+.features-dashed-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-dashed-border) 0px, var(--color-dashed-border) 4px, transparent 4px, transparent 8px) repeat-x;
+  background-size: 8px 1px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* Ensure all interactive elements have pointer cursor */
+  a, button, [role="button"], input[type="submit"], input[type="button"] {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  /* Figma-precise dashed borders: 4px dash, 4px gap */
+  .border-dashed-figma {
+    border-style: dashed;
+    border-image: repeating-linear-gradient(
+      90deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    ) 1;
+  }
+
+  .border-t-dashed-figma {
+    border-top-style: dashed;
+    border-top-width: 1px;
+    border-image: repeating-linear-gradient(
+      90deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    ) 1;
+  }
+
+  .border-b-dashed-figma {
+    border-bottom-style: dashed;
+    border-bottom-width: 1px;
+    border-image: repeating-linear-gradient(
+      90deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    ) 1;
+  }
+
+  .border-y-dashed-figma {
+    border-top-style: dashed;
+    border-bottom-style: dashed;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-image: repeating-linear-gradient(
+      90deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    ) 1;
+  }
+
+  .border-r-dashed-figma {
+    border-right-style: dashed;
+    border-right-width: 1px;
+    border-image: repeating-linear-gradient(
+      0deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    ) 1;
+  }
+
+  .border-l-dashed-figma {
+    position: relative;
+  }
+
+  .border-l-dashed-figma::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+
+  .border-x-dashed-figma {
+    position: relative;
+  }
+
+  .border-x-dashed-figma::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+
+  .border-x-dashed-figma::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+
+  /* Responsive: borders only on tablet and up (sm: 640px+) */
+  .sm\:border-x-dashed-figma {
+    position: relative;
+  }
+
+  .sm\:border-x-dashed-figma::before,
+  .sm\:border-x-dashed-figma::after {
+    content: none;
+  }
+
+  @media (min-width: 640px) {
+    .sm\:border-x-dashed-figma::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: repeating-linear-gradient(
+        180deg,
+        var(--color-dashed-border) 0,
+        var(--color-dashed-border) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+    }
+
+    .sm\:border-x-dashed-figma::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: repeating-linear-gradient(
+        180deg,
+        var(--color-dashed-border) 0,
+        var(--color-dashed-border) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .lg\:border-r-dashed-figma {
+      border-right-style: dashed;
+      border-right-width: 1px;
+      border-image: repeating-linear-gradient(
+        0deg,
+        var(--color-dashed-border) 0,
+        var(--color-dashed-border) 4px,
+        transparent 4px,
+        transparent 8px
+      ) 1;
+    }
+  }
+
+  /* Horizontal dashed separator line */
+  .separator-dashed {
+    width: 100%;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-dashed-border) 0,
+      var(--color-dashed-border) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+
+  /* Arrow bounce animation - subtle directional indicator */
+  .arrow-bounce {
+    animation: arrow-bounce-right 1.5s ease-in-out infinite;
+  }
+
+  @keyframes arrow-bounce-right {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+  }
+
+  /* Skeleton loading animations */
+  .skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skeleton-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: skeleton-shimmer 1.5s infinite;
+  }
+
+  @keyframes skeleton-shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .skeleton-wave {
+    animation: skeleton-wave 1.6s ease-in-out infinite;
+  }
+
+  @keyframes skeleton-wave {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+}

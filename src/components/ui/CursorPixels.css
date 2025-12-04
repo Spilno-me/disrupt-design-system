@@ -1,0 +1,56 @@
+/* Container for cursor pixels - covers entire viewport */
+.cursor-pixels-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  /* CRITICAL: pointer-events: none ensures NO interference with touch/click */
+  pointer-events: none;
+  /* Prevent any selection */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Don't block scrolling */
+  overflow: visible;
+}
+
+/* Individual pixel elements */
+.cursor-pixel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Start invisible */
+  opacity: 0;
+  /* CRITICAL: pointer-events: none on each pixel too */
+  pointer-events: none;
+  /* Performance optimizations */
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%);
+  /* Smooth rendering */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  /* Subtle shadow for depth */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Hide cursor pixels on touch devices via media query */
+@media (hover: none) and (pointer: coarse) {
+  .cursor-pixels-container {
+    display: none !important;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-pixels-container {
+    display: none !important;
+  }
+}
+
+/* Hide on small screens (likely mobile) */
+@media (max-width: 768px) {
+  .cursor-pixels-container {
+    display: none !important;
+  }
+}
