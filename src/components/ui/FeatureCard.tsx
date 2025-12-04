@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring, animate } from 'motion/react'
-import { ElectricLucideIcon, IconName } from '@/components/ui/ElectricLucideIcon'
+import { ElectricLucideIcon, IconName } from './ElectricLucideIcon'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
 // Hook to detect tablet (between mobile and desktop)
