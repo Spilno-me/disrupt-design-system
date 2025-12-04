@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { COLORS } from '../../constants/designTokens';
+import { COLORS, SHADOWS } from '../../constants/designTokens';
 
 const meta = {
   title: 'Design Tokens/Dashed Borders',
@@ -61,7 +61,7 @@ const DashedBorderExamples = () => (
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: COLORS.shadow?.lg || '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            boxShadow: SHADOWS?.lg || '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
           }}
         >
           <span style={{ fontSize: '14px', color: COLORS.text.secondary }}>border-dashed border-teal</span>
