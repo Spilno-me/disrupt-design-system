@@ -294,7 +294,7 @@ const GridConfiguration = () => (
         overflow: 'auto',
       }}>
 {`// Direct usage
-import { GridBlobBackground } from '@/components/ui/GridBlobCanvas';
+import { GridBlobBackground } from '../../components/ui/GridBlobCanvas';
 
 <section className="relative">
   <GridBlobBackground scale={1} />
@@ -304,7 +304,7 @@ import { GridBlobBackground } from '@/components/ui/GridBlobCanvas';
 </section>
 
 // Using wrapper component
-import { BlobSection } from '@/components/ui/GridBlobCanvas';
+import { BlobSection } from '../../components/ui/GridBlobCanvas';
 
 <BlobSection className="py-16">
   Your content here
