@@ -36,8 +36,7 @@ export { ElectricLucideIcon } from './components/ui/ElectricLucideIcon'
 export * from './constants/designTokens'
 export * from './constants/tailwindClasses'
 
-// Re-export for /tokens path
-export { GLASS_CLASSES, GRID_CLASSES } from './constants/tailwindClasses'
+// Re-export for /tokens path (empty for now, all exported via * above)
 
 // Export utilities
 export { cn } from './lib/utils'
