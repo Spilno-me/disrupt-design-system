@@ -1,7 +1,7 @@
 import { useState, cloneElement, ReactElement, useRef, useEffect } from 'react'
 import { Workflow, BrainCircuit, LayoutDashboard, TrendingUp, LucideProps } from 'lucide-react'
 import { motion, animate } from 'motion/react'
-import { COLORS } from '@/constants/designTokens'
+import { COLORS } from '../../constants/designTokens'
 
 // =============================================================================
 // TYPES

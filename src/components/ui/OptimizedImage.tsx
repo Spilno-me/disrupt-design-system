@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 import { SkeletonImage } from './Skeleton'
-import { SHADOWS } from '@/constants/designTokens'
+import { SHADOWS } from '../../constants/designTokens'
 import { ResponsivePicture, type ResponsiveImageSets } from './ResponsivePicture'
 
 // =============================================================================

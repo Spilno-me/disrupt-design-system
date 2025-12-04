@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FeatureCard } from './FeatureCard';
-import { COLORS } from '@/constants/designTokens';
+import { COLORS } from '../../constants/designTokens';
 
 const meta = {
   title: 'Components/FeatureCard',

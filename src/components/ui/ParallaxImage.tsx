@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'motion/react'
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 import { ResponsivePicture, type ResponsiveImageSets } from './ResponsivePicture'
 
 // =============================================================================

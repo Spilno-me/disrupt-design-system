@@ -2,7 +2,7 @@ import { ReactNode, useState, useRef, useEffect } from 'react'
 import { SkeletonImage } from './Skeleton'
 import { GridBlobBackground } from './GridBlobCanvas'
 import { ResponsiveImage } from './ResponsiveImage'
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 
 // =============================================================================
 // SECTION WRAPPER

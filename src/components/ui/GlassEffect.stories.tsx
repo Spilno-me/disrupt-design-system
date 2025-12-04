@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ElectricButtonWrapper, GlassInputWrapper } from './GlassEffect';
 import { Input } from './input';
-import { COLORS } from '@/constants/designTokens';
+import { COLORS } from '../../constants/designTokens';
 
 const meta = {
   title: 'Components/Glass Effects',

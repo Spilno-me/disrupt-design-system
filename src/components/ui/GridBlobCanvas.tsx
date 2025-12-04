@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ReactNode } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'motion/react'
-import { GRID_PATTERNS } from '@/constants/designTokens'
-import { GRID_CLASSES } from '@/constants/tailwindClasses'
+import { GRID_PATTERNS } from '../../constants/designTokens'
+import { GRID_CLASSES } from '../../constants/tailwindClasses'
 
 // =============================================================================
 // CONFIGURATION
