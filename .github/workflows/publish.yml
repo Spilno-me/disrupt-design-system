@@ -30,13 +30,17 @@ jobs:
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
           NPM_VERSION=$(npm view @adrozdenko/design-system version 2>/dev/null || echo "0.0.0")
+          echo "Local version: $PACKAGE_VERSION"
+          echo "npm version: $NPM_VERSION"
           if [ "$PACKAGE_VERSION" != "$NPM_VERSION" ]; then
             echo "should_publish=true" >> $GITHUB_OUTPUT
             echo "Version changed: $NPM_VERSION -> $PACKAGE_VERSION"
           else
             echo "should_publish=false" >> $GITHUB_OUTPUT
-            echo "Version unchanged: $PACKAGE_VERSION"
+            echo "Version unchanged: $PACKAGE_VERSION - skipping publish"
           fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to npm
         if: steps.version-check.outputs.should_publish == 'true'
