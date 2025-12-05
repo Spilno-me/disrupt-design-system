@@ -171,11 +171,11 @@ export function GlassButtonWrapper({ children, className = '', isActive = false,
   const backgroundPosition = useTransform(positionX, (x) => `${x}% 0`)
 
   // Determine border radius based on className
-  // Design system: rounded-sm = 8px for all interactive elements
+  // Design system: rounded-md = 12px for buttons
   const isNavItem = className.includes('nav-item')
-  const borderRadius = '8px' // rounded-sm from design system
-  const innerRadius = '7px'
-  const glowRadius = '6px'
+  const borderRadius = '12px' // rounded-md from design system
+  const innerRadius = '11px'
+  const glowRadius = '10px'
   const borderInset = '1px'
   const glowInset = '2px'
 
