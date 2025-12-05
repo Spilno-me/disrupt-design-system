@@ -1,3 +1,6 @@
+// Import styles
+import './styles.css'
+
 // Export all components
 export { Button, buttonVariants } from './components/ui/button'
 export { Badge, badgeVariants } from './components/ui/badge'
