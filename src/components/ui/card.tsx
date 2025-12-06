@@ -1,15 +1,47 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
+import { COLORS, SHADOWS, type ShadowLevel } from "../../constants/designTokens"
 
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+// =============================================================================
+// CARD VARIANTS
+// =============================================================================
+
+const cardVariants = cva(
+  "flex flex-col rounded-lg",
+  {
+    variants: {
+      variant: {
+        default: "bg-card text-card-foreground gap-6 border py-6",
+        pricing: "bg-white p-6 h-full border border-dashed border-slate-300 rounded-[14px]",
+        pricingHighlight: "bg-white p-6 border-2 border-dashed rounded-[14px]",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+interface CardProps extends React.ComponentProps<"div">, VariantProps<typeof cardVariants> {
+  /** Shadow elevation level: none, sm, md, lg, xl */
+  shadow?: ShadowLevel
+}
+
+function Card({ className, variant, shadow, style, ...props }: CardProps) {
+  // Build combined styles
+  const combinedStyle: React.CSSProperties = {
+    ...(variant === "pricingHighlight" && { borderColor: COLORS.ferrariRed }),
+    ...(shadow && shadow !== 'none' && { boxShadow: SHADOWS[shadow] }),
+    ...style,
+  }
+
   return (
     <div
       data-slot="card"
-      className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-lg border py-6 shadow-sm",
-        className
-      )}
+      className={cn(cardVariants({ variant }), className)}
+      style={combinedStyle}
       {...props}
     />
   )
@@ -83,6 +115,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 export {
   Card,
+  cardVariants,
   CardHeader,
   CardFooter,
   CardTitle,

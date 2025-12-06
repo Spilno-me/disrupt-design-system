@@ -71,14 +71,14 @@ interface SectionContainerProps {
 
 /**
  * Standard section container with max-width and horizontal padding.
- * Replaces repeated `max-w-container mx-auto px-4 sm:px-6` pattern.
+ * Replaces repeated `max-w-[1440px] mx-auto px-4 sm:px-6` pattern.
  */
 export function SectionContainer({
   children,
   className = '',
 }: SectionContainerProps) {
   return (
-    <div className={`max-w-container mx-auto px-4 sm:px-6 ${className}`}>
+    <div className={`max-w-[1440px] mx-auto px-4 sm:px-6 ${className}`}>
       {children}
     </div>
   )

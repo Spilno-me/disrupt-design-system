@@ -59,6 +59,16 @@ export default {
         'feature-yellow': COLORS.feature.yellow,
         'feature-green': COLORS.feature.green,
 
+        // Circle colors (feature card icons)
+        circleBlue: COLORS.circleBlue,
+        circleRed: COLORS.circleRed,
+        circleYellow: COLORS.circleYellow,
+        circleGreen: COLORS.circleGreen,
+
+        // Purple shades
+        darkPurple: COLORS.darkPurple,
+        lightPurple: COLORS.lightPurple,
+
         // Utility colors
         white: COLORS.white,
         slate: COLORS.slate,

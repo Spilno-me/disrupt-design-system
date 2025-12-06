@@ -213,10 +213,10 @@ export function ElectricLucideIconDemo() {
   const [hoveredIcon, setHoveredIcon] = useState<IconName | null>(null)
 
   const icons: { name: IconName; color: string; label: string }[] = [
-    { name: 'automate', color: COLORS.feature.blue, label: 'Automate' },
-    { name: 'advice', color: COLORS.feature.red, label: 'Advice' },
-    { name: 'adapt', color: COLORS.feature.yellow, label: 'Adapt' },
-    { name: 'scale', color: COLORS.feature.green, label: 'Scale' },
+    { name: 'automate', color: COLORS.circleBlue, label: 'Automate' },
+    { name: 'advice', color: COLORS.circleRed, label: 'Advice' },
+    { name: 'adapt', color: COLORS.circleYellow, label: 'Adapt' },
+    { name: 'scale', color: COLORS.circleGreen, label: 'Scale' },
   ]
 
   return (

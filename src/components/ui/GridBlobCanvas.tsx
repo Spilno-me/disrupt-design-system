@@ -1,18 +1,12 @@
 import React, { useEffect, useState, ReactNode } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'motion/react'
-import { GRID_PATTERNS } from '../../constants/designTokens'
-import { GRID_CLASSES } from '../../constants/tailwindClasses'
 
 // =============================================================================
 // CONFIGURATION
 // =============================================================================
 
 const CONFIG = {
-  grid: {
-    size: parseInt(GRID_PATTERNS.preset.default.size),
-    color: GRID_PATTERNS.preset.default.color,
-    strokeWidth: GRID_PATTERNS.preset.default.strokeWidth,
-  },
+  grid: { size: 20, color: 'rgba(180, 180, 180, 0.4)' },
   blob: {
     waypointInterval: 2000,
     transitionDuration: 1.8,
@@ -35,10 +29,10 @@ const CONFIG = {
 // =============================================================================
 
 function GridPattern() {
-  const { size, color, strokeWidth } = CONFIG.grid
+  const { size, color } = CONFIG.grid
 
   return (
-    <svg className={GRID_CLASSES.svg} aria-hidden="true">
+    <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
       <defs>
         <pattern
           id="grid-pattern"
@@ -50,7 +44,7 @@ function GridPattern() {
             d={`M ${size} 0 L 0 0 0 ${size}`}
             fill="none"
             stroke={color}
-            strokeWidth={strokeWidth}
+            strokeWidth="1"
           />
         </pattern>
       </defs>
@@ -110,7 +104,7 @@ export function GridBlobBackground({ scale = 1 }: GridBlobBackgroundProps) {
   }, [waypointIndex, scale, x, y, width, height])
 
   return (
-    <div className={GRID_CLASSES.container} style={{ zIndex: 0 }}>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
       <motion.div
         className="absolute inset-0"
         style={{ maskImage, WebkitMaskImage: maskImage }}

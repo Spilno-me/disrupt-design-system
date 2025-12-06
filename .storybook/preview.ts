@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
+import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from 'storybook/viewport'
 import '../src/styles.css'
 
 const preview: Preview = {
@@ -9,9 +10,19 @@ const preview: Preview = {
        date: /Date$/i,
       },
     },
+    viewport: {
+      options: {
+        ...MINIMAL_VIEWPORTS,
+        ...INITIAL_VIEWPORTS,
+      },
+    },
     backgrounds: {
-      default: 'cream',
+      default: 'white',
       values: [
+        {
+          name: 'white',
+          value: '#FFFFFF',
+        },
         {
           name: 'cream',
           value: '#FBFBF3',
@@ -19,10 +30,6 @@ const preview: Preview = {
         {
           name: 'dark',
           value: '#2D3142',
-        },
-        {
-          name: 'white',
-          value: '#FFFFFF',
         },
       ],
     },
