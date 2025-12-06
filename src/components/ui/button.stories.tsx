@@ -23,10 +23,6 @@ const meta: Meta<typeof Button> = {
       control: 'boolean',
       description: 'Whether the button is disabled',
     },
-    asChild: {
-      control: 'boolean',
-      description: 'Render as child element (using Radix Slot)',
-    },
   },
 }
 
@@ -42,17 +38,17 @@ export const Default: Story = {
   },
 }
 
-// All variants
+// All variants overview
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
       <Button variant="default">Default</Button>
-      <Button variant="destructive">Destructive</Button>
+      <Button variant="contact">Contact</Button>
       <Button variant="outline">Outline</Button>
       <Button variant="secondary">Secondary</Button>
+      <Button variant="destructive">Destructive</Button>
       <Button variant="ghost">Ghost</Button>
       <Button variant="link">Link</Button>
-      <Button variant="contact">Contact</Button>
     </div>
   ),
 }
@@ -68,6 +64,24 @@ export const Sizes: Story = {
   ),
 }
 
+// Contact button (primary CTA used on website)
+export const ContactButton: Story = {
+  args: {
+    children: 'Contact us',
+    variant: 'contact',
+  },
+}
+
+// Full Width Button (form pattern)
+export const FullWidth: Story = {
+  name: 'Full Width',
+  render: () => (
+    <div className="w-[400px]">
+      <Button variant="contact" className="w-full">Send Message</Button>
+    </div>
+  ),
+}
+
 // Disabled state
 export const Disabled: Story = {
   args: {
@@ -76,7 +90,7 @@ export const Disabled: Story = {
   },
 }
 
-// With icon (using lucide-react)
+// With icon
 export const WithIcon: Story = {
   render: () => (
     <div className="flex gap-4">
@@ -115,36 +129,5 @@ export const WithIcon: Story = {
         Back
       </Button>
     </div>
-  ),
-}
-
-// Contact variant showcase
-export const ContactButton: Story = {
-  args: {
-    children: 'Contact us',
-    variant: 'contact',
-  },
-}
-
-// Loading state example
-export const Loading: Story = {
-  render: () => (
-    <Button disabled>
-      <svg
-        className="animate-spin"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-      </svg>
-      Loading...
-    </Button>
   ),
 }

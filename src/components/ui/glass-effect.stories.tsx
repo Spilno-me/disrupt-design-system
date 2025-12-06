@@ -4,7 +4,7 @@ import { Input } from './input';
 import { COLORS } from '../../constants/designTokens';
 
 const meta = {
-  title: 'Components/Glass Effects',
+  title: 'Website/Components/Glass Effects',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -27,8 +27,8 @@ const ElectricButtonDefault = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.teal[800],
-          color: COLORS.text.inverse,
+          background: COLORS.teal,
+          color: '#fff',
           border: 'none',
           borderRadius: '4px',
           fontSize: '14px',
@@ -56,8 +56,8 @@ const ElectricButtonActive = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.primary,
-          color: COLORS.text.inverse,
+          background: COLORS.dark,
+          color: '#fff',
           border: 'none',
           borderRadius: '4px',
           fontSize: '14px',
@@ -84,8 +84,8 @@ const MultipleButtons = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.teal[800],
-          color: COLORS.text.inverse,
+          background: COLORS.teal,
+          color: '#fff',
           border: 'none',
           borderRadius: '4px',
           fontSize: '14px',
@@ -101,8 +101,8 @@ const MultipleButtons = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.primary,
-          color: COLORS.text.inverse,
+          background: COLORS.dark,
+          color: '#fff',
           border: 'none',
           borderRadius: '4px',
           fontSize: '14px',
@@ -118,8 +118,8 @@ const MultipleButtons = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.error,
-          color: COLORS.text.inverse,
+          background: COLORS.ferrariRed,
+          color: '#fff',
           border: 'none',
           borderRadius: '4px',
           fontSize: '14px',
@@ -143,7 +143,7 @@ const GlassInputExample = () => (
   <div style={{ padding: '48px', width: '400px' }}>
     <h3 style={{ marginBottom: '24px', fontSize: '18px', fontWeight: '600' }}>Click to focus</h3>
     <div style={{ marginBottom: '24px' }}>
-      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.text.primary }}>
+      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
         Email Address
       </label>
       <GlassInputWrapper>
@@ -151,7 +151,7 @@ const GlassInputExample = () => (
       </GlassInputWrapper>
     </div>
     <div>
-      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.text.primary }}>
+      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
         Password
       </label>
       <GlassInputWrapper>
@@ -170,17 +170,17 @@ export const GlassInputExampleStory: Story = {
 const CombinedForm = () => (
   <div style={{ padding: '48px', width: '500px' }}>
     <div style={{
-      background: COLORS.surface,
-      border: `1px dashed ${COLORS.dark[200]}`,
+      background: COLORS.cream,
+      border: `1px dashed ${COLORS.slate}`,
       borderRadius: '8px',
       padding: '32px',
     }}>
-      <h3 style={{ fontSize: '20px', fontWeight: '700', color: COLORS.text.primary, marginBottom: '24px' }}>
+      <h3 style={{ fontSize: '20px', fontWeight: '700', color: COLORS.dark, marginBottom: '24px' }}>
         Contact Form with Glass Effects
       </h3>
 
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.text.primary }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
           Name
         </label>
         <GlassInputWrapper>
@@ -189,7 +189,7 @@ const CombinedForm = () => (
       </div>
 
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.text.primary }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
           Email
         </label>
         <GlassInputWrapper>
@@ -198,7 +198,7 @@ const CombinedForm = () => (
       </div>
 
       <div style={{ marginBottom: '24px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.text.primary }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
           Company
         </label>
         <GlassInputWrapper>
@@ -211,8 +211,8 @@ const CombinedForm = () => (
           style={{
             width: '100%',
             padding: '12px',
-            background: COLORS.teal[800],
-            color: COLORS.text.inverse,
+            background: COLORS.teal,
+            color: '#fff',
             border: 'none',
             borderRadius: '4px',
             fontSize: '14px',
