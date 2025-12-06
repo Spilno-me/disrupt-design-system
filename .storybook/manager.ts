@@ -7,7 +7,7 @@ const theme = create({
   // Brand
   brandTitle: 'Disrupt Design System',
   brandUrl: 'https://disruptinc.io',
-  // brandImage: '/logo.svg', // Add logo later
+  brandImage: '/disrupt-logo.svg',
   brandTarget: '_blank',
 
   // Colors
