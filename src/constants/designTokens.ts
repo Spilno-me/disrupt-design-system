@@ -97,6 +97,20 @@ export const SUNRISE = {
   900: '#713F12',
 } as const
 
+/** Orange scale - for aging/urgent indicators */
+export const ORANGE = {
+  50: '#FFF7ED',
+  100: '#FFEDD5',
+  200: '#FED7AA',
+  300: '#FDBA74',
+  400: '#FB923C',
+  500: '#F97316',
+  600: '#EA580C',
+  700: '#C2410C',
+  800: '#9A3412',
+  900: '#7C2D12',
+} as const
+
 /** Harbor - Green scale */
 export const HARBOR = {
   50: '#F0FDF4',
@@ -292,6 +306,13 @@ export const ALIAS = {
     advice: CORAL[450],    // circleRed - used for badges, feature indicators
     adapt: SUNRISE[500],
     scale: HARBOR[500],
+  },
+
+  // --- AGING/URGENT (orange indicators) ---
+  aging: {
+    primary: ORANGE[500],
+    dark: ORANGE[600],
+    light: ORANGE[50],
   },
 } as const
 
@@ -515,6 +536,47 @@ export const MAPPED = {
       border: ALIAS.overlay.subtle,
     },
   },
+
+  // --- QUICK FILTER (Flow EHS) ---
+  quickFilter: {
+    bg: {
+      start: ALIAS.background.surface,
+      end: ALIAS.background.surfaceHover,
+    },
+    shadow: ALIAS.shadow.sm,
+    borderRadius: '12px',
+    // Variant-specific colors
+    variants: {
+      default: {
+        border: ALIAS.border.default,
+        badge: ALIAS.text.secondary,
+        text: ALIAS.text.secondary,
+        icon: ALIAS.icon.secondary,
+      },
+      info: {
+        border: ALIAS.brand.secondary,
+        badge: ALIAS.interactive.accentHover,
+        text: ALIAS.interactive.accentHover,
+        icon: ALIAS.brand.secondary,
+      },
+      warning: {
+        border: ALIAS.aging.primary,
+        badge: ALIAS.aging.dark,
+        text: ALIAS.aging.dark,
+        icon: ALIAS.aging.primary,
+      },
+      primary: {
+        border: ALIAS.brand.primary,
+        badge: ALIAS.brand.primary,
+        text: ALIAS.brand.primary,
+        icon: ALIAS.brand.primary,
+      },
+    },
+    badge: {
+      text: ALIAS.text.inverse,
+      border: ALIAS.background.surface,
+    },
+  },
 } as const
 
 // =============================================================================
@@ -605,6 +667,7 @@ export const COLOR_SCALES = {
   coral: CORAL,
   wave: WAVE,
   sunrise: SUNRISE,
+  orange: ORANGE,
   harbor: HARBOR,
   slate: SLATE,
 } as const
