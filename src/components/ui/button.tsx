@@ -72,6 +72,8 @@ interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeo
   noEffect?: boolean
   /** Keep the electric effect always active */
   effectActive?: boolean
+  /** Make button full width */
+  fullWidth?: boolean
 }
 
 function Button({
@@ -81,6 +83,7 @@ function Button({
   asChild = false,
   noEffect = false,
   effectActive = false,
+  fullWidth = false,
   ...props
 }: ButtonProps) {
   const Comp = asChild ? Slot : "button"
@@ -128,13 +131,17 @@ function Button({
   const innerRadius = '11px'
   const glowRadius = '10px'
 
-  // Check if button should be full width
-  const isFullWidth = className?.includes('w-full')
+  // Check if button should be full width (explicit prop takes precedence)
+  const isFullWidth = fullWidth || className?.includes('w-full')
 
   return (
     <div
-      className={cn("relative inline-flex", isFullWidth ? "w-full" : "w-fit")}
-      style={{ borderRadius, isolation: 'isolate' }}
+      className={cn("relative", isFullWidth ? "flex" : "inline-flex")}
+      style={{
+        borderRadius,
+        isolation: 'isolate',
+        width: isFullWidth ? '100%' : 'fit-content'
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -186,7 +193,7 @@ function Button({
       <Comp
         data-slot="button"
         className={cn(buttonVariants({ variant, size, className }), "relative z-[1]")}
-        style={{ borderRadius }}
+        style={{ borderRadius, width: isFullWidth ? '100%' : undefined }}
         {...props}
       />
     </div>
