@@ -40,9 +40,6 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "eslint --max-warnings=0"
-    ],
-    "CLAUDE.md": [
-      "git add"
     ]
   },
   "repository": {
