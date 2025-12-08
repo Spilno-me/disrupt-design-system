@@ -4,6 +4,7 @@ import { MobileMenu } from './MobileMenu'
 import { ElectricButtonWrapper } from './GlassEffect'
 import { Button } from './button'
 import { cn } from '../../lib/utils'
+import { SHADOWS } from '../../constants/designTokens'
 
 // =============================================================================
 // TYPES
@@ -112,9 +113,10 @@ export function Header({
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 backdrop-blur-[10px] bg-cream/30 border-b border-teal shadow-[0px_2px_4px_5px_rgba(0,0,0,0.15)]',
+        'fixed top-0 left-0 right-0 z-50 backdrop-blur-[10px] bg-cream/30 border-b border-teal',
         className
       )}
+      style={{ boxShadow: SHADOWS.header }}
       data-element="main-header"
     >
       <nav

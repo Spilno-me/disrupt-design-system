@@ -5,33 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { motion, useMotionValue, useTransform, animate } from "motion/react"
 
 import { cn } from "../../lib/utils"
+import { GLASS_GRADIENTS } from "../../constants/designTokens"
 
 // =============================================================================
 // GLASS EFFECT CONFIGURATION
 // =============================================================================
 
-const GLASS_GRADIENT = `linear-gradient(
-  0deg,
-  #08A4BD 0%,
-  #3DBDD4 8%,
-  #5FCFDF 15%,
-  transparent 25%,
-  transparent 75%,
-  #5FCFDF 85%,
-  #3DBDD4 92%,
-  #08A4BD 100%
-)`
-
-const GLASS_GLOW_GRADIENT = `linear-gradient(
-  0deg,
-  rgba(8, 164, 189, 0.9) 0%,
-  rgba(61, 189, 212, 0.7) 10%,
-  transparent 25%,
-  transparent 75%,
-  rgba(61, 189, 212, 0.7) 90%,
-  rgba(8, 164, 189, 0.9) 100%
-)`
-
+const GLASS_GRADIENT = GLASS_GRADIENTS.teal
+const GLASS_GLOW_GRADIENT = GLASS_GRADIENTS.tealGlow
 const ANIMATION_DURATION = 1.5
 
 // =============================================================================
@@ -39,23 +20,33 @@ const ANIMATION_DURATION = 1.5
 // =============================================================================
 
 const buttonVariants = cva(
-  "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all cursor-pointer disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium font-sans transition-all cursor-pointer disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-[3px] focus-visible:ring-teal/30 focus-visible:border-teal",
   {
     variants: {
       variant: {
+        // Primary - Dark background (brand primary)
         default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+          "bg-dark text-white shadow-sm hover:bg-dark/90",
+        // Destructive - Error/danger state
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-error text-white shadow-sm hover:bg-error/90 focus-visible:ring-error/30",
+        // Outline - Bordered variant
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-slate bg-white text-dark shadow-sm hover:bg-cream",
+        // Secondary - Light background
         secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+          "bg-lightPurple text-darkPurple shadow-sm hover:bg-lightPurple/80",
+        // Ghost - Transparent until hover
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
+          "text-dark hover:bg-cream",
+        // Link - Text only
+        link: "text-teal underline-offset-4 hover:underline",
+        // Contact - Specific CTA button
         contact:
           "h-10 bg-dark text-white hover:bg-dark/90 px-6 py-2 font-medium",
+        // Accent - Teal/brand secondary
+        accent:
+          "bg-teal text-white shadow-sm hover:bg-teal/90",
       },
       size: {
         default: "h-10 px-6 py-2 has-[>svg]:px-4",

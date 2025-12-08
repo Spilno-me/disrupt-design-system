@@ -1,4 +1,4 @@
-import { COLORS } from '@/constants/designTokens'
+import { ALIAS, MAPPED } from '@/constants/designTokens'
 import { Shield, BookOpen, BarChart3, Scale } from 'lucide-react'
 
 // =============================================================================
@@ -48,18 +48,18 @@ function FeatureItem({ icon: Icon, title, description }: AdvisoryFeature) {
       <div
         className="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center bg-darkPurple/10"
       >
-        <Icon className="w-6 h-6" style={{ color: COLORS.darkPurple }} strokeWidth={2} />
+        <Icon className="w-6 h-6" style={{ color: ALIAS.text.secondary }} strokeWidth={2} />
       </div>
       <div className="flex flex-col gap-1">
         <h4
           className="font-sans font-bold text-base tracking-tight"
-          style={{ color: COLORS.darkPurple }}
+          style={{ color: ALIAS.text.secondary }}
         >
           {title}
         </h4>
         <p
           className="font-sans text-sm leading-[1.43] tracking-tight"
-          style={{ color: COLORS.muted }}
+          style={{ color: ALIAS.text.secondary }}
         >
           {description}
         </p>
@@ -85,7 +85,7 @@ export function StrategicAdvisorySection() {
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <span
               className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold text-white whitespace-nowrap"
-              style={{ backgroundColor: COLORS.circleRed }}
+              style={{ backgroundColor: MAPPED.badge.highlight.bg }}
             >
               STRATEGIC ADVISORY ADD-ON
             </span>
@@ -101,7 +101,7 @@ export function StrategicAdvisorySection() {
                 </h3>
                 <p
                   className="font-sans text-sm max-w-[320px]"
-                  style={{ color: COLORS.muted }}
+                  style={{ color: ALIAS.text.secondary }}
                 >
                   Your virtual board of directors, available 24/7.
                 </p>
@@ -109,13 +109,13 @@ export function StrategicAdvisorySection() {
               <div className="flex flex-col gap-1 md:text-right">
                 <span
                   className="font-display font-bold text-2xl"
-                  style={{ color: COLORS.ferrariRed }}
+                  style={{ color: ALIAS.status.error }}
                 >
                   $7500/mo
                 </span>
                 <span
                   className="font-sans text-sm"
-                  style={{ color: COLORS.muted }}
+                  style={{ color: ALIAS.text.secondary }}
                 >
                   Replaces €100k–500k/yr consulting spend
                 </span>

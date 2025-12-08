@@ -1,5 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { COLORS, SHADOWS, RADIUS, SPACING, TYPOGRAPHY, ANIMATION, Z_INDEX } from '../constants/designTokens'
+import {
+  // Tier 1: Primitives
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  WAVE,
+  SUNRISE,
+  HARBOR,
+  SLATE,
+  PRIMITIVES,
+  // Tier 2: Alias (Semantic)
+  ALIAS,
+  // Other tokens
+  SHADOWS,
+  RADIUS,
+  SPACING,
+  TYPOGRAPHY,
+  ANIMATION,
+  Z_INDEX,
+} from '../constants/designTokens'
 
 const meta: Meta = {
   title: 'Foundation/Design Tokens',
@@ -11,9 +31,14 @@ const meta: Meta = {
 Design tokens are the foundational values that define the visual design of the Disrupt Design System.
 They ensure consistency across all components and applications.
 
+**3-Tier Architecture:**
+- **Tier 1 (Primitives):** Raw color values - ABYSS, DEEP_CURRENT, CORAL, etc.
+- **Tier 2 (Alias):** Semantic tokens - ALIAS.text.primary, ALIAS.background.surface
+- **Tier 3 (Mapped):** Component-specific - MAPPED.button.primary.bg
+
 Import tokens:
 \`\`\`typescript
-import { COLORS, SHADOWS, SPACING } from '@adrozdenko/design-system'
+import { ALIAS, MAPPED, SHADOWS, SPACING } from '@/constants/designTokens'
 \`\`\`
         `,
       },
@@ -29,7 +54,7 @@ type Story = StoryObj
 // COLOR SWATCH COMPONENT
 // =============================================================================
 
-function ColorSwatch({ name, value }: { name: string; value: string }) {
+function ColorSwatch({ name, value, token }: { name: string; value: string; token?: string }) {
   const isTransparent = value.includes('rgba') || value.includes('transparent')
 
   return (
@@ -49,6 +74,9 @@ function ColorSwatch({ name, value }: { name: string; value: string }) {
       </div>
       <span className="text-sm font-semibold text-dark">{name}</span>
       <code className="text-xs text-muted bg-slate-100 px-2 py-0.5 rounded">{value}</code>
+      {token && (
+        <code className="text-[10px] text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">{token}</code>
+      )}
     </div>
   )
 }
@@ -59,81 +87,172 @@ function ColorSwatch({ name, value }: { name: string; value: string }) {
 
 export const Colors: Story = {
   render: () => {
-    const primaryColors = {
-      dark: COLORS.dark,
-      cream: COLORS.cream,
-      teal: COLORS.teal,
-      ferrariRed: COLORS.ferrariRed,
-      muted: COLORS.muted,
-      darkPurple: COLORS.darkPurple,
-    }
+    // Primary brand colors (Tier 1 base values)
+    const primaryColors = [
+      { name: 'Abyss', value: ABYSS[500], token: 'ABYSS[500]' },
+      { name: 'Deep Current', value: DEEP_CURRENT[500], token: 'DEEP_CURRENT[500]' },
+      { name: 'Red Coral', value: CORAL[500], token: 'CORAL[500]' },
+    ]
 
-    const circleColors = {
-      circleBlue: COLORS.circleBlue,
-      circleRed: COLORS.circleRed,
-      circleYellow: COLORS.circleYellow,
-      circleGreen: COLORS.circleGreen,
-    }
+    // Secondary/neutral colors
+    const secondaryColors = [
+      { name: 'Dusk Reef', value: DUSK_REEF[500], token: 'DUSK_REEF[500]' },
+      { name: 'Tide Foam', value: PRIMITIVES.cream, token: 'PRIMITIVES.cream' },
+      { name: 'Slate', value: SLATE[300], token: 'SLATE[300]' },
+      { name: 'White', value: PRIMITIVES.white, token: 'PRIMITIVES.white' },
+      { name: 'Black', value: PRIMITIVES.black, token: 'PRIMITIVES.black' },
+    ]
 
-    const uiColors = {
-      slate: COLORS.slate,
-      lightPurple: COLORS.lightPurple,
-      linkedInBlue: COLORS.linkedInBlue,
-    }
+    // Semantic/status colors
+    const semanticColors = [
+      { name: 'Wave (Info)', value: WAVE[500], token: 'WAVE[500]' },
+      { name: 'Tide Alert (Error)', value: CORAL[500], token: 'CORAL[500]' },
+      { name: 'Sunrise (Warning)', value: SUNRISE[500], token: 'SUNRISE[500]' },
+      { name: 'Harbor (Success)', value: HARBOR[500], token: 'HARBOR[500]' },
+    ]
+
+    // Alias tokens (Tier 2 - semantic usage)
+    const aliasTextColors = [
+      { name: 'Primary', value: ALIAS.text.primary, token: 'ALIAS.text.primary' },
+      { name: 'Secondary', value: ALIAS.text.secondary, token: 'ALIAS.text.secondary' },
+      { name: 'Tertiary', value: ALIAS.text.tertiary, token: 'ALIAS.text.tertiary' },
+      { name: 'Inverse', value: ALIAS.text.inverse, token: 'ALIAS.text.inverse' },
+      { name: 'Link', value: ALIAS.text.link, token: 'ALIAS.text.link' },
+    ]
+
+    const aliasBgColors = [
+      { name: 'Page', value: ALIAS.background.page, token: 'ALIAS.background.page' },
+      { name: 'Surface', value: ALIAS.background.surface, token: 'ALIAS.background.surface' },
+      { name: 'Muted', value: ALIAS.background.muted, token: 'ALIAS.background.muted' },
+      { name: 'Inverse', value: ALIAS.background.inverse, token: 'ALIAS.background.inverse' },
+    ]
 
     return (
       <div className="p-8 bg-white">
-        <h1 className="text-3xl font-display font-bold text-dark mb-8">Colors</h1>
+        <h1 className="text-3xl font-display font-bold text-dark mb-2">Colors</h1>
+        <p className="text-muted mb-8">Three-tiered color system: Primitives → Alias → Mapped</p>
 
-        {/* Primary Palette */}
+        {/* Tier 1: Primary Palette */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-dark mb-4">Primary Palette</h2>
-          <p className="text-muted mb-6">Core brand colors used throughout the design system.</p>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-6">
-            {Object.entries(primaryColors).map(([name, value]) => (
-              <ColorSwatch key={name} name={name} value={value} />
-            ))}
-          </div>
-        </section>
-
-        {/* Feature Circle Colors */}
-        <section className="mb-12">
-          <h2 className="text-xl font-semibold text-dark mb-4">Feature Card Colors</h2>
-          <p className="text-muted mb-6">Used in feature cards for visual distinction.</p>
-          <div className="grid grid-cols-4 gap-6">
-            {Object.entries(circleColors).map(([name, value]) => (
-              <ColorSwatch key={name} name={name} value={value} />
-            ))}
-          </div>
-        </section>
-
-        {/* UI Colors */}
-        <section className="mb-12">
-          <h2 className="text-xl font-semibold text-dark mb-4">UI Colors</h2>
-          <p className="text-muted mb-6">Supporting colors for UI elements.</p>
+          <h2 className="text-xl font-semibold text-dark mb-2">Tier 1: Primary Colors</h2>
+          <p className="text-muted mb-6">Core brand primitives - raw color values.</p>
           <div className="grid grid-cols-3 gap-6">
-            {Object.entries(uiColors).map(([name, value]) => (
-              <ColorSwatch key={name} name={name} value={value} />
+            {primaryColors.map((color) => (
+              <ColorSwatch key={color.name} {...color} />
+            ))}
+          </div>
+        </section>
+
+        {/* Secondary/Neutral Colors */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold text-dark mb-2">Tier 1: Secondary & Neutral Colors</h2>
+          <p className="text-muted mb-6">Supporting colors for text, backgrounds, and borders.</p>
+          <div className="grid grid-cols-5 gap-6">
+            {secondaryColors.map((color) => (
+              <ColorSwatch key={color.name} {...color} />
+            ))}
+          </div>
+        </section>
+
+        {/* Semantic Colors */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold text-dark mb-2">Tier 1: Status Colors</h2>
+          <p className="text-muted mb-6">Semantic colors for feedback and alerts.</p>
+          <div className="grid grid-cols-4 gap-6">
+            {semanticColors.map((color) => (
+              <ColorSwatch key={color.name} {...color} />
+            ))}
+          </div>
+        </section>
+
+        {/* Tier 2: Alias Tokens */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold text-dark mb-2">Tier 2: Text Colors (Alias)</h2>
+          <p className="text-muted mb-6">Semantic tokens - use these in components.</p>
+          <div className="grid grid-cols-5 gap-6">
+            {aliasTextColors.map((color) => (
+              <ColorSwatch key={color.name} {...color} />
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold text-dark mb-2">Tier 2: Background Colors (Alias)</h2>
+          <p className="text-muted mb-6">Semantic background tokens.</p>
+          <div className="grid grid-cols-4 gap-6">
+            {aliasBgColors.map((color) => (
+              <ColorSwatch key={color.name} {...color} />
             ))}
           </div>
         </section>
 
         {/* Usage Example */}
         <section className="p-6 bg-slate-50 rounded-lg">
-          <h3 className="text-lg font-semibold text-dark mb-3">Usage</h3>
+          <h3 className="text-lg font-semibold text-dark mb-3">Usage (Recommended: Tier 2 Alias)</h3>
           <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
-{`import { COLORS } from '@adrozdenko/design-system'
+{`import { ALIAS, MAPPED } from '@/constants/designTokens'
 
-// In inline styles
-<div style={{ color: COLORS.dark, backgroundColor: COLORS.cream }}>
+// Tier 2: Semantic tokens (recommended)
+<div style={{
+  color: ALIAS.text.primary,
+  backgroundColor: ALIAS.background.surface
+}}>
 
-// Or reference in Tailwind config
-colors: {
-  dark: COLORS.dark,
-  teal: COLORS.teal,
-}`}
+// Tier 3: Component-specific tokens
+<button style={{
+  background: MAPPED.button.primary.bg,
+  color: MAPPED.button.primary.text
+}}>
+
+// Tailwind classes (mapped to tokens)
+<div className="text-dark bg-surface border-slate">`}
           </pre>
         </section>
+      </div>
+    )
+  },
+}
+
+// =============================================================================
+// COLOR SCALES STORY
+// =============================================================================
+
+export const ColorScales: Story = {
+  render: () => {
+    const scales = [
+      { name: 'Abyss', scale: ABYSS, description: 'Primary dark neutral' },
+      { name: 'Deep Current', scale: DEEP_CURRENT, description: 'Teal accent' },
+      { name: 'Dusk Reef', scale: DUSK_REEF, description: 'Purple secondary' },
+      { name: 'Coral', scale: CORAL, description: 'Red/error' },
+      { name: 'Wave', scale: WAVE, description: 'Blue/info' },
+      { name: 'Sunrise', scale: SUNRISE, description: 'Yellow/warning' },
+      { name: 'Harbor', scale: HARBOR, description: 'Green/success' },
+      { name: 'Slate', scale: SLATE, description: 'Neutral gray' },
+    ]
+
+    return (
+      <div className="p-8 bg-white">
+        <h1 className="text-3xl font-display font-bold text-dark mb-2">Color Scales</h1>
+        <p className="text-muted mb-8">Full 50-900 scales for each color primitive.</p>
+
+        {scales.map(({ name, scale, description }) => (
+          <section key={name} className="mb-10">
+            <h2 className="text-lg font-semibold text-dark mb-1">{name}</h2>
+            <p className="text-sm text-muted mb-4">{description}</p>
+            <div className="flex gap-1">
+              {Object.entries(scale).map(([shade, value]) => (
+                <div key={shade} className="flex-1 text-center">
+                  <div
+                    className="h-16 rounded-md mb-2"
+                    style={{ backgroundColor: value }}
+                  />
+                  <div className="text-xs font-medium text-dark">{shade}</div>
+                  <div className="text-[10px] text-muted font-mono">{value}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     )
   },
@@ -165,7 +284,7 @@ export const Shadows: Story = {
                   <span className="text-sm font-medium text-dark">{level}</span>
                 </div>
                 <code className="text-xs text-muted bg-white px-2 py-1 rounded border">
-                  shadow="{level}"
+                  SHADOWS.{level}
                 </code>
               </div>
             ))}
@@ -201,8 +320,8 @@ export const Shadows: Story = {
         <section className="p-6 bg-white rounded-lg">
           <h3 className="text-lg font-semibold text-dark mb-3">Usage</h3>
           <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
-{`import { SHADOWS } from '@adrozdenko/design-system'
-import { Card } from '@adrozdenko/design-system'
+{`import { SHADOWS } from '@/constants/designTokens'
+import { Card } from '@/components/ui/card'
 
 // Using Card shadow prop
 <Card shadow="sm">...</Card>
@@ -272,7 +391,7 @@ export const Typography: Story = {
       <section className="p-6 bg-slate-50 rounded-lg">
         <h3 className="text-lg font-semibold text-dark mb-3">Usage</h3>
         <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
-{`import { TYPOGRAPHY } from '@adrozdenko/design-system'
+{`import { TYPOGRAPHY } from '@/constants/designTokens'
 
 // Use typography tokens
 <h1 className={TYPOGRAPHY.h1}>Large Heading</h1>
@@ -344,7 +463,7 @@ export const Spacing: Story = {
       <section className="p-6 bg-slate-50 rounded-lg">
         <h3 className="text-lg font-semibold text-dark mb-3">Usage</h3>
         <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
-{`import { SPACING, RADIUS } from '@adrozdenko/design-system'
+{`import { SPACING, RADIUS } from '@/constants/designTokens'
 
 // In styles
 <div style={{
@@ -406,7 +525,7 @@ export const Animation: Story = {
       <section className="p-6 bg-slate-50 rounded-lg">
         <h3 className="text-lg font-semibold text-dark mb-3">Usage with Motion</h3>
         <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
-{`import { ANIMATION } from '@adrozdenko/design-system'
+{`import { ANIMATION } from '@/constants/designTokens'
 import { motion } from 'motion/react'
 
 <motion.div
@@ -444,11 +563,11 @@ export const ZIndex: Story = {
               style={{
                 zIndex: value,
                 bottom: `${index * 40 + 20}px`,
-                backgroundColor: index === 0 ? COLORS.slate :
-                               index === 1 ? COLORS.cream :
-                               index === 2 ? COLORS.teal :
-                               index === 3 ? COLORS.darkPurple : COLORS.ferrariRed,
-                color: index < 2 ? COLORS.dark : 'white',
+                backgroundColor: index === 0 ? SLATE[300] :
+                               index === 1 ? PRIMITIVES.cream :
+                               index === 2 ? DEEP_CURRENT[500] :
+                               index === 3 ? DUSK_REEF[500] : CORAL[500],
+                color: index < 2 ? ABYSS[500] : PRIMITIVES.white,
               }}
             >
               <span className="font-mono text-sm">{name}: {value}</span>
@@ -461,7 +580,7 @@ export const ZIndex: Story = {
       <section className="p-6 bg-slate-50 rounded-lg">
         <h3 className="text-lg font-semibold text-dark mb-3">Usage</h3>
         <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
-{`import { Z_INDEX } from '@adrozdenko/design-system'
+{`import { Z_INDEX } from '@/constants/designTokens'
 
 <header style={{ zIndex: Z_INDEX.header }}>...</header>
 <div className="modal" style={{ zIndex: Z_INDEX.modal }}>...</div>

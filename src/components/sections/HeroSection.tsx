@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '../../lib/utils'
 import { Button } from '../ui/button'
 import { useHeroTitleRotation } from '../../hooks/useHeroTitleRotation'
+import { GRADIENTS } from '../../constants/designTokens'
+import { ResponsivePicture, ResponsiveImageSets } from '../ui/ResponsivePicture'
 
 // =============================================================================
 // TYPES
@@ -25,8 +27,10 @@ export interface HeroSectionProps {
   secondaryButtonText?: string
   /** Secondary button click handler */
   onSecondaryButtonClick?: () => void
-  /** Background image URL */
+  /** Background image URL (simple) */
   backgroundImage?: string
+  /** Responsive background images (optimized with AVIF/WebP/fallback) */
+  responsiveBackgroundImage?: ResponsiveImageSets
   /** Background color when no image */
   backgroundColor?: 'dark' | 'primary' | 'gradient'
   /** Content alignment */
@@ -59,6 +63,7 @@ export function HeroSection({
   secondaryButtonText,
   onSecondaryButtonClick,
   backgroundImage,
+  responsiveBackgroundImage,
   backgroundColor = 'dark',
   alignment = 'center',
   height = 'medium',
@@ -92,19 +97,40 @@ export function HeroSection({
 
   const displayTitle = rotatingTitles ? rotatingTitles[currentIndex] : title
   const hasRotatingTitles = rotatingTitles && rotatingTitles.length > 1
+  const hasBackgroundImage = backgroundImage || responsiveBackgroundImage
 
   return (
     <section
       className={cn(
         'relative overflow-hidden',
         heightClasses[height],
-        !backgroundImage && bgColorClasses[backgroundColor],
+        !hasBackgroundImage && bgColorClasses[backgroundColor],
         className
       )}
       data-element="hero-section"
     >
-      {/* Background Image */}
-      {backgroundImage && (
+      {/* Background Image - Responsive (optimized) */}
+      {responsiveBackgroundImage && (
+        <div className="absolute inset-0">
+          <ResponsivePicture
+            images={responsiveBackgroundImage}
+            alt=""
+            loading="eager"
+            className="w-full h-full object-cover"
+          />
+          {showOverlay && (
+            <div
+              className="absolute inset-0"
+              style={{
+                background: GRADIENTS.heroOverlayStrong,
+              }}
+            />
+          )}
+        </div>
+      )}
+
+      {/* Background Image - Simple URL (legacy support) */}
+      {backgroundImage && !responsiveBackgroundImage && (
         <div className="absolute inset-0">
           <img
             src={backgroundImage}
@@ -115,8 +141,7 @@ export function HeroSection({
             <div
               className="absolute inset-0"
               style={{
-                background:
-                  'linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.2) 50%, transparent 70%)',
+                background: GRADIENTS.heroOverlayStrong,
               }}
             />
           )}

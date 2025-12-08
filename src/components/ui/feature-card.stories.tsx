@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FeatureCard } from './FeatureCard';
-import { COLORS } from '../../constants/designTokens';
+import { ALIAS } from '../../constants/designTokens';
 
 const meta = {
   title: 'Website/FeatureCard',
@@ -23,7 +23,7 @@ type Story = StoryObj<typeof FeatureCard>;
 export const Automate: Story = {
   args: {
     iconName: 'automate',
-    circleColor: COLORS.circleBlue,
+    circleColor: ALIAS.feature.automate,
     title: 'Automate',
     description: 'Streamline repetitive tasks with intelligent automation that learns from your workflows.',
     hasCompletedSequence: true,
@@ -34,7 +34,7 @@ export const Automate: Story = {
 export const Advice: Story = {
   args: {
     iconName: 'advice',
-    circleColor: COLORS.circleRed,
+    circleColor: ALIAS.feature.advice,
     title: 'Advice',
     description: 'Get strategic recommendations powered by AI analysis of your business data.',
     hasCompletedSequence: true,
@@ -45,7 +45,7 @@ export const Advice: Story = {
 export const Adapt: Story = {
   args: {
     iconName: 'adapt',
-    circleColor: COLORS.circleYellow,
+    circleColor: ALIAS.feature.adapt,
     title: 'Adapt',
     description: 'Flexibly adjust to changing conditions with real-time intelligence and insights.',
     hasCompletedSequence: true,
@@ -56,7 +56,7 @@ export const Adapt: Story = {
 export const Scale: Story = {
   args: {
     iconName: 'scale',
-    circleColor: COLORS.circleGreen,
+    circleColor: ALIAS.feature.scale,
     title: 'Scale',
     description: 'Grow your operations seamlessly with systems designed for enterprise expansion.',
     hasCompletedSequence: true,
@@ -69,28 +69,28 @@ export const AllFeatures: Story = {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 max-w-7xl p-8">
       <FeatureCard
         iconName="automate"
-        circleColor={COLORS.circleBlue}
+        circleColor={ALIAS.feature.automate}
         title="Automate"
         description="Streamline repetitive tasks with intelligent automation that learns from your workflows."
         hasCompletedSequence={true}
       />
       <FeatureCard
         iconName="advice"
-        circleColor={COLORS.circleRed}
+        circleColor={ALIAS.feature.advice}
         title="Advice"
         description="Get strategic recommendations powered by AI analysis of your business data."
         hasCompletedSequence={true}
       />
       <FeatureCard
         iconName="adapt"
-        circleColor={COLORS.circleYellow}
+        circleColor={ALIAS.feature.adapt}
         title="Adapt"
         description="Flexibly adjust to changing conditions with real-time intelligence and insights."
         hasCompletedSequence={true}
       />
       <FeatureCard
         iconName="scale"
-        circleColor={COLORS.circleGreen}
+        circleColor={ALIAS.feature.scale}
         title="Scale"
         description="Grow your operations seamlessly with systems designed for enterprise expansion."
         hasCompletedSequence={true}
@@ -107,7 +107,7 @@ export const InteractiveStates: Story = {
         <h3 className="text-lg font-bold mb-4 text-dark">Hover me (Desktop only)</h3>
         <FeatureCard
           iconName="automate"
-          circleColor={COLORS.circleBlue}
+          circleColor={ALIAS.feature.automate}
           title="Automate"
           description="Hover over this card to see the rotation and electric effect animation."
           hasCompletedSequence={true}
@@ -118,7 +118,7 @@ export const InteractiveStates: Story = {
         <h3 className="text-lg font-bold mb-4 text-dark">Sequence Active</h3>
         <FeatureCard
           iconName="advice"
-          circleColor={COLORS.circleRed}
+          circleColor={ALIAS.feature.advice}
           title="Advice"
           description="This card simulates the scroll sequence animation state."
           isSequenceActive={true}
@@ -129,7 +129,7 @@ export const InteractiveStates: Story = {
         <h3 className="text-lg font-bold mb-4 text-dark">Before Sequence (Hidden Description)</h3>
         <FeatureCard
           iconName="adapt"
-          circleColor={COLORS.circleYellow}
+          circleColor={ALIAS.feature.adapt}
           title="Adapt"
           description="This description is hidden until the sequence activates or on mobile."
           hasCompletedSequence={false}

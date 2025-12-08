@@ -1,4 +1,4 @@
-import { COLORS } from '@/constants/designTokens'
+import { ALIAS } from '@/constants/designTokens'
 import { GridBlobBackground } from '@/components/ui/GridBlobCanvas'
 
 // =============================================================================
@@ -45,14 +45,14 @@ function FeatureGridCard({ title, description }: FeatureCardData) {
       <div className="flex flex-col gap-4">
         <h3
           className="font-sans font-bold text-xl leading-[1.4] tracking-[-0.02em]"
-          style={{ color: COLORS.dark }}
+          style={{ color: ALIAS.text.primary }}
         >
           {title}
         </h3>
       </div>
       <p
         className="font-sans text-sm leading-[1.625] tracking-[-0.01em]"
-        style={{ color: COLORS.muted }}
+        style={{ color: ALIAS.text.secondary }}
       >
         {description}
       </p>

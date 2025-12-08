@@ -1,4 +1,4 @@
-import { COLORS } from '@/constants/designTokens'
+import { ALIAS } from '@/constants/designTokens'
 import { Check, X } from 'lucide-react'
 import { Button } from '../ui/button'
 import { ElectricButtonWrapper } from '@/components/ui/ElectricInput'
@@ -183,19 +183,19 @@ function FeatureCell({
       {isCheck && (
         <Check
           className="w-5 h-5 mx-auto"
-          style={{ color: isHighlighted ? '#fff' : COLORS.dark }}
+          style={{ color: isHighlighted ? '#fff' : ALIAS.text.primary }}
         />
       )}
       {isX && (
         <X
           className="w-5 h-5 mx-auto"
-          style={{ color: isHighlighted ? 'rgba(255,255,255,0.5)' : COLORS.slate }}
+          style={{ color: isHighlighted ? 'rgba(255,255,255,0.5)' : ALIAS.border.default }}
         />
       )}
       {isGetQuote && (
         <span
           className="text-sm font-medium"
-          style={{ color: isHighlighted ? '#fff' : COLORS.teal }}
+          style={{ color: isHighlighted ? '#fff' : ALIAS.brand.secondary }}
         >
           {value}
         </span>
@@ -203,7 +203,7 @@ function FeatureCell({
       {isPrice && !isCheck && !isX && !isEmpty && !isGetQuote && (
         <span
           className={`font-display font-bold text-xl lg:text-2xl ${isHighlighted ? 'text-white' : ''}`}
-          style={{ color: isHighlighted ? undefined : COLORS.darkPurple }}
+          style={{ color: isHighlighted ? undefined : ALIAS.brand.tertiary }}
         >
           {value}
         </span>
@@ -211,7 +211,7 @@ function FeatureCell({
       {isDefinition && !isCheck && !isX && !isEmpty && !isGetQuote && (
         <span
           className={`text-xs leading-relaxed block text-left ${isHighlighted ? 'text-white/80' : ''}`}
-          style={{ color: isHighlighted ? undefined : COLORS.muted }}
+          style={{ color: isHighlighted ? undefined : ALIAS.text.secondary }}
         >
           {value}
         </span>
@@ -232,13 +232,13 @@ function PricingFeatureCard({
     <div className="flex-1 p-6 bg-white rounded-[14px] border border-dashed border-slate-300">
       <h3
         className="font-sans font-bold text-lg mb-2"
-        style={{ color: COLORS.dark }}
+        style={{ color: ALIAS.text.primary }}
       >
         {title}
       </h3>
       <p
         className="font-sans text-sm leading-relaxed"
-        style={{ color: COLORS.muted }}
+        style={{ color: ALIAS.text.secondary }}
       >
         {description}
       </p>
@@ -295,7 +295,7 @@ export function PlatformTiersSection() {
                 <tr>
                   <th
                     className="px-4 py-4 text-left bg-slate-100 font-sans font-semibold text-sm uppercase tracking-wider"
-                    style={{ color: COLORS.dark }}
+                    style={{ color: ALIAS.text.primary }}
                   >
                     CORE CAPABILITIES
                   </th>
@@ -305,7 +305,7 @@ export function PlatformTiersSection() {
                       className={`px-4 py-4 text-center font-sans font-semibold text-sm ${
                         tier.isHighlighted ? 'bg-dark text-white' : 'bg-slate-100'
                       }`}
-                      style={{ color: tier.isHighlighted ? undefined : COLORS.dark }}
+                      style={{ color: tier.isHighlighted ? undefined : ALIAS.text.primary }}
                     >
                       {tier.name}
                     </th>
@@ -316,10 +316,10 @@ export function PlatformTiersSection() {
                 {/* Annual Platform Fee */}
                 <tr className="bg-[#5E4F7E]/10">
                   <td className="px-4 py-4 border-b border-slate-200">
-                    <span className="font-sans font-semibold text-sm block" style={{ color: COLORS.dark }}>
+                    <span className="font-sans font-semibold text-sm block" style={{ color: ALIAS.text.primary }}>
                       Annual Platform Fee
                     </span>
-                    <span className="font-sans text-xs block mt-1" style={{ color: COLORS.muted }}>
+                    <span className="font-sans text-xs block mt-1" style={{ color: ALIAS.text.secondary }}>
                       Quoted based on total business size
                     </span>
                   </td>
@@ -336,7 +336,7 @@ export function PlatformTiersSection() {
                 {/* Per-User Fee */}
                 <tr>
                   <td className="px-4 py-4 border-b border-slate-200">
-                    <span className="font-sans font-semibold text-sm block" style={{ color: COLORS.dark }}>
+                    <span className="font-sans font-semibold text-sm block" style={{ color: ALIAS.text.primary }}>
                       Per-User Fee (Monthly)
                     </span>
                   </td>
@@ -351,7 +351,7 @@ export function PlatformTiersSection() {
                         className={`font-display font-bold text-xl lg:text-2xl ${
                           tier.isHighlighted ? 'text-white' : ''
                         }`}
-                        style={{ color: tier.isHighlighted ? undefined : COLORS.darkPurple }}
+                        style={{ color: tier.isHighlighted ? undefined : ALIAS.text.primaryPurple }}
                       >
                         {tier.price}
                       </span>
@@ -362,7 +362,7 @@ export function PlatformTiersSection() {
                 {/* Definition - Last row, no bottom border */}
                 <tr>
                   <td className="px-4 py-4">
-                    <span className="font-sans font-semibold text-sm block" style={{ color: COLORS.dark }}>
+                    <span className="font-sans font-semibold text-sm block" style={{ color: ALIAS.text.primary }}>
                       Definition:
                     </span>
                   </td>
@@ -375,7 +375,7 @@ export function PlatformTiersSection() {
                         className={`text-xs leading-relaxed block ${
                           tier.isHighlighted ? 'text-white/80' : ''
                         }`}
-                        style={{ color: tier.isHighlighted ? undefined : COLORS.muted }}
+                        style={{ color: tier.isHighlighted ? undefined : ALIAS.text.secondary }}
                       >
                         {tier.description}
                       </span>
@@ -402,7 +402,7 @@ export function PlatformTiersSection() {
                 <tr>
                   <th
                     className="px-4 py-4 text-left bg-slate-100 font-sans font-semibold text-sm uppercase tracking-wider"
-                    style={{ color: COLORS.darkPurple }}
+                    style={{ color: ALIAS.text.primaryPurple }}
                   >
                     FOUNDATIONAL EHS MODULES (The Data Engine)
                   </th>
@@ -412,7 +412,7 @@ export function PlatformTiersSection() {
                       className={`px-4 py-4 text-center font-sans font-semibold text-sm ${
                         tier.isHighlighted ? 'bg-dark text-white' : 'bg-slate-100'
                       }`}
-                      style={{ color: tier.isHighlighted ? undefined : COLORS.dark }}
+                      style={{ color: tier.isHighlighted ? undefined : ALIAS.text.primary }}
                     >
                       {tier.name}
                     </th>
@@ -425,11 +425,11 @@ export function PlatformTiersSection() {
                   return (
                     <tr key={row.label}>
                       <td className={`px-4 py-4 ${isLastRow ? '' : 'border-b border-slate-200'}`}>
-                        <span className="font-sans font-semibold text-sm block" style={{ color: COLORS.dark }}>
+                        <span className="font-sans font-semibold text-sm block" style={{ color: ALIAS.text.primary }}>
                           {row.label} <span className="font-normal">{row.description?.split('.')[0]}.</span>
                         </span>
                         {row.description?.includes('Target:') && (
-                          <span className="font-sans text-xs block mt-1" style={{ color: COLORS.teal }}>
+                          <span className="font-sans text-xs block mt-1" style={{ color: ALIAS.brand.secondary }}>
                             Target: {row.description.split('Target:')[1]}
                           </span>
                         )}
@@ -461,7 +461,7 @@ export function PlatformTiersSection() {
                 <tr>
                   <th
                     className="px-4 py-4 text-left bg-slate-100 font-sans font-semibold text-sm uppercase tracking-wider"
-                    style={{ color: COLORS.darkPurple }}
+                    style={{ color: ALIAS.text.primaryPurple }}
                   >
                     AGENTIC AI MODULES (The Automation Layer)
                   </th>
@@ -471,7 +471,7 @@ export function PlatformTiersSection() {
                       className={`px-4 py-4 text-center font-sans font-semibold text-sm ${
                         tier.isHighlighted ? 'bg-dark text-white' : 'bg-slate-100'
                       }`}
-                      style={{ color: tier.isHighlighted ? undefined : COLORS.dark }}
+                      style={{ color: tier.isHighlighted ? undefined : ALIAS.text.primary }}
                     >
                       {tier.name}
                     </th>
@@ -484,11 +484,11 @@ export function PlatformTiersSection() {
                   return (
                     <tr key={row.label}>
                       <td className={`px-4 py-4 ${isLastRow ? '' : 'border-b border-slate-200'}`}>
-                        <span className="font-sans font-semibold text-sm block" style={{ color: COLORS.dark }}>
+                        <span className="font-sans font-semibold text-sm block" style={{ color: ALIAS.text.primary }}>
                           {row.label}
                         </span>
                         {row.description && (
-                          <span className="font-sans text-xs block mt-1" style={{ color: COLORS.teal }}>
+                          <span className="font-sans text-xs block mt-1" style={{ color: ALIAS.brand.secondary }}>
                             {row.description}
                           </span>
                         )}

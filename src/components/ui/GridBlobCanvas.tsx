@@ -1,12 +1,13 @@
 import React, { useEffect, useState, ReactNode } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'motion/react'
+import { ALIAS } from '../../constants/designTokens'
 
 // =============================================================================
 // CONFIGURATION
 // =============================================================================
 
 const CONFIG = {
-  grid: { size: 20, color: 'rgba(180, 180, 180, 0.4)' },
+  grid: { size: 20, color: ALIAS.grid.color },
   blob: {
     waypointInterval: 2000,
     transitionDuration: 1.8,
@@ -74,12 +75,8 @@ export function GridBlobBackground({ scale = 1 }: GridBlobBackgroundProps) {
   const maskImage = useTransform(
     [x, y, width, height],
     ([xVal, yVal, wVal, hVal]) => {
-      // Create radial gradient mask with soft edges
-      return `radial-gradient(ellipse ${wVal}px ${hVal}px at ${xVal}% ${yVal}%,
-        rgba(0,0,0,1) 0%,
-        rgba(0,0,0,0.8) 50%,
-        rgba(0,0,0,0.3) 70%,
-        rgba(0,0,0,0) 100%)`
+      // Create radial gradient mask with soft edges using design token
+      return ALIAS.mask.radialFade(wVal as number, hVal as number, xVal as number, yVal as number)
     }
   )
 

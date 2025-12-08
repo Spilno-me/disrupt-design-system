@@ -2,20 +2,23 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
-import { COLORS, SHADOWS, type ShadowLevel } from "../../constants/designTokens"
+import { SHADOWS, type ShadowLevel } from "../../constants/designTokens"
 
 // =============================================================================
 // CARD VARIANTS
 // =============================================================================
 
 const cardVariants = cva(
-  "flex flex-col rounded-lg",
+  "flex flex-col rounded-lg font-sans",
   {
     variants: {
       variant: {
-        default: "bg-card text-card-foreground gap-6 border py-6",
-        pricing: "bg-white p-6 h-full border border-dashed border-slate-300 rounded-[14px]",
-        pricingHighlight: "bg-white p-6 border-2 border-dashed rounded-[14px]",
+        // Default card - white background with subtle border
+        default: "bg-white text-dark gap-6 border border-slate py-6",
+        // Pricing card - dashed border
+        pricing: "bg-white p-6 h-full border border-dashed border-slate rounded-[14px]",
+        // Highlighted pricing card - accent border
+        pricingHighlight: "bg-white p-6 border-2 border-dashed border-error rounded-[14px]",
       },
     },
     defaultVariants: {
@@ -30,9 +33,8 @@ interface CardProps extends React.ComponentProps<"div">, VariantProps<typeof car
 }
 
 function Card({ className, variant, shadow, style, ...props }: CardProps) {
-  // Build combined styles
+  // Build combined styles using SHADOWS tokens (Tier 1 primitive for shadows)
   const combinedStyle: React.CSSProperties = {
-    ...(variant === "pricingHighlight" && { borderColor: COLORS.ferrariRed }),
     ...(shadow && shadow !== 'none' && { boxShadow: SHADOWS[shadow] }),
     ...style,
   }
@@ -41,7 +43,7 @@ function Card({ className, variant, shadow, style, ...props }: CardProps) {
     <div
       data-slot="card"
       className={cn(cardVariants({ variant }), className)}
-      style={combinedStyle}
+      style={Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined}
       {...props}
     />
   )
@@ -74,7 +76,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-muted text-sm", className)}
       {...props}
     />
   )

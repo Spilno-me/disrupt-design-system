@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ArrowUp } from 'lucide-react'
 
-interface ScrollToTopButtonProps {
+export interface ScrollToTopButtonProps {
   /** CSS selector for the element that triggers button visibility */
   triggerSelector?: string
 }

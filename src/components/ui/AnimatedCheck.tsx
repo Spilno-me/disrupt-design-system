@@ -1,5 +1,6 @@
 import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
+import { ALIAS } from '../../constants/designTokens'
 
 interface AnimatedCheckProps {
   /** Size class for the check (default matches Check icon sizing) */
@@ -20,7 +21,7 @@ interface AnimatedCheckProps {
  */
 export function AnimatedCheck({
   className = 'w-5 h-5 sm:w-6 sm:h-6',
-  color = '#08A4BD',
+  color = ALIAS.brand.secondary,
   autoAnimate = false,
   index = 0,
   staggerDelay = 0.15,

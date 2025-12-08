@@ -1,37 +1,612 @@
 /**
- * Design Tokens - Centralized design system values
- * All colors, shadows, spacing, and animation values should be defined here
+ * Design Tokens - Three-Tiered Color System
+ *
+ * TIER 1 (Brand): Raw color primitives ONLY - hex values, no semantics
+ * TIER 2 (Alias): Semantic tokens - references Tier 1, describes intent
+ * TIER 3 (Mapped): Component-specific - references Tier 2 ONLY
  */
 
 // =============================================================================
-// COLORS
+// TIER 1: BRAND COLORS (Primitives)
+// Raw color values ONLY. No semantic meaning, no usage context.
+// These are the single source of truth for all color values.
+// =============================================================================
+
+/** Abyss - Dark neutral scale */
+export const ABYSS = {
+  50: '#E8E9EB',
+  100: '#D1D3D7',
+  200: '#A3A7AF',
+  300: '#757B87',
+  400: '#474F5F',
+  500: '#2D3142',
+  600: '#252836',
+  700: '#1D1F2A',
+  800: '#14161E',
+  900: '#0C0D12',
+} as const
+
+/** Deep Current - Teal scale */
+export const DEEP_CURRENT = {
+  50: '#E6F7FA',
+  100: '#CCEFF5',
+  200: '#99DFEB',
+  300: '#66CFE1',
+  400: '#33BFD7',
+  500: '#08A4BD',
+  600: '#068397',
+  700: '#056271',
+  800: '#03424B',
+  900: '#022125',
+} as const
+
+/** Dusk Reef - Purple scale */
+export const DUSK_REEF = {
+  50: '#EFEDF3',
+  100: '#DFDBE7',
+  200: '#BFB7CF',
+  300: '#9F93B7',
+  400: '#7F6F9F',
+  500: '#5E4F7E',
+  600: '#4B3F65',
+  700: '#382F4C',
+  800: '#262033',
+  900: '#13101A',
+} as const
+
+/** Coral - Red scale */
+export const CORAL = {
+  50: '#FEF2F2',
+  100: '#FEE2E2',
+  200: '#FECACA',
+  300: '#FCA5A5',
+  400: '#F87171',
+  450: '#EF4444',    // Tailwind red-500 (circleRed - for badges, feature indicators)
+  500: '#F70D1A',    // Ferrari red (brand accent)
+  600: '#DC2626',
+  700: '#B91C1C',
+  800: '#991B1B',
+  900: '#7F1D1D',
+} as const
+
+/** Wave - Blue scale */
+export const WAVE = {
+  50: '#EFF6FF',
+  100: '#DBEAFE',
+  200: '#BFDBFE',
+  300: '#93C5FD',
+  400: '#60A5FA',
+  500: '#3B82F6',
+  600: '#2563EB',
+  700: '#1D4ED8',
+  800: '#1E40AF',
+  900: '#1E3A8A',
+} as const
+
+/** Sunrise - Yellow scale */
+export const SUNRISE = {
+  50: '#FFFBEB',
+  100: '#FEF3C7',
+  200: '#FDE68A',
+  300: '#FCD34D',
+  400: '#FBBF24',
+  500: '#EAB308',
+  600: '#CA8A04',
+  700: '#A16207',
+  800: '#854D0E',
+  900: '#713F12',
+} as const
+
+/** Harbor - Green scale */
+export const HARBOR = {
+  50: '#F0FDF4',
+  100: '#DCFCE7',
+  200: '#BBF7D0',
+  300: '#86EFAC',
+  400: '#4ADE80',
+  500: '#22C55E',
+  600: '#16A34A',
+  700: '#15803D',
+  800: '#166534',
+  900: '#14532D',
+} as const
+
+/** Slate - Neutral gray scale */
+export const SLATE = {
+  50: '#F8FAFC',
+  100: '#F1F5F9',
+  200: '#E2E8F0',
+  300: '#CBD5E1',
+  400: '#94A3B8',
+  500: '#64748B',
+  600: '#475569',
+  700: '#334155',
+  800: '#1E293B',
+  900: '#0F172A',
+} as const
+
+/** Base primitives - single color values */
+export const PRIMITIVES = {
+  white: '#FFFFFF',
+  black: '#000000',
+  cream: '#FBFBF3',
+  linkedIn: '#0A66C2',
+} as const
+
+// =============================================================================
+// TIER 2: ALIAS TOKENS (Semantic)
+// What the color MEANS. References Tier 1 ONLY.
+// No raw hex values allowed in this tier.
+// =============================================================================
+
+export const ALIAS = {
+  // --- TEXT ---
+  text: {
+    primary: ABYSS[500],
+    secondary: DUSK_REEF[500],
+    tertiary: DUSK_REEF[400],
+    disabled: DUSK_REEF[300],
+    inverse: PRIMITIVES.white,
+    link: DEEP_CURRENT[500],
+    linkHover: DEEP_CURRENT[600],
+    error: CORAL[500],
+    success: HARBOR[600],
+    warning: SUNRISE[600],
+    info: WAVE[600],
+  },
+
+  // --- BACKGROUND ---
+  background: {
+    page: PRIMITIVES.cream,
+    surface: PRIMITIVES.white,
+    surfaceHover: ABYSS[50],
+    surfaceActive: ABYSS[100],
+    elevated: PRIMITIVES.white,
+    muted: DUSK_REEF[50],
+    inverse: ABYSS[500],
+    inverseSubtle: ABYSS[700],
+    accent: DEEP_CURRENT[50],
+    accentSubtle: DEEP_CURRENT[100],
+    accentStrong: DEEP_CURRENT[500],
+    error: CORAL[50],
+    errorSubtle: CORAL[100],
+    success: HARBOR[50],
+    successSubtle: HARBOR[100],
+    warning: SUNRISE[50],
+    warningSubtle: SUNRISE[100],
+    info: WAVE[50],
+    infoSubtle: WAVE[100],
+  },
+
+  // --- BORDER ---
+  border: {
+    default: SLATE[300],
+    subtle: ABYSS[100],
+    strong: ABYSS[300],
+    focus: DEEP_CURRENT[500],
+    error: CORAL[500],
+    success: HARBOR[500],
+    warning: SUNRISE[500],
+    info: WAVE[500],
+    disabled: ABYSS[200],
+    accent: DEEP_CURRENT[500],
+    inverse: ABYSS[700],
+  },
+
+  // --- ICON ---
+  icon: {
+    primary: ABYSS[500],
+    secondary: DUSK_REEF[500],
+    tertiary: DUSK_REEF[400],
+    disabled: DUSK_REEF[300],
+    inverse: PRIMITIVES.white,
+    accent: DEEP_CURRENT[500],
+    error: CORAL[500],
+    success: HARBOR[500],
+    warning: SUNRISE[500],
+    info: WAVE[500],
+  },
+
+  // --- INTERACTIVE ---
+  interactive: {
+    primary: ABYSS[500],
+    primaryHover: ABYSS[600],
+    primaryActive: ABYSS[700],
+    accent: DEEP_CURRENT[500],
+    accentHover: DEEP_CURRENT[600],
+    accentActive: DEEP_CURRENT[700],
+    danger: CORAL[500],
+    dangerHover: CORAL[600],
+    dangerActive: CORAL[700],
+    disabled: ABYSS[200],
+    disabledText: ABYSS[300],
+  },
+
+  // --- STATUS ---
+  status: {
+    error: CORAL[500],
+    errorLight: CORAL[50],
+    errorMuted: CORAL[100],
+    success: HARBOR[500],
+    successLight: HARBOR[50],
+    successMuted: HARBOR[100],
+    warning: SUNRISE[500],
+    warningLight: SUNRISE[50],
+    warningMuted: SUNRISE[100],
+    info: WAVE[500],
+    infoLight: WAVE[50],
+    infoMuted: WAVE[100],
+  },
+
+  // --- OVERLAY ---
+  overlay: {
+    light: 'rgba(251, 251, 243, 0.3)',
+    medium: 'rgba(0, 0, 0, 0.3)',
+    dark: 'rgba(0, 0, 0, 0.5)',
+    darkStrong: 'rgba(0, 0, 0, 0.8)',
+    white50: 'rgba(255, 255, 255, 0.5)',
+    subtle: 'rgba(229, 229, 229, 0.5)',
+  },
+
+  // --- GRADIENTS ---
+  gradient: {
+    searchFilter: `linear-gradient(0deg, ${WAVE[50]} 0%, ${PRIMITIVES.white} 100%)`,
+  },
+
+  // --- SHADOWS ---
+  shadow: {
+    sm: '0px 1px 2px -1px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.1)',
+    header: '0px 2px 4px 5px rgba(0, 0, 0, 0.15)',
+    footer: '0px -1px 3px rgba(0, 0, 0, 0.08)',
+  },
+
+  // --- GRID/CANVAS ---
+  grid: {
+    color: 'rgba(180, 180, 180, 0.4)',
+  },
+
+  // --- MASK GRADIENTS ---
+  mask: {
+    radialFade: (w: number, h: number, x: number, y: number) =>
+      `radial-gradient(ellipse ${w}px ${h}px at ${x}% ${y}%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)`,
+  },
+
+  // --- GLOW FILTERS ---
+  glow: {
+    electric: 'drop-shadow(0 0 2px cyan)',
+    electricIntense: 'drop-shadow(0 0 3px cyan)',
+  },
+
+  // --- BRAND ACCENT (for brand-specific usage) ---
+  brand: {
+    primary: ABYSS[500],
+    secondary: DEEP_CURRENT[500],
+    tertiary: DUSK_REEF[500],
+    accent: CORAL[500],
+    neutral: PRIMITIVES.cream,
+  },
+
+  // --- FEATURE INDICATORS (semantic colors for features) ---
+  feature: {
+    automate: WAVE[500],
+    advice: CORAL[450],    // circleRed - used for badges, feature indicators
+    adapt: SUNRISE[500],
+    scale: HARBOR[500],
+  },
+} as const
+
+// =============================================================================
+// TIER 3: MAPPED TOKENS (Component-specific)
+// WHERE the color is used. References TIER 2 ONLY.
+// No Tier 1 references or raw hex values allowed.
+// =============================================================================
+
+export const MAPPED = {
+  // --- BUTTON ---
+  button: {
+    primary: {
+      bg: ALIAS.interactive.primary,
+      bgHover: ALIAS.interactive.primaryHover,
+      bgActive: ALIAS.interactive.primaryActive,
+      text: ALIAS.text.inverse,
+      border: ALIAS.border.subtle,
+    },
+    secondary: {
+      bg: ALIAS.background.surface,
+      bgHover: ALIAS.background.surfaceHover,
+      bgActive: ALIAS.background.surfaceActive,
+      text: ALIAS.text.primary,
+      border: ALIAS.border.default,
+    },
+    accent: {
+      bg: ALIAS.interactive.accent,
+      bgHover: ALIAS.interactive.accentHover,
+      bgActive: ALIAS.interactive.accentActive,
+      text: ALIAS.text.inverse,
+      border: ALIAS.border.accent,
+    },
+    ghost: {
+      bg: 'transparent',
+      bgHover: ALIAS.background.surfaceHover,
+      bgActive: ALIAS.background.surfaceActive,
+      text: ALIAS.text.primary,
+      border: 'transparent',
+    },
+    danger: {
+      bg: ALIAS.interactive.danger,
+      bgHover: ALIAS.interactive.dangerHover,
+      bgActive: ALIAS.interactive.dangerActive,
+      text: ALIAS.text.inverse,
+      border: ALIAS.border.error,
+    },
+    disabled: {
+      bg: ALIAS.interactive.disabled,
+      text: ALIAS.interactive.disabledText,
+      border: ALIAS.border.disabled,
+    },
+  },
+
+  // --- INPUT ---
+  input: {
+    bg: ALIAS.background.surface,
+    bgHover: ALIAS.background.surface,
+    bgFocus: ALIAS.background.surface,
+    bgDisabled: ALIAS.background.muted,
+    text: ALIAS.text.primary,
+    textPlaceholder: ALIAS.text.tertiary,
+    textDisabled: ALIAS.text.disabled,
+    border: ALIAS.border.default,
+    borderHover: ALIAS.border.strong,
+    borderFocus: ALIAS.border.focus,
+    borderError: ALIAS.border.error,
+    borderDisabled: ALIAS.border.disabled,
+  },
+
+  // --- CARD ---
+  card: {
+    bg: ALIAS.background.surface,
+    bgHover: ALIAS.background.surfaceHover,
+    border: ALIAS.border.subtle,
+    borderHover: ALIAS.border.default,
+    shadow: 'sm',
+  },
+
+  // --- HEADER ---
+  header: {
+    bg: ALIAS.overlay.light,
+    bgSolid: ALIAS.background.surface,
+    text: ALIAS.text.primary,
+    textInverse: ALIAS.text.inverse,
+    border: ALIAS.border.accent,
+    shadow: ALIAS.shadow.header,
+  },
+
+  // --- NAVIGATION ---
+  nav: {
+    link: ALIAS.text.primary,
+    linkHover: ALIAS.text.link,
+    linkActive: ALIAS.text.link,
+    indicator: ALIAS.border.accent,
+  },
+
+  // --- BADGE ---
+  badge: {
+    default: {
+      bg: ALIAS.background.muted,
+      text: ALIAS.text.secondary,
+    },
+    accent: {
+      bg: ALIAS.background.accent,
+      text: ALIAS.text.link,
+    },
+    highlight: {
+      bg: ALIAS.feature.advice,       // circleRed (#EF4444) - for promotional badges
+      text: ALIAS.text.inverse,
+    },
+    success: {
+      bg: ALIAS.status.successLight,
+      text: ALIAS.text.success,
+    },
+    warning: {
+      bg: ALIAS.status.warningLight,
+      text: ALIAS.text.warning,
+    },
+    error: {
+      bg: ALIAS.status.errorLight,
+      text: ALIAS.text.error,
+    },
+    info: {
+      bg: ALIAS.status.infoLight,
+      text: ALIAS.text.info,
+    },
+  },
+
+  // --- TOOLTIP ---
+  tooltip: {
+    bg: ALIAS.background.inverse,
+    text: ALIAS.text.inverse,
+  },
+
+  // --- MODAL ---
+  modal: {
+    bg: ALIAS.background.elevated,
+    overlay: ALIAS.overlay.dark,
+    border: ALIAS.border.subtle,
+  },
+
+  // --- ALERT ---
+  alert: {
+    error: {
+      bg: ALIAS.background.error,
+      border: ALIAS.border.error,
+      text: ALIAS.text.primary,
+      icon: ALIAS.icon.error,
+    },
+    success: {
+      bg: ALIAS.background.success,
+      border: ALIAS.border.success,
+      text: ALIAS.text.primary,
+      icon: ALIAS.icon.success,
+    },
+    warning: {
+      bg: ALIAS.background.warning,
+      border: ALIAS.border.warning,
+      text: ALIAS.text.primary,
+      icon: ALIAS.icon.warning,
+    },
+    info: {
+      bg: ALIAS.background.info,
+      border: ALIAS.border.info,
+      text: ALIAS.text.primary,
+      icon: ALIAS.icon.info,
+    },
+  },
+
+  // --- FEATURE CARD ---
+  featureCard: {
+    bg: ALIAS.background.inverse,
+    text: ALIAS.text.inverse,
+    textMuted: ALIAS.overlay.medium,
+    circles: {
+      automate: ALIAS.feature.automate,
+      advice: ALIAS.feature.advice,
+      adapt: ALIAS.feature.adapt,
+      scale: ALIAS.feature.scale,
+    },
+  },
+
+  // --- PRICING ---
+  pricing: {
+    highlight: {
+      border: ALIAS.status.error,
+      badge: ALIAS.status.error,
+    },
+    connector: {
+      line: ALIAS.status.error,
+      dot: ALIAS.status.error,
+    },
+  },
+
+  // --- FOOTER ---
+  footer: {
+    bg: ALIAS.background.inverse,
+    text: ALIAS.text.inverse,
+    textMuted: ALIAS.overlay.medium,
+    link: ALIAS.text.inverse,
+    linkHover: ALIAS.text.link,
+  },
+
+  // --- SEARCH FILTER (Market Product) ---
+  searchFilter: {
+    bg: ALIAS.gradient.searchFilter,
+    border: ALIAS.overlay.subtle,
+    shadow: ALIAS.shadow.sm,
+    input: {
+      bg: ALIAS.overlay.white50,
+      placeholder: ALIAS.text.tertiary,
+      text: ALIAS.text.primary,
+    },
+    icon: {
+      search: ALIAS.icon.secondary,
+      filter: ALIAS.interactive.accent,
+    },
+    filterButton: {
+      bg: ALIAS.overlay.white50,
+      border: ALIAS.overlay.subtle,
+    },
+  },
+} as const
+
+// =============================================================================
+// TAILWIND COLOR MAPPING
+// Maps TIER 2 semantic aliases to Tailwind class names
+// References TIER 2 ONLY - never Tier 1
 // =============================================================================
 
 export const COLORS = {
-  // Primary palette
-  dark: '#2D3142',           // Primary text, buttons, headings
-  cream: '#FBFBF3',          // Main background
-  teal: '#08A4BD',           // Accent, links, active states
-  ferrariRed: '#F70D1A',     // Brand accent (logo red)
-  muted: '#5E4F7E',          // Secondary/muted text (dusty purple)
-  darkPurple: '#341E63',     // Section headings, pricing tables
+  // --- SEMANTIC NAMES (Tailwind classes) ---
+  dark: ALIAS.brand.primary,           // bg-dark, text-dark
+  teal: ALIAS.brand.secondary,         // bg-teal, text-teal
+  red: ALIAS.status.error,             // bg-red, text-red
+  cream: ALIAS.background.page,        // bg-cream
+  muted: ALIAS.text.secondary,         // text-muted
 
-  // Feature card circle colors
-  circleBlue: '#3B82F6',     // Automate
-  circleRed: '#EF4444',      // Advice
-  circleYellow: '#EAB308',   // Adapt
-  circleGreen: '#22C55E',    // Scale
+  // --- SEMANTIC ROLES ---
+  primary: ALIAS.interactive.primary,  // bg-primary
+  accent: ALIAS.interactive.accent,    // bg-accent
+  background: ALIAS.background.page,   // bg-background
+  surface: ALIAS.background.surface,   // bg-surface
+  error: ALIAS.status.error,           // bg-error
 
-  // UI Colors
-  slate: '#CBD5E1',          // Disabled/inactive states
-  lightPurple: '#F5F1FD',    // Light backgrounds
+  // --- TEXT COLORS ---
+  text: {
+    primary: ALIAS.text.primary,
+    secondary: ALIAS.text.secondary,
+    disabled: ALIAS.text.disabled,
+    inverse: ALIAS.text.inverse,
+  },
 
-  // LinkedIn brand
-  linkedInBlue: '#0A66C2',
+  // --- FEATURE COLORS ---
+  feature: {
+    blue: ALIAS.feature.automate,
+    red: ALIAS.feature.advice,
+    yellow: ALIAS.feature.adapt,
+    green: ALIAS.feature.scale,
+  },
 
-  // Transparent overlays
-  glassBackground: 'rgba(251, 251, 243, 0.3)',
-  headerShadow: 'rgba(0, 0, 0, 0.15)',
+  // --- CIRCLE COLORS (feature card shortcuts) ---
+  circleBlue: ALIAS.feature.automate,
+  circleRed: ALIAS.feature.advice,
+  circleYellow: ALIAS.feature.adapt,
+  circleGreen: ALIAS.feature.scale,
+
+  // --- PURPLE SHADES ---
+  darkPurple: ALIAS.text.secondary,
+  lightPurple: ALIAS.background.muted,
+
+  // --- UTILITY COLORS ---
+  white: ALIAS.text.inverse,
+  slate: ALIAS.border.default,
+  linkedIn: PRIMITIVES.linkedIn,
+
+  // --- TRANSPARENT/OVERLAY ---
+  transparent: {
+    glass: ALIAS.overlay.light,
+    headerShadow: ALIAS.overlay.medium,
+  },
+} as const
+
+// =============================================================================
+// LEGACY EXPORTS FOR BACKWARD COMPATIBILITY
+// These map old token names to the new structure
+// =============================================================================
+
+/** @deprecated Use ALIAS.brand or specific semantic tokens */
+export const BRAND = {
+  abyss: ALIAS.brand.primary,
+  deepCurrent: ALIAS.brand.secondary,
+  redCoral: ALIAS.status.error,
+  duskReef: ALIAS.brand.tertiary,
+  tideFoam: ALIAS.background.page,
+  slate: ALIAS.border.default,
+  white: ALIAS.text.inverse,
+  black: PRIMITIVES.black,
+  wave: ALIAS.feature.automate,
+  tideAlert: ALIAS.status.error,
+  sunrise: ALIAS.feature.adapt,
+  harbor: ALIAS.feature.scale,
+} as const
+
+// Export color scales for direct access when needed
+export const COLOR_SCALES = {
+  abyss: ABYSS,
+  deepCurrent: DEEP_CURRENT,
+  duskReef: DUSK_REEF,
+  coral: CORAL,
+  wave: WAVE,
+  sunrise: SUNRISE,
+  harbor: HARBOR,
+  slate: SLATE,
 } as const
 
 // =============================================================================
@@ -39,24 +614,17 @@ export const COLORS = {
 // =============================================================================
 
 export const SHADOWS = {
-  // Elevation scale - use these for consistent card/component shadows
   none: 'none',
   sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
   md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
   lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
   xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-
-  // Image shadow - double shadow for "standing on surface" effect
   image: '0 6px 12px -2px rgba(0,0,0,0.3), 0 20px 50px -8px rgba(0,0,0,0.2)',
-
-  // Header glass effect shadow
-  header: '0px 2px 4px 5px rgba(0, 0, 0, 0.15)',
-
-  // Button shadows
+  header: ALIAS.shadow.header,
+  footer: ALIAS.shadow.footer,
   buttonDefault: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
 } as const
 
-// Shadow type for component props
 export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl'
 
 // =============================================================================
@@ -64,8 +632,55 @@ export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl'
 // =============================================================================
 
 export const GRADIENTS = {
-  // Hero overlay for text readability - only bottom half, light
   heroOverlay: 'linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.25) 100%)',
+  heroOverlayStrong: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%)',
+} as const
+
+// =============================================================================
+// GLASS EFFECT GRADIENTS
+// =============================================================================
+
+export const GLASS_GRADIENTS = {
+  teal: `linear-gradient(
+    0deg,
+    ${DEEP_CURRENT[500]} 0%,
+    ${DEEP_CURRENT[300]} 8%,
+    ${DEEP_CURRENT[200]} 15%,
+    transparent 25%,
+    transparent 75%,
+    ${DEEP_CURRENT[200]} 85%,
+    ${DEEP_CURRENT[300]} 92%,
+    ${DEEP_CURRENT[500]} 100%
+  )`,
+  tealGlow: `linear-gradient(
+    0deg,
+    rgba(8, 164, 189, 0.9) 0%,
+    rgba(61, 189, 212, 0.7) 10%,
+    transparent 25%,
+    transparent 75%,
+    rgba(61, 189, 212, 0.7) 90%,
+    rgba(8, 164, 189, 0.9) 100%
+  )`,
+  white: `linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.8) 5%,
+    rgba(255, 255, 255, 1) 8%,
+    transparent 12%,
+    transparent 88%,
+    rgba(255, 255, 255, 1) 92%,
+    rgba(255, 255, 255, 0.8) 95%,
+    rgba(255, 255, 255, 0.9) 100%
+  )`,
+  whiteGlow: `linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.3) 5%,
+    transparent 12%,
+    transparent 88%,
+    rgba(255, 255, 255, 0.3) 95%,
+    rgba(255, 255, 255, 0.5) 100%
+  )`,
 } as const
 
 // =============================================================================
@@ -73,9 +688,13 @@ export const GRADIENTS = {
 // =============================================================================
 
 export const RADIUS = {
+  xs: '4px',
   sm: '8px',
   md: '12px',
   lg: '16px',
+  xl: '20px',
+  '2xl': '24px',
+  full: '9999px',
 } as const
 
 // =============================================================================
@@ -83,23 +702,30 @@ export const RADIUS = {
 // =============================================================================
 
 export const SPACING = {
-  // Section padding
   sectionPaddingY: 'py-16 lg:py-24',
   sectionPaddingX: 'px-6 lg:px-10',
-
-  // Container max width
   containerMaxWidth: '1440px',
-  heroFrameMaxWidth: '1440px',  // Match content container width
+  heroFrameMaxWidth: '1440px',
   headerMaxWidth: '1440px',
-
-  // Header height (for hero offset)
   headerHeight: '82px',
-
-  // Content gaps
-  headingGap: 'mb-1',           // Between heading and subheading
-  subheadingGap: 'mb-8',        // Between subheading and content
-  listItemGap: 'gap-4',         // Between list items
+  headingGap: 'mb-1',
+  subheadingGap: 'mb-8',
+  listItemGap: 'gap-4',
   sectionContentGap: 'gap-12 lg:gap-16',
+} as const
+
+// =============================================================================
+// SIZES
+// =============================================================================
+
+export const SIZES = {
+  containerMaxWidth: '1440px',
+  heroFrameMaxWidth: '1440px',
+  headerMaxWidth: '1440px',
+  headerHeight: '82px',
+  inputHeight: '40px',
+  buttonHeight: '40px',
+  textareaMinHeight: '120px',
 } as const
 
 // =============================================================================
@@ -107,27 +733,105 @@ export const SPACING = {
 // =============================================================================
 
 export const TYPOGRAPHY = {
-  // Font families
-  display: 'font-display',      // Pilat Extended
-  sans: 'font-sans',            // Fixel
-
-  // Heading sizes
+  fontFamily: {
+    display: '"Pilat Extended", Arial, sans-serif',
+    sans: '"Fixel", system-ui, sans-serif',
+    mono: 'ui-monospace, monospace',
+  },
+  fontSize: {
+    xs: ['12px', { lineHeight: '16px' }],
+    sm: ['14px', { lineHeight: '20px' }],
+    base: ['16px', { lineHeight: '24px' }],
+    lg: ['18px', { lineHeight: '28px' }],
+    xl: ['20px', { lineHeight: '28px' }],
+    '2xl': ['24px', { lineHeight: '32px' }],
+    '3xl': ['30px', { lineHeight: '36px' }],
+    '4xl': ['36px', { lineHeight: '40px' }],
+    '5xl': ['48px', { lineHeight: '1' }],
+    '6xl': ['60px', { lineHeight: '1' }],
+    '7xl': ['72px', { lineHeight: '1' }],
+  },
+  fontWeight: {
+    normal: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700',
+  },
+  lineHeight: {
+    none: '1',
+    tight: '1.25',
+    snug: '1.375',
+    normal: '1.5',
+    relaxed: '1.625',
+    loose: '2',
+  },
+  letterSpacing: {
+    tighter: '-0.05em',
+    tight: '-0.025em',
+    normal: '0',
+    wide: '0.025em',
+    wider: '0.05em',
+    widest: '0.1em',
+  },
+  // Tailwind class shortcuts
+  display: 'font-display',
+  sans: 'font-sans',
   h1: 'text-4xl md:text-6xl lg:text-7xl',
   h2: 'text-2xl lg:text-[32px]',
   subheading: 'text-base lg:text-lg',
   body: 'text-base',
-
-  // Heading styles (combined)
   sectionHeading: 'text-2xl lg:text-[32px] font-display font-semibold leading-tight',
   sectionSubheading: 'text-base lg:text-lg font-display font-medium',
 } as const
 
 // =============================================================================
-// ANIMATION CONSTANTS
+// BORDER WIDTH
+// =============================================================================
+
+export const BORDER_WIDTH = {
+  0: '0px',
+  1: '1px',
+  2: '2px',
+  4: '4px',
+  8: '8px',
+} as const
+
+// =============================================================================
+// BREAKPOINTS
+// =============================================================================
+
+export const BREAKPOINTS = {
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
+} as const
+
+// =============================================================================
+// TRANSITIONS
+// =============================================================================
+
+export const TRANSITIONS = {
+  duration: {
+    fast: '150ms',
+    normal: '200ms',
+    smooth: '300ms',
+    slow: '500ms',
+  },
+  timing: {
+    ease: 'ease',
+    easeIn: 'ease-in',
+    easeOut: 'ease-out',
+    easeInOut: 'ease-in-out',
+  },
+} as const
+
+// =============================================================================
+// ANIMATION
 // =============================================================================
 
 export const ANIMATION = {
-  // Duration constants (in seconds)
   duration: {
     INSTANT: 0.1,
     FAST: 0.2,
@@ -137,18 +841,12 @@ export const ANIMATION = {
     SCROLL: 0.8,
     SCROLL_LONG: 1.4,
   },
-
-  // Common easing curves
   easing: {
     EASE_OUT: [0.4, 0, 0.1, 1] as const,
     EASE_IN_OUT: 'easeInOut' as const,
     SPRING_CAROUSEL: [0.32, 0.72, 0, 1] as const,
   },
-
-  // Menu animation delay (ms)
   MENU_CLOSE_DELAY_MS: 350,
-
-  // Particle system (HeroSection)
   particles: {
     SPAWN_THROTTLE_MS: 50,
     MAX_ACTIVE_PARTICLES: 30,
@@ -156,23 +854,17 @@ export const ANIMATION = {
     LIFETIME_MS: 3500,
     INITIAL_SPAWN_COUNT: 30,
   },
-
-  // Rotation animation (FeatureCard, LinkedInButton)
   rotation: {
     MAX_SPEED: 1,
     ACCELERATION: 0.05,
     DECELERATION: 0.03,
   },
-
-  // LinkedIn button specific
   linkedIn: {
     MAX_SPEED: 8,
     ACCELERATION: 0.4,
     DECELERATION: 0.15,
     FILL_TRIGGER_SPEED: 7,
   },
-
-  // Waypoint animation (GridBlobCanvas)
   blob: {
     WAYPOINT_INTERVAL_MS: 2000,
     EASE_FACTOR: 0.02,
@@ -182,28 +874,30 @@ export const ANIMATION = {
 } as const
 
 // =============================================================================
+// Z-INDEX LAYERS
+// =============================================================================
+
+export const Z_INDEX = {
+  background: 0,
+  content: 1,
+  dropdown: 10,
+  sticky: 20,
+  header: 50,
+  modal: 100,
+  tooltip: 150,
+} as const
+
+// =============================================================================
 // TAILWIND CLASS COMPOSITIONS
 // =============================================================================
 
-// Pre-composed Tailwind class strings for common patterns
 export const CLASSES = {
-  // Section container
   sectionContainer: 'max-w-[1440px] mx-auto px-6 lg:px-10',
-
-  // Two-column layout
   twoColumnLayout: 'flex flex-col lg:flex-row items-center gap-12 lg:gap-16',
-
-  // Image with shadow
   sectionImage: `w-full h-auto rounded-[${RADIUS.lg}] object-cover`,
-
-  // Heading group
   headingGroup: 'flex flex-col',
-
-  // Glass morphism effect
   glassEffect: 'backdrop-blur-[10px] bg-[rgba(251,251,243,0.3)]',
-
-  // Button base
-  buttonPrimary: `h-9 px-4 py-2 rounded-[${RADIUS.md}] text-sm font-medium bg-[${COLORS.dark}] text-white hover:opacity-90 cursor-pointer`,
+  buttonPrimary: `h-9 px-4 py-2 rounded-[${RADIUS.md}] text-sm font-medium bg-dark text-white hover:opacity-90 cursor-pointer`,
 } as const
 
 // =============================================================================
@@ -211,35 +905,17 @@ export const CLASSES = {
 // =============================================================================
 
 export const LAYOUT = {
-  /** Header height in pixels - used for scroll offsets and positioning */
   HEADER_HEIGHT_PX: 82,
-  /** Extra padding below header when scrolling to elements */
   SCROLL_OFFSET_PX: 16,
-  /** Y position for header contrast sampling */
   HEADER_SAMPLE_Y: 50,
 } as const
 
 // =============================================================================
-// COLOR CONSTANTS
+// COLOR CONSTANTS (for runtime calculations)
 // =============================================================================
 
 export const COLOR_CONSTANTS = {
-  /** Default cream background color (rgb) */
   DEFAULT_BG: 'rgb(251, 251, 243)',
-  /** Assumed dark color for hero sections with images */
   ASSUMED_DARK: 'rgb(50, 50, 50)',
-  /** Brightness threshold for determining dark vs light text */
   BRIGHTNESS_THRESHOLD: 128,
-} as const
-
-// =============================================================================
-// Z-INDEX LAYERS
-// =============================================================================
-
-export const Z_INDEX = {
-  background: 0,
-  content: 1,
-  header: 50,
-  modal: 100,
-  tooltip: 150,
 } as const

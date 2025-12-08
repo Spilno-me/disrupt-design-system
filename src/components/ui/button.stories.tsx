@@ -36,6 +36,7 @@ export const Default: Story = {
     variant: 'default',
     size: 'default',
   },
+  render: (args) => <Button {...args} />,
 }
 
 // All variants overview
@@ -43,7 +44,6 @@ export const Variants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
       <Button variant="default">Default</Button>
-      <Button variant="contact">Contact</Button>
       <Button variant="outline">Outline</Button>
       <Button variant="secondary">Secondary</Button>
       <Button variant="destructive">Destructive</Button>

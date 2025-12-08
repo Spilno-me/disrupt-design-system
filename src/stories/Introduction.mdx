@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Palette, Component, Sparkles, LayoutTemplate } from 'lucide-react';
 
 <Meta title="Disrupt Design System/Introduction" />
 
@@ -10,25 +11,51 @@ Welcome to the **Disrupt Design System** – a unified design language and compo
 
 This design system provides a consistent, scalable foundation for:
 
-- **Disrupt Inc.** – Corporate website
-- **Disrupt Flow** – Product 1
-- **Disrupt Market** – Product 2
-- **Disrupt Partner** – Product 3
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', marginTop: '24px', marginBottom: '32px' }}>
+  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
+    <img src="/logos/D-pixels-dark-full.svg" alt="Disrupt Inc." style={{ height: '48px' }} />
+  </div>
+  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
+    <img src="/logos/flow-logo-full-dark.svg" alt="Disrupt Flow" style={{ width: '140px' }} />
+  </div>
+  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
+    <img src="/logos/market-logo-full-dark.svg" alt="Disrupt Market" style={{ width: '180px' }} />
+  </div>
+  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
+    <img src="/logos/partner-logo-full-dark.svg" alt="Disrupt Partner" style={{ width: '140px' }} />
+  </div>
+</div>
 
 ## What's Inside
 
-### 🎨 Design Tokens
+<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
+  <Palette size={20} color="#2D3142" />
+  <h3 style={{ margin: 0 }}>Design Tokens</h3>
+</div>
+
 Centralized design values including colors, typography, spacing, shadows, and more. All tokens are defined in `designTokens.ts` and consumed across all products.
 
-### 🧩 Components
+<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
+  <Component size={20} color="#2D3142" />
+  <h3 style={{ margin: 0 }}>Components</h3>
+</div>
+
 Reusable React components built with TypeScript, styled with Tailwind CSS, and designed for maximum flexibility.
 
-### ✨ Visual Effects
+<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
+  <Sparkles size={20} color="#2D3142" />
+  <h3 style={{ margin: 0 }}>Visual Effects</h3>
+</div>
+
 - **Glassmorphism** – Frosted glass UI effects with 4 surface presets
 - **Grid Patterns** – Background decorative grids with customizable sizes and colors
 - **Gradients** – Predefined gradient overlays for hero sections
 
-### 📐 Patterns
+<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
+  <LayoutTemplate size={20} color="#2D3142" />
+  <h3 style={{ margin: 0 }}>Patterns</h3>
+</div>
+
 Common UI patterns and compositions like hero sections, pricing cards, feature grids, and contact forms.
 
 ## Technology Stack
@@ -64,4 +91,4 @@ Browse the sections in the sidebar to explore:
 
 ---
 
-**Built with ❤️ by the Disrupt team**
+**Built by the Disrupt team**

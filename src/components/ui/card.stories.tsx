@@ -117,40 +117,48 @@ function FeatureListItem({ feature, isHighlighted }: { feature: TierFeature; isH
 
 function PricingCardComponent({ tier }: { tier: PricingCardTier }) {
   return (
-    <Card
-      variant={tier.isHighlighted ? 'pricingHighlight' : 'pricing'}
-      shadow="sm"
-      className="relative"
-    >
+    <div className="relative h-full">
+      {/* Badge - positioned outside the card with white mask to cover border */}
       {tier.badge && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full font-sans text-xs font-semibold text-white whitespace-nowrap bg-ferrari-red">
-          {tier.badge}
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+          {/* White mask to cover the dashed border */}
+          <div className="absolute inset-0 -inset-x-2 bg-white" />
+          {/* Badge content */}
+          <div className="relative px-3 py-1 rounded-full font-sans text-xs font-semibold text-white whitespace-nowrap bg-error">
+            {tier.badge}
+          </div>
         </div>
       )}
 
-      <div className="flex flex-col gap-6 pt-2">
-        <div className="flex flex-col gap-3">
-          <h3 className="font-sans font-bold text-xl text-dark">{tier.name}</h3>
-          <p className="font-sans text-sm text-muted">{tier.description}</p>
+      <Card
+        variant={tier.isHighlighted ? 'pricingHighlight' : 'pricing'}
+        shadow="sm"
+        className="h-full"
+      >
+        <div className="flex flex-col gap-6 pt-2">
+          <div className="flex flex-col gap-3">
+            <h3 className="font-sans font-bold text-xl text-dark">{tier.name}</h3>
+            <p className="font-sans text-sm text-muted">{tier.description}</p>
+          </div>
+
+          <div className="flex items-end gap-1">
+            <span className="font-display font-bold text-3xl text-dark">
+              {tier.price.replace('/mo', '')}
+            </span>
+            <span className="font-sans text-base text-muted pb-1">/month</span>
+          </div>
+
+          <Button variant="contact" className="w-full">Get Started</Button>
         </div>
 
-        <div className="flex items-end gap-1">
-          <span className="font-display font-bold text-3xl text-dark">
-            {tier.price.replace('/mo', '')}
-          </span>
-          <span className="font-sans text-base text-muted pb-1">/month</span>
+        <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-slate-200">
+          <span className="font-sans font-semibold text-sm text-dark">{tier.includesFrom}</span>
+          {tier.features.map((feature, idx) => (
+            <FeatureListItem key={idx} feature={feature} isHighlighted={tier.isHighlighted} />
+          ))}
         </div>
-
-        <Button variant="contact" className="w-full">Get Started</Button>
-      </div>
-
-      <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-slate-200">
-        <span className="font-sans font-semibold text-sm text-dark">{tier.includesFrom}</span>
-        {tier.features.map((feature, idx) => (
-          <FeatureListItem key={idx} feature={feature} isHighlighted={tier.isHighlighted} />
-        ))}
-      </div>
-    </Card>
+      </Card>
+    </div>
   )
 }
 
@@ -186,7 +194,7 @@ export const PricingVariants: Story = {
       <Card variant="pricing" shadow="sm" className="w-[280px]">
         <CardHeader>
           <CardTitle>Standard Pricing</CardTitle>
-          <CardDescription>variant="pricing"</CardDescription>
+          <CardDescription>Basic plan for individuals</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-2xl font-bold">$30/mo</p>
@@ -195,7 +203,7 @@ export const PricingVariants: Story = {
       <Card variant="pricingHighlight" shadow="sm" className="w-[280px]">
         <CardHeader>
           <CardTitle>Highlighted Pricing</CardTitle>
-          <CardDescription>variant="pricingHighlight"</CardDescription>
+          <CardDescription>Most popular choice</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-2xl font-bold">$60/mo</p>

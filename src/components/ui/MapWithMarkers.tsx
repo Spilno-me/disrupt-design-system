@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, useAnimation, useMotionValue, useMotionValueEvent, animate, PanInfo } from 'motion/react'
 import mapBackground from '@/assets/figma/map-background.svg'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { ALIAS } from '../../constants/designTokens'
 
 interface MarkerLocation {
   id: string
@@ -322,8 +323,8 @@ function AnimatedMarkerPixel({ config, isAnimating, mainColor, accentColor }: An
 
 // Disrupt "D" icon with explosive animated pixels - using Motion library
 function DisruptIcon({ isMain = false, isHovered = false }: { isMain?: boolean; isHovered?: boolean }) {
-  const mainColor = isMain ? '#F70D1A' : '#2D3142'
-  const accentColor = isMain ? '#2D3142' : '#F70D1A'
+  const mainColor = isMain ? ALIAS.status.error : ALIAS.text.primary
+  const accentColor = isMain ? ALIAS.text.primary : ALIAS.status.error
 
   return (
     <svg
@@ -397,16 +398,17 @@ function LocationMarker({ x, y, country, isMain = false, mapOffset, mapWidth, ma
     >
       {/* Tooltip */}
       <div
-        className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap bg-[#2D3142] text-white text-xs font-medium px-2 py-1 rounded transition-all duration-300 ${
+        className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-white text-xs font-medium px-2 py-1 rounded transition-all duration-300 ${
           showTooltip
             ? 'opacity-100 -top-8 scale-100'
             : 'opacity-0 top-0 scale-75 pointer-events-none'
         }`}
+        style={{ backgroundColor: ALIAS.text.primary }}
       >
         {countryName}
-        {isMain && <span className="text-[#08A4BD] ml-1">(HQ)</span>}
+        {isMain && <span style={{ color: ALIAS.brand.secondary }} className="ml-1">(HQ)</span>}
         {/* Tooltip arrow */}
-        <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-[#2D3142] rotate-45" />
+        <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 rotate-45" style={{ backgroundColor: ALIAS.text.primary }} />
       </div>
 
       {/* Circle background with stroke */}
@@ -433,7 +435,7 @@ function LocationMarker({ x, y, country, isMain = false, mapOffset, mapWidth, ma
             strokeWidth="3"
             fill="none"
             animate={{
-              stroke: ['#08A4BD', '#F70D1A', '#08A4BD'],
+              stroke: [ALIAS.brand.secondary, ALIAS.status.error, ALIAS.brand.secondary],
             }}
             transition={{
               duration: 3,
@@ -446,7 +448,7 @@ function LocationMarker({ x, y, country, isMain = false, mapOffset, mapWidth, ma
             cx="32"
             cy="32"
             r="27.5"
-            stroke="#08A4BD"
+            stroke={ALIAS.brand.secondary}
             strokeWidth="3"
             fill="none"
           />

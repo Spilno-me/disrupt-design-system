@@ -1,4 +1,4 @@
-import { COLORS, RADIUS, SHADOWS, TYPOGRAPHY, SPACING } from '@/constants/designTokens'
+import { ALIAS, SHADOWS, MAPPED } from '@/constants/designTokens'
 import { Check } from 'lucide-react'
 import { Button } from '../ui/button'
 import { ElectricButtonWrapper } from '@/components/ui/ElectricInput'
@@ -108,13 +108,13 @@ function PricingComponentCard({
     <div className="flex-1 p-6 bg-white rounded-[14px] border border-dashed border-slate-300">
       <h3
         className="font-sans font-bold text-lg mb-2"
-        style={{ color: COLORS.dark }}
+        style={{ color: ALIAS.text.primary }}
       >
         {title}
       </h3>
       <p
         className="font-sans text-sm leading-relaxed"
-        style={{ color: COLORS.muted }}
+        style={{ color: ALIAS.text.secondary }}
       >
         {description}
       </p>
@@ -127,19 +127,19 @@ function FeatureListItem({ feature }: { feature: TierFeature }) {
     <div className="flex items-start gap-3">
       <Check
         className="w-5 h-5 flex-shrink-0 mt-0.5"
-        style={{ color: COLORS.teal }}
+        style={{ color: ALIAS.brand.secondary }}
       />
       <div className="flex-1">
         <span
           className="font-sans text-sm leading-[1.625] tracking-[-0.01em]"
-          style={{ color: COLORS.muted }}
+          style={{ color: ALIAS.text.secondary }}
         >
           {feature.label}
         </span>
         {feature.description && (
           <span
             className="font-sans text-sm leading-[1.625] tracking-[-0.01em] block opacity-80"
-            style={{ color: COLORS.muted }}
+            style={{ color: ALIAS.text.secondary }}
           >
             {feature.description}
           </span>
@@ -152,84 +152,94 @@ function FeatureListItem({ feature }: { feature: TierFeature }) {
 function PricingCard({ tier }: { tier: PricingCardTier }) {
   return (
     <div
-      className={`relative flex flex-col p-6 h-full rounded-[14px] border border-dashed ${
-        tier.isHighlighted
-          ? 'border-teal bg-white'
-          : 'border-slate-300 bg-white'
-      }`}
-      style={{
-        boxShadow: tier.isHighlighted ? SHADOWS.image : SHADOWS.buttonDefault,
-      }}
+      className="relative flex flex-col h-full"
       data-element="pricing-card"
     >
-      {/* Badge */}
+      {/* Badge - positioned outside the card with white mask to cover border */}
       {tier.badge && (
-        <div
-          className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full font-sans text-xs font-semibold text-white whitespace-nowrap"
-          style={{ backgroundColor: COLORS.circleRed }}
-        >
-          {tier.badge}
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+          {/* White mask to cover the dashed border */}
+          <div className="absolute inset-0 -inset-x-2 bg-white" />
+          {/* Badge content */}
+          <div
+            className="relative px-3 py-1 rounded-full font-sans text-xs font-semibold text-white whitespace-nowrap"
+            style={{ backgroundColor: MAPPED.badge.highlight.bg }}
+          >
+            {tier.badge}
+          </div>
         </div>
       )}
 
-      {/* Top Section */}
-      <div className="flex flex-col gap-6">
-        {/* Tier Info */}
-        <div className="flex flex-col gap-3 pt-2">
-          <h3
-            className="font-sans font-bold text-xl leading-[1.4] tracking-[-0.02em]"
-            style={{ color: COLORS.dark }}
-          >
-            {tier.name}
-          </h3>
-          <p
-            className="font-sans text-sm leading-[1.625] tracking-[-0.01em]"
-            style={{ color: COLORS.muted }}
-          >
-            {tier.description}
-          </p>
-        </div>
-
-        {/* Price */}
-        <div className="flex items-end gap-1">
-          <span
-            className="font-display font-bold text-3xl lg:text-4xl leading-[1.1]"
-            style={{ color: COLORS.dark }}
-          >
-            {tier.price.replace('/mo', '')}
-          </span>
-          <span
-            className="font-sans text-base leading-[1.5] pb-1"
-            style={{ color: COLORS.muted }}
-          >
-            /month
-          </span>
-        </div>
-
-        {/* CTA Button */}
-        <div className="w-full">
-          <ElectricButtonWrapper className="!w-full [&>div]:w-full">
-            <Button
-              onClick={() => scrollToElement('contact')}
-              className={`w-full ${tier.isHighlighted ? 'bg-primary hover:bg-primary/90' : 'bg-teal-800 hover:bg-teal-900'}`}
+      {/* Card container */}
+      <div
+        className={`flex flex-col flex-1 p-6 rounded-[14px] border border-dashed ${
+          tier.isHighlighted
+            ? 'border-teal bg-white'
+            : 'border-slate-300 bg-white'
+        }`}
+        style={{
+          boxShadow: tier.isHighlighted ? SHADOWS.image : SHADOWS.buttonDefault,
+        }}
+      >
+        {/* Top Section */}
+        <div className="flex flex-col gap-6">
+          {/* Tier Info */}
+          <div className="flex flex-col gap-3 pt-2">
+            <h3
+              className="font-sans font-bold text-xl leading-[1.4] tracking-[-0.02em]"
+              style={{ color: ALIAS.text.primary }}
             >
-              Get Started
-            </Button>
-          </ElectricButtonWrapper>
-        </div>
-      </div>
+              {tier.name}
+            </h3>
+            <p
+              className="font-sans text-sm leading-[1.625] tracking-[-0.01em]"
+              style={{ color: ALIAS.text.secondary }}
+            >
+              {tier.description}
+            </p>
+          </div>
 
-      {/* Features Section */}
-      <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-slate-200">
-        <span
-          className="font-sans font-semibold text-sm"
-          style={{ color: COLORS.dark }}
-        >
-          {tier.includesFrom}
-        </span>
-        {tier.features.map((feature, idx) => (
-          <FeatureListItem key={idx} feature={feature} />
-        ))}
+          {/* Price */}
+          <div className="flex items-end gap-1">
+            <span
+              className="font-display font-bold text-3xl lg:text-4xl leading-[1.1]"
+              style={{ color: ALIAS.text.primary }}
+            >
+              {tier.price.replace('/mo', '')}
+            </span>
+            <span
+              className="font-sans text-base leading-[1.5] pb-1"
+              style={{ color: ALIAS.text.secondary }}
+            >
+              /month
+            </span>
+          </div>
+
+          {/* CTA Button */}
+          <div className="w-full">
+            <ElectricButtonWrapper className="!w-full [&>div]:w-full">
+              <Button
+                onClick={() => scrollToElement('contact')}
+                className={`w-full ${tier.isHighlighted ? 'bg-primary hover:bg-primary/90' : 'bg-teal hover:bg-teal/90'}`}
+              >
+                Get Started
+              </Button>
+            </ElectricButtonWrapper>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-slate-200">
+          <span
+            className="font-sans font-semibold text-sm"
+            style={{ color: ALIAS.text.primary }}
+          >
+            {tier.includesFrom}
+          </span>
+          {tier.features.map((feature, idx) => (
+            <FeatureListItem key={idx} feature={feature} />
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -279,13 +289,13 @@ export function PricingCardsSection() {
             <div>
               <h4
                 className="font-sans font-bold text-base"
-                style={{ color: COLORS.dark }}
+                style={{ color: ALIAS.text.primary }}
               >
                 Annual Platform Fee
               </h4>
               <p
                 className="font-sans text-sm"
-                style={{ color: COLORS.muted }}
+                style={{ color: ALIAS.text.secondary }}
               >
                 Quoted based on total business size
               </p>

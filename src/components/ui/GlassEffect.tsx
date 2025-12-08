@@ -1,58 +1,17 @@
 import { ReactNode, useState } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'motion/react'
 import { useEffect } from 'react'
+import { GLASS_GRADIENTS } from '../../constants/designTokens'
 
 // =============================================================================
 // CONFIGURATION
 // =============================================================================
 
-// Teal glass effect - matches brand color (#08A4BD)
-// Wider bands for more visible glass border effect
-const GLASS_GRADIENT_DARK = `linear-gradient(
-  0deg,
-  #08A4BD 0%,
-  #3DBDD4 8%,
-  #5FCFDF 15%,
-  transparent 25%,
-  transparent 75%,
-  #5FCFDF 85%,
-  #3DBDD4 92%,
-  #08A4BD 100%
-)`
-
-// Stronger glow effect
-const GLASS_GLOW_GRADIENT_DARK = `linear-gradient(
-  0deg,
-  rgba(8, 164, 189, 0.9) 0%,
-  rgba(61, 189, 212, 0.7) 10%,
-  transparent 25%,
-  transparent 75%,
-  rgba(61, 189, 212, 0.7) 90%,
-  rgba(8, 164, 189, 0.9) 100%
-)`
-
-// Light mode (for dark backgrounds) - white glass effect
-const GLASS_GRADIENT_LIGHT = `linear-gradient(
-  0deg,
-  rgba(255, 255, 255, 0.9) 0%,
-  rgba(255, 255, 255, 0.8) 5%,
-  rgba(255, 255, 255, 1) 8%,
-  transparent 12%,
-  transparent 88%,
-  rgba(255, 255, 255, 1) 92%,
-  rgba(255, 255, 255, 0.8) 95%,
-  rgba(255, 255, 255, 0.9) 100%
-)`
-
-const GLASS_GLOW_GRADIENT_LIGHT = `linear-gradient(
-  0deg,
-  rgba(255, 255, 255, 0.5) 0%,
-  rgba(255, 255, 255, 0.3) 5%,
-  transparent 12%,
-  transparent 88%,
-  rgba(255, 255, 255, 0.3) 95%,
-  rgba(255, 255, 255, 0.5) 100%
-)`
+// Glass gradients from design system
+const GLASS_GRADIENT_DARK = GLASS_GRADIENTS.teal
+const GLASS_GLOW_GRADIENT_DARK = GLASS_GRADIENTS.tealGlow
+const GLASS_GRADIENT_LIGHT = GLASS_GRADIENTS.white
+const GLASS_GLOW_GRADIENT_LIGHT = GLASS_GRADIENTS.whiteGlow
 
 const ANIMATION_DURATION = 1.5
 const ACTIVE_ANIMATION_DURATION = 4 // Slower, calming animation for active state

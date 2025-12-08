@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { HeroSection } from './HeroSection'
+import { optimizedImages } from '../../assets/optimized'
 
 const meta: Meta<typeof HeroSection> = {
   title: 'Website/Sections/HeroSection',
@@ -63,13 +64,14 @@ export const Default: Story = {
   },
 }
 
-// With background image
+// With background image (using optimized assets)
 export const WithBackgroundImage: Story = {
   args: {
-    title: 'Transform Your Business',
-    subtitle: 'Next-generation solutions for modern enterprises',
-    primaryButtonText: 'Start Free Trial',
-    backgroundImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920',
+    title: 'Protect People. Empower Strategy.',
+    subtitle: 'Compliance should make workplaces safer and decisions smarter — not bury teams in forms.',
+    primaryButtonText: 'Get Started',
+    secondaryButtonText: 'Learn More',
+    backgroundImage: optimizedImages.heroFrame.desktop.webp,
     alignment: 'center',
     height: 'large',
     showOverlay: true,
@@ -118,5 +120,37 @@ export const WithCustomContent: Story = {
         <div className="text-white text-xl font-bold">Company D</div>
       </div>
     </HeroSection>
+  ),
+}
+
+// With responsive optimized images (recommended for production)
+export const WithResponsiveImage: Story = {
+  args: {
+    title: 'Protect People. Empower Strategy.',
+    subtitle: 'Compliance should make workplaces safer and decisions smarter — not bury teams in forms.',
+    primaryButtonText: 'Get Started',
+    secondaryButtonText: 'Learn More',
+    responsiveBackgroundImage: optimizedImages.heroFrame,
+    alignment: 'center',
+    height: 'large',
+    showOverlay: true,
+  },
+}
+
+// Home Page Hero (production-ready)
+export const HomePageHero: Story = {
+  render: () => (
+    <HeroSection
+      title="Protect People. Empower Strategy."
+      rotatingTitles={['Protect People', 'Empower Strategy', 'Cut the Admin']}
+      rotationInterval={4000}
+      subtitle="Compliance should make workplaces safer and decisions smarter — not bury teams in forms."
+      primaryButtonText="Get Started"
+      secondaryButtonText="Learn More"
+      responsiveBackgroundImage={optimizedImages.heroFrame}
+      alignment="center"
+      height="large"
+      showOverlay={true}
+    />
   ),
 }

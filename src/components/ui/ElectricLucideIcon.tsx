@@ -1,7 +1,16 @@
 import { useState, cloneElement, ReactElement, useRef, useEffect } from 'react'
 import { Workflow, BrainCircuit, LayoutDashboard, TrendingUp, LucideProps } from 'lucide-react'
 import { motion, animate } from 'motion/react'
-import { COLORS } from '../../constants/designTokens'
+import { ALIAS } from '../../constants/designTokens'
+
+// =============================================================================
+// GLOW FILTER TOKENS
+// =============================================================================
+
+const GLOW_FILTERS = {
+  electric: ALIAS.glow.electric,
+  electricIntense: ALIAS.glow.electricIntense,
+}
 
 // =============================================================================
 // TYPES
@@ -39,8 +48,8 @@ const ELECTRIC_CONFIG = {
   dashArray: '20 10',
   flowDuration: 0.6,
   staggerDelay: 0.08,
-  glowFilter: 'drop-shadow(0 0 2px cyan)',
-  glowFilterIntense: 'drop-shadow(0 0 3px cyan)',
+  glowFilter: GLOW_FILTERS.electric,
+  glowFilterIntense: GLOW_FILTERS.electricIntense,
 }
 
 // =============================================================================
@@ -213,10 +222,10 @@ export function ElectricLucideIconDemo() {
   const [hoveredIcon, setHoveredIcon] = useState<IconName | null>(null)
 
   const icons: { name: IconName; color: string; label: string }[] = [
-    { name: 'automate', color: COLORS.circleBlue, label: 'Automate' },
-    { name: 'advice', color: COLORS.circleRed, label: 'Advice' },
-    { name: 'adapt', color: COLORS.circleYellow, label: 'Adapt' },
-    { name: 'scale', color: COLORS.circleGreen, label: 'Scale' },
+    { name: 'automate', color: ALIAS.feature.automate, label: 'Automate' },
+    { name: 'advice', color: ALIAS.feature.advice, label: 'Advice' },
+    { name: 'adapt', color: ALIAS.feature.adapt, label: 'Adapt' },
+    { name: 'scale', color: ALIAS.feature.scale, label: 'Scale' },
   ]
 
   return (

@@ -1,6 +1,7 @@
 import { ContactForm } from '@/components/forms/ContactForm'
 import { ContactInfo } from './ContactInfo'
 import { BlobSection } from '@/components/ui/GridBlobCanvas'
+import { ALIAS } from '../../constants/designTokens'
 
 export function ContactSection() {
   return (
@@ -9,7 +10,8 @@ export function ContactSection() {
         <div className="flex flex-col lg:flex-row sm:border-x-dashed-figma" data-element="contact-wrapper">
           {/* Left side - Form */}
           <div
-            className="w-full lg:w-1/2 bg-[#FBFBF3] px-4 sm:px-6 py-8 sm:py-12 lg:py-16 lg:border-r-dashed-figma"
+            className="w-full lg:w-1/2 px-4 sm:px-6 py-8 sm:py-12 lg:py-16 lg:border-r-dashed-figma"
+            style={{ backgroundColor: ALIAS.background.page }}
             data-element="contact-form-wrapper"
           >
             <div className="max-w-lg mx-auto flex flex-col gap-6 sm:gap-8 lg:gap-10">

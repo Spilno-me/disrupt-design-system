@@ -1,6 +1,8 @@
 {
-  "buildScriptName": "build-storybook",
   "autoAcceptChanges": "main",
+  "buildScriptName": "build-storybook",
   "exitOnceUploaded": false,
-  "onlyChanged": true
+  "onlyChanged": true,
+  "projectId": "Project:6934814f3405bf928b28820c",
+  "zip": true
 }

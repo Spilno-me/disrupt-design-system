@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ElectricButtonWrapper, GlassInputWrapper } from './GlassEffect';
 import { Input } from './input';
-import { COLORS } from '../../constants/designTokens';
+import { ALIAS } from '../../constants/designTokens';
 
 const meta = {
   title: 'Website/Components/Glass Effects',
@@ -27,7 +27,7 @@ const ElectricButtonDefault = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.teal,
+          background: ALIAS.brand.secondary,
           color: '#fff',
           border: 'none',
           borderRadius: '4px',
@@ -56,7 +56,7 @@ const ElectricButtonActive = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.dark,
+          background: ALIAS.text.primary,
           color: '#fff',
           border: 'none',
           borderRadius: '4px',
@@ -84,7 +84,7 @@ const MultipleButtons = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.teal,
+          background: ALIAS.brand.secondary,
           color: '#fff',
           border: 'none',
           borderRadius: '4px',
@@ -101,7 +101,7 @@ const MultipleButtons = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.dark,
+          background: ALIAS.text.primary,
           color: '#fff',
           border: 'none',
           borderRadius: '4px',
@@ -118,7 +118,7 @@ const MultipleButtons = () => (
       <button
         style={{
           padding: '12px 32px',
-          background: COLORS.ferrariRed,
+          background: ALIAS.status.error,
           color: '#fff',
           border: 'none',
           borderRadius: '4px',
@@ -143,7 +143,7 @@ const GlassInputExample = () => (
   <div style={{ padding: '48px', width: '400px' }}>
     <h3 style={{ marginBottom: '24px', fontSize: '18px', fontWeight: '600' }}>Click to focus</h3>
     <div style={{ marginBottom: '24px' }}>
-      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
+      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: ALIAS.text.primary }}>
         Email Address
       </label>
       <GlassInputWrapper>
@@ -151,7 +151,7 @@ const GlassInputExample = () => (
       </GlassInputWrapper>
     </div>
     <div>
-      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
+      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: ALIAS.text.primary }}>
         Password
       </label>
       <GlassInputWrapper>
@@ -170,17 +170,17 @@ export const GlassInputExampleStory: Story = {
 const CombinedForm = () => (
   <div style={{ padding: '48px', width: '500px' }}>
     <div style={{
-      background: COLORS.cream,
-      border: `1px dashed ${COLORS.slate}`,
+      background: ALIAS.background.page,
+      border: `1px dashed ${ALIAS.border.default}`,
       borderRadius: '8px',
       padding: '32px',
     }}>
-      <h3 style={{ fontSize: '20px', fontWeight: '700', color: COLORS.dark, marginBottom: '24px' }}>
+      <h3 style={{ fontSize: '20px', fontWeight: '700', color: ALIAS.text.primary, marginBottom: '24px' }}>
         Contact Form with Glass Effects
       </h3>
 
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: ALIAS.text.primary }}>
           Name
         </label>
         <GlassInputWrapper>
@@ -189,7 +189,7 @@ const CombinedForm = () => (
       </div>
 
       <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: ALIAS.text.primary }}>
           Email
         </label>
         <GlassInputWrapper>
@@ -198,7 +198,7 @@ const CombinedForm = () => (
       </div>
 
       <div style={{ marginBottom: '24px' }}>
-        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: COLORS.dark }}>
+        <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500', color: ALIAS.text.primary }}>
           Company
         </label>
         <GlassInputWrapper>
@@ -211,7 +211,7 @@ const CombinedForm = () => (
           style={{
             width: '100%',
             padding: '12px',
-            background: COLORS.teal,
+            background: ALIAS.brand.secondary,
             color: '#fff',
             border: 'none',
             borderRadius: '4px',

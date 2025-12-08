@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { useInView } from 'motion/react'
 import { FeatureCard, FeatureCardProps } from '@/components/ui/FeatureCard'
 import { SectionContainer, SectionHeading } from '@/components/ui/SectionLayout'
-import { COLORS } from '@/constants/designTokens'
+import { ALIAS } from '@/constants/designTokens'
 
 // =============================================================================
 // TABLET DETECTION HOOK
@@ -33,25 +33,25 @@ function useIsTablet() {
 const FEATURES: Omit<FeatureCardProps, 'isSequenceActive' | 'hasCompletedSequence' | 'onSequenceComplete'>[] = [
   {
     iconName: 'automate',
-    circleColor: COLORS.circleBlue,
+    circleColor: ALIAS.feature.automate,
     title: 'Automate',
     description: <>Cut up to <strong>70% of admin</strong> — freeing time for training, coaching, and prevention.</>,
   },
   {
     iconName: 'advice',
-    circleColor: COLORS.circleRed,
+    circleColor: ALIAS.feature.advice,
     title: 'Advice',
     description: <><strong>Real-time AI guidance</strong> during audits and reporting — helping teams avoid mistakes before they become incidents.</>,
   },
   {
     iconName: 'adapt',
-    circleColor: COLORS.circleYellow,
+    circleColor: ALIAS.feature.adapt,
     title: 'Adapt',
     description: <>Build forms and workflows <strong>instantly</strong> — no coding, no bottlenecks. Flexible enough for EHS today.</>,
   },
   {
     iconName: 'scale',
-    circleColor: COLORS.circleGreen,
+    circleColor: ALIAS.feature.scale,
     title: 'Scale',
     description: <>Architected to <strong>extend beyond EHS</strong> into any workflow where admin slows people down.</>,
   },

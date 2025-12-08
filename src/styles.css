@@ -1,6 +1,56 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Storybook docs - hide anchor link icons on headings (including hover state) */
+.sbdocs-content .docblock-anchor,
+.sbdocs .docblock-anchor,
+.sb-anchor,
+[class*="anchor-"],
+a[aria-hidden="true"],
+.docblock-heading a[aria-hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hide only the anchor link SVGs (link icon), not custom icons */
+.sbdocs h1 > a[href^="#"],
+.sbdocs h2 > a[href^="#"],
+.sbdocs h3 > a[href^="#"],
+.sbdocs h4 > a[href^="#"],
+.sbdocs-content h1 > a[href^="#"],
+.sbdocs-content h2 > a[href^="#"],
+.sbdocs-content h3 > a[href^="#"],
+.sbdocs-content h4 > a[href^="#"] {
+  display: none !important;
+}
+
+/* Storybook docs - ensure Fixel font is used */
+.sbdocs,
+.sbdocs-content,
+.sbdocs-wrapper {
+  font-family: 'Fixel', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+/* Storybook docs - ensure full width for color palettes and grids */
+.sbdocs-content {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 24px 40px !important;
+}
+
+.sbdocs-wrapper {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+/* Ensure MDX content has proper width */
+.sb-unstyled {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
@@ -53,34 +103,220 @@
   /* Custom animations */
   --animate-spin-slow: spin-slow 3s linear infinite;
 
-  /* Brand Colors */
-  --color-primary: #2D3142;         /* Dark - primary text/buttons */
-  --color-accent: #08A4BD;          /* Teal - links/accents */
-  --color-ferrari-red: #F70D1A;     /* Brand red */
-  --color-secondary: #9333ea;
+  /* ============================================================ */
+  /* TAILWIND COLOR UTILITIES                                     */
+  /* Maps design tokens to Tailwind utility classes               */
+  /* e.g., bg-dark, text-teal, border-slate                       */
+  /* ============================================================ */
+  --color-dark: #2D3142;
+  --color-teal: #08A4BD;
+  --color-error: #F70D1A;
+  --color-cream: #FBFBF3;
+  --color-slate: #CBD5E1;
+  --color-white: #FFFFFF;
+  --color-lightPurple: #EFEDF3;
+  --color-darkPurple: #5E4F7E;
 
-  /* Background Colors */
-  --color-cream: #FBFBF3;           /* Main background */
-  --color-background: #FBFBF3;
-  --color-surface: #FFFFFF;
+  /* ============================================================ */
+  /* TIER 1: BRAND COLORS (Primitives)                           */
+  /* Raw color values - the source of truth                      */
+  /* ============================================================ */
+
+  /* ABYSS - Primary Dark Scale */
+  --brand-abyss-50: #E8E9EB;
+  --brand-abyss-100: #D1D3D7;
+  --brand-abyss-200: #A3A7AF;
+  --brand-abyss-300: #757B87;
+  --brand-abyss-400: #474F5F;
+  --brand-abyss-500: #2D3142;
+  --brand-abyss-600: #252836;
+  --brand-abyss-700: #1D1F2A;
+  --brand-abyss-800: #14161E;
+  --brand-abyss-900: #0C0D12;
+
+  /* DEEP CURRENT - Teal Accent Scale */
+  --brand-deep-current-50: #E6F7FA;
+  --brand-deep-current-100: #CCEFF5;
+  --brand-deep-current-200: #99DFEB;
+  --brand-deep-current-300: #66CFE1;
+  --brand-deep-current-400: #33BFD7;
+  --brand-deep-current-500: #08A4BD;
+  --brand-deep-current-600: #068397;
+  --brand-deep-current-700: #056271;
+  --brand-deep-current-800: #03424B;
+  --brand-deep-current-900: #022125;
+
+  /* DUSK REEF - Purple Secondary Scale */
+  --brand-dusk-reef-50: #EFEDF3;
+  --brand-dusk-reef-100: #DFDBE7;
+  --brand-dusk-reef-200: #BFB7CF;
+  --brand-dusk-reef-300: #9F93B7;
+  --brand-dusk-reef-400: #7F6F9F;
+  --brand-dusk-reef-500: #5E4F7E;
+  --brand-dusk-reef-600: #4B3F65;
+  --brand-dusk-reef-700: #382F4C;
+  --brand-dusk-reef-800: #262033;
+  --brand-dusk-reef-900: #13101A;
+
+  /* Other Brand Primitives */
+  --brand-red-coral: #F70D1A;
+  --brand-tide-foam: #FBFBF3;
+  --brand-slate: #CBD5E1;
+  --brand-white: #FFFFFF;
+  --brand-black: #000000;
+  --brand-wave: #3B82F6;
+  --brand-tide-alert: #F70D1A;
+  --brand-sunrise: #EAB308;
+  --brand-harbor: #22C55E;
+
+  /* ============================================================ */
+  /* TIER 2: ALIAS TOKENS (Semantic)                              */
+  /* What the color means - use these for clear intent            */
+  /* ============================================================ */
 
   /* Text Colors */
-  --color-dark: #2D3142;            /* Primary text */
-  --color-muted: #5E4F7E;           /* Secondary/paragraph text */
-  --color-text-secondary: #5E4F7E;  /* Alias for muted */
-  --color-text-primary: #2D3142;
-  --color-slate: #CBD5E1;           /* Disabled/inactive */
+  --alias-text-primary: var(--brand-abyss-500);
+  --alias-text-secondary: var(--brand-dusk-reef-500);
+  --alias-text-tertiary: var(--brand-dusk-reef-400);
+  --alias-text-disabled: var(--brand-dusk-reef-300);
+  --alias-text-inverse: var(--brand-white);
+  --alias-text-link: var(--brand-deep-current-500);
+  --alias-text-link-hover: var(--brand-deep-current-600);
+  --alias-text-error: var(--brand-tide-alert);
+  --alias-text-success: var(--brand-harbor);
+  --alias-text-warning: var(--brand-sunrise);
+  --alias-text-info: var(--brand-wave);
 
-  /* Semantic Colors */
-  --color-teal: #08A4BD;            /* Accent color */
-  --color-error: #F70D1A;
-  --color-linkedin: #0A66C2;
+  /* Background Colors */
+  --alias-bg-page: var(--brand-tide-foam);
+  --alias-bg-surface: var(--brand-white);
+  --alias-bg-surface-hover: var(--brand-abyss-50);
+  --alias-bg-elevated: var(--brand-white);
+  --alias-bg-muted: var(--brand-dusk-reef-50);
+  --alias-bg-inverse: var(--brand-abyss-500);
+  --alias-bg-inverse-subtle: var(--brand-abyss-700);
+  --alias-bg-accent: var(--brand-deep-current-50);
+  --alias-bg-accent-strong: var(--brand-deep-current-500);
+  --alias-bg-error: #FEF2F2;
+  --alias-bg-success: #F0FDF4;
+  --alias-bg-warning: #FFFBEB;
+  --alias-bg-info: #EFF6FF;
 
-  /* Feature Card Circle Colors */
-  --color-circle-blue: #3B82F6;     /* Automate */
-  --color-circle-red: #EF4444;      /* Advice */
-  --color-circle-yellow: #EAB308;   /* Adapt */
-  --color-circle-green: #22C55E;    /* Scale */
+  /* Border Colors */
+  --alias-border-default: var(--brand-slate);
+  --alias-border-subtle: var(--brand-abyss-100);
+  --alias-border-strong: var(--brand-abyss-300);
+  --alias-border-focus: var(--brand-deep-current-500);
+  --alias-border-error: var(--brand-tide-alert);
+  --alias-border-success: var(--brand-harbor);
+  --alias-border-disabled: var(--brand-abyss-200);
+  --alias-border-accent: var(--brand-deep-current-500);
+
+  /* Interactive Colors */
+  --alias-interactive-primary: var(--brand-abyss-500);
+  --alias-interactive-primary-hover: var(--brand-abyss-600);
+  --alias-interactive-primary-active: var(--brand-abyss-700);
+  --alias-interactive-accent: var(--brand-deep-current-500);
+  --alias-interactive-accent-hover: var(--brand-deep-current-600);
+  --alias-interactive-accent-active: var(--brand-deep-current-700);
+  --alias-interactive-danger: var(--brand-red-coral);
+  --alias-interactive-danger-hover: #E00B17;
+  --alias-interactive-disabled: var(--brand-abyss-200);
+  --alias-interactive-disabled-text: var(--brand-abyss-300);
+
+  /* Overlay Colors */
+  --alias-overlay-light: rgba(251, 251, 243, 0.3);
+  --alias-overlay-dark: rgba(0, 0, 0, 0.5);
+  --alias-overlay-dark-strong: rgba(0, 0, 0, 0.8);
+
+  /* ============================================================ */
+  /* TIER 3: MAPPED TOKENS (Component-specific)                   */
+  /* Where the color is used - component states and variants      */
+  /* ============================================================ */
+
+  /* Button - Primary */
+  --button-primary-bg: var(--alias-interactive-primary);
+  --button-primary-bg-hover: var(--alias-interactive-primary-hover);
+  --button-primary-bg-active: var(--alias-interactive-primary-active);
+  --button-primary-text: var(--alias-text-inverse);
+
+  /* Button - Secondary */
+  --button-secondary-bg: transparent;
+  --button-secondary-bg-hover: var(--alias-bg-surface-hover);
+  --button-secondary-text: var(--alias-text-primary);
+  --button-secondary-border: var(--alias-border-default);
+
+  /* Button - Accent */
+  --button-accent-bg: var(--alias-interactive-accent);
+  --button-accent-bg-hover: var(--alias-interactive-accent-hover);
+  --button-accent-text: var(--alias-text-inverse);
+
+  /* Button - Danger */
+  --button-danger-bg: var(--alias-interactive-danger);
+  --button-danger-bg-hover: var(--alias-interactive-danger-hover);
+  --button-danger-text: var(--alias-text-inverse);
+
+  /* Input */
+  --input-bg: var(--alias-bg-surface);
+  --input-text: var(--alias-text-primary);
+  --input-placeholder: var(--brand-dusk-reef-400);
+  --input-border: var(--alias-border-default);
+  --input-border-hover: var(--brand-abyss-400);
+  --input-border-focus: var(--alias-border-focus);
+  --input-border-error: var(--alias-border-error);
+
+  /* Card */
+  --card-bg: var(--alias-bg-surface);
+  --card-bg-hover: var(--alias-bg-surface-hover);
+  --card-border: var(--alias-border-subtle);
+
+  /* Header */
+  --header-bg: var(--alias-overlay-light);
+  --header-text: var(--alias-text-primary);
+  --header-border: var(--brand-deep-current-500);
+
+  /* Navigation */
+  --nav-link: var(--alias-text-primary);
+  --nav-link-hover: var(--alias-text-link);
+  --nav-indicator: var(--brand-deep-current-500);
+
+  /* Badge */
+  --badge-default-bg: var(--alias-bg-muted);
+  --badge-default-text: var(--alias-text-secondary);
+  --badge-success-bg: var(--alias-bg-success);
+  --badge-success-text: var(--brand-harbor);
+  --badge-error-bg: var(--alias-bg-error);
+  --badge-error-text: var(--brand-tide-alert);
+  --badge-warning-bg: var(--alias-bg-warning);
+  --badge-warning-text: var(--brand-sunrise);
+  --badge-info-bg: var(--alias-bg-info);
+  --badge-info-text: var(--brand-wave);
+
+  /* Tooltip */
+  --tooltip-bg: var(--brand-abyss-500);
+  --tooltip-text: var(--brand-white);
+
+  /* Modal */
+  --modal-bg: var(--alias-bg-elevated);
+  --modal-overlay: var(--alias-overlay-dark);
+
+  /* Feature Card (Disrupt-specific) */
+  --feature-card-bg: var(--alias-bg-inverse);
+  --feature-card-text: var(--alias-text-inverse);
+  --feature-card-circle-blue: var(--brand-wave);
+  --feature-card-circle-red: #EF4444;
+  --feature-card-circle-yellow: var(--brand-sunrise);
+  --feature-card-circle-green: var(--brand-harbor);
+
+  /* Pricing */
+  --pricing-highlight-border: var(--brand-red-coral);
+  --pricing-connector: var(--brand-red-coral);
+
+  /* Footer */
+  --footer-bg: var(--alias-bg-inverse);
+  --footer-text: var(--alias-text-inverse);
+  --footer-link-hover: var(--brand-deep-current-500);
+
 
   /* Layout Max Widths */
   --max-width-container: 1358px;    /* Main container max-width */
@@ -662,6 +898,11 @@
 }
 
 @layer utilities {
+  /* Search filter input placeholder styling */
+  .search-filter-input::placeholder {
+    color: var(--placeholder-color, #94A3B8);
+  }
+
   /* Figma-precise dashed borders: 4px dash, 4px gap */
   .border-dashed-figma {
     border-style: dashed;

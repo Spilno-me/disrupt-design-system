@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { cn } from '../../lib/utils'
+import { ALIAS } from '../../constants/designTokens'
 
 // =============================================================================
 // TYPES
@@ -45,7 +46,7 @@ function FeatureCard({
   icon,
   title,
   description,
-  iconBgColor = '#2D6FE9',
+  iconBgColor = ALIAS.feature.automate,
   className,
 }: FeatureCardProps) {
   return (

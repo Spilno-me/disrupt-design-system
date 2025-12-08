@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { cn } from '../../lib/utils'
+import { SHADOWS } from '../../constants/designTokens'
 
 // =============================================================================
 // TYPES
@@ -46,8 +47,14 @@ export function Footer({
   variant = 'default',
   className,
 }: FooterProps) {
+  const variantStyles = {
+    default: { boxShadow: SHADOWS.footer },
+    transparent: {},
+    dark: {},
+  }
+
   const variantClasses = {
-    default: 'bg-cream/30 backdrop-blur-[10px] shadow-[0px_-1px_3px_rgba(0,0,0,0.08)]',
+    default: 'bg-cream/30 backdrop-blur-[10px]',
     transparent: 'bg-transparent',
     dark: 'bg-dark text-white',
   }
@@ -67,6 +74,7 @@ export function Footer({
   return (
     <footer
       className={cn('py-3 sm:py-4', variantClasses[variant], className)}
+      style={variantStyles[variant]}
       data-element="footer"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6">

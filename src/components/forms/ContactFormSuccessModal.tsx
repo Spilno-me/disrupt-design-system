@@ -10,6 +10,7 @@ import {
 } from '../ui/dialog'
 import { Button } from '../ui/button'
 import { ElectricButtonWrapper } from '../ui/GlassEffect'
+import { ALIAS } from '../../constants/designTokens'
 
 export interface ContactFormSuccessModalProps {
   open: boolean
@@ -46,7 +47,7 @@ const PIXEL_CONFIGS: PixelConfig[] = [
 ]
 
 function AnimatedPixel({ config, isHovered }: { config: PixelConfig; isHovered: boolean }) {
-  const fill = config.color === 'red' ? '#F70D1A' : '#2D3142'
+  const fill = config.color === 'red' ? ALIAS.status.error : ALIAS.text.primary
 
   return (
     <motion.path
@@ -86,7 +87,7 @@ function AnimatedDisruptLogo({ isHovered }: { isHovered: boolean }) {
           {/* Main D shape - exact path from official logo */}
           <path
             d="M29.1689 8.35718C36.5257 8.35718 42.4895 14.2909 42.4895 21.6105C42.4895 28.93 36.5257 34.8637 29.1689 34.8637H15.3565C14.8492 34.8637 14.4379 34.4545 14.4379 33.9497V30.4764C14.4379 29.9716 14.8492 29.5624 15.3565 29.5624H29.1689C33.583 29.5624 37.1613 26.0022 37.1613 21.6105C37.1613 17.2187 33.583 13.6585 29.1689 13.6585H15.3565C14.8492 13.6585 14.4379 13.2493 14.4379 12.7445V9.2712C14.4379 8.7664 14.8492 8.35718 15.3565 8.35718H29.1689Z"
-            fill="#F70D1A"
+            fill={ALIAS.status.error}
           />
           {/* Animated pixels */}
           {PIXEL_CONFIGS.map((config) => (

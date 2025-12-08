@@ -39,7 +39,7 @@ const theme = create({
   inputBorderRadius: 4,
 
   // Font
-  fontBase: '"Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif',
+  fontBase: '"Fixel", "Segoe UI", "Helvetica Neue", Arial, sans-serif',
   fontCode: '"Fira Code", "Monaco", "Consolas", monospace',
 })
 

@@ -32,8 +32,12 @@ export {
 } from './components/ui/select'
 export { Separator } from './components/ui/separator'
 export { Skeleton, SkeletonImage, SkeletonText } from './components/ui/Skeleton'
+export { Slider } from './components/ui/Slider'
+export type { SliderProps } from './components/ui/Slider'
 export { FeatureCard } from './components/ui/FeatureCard'
 export type { FeatureCardProps } from './components/ui/FeatureCard'
+export { FeatureItem } from './components/ui/FeatureItem'
+export type { FeatureItemProps } from './components/ui/FeatureItem'
 export { ElectricButtonWrapper, GlassInputWrapper, ElectricInputWrapper, GlassButtonWrapper } from './components/ui/GlassEffect'
 export { ElectricLucideIcon } from './components/ui/ElectricLucideIcon'
 export { AnimatedCheck } from './components/ui/AnimatedCheck'
@@ -46,10 +50,35 @@ export { ResponsiveImage } from './components/ui/ResponsiveImage'
 export { ResponsivePicture } from './components/ui/ResponsivePicture'
 export { ParallaxImage } from './components/ui/ParallaxImage'
 export { ScrollToTopButton } from './components/ui/ScrollToTopButton'
+export type { ScrollToTopButtonProps } from './components/ui/ScrollToTopButton'
+export { Accordion } from './components/ui/Accordion'
+export type { AccordionProps, AccordionItem } from './components/ui/Accordion'
+export { LinkedInButton } from './components/ui/LinkedInButton'
+export type { LinkedInButtonProps } from './components/ui/LinkedInButton'
 export { ScrollableTableWrapper } from './components/ui/ScrollableTableWrapper'
 export { SectionWrapper, SectionHeading, SectionContainer, ContentSection, TwoColumnLayout, Column } from './components/ui/SectionLayout'
-export { Dialog } from './components/ui/dialog'
-export { Sheet } from './components/ui/sheet'
+export {
+  Dialog,
+  DialogTrigger,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogPortal,
+  DialogOverlay,
+} from './components/ui/dialog'
+export {
+  Sheet,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from './components/ui/sheet'
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
 export { Label } from './components/ui/label'
 export { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from './components/ui/form'
@@ -59,6 +88,8 @@ export { MobileMenu } from './components/ui/MobileMenu'
 export type { MobileMenuProps } from './components/ui/MobileMenu'
 export { Header } from './components/ui/Header'
 export type { HeaderProps, NavItem } from './components/ui/Header'
+export { AppHeader, WavePattern, LogoContainer, NotificationBell, NotificationBadge, UserAvatar, UserMenu, IconButton } from './components/ui/AppHeader'
+export type { AppHeaderProps, ProductType, UserMenuItem, UserInfo, ProductConfig, IconButtonProps } from './components/ui/AppHeader'
 export { CursorPixels } from './components/ui/cursor-pixels'
 export type { CursorPixelsProps } from './components/ui/cursor-pixels'
 export { ElectricInputWrapper as ElectricInput } from './components/ui/ElectricInput'

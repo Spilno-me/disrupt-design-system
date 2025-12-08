@@ -1,0 +1,375 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ColorPalette } from './ColorPalette';
+
+<Meta title="Disrupt Design System/Brand/Colors" />
+
+# Color System
+
+The Disrupt Design System uses a **Three-Tiered Color Architecture** for maximum flexibility and maintainability.
+
+## The Three Tiers
+
+<div style={{ background: '#FFFBEB', border: '1px solid #EAB308', borderRadius: '8px', padding: '16px', marginBottom: '32px' }}>
+  <strong>Brand → Alias → Mapped</strong>
+  <p style={{ margin: '8px 0 0 0', fontSize: '14px' }}>
+    Raw values → Semantic meaning → Component-specific usage
+  </p>
+</div>
+
+---
+
+## Tier 1: Brand Colors (Primitives)
+
+Raw color values with brand naming. These are the **source of truth** for all colors.
+
+### Abyss Scale (Primary Dark)
+
+<ColorPalette
+  colors={[
+    { name: 'Abyss 50', hex: '#E8E9EB', usage: 'Lightest' },
+    { name: 'Abyss 100', hex: '#D1D3D7', usage: '' },
+    { name: 'Abyss 200', hex: '#A3A7AF', usage: '' },
+    { name: 'Abyss 300', hex: '#757B87', usage: '' },
+    { name: 'Abyss 400', hex: '#474F5F', usage: '' },
+    { name: 'Abyss 500', hex: '#2D3142', usage: 'Base' },
+    { name: 'Abyss 600', hex: '#252836', usage: '' },
+    { name: 'Abyss 700', hex: '#1D1F2A', usage: '' },
+    { name: 'Abyss 800', hex: '#14161E', usage: '' },
+    { name: 'Abyss 900', hex: '#0C0D12', usage: 'Darkest' },
+  ]}
+  variant="scale"
+/>
+
+### Deep Current Scale (Teal Accent)
+
+<ColorPalette
+  colors={[
+    { name: 'Deep Current 50', hex: '#E6F7FA', usage: 'Lightest' },
+    { name: 'Deep Current 100', hex: '#CCEFF5', usage: '' },
+    { name: 'Deep Current 200', hex: '#99DFEB', usage: '' },
+    { name: 'Deep Current 300', hex: '#66CFE1', usage: '' },
+    { name: 'Deep Current 400', hex: '#33BFD7', usage: '' },
+    { name: 'Deep Current 500', hex: '#08A4BD', usage: 'Base' },
+    { name: 'Deep Current 600', hex: '#068397', usage: '' },
+    { name: 'Deep Current 700', hex: '#056271', usage: '' },
+    { name: 'Deep Current 800', hex: '#03424B', usage: '' },
+    { name: 'Deep Current 900', hex: '#022125', usage: 'Darkest' },
+  ]}
+  variant="scale"
+/>
+
+### Dusk Reef Scale (Purple Secondary)
+
+<ColorPalette
+  colors={[
+    { name: 'Dusk Reef 50', hex: '#EFEDF3', usage: 'Lightest' },
+    { name: 'Dusk Reef 100', hex: '#DFDBE7', usage: '' },
+    { name: 'Dusk Reef 200', hex: '#BFB7CF', usage: '' },
+    { name: 'Dusk Reef 300', hex: '#9F93B7', usage: '' },
+    { name: 'Dusk Reef 400', hex: '#7F6F9F', usage: '' },
+    { name: 'Dusk Reef 500', hex: '#5E4F7E', usage: 'Base' },
+    { name: 'Dusk Reef 600', hex: '#4B3F65', usage: '' },
+    { name: 'Dusk Reef 700', hex: '#382F4C', usage: '' },
+    { name: 'Dusk Reef 800', hex: '#262033', usage: '' },
+    { name: 'Dusk Reef 900', hex: '#13101A', usage: 'Darkest' },
+  ]}
+  variant="scale"
+/>
+
+### Other Brand Primitives
+
+<ColorPalette
+  colors={[
+    { name: 'Red Coral', hex: '#F70D1A', usage: 'Brand red, CTAs' },
+    { name: 'Tide Foam', hex: '#FBFBF3', usage: 'Cream background' },
+    { name: 'Slate', hex: '#CBD5E1', usage: 'Borders' },
+    { name: 'White', hex: '#FFFFFF', usage: 'Surface' },
+    { name: 'Black', hex: '#000000', usage: 'Absolute dark' },
+  ]}
+  variant="neutral"
+/>
+
+### Status Primitives
+
+<ColorPalette
+  colors={[
+    { name: 'Wave', hex: '#3B82F6', usage: 'Info blue' },
+    { name: 'Tide Alert', hex: '#F70D1A', usage: 'Error red' },
+    { name: 'Sunrise', hex: '#EAB308', usage: 'Warning yellow' },
+    { name: 'Harbor', hex: '#22C55E', usage: 'Success green' },
+  ]}
+  variant="semantic"
+/>
+
+---
+
+## Tier 2: Alias Tokens (Semantic)
+
+Semantic tokens that define **what the color means**. Use these in components.
+
+### Text Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>text.primary</code></td>
+      <td style={{ padding: '12px 8px' }}>Abyss 500</td>
+      <td style={{ padding: '12px 8px' }}>Main body text, headings</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>text.secondary</code></td>
+      <td style={{ padding: '12px 8px' }}>Dusk Reef 500</td>
+      <td style={{ padding: '12px 8px' }}>Muted text, descriptions</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>text.tertiary</code></td>
+      <td style={{ padding: '12px 8px' }}>Dusk Reef 400</td>
+      <td style={{ padding: '12px 8px' }}>Subtle text, captions</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>text.disabled</code></td>
+      <td style={{ padding: '12px 8px' }}>Dusk Reef 300</td>
+      <td style={{ padding: '12px 8px' }}>Disabled text</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>text.inverse</code></td>
+      <td style={{ padding: '12px 8px' }}>White</td>
+      <td style={{ padding: '12px 8px' }}>Text on dark backgrounds</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>text.link</code></td>
+      <td style={{ padding: '12px 8px' }}>Deep Current 500</td>
+      <td style={{ padding: '12px 8px' }}>Link text</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>text.error</code></td>
+      <td style={{ padding: '12px 8px' }}>Tide Alert</td>
+      <td style={{ padding: '12px 8px' }}>Error messages</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '12px 8px' }}><code>text.success</code></td>
+      <td style={{ padding: '12px 8px' }}>Harbor</td>
+      <td style={{ padding: '12px 8px' }}>Success messages</td>
+    </tr>
+  </tbody>
+</table>
+
+### Background Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>background.page</code></td>
+      <td style={{ padding: '12px 8px' }}>Tide Foam</td>
+      <td style={{ padding: '12px 8px' }}>Main page background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>background.surface</code></td>
+      <td style={{ padding: '12px 8px' }}>White</td>
+      <td style={{ padding: '12px 8px' }}>Card/panel backgrounds</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>background.surfaceHover</code></td>
+      <td style={{ padding: '12px 8px' }}>Abyss 50</td>
+      <td style={{ padding: '12px 8px' }}>Surface hover state</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>background.muted</code></td>
+      <td style={{ padding: '12px 8px' }}>Dusk Reef 50</td>
+      <td style={{ padding: '12px 8px' }}>Subtle areas</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>background.inverse</code></td>
+      <td style={{ padding: '12px 8px' }}>Abyss 500</td>
+      <td style={{ padding: '12px 8px' }}>Dark backgrounds</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>background.accent</code></td>
+      <td style={{ padding: '12px 8px' }}>Deep Current 50</td>
+      <td style={{ padding: '12px 8px' }}>Light teal accent</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>background.error</code></td>
+      <td style={{ padding: '12px 8px' }}>#FEF2F2</td>
+      <td style={{ padding: '12px 8px' }}>Error background</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '12px 8px' }}><code>background.success</code></td>
+      <td style={{ padding: '12px 8px' }}>#F0FDF4</td>
+      <td style={{ padding: '12px 8px' }}>Success background</td>
+    </tr>
+  </tbody>
+</table>
+
+### Border Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>border.default</code></td>
+      <td style={{ padding: '12px 8px' }}>Slate</td>
+      <td style={{ padding: '12px 8px' }}>Default borders</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>border.subtle</code></td>
+      <td style={{ padding: '12px 8px' }}>Abyss 100</td>
+      <td style={{ padding: '12px 8px' }}>Subtle borders</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>border.focus</code></td>
+      <td style={{ padding: '12px 8px' }}>Deep Current 500</td>
+      <td style={{ padding: '12px 8px' }}>Focus rings</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '12px 8px' }}><code>border.error</code></td>
+      <td style={{ padding: '12px 8px' }}>Tide Alert</td>
+      <td style={{ padding: '12px 8px' }}>Error borders</td>
+    </tr>
+  </tbody>
+</table>
+
+### Interactive Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>interactive.primary</code></td>
+      <td style={{ padding: '12px 8px' }}>Abyss 500</td>
+      <td style={{ padding: '12px 8px' }}>Primary buttons</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>interactive.primaryHover</code></td>
+      <td style={{ padding: '12px 8px' }}>Abyss 600</td>
+      <td style={{ padding: '12px 8px' }}>Primary hover</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>interactive.accent</code></td>
+      <td style={{ padding: '12px 8px' }}>Deep Current 500</td>
+      <td style={{ padding: '12px 8px' }}>Accent buttons</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '12px 8px' }}><code>interactive.accentHover</code></td>
+      <td style={{ padding: '12px 8px' }}>Deep Current 600</td>
+      <td style={{ padding: '12px 8px' }}>Accent hover</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '12px 8px' }}><code>interactive.danger</code></td>
+      <td style={{ padding: '12px 8px' }}>Red Coral</td>
+      <td style={{ padding: '12px 8px' }}>Destructive actions</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## Tier 3: Mapped Tokens (Component-specific)
+
+Tokens mapped to specific **component states and variants**.
+
+### Button Tokens
+
+```typescript
+MAPPED.button.primary.bg      // Abyss 500
+MAPPED.button.primary.bgHover // Abyss 600
+MAPPED.button.primary.text    // White
+MAPPED.button.accent.bg       // Deep Current 500
+MAPPED.button.danger.bg       // Red Coral
+```
+
+### Input Tokens
+
+```typescript
+MAPPED.input.bg           // White
+MAPPED.input.border       // Slate
+MAPPED.input.borderFocus  // Deep Current 500
+MAPPED.input.borderError  // Tide Alert
+```
+
+### Card Tokens
+
+```typescript
+MAPPED.card.bg        // White
+MAPPED.card.bgHover   // Abyss 50
+MAPPED.card.border    // Abyss 100
+```
+
+---
+
+## Usage Examples
+
+### TypeScript (Recommended)
+
+```typescript
+import { BRAND, ALIAS, MAPPED } from '@adrozdenko/design-system'
+
+// Tier 1: Raw brand color
+const brandColor = BRAND.deepCurrent // #08A4BD
+
+// Tier 2: Semantic usage (preferred)
+const textColor = ALIAS.text.primary // Abyss 500
+const bgColor = ALIAS.background.page // Tide Foam
+
+// Tier 3: Component-specific
+const buttonBg = MAPPED.button.primary.bg // Abyss 500
+```
+
+### CSS Variables
+
+```css
+/* Tier 1: Brand */
+color: var(--brand-abyss-500);
+
+/* Tier 2: Alias (preferred) */
+color: var(--alias-text-primary);
+background: var(--alias-bg-surface);
+
+/* Tier 3: Mapped */
+background: var(--button-primary-bg);
+border-color: var(--input-border-focus);
+```
+
+---
+
+## Guidelines
+
+### Do's
+
+- Use **Alias tokens** for most color decisions
+- Use **Mapped tokens** for component-specific styling
+- Reference **Brand** only when you need raw values
+
+### Don'ts
+
+- Don't hardcode hex values - always use tokens
+- Don't use Brand tokens directly in components when Alias exists
+- Don't create new colors outside the system
