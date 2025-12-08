@@ -60,7 +60,7 @@ export function ContactForm({
   submitButtonText = 'Send Message',
   onSubmit,
   isSubmitting = false,
-  showEffects = false,
+  showEffects: _showEffects = false,
   privacyPolicyLabel,
   className,
 }: ContactFormProps) {

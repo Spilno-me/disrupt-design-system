@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
-import { MAPPED, SHADOWS, RADIUS, PRIMITIVES } from '../../constants/designTokens'
+import { SHADOWS, RADIUS, ALIAS } from '../../constants/designTokens'
 import { FileText, Flag, Cylinder, Search, ClipboardCheck } from 'lucide-react'
 
 // =============================================================================
@@ -48,16 +48,36 @@ const quickFilterItemVariants = cva(
 
 /**
  * Get variant-specific colors for the Quick Filter item
- * Uses MAPPED.quickFilter tokens from the design system
+ * Uses ALIAS tokens from the design system
  */
 const getVariantColors = (variant: QuickFilterVariant) => {
-  const variantTokens = MAPPED.quickFilter.variants[variant]
-  return {
-    border: variantTokens.border,
-    badge: variantTokens.badge,
-    text: variantTokens.text,
-    icon: variantTokens.icon,
+  const variantMap = {
+    default: {
+      border: ALIAS.border.default,
+      badge: ALIAS.text.secondary,
+      text: ALIAS.text.secondary,
+      icon: ALIAS.icon.secondary,
+    },
+    info: {
+      border: ALIAS.brand.secondary,
+      badge: ALIAS.interactive.accentHover,
+      text: ALIAS.interactive.accentHover,
+      icon: ALIAS.brand.secondary,
+    },
+    warning: {
+      border: ALIAS.aging.primary,
+      badge: ALIAS.aging.dark,
+      text: ALIAS.aging.dark,
+      icon: ALIAS.aging.primary,
+    },
+    primary: {
+      border: ALIAS.brand.primary,
+      badge: ALIAS.brand.primary,
+      text: ALIAS.brand.primary,
+      icon: ALIAS.brand.primary,
+    },
   }
+  return variantMap[variant]
 }
 
 export interface QuickFilterItemProps
@@ -126,7 +146,7 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
           className
         )}
         style={{
-          background: `linear-gradient(180deg, ${MAPPED.quickFilter.bg.start} 0%, ${MAPPED.quickFilter.bg.end} 100%)`,
+          background: `linear-gradient(180deg, ${ALIAS.background.surface} 0%, ${ALIAS.background.surfaceHover} 100%)`,
           boxShadow: SHADOWS.sm,
           borderRadius: RADIUS.md,
         }}
@@ -137,7 +157,7 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
           className="absolute inset-0 pointer-events-none"
           style={{
             border: '2px solid transparent',
-            background: `linear-gradient(180deg, ${PRIMITIVES.white}30 0%, ${colors.border} 60%, ${colors.border} 100%) border-box`,
+            background: `linear-gradient(180deg, ${ALIAS.text.inverse}30 0%, ${colors.border} 60%, ${colors.border} 100%) border-box`,
             WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
@@ -162,8 +182,8 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
                 className="absolute min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold px-1"
                 style={{
                   backgroundColor: colors.badge,
-                  color: MAPPED.quickFilter.badge.text,
-                  border: `2px solid ${MAPPED.quickFilter.badge.border}`,
+                  color: ALIAS.text.inverse,
+                  border: `2px solid ${ALIAS.background.surface}`,
                   borderRadius: RADIUS.full,
                   top: '-6px',
                   right: '-12px',

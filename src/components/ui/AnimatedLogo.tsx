@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion, useAnimation } from 'motion/react'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { ALIAS, PRIMITIVES } from '../../constants/designTokens'
+import { ALIAS } from '../../constants/designTokens'
 import './AnimatedLogo.css'
 
 // =============================================================================
@@ -220,8 +220,8 @@ export function AnimatedLogo({
   const clickLockRef = useRef(false)
   const isMobile = useIsMobile()
 
-  const textColor = colorMode === 'light' ? PRIMITIVES.white : ALIAS.text.primary
-  const taglineColor = colorMode === 'light' ? PRIMITIVES.white : ALIAS.brand.secondary
+  const textColor = colorMode === 'light' ? ALIAS.text.inverse : ALIAS.text.primary
+  const taglineColor = colorMode === 'light' ? ALIAS.text.inverse : ALIAS.brand.secondary
 
   const handleClick = useCallback(() => {
     if (clickLockRef.current) return

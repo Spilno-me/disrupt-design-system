@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { Building2, Factory, Zap, Pill, Truck } from 'lucide-react'
 import { SectionContainer } from '../ui/SectionLayout'
+import { ALIAS } from '../../constants/designTokens'
 
 // Industry images - responsive versions
 // Construction
@@ -282,7 +283,7 @@ const IndustryCard = forwardRef<HTMLDivElement, IndustryCardProps>(
               className="flex items-center justify-center flex-shrink-0"
               initial={false}
               animate={{
-                backgroundColor: isExpanded ? 'rgba(255,255,255,0.15)' : 'transparent',
+                backgroundColor: isExpanded ? ALIAS.overlay.white15 : 'transparent',
                 padding: isExpanded ? '8px' : '0px',
                 borderRadius: isExpanded ? '8px' : '0px',
               }}

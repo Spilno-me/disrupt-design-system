@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { COMPANY_INFO } from '@/constants/appConstants'
-import { ALIAS, PRIMITIVES } from '@/constants/designTokens'
+import { ALIAS } from '@/constants/designTokens'
 import { MapWithMarkers } from '@/components/ui/MapWithMarkers'
 
 function LinkedInButton() {
@@ -103,7 +103,7 @@ function LinkedInButton() {
         className={`absolute inset-0 rounded-full ${
           showFill ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
         }`}
-        style={{ backgroundColor: PRIMITIVES.linkedIn }}
+        style={{ backgroundColor: ALIAS.brand.linkedIn }}
       />
 
       {/* LinkedIn icon */}
@@ -117,7 +117,7 @@ function LinkedInButton() {
       >
         <path
           d="M20.6667 0C21.3518 0 22.0089 0.280951 22.4934 0.781048C22.9778 1.28115 23.25 1.95942 23.25 2.66667V21.3333C23.25 22.0406 22.9778 22.7189 22.4934 23.219C22.0089 23.719 21.3518 24 20.6667 24H2.58333C1.89819 24 1.24111 23.719 0.756641 23.219C0.272172 22.7189 0 22.0406 0 21.3333V2.66667C0 1.95942 0.272172 1.28115 0.756641 0.781048C1.24111 0.280951 1.89819 0 2.58333 0H20.6667ZM20.0208 20.6667V13.6C20.0208 12.4472 19.5772 11.3416 18.7875 10.5264C17.9978 9.71128 16.9268 9.25333 15.81 9.25333C14.7121 9.25333 13.4333 9.94667 12.8133 10.9867V9.50667H9.20958V20.6667H12.8133V14.0933C12.8133 13.0667 13.6142 12.2267 14.6088 12.2267C15.0883 12.2267 15.5483 12.4233 15.8874 12.7734C16.2266 13.1235 16.4171 13.5983 16.4171 14.0933V20.6667H20.0208ZM5.01167 7.41333C5.58719 7.41333 6.13913 7.17733 6.54609 6.75725C6.95304 6.33717 7.18167 5.76742 7.18167 5.17333C7.18167 3.93333 6.21292 2.92 5.01167 2.92C4.43272 2.92 3.87749 3.1574 3.46811 3.57999C3.05873 4.00257 2.82875 4.57571 2.82875 5.17333C2.82875 6.41333 3.81042 7.41333 5.01167 7.41333ZM6.80708 20.6667V9.50667H3.22917V20.6667H6.80708Z"
-          fill={showFill ? PRIMITIVES.white : ALIAS.text.primary}
+          fill={showFill ? ALIAS.text.inverse : ALIAS.text.primary}
         />
       </svg>
     </a>

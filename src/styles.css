@@ -106,16 +106,139 @@ a[aria-hidden="true"],
   /* ============================================================ */
   /* TAILWIND COLOR UTILITIES                                     */
   /* Maps design tokens to Tailwind utility classes               */
-  /* e.g., bg-dark, text-teal, border-slate                       */
+  /* Use these classes for ALL styling - no raw colors!           */
   /* ============================================================ */
+
+  /* --- PRIMARY BRAND COLORS --- */
+  /* Usage: bg-dark, text-dark, border-dark */
   --color-dark: #2D3142;
+  /* Usage: bg-teal, text-teal, border-teal */
   --color-teal: #08A4BD;
-  --color-error: #F70D1A;
+  /* Usage: bg-tealLight, text-tealLight */
+  --color-tealLight: #66CFE1;
+  /* Usage: bg-cream, text-cream */
   --color-cream: #FBFBF3;
+
+  /* --- SEMANTIC TEXT COLORS --- */
+  /* Usage: text-primary (main text) */
+  --color-primary: #2D3142;
+  /* Usage: text-secondary (muted text) */
+  --color-secondary: #5E4F7E;
+  /* Usage: text-tertiary (subtle text, placeholders) */
+  --color-tertiary: #7F6F9F;
+  /* Usage: text-muted (same as secondary, alternative name) */
+  --color-muted: #5E4F7E;
+  /* Usage: text-emphasis (emphasized labels) */
+  --color-emphasis: #474F5F;
+  /* Usage: text-disabled */
+  --color-disabled: #9F93B7;
+  /* Usage: text-inverse (on dark backgrounds) */
+  --color-inverse: #FFFFFF;
+  /* Usage: text-link */
+  --color-link: #08A4BD;
+  /* Usage: text-linkHover */
+  --color-linkHover: #068397;
+
+  /* --- BACKGROUND COLORS --- */
+  /* Usage: bg-surface (cards, panels) */
+  --color-surface: #FFFFFF;
+  /* Usage: bg-surfaceHover */
+  --color-surfaceHover: #E8E9EB;
+  /* Usage: bg-surfaceActive */
+  --color-surfaceActive: #D1D3D7;
+  /* Usage: bg-page (main page background) - same as cream */
+  --color-page: #FBFBF3;
+  /* Usage: bg-elevated (elevated surfaces) */
+  --color-elevated: #FFFFFF;
+  /* Usage: bg-mutedBg (muted backgrounds) */
+  --color-mutedBg: #EFEDF3;
+  /* Usage: bg-inverseBg (dark backgrounds) */
+  --color-inverseBg: #2D3142;
+  /* Usage: bg-inverseSubtle (subtle dark) */
+  --color-inverseSubtle: #1D1F2A;
+  /* Usage: bg-accentBg (light teal background) */
+  --color-accentBg: #E6F7FA;
+  /* Usage: bg-accentStrong (strong teal) */
+  --color-accentStrong: #08A4BD;
+
+  /* --- BORDER COLORS --- */
+  /* Usage: border-default (standard borders) */
+  --color-default: #CBD5E1;
+  /* Usage: border-slate (same as default, common name) */
   --color-slate: #CBD5E1;
-  --color-white: #FFFFFF;
+  /* Usage: border-subtle */
+  --color-subtle: #D1D3D7;
+  /* Usage: border-strong */
+  --color-strong: #757B87;
+  /* Usage: border-focus (focus rings) */
+  --color-focus: #08A4BD;
+  /* Usage: border-accent */
+  --color-accent: #08A4BD;
+
+  /* --- STATUS COLORS --- */
+  /* Usage: bg-error, text-error, border-error */
+  --color-error: #F70D1A;
+  /* Usage: bg-errorLight */
+  --color-errorLight: #FEF2F2;
+  /* Usage: bg-errorMuted */
+  --color-errorMuted: #FEE2E2;
+  /* Usage: bg-success, text-success, border-success */
+  --color-success: #22C55E;
+  /* Usage: bg-successLight */
+  --color-successLight: #F0FDF4;
+  /* Usage: bg-successMuted */
+  --color-successMuted: #DCFCE7;
+  /* Usage: bg-warning, text-warning, border-warning */
+  --color-warning: #EAB308;
+  /* Usage: bg-warningLight */
+  --color-warningLight: #FFFBEB;
+  /* Usage: bg-warningMuted */
+  --color-warningMuted: #FEF3C7;
+  /* Usage: bg-info, text-info, border-info */
+  --color-info: #3B82F6;
+  /* Usage: bg-infoLight */
+  --color-infoLight: #EFF6FF;
+  /* Usage: bg-infoMuted */
+  --color-infoMuted: #DBEAFE;
+
+  /* --- FEATURE INDICATOR COLORS --- */
+  /* Usage: bg-featureBlue, text-featureBlue (automate) */
+  --color-featureBlue: #3B82F6;
+  /* Usage: bg-featureRed, text-featureRed (advice) */
+  --color-featureRed: #EF4444;
+  /* Usage: bg-featureYellow, text-featureYellow (adapt) */
+  --color-featureYellow: #EAB308;
+  /* Usage: bg-featureGreen, text-featureGreen (scale) */
+  --color-featureGreen: #22C55E;
+  /* Usage: bg-circleBlue etc (legacy names) */
+  --color-circleBlue: #3B82F6;
+  --color-circleRed: #EF4444;
+  --color-circleYellow: #EAB308;
+  --color-circleGreen: #22C55E;
+
+  /* --- PURPLE SHADES --- */
+  /* Usage: bg-lightPurple, text-lightPurple */
   --color-lightPurple: #EFEDF3;
+  /* Usage: bg-darkPurple, text-darkPurple */
   --color-darkPurple: #5E4F7E;
+
+  /* --- AGING/URGENT INDICATORS --- */
+  /* Usage: bg-aging, text-aging, border-aging */
+  --color-aging: #F97316;
+  /* Usage: bg-agingDark */
+  --color-agingDark: #EA580C;
+  /* Usage: bg-agingLight */
+  --color-agingLight: #FFF7ED;
+
+  /* --- UTILITY COLORS --- */
+  /* Usage: bg-white, text-white */
+  --color-white: #FFFFFF;
+  /* Usage: bg-black, text-black */
+  --color-black: #000000;
+  /* Usage: bg-linkedin */
+  --color-linkedin: #0A66C2;
+  /* Usage: bg-transparent */
+  --color-transparent: transparent;
 
   /* ============================================================ */
   /* TIER 1: BRAND COLORS (Primitives)                           */
@@ -230,8 +353,9 @@ a[aria-hidden="true"],
   --alias-overlay-dark-strong: rgba(0, 0, 0, 0.8);
 
   /* ============================================================ */
-  /* TIER 3: MAPPED TOKENS (Component-specific)                   */
-  /* Where the color is used - component states and variants      */
+  /* COMPONENT CSS VARIABLES                                      */
+  /* Convenience aliases for common component states              */
+  /* These reference ALIAS tokens for consistent styling          */
   /* ============================================================ */
 
   /* Button - Primary */

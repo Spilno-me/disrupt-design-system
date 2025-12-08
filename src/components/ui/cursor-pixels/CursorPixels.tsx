@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { CursorAnimationController } from './CursorAnimationController'
 import { PIXELS, REPEL } from './animation-config'
 import { isFormInput, shouldTriggerRepel } from './animation-utils'
+import { ALIAS } from '../../../constants/designTokens'
 import '../CursorPixels.css'
 
 const isTouchDevice = (): boolean => {
@@ -135,7 +136,7 @@ export function CursorPixels({ darkMode = false }: CursorPixelsProps) {
   // Get pixel color - swap dark pixels to white in darkMode
   const getPixelColor = (pixel: typeof PIXELS[number]) => {
     if (darkMode && pixel.id.startsWith('dark-')) {
-      return '#FFFFFF'
+      return ALIAS.text.inverse
     }
     return pixel.color
   }

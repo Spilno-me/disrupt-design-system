@@ -1,22 +1,21 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect, useRef, useMemo } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { cn } from "../../lib/utils"
-import { Button } from "./button"
-import { Input } from "./input"
-import { Textarea } from "./textarea"
-import { Badge } from "./badge"
-import { Checkbox } from "./checkbox"
-import { Label } from "./label"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 import {
   DEEP_CURRENT,
   ABYSS,
@@ -30,7 +29,7 @@ import {
   ALIAS,
   RADIUS,
   SHADOWS,
-} from "../../constants/designTokens"
+} from "@/constants/designTokens"
 import {
   AlertTriangle,
   Send,
@@ -41,7 +40,6 @@ import {
   FileText,
   Camera,
   Mic,
-  Loader2,
   Shield,
   Zap,
   X,
@@ -1957,7 +1955,7 @@ function InvitePeople({
   members,
   selectedIds,
   onChange,
-  suggestedMembers = [],
+  suggestedMembers: _suggestedMembers = [],
   onInviteNew,
   className,
 }: InvitePeopleProps) {

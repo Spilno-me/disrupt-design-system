@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { PricingConnector } from './pricing-connector'
-import { Minus, X, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const meta = {
   title: 'Components/PricingConnector',

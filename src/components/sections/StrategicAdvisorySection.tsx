@@ -1,4 +1,4 @@
-import { ALIAS, MAPPED } from '@/constants/designTokens'
+import { ALIAS } from '@/constants/designTokens'
 import { Shield, BookOpen, BarChart3, Scale } from 'lucide-react'
 
 // =============================================================================
@@ -85,7 +85,7 @@ export function StrategicAdvisorySection() {
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <span
               className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold text-white whitespace-nowrap"
-              style={{ backgroundColor: MAPPED.badge.highlight.bg }}
+              style={{ backgroundColor: ALIAS.feature.advice }}
             >
               STRATEGIC ADVISORY ADD-ON
             </span>

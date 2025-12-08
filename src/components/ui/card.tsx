@@ -2,7 +2,45 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
-import { SHADOWS, type ShadowLevel } from "../../constants/designTokens"
+import { SHADOWS, type ShadowLevel, ALIAS } from "../../constants/designTokens"
+
+// =============================================================================
+// ANIMATED BORDER COMPONENT
+// =============================================================================
+
+function AnimatedDashedBorder({ color = ALIAS.status.error }: { color?: string }) {
+  return (
+    <svg
+      className="absolute inset-0 w-full h-full pointer-events-none z-0"
+      style={{ borderRadius: 'inherit' }}
+    >
+      <style>
+        {`
+          @keyframes marchingAnts {
+            to {
+              stroke-dashoffset: -32;
+            }
+          }
+        `}
+      </style>
+      <rect
+        x="1"
+        y="1"
+        width="calc(100% - 2px)"
+        height="calc(100% - 2px)"
+        rx="13"
+        ry="13"
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+        strokeDasharray="8 8"
+        style={{
+          animation: 'marchingAnts 1s linear infinite',
+        }}
+      />
+    </svg>
+  )
+}
 
 // =============================================================================
 // CARD VARIANTS
@@ -17,8 +55,8 @@ const cardVariants = cva(
         default: "bg-white text-dark gap-6 border border-slate py-6",
         // Pricing card - dashed border
         pricing: "bg-white p-6 h-full border border-dashed border-slate rounded-[14px]",
-        // Highlighted pricing card - accent border
-        pricingHighlight: "bg-white p-6 border-2 border-dashed border-error rounded-[14px]",
+        // Highlighted pricing card - animated marching ants border
+        pricingHighlight: "bg-white p-6 rounded-[14px] relative overflow-hidden",
       },
     },
     defaultVariants: {
@@ -32,11 +70,28 @@ interface CardProps extends React.ComponentProps<"div">, VariantProps<typeof car
   shadow?: ShadowLevel
 }
 
-function Card({ className, variant, shadow, style, ...props }: CardProps) {
+function Card({ className, variant, shadow, style, children, ...props }: CardProps) {
   // Build combined styles using SHADOWS tokens (Tier 1 primitive for shadows)
   const combinedStyle: React.CSSProperties = {
     ...(shadow && shadow !== 'none' && { boxShadow: SHADOWS[shadow] }),
     ...style,
+  }
+
+  // For pricingHighlight, add animated SVG border
+  if (variant === 'pricingHighlight') {
+    return (
+      <div
+        data-slot="card"
+        className={cn(cardVariants({ variant }), className)}
+        style={Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined}
+        {...props}
+      >
+        <AnimatedDashedBorder />
+        <div className="relative z-10 flex flex-col h-full">
+          {children}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -45,7 +100,9 @@ function Card({ className, variant, shadow, style, ...props }: CardProps) {
       className={cn(cardVariants({ variant }), className)}
       style={Object.keys(combinedStyle).length > 0 ? combinedStyle : undefined}
       {...props}
-    />
+    >
+      {children}
+    </div>
   )
 }
 

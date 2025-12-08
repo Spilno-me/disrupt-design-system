@@ -50,8 +50,7 @@ function PricingConnector({
       <motion.div
         className="w-10 h-10 rounded-full flex items-center justify-center"
         style={{
-          backgroundColor: ALIAS.status.error,
-          boxShadow: '0 2px 12px rgba(247, 13, 26, 0.35)'
+          backgroundColor: ALIAS.status.error
         }}
         animate={{ rotate: rotation }}
         transition={{

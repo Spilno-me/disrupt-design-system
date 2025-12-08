@@ -36,6 +36,7 @@ export default {
         // Brand color scales
         dark: COLORS.dark,
         teal: COLORS.teal,
+        tealLight: COLORS.tealLight,
         red: COLORS.red,
         cream: COLORS.cream,
         muted: COLORS.muted,

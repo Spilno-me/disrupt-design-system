@@ -13,7 +13,6 @@ import {
   InvitePeople,
   CommentThread,
   severityConfig,
-  roleConfig,
   SAMPLE_LOCATIONS,
   type QuickSelectOption,
   type Location,

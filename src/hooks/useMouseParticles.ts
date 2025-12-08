@@ -1,11 +1,12 @@
 import { useState, useCallback, useRef } from 'react'
+import { ALIAS } from '@/constants/designTokens'
 
-// Particle spawn configuration
+// Particle spawn configuration - uses ALIAS animation tokens
 const PARTICLE_COLORS = [
-  '#2D6FE9', // circleBlue
-  '#60A5FA',
-  '#93C5FD',
-  '#BFDBFE',
+  ALIAS.animation.particleBlue,
+  ALIAS.animation.particleBlueMed,
+  ALIAS.animation.particleBlueLight,
+  ALIAS.animation.particleBlueSubtle,
 ] as const
 
 const POSITION_OFFSET = 30

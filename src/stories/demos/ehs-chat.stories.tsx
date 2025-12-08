@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState, useEffect } from 'react'
 import { EHSChat, AgentLogo, type IncidentReport, type LogoState, type LogoVariant } from './EHSChat'
-import { Card } from './card'
-import { Badge } from './badge'
-import { Button } from './button'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
-  AlertTriangle,
   CheckCircle2,
-  Clock,
   FileText,
   RotateCcw,
 } from 'lucide-react'

@@ -7,14 +7,14 @@ import { ColorPalette } from './ColorPalette';
 
 # Color System
 
-The Disrupt Design System uses a **Three-Tiered Color Architecture** for maximum flexibility and maintainability.
+The Disrupt Design System uses a **Two-Tiered Color Architecture** for simplicity and maintainability.
 
-## The Three Tiers
+## The Two Tiers
 
 <div style={{ background: '#FFFBEB', border: '1px solid #EAB308', borderRadius: '8px', padding: '16px', marginBottom: '32px' }}>
-  <strong>Brand → Alias → Mapped</strong>
+  <strong>Primitives → Alias</strong>
   <p style={{ margin: '8px 0 0 0', fontSize: '14px' }}>
-    Raw values → Semantic meaning → Component-specific usage
+    Raw values → Semantic meaning (use ALIAS in components)
   </p>
 </div>
 
@@ -292,70 +292,32 @@ Semantic tokens that define **what the color means**. Use these in components.
 
 ---
 
-## Tier 3: Mapped Tokens (Component-specific)
-
-Tokens mapped to specific **component states and variants**.
-
-### Button Tokens
-
-```typescript
-MAPPED.button.primary.bg      // Abyss 500
-MAPPED.button.primary.bgHover // Abyss 600
-MAPPED.button.primary.text    // White
-MAPPED.button.accent.bg       // Deep Current 500
-MAPPED.button.danger.bg       // Red Coral
-```
-
-### Input Tokens
-
-```typescript
-MAPPED.input.bg           // White
-MAPPED.input.border       // Slate
-MAPPED.input.borderFocus  // Deep Current 500
-MAPPED.input.borderError  // Tide Alert
-```
-
-### Card Tokens
-
-```typescript
-MAPPED.card.bg        // White
-MAPPED.card.bgHover   // Abyss 50
-MAPPED.card.border    // Abyss 100
-```
-
----
-
 ## Usage Examples
 
 ### TypeScript (Recommended)
 
 ```typescript
-import { BRAND, ALIAS, MAPPED } from '@adrozdenko/design-system'
+import { ALIAS, ABYSS, DEEP_CURRENT } from '@adrozdenko/design-system'
 
-// Tier 1: Raw brand color
-const brandColor = BRAND.deepCurrent // #08A4BD
-
-// Tier 2: Semantic usage (preferred)
+// Tier 2: Semantic usage (recommended for components)
 const textColor = ALIAS.text.primary // Abyss 500
 const bgColor = ALIAS.background.page // Tide Foam
+const buttonBg = ALIAS.interactive.primary // Abyss 500
 
-// Tier 3: Component-specific
-const buttonBg = MAPPED.button.primary.bg // Abyss 500
+// Tier 1: Raw primitives (only when needed for custom scales)
+const darkScale = ABYSS[600] // Darker shade
 ```
 
 ### CSS Variables
 
 ```css
-/* Tier 1: Brand */
-color: var(--brand-abyss-500);
-
-/* Tier 2: Alias (preferred) */
+/* Tier 2: Alias (use these in components) */
 color: var(--alias-text-primary);
 background: var(--alias-bg-surface);
+border-color: var(--alias-border-focus);
 
-/* Tier 3: Mapped */
-background: var(--button-primary-bg);
-border-color: var(--input-border-focus);
+/* Tier 1: Primitives (rarely needed directly) */
+color: var(--brand-abyss-500);
 ```
 
 ---
@@ -364,12 +326,12 @@ border-color: var(--input-border-focus);
 
 ### Do's
 
-- Use **Alias tokens** for most color decisions
-- Use **Mapped tokens** for component-specific styling
-- Reference **Brand** only when you need raw values
+- Use **ALIAS tokens** for all component styling
+- Reference **Primitives** only when you need raw scale values
+- Use semantic names that describe intent (text.primary, background.surface)
 
 ### Don'ts
 
 - Don't hardcode hex values - always use tokens
-- Don't use Brand tokens directly in components when Alias exists
+- Don't use Primitives directly when an ALIAS token exists
 - Don't create new colors outside the system

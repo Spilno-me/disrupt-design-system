@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Slider } from './Slider'
-import { COLORS } from '../../constants/designTokens'
 
 const meta = {
   title: 'Components/Slider',
@@ -10,7 +9,7 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A customizable range slider with filled track and styled thumb. Used in ROI calculators and other interactive components.',
+        component: 'A customizable range slider built on Radix UI primitives. Uses design system color tokens (circleRed). Used in ROI calculators and other interactive components.',
       },
     },
   },
@@ -39,14 +38,6 @@ const meta = {
     unit: {
       control: 'text',
       description: 'Unit text displayed after value',
-    },
-    fillColor: {
-      control: 'color',
-      description: 'Track fill color',
-    },
-    thumbColor: {
-      control: 'color',
-      description: 'Thumb border color (defaults to fillColor)',
     },
     showValue: {
       control: 'boolean',
@@ -85,66 +76,6 @@ export const Default: Story = {
       step={1}
       label="Number of Workers"
       unit="Workers"
-    />
-  ),
-}
-
-// With Red Fill (circleRed)
-export const RedFill: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={30}
-      min={0}
-      max={100}
-      step={5}
-      label="Daily Tasks"
-      unit="Tasks/Day"
-      fillColor={COLORS.circleRed}
-    />
-  ),
-}
-
-// With Blue Fill
-export const BlueFill: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={60}
-      min={0}
-      max={100}
-      step={1}
-      label="Progress"
-      unit="%"
-      fillColor={COLORS.circleBlue}
-    />
-  ),
-}
-
-// With Green Fill
-export const GreenFill: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={75}
-      min={0}
-      max={100}
-      step={1}
-      label="Completion"
-      unit="%"
-      fillColor={COLORS.circleGreen}
-    />
-  ),
-}
-
-// With Yellow Fill
-export const YellowFill: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={45}
-      min={0}
-      max={100}
-      step={1}
-      label="Warning Level"
-      unit="%"
-      fillColor={COLORS.circleYellow}
     />
   ),
 }
@@ -200,7 +131,6 @@ export const LargeRange: Story = {
       step={10}
       label="Number of Field Workers"
       unit="Workers"
-      fillColor={COLORS.circleRed}
     />
   ),
 }
@@ -215,7 +145,6 @@ export const SmallRange: Story = {
       step={1}
       label="Daily AI Tasks Per Worker"
       unit="Tasks/Day"
-      fillColor={COLORS.circleRed}
     />
   ),
 }
@@ -231,7 +160,6 @@ export const ROICalculatorExample: Story = {
         step={10}
         label="Number of Field Workers"
         unit="Workers"
-        fillColor={COLORS.circleRed}
       />
       <InteractiveSlider
         value={5}
@@ -240,24 +168,7 @@ export const ROICalculatorExample: Story = {
         step={1}
         label="Daily AI Tasks Per Worker (Photos/Video)"
         unit="Tasks/Day"
-        fillColor={COLORS.circleRed}
       />
     </div>
-  ),
-}
-
-// Custom Colors
-export const CustomColors: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={65}
-      min={0}
-      max={100}
-      step={1}
-      label="Custom Styled Slider"
-      unit="%"
-      fillColor={COLORS.teal}
-      thumbColor={COLORS.darkPurple}
-    />
   ),
 }

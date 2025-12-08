@@ -1,3 +1,5 @@
+import { ALIAS } from '../../../constants/designTokens'
+
 // Animation timing constants - named for semantic meaning
 export const TIMING = {
   IDLE_TRIGGER_DELAY_MS: 600,
@@ -59,13 +61,13 @@ export const REPEL = {
 
 // Pixel configurations
 export const PIXELS = [
-  { id: 'red-1', width: 12, height: 12, rx: 2, color: '#F70D1A', delay: 0.02 },
-  { id: 'red-2', width: 10, height: 10, rx: 2, color: '#F70D1A', delay: 0.06 },
-  { id: 'red-3', width: 14, height: 14, rx: 3, color: '#F70D1A', delay: 0.10 },
-  { id: 'dark-1', width: 8, height: 8, rx: 1.5, color: '#2D3142', delay: 0.04 },
-  { id: 'dark-2', width: 6, height: 6, rx: 1, color: '#2D3142', delay: 0.08 },
-  { id: 'dark-3', width: 6, height: 6, rx: 1, color: '#2D3142', delay: 0.12 },
-  { id: 'dark-4', width: 7, height: 7, rx: 1.5, color: '#2D3142', delay: 0.14 },
+  { id: 'red-1', width: 12, height: 12, rx: 2, color: ALIAS.status.error, delay: 0.02 },
+  { id: 'red-2', width: 10, height: 10, rx: 2, color: ALIAS.status.error, delay: 0.06 },
+  { id: 'red-3', width: 14, height: 14, rx: 3, color: ALIAS.status.error, delay: 0.10 },
+  { id: 'dark-1', width: 8, height: 8, rx: 1.5, color: ALIAS.text.primary, delay: 0.04 },
+  { id: 'dark-2', width: 6, height: 6, rx: 1, color: ALIAS.text.primary, delay: 0.08 },
+  { id: 'dark-3', width: 6, height: 6, rx: 1, color: ALIAS.text.primary, delay: 0.12 },
+  { id: 'dark-4', width: 7, height: 7, rx: 1.5, color: ALIAS.text.primary, delay: 0.14 },
 ] as const
 
 // Offset positions relative to cursor

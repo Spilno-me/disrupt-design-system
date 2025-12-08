@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { AppHeader, type UserMenuItem } from './AppHeader'
-import { User, Settings, HelpCircle, LogOut, CreditCard, Bell } from 'lucide-react'
+import { User, Settings, HelpCircle, LogOut, CreditCard } from 'lucide-react'
 
 const meta: Meta<typeof AppHeader> = {
   title: 'App/AppHeader',

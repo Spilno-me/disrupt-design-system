@@ -1,3 +1,5 @@
+import { ALIAS } from './designTokens'
+
 export const API_CONFIG = {
   BASE_URL: import.meta.env.MODE === 'production'
     ? ''
@@ -31,8 +33,8 @@ export const FORM_CONSTANTS = {
     DESKTOP: 'sm:h-9'
   },
   BUTTON_COLORS: {
-    MOBILE_SUBMIT: '#10b981',
-    DESKTOP_SUBMIT: '#2D3142'
+    MOBILE_SUBMIT: ALIAS.status.success,
+    DESKTOP_SUBMIT: ALIAS.brand.primary
   },
   TEXT_SIZES: {
     MOBILE: 'text-base',

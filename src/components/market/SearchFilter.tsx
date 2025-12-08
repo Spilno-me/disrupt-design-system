@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { cn } from '../../lib/utils'
-import { MAPPED, RADIUS, ALIAS } from '../../constants/designTokens'
+import { RADIUS, ALIAS, SHADOWS } from '../../constants/designTokens'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -210,25 +210,25 @@ export function SearchFilter({
         className
       )}
       style={{
-        background: MAPPED.searchFilter.bg,
-        border: `1px solid ${MAPPED.searchFilter.border}`,
+        background: ALIAS.gradient.searchFilter,
+        border: `1px solid ${ALIAS.overlay.subtle}`,
         borderRadius: RADIUS.md,
-        boxShadow: MAPPED.searchFilter.shadow,
+        boxShadow: SHADOWS.sm,
       }}
     >
       {/* Input container with search icon */}
       <div
         className="relative flex flex-1 items-center h-9"
         style={{
-          background: MAPPED.searchFilter.input.bg,
-          border: `1px solid ${MAPPED.searchFilter.border}`,
+          background: ALIAS.overlay.white50,
+          border: `1px solid ${ALIAS.overlay.subtle}`,
           borderRadius: RADIUS.sm,
         }}
       >
         {/* Search icon */}
         <div className="absolute left-3 flex items-center pointer-events-none">
           <SearchIcon
-            style={{ color: MAPPED.searchFilter.icon.search }}
+            style={{ color: ALIAS.icon.secondary }}
           />
         </div>
 
@@ -246,8 +246,8 @@ export function SearchFilter({
             'search-filter-input'
           )}
           style={{
-            color: MAPPED.searchFilter.input.text,
-            '--placeholder-color': MAPPED.searchFilter.input.placeholder,
+            color: ALIAS.text.primary,
+            '--placeholder-color': ALIAS.text.tertiary,
           } as React.CSSProperties}
         />
       </div>
@@ -264,14 +264,14 @@ export function SearchFilter({
               'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1'
             )}
             style={{
-              background: MAPPED.searchFilter.filterButton.bg,
-              border: `1px solid ${MAPPED.searchFilter.filterButton.border}`,
+              background: ALIAS.overlay.white50,
+              border: `1px solid ${ALIAS.overlay.subtle}`,
               borderRadius: RADIUS.sm,
             }}
             aria-label="Filter"
           >
             <FilterIcon
-              style={{ color: MAPPED.searchFilter.icon.filter }}
+              style={{ color: ALIAS.interactive.accent }}
             />
             {/* Active filter badge */}
             {activeFilterCount > 0 && (

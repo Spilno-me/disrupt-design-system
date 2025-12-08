@@ -1,4 +1,4 @@
-import { ALIAS, SHADOWS, MAPPED } from '@/constants/designTokens'
+import { ALIAS, SHADOWS } from '@/constants/designTokens'
 import { Check } from 'lucide-react'
 import { Button } from '../ui/button'
 import { ElectricButtonWrapper } from '@/components/ui/ElectricInput'
@@ -163,7 +163,7 @@ function PricingCard({ tier }: { tier: PricingCardTier }) {
           {/* Badge content */}
           <div
             className="relative px-3 py-1 rounded-full font-sans text-xs font-semibold text-white whitespace-nowrap"
-            style={{ backgroundColor: MAPPED.badge.highlight.bg }}
+            style={{ backgroundColor: ALIAS.feature.advice }}
           >
             {tier.badge}
           </div>

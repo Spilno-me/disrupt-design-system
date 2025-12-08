@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { cn } from '../../lib/utils'
-import { COLORS } from '../../constants/designTokens'
+import { COLORS, ALIAS } from '../../constants/designTokens'
 
 // =============================================================================
 // TYPES
@@ -132,7 +132,7 @@ export function LinkedInButton({
           'absolute inset-0 rounded-full transition-all duration-200',
           showFill ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
         )}
-        style={{ backgroundColor: '#0A66C2' }}
+        style={{ backgroundColor: ALIAS.brand.linkedIn }}
       />
 
       {/* LinkedIn icon */}

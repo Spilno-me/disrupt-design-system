@@ -1,9 +1,10 @@
 /**
- * Design Tokens - Three-Tiered Color System
+ * Design Tokens - Two-Tiered Color System
  *
- * TIER 1 (Brand): Raw color primitives ONLY - hex values, no semantics
+ * TIER 1 (Primitives): Raw color values ONLY - hex values, no semantics
  * TIER 2 (Alias): Semantic tokens - references Tier 1, describes intent
- * TIER 3 (Mapped): Component-specific - references Tier 2 ONLY
+ *
+ * Components use ALIAS tokens directly. No component-specific tier needed.
  */
 
 // =============================================================================
@@ -159,6 +160,7 @@ export const ALIAS = {
     primary: ABYSS[500],
     secondary: DUSK_REEF[500],
     tertiary: DUSK_REEF[400],
+    emphasis: ABYSS[400], // Emphasized labels - lighter than primary but still dark
     disabled: DUSK_REEF[300],
     inverse: PRIMITIVES.white,
     link: DEEP_CURRENT[500],
@@ -258,8 +260,11 @@ export const ALIAS = {
     medium: 'rgba(0, 0, 0, 0.3)',
     dark: 'rgba(0, 0, 0, 0.5)',
     darkStrong: 'rgba(0, 0, 0, 0.8)',
+    white15: 'rgba(255, 255, 255, 0.15)',
     white50: 'rgba(255, 255, 255, 0.5)',
+    white60: 'rgba(255, 255, 255, 0.6)',
     subtle: 'rgba(229, 229, 229, 0.5)',
+    tealGlass: 'rgba(0, 128, 128, 0.05)',
   },
 
   // --- GRADIENTS ---
@@ -298,6 +303,7 @@ export const ALIAS = {
     tertiary: DUSK_REEF[500],
     accent: CORAL[500],
     neutral: PRIMITIVES.cream,
+    linkedIn: PRIMITIVES.linkedIn,
   },
 
   // --- FEATURE INDICATORS (semantic colors for features) ---
@@ -314,268 +320,21 @@ export const ALIAS = {
     dark: ORANGE[600],
     light: ORANGE[50],
   },
-} as const
 
-// =============================================================================
-// TIER 3: MAPPED TOKENS (Component-specific)
-// WHERE the color is used. References TIER 2 ONLY.
-// No Tier 1 references or raw hex values allowed.
-// =============================================================================
-
-export const MAPPED = {
-  // --- BUTTON ---
-  button: {
-    primary: {
-      bg: ALIAS.interactive.primary,
-      bgHover: ALIAS.interactive.primaryHover,
-      bgActive: ALIAS.interactive.primaryActive,
-      text: ALIAS.text.inverse,
-      border: ALIAS.border.subtle,
-    },
-    secondary: {
-      bg: ALIAS.background.surface,
-      bgHover: ALIAS.background.surfaceHover,
-      bgActive: ALIAS.background.surfaceActive,
-      text: ALIAS.text.primary,
-      border: ALIAS.border.default,
-    },
-    accent: {
-      bg: ALIAS.interactive.accent,
-      bgHover: ALIAS.interactive.accentHover,
-      bgActive: ALIAS.interactive.accentActive,
-      text: ALIAS.text.inverse,
-      border: ALIAS.border.accent,
-    },
-    ghost: {
-      bg: 'transparent',
-      bgHover: ALIAS.background.surfaceHover,
-      bgActive: ALIAS.background.surfaceActive,
-      text: ALIAS.text.primary,
-      border: 'transparent',
-    },
-    danger: {
-      bg: ALIAS.interactive.danger,
-      bgHover: ALIAS.interactive.dangerHover,
-      bgActive: ALIAS.interactive.dangerActive,
-      text: ALIAS.text.inverse,
-      border: ALIAS.border.error,
-    },
-    disabled: {
-      bg: ALIAS.interactive.disabled,
-      text: ALIAS.interactive.disabledText,
-      border: ALIAS.border.disabled,
-    },
+  // --- ANIMATION (particle effects, decorative elements) ---
+  animation: {
+    particleBlue: WAVE[600],      // Primary particle color
+    particleBlueMed: WAVE[400],   // Medium particle color
+    particleBlueLight: WAVE[300], // Light particle color
+    particleBlueSubtle: WAVE[200], // Subtle particle color
   },
 
-  // --- INPUT ---
-  input: {
-    bg: ALIAS.background.surface,
-    bgHover: ALIAS.background.surface,
-    bgFocus: ALIAS.background.surface,
-    bgDisabled: ALIAS.background.muted,
-    text: ALIAS.text.primary,
-    textPlaceholder: ALIAS.text.tertiary,
-    textDisabled: ALIAS.text.disabled,
-    border: ALIAS.border.default,
-    borderHover: ALIAS.border.strong,
-    borderFocus: ALIAS.border.focus,
-    borderError: ALIAS.border.error,
-    borderDisabled: ALIAS.border.disabled,
-  },
-
-  // --- CARD ---
-  card: {
-    bg: ALIAS.background.surface,
-    bgHover: ALIAS.background.surfaceHover,
-    border: ALIAS.border.subtle,
-    borderHover: ALIAS.border.default,
-    shadow: 'sm',
-  },
-
-  // --- HEADER ---
-  header: {
-    bg: ALIAS.overlay.light,
-    bgSolid: ALIAS.background.surface,
-    text: ALIAS.text.primary,
-    textInverse: ALIAS.text.inverse,
-    border: ALIAS.border.accent,
-    shadow: ALIAS.shadow.header,
-  },
-
-  // --- NAVIGATION ---
-  nav: {
-    link: ALIAS.text.primary,
-    linkHover: ALIAS.text.link,
-    linkActive: ALIAS.text.link,
-    indicator: ALIAS.border.accent,
-  },
-
-  // --- BADGE ---
-  badge: {
-    default: {
-      bg: ALIAS.background.muted,
-      text: ALIAS.text.secondary,
-    },
-    accent: {
-      bg: ALIAS.background.accent,
-      text: ALIAS.text.link,
-    },
-    highlight: {
-      bg: ALIAS.feature.advice,       // circleRed (#EF4444) - for promotional badges
-      text: ALIAS.text.inverse,
-    },
-    success: {
-      bg: ALIAS.status.successLight,
-      text: ALIAS.text.success,
-    },
-    warning: {
-      bg: ALIAS.status.warningLight,
-      text: ALIAS.text.warning,
-    },
-    error: {
-      bg: ALIAS.status.errorLight,
-      text: ALIAS.text.error,
-    },
-    info: {
-      bg: ALIAS.status.infoLight,
-      text: ALIAS.text.info,
-    },
-  },
-
-  // --- TOOLTIP ---
-  tooltip: {
-    bg: ALIAS.background.inverse,
-    text: ALIAS.text.inverse,
-  },
-
-  // --- MODAL ---
-  modal: {
-    bg: ALIAS.background.elevated,
-    overlay: ALIAS.overlay.dark,
-    border: ALIAS.border.subtle,
-  },
-
-  // --- ALERT ---
-  alert: {
-    error: {
-      bg: ALIAS.background.error,
-      border: ALIAS.border.error,
-      text: ALIAS.text.primary,
-      icon: ALIAS.icon.error,
-    },
-    success: {
-      bg: ALIAS.background.success,
-      border: ALIAS.border.success,
-      text: ALIAS.text.primary,
-      icon: ALIAS.icon.success,
-    },
-    warning: {
-      bg: ALIAS.background.warning,
-      border: ALIAS.border.warning,
-      text: ALIAS.text.primary,
-      icon: ALIAS.icon.warning,
-    },
-    info: {
-      bg: ALIAS.background.info,
-      border: ALIAS.border.info,
-      text: ALIAS.text.primary,
-      icon: ALIAS.icon.info,
-    },
-  },
-
-  // --- FEATURE CARD ---
-  featureCard: {
-    bg: ALIAS.background.inverse,
-    text: ALIAS.text.inverse,
-    textMuted: ALIAS.overlay.medium,
-    circles: {
-      automate: ALIAS.feature.automate,
-      advice: ALIAS.feature.advice,
-      adapt: ALIAS.feature.adapt,
-      scale: ALIAS.feature.scale,
-    },
-  },
-
-  // --- PRICING ---
-  pricing: {
-    highlight: {
-      border: ALIAS.status.error,
-      badge: ALIAS.status.error,
-    },
-    connector: {
-      line: ALIAS.status.error,
-      dot: ALIAS.status.error,
-    },
-  },
-
-  // --- FOOTER ---
-  footer: {
-    bg: ALIAS.background.inverse,
-    text: ALIAS.text.inverse,
-    textMuted: ALIAS.overlay.medium,
-    link: ALIAS.text.inverse,
-    linkHover: ALIAS.text.link,
-  },
-
-  // --- SEARCH FILTER (Market Product) ---
-  searchFilter: {
-    bg: ALIAS.gradient.searchFilter,
-    border: ALIAS.overlay.subtle,
-    shadow: ALIAS.shadow.sm,
-    input: {
-      bg: ALIAS.overlay.white50,
-      placeholder: ALIAS.text.tertiary,
-      text: ALIAS.text.primary,
-    },
-    icon: {
-      search: ALIAS.icon.secondary,
-      filter: ALIAS.interactive.accent,
-    },
-    filterButton: {
-      bg: ALIAS.overlay.white50,
-      border: ALIAS.overlay.subtle,
-    },
-  },
-
-  // --- QUICK FILTER (Flow EHS) ---
-  quickFilter: {
-    bg: {
-      start: ALIAS.background.surface,
-      end: ALIAS.background.surfaceHover,
-    },
-    shadow: ALIAS.shadow.sm,
-    borderRadius: '12px',
-    // Variant-specific colors
-    variants: {
-      default: {
-        border: ALIAS.border.default,
-        badge: ALIAS.text.secondary,
-        text: ALIAS.text.secondary,
-        icon: ALIAS.icon.secondary,
-      },
-      info: {
-        border: ALIAS.brand.secondary,
-        badge: ALIAS.interactive.accentHover,
-        text: ALIAS.interactive.accentHover,
-        icon: ALIAS.brand.secondary,
-      },
-      warning: {
-        border: ALIAS.aging.primary,
-        badge: ALIAS.aging.dark,
-        text: ALIAS.aging.dark,
-        icon: ALIAS.aging.primary,
-      },
-      primary: {
-        border: ALIAS.brand.primary,
-        badge: ALIAS.brand.primary,
-        text: ALIAS.brand.primary,
-        icon: ALIAS.brand.primary,
-      },
-    },
-    badge: {
-      text: ALIAS.text.inverse,
-      border: ALIAS.background.surface,
-    },
+  // --- ELECTRIC EFFECT (input borders, interactive glow) ---
+  electric: {
+    cyan: '#00CED1',           // Dark turquoise for electric borders
+    cyanBright: '#00FFFF',     // Bright cyan for glow
+    cyanGlow: 'rgba(0, 206, 209, 0.6)',
+    cyanGlowSubtle: 'rgba(0, 255, 255, 0.4)',
   },
 } as const
 
@@ -589,6 +348,7 @@ export const COLORS = {
   // --- SEMANTIC NAMES (Tailwind classes) ---
   dark: ALIAS.brand.primary,           // bg-dark, text-dark
   teal: ALIAS.brand.secondary,         // bg-teal, text-teal
+  tealLight: DEEP_CURRENT[300],        // bg-tealLight, text-tealLight - lighter teal for hero subtitles
   red: ALIAS.status.error,             // bg-red, text-red
   cream: ALIAS.background.page,        // bg-cream
   muted: ALIAS.text.secondary,         // text-muted
@@ -604,6 +364,7 @@ export const COLORS = {
   text: {
     primary: ALIAS.text.primary,
     secondary: ALIAS.text.secondary,
+    emphasis: ALIAS.text.emphasis,
     disabled: ALIAS.text.disabled,
     inverse: ALIAS.text.inverse,
   },

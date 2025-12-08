@@ -2,6 +2,25 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
+import { copyFileSync, mkdirSync, existsSync } from 'fs'
+
+// Plugin to copy tokens.css to dist
+function copyTokensPlugin() {
+  return {
+    name: 'copy-tokens',
+    closeBundle() {
+      const srcPath = resolve(__dirname, 'src/styles/tokens.css')
+      const destDir = resolve(__dirname, 'dist/styles')
+      const destPath = resolve(destDir, 'tokens.css')
+
+      if (!existsSync(destDir)) {
+        mkdirSync(destDir, { recursive: true })
+      }
+      copyFileSync(srcPath, destPath)
+      console.log('✓ Copied tokens.css to dist/styles/')
+    },
+  }
+}
 
 export default defineConfig({
   plugins: [
@@ -10,6 +29,7 @@ export default defineConfig({
       insertTypesEntry: true,
       include: ['src/**/*'],
     }),
+    copyTokensPlugin(),
   ],
   resolve: {
     alias: {

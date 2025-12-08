@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../lib/utils"
 import { COLORS } from "../../constants/designTokens"
 
@@ -21,10 +22,6 @@ export interface SliderProps extends Omit<React.ComponentProps<"div">, "onChange
   unit?: string
   /** Callback when value changes */
   onChange?: (value: number) => void
-  /** Track fill color (defaults to circleRed) */
-  fillColor?: string
-  /** Thumb border color (defaults to fillColor) */
-  thumbColor?: string
   /** Show value display */
   showValue?: boolean
   /** Disabled state */
@@ -36,8 +33,9 @@ export interface SliderProps extends Omit<React.ComponentProps<"div">, "onChange
 // =============================================================================
 
 /**
- * Slider - A customizable range slider with filled track and styled thumb.
+ * Slider - A customizable range slider built on Radix UI primitives.
  * Used in ROI calculators and other interactive components.
+ * Responsive: larger touch targets on mobile, standard size on desktop.
  */
 export function Slider({
   value,
@@ -47,19 +45,14 @@ export function Slider({
   label,
   unit,
   onChange,
-  fillColor = COLORS.circleRed,
-  thumbColor,
   showValue = true,
   disabled = false,
   className,
   ...props
 }: SliderProps) {
-  const percentage = ((value - min) / (max - min)) * 100
-  const actualThumbColor = thumbColor || fillColor
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleValueChange = (values: number[]) => {
     if (!disabled && onChange) {
-      onChange(Number(e.target.value))
+      onChange(values[0])
     }
   }
 
@@ -84,40 +77,47 @@ export function Slider({
         </div>
       )}
 
-      {/* Slider Track */}
-      <div className="relative h-4">
-        {/* Track Background */}
-        <div className="absolute inset-0 bg-slate-100 rounded-full" />
+      {/* Radix Slider - custom implementation for precise thumb/range alignment */}
+      <div className="relative w-full h-8 lg:h-5 flex items-center">
+        {/* Track background */}
+        <div className="absolute inset-x-4 lg:inset-x-2.5 h-6 lg:h-4 rounded-full bg-slate-100" />
 
-        {/* Track Fill */}
+        {/* Track fill (Range) */}
         <div
-          className="absolute left-0 top-0 h-full rounded-full transition-all duration-150"
+          className="absolute left-4 lg:left-2.5 h-6 lg:h-4 rounded-l-full"
           style={{
-            width: `${percentage}%`,
-            backgroundColor: fillColor,
+            backgroundColor: COLORS.circleRed,
+            width: `calc(${((value - min) / (max - min)) * 100}% - ${((value - min) / (max - min)) * 16}px)`,
           }}
         />
 
-        {/* Hidden Range Input */}
-        <input
-          type="range"
+        {/* Hidden Radix slider for interaction */}
+        <SliderPrimitive.Root
+          className="absolute inset-0 flex items-center select-none touch-none w-full"
+          value={[value]}
           min={min}
           max={max}
           step={step}
-          value={value}
-          onChange={handleChange}
           disabled={disabled}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
-        />
-
-        {/* Thumb */}
-        <div
-          className="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-white rounded-full shadow-md border-2 pointer-events-none transition-all duration-150"
-          style={{
-            left: `calc(${percentage}% - 10px)`,
-            borderColor: actualThumbColor,
-          }}
-        />
+          onValueChange={handleValueChange}
+        >
+          <SliderPrimitive.Track className="relative grow h-full">
+            <SliderPrimitive.Range className="absolute h-full" />
+          </SliderPrimitive.Track>
+          <SliderPrimitive.Thumb
+            className={cn(
+              "block rounded-full shadow-md border-2",
+              "w-8 h-8 lg:w-5 lg:h-5",
+              "cursor-grab active:cursor-grabbing",
+              "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#E8524F]/20"
+            )}
+            style={{
+              backgroundColor: 'white',
+              borderColor: COLORS.circleRed,
+            }}
+            aria-label={label}
+          />
+        </SliderPrimitive.Root>
       </div>
     </div>
   )

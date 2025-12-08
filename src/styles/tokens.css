@@ -1,0 +1,602 @@
+/**
+ * Disrupt Design System - CSS Design Tokens
+ *
+ * This file contains all CSS custom properties (variables) for the design system.
+ * Import this file in your application to get all design tokens as CSS variables.
+ *
+ * Usage:
+ *   @import "@adrozdenko/design-system/tokens.css";
+ *
+ * Or in Tailwind v4 with @theme:
+ *   @import "@adrozdenko/design-system/tokens.css" theme(reference);
+ */
+
+@theme {
+  /* ============================================================ */
+  /* FONTS                                                        */
+  /* ============================================================ */
+  --font-display: "Pilat Extended", "Arial", "sans-serif";
+  --font-sans: "Fixel", "system-ui", "sans-serif";
+  --font-mono: "ui-monospace", "monospace";
+
+  /* ============================================================ */
+  /* TAILWIND COLOR UTILITIES                                     */
+  /* Maps design tokens to Tailwind utility classes               */
+  /* Use these classes for ALL styling - no raw colors!           */
+  /* ============================================================ */
+
+  /* --- PRIMARY BRAND COLORS --- */
+  /* Usage: bg-dark, text-dark, border-dark */
+  --color-dark: #2D3142;
+  /* Usage: bg-teal, text-teal, border-teal */
+  --color-teal: #08A4BD;
+  /* Usage: bg-tealLight, text-tealLight */
+  --color-tealLight: #66CFE1;
+  /* Usage: bg-cream, text-cream */
+  --color-cream: #FBFBF3;
+
+  /* --- SEMANTIC TEXT COLORS --- */
+  /* Usage: text-primary (main text) */
+  --color-primary: #2D3142;
+  /* Usage: text-secondary (muted text) */
+  --color-secondary: #5E4F7E;
+  /* Usage: text-tertiary (subtle text, placeholders) */
+  --color-tertiary: #7F6F9F;
+  /* Usage: text-muted (same as secondary, alternative name) */
+  --color-muted: #5E4F7E;
+  /* Usage: text-emphasis (emphasized labels) */
+  --color-emphasis: #474F5F;
+  /* Usage: text-disabled */
+  --color-disabled: #9F93B7;
+  /* Usage: text-inverse (on dark backgrounds) */
+  --color-inverse: #FFFFFF;
+  /* Usage: text-link */
+  --color-link: #08A4BD;
+  /* Usage: text-linkHover */
+  --color-linkHover: #068397;
+
+  /* --- BACKGROUND COLORS --- */
+  /* Usage: bg-surface (cards, panels) */
+  --color-surface: #FFFFFF;
+  /* Usage: bg-surfaceHover */
+  --color-surfaceHover: #E8E9EB;
+  /* Usage: bg-surfaceActive */
+  --color-surfaceActive: #D1D3D7;
+  /* Usage: bg-page (main page background) - same as cream */
+  --color-page: #FBFBF3;
+  /* Usage: bg-elevated (elevated surfaces) */
+  --color-elevated: #FFFFFF;
+  /* Usage: bg-mutedBg (muted backgrounds) */
+  --color-mutedBg: #EFEDF3;
+  /* Usage: bg-inverseBg (dark backgrounds) */
+  --color-inverseBg: #2D3142;
+  /* Usage: bg-inverseSubtle (subtle dark) */
+  --color-inverseSubtle: #1D1F2A;
+  /* Usage: bg-accentBg (light teal background) */
+  --color-accentBg: #E6F7FA;
+  /* Usage: bg-accentStrong (strong teal) */
+  --color-accentStrong: #08A4BD;
+
+  /* --- BORDER COLORS --- */
+  /* Usage: border-default (standard borders) */
+  --color-default: #CBD5E1;
+  /* Usage: border-slate (same as default, common name) */
+  --color-slate: #CBD5E1;
+  /* Usage: border-subtle */
+  --color-subtle: #D1D3D7;
+  /* Usage: border-strong */
+  --color-strong: #757B87;
+  /* Usage: border-focus (focus rings) */
+  --color-focus: #08A4BD;
+  /* Usage: border-accent */
+  --color-accent: #08A4BD;
+
+  /* --- STATUS COLORS --- */
+  /* Usage: bg-error, text-error, border-error */
+  --color-error: #F70D1A;
+  /* Usage: bg-errorLight */
+  --color-errorLight: #FEF2F2;
+  /* Usage: bg-errorMuted */
+  --color-errorMuted: #FEE2E2;
+  /* Usage: bg-success, text-success, border-success */
+  --color-success: #22C55E;
+  /* Usage: bg-successLight */
+  --color-successLight: #F0FDF4;
+  /* Usage: bg-successMuted */
+  --color-successMuted: #DCFCE7;
+  /* Usage: bg-warning, text-warning, border-warning */
+  --color-warning: #EAB308;
+  /* Usage: bg-warningLight */
+  --color-warningLight: #FFFBEB;
+  /* Usage: bg-warningMuted */
+  --color-warningMuted: #FEF3C7;
+  /* Usage: bg-info, text-info, border-info */
+  --color-info: #3B82F6;
+  /* Usage: bg-infoLight */
+  --color-infoLight: #EFF6FF;
+  /* Usage: bg-infoMuted */
+  --color-infoMuted: #DBEAFE;
+
+  /* --- FEATURE INDICATOR COLORS --- */
+  /* Usage: bg-featureBlue, text-featureBlue (automate) */
+  --color-featureBlue: #3B82F6;
+  /* Usage: bg-featureRed, text-featureRed (advice) */
+  --color-featureRed: #EF4444;
+  /* Usage: bg-featureYellow, text-featureYellow (adapt) */
+  --color-featureYellow: #EAB308;
+  /* Usage: bg-featureGreen, text-featureGreen (scale) */
+  --color-featureGreen: #22C55E;
+  /* Usage: bg-circleBlue etc (legacy names) */
+  --color-circleBlue: #3B82F6;
+  --color-circleRed: #EF4444;
+  --color-circleYellow: #EAB308;
+  --color-circleGreen: #22C55E;
+
+  /* --- PURPLE SHADES --- */
+  /* Usage: bg-lightPurple, text-lightPurple */
+  --color-lightPurple: #EFEDF3;
+  /* Usage: bg-darkPurple, text-darkPurple */
+  --color-darkPurple: #5E4F7E;
+
+  /* --- AGING/URGENT INDICATORS --- */
+  /* Usage: bg-aging, text-aging, border-aging */
+  --color-aging: #F97316;
+  /* Usage: bg-agingDark */
+  --color-agingDark: #EA580C;
+  /* Usage: bg-agingLight */
+  --color-agingLight: #FFF7ED;
+
+  /* --- UTILITY COLORS --- */
+  /* Usage: bg-white, text-white */
+  --color-white: #FFFFFF;
+  /* Usage: bg-black, text-black */
+  --color-black: #000000;
+  /* Usage: bg-linkedin */
+  --color-linkedin: #0A66C2;
+  /* Usage: bg-transparent */
+  --color-transparent: transparent;
+
+  /* ============================================================ */
+  /* TIER 1: BRAND COLORS (Primitives)                           */
+  /* Raw color values - the source of truth                      */
+  /* ============================================================ */
+
+  /* ABYSS - Primary Dark Scale */
+  --brand-abyss-50: #E8E9EB;
+  --brand-abyss-100: #D1D3D7;
+  --brand-abyss-200: #A3A7AF;
+  --brand-abyss-300: #757B87;
+  --brand-abyss-400: #474F5F;
+  --brand-abyss-500: #2D3142;
+  --brand-abyss-600: #252836;
+  --brand-abyss-700: #1D1F2A;
+  --brand-abyss-800: #14161E;
+  --brand-abyss-900: #0C0D12;
+
+  /* DEEP CURRENT - Teal Accent Scale */
+  --brand-deep-current-50: #E6F7FA;
+  --brand-deep-current-100: #CCEFF5;
+  --brand-deep-current-200: #99DFEB;
+  --brand-deep-current-300: #66CFE1;
+  --brand-deep-current-400: #33BFD7;
+  --brand-deep-current-500: #08A4BD;
+  --brand-deep-current-600: #068397;
+  --brand-deep-current-700: #056271;
+  --brand-deep-current-800: #03424B;
+  --brand-deep-current-900: #022125;
+
+  /* DUSK REEF - Purple Secondary Scale */
+  --brand-dusk-reef-50: #EFEDF3;
+  --brand-dusk-reef-100: #DFDBE7;
+  --brand-dusk-reef-200: #BFB7CF;
+  --brand-dusk-reef-300: #9F93B7;
+  --brand-dusk-reef-400: #7F6F9F;
+  --brand-dusk-reef-500: #5E4F7E;
+  --brand-dusk-reef-600: #4B3F65;
+  --brand-dusk-reef-700: #382F4C;
+  --brand-dusk-reef-800: #262033;
+  --brand-dusk-reef-900: #13101A;
+
+  /* CORAL - Red Scale */
+  --brand-coral-50: #FEF2F2;
+  --brand-coral-100: #FEE2E2;
+  --brand-coral-200: #FECACA;
+  --brand-coral-300: #FCA5A5;
+  --brand-coral-400: #F87171;
+  --brand-coral-450: #EF4444;
+  --brand-coral-500: #F70D1A;
+  --brand-coral-600: #DC2626;
+  --brand-coral-700: #B91C1C;
+  --brand-coral-800: #991B1B;
+  --brand-coral-900: #7F1D1D;
+
+  /* WAVE - Blue Scale */
+  --brand-wave-50: #EFF6FF;
+  --brand-wave-100: #DBEAFE;
+  --brand-wave-200: #BFDBFE;
+  --brand-wave-300: #93C5FD;
+  --brand-wave-400: #60A5FA;
+  --brand-wave-500: #3B82F6;
+  --brand-wave-600: #2563EB;
+  --brand-wave-700: #1D4ED8;
+  --brand-wave-800: #1E40AF;
+  --brand-wave-900: #1E3A8A;
+
+  /* SUNRISE - Yellow Scale */
+  --brand-sunrise-50: #FFFBEB;
+  --brand-sunrise-100: #FEF3C7;
+  --brand-sunrise-200: #FDE68A;
+  --brand-sunrise-300: #FCD34D;
+  --brand-sunrise-400: #FBBF24;
+  --brand-sunrise-500: #EAB308;
+  --brand-sunrise-600: #CA8A04;
+  --brand-sunrise-700: #A16207;
+  --brand-sunrise-800: #854D0E;
+  --brand-sunrise-900: #713F12;
+
+  /* ORANGE - Orange Scale */
+  --brand-orange-50: #FFF7ED;
+  --brand-orange-100: #FFEDD5;
+  --brand-orange-200: #FED7AA;
+  --brand-orange-300: #FDBA74;
+  --brand-orange-400: #FB923C;
+  --brand-orange-500: #F97316;
+  --brand-orange-600: #EA580C;
+  --brand-orange-700: #C2410C;
+  --brand-orange-800: #9A3412;
+  --brand-orange-900: #7C2D12;
+
+  /* HARBOR - Green Scale */
+  --brand-harbor-50: #F0FDF4;
+  --brand-harbor-100: #DCFCE7;
+  --brand-harbor-200: #BBF7D0;
+  --brand-harbor-300: #86EFAC;
+  --brand-harbor-400: #4ADE80;
+  --brand-harbor-500: #22C55E;
+  --brand-harbor-600: #16A34A;
+  --brand-harbor-700: #15803D;
+  --brand-harbor-800: #166534;
+  --brand-harbor-900: #14532D;
+
+  /* SLATE - Neutral Gray Scale */
+  --brand-slate-50: #F8FAFC;
+  --brand-slate-100: #F1F5F9;
+  --brand-slate-200: #E2E8F0;
+  --brand-slate-300: #CBD5E1;
+  --brand-slate-400: #94A3B8;
+  --brand-slate-500: #64748B;
+  --brand-slate-600: #475569;
+  --brand-slate-700: #334155;
+  --brand-slate-800: #1E293B;
+  --brand-slate-900: #0F172A;
+
+  /* Other Brand Primitives */
+  --brand-red-coral: #F70D1A;
+  --brand-tide-foam: #FBFBF3;
+  --brand-white: #FFFFFF;
+  --brand-black: #000000;
+
+  /* ============================================================ */
+  /* TIER 2: ALIAS TOKENS (Semantic)                              */
+  /* What the color means - use these for clear intent            */
+  /* ============================================================ */
+
+  /* Text Colors */
+  --alias-text-primary: var(--brand-abyss-500);
+  --alias-text-secondary: var(--brand-dusk-reef-500);
+  --alias-text-tertiary: var(--brand-dusk-reef-400);
+  --alias-text-emphasis: var(--brand-abyss-400);
+  --alias-text-disabled: var(--brand-dusk-reef-300);
+  --alias-text-inverse: var(--brand-white);
+  --alias-text-link: var(--brand-deep-current-500);
+  --alias-text-link-hover: var(--brand-deep-current-600);
+  --alias-text-error: var(--brand-coral-500);
+  --alias-text-success: var(--brand-harbor-600);
+  --alias-text-warning: var(--brand-sunrise-600);
+  --alias-text-info: var(--brand-wave-600);
+
+  /* Background Colors */
+  --alias-bg-page: var(--brand-tide-foam);
+  --alias-bg-surface: var(--brand-white);
+  --alias-bg-surface-hover: var(--brand-abyss-50);
+  --alias-bg-surface-active: var(--brand-abyss-100);
+  --alias-bg-elevated: var(--brand-white);
+  --alias-bg-muted: var(--brand-dusk-reef-50);
+  --alias-bg-inverse: var(--brand-abyss-500);
+  --alias-bg-inverse-subtle: var(--brand-abyss-700);
+  --alias-bg-accent: var(--brand-deep-current-50);
+  --alias-bg-accent-subtle: var(--brand-deep-current-100);
+  --alias-bg-accent-strong: var(--brand-deep-current-500);
+  --alias-bg-error: var(--brand-coral-50);
+  --alias-bg-error-subtle: var(--brand-coral-100);
+  --alias-bg-success: var(--brand-harbor-50);
+  --alias-bg-success-subtle: var(--brand-harbor-100);
+  --alias-bg-warning: var(--brand-sunrise-50);
+  --alias-bg-warning-subtle: var(--brand-sunrise-100);
+  --alias-bg-info: var(--brand-wave-50);
+  --alias-bg-info-subtle: var(--brand-wave-100);
+
+  /* Border Colors */
+  --alias-border-default: var(--brand-slate-300);
+  --alias-border-subtle: var(--brand-abyss-100);
+  --alias-border-strong: var(--brand-abyss-300);
+  --alias-border-focus: var(--brand-deep-current-500);
+  --alias-border-error: var(--brand-coral-500);
+  --alias-border-success: var(--brand-harbor-500);
+  --alias-border-warning: var(--brand-sunrise-500);
+  --alias-border-info: var(--brand-wave-500);
+  --alias-border-disabled: var(--brand-abyss-200);
+  --alias-border-accent: var(--brand-deep-current-500);
+  --alias-border-inverse: var(--brand-abyss-700);
+
+  /* Interactive Colors */
+  --alias-interactive-primary: var(--brand-abyss-500);
+  --alias-interactive-primary-hover: var(--brand-abyss-600);
+  --alias-interactive-primary-active: var(--brand-abyss-700);
+  --alias-interactive-accent: var(--brand-deep-current-500);
+  --alias-interactive-accent-hover: var(--brand-deep-current-600);
+  --alias-interactive-accent-active: var(--brand-deep-current-700);
+  --alias-interactive-danger: var(--brand-coral-500);
+  --alias-interactive-danger-hover: var(--brand-coral-600);
+  --alias-interactive-danger-active: var(--brand-coral-700);
+  --alias-interactive-disabled: var(--brand-abyss-200);
+  --alias-interactive-disabled-text: var(--brand-abyss-300);
+
+  /* Overlay Colors */
+  --alias-overlay-light: rgba(251, 251, 243, 0.3);
+  --alias-overlay-medium: rgba(0, 0, 0, 0.3);
+  --alias-overlay-dark: rgba(0, 0, 0, 0.5);
+  --alias-overlay-dark-strong: rgba(0, 0, 0, 0.8);
+  --alias-overlay-white-50: rgba(255, 255, 255, 0.5);
+  --alias-overlay-subtle: rgba(229, 229, 229, 0.5);
+
+  /* Feature Colors */
+  --alias-feature-automate: var(--brand-wave-500);
+  --alias-feature-advice: var(--brand-coral-450);
+  --alias-feature-adapt: var(--brand-sunrise-500);
+  --alias-feature-scale: var(--brand-harbor-500);
+
+  /* ============================================================ */
+  /* COMPONENT CSS VARIABLES                                      */
+  /* Convenience aliases for common component states              */
+  /* These reference ALIAS tokens for consistent styling          */
+  /* ============================================================ */
+
+  /* Button - Primary */
+  --button-primary-bg: var(--alias-interactive-primary);
+  --button-primary-bg-hover: var(--alias-interactive-primary-hover);
+  --button-primary-bg-active: var(--alias-interactive-primary-active);
+  --button-primary-text: var(--alias-text-inverse);
+  --button-primary-border: var(--alias-border-subtle);
+
+  /* Button - Secondary */
+  --button-secondary-bg: var(--alias-bg-surface);
+  --button-secondary-bg-hover: var(--alias-bg-surface-hover);
+  --button-secondary-bg-active: var(--alias-bg-surface-active);
+  --button-secondary-text: var(--alias-text-primary);
+  --button-secondary-border: var(--alias-border-default);
+
+  /* Button - Accent */
+  --button-accent-bg: var(--alias-interactive-accent);
+  --button-accent-bg-hover: var(--alias-interactive-accent-hover);
+  --button-accent-bg-active: var(--alias-interactive-accent-active);
+  --button-accent-text: var(--alias-text-inverse);
+  --button-accent-border: var(--alias-border-accent);
+
+  /* Button - Ghost */
+  --button-ghost-bg: transparent;
+  --button-ghost-bg-hover: var(--alias-bg-surface-hover);
+  --button-ghost-bg-active: var(--alias-bg-surface-active);
+  --button-ghost-text: var(--alias-text-primary);
+  --button-ghost-border: transparent;
+
+  /* Button - Danger */
+  --button-danger-bg: var(--alias-interactive-danger);
+  --button-danger-bg-hover: var(--alias-interactive-danger-hover);
+  --button-danger-bg-active: var(--alias-interactive-danger-active);
+  --button-danger-text: var(--alias-text-inverse);
+  --button-danger-border: var(--alias-border-error);
+
+  /* Button - Disabled */
+  --button-disabled-bg: var(--alias-interactive-disabled);
+  --button-disabled-text: var(--alias-interactive-disabled-text);
+  --button-disabled-border: var(--alias-border-disabled);
+
+  /* Input */
+  --input-bg: var(--alias-bg-surface);
+  --input-bg-hover: var(--alias-bg-surface);
+  --input-bg-focus: var(--alias-bg-surface);
+  --input-bg-disabled: var(--alias-bg-muted);
+  --input-text: var(--alias-text-primary);
+  --input-placeholder: var(--alias-text-tertiary);
+  --input-text-disabled: var(--alias-text-disabled);
+  --input-border: var(--alias-border-default);
+  --input-border-hover: var(--alias-border-strong);
+  --input-border-focus: var(--alias-border-focus);
+  --input-border-error: var(--alias-border-error);
+  --input-border-disabled: var(--alias-border-disabled);
+
+  /* Card */
+  --card-bg: var(--alias-bg-surface);
+  --card-bg-hover: var(--alias-bg-surface-hover);
+  --card-border: var(--alias-border-subtle);
+  --card-border-hover: var(--alias-border-default);
+
+  /* Header */
+  --header-bg: var(--alias-overlay-light);
+  --header-bg-solid: var(--alias-bg-surface);
+  --header-text: var(--alias-text-primary);
+  --header-text-inverse: var(--alias-text-inverse);
+  --header-border: var(--alias-border-accent);
+
+  /* Navigation */
+  --nav-link: var(--alias-text-primary);
+  --nav-link-hover: var(--alias-text-link);
+  --nav-link-active: var(--alias-text-link);
+  --nav-indicator: var(--alias-border-accent);
+
+  /* Badge */
+  --badge-default-bg: var(--alias-bg-muted);
+  --badge-default-text: var(--alias-text-secondary);
+  --badge-accent-bg: var(--alias-bg-accent);
+  --badge-accent-text: var(--alias-text-link);
+  --badge-highlight-bg: var(--alias-feature-advice);
+  --badge-highlight-text: var(--alias-text-inverse);
+  --badge-success-bg: var(--alias-bg-success);
+  --badge-success-text: var(--alias-text-success);
+  --badge-warning-bg: var(--alias-bg-warning);
+  --badge-warning-text: var(--alias-text-warning);
+  --badge-error-bg: var(--alias-bg-error);
+  --badge-error-text: var(--alias-text-error);
+  --badge-info-bg: var(--alias-bg-info);
+  --badge-info-text: var(--alias-text-info);
+
+  /* Tooltip */
+  --tooltip-bg: var(--alias-bg-inverse);
+  --tooltip-text: var(--alias-text-inverse);
+
+  /* Modal */
+  --modal-bg: var(--alias-bg-elevated);
+  --modal-overlay: var(--alias-overlay-dark);
+  --modal-border: var(--alias-border-subtle);
+
+  /* Alert */
+  --alert-error-bg: var(--alias-bg-error);
+  --alert-error-border: var(--alias-border-error);
+  --alert-success-bg: var(--alias-bg-success);
+  --alert-success-border: var(--alias-border-success);
+  --alert-warning-bg: var(--alias-bg-warning);
+  --alert-warning-border: var(--alias-border-warning);
+  --alert-info-bg: var(--alias-bg-info);
+  --alert-info-border: var(--alias-border-info);
+
+  /* Feature Card */
+  --feature-card-bg: var(--alias-bg-inverse);
+  --feature-card-text: var(--alias-text-inverse);
+  --feature-card-circle-blue: var(--alias-feature-automate);
+  --feature-card-circle-red: var(--alias-feature-advice);
+  --feature-card-circle-yellow: var(--alias-feature-adapt);
+  --feature-card-circle-green: var(--alias-feature-scale);
+
+  /* Pricing */
+  --pricing-highlight-border: var(--brand-coral-500);
+  --pricing-connector-line: var(--brand-coral-500);
+  --pricing-connector-dot: var(--brand-coral-500);
+
+  /* Footer */
+  --footer-bg: var(--alias-bg-inverse);
+  --footer-text: var(--alias-text-inverse);
+  --footer-link: var(--alias-text-inverse);
+  --footer-link-hover: var(--alias-text-link);
+
+  /* ============================================================ */
+  /* LAYOUT                                                       */
+  /* ============================================================ */
+
+  /* Max Widths */
+  --max-width-container: 1440px;
+  --max-width-hero: 1440px;
+  --max-width-header: 1440px;
+
+  /* Spacing */
+  --spacing: 0.25rem;
+
+  /* ============================================================ */
+  /* BORDER RADIUS                                                */
+  /* ============================================================ */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ============================================================ */
+  /* SHADOWS                                                      */
+  /* ============================================================ */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-image: 0 6px 12px -2px rgba(0,0,0,0.3), 0 20px 50px -8px rgba(0,0,0,0.2);
+  --shadow-header: 0px 2px 4px 5px rgba(0, 0, 0, 0.15);
+  --shadow-footer: 0px -1px 3px rgba(0, 0, 0, 0.08);
+
+  /* ============================================================ */
+  /* TRANSITIONS                                                  */
+  /* ============================================================ */
+  --transition-fast: 150ms;
+  --transition-normal: 200ms;
+  --transition-smooth: 300ms;
+  --transition-slow: 500ms;
+
+  /* ============================================================ */
+  /* TYPOGRAPHY                                                   */
+  /* ============================================================ */
+
+  /* Font Sizes */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+  --font-size-5xl: 48px;
+  --font-size-6xl: 60px;
+  --font-size-7xl: 72px;
+  --font-size-8xl: 96px;
+  --font-size-9xl: 128px;
+
+  /* Line Heights */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
+  /* ============================================================ */
+  /* BORDER WIDTHS                                                */
+  /* ============================================================ */
+  --border-width-0: 0px;
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+  --border-width-4: 4px;
+  --border-width-8: 8px;
+
+  /* ============================================================ */
+  /* Z-INDEX LAYERS                                               */
+  /* ============================================================ */
+  --z-index-0: 0;
+  --z-index-10: 10;
+  --z-index-20: 20;
+  --z-index-30: 30;
+  --z-index-40: 40;
+  --z-index-50: 50;
+  --z-index-100: 100;
+  --z-index-150: 150;
+
+  /* ============================================================ */
+  /* ANIMATIONS                                                   */
+  /* ============================================================ */
+  --animate-spin-slow: spin-slow 3s linear infinite;
+}
+
+/* Brand root variables for non-Tailwind usage */
+:root {
+  --brand-secondary: #08A4BD;
+  --brand-base: #FBFBF3;
+  --color-dashed-border: #08A4BD;
+}

@@ -51,7 +51,7 @@ export function CTASection({
   onSecondaryButtonClick,
   background = 'white',
   centered = true,
-  showBlob = false,
+  showBlob: _showBlob = false,
   className,
   children,
 }: CTASectionProps) {

@@ -31,14 +31,15 @@ const meta: Meta = {
 Design tokens are the foundational values that define the visual design of the Disrupt Design System.
 They ensure consistency across all components and applications.
 
-**3-Tier Architecture:**
+**2-Tier Architecture:**
 - **Tier 1 (Primitives):** Raw color values - ABYSS, DEEP_CURRENT, CORAL, etc.
 - **Tier 2 (Alias):** Semantic tokens - ALIAS.text.primary, ALIAS.background.surface
-- **Tier 3 (Mapped):** Component-specific - MAPPED.button.primary.bg
+
+Components use ALIAS tokens directly. No component-specific tier needed.
 
 Import tokens:
 \`\`\`typescript
-import { ALIAS, MAPPED, SHADOWS, SPACING } from '@/constants/designTokens'
+import { ALIAS, SHADOWS, SPACING } from '@/constants/designTokens'
 \`\`\`
         `,
       },
@@ -130,7 +131,7 @@ export const Colors: Story = {
     return (
       <div className="p-8 bg-white">
         <h1 className="text-3xl font-display font-bold text-dark mb-2">Colors</h1>
-        <p className="text-muted mb-8">Three-tiered color system: Primitives → Alias → Mapped</p>
+        <p className="text-muted mb-8">Two-tiered color system: Primitives → Alias</p>
 
         {/* Tier 1: Primary Palette */}
         <section className="mb-12">
@@ -188,20 +189,20 @@ export const Colors: Story = {
 
         {/* Usage Example */}
         <section className="p-6 bg-slate-50 rounded-lg">
-          <h3 className="text-lg font-semibold text-dark mb-3">Usage (Recommended: Tier 2 Alias)</h3>
+          <h3 className="text-lg font-semibold text-dark mb-3">Usage (Recommended: ALIAS tokens)</h3>
           <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
-{`import { ALIAS, MAPPED } from '@/constants/designTokens'
+{`import { ALIAS } from '@/constants/designTokens'
 
-// Tier 2: Semantic tokens (recommended)
+// Tier 2: Semantic tokens (use these in components)
 <div style={{
   color: ALIAS.text.primary,
   backgroundColor: ALIAS.background.surface
 }}>
 
-// Tier 3: Component-specific tokens
+// Interactive elements
 <button style={{
-  background: MAPPED.button.primary.bg,
-  color: MAPPED.button.primary.text
+  background: ALIAS.interactive.primary,
+  color: ALIAS.text.inverse
 }}>
 
 // Tailwind classes (mapped to tokens)

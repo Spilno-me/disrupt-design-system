@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { motion, useAnimation, useMotionValue, useMotionValueEvent, animate, PanInfo } from 'motion/react'
+import { motion, useAnimation, useMotionValue, animate, PanInfo } from 'motion/react'
 import mapBackground from '@/assets/figma/map-background.svg'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { ALIAS } from '../../constants/designTokens'
@@ -545,7 +545,7 @@ export function MapWithMarkers() {
   }, [])
 
   // Handle drag - normalize position for infinite scroll
-  const handleDrag = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+  const handleDrag = useCallback((_: MouseEvent | TouchEvent | PointerEvent, _info: PanInfo) => {
     const currentX = x.get()
     const normalized = normalizeOffset(currentX)
 

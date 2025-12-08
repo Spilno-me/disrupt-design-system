@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { COLORS } from '../../constants/designTokens'
+import { COLORS, ALIAS } from '../../constants/designTokens'
 
 // =============================================================================
 // TYPES
@@ -60,7 +60,7 @@ function AccordionItemComponent({
   borderColor = COLORS.teal,
   questionColor = COLORS.darkPurple,
   answerColor = COLORS.darkPurple,
-  answerBgColor = 'rgba(0, 128, 128, 0.05)',
+  answerBgColor = ALIAS.overlay.tealGlass,
 }: AccordionItemProps) {
   return (
     <div className={isLast ? '' : 'border-b border-dashed'} style={{ borderColor }}>
@@ -130,7 +130,7 @@ export function Accordion({
   borderColor = COLORS.teal,
   questionColor = COLORS.darkPurple,
   answerColor = COLORS.darkPurple,
-  answerBgColor = 'rgba(0, 128, 128, 0.05)',
+  answerBgColor = ALIAS.overlay.tealGlass,
 }: AccordionProps) {
   const [openIndices, setOpenIndices] = useState<Set<number>>(() => {
     if (defaultOpenIndex !== null && defaultOpenIndex >= 0) {

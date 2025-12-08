@@ -3,8 +3,7 @@ import { useState } from 'react'
 import { Bell, LogOut, Settings, User } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cn } from '../../lib/utils'
-import { ALIAS, MAPPED, SHADOWS, RADIUS } from '../../constants/designTokens'
-import { GlassButtonWrapper } from './GlassEffect'
+import { ALIAS, SHADOWS, RADIUS } from '../../constants/designTokens'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -138,7 +137,7 @@ function WavePattern() {
       {/* White overlay at 60% opacity - as per Figma rgba(255, 255, 255, 0.6) */}
       <div
         className="absolute inset-0"
-        style={{ backgroundColor: 'rgba(255, 255, 255, 0.6)' }}
+        style={{ backgroundColor: ALIAS.overlay.white60 }}
       />
     </div>
   )

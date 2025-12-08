@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'motion/react'
 import { useEffect } from 'react'
+import { ALIAS } from '@/constants/designTokens'
 
 // =============================================================================
 // CONFIGURATION
@@ -9,28 +10,28 @@ import { useEffect } from 'react'
 // Cyan/teal electric effect - works on both light and dark backgrounds
 const ELECTRIC_GRADIENT_DARK = `linear-gradient(
   0deg,
-  #00CED1 0%,
-  #00ffff 5%,
-  #00ffff 8%,
+  ${ALIAS.electric.cyan} 0%,
+  ${ALIAS.electric.cyanBright} 5%,
+  ${ALIAS.electric.cyanBright} 8%,
   transparent 12%,
   transparent 88%,
-  #00ffff 92%,
-  #00ffff 95%,
-  #00CED1 100%
+  ${ALIAS.electric.cyanBright} 92%,
+  ${ALIAS.electric.cyanBright} 95%,
+  ${ALIAS.electric.cyan} 100%
 )`
 
 const ELECTRIC_GLOW_GRADIENT_DARK = `linear-gradient(
   0deg,
-  rgba(0, 206, 209, 0.6) 0%,
-  rgba(0, 255, 255, 0.4) 5%,
+  ${ALIAS.electric.cyanGlow} 0%,
+  ${ALIAS.electric.cyanGlowSubtle} 5%,
   transparent 12%,
   transparent 88%,
-  rgba(0, 255, 255, 0.4) 95%,
-  rgba(0, 206, 209, 0.6) 100%
+  ${ALIAS.electric.cyanGlowSubtle} 95%,
+  ${ALIAS.electric.cyanGlow} 100%
 )`
 
 // Light mode (for dark backgrounds) - white electric effect (matches white nav text)
-const ELECTRIC_GRADIENT_LIGHT = `linear-gradient(
+const _ELECTRIC_GRADIENT_LIGHT = `linear-gradient(
   0deg,
   rgba(255, 255, 255, 0.9) 0%,
   rgba(255, 255, 255, 0.8) 5%,
@@ -42,7 +43,7 @@ const ELECTRIC_GRADIENT_LIGHT = `linear-gradient(
   rgba(255, 255, 255, 0.9) 100%
 )`
 
-const ELECTRIC_GLOW_GRADIENT_LIGHT = `linear-gradient(
+const _ELECTRIC_GLOW_GRADIENT_LIGHT = `linear-gradient(
   0deg,
   rgba(255, 255, 255, 0.5) 0%,
   rgba(255, 255, 255, 0.3) 5%,
@@ -53,7 +54,7 @@ const ELECTRIC_GLOW_GRADIENT_LIGHT = `linear-gradient(
 )`
 
 const ANIMATION_DURATION = 1.5
-const ACTIVE_ANIMATION_DURATION = 4 // Slower, calming animation for active state
+const _ACTIVE_ANIMATION_DURATION = 4 // Slower, calming animation for active state
 
 // Default gradients (dark mode - cyan)
 const ELECTRIC_GRADIENT = ELECTRIC_GRADIENT_DARK
@@ -154,7 +155,7 @@ interface ElectricButtonWrapperProps {
  * When isActive is true, the effect is always visible.
  * colorMode controls the gradient colors based on background.
  */
-export function ElectricButtonWrapper({ children, className = '', isActive = false, colorMode = 'dark' }: ElectricButtonWrapperProps) {
+export function ElectricButtonWrapper({ children, className = '', isActive = false, colorMode: _colorMode = 'dark' }: ElectricButtonWrapperProps) {
   const [isHovered, setIsHovered] = useState(false)
 
   // Show effect when hovered OR when active

@@ -3,13 +3,12 @@
 import * as React from "react"
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { cn } from "../../lib/utils"
-import { Button } from "./button"
-import { Input } from "./input"
-import { Textarea } from "./textarea"
-import { Badge } from "./badge"
-import { Card } from "./card"
-import { Label } from "./label"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Badge } from "@/components/ui/badge"
+import { Card } from "@/components/ui/card"
 import {
   WAVE,
   DUSK_REEF,
@@ -21,7 +20,7 @@ import {
   ALIAS,
   RADIUS,
   SHADOWS,
-} from "../../constants/designTokens"
+} from "@/constants/designTokens"
 import {
   AlertTriangle,
   Send,

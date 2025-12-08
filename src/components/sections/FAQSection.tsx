@@ -89,7 +89,7 @@ export function FAQSection({
   title = 'FAQs',
   items,
   defaultOpen = 0,
-  showBlob = false,
+  showBlob: _showBlob = false,
   className,
 }: FAQSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(defaultOpen)
