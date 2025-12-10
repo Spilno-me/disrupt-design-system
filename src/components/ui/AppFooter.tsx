@@ -35,8 +35,7 @@ function WavePattern() {
       />
       {/* White overlay at 60% opacity - matches header */}
       <div
-        className="absolute inset-0"
-        style={{ backgroundColor: ALIAS.overlay.white60 }}
+        className="absolute inset-0 bg-white/60"
       />
     </div>
   )

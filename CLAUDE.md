@@ -1,6 +1,6 @@
 # Disrupt Design System (DDS) - AI Agent Guidelines
 
-> Last updated: 2025-12-08
+> Last updated: 2025-12-10
 
 > **This document is the single source of truth for AI agents building UI with DDS.**
 > Follow these rules exactly. No exceptions.

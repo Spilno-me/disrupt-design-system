@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Bell, LogOut, Settings, User } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cn } from '../../lib/utils'
-import { ALIAS, SHADOWS, RADIUS } from '../../constants/designTokens'
+import { ALIAS, SHADOWS } from '../../constants/designTokens'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -187,8 +187,7 @@ function LogoContainer({
         }}
       />
       <span
-        className="text-xs font-medium whitespace-nowrap"
-        style={{ color: ALIAS.text.primary }}
+        className="text-xs font-medium whitespace-nowrap text-primary"
       >
         {displayTagline}
       </span>
@@ -202,13 +201,7 @@ function NotificationBadge({ count }: { count: number }) {
 
   return (
     <div
-      className="absolute -top-2 -right-2.5 min-w-5 h-5 px-1.5 flex items-center justify-center font-medium text-[11px] leading-none z-10"
-      style={{
-        backgroundColor: ALIAS.status.error,
-        color: ALIAS.text.inverse,
-        borderRadius: RADIUS.sm, // 8px - rounded corners, NOT full circle
-        border: `2px solid ${ALIAS.background.surface}`,
-      }}
+      className="absolute -top-2 -right-2.5 min-w-5 h-5 px-1.5 flex items-center justify-center font-medium text-[11px] leading-none z-10 bg-error text-inverse rounded-sm border-2 border-surface"
     >
       {displayCount}
     </div>
@@ -242,16 +235,15 @@ function IconButton({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        'relative flex items-center justify-center transition-colors',
+        'relative flex items-center justify-center transition-colors rounded-md',
         className
       )}
-      style={{ borderRadius: RADIUS.md }} // 12px
       aria-label={ariaLabel}
       whileTap={{ scale: 0.95 }}
     >
       {/* Soft background on hover */}
       <motion.div
-        className="absolute inset-0"
+        className="absolute inset-0 rounded-md"
         initial={{ opacity: 0 }}
         animate={{
           opacity: isHovered ? 1 : 0,
@@ -259,7 +251,6 @@ function IconButton({
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
         style={{
-          borderRadius: RADIUS.md, // 12px
           background: variant === 'default'
             ? `linear-gradient(135deg, ${ALIAS.background.accent} 0%, ${ALIAS.overlay.white50} 100%)`
             : ALIAS.overlay.white50,
@@ -288,9 +279,8 @@ function NotificationBell({
     >
       <div className="relative flex items-center justify-center">
         <Bell
-          className="w-5 h-5"
+          className="w-5 h-5 text-primary"
           strokeWidth={1.5}
-          style={{ color: ALIAS.text.primary }}
         />
         {count > 0 && <NotificationBadge count={count} />}
       </div>
@@ -317,14 +307,10 @@ function UserAvatar({
   return (
     <div
       className={cn(
-        'flex items-center justify-center overflow-hidden flex-shrink-0',
+        'flex items-center justify-center overflow-hidden flex-shrink-0 rounded-full text-secondary',
+        user?.avatarUrl ? 'bg-transparent' : 'bg-mutedBg',
         sizeMap[size]
       )}
-      style={{
-        borderRadius: RADIUS.full,
-        backgroundColor: user?.avatarUrl ? 'transparent' : ALIAS.background.muted,
-        color: ALIAS.text.secondary,
-      }}
     >
       {user?.avatarUrl ? (
         <img
@@ -383,15 +369,13 @@ function UserMenu({
                 <UserAvatar user={user} size="lg" />
                 <div className="flex flex-col">
                   <span
-                    className="font-medium text-sm"
-                    style={{ color: ALIAS.text.primary }}
+                    className="font-medium text-sm text-primary"
                   >
                     {user.name}
                   </span>
                   {user.email && (
                     <span
-                      className="text-xs"
-                      style={{ color: ALIAS.text.secondary }}
+                      className="text-xs text-secondary"
                     >
                       {user.email}
                     </span>
@@ -413,7 +397,6 @@ function UserMenu({
                 'flex items-center gap-2 px-3 py-2 cursor-pointer',
                 item.destructive && 'text-error focus:text-error'
               )}
-              style={item.destructive ? { color: ALIAS.status.error } : undefined}
             >
               {item.icon}
               <span>{item.label}</span>
