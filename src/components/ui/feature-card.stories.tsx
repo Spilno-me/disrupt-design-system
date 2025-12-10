@@ -104,7 +104,7 @@ export const InteractiveStates: Story = {
   render: () => (
     <div className="space-y-8 p-8">
       <div>
-        <h3 className="text-lg font-bold mb-4 text-dark">Hover me (Desktop only)</h3>
+        <h3 className="text-lg font-bold mb-4 text-primary">Hover me (Desktop only)</h3>
         <FeatureCard
           iconName="automate"
           circleColor={ALIAS.feature.automate}
@@ -115,7 +115,7 @@ export const InteractiveStates: Story = {
       </div>
 
       <div>
-        <h3 className="text-lg font-bold mb-4 text-dark">Sequence Active</h3>
+        <h3 className="text-lg font-bold mb-4 text-primary">Sequence Active</h3>
         <FeatureCard
           iconName="advice"
           circleColor={ALIAS.feature.advice}
@@ -126,7 +126,7 @@ export const InteractiveStates: Story = {
       </div>
 
       <div>
-        <h3 className="text-lg font-bold mb-4 text-dark">Before Sequence (Hidden Description)</h3>
+        <h3 className="text-lg font-bold mb-4 text-primary">Before Sequence (Hidden Description)</h3>
         <FeatureCard
           iconName="adapt"
           circleColor={ALIAS.feature.adapt}

@@ -26,12 +26,12 @@ type Story = StoryObj<typeof HeroParticles>
 // Default particles on dark background
 export const Default: Story = {
   render: () => (
-    <div className="relative w-full h-[500px] bg-gradient-to-br from-dark to-dark/90 overflow-hidden">
+    <div className="relative w-full h-[500px] bg-gradient-to-br from-inverse-bg to-inverse-bg/90 overflow-hidden">
       <HeroParticles />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white">
+        <div className="text-center text-inverse">
           <h1 className="text-4xl font-bold mb-4">Hero Section</h1>
-          <p className="text-white/70">Watch the particles float and change colors</p>
+          <p className="text-inverse/70">Watch the particles float and change colors</p>
         </div>
       </div>
     </div>
@@ -84,9 +84,9 @@ const ActualHeroImageDemo = () => {
 
       {/* Content */}
       <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div className="text-center text-white">
+        <div className="text-center text-inverse">
           <h1 className="text-4xl font-bold mb-4">Protect People</h1>
-          <p className="text-teal text-lg">Compliance should make workplaces safer and decisions smarter</p>
+          <p className="text-accent text-lg">Compliance should make workplaces safer and decisions smarter</p>
         </div>
       </div>
     </div>
@@ -161,7 +161,7 @@ const WebsiteHeroDemo = () => {
           </div>
 
           {/* Subtitle */}
-          <p className="text-center text-teal font-display font-medium text-sm sm:text-base lg:text-lg max-w-[340px] sm:max-w-none z-10">
+          <p className="text-center text-accent font-display font-medium text-sm sm:text-base lg:text-lg max-w-[340px] sm:max-w-none z-10">
             Compliance should make workplaces safer and decisions smarter — not bury teams in forms.
           </p>
         </div>
@@ -184,12 +184,12 @@ export const WebsiteHeroExact: Story = {
 // With gradient background
 export const WithGradient: Story = {
   render: () => (
-    <div className="relative w-full h-[500px] bg-gradient-to-br from-teal via-circleBlue to-purple overflow-hidden">
+    <div className="relative w-full h-[500px] bg-gradient-to-br from-accent via-circleBlue to-purple overflow-hidden">
       <HeroParticles />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white">
+        <div className="text-center text-inverse">
           <h1 className="text-4xl font-bold mb-4">Colorful Background</h1>
-          <p className="text-white/80">Particles visible on gradient backgrounds</p>
+          <p className="text-inverse/80">Particles visible on gradient backgrounds</p>
         </div>
       </div>
     </div>
@@ -207,15 +207,15 @@ const MouseParticlesDemo = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[500px] bg-gradient-to-br from-dark to-dark/90 overflow-hidden cursor-crosshair"
+      className="relative w-full h-[500px] bg-gradient-to-br from-inverse-bg to-inverse-bg/90 overflow-hidden cursor-crosshair"
       onMouseMove={handleMouseMove}
     >
       <HeroParticles />
       <MouseParticleRenderer particles={particles} />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white">
+        <div className="text-center text-inverse">
           <h1 className="text-4xl font-bold mb-4">Mouse Interaction</h1>
-          <p className="text-white/70">Move your mouse to generate particles (desktop only)</p>
+          <p className="text-inverse/70">Move your mouse to generate particles (desktop only)</p>
         </div>
       </div>
     </div>
@@ -249,10 +249,10 @@ export const AnimationShowcase: Story = {
         </ul>
       </div>
 
-      <div className="relative w-full h-[400px] bg-dark rounded-lg overflow-hidden">
+      <div className="relative w-full h-[400px] bg-inverse-bg rounded-lg overflow-hidden">
         <HeroParticles />
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white/50 text-sm">Watch the particles drift and change colors</p>
+          <p className="text-inverse/50 text-sm">Watch the particles drift and change colors</p>
         </div>
       </div>
 
@@ -304,10 +304,10 @@ export const MobileNote: Story = {
         </p>
       </div>
 
-      <div className="mt-8 relative w-full h-[300px] bg-dark rounded-lg overflow-hidden">
+      <div className="mt-8 relative w-full h-[300px] bg-inverse-bg rounded-lg overflow-hidden">
         <HeroParticles />
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white/50 text-sm">Resize browser to see mobile adaptation</p>
+          <p className="text-inverse/50 text-sm">Resize browser to see mobile adaptation</p>
         </div>
       </div>
     </div>

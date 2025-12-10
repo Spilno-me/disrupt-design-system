@@ -1,4 +1,3 @@
-import { ALIAS } from '@/constants/designTokens'
 import { GridBlobBackground } from '@/components/ui/GridBlobCanvas'
 
 // =============================================================================
@@ -7,6 +6,7 @@ import { GridBlobBackground } from '@/components/ui/GridBlobCanvas'
 
 interface FeatureCardData {
   title: string
+  subtitle: string
   description: string
 }
 
@@ -16,17 +16,20 @@ interface FeatureCardData {
 
 const FEATURES: FeatureCardData[] = [
   {
-    title: 'API-First (Integrator Agents)',
+    title: 'API-First',
+    subtitle: 'Integrator Agents',
     description:
-      'Enables Integrator Agents for seamless sync with enterprise systems (SAP, Teams), eliminating data fragmentation.',
+      'Supports seamless enterprise integration using open APIs enabling Integrator Agents to synchronize data across SAP, Teams, and other systems – eliminating fragmentation and manual reconciliation.',
   },
   {
-    title: 'Cloud-Native (No Upgrades)',
+    title: 'Cloud-Native',
+    subtitle: 'No Upgrades',
     description:
       'Ensures continuous, frictionless rolling updates. Eliminate the disruption of "version upgrades" forever.',
   },
   {
-    title: 'Headless (Engager Agents)',
+    title: 'Headless',
+    subtitle: 'Engager Agents',
     description:
       'Supports Engager Agents for highly intuitive, mobile-first design, driving user adoption and data quality.',
   },
@@ -36,24 +39,24 @@ const FEATURES: FeatureCardData[] = [
 // SUB-COMPONENTS
 // =============================================================================
 
-function FeatureGridCard({ title, description }: FeatureCardData) {
+function FeatureGridCard({ title, subtitle, description }: FeatureCardData) {
   return (
     <div
-      className="flex flex-col gap-6 p-6 rounded-xl border border-dashed border-slate-300 bg-cream"
+      className="flex flex-col gap-4 p-6 rounded-xl border border-dashed border-default bg-page"
       data-element="feature-grid-card"
     >
-      <div className="flex flex-col gap-4">
-        <h3
-          className="font-sans font-bold text-xl leading-[1.4] tracking-[-0.02em]"
-          style={{ color: ALIAS.text.primary }}
-        >
+      {/* Title Block */}
+      <div className="flex flex-col gap-1">
+        <h3 className="font-display font-bold text-2xl sm:text-[28px] leading-[1.2] tracking-[-0.02em] text-primary">
           {title}
         </h3>
+        <span className="font-display font-medium text-lg sm:text-xl leading-[1.3] text-accent">
+          {subtitle}
+        </span>
       </div>
-      <p
-        className="font-sans text-sm leading-[1.625] tracking-[-0.01em]"
-        style={{ color: ALIAS.text.secondary }}
-      >
+
+      {/* Description */}
+      <p className="font-sans text-sm leading-[1.7] tracking-[-0.01em] text-secondary">
         {description}
       </p>
     </div>
@@ -74,10 +77,10 @@ export function FeaturesGridSection() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-[1]">
         {/* Header */}
         <div className="flex flex-col items-start lg:items-center gap-4 mb-10">
-          <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-display font-bold leading-[1.2] text-left lg:text-center text-dark">
+          <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-display font-bold leading-[1.2] text-left lg:text-center text-primary">
             The Monolith is Dead. Architecture Matters.
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-teal text-left lg:text-center max-w-[672px]">
+          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-accent text-left lg:text-center max-w-[672px]">
             We replace outdated, monolithic EHS systems with a modern M-MACH-1
             infrastructure.
           </p>
@@ -92,6 +95,7 @@ export function FeaturesGridSection() {
             <FeatureGridCard
               key={feature.title}
               title={feature.title}
+              subtitle={feature.subtitle}
               description={feature.description}
             />
           ))}

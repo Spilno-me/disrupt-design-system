@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'motion/react'
 import { useEffect } from 'react'
-import { ALIAS } from '@/constants/designTokens'
+import { ALIAS, Z_INDEX } from '@/constants/designTokens'
 
 // =============================================================================
 // CONFIGURATION
@@ -101,9 +101,8 @@ export function ElectricInputWrapper({ children }: ElectricInputWrapperProps) {
     >
       {/* Electric border */}
       <motion.div
-        className="absolute inset-[-2px] rounded-[8px] pointer-events-none"
+        className="absolute inset-[-2px] rounded-[8px] pointer-events-none p-0.5"
         style={{
-          padding: '2px',
           background: ELECTRIC_GRADIENT,
           backgroundSize: '200% 100%',
           backgroundPosition,
@@ -221,7 +220,7 @@ export function ElectricButtonWrapper({ children, className = '', isActive = fal
             maskComposite: 'exclude',
             WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
-            zIndex: 10,
+            zIndex: Z_INDEX.dropdown,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showEffect ? 1 : 0 }}
@@ -238,7 +237,7 @@ export function ElectricButtonWrapper({ children, className = '', isActive = fal
             backgroundSize: '200% 100%',
             backgroundPosition,
             filter: 'blur(4px)',
-            zIndex: 10,
+            zIndex: Z_INDEX.dropdown,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showEffect ? 1 : 0 }}

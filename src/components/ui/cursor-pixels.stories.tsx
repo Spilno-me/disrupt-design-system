@@ -38,12 +38,12 @@ type Story = StoryObj<typeof CursorPixels>
 // Default - Interactive Demo
 export const Default: Story = {
   render: () => (
-    <div className="min-h-screen bg-cream p-8">
+    <div className="min-h-screen bg-page p-8">
       <CursorPixels />
 
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center py-16">
-          <h1 className="text-4xl font-display font-bold text-dark mb-4">
+          <h1 className="text-4xl font-display font-bold text-primary mb-4">
             Custom Cursor Demo
           </h1>
           <p className="text-muted mb-8">
@@ -53,7 +53,7 @@ export const Default: Story = {
         </div>
 
         <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold text-dark mb-4">Interactive Elements</h2>
+          <h2 className="text-xl font-bold text-primary mb-4">Interactive Elements</h2>
           <p className="text-muted mb-6">
             Hover over these buttons to see the pixels repel outward.
             Click anywhere to trigger the "disrupt" explosion animation.
@@ -67,19 +67,19 @@ export const Default: Story = {
         </div>
 
         <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold text-dark mb-4">Links</h2>
+          <h2 className="text-xl font-bold text-primary mb-4">Links</h2>
           <p className="text-muted mb-4">
             The cursor also reacts to links:
           </p>
           <div className="flex gap-4">
-            <a href="#" className="text-teal hover:underline">Link One</a>
-            <a href="#" className="text-teal hover:underline">Link Two</a>
-            <a href="#" className="text-teal hover:underline">Link Three</a>
+            <a href="#" className="text-accent hover:underline">Link One</a>
+            <a href="#" className="text-accent hover:underline">Link Two</a>
+            <a href="#" className="text-accent hover:underline">Link Three</a>
           </div>
         </div>
 
         <div className="text-center py-8">
-          <h3 className="text-lg font-semibold text-dark mb-2">Idle Animation</h3>
+          <h3 className="text-lg font-semibold text-primary mb-2">Idle Animation</h3>
           <p className="text-muted">
             Stop moving your mouse for a moment to see the pixels
             start floating gently in place.
@@ -93,15 +93,15 @@ export const Default: Story = {
 // On Dark Background
 export const DarkBackground: Story = {
   render: () => (
-    <div className="min-h-screen bg-dark p-8">
+    <div className="min-h-screen bg-inverse-bg p-8">
       <CursorPixels darkMode />
 
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center py-16">
-          <h1 className="text-4xl font-display font-bold text-white mb-4">
+          <h1 className="text-4xl font-display font-bold text-inverse mb-4">
             Dark Background Demo
           </h1>
-          <p className="text-white/70 mb-8">
+          <p className="text-inverse/70 mb-8">
             On dark backgrounds, use the darkMode prop to make dark pixels white.
             Red pixels stay red for brand consistency.
           </p>
@@ -109,7 +109,7 @@ export const DarkBackground: Story = {
 
         <div className="flex flex-wrap justify-center gap-4">
           <Button variant="contact">Get Started</Button>
-          <Button variant="outline" className="border-white text-white hover:bg-white/10">
+          <Button variant="outline" className="border-inverse text-inverse hover:bg-inverse/10">
             Learn More
           </Button>
         </div>
@@ -121,15 +121,15 @@ export const DarkBackground: Story = {
 // Instructions
 export const HowToUse: Story = {
   render: () => (
-    <div className="min-h-screen bg-cream p-8">
+    <div className="min-h-screen bg-page p-8">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-display font-bold text-dark mb-8">
+        <h1 className="text-3xl font-display font-bold text-primary mb-8">
           How to Use CursorPixels
         </h1>
 
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-dark mb-3">Installation</h2>
+            <h2 className="text-xl font-bold text-primary mb-3">Installation</h2>
             <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
 {`import { CursorPixels } from '@adrozdenko/design-system'
 
@@ -150,7 +150,7 @@ function App() {
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-dark mb-3">Features</h2>
+            <h2 className="text-xl font-bold text-primary mb-3">Features</h2>
             <ul className="list-disc list-inside space-y-2 text-muted">
               <li><strong>Zero Configuration</strong> - Just drop it in your app</li>
               <li><strong>Automatic Touch Detection</strong> - Hidden on mobile/tablets</li>
@@ -161,7 +161,7 @@ function App() {
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-dark mb-3">Pixel Configuration</h2>
+            <h2 className="text-xl font-bold text-primary mb-3">Pixel Configuration</h2>
             <p className="text-muted mb-4">
               The cursor consists of 7 pixels in brand colors:
             </p>

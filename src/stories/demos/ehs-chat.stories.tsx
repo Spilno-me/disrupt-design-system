@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 
 const meta: Meta<typeof EHSChat> = {
-  title: 'Components/EHSChat',
+  title: 'Flow/Components/EHSChat',
   component: EHSChat,
   parameters: {
     layout: 'centered',

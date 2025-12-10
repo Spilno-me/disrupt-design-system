@@ -35,7 +35,7 @@ function DialogOverlay({
       data-slot="dialog-overlay"
       className={cn(
         // Overlay with brand-compliant opacity
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-dark/80",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-inverse-bg/80",
         className
       )}
       {...props}
@@ -55,19 +55,19 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(
           // Base dialog styles with design system colors
-          "bg-white text-dark font-sans",
+          "bg-surface text-primary font-sans",
           // Animation
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
           // Positioning
           "fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]",
           // Spacing & appearance
-          "gap-4 border border-slate p-6 shadow-lg duration-200 sm:rounded-lg",
+          "gap-4 border border-default p-6 shadow-lg duration-200 sm:rounded-lg",
           className
         )}
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-teal focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-cream data-[state=open]:text-muted">
+        <DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-page data-[state=open]:text-muted">
           <XIcon className="size-4" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>

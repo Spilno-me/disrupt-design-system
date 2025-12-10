@@ -4,20 +4,32 @@ import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
 import { copyFileSync, mkdirSync, existsSync } from 'fs'
 
-// Plugin to copy tokens.css to dist
-function copyTokensPlugin() {
+// Plugin to copy CSS files to dist
+function copyCSSFilesPlugin() {
   return {
-    name: 'copy-tokens',
+    name: 'copy-css-files',
     closeBundle() {
-      const srcPath = resolve(__dirname, 'src/styles/tokens.css')
-      const destDir = resolve(__dirname, 'dist/styles')
-      const destPath = resolve(destDir, 'tokens.css')
-
-      if (!existsSync(destDir)) {
-        mkdirSync(destDir, { recursive: true })
+      // Copy tokens.css
+      const tokensDir = resolve(__dirname, 'dist/styles')
+      if (!existsSync(tokensDir)) {
+        mkdirSync(tokensDir, { recursive: true })
       }
-      copyFileSync(srcPath, destPath)
+      copyFileSync(
+        resolve(__dirname, 'src/styles/tokens.css'),
+        resolve(tokensDir, 'tokens.css')
+      )
       console.log('✓ Copied tokens.css to dist/styles/')
+
+      // Copy HeroParticles.css
+      const uiDir = resolve(__dirname, 'dist/components/ui')
+      if (!existsSync(uiDir)) {
+        mkdirSync(uiDir, { recursive: true })
+      }
+      copyFileSync(
+        resolve(__dirname, 'src/components/ui/HeroParticles.css'),
+        resolve(uiDir, 'HeroParticles.css')
+      )
+      console.log('✓ Copied HeroParticles.css to dist/components/ui/')
     },
   }
 }
@@ -29,7 +41,7 @@ export default defineConfig({
       insertTypesEntry: true,
       include: ['src/**/*'],
     }),
-    copyTokensPlugin(),
+    copyCSSFilesPlugin(),
   ],
   resolve: {
     alias: {

@@ -49,7 +49,7 @@ export const Default: Story = {
         <div className="relative">
           <p className="text-sm text-muted-foreground mb-2 text-center">Button preview:</p>
           <button
-            className="w-12 h-12 rounded-full bg-dark text-white shadow-lg flex items-center justify-center"
+            className="w-12 h-12 rounded-full bg-inverseBg text-white shadow-lg flex items-center justify-center"
             aria-label="Scroll to top preview"
           >
             <svg
@@ -113,10 +113,10 @@ export const ScrollableDemo: Story = {
 
           {/* Trigger section */}
           <section
-            className="bg-teal/10 p-6 rounded-lg"
+            className="bg-accent/10 p-6 rounded-lg"
             data-element="scroll-trigger"
           >
-            <h2 className="text-xl font-semibold mb-2 text-teal">Trigger Section</h2>
+            <h2 className="text-xl font-semibold mb-2 text-accent">Trigger Section</h2>
             <p className="text-muted-foreground">
               When this section reaches the top of the viewport on mobile, the scroll-to-top button appears.
             </p>
@@ -155,7 +155,7 @@ export const ButtonStates: Story = {
         {/* Default state */}
         <div className="text-center">
           <button
-            className="w-12 h-12 rounded-full bg-dark text-white shadow-lg flex items-center justify-center"
+            className="w-12 h-12 rounded-full bg-inverseBg text-white shadow-lg flex items-center justify-center"
             aria-label="Default state"
           >
             <svg
@@ -178,7 +178,7 @@ export const ButtonStates: Story = {
         {/* Active/Pressed state */}
         <div className="text-center">
           <button
-            className="w-12 h-12 rounded-full bg-dark text-white shadow-lg flex items-center justify-center scale-95"
+            className="w-12 h-12 rounded-full bg-inverseBg text-white shadow-lg flex items-center justify-center scale-95"
             aria-label="Active state"
           >
             <svg
@@ -201,7 +201,7 @@ export const ButtonStates: Story = {
         {/* With shadow emphasis */}
         <div className="text-center">
           <button
-            className="w-12 h-12 rounded-full bg-dark text-white shadow-xl flex items-center justify-center"
+            className="w-12 h-12 rounded-full bg-inverseBg text-white shadow-xl flex items-center justify-center"
             aria-label="Shadow emphasis"
           >
             <svg

@@ -1,14 +1,32 @@
-import { ReactNode } from 'react'
+import { useState, useRef, ReactNode } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '../../lib/utils'
-import { Button } from '../ui/button'
+import { GridBlobBackground } from '../ui/GridBlobCanvas'
+import { HeroParticles } from '../ui/HeroParticles'
+import { MouseParticleRenderer } from '../ui/MouseParticleRenderer'
+import { BlurImage } from '../ui/BlurImage'
 import { useHeroTitleRotation } from '../../hooks/useHeroTitleRotation'
-import { GRADIENTS } from '../../constants/designTokens'
-import { ResponsivePicture, ResponsiveImageSets } from '../ui/ResponsivePicture'
+import { useMouseParticles } from '../../hooks/useMouseParticles'
 
 // =============================================================================
 // TYPES
 // =============================================================================
+
+/** Image source with multiple formats */
+interface ImageSource {
+  webp: string
+  avif: string
+  fallback: string
+}
+
+/** Responsive image sets for mobile, tablet, and desktop */
+export interface HeroBackgroundImage {
+  mobile: ImageSource
+  tablet: ImageSource
+  desktop: ImageSource
+  /** Tiny blurred placeholder for blur-up effect */
+  placeholder: string
+}
 
 export interface HeroSectionProps {
   /** Main hero title (used when rotatingTitles not provided) */
@@ -19,211 +37,216 @@ export interface HeroSectionProps {
   rotationInterval?: number
   /** Subtitle text */
   subtitle?: string
-  /** Primary CTA button text */
-  primaryButtonText?: string
-  /** Primary button click handler */
-  onPrimaryButtonClick?: () => void
-  /** Secondary CTA button text */
-  secondaryButtonText?: string
-  /** Secondary button click handler */
-  onSecondaryButtonClick?: () => void
-  /** Background image URL (simple) */
-  backgroundImage?: string
-  /** Responsive background images (optimized with AVIF/WebP/fallback) */
-  responsiveBackgroundImage?: ResponsiveImageSets
-  /** Background color when no image */
-  backgroundColor?: 'dark' | 'primary' | 'gradient'
-  /** Content alignment */
-  alignment?: 'center' | 'left'
-  /** Hero height */
-  height?: 'small' | 'medium' | 'large' | 'full'
-  /** Show gradient overlay on background image */
-  showOverlay?: boolean
-  /** Additional content below buttons */
+  /** Responsive background images with placeholder */
+  backgroundImage: HeroBackgroundImage
+  /** Content layout variant */
+  layout?: 'center' | 'left-bottom' | 'two-column'
+  /** Show particles effect */
+  showParticles?: boolean
+  /** Show grid blob background */
+  showGridBlob?: boolean
+  /** Additional content (e.g., bullet points for two-column layout) */
   children?: ReactNode
-  /** Additional class name */
+  /** Additional class name for section */
   className?: string
 }
+
+// =============================================================================
+// GRADIENT OVERLAY
+// =============================================================================
+
+const HERO_GRADIENT = 'linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.2) 50%, transparent 70%)'
 
 // =============================================================================
 // COMPONENT
 // =============================================================================
 
 /**
- * Reusable Hero Section with configurable content and styling.
- * Supports background images, gradient overlays, rotating titles, and multiple CTAs.
+ * Unified Hero Section component for all pages.
+ * Supports different layouts: center (home), left-bottom (product), two-column (about).
+ * Includes background image with blur-up loading, particles, and grid blob effects.
  */
 export function HeroSection({
   title,
   rotatingTitles,
   rotationInterval = 4000,
   subtitle,
-  primaryButtonText,
-  onPrimaryButtonClick,
-  secondaryButtonText,
-  onSecondaryButtonClick,
   backgroundImage,
-  responsiveBackgroundImage,
-  backgroundColor = 'dark',
-  alignment = 'center',
-  height = 'medium',
-  showOverlay = true,
+  layout = 'center',
+  showParticles = true,
+  showGridBlob = true,
   children,
   className,
 }: HeroSectionProps) {
-  const heightClasses = {
-    small: 'min-h-[300px] sm:min-h-[350px]',
-    medium: 'min-h-[400px] sm:min-h-[450px] lg:min-h-[500px]',
-    large: 'min-h-[500px] sm:min-h-[600px] lg:min-h-[700px]',
-    full: 'min-h-screen',
-  }
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const heroFrameRef = useRef<HTMLDivElement>(null)
 
-  const bgColorClasses = {
-    dark: 'bg-dark',
-    primary: 'bg-primary',
-    gradient: 'bg-gradient-to-br from-dark via-primary/80 to-dark',
-  }
-
-  const alignmentClasses = {
-    center: 'items-center text-center',
-    left: 'items-start text-left',
-  }
-
-  // Use rotating titles hook if rotatingTitles provided
-  const currentIndex = useHeroTitleRotation(
-    rotatingTitles?.length ?? 1,
-    rotationInterval
-  )
-
+  // Title rotation hook
+  const titlesCount = rotatingTitles?.length ?? 1
+  const currentIndex = useHeroTitleRotation(titlesCount, rotationInterval)
   const displayTitle = rotatingTitles ? rotatingTitles[currentIndex] : title
   const hasRotatingTitles = rotatingTitles && rotatingTitles.length > 1
-  const hasBackgroundImage = backgroundImage || responsiveBackgroundImage
+
+  // Mouse particles hook
+  const { particles, handleMouseMove } = useMouseParticles({
+    enabled: imageLoaded && showParticles,
+    containerRef: heroFrameRef,
+  })
 
   return (
     <section
-      className={cn(
-        'relative overflow-hidden',
-        heightClasses[height],
-        !hasBackgroundImage && bgColorClasses[backgroundColor],
-        className
-      )}
+      className={cn('relative mb-8 lg:mb-[56px] mt-[82px]', className)}
       data-element="hero-section"
+      data-header-theme="light"
+      onMouseMove={handleMouseMove}
     >
-      {/* Background Image - Responsive (optimized) */}
-      {responsiveBackgroundImage && (
-        <div className="absolute inset-0">
-          <ResponsivePicture
-            images={responsiveBackgroundImage}
-            alt=""
-            loading="eager"
-            className="w-full h-full object-cover"
-          />
-          {showOverlay && (
-            <div
-              className="absolute inset-0"
-              style={{
-                background: GRADIENTS.heroOverlayStrong,
-              }}
-            />
-          )}
-        </div>
-      )}
+      {/* Grid Blob Background */}
+      {showGridBlob && <GridBlobBackground scale={1.8} />}
 
-      {/* Background Image - Simple URL (legacy support) */}
-      {backgroundImage && !responsiveBackgroundImage && (
-        <div className="absolute inset-0">
-          <img
-            src={backgroundImage}
-            alt=""
-            className="w-full h-full object-cover"
+      {/* Background Frame */}
+      <div
+        className="absolute inset-x-0 top-0 flex justify-center z-[1] px-0 sm:px-6"
+        data-element="hero-bg-wrapper"
+      >
+        <div
+          ref={heroFrameRef}
+          className="w-full h-[380px] sm:h-[420px] lg:h-[499px] rounded-none sm:rounded-b-[10px] overflow-hidden relative max-w-[1440px]"
+          data-element="hero-bg-frame"
+          data-dark-background="true"
+        >
+          {/* Background Image with blur-up loading */}
+          <BlurImage
+            images={backgroundImage}
+            placeholder={backgroundImage.placeholder}
+            className="object-[center_30%] sm:object-center"
+            onLoad={() => setImageLoaded(true)}
           />
-          {showOverlay && (
-            <div
-              className="absolute inset-0"
-              style={{
-                background: GRADIENTS.heroOverlayStrong,
-              }}
-            />
+
+          {/* Gradient overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: HERO_GRADIENT }}
+          />
+
+          {/* Particles */}
+          {showParticles && imageLoaded && (
+            <>
+              <HeroParticles />
+              <MouseParticleRenderer particles={particles} />
+            </>
           )}
         </div>
-      )}
+      </div>
 
       {/* Content */}
       <div
-        className={cn(
-          'relative z-10 flex flex-col justify-center h-full px-4 sm:px-6 py-16',
-          alignmentClasses[alignment]
-        )}
+        className="mx-auto relative z-[2] flex flex-col w-full h-[380px] sm:h-[420px] lg:h-[499px] pointer-events-none px-4 sm:px-6 max-w-[1440px]"
+        data-element="hero-wrapper"
       >
-        <div className="max-w-[1440px] mx-auto w-full">
-          {/* Title - with optional rotation animation */}
-          {hasRotatingTitles ? (
-            <div
-              className={cn(
-                'relative h-[60px] sm:h-[70px] lg:h-[80px] mb-4',
-                alignment === 'center' && 'max-w-4xl mx-auto'
-              )}
-            >
-              <AnimatePresence mode="wait">
-                <motion.h1
-                  key={currentIndex}
-                  initial={{ opacity: 0, y: -30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 30 }}
-                  transition={{ duration: 0.4, ease: 'easeInOut' }}
-                  className="absolute inset-0 flex items-center justify-center font-display font-bold text-white text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-wide"
-                >
+        {/* Center Layout (Home page) */}
+        {layout === 'center' && (
+          <div
+            className="w-full flex flex-col items-center justify-between relative h-full px-4 sm:px-6 lg:px-[36px] pt-[120px] sm:pt-[140px] lg:pt-[160px] pb-8 sm:pb-10 lg:pb-14"
+            data-element="hero-container"
+          >
+            {/* Animated Title */}
+            <div className="relative z-10 text-center w-full h-[80px] sm:h-[80px] lg:h-[100px]">
+              {hasRotatingTitles ? (
+                <AnimatePresence mode="wait">
+                  <motion.h1
+                    key={currentIndex}
+                    initial={{ opacity: 0, y: -30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 30 }}
+                    transition={{ duration: 0.4, ease: 'easeInOut' }}
+                    className="absolute inset-0 flex items-center justify-center font-display font-bold text-inverse text-3xl sm:text-3xl lg:text-[48px] leading-[44px] sm:leading-[48px] lg:leading-[60px] tracking-[2.5px] sm:tracking-[3px] lg:tracking-[4px]"
+                  >
+                    {displayTitle}
+                  </motion.h1>
+                </AnimatePresence>
+              ) : (
+                <h1 className="absolute inset-0 flex items-center justify-center font-display font-bold text-inverse text-3xl sm:text-3xl lg:text-[48px] leading-[44px] sm:leading-[48px] lg:leading-[60px] tracking-[2.5px] sm:tracking-[3px] lg:tracking-[4px]">
                   {displayTitle}
-                </motion.h1>
-              </AnimatePresence>
-            </div>
-          ) : (
-            <h1
-              className={cn(
-                'font-display font-bold text-white text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-wide mb-4',
-                alignment === 'center' && 'max-w-4xl mx-auto'
+                </h1>
               )}
-            >
+            </div>
+
+            {/* Subtitle */}
+            {subtitle && (
+              <p className="text-center text-accent-light font-display font-medium text-sm sm:text-base lg:text-lg max-w-[340px] sm:max-w-none z-10">
+                {subtitle}
+              </p>
+            )}
+
+            {children}
+          </div>
+        )}
+
+        {/* Left-Bottom Layout (Product page) */}
+        {layout === 'left-bottom' && (
+          <div
+            className="w-full flex flex-col items-start justify-end relative h-full px-4 sm:px-6 lg:px-[36px] pb-8 sm:pb-10 lg:pb-12"
+            data-element="hero-container"
+          >
+            {/* Title */}
+            <h1 className="font-display font-bold text-page text-[32px] sm:text-[32px] lg:text-[48px] leading-[44px] sm:leading-[48px] lg:leading-[60px] tracking-[2.5px] sm:tracking-[3px] lg:tracking-[4px] mb-4">
               {displayTitle}
             </h1>
-          )}
 
-          {/* Subtitle */}
-          {subtitle && (
-            <p
-              className={cn(
-                'text-teal font-display font-medium text-base sm:text-lg lg:text-xl mb-8',
-                alignment === 'center' && 'max-w-2xl mx-auto'
-              )}
-            >
-              {subtitle}
-            </p>
-          )}
+            {/* Subtitle */}
+            {subtitle && (
+              <p className="font-display font-medium text-accent-light text-sm sm:text-base lg:text-lg">
+                {subtitle}
+              </p>
+            )}
 
-          {/* Buttons */}
-          {(primaryButtonText || secondaryButtonText) && (
-            <div
-              className={cn(
-                'flex gap-4 mb-8',
-                alignment === 'center' && 'justify-center'
-              )}
-            >
-              {secondaryButtonText && (
-                <Button variant="outline" onClick={onSecondaryButtonClick}>
-                  {secondaryButtonText}
-                </Button>
-              )}
-              {primaryButtonText && (
-                <Button variant="contact" onClick={onPrimaryButtonClick}>
-                  {primaryButtonText}
-                </Button>
-              )}
+            {children}
+          </div>
+        )}
+
+        {/* Two-Column Layout (About page) */}
+        {layout === 'two-column' && (
+          <div
+            className="w-full flex flex-col items-start justify-center relative h-full px-4 sm:px-6 lg:px-[36px]"
+            data-element="hero-container"
+          >
+            <div className="w-full flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8">
+              {/* Left Column - Animated Title */}
+              <div className="lg:flex-1">
+                <div className="relative h-[80px] sm:h-[100px] lg:h-[140px]">
+                  {hasRotatingTitles ? (
+                    <AnimatePresence mode="wait">
+                      <motion.h1
+                        key={currentIndex}
+                        initial={{ opacity: 0, y: -40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 40 }}
+                        transition={{ duration: 0.4, ease: 'easeInOut' }}
+                        className="absolute inset-0 flex items-start font-display font-bold text-inverse text-[32px] sm:text-[40px] lg:text-[56px] leading-[1.15] tracking-[2px] sm:tracking-[3px] lg:tracking-[4px]"
+                      >
+                        {displayTitle}
+                      </motion.h1>
+                    </AnimatePresence>
+                  ) : (
+                    <h1 className="absolute inset-0 flex items-start font-display font-bold text-inverse text-[32px] sm:text-[40px] lg:text-[56px] leading-[1.15] tracking-[2px] sm:tracking-[3px] lg:tracking-[4px]">
+                      {displayTitle}
+                    </h1>
+                  )}
+                </div>
+              </div>
+
+              {/* Right Column - Subtitle & Children (bullet points) */}
+              <div className="lg:max-w-[420px]">
+                {subtitle && (
+                  <p className="font-display font-medium text-accent-light text-sm sm:text-base lg:text-lg mb-5">
+                    {subtitle}
+                  </p>
+                )}
+                {children}
+              </div>
             </div>
-          )}
-
-          {/* Additional content */}
-          {children}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -4,7 +4,7 @@ import { Input } from './input';
 import { ALIAS } from '../../constants/designTokens';
 
 const meta = {
-  title: 'Website/Components/Glass Effects',
+  title: 'Website/Components/GlassEffects',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

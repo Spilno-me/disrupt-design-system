@@ -1,5 +1,35 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./components/ui/HeroParticles.css";
+
+/* ============================================================ */
+/* SAFELIST - Force generation of button and component classes  */
+/* These classes are used by components but need to be pre-gen   */
+/* ============================================================ */
+@layer utilities {
+  /* Button variant classes - these are used dynamically by CVA */
+  .bg-inverseBg { background-color: var(--color-inverseBg); }
+  .bg-mutedBg { background-color: var(--color-mutedBg); }
+  .bg-accentStrong { background-color: var(--color-accentStrong); }
+  .text-inverse { color: var(--color-inverse); }
+  .text-accent { color: var(--color-accent); }
+
+  /* Hover variants with opacity */
+  .hover\:bg-inverseBg\/90:hover { background-color: color-mix(in srgb, var(--color-inverseBg) 90%, transparent); }
+  .hover\:bg-mutedBg\/80:hover { background-color: color-mix(in srgb, var(--color-mutedBg) 80%, transparent); }
+  .hover\:bg-accentStrong\/90:hover { background-color: color-mix(in srgb, var(--color-accentStrong) 90%, transparent); }
+  .hover\:bg-error\/90:hover { background-color: color-mix(in srgb, var(--color-error) 90%, transparent); }
+
+  /* Focus ring variants */
+  .focus-visible\:ring-accent\/30:focus-visible {
+    --tw-ring-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+    box-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  }
+  .focus-visible\:ring-error\/30:focus-visible {
+    --tw-ring-color: color-mix(in srgb, var(--color-error) 30%, transparent);
+    box-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  }
+}
 
 /* Storybook docs - hide anchor link icons on headings (including hover state) */
 .sbdocs-content .docblock-anchor,
@@ -570,8 +600,8 @@ a[aria-hidden="true"],
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: #5E4F7E;
+  --color-secondary-foreground: #FFFFFF;
   --color-muted: #5E4F7E;
   --color-muted-foreground: #5E4F7E;
   --color-accent: var(--accent);

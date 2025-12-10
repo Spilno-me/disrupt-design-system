@@ -3,7 +3,7 @@ import { PricingConnector } from './pricing-connector'
 import { ArrowRight } from 'lucide-react'
 
 const meta = {
-  title: 'Components/PricingConnector',
+  title: 'Website/PricingConnector',
   component: PricingConnector,
   parameters: {
     layout: 'centered',

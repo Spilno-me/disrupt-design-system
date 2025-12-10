@@ -158,7 +158,7 @@ function ColoredCircleDemo() {
               isActive={hoveredIcon === name}
             />
           </div>
-          <span className="text-dark font-semibold">{label}</span>
+          <span className="text-primary font-semibold">{label}</span>
         </div>
       ))}
     </div>
@@ -177,7 +177,7 @@ export const FullDemo: Story = {
 // On dark background
 export const OnDarkBackground: Story = {
   render: () => (
-    <div className="bg-dark p-8 rounded-lg">
+    <div className="bg-inverseBg p-8 rounded-lg">
       <div className="flex gap-8">
         <ElectricLucideIcon name="automate" size={48} />
         <ElectricLucideIcon name="advice" size={48} />
@@ -195,7 +195,7 @@ export const InFeatureCard: Story = {
       <div className="w-16 h-16 rounded-full bg-[#2D6FE9] flex items-center justify-center mb-4">
         <ElectricLucideIcon name="automate" size={36} isActive />
       </div>
-      <h3 className="text-xl font-bold text-dark mb-2">Automate Compliance</h3>
+      <h3 className="text-xl font-bold text-primary mb-2">Automate Compliance</h3>
       <p className="text-muted-foreground">
         Streamline your environmental compliance workflows with intelligent automation.
       </p>

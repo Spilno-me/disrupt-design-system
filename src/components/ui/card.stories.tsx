@@ -11,7 +11,7 @@ import {
 import { Button } from './button'
 
 const meta: Meta<typeof Card> = {
-  title: 'Components/Card',
+  title: 'Core/Card',
   component: Card,
   parameters: {
     layout: 'centered',
@@ -20,7 +20,7 @@ const meta: Meta<typeof Card> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'pricing', 'pricingHighlight'],
+      options: ['default', 'pricing', 'pricingHighlight', 'elevated'],
       description: 'Card variant style',
     },
     shadow: {
@@ -104,9 +104,9 @@ const PRICING_CARD_TIERS: PricingCardTier[] = [
 function FeatureListItem({ feature, isHighlighted }: { feature: TierFeature; isHighlighted?: boolean }) {
   return (
     <div className="flex items-start gap-3">
-      <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isHighlighted ? 'text-teal' : 'text-teal'}`} />
+      <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isHighlighted ? 'text-accent' : 'text-accent'}`} />
       <div className="flex-1">
-        <span className={`font-sans text-sm leading-[1.625] ${isHighlighted ? 'text-dark' : 'text-muted'}`}>
+        <span className={`font-sans text-sm leading-[1.625] ${isHighlighted ? 'text-primary' : 'text-muted'}`}>
           {feature.label}
           {feature.description && <span className="opacity-80"> - {feature.description}</span>}
         </span>
@@ -137,12 +137,12 @@ function PricingCardComponent({ tier }: { tier: PricingCardTier }) {
       >
         <div className="flex flex-col gap-6 pt-2">
           <div className="flex flex-col gap-3">
-            <h3 className="font-sans font-bold text-xl text-dark">{tier.name}</h3>
+            <h3 className="font-sans font-bold text-xl text-primary">{tier.name}</h3>
             <p className="font-sans text-sm text-muted">{tier.description}</p>
           </div>
 
           <div className="flex items-end gap-1">
-            <span className="font-display font-bold text-3xl text-dark">
+            <span className="font-display font-bold text-3xl text-primary">
               {tier.price.replace('/mo', '')}
             </span>
             <span className="font-sans text-base text-muted pb-1">/month</span>
@@ -151,8 +151,8 @@ function PricingCardComponent({ tier }: { tier: PricingCardTier }) {
           <Button variant="contact" className="w-full">Get Started</Button>
         </div>
 
-        <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-slate-200">
-          <span className="font-sans font-semibold text-sm text-dark">{tier.includesFrom}</span>
+        <div className="flex flex-col gap-4 mt-8 pt-6 border-t border-default">
+          <span className="font-sans font-semibold text-sm text-primary">{tier.includesFrom}</span>
           {tier.features.map((feature, idx) => (
             <FeatureListItem key={idx} feature={feature} isHighlighted={tier.isHighlighted} />
           ))}
@@ -243,6 +243,116 @@ export const ShadowLevels: Story = {
       <Card shadow="xl" className="w-[150px] p-4">
         <p className="text-sm text-center">xl</p>
       </Card>
+    </div>
+  ),
+}
+
+// =============================================================================
+// ELEVATED CARD STORIES (For in-app use across Flow/Market/Partner)
+// =============================================================================
+
+// Elevated card - gradient background with gradient border
+export const Elevated: Story = {
+  render: () => (
+    <Card variant="elevated" className="w-[408px] h-[199px]">
+      <CardHeader className="p-0">
+        <CardTitle className="text-primary text-lg">Card Title</CardTitle>
+        <CardDescription>Card description goes here</CardDescription>
+      </CardHeader>
+      <CardContent className="p-0 mt-4">
+        <p className="text-sm text-muted leading-relaxed">
+          The elevated card variant features a gradient background transitioning from white to light gray,
+          with a subtle gradient border effect for added depth. Ideal for in-app content cards.
+        </p>
+      </CardContent>
+    </Card>
+  ),
+}
+
+// Elevated card examples for different app contexts
+export const ElevatedInAppCards: Story = {
+  render: () => (
+    <div className="flex gap-6">
+      <Card variant="elevated" className="w-[408px]">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+            <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="font-semibold text-primary">Active Incidents</h3>
+            <p className="text-sm text-muted">12 open items</p>
+          </div>
+        </div>
+        <p className="text-sm text-muted mt-4">
+          Track and manage active safety incidents across all facilities.
+        </p>
+      </Card>
+      <Card variant="elevated" className="w-[408px]">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-lg bg-circleBlue/10 flex items-center justify-center">
+            <svg className="w-6 h-6 text-circleBlue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="font-semibold text-primary">Compliance Score</h3>
+            <p className="text-sm text-muted">94% compliant</p>
+          </div>
+        </div>
+        <p className="text-sm text-muted mt-4">
+          Monitor regulatory compliance across your organization.
+        </p>
+      </Card>
+    </div>
+  ),
+}
+
+// All card variants comparison
+export const AllVariants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-8">
+      <div>
+        <h3 className="text-sm font-medium text-muted mb-4">Default</h3>
+        <Card variant="default" className="w-[300px]">
+          <CardHeader>
+            <CardTitle>Default Card</CardTitle>
+            <CardDescription>Standard card style</CardDescription>
+          </CardHeader>
+          <CardContent>Content area</CardContent>
+        </Card>
+      </div>
+      <div>
+        <h3 className="text-sm font-medium text-muted mb-4">Elevated (In-App)</h3>
+        <Card variant="elevated" className="w-[300px]">
+          <CardHeader className="p-0">
+            <CardTitle>Elevated Card</CardTitle>
+            <CardDescription>Gradient background & border</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0 mt-4">Content area</CardContent>
+        </Card>
+      </div>
+      <div>
+        <h3 className="text-sm font-medium text-muted mb-4">Pricing</h3>
+        <Card variant="pricing" className="w-[300px]">
+          <CardHeader className="p-0">
+            <CardTitle>Pricing Card</CardTitle>
+            <CardDescription>Dashed border style</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0 mt-4">Content area</CardContent>
+        </Card>
+      </div>
+      <div>
+        <h3 className="text-sm font-medium text-muted mb-4">Pricing Highlight</h3>
+        <Card variant="pricingHighlight" className="w-[300px]">
+          <CardHeader className="p-0">
+            <CardTitle>Highlighted Card</CardTitle>
+            <CardDescription>Animated border</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0 mt-4">Content area</CardContent>
+        </Card>
+      </div>
     </div>
   ),
 }

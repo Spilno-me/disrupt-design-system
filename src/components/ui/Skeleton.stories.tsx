@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Skeleton, SkeletonImage, SkeletonText } from './Skeleton';
 
 const meta = {
-  title: 'Components/Skeleton',
+  title: 'Core/Skeleton',
   component: Skeleton,
   parameters: {
     layout: 'centered',
@@ -85,7 +85,7 @@ export const PricingCardSkeleton: Story = {
       <Skeleton className="w-3/4 h-[14px] mb-6" />
       <Skeleton className="w-[140px] h-[48px] mb-6" />
       <Skeleton className="w-full h-[40px] mb-4" rounded="sm" />
-      <div className="border-t border-slate-200 pt-4">
+      <div className="border-t border-default pt-4">
         <Skeleton className="w-[180px] h-[16px] mb-3" />
         <div className="space-y-3">
           <div className="flex items-start gap-2">

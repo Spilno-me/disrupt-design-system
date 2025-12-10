@@ -4,13 +4,19 @@ import { Card } from './card'
 import { COLORS } from '../../constants/designTokens'
 
 const meta = {
-  title: 'Components/Accordion',
+  title: 'Core/Accordion',
   component: Accordion,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'An expandable/collapsible content component for FAQs and similar use cases.',
+        component: `An expandable/collapsible content component built on Radix UI Accordion.
+
+**Features:**
+- Keyboard navigation (Arrow keys, Home, End)
+- ARIA attributes handled automatically
+- Single or multiple expansion modes
+- Animated open/close transitions`,
       },
     },
   },

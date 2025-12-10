@@ -269,7 +269,7 @@ export const ALIAS = {
 
   // --- GRADIENTS ---
   gradient: {
-    searchFilter: `linear-gradient(0deg, ${WAVE[50]} 0%, ${PRIMITIVES.white} 100%)`,
+    subtle: `linear-gradient(0deg, ${DEEP_CURRENT[50]} 0%, ${PRIMITIVES.white} 100%)`,
   },
 
   // --- SHADOWS ---
@@ -400,40 +400,6 @@ export const COLORS = {
 } as const
 
 // =============================================================================
-// LEGACY EXPORTS FOR BACKWARD COMPATIBILITY
-// These map old token names to the new structure
-// =============================================================================
-
-/** @deprecated Use ALIAS.brand or specific semantic tokens */
-export const BRAND = {
-  abyss: ALIAS.brand.primary,
-  deepCurrent: ALIAS.brand.secondary,
-  redCoral: ALIAS.status.error,
-  duskReef: ALIAS.brand.tertiary,
-  tideFoam: ALIAS.background.page,
-  slate: ALIAS.border.default,
-  white: ALIAS.text.inverse,
-  black: PRIMITIVES.black,
-  wave: ALIAS.feature.automate,
-  tideAlert: ALIAS.status.error,
-  sunrise: ALIAS.feature.adapt,
-  harbor: ALIAS.feature.scale,
-} as const
-
-// Export color scales for direct access when needed
-export const COLOR_SCALES = {
-  abyss: ABYSS,
-  deepCurrent: DEEP_CURRENT,
-  duskReef: DUSK_REEF,
-  coral: CORAL,
-  wave: WAVE,
-  sunrise: SUNRISE,
-  orange: ORANGE,
-  harbor: HARBOR,
-  slate: SLATE,
-} as const
-
-// =============================================================================
 // SHADOWS
 // =============================================================================
 
@@ -443,6 +409,8 @@ export const SHADOWS = {
   md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
   lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
   xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+  /** Ambient shadow: hard close shadow + soft spread for realistic depth */
+  ambient: '0 2px 4px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08)',
   image: '0 6px 12px -2px rgba(0,0,0,0.3), 0 20px 50px -8px rgba(0,0,0,0.2)',
   header: ALIAS.shadow.header,
   footer: ALIAS.shadow.footer,
@@ -458,6 +426,10 @@ export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl'
 export const GRADIENTS = {
   heroOverlay: 'linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.25) 100%)',
   heroOverlayStrong: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%)',
+  /** Product card background - white at top fading to light teal (DDS branded) */
+  cardBg: `linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(230, 247, 250, 1) 14%, rgba(230, 247, 250, 1) 100%)`,
+  /** Product card border - gradient stroke for depth effect (DDS branded) */
+  cardBorder: `linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(204, 239, 245, 0.95) 11%, rgba(204, 239, 245, 0.95) 100%)`,
 } as const
 
 // =============================================================================

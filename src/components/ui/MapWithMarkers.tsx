@@ -398,17 +398,16 @@ function LocationMarker({ x, y, country, isMain = false, mapOffset, mapWidth, ma
     >
       {/* Tooltip */}
       <div
-        className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-white text-xs font-medium px-2 py-1 rounded transition-all duration-300 ${
+        className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-inverse text-xs font-medium px-2 py-1 rounded transition-all duration-300 ${
           showTooltip
             ? 'opacity-100 -top-8 scale-100'
             : 'opacity-0 top-0 scale-75 pointer-events-none'
         }`}
-        style={{ backgroundColor: ALIAS.text.primary }}
       >
         {countryName}
-        {isMain && <span style={{ color: ALIAS.brand.secondary }} className="ml-1">(HQ)</span>}
+        {isMain && <span className="ml-1 text-accent">(HQ)</span>}
         {/* Tooltip arrow */}
-        <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 rotate-45" style={{ backgroundColor: ALIAS.text.primary }} />
+        <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 rotate-45 bg-primary" />
       </div>
 
       {/* Circle background with stroke */}

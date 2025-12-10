@@ -250,7 +250,7 @@ export function ElectricLucideIconDemo() {
               isActive={hoveredIcon === name}
             />
           </motion.div>
-          <span className="text-dark font-semibold">{label}</span>
+          <span className="text-primary font-semibold">{label}</span>
         </div>
       ))}
     </div>

@@ -34,7 +34,7 @@ export function OurValuesSection() {
           <li key={value.title} className="flex items-start gap-3">
             <AnimatedCheck className="w-5 h-5" index={index} />
             <span className="text-muted text-base lg:text-lg leading-[1.5]">
-              <strong className="text-dark">{value.title}</strong> – {value.description}
+              <strong className="text-primary">{value.title}</strong> – {value.description}
             </span>
           </li>
         ))}

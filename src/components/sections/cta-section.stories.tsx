@@ -90,15 +90,15 @@ export const WithCustomContent: Story = {
     >
       <div className="flex gap-8 mb-8 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded-full bg-teal/20 flex items-center justify-center text-teal text-xs">✓</span>
+          <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs">✓</span>
           Unlimited users
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded-full bg-teal/20 flex items-center justify-center text-teal text-xs">✓</span>
+          <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs">✓</span>
           Dedicated support
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded-full bg-teal/20 flex items-center justify-center text-teal text-xs">✓</span>
+          <span className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs">✓</span>
           Custom integrations
         </div>
       </div>

@@ -101,7 +101,7 @@ export function GridBlobBackground({ scale = 1 }: GridBlobBackgroundProps) {
   }, [waypointIndex, scale, x, y, width, height])
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       <motion.div
         className="absolute inset-0"
         style={{ maskImage, WebkitMaskImage: maskImage }}

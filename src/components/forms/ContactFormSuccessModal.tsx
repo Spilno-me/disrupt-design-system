@@ -110,13 +110,13 @@ export function ContactFormSuccessModal({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-md bg-cream border-slate-200">
+      <DialogContent className="sm:max-w-md bg-page border-default">
         <DialogHeader className="text-center sm:text-center">
           <AnimatedDisruptLogo isHovered={isButtonHovered} />
-          <DialogTitle className="text-2xl font-bold text-dark">
+          <DialogTitle className="text-2xl font-bold text-primary">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-muted mt-3 text-base">
+          <DialogDescription className="text-secondary mt-3 text-base">
             {description}
           </DialogDescription>
         </DialogHeader>

@@ -175,7 +175,7 @@ export const InCard: Story = {
         />
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-bold text-dark">Card Title</h3>
+        <h3 className="text-lg font-bold text-primary">Card Title</h3>
         <p className="text-muted-foreground text-sm mt-1">
           This card uses BlurImage for progressive loading.
         </p>

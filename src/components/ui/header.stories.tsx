@@ -76,7 +76,7 @@ export const Default: Story = {
       <div className="min-h-[400px] bg-white">
         <Story />
         <div className="pt-24 px-8">
-          <h1 className="text-2xl font-bold text-dark">Page Content</h1>
+          <h1 className="text-2xl font-bold text-primary">Page Content</h1>
           <p className="text-muted mt-2">
             The header is fixed at the top. Scroll down to see it stay in place.
           </p>
@@ -114,7 +114,7 @@ export const Mobile: Story = {
       <div className="min-h-[500px] bg-white">
         <Story />
         <div className="pt-24 px-4">
-          <h1 className="text-xl font-bold text-dark">Mobile View</h1>
+          <h1 className="text-xl font-bold text-primary">Mobile View</h1>
           <p className="text-muted mt-2 text-sm">
             Click the hamburger icon to open the mobile menu.
           </p>
@@ -283,7 +283,7 @@ export const CustomLinkRenderer: Story = {
     renderNavLink: (item: NavItem, children: React.ReactNode) => (
       <button
         onClick={() => console.log(`Custom navigation to: ${item.path}`)}
-        className="h-9 px-4 py-2 rounded-[12px] text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer text-dark hover:bg-white/10"
+        className="h-9 px-4 py-2 rounded-[12px] text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer text-primary hover:bg-white/10"
       >
         {children}
       </button>

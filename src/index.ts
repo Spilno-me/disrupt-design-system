@@ -1,5 +1,6 @@
 // Import styles
 import './styles.css'
+import './components/ui/HeroParticles.css'
 
 // Export all components
 export { Button, buttonVariants } from './components/ui/button'
@@ -51,11 +52,22 @@ export { ResponsivePicture } from './components/ui/ResponsivePicture'
 export { ParallaxImage } from './components/ui/ParallaxImage'
 export { ScrollToTopButton } from './components/ui/ScrollToTopButton'
 export type { ScrollToTopButtonProps } from './components/ui/ScrollToTopButton'
-export { Accordion } from './components/ui/Accordion'
+export {
+  Accordion,
+  AccordionRoot,
+  AccordionItemPrimitive,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionHeader,
+} from './components/ui/Accordion'
 export type { AccordionProps, AccordionItem } from './components/ui/Accordion'
 export { LinkedInButton } from './components/ui/LinkedInButton'
 export type { LinkedInButtonProps } from './components/ui/LinkedInButton'
 export { ScrollableTableWrapper } from './components/ui/ScrollableTableWrapper'
+export { DataTable } from './components/ui/DataTable'
+export type { DataTableProps, ColumnDef, SortDirection } from './components/ui/DataTable'
+export { Pagination } from './components/ui/Pagination'
+export type { PaginationProps } from './components/ui/Pagination'
 export { SectionWrapper, SectionHeading, SectionContainer, ContentSection, TwoColumnLayout, Column } from './components/ui/SectionLayout'
 export {
   Dialog,
@@ -84,18 +96,48 @@ export { Label } from './components/ui/label'
 export { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from './components/ui/form'
 export { AnimatedLogo } from './components/ui/AnimatedLogo'
 export type { AnimatedLogoProps } from './components/ui/AnimatedLogo'
+export { MadeWithLove } from './components/ui/MadeWithLove'
+export type { MadeWithLoveProps } from './components/ui/MadeWithLove'
 export { MobileMenu } from './components/ui/MobileMenu'
 export type { MobileMenuProps } from './components/ui/MobileMenu'
 export { Header } from './components/ui/Header'
-export type { HeaderProps, NavItem } from './components/ui/Header'
+export type { HeaderProps, NavItem as HeaderNavItem } from './components/ui/Header'
 export { AppHeader, WavePattern, LogoContainer, NotificationBell, NotificationBadge, UserAvatar, UserMenu, IconButton } from './components/ui/AppHeader'
-export type { AppHeaderProps, ProductType, UserMenuItem, UserInfo, ProductConfig, IconButtonProps } from './components/ui/AppHeader'
+export type { AppHeaderProps, UserMenuItem, UserInfo, ProductConfig, IconButtonProps } from './components/ui/AppHeader'
+export { AppSidebar } from './components/ui/AppSidebar'
+export type { AppSidebarProps } from './components/ui/AppSidebar'
+export { AppFooter } from './components/ui/AppFooter'
+export type { AppFooterProps } from './components/ui/AppFooter'
+export { MobileNav } from './components/ui/MobileNav'
+export type { MobileNavProps } from './components/ui/MobileNav'
+export { BottomNav } from './components/ui/BottomNav'
+export type { BottomNavProps } from './components/ui/BottomNav'
+
+// Navigation module - shared types, utilities, and components
+export {
+  NavIcon,
+  NavBadge,
+  isGroupActive,
+  findParentGroupId,
+  findItemById,
+  addBadges,
+} from './components/ui/navigation'
+export type {
+  NavItem,
+  ProductType,
+  OnNavigate,
+  BaseNavProps,
+  NavIconProps,
+  NavBadgeProps,
+} from './components/ui/navigation'
 export { CursorPixels } from './components/ui/cursor-pixels'
 export type { CursorPixelsProps } from './components/ui/cursor-pixels'
 export { ElectricInputWrapper as ElectricInput } from './components/ui/ElectricInput'
 export { GridBlobBackground, GridBlobCanvas, BlobSection } from './components/ui/GridBlobCanvas'
 export { MapWithMarkers } from './components/ui/MapWithMarkers'
 export { ErrorBoundary, CanvasErrorBoundary, SectionErrorBoundary } from './components/ui/ErrorBoundary'
+export { SeverityIndicator } from './components/ui/SeverityIndicator'
+export type { SeverityIndicatorProps, SeverityLevel } from './components/ui/SeverityIndicator'
 
 // Export section components
 export { FAQSection } from './components/sections/FAQSection'
@@ -125,6 +167,7 @@ export { OurVisionSection } from './components/sections/OurVisionSection'
 export { PartnersSection } from './components/sections/PartnersSection'
 // PlatformTiersSection moved to _archive - not exported
 export { PricingCardsSection } from './components/sections/PricingCardsSection'
+export { ROICalculatorSection } from './components/sections/ROICalculatorSection'
 export { ProductHeroSection } from './components/sections/ProductHeroSection'
 export { ProofSection } from './components/sections/ProofSection'
 export { ReadyToAchieveSection } from './components/sections/ReadyToAchieveSection'
@@ -132,6 +175,54 @@ export { StrategicAdvisorySection } from './components/sections/StrategicAdvisor
 export { WhatDisruptDoesSection } from './components/sections/WhatDisruptDoesSection'
 export { WhoWeHelpSection } from './components/sections/WhoWeHelpSection'
 export { WhyDifferentSection } from './components/sections/WhyDifferentSection'
+
+// Export partners components
+export { PartnersPage, MOCK_PARTNERS, EditPartnerDialog, DeletePartnerDialog } from './components/partners'
+export type { PartnersPageProps, Partner, PartnerStatus, PartnerTier, EditPartnerDialogProps, PartnerFormData, DeletePartnerDialogProps } from './components/partners'
+
+// Export partner login accounts components
+export { PartnerLoginAccountsPage, MOCK_LOGIN_ACCOUNTS, ResetPasswordDialog, CreateLoginAccountDialog, DeleteLoginAccountDialog } from './components/partners'
+export type { LoginAccount, LoginAccountStatus, PartnerLoginAccountsPageProps, CreateLoginAccountData, ResetPasswordDialogProps, CreateLoginAccountDialogProps, DeleteLoginAccountDialogProps } from './components/partners'
+
+// Export leads components
+export { LeadsPage } from './components/leads/LeadsPage'
+export type { LeadsPageProps } from './components/leads/LeadsPage'
+export { LeadCard } from './components/leads/LeadCard'
+export type { Lead, LeadCardProps, LeadStatus, LeadPriority, LeadSource, LeadAction } from './components/leads/LeadCard'
+export { LeadsDataTable } from './components/leads/LeadsDataTable'
+export type { LeadsDataTableProps } from './components/leads/LeadsDataTable'
+export { StatsCard } from './components/leads/StatsCard'
+export type { StatsCardProps, TrendDirection } from './components/leads/StatsCard'
+// Export provisioning components
+export { ProvisioningMethodSelector } from './components/provisioning/ProvisioningMethodSelector'
+export type { ProvisioningMethodSelectorProps, ProvisioningMethod } from './components/provisioning/ProvisioningMethodSelector'
+
+// Export SearchFilter (Shared component - universal search & filter)
+export { SearchFilter } from './components/shared/SearchFilter/SearchFilter'
+export type { SearchFilterProps } from './components/shared/SearchFilter/SearchFilter'
+export type {
+  FilterGroup,
+  FilterOption,
+  FilterState,
+} from './components/shared/SearchFilter/types'
+
+// Export SearchFilter hooks for advanced usage
+export { useSearchInput, useFilters } from './components/shared/SearchFilter'
+export type {
+  UseSearchInputOptions,
+  UseSearchInputReturn,
+  UseFiltersOptions,
+  UseFiltersReturn,
+} from './components/shared/SearchFilter'
+
+// Export Market-specific filter options
+export { MARKET_FILTER_OPTIONS } from './components/market'
+export type {
+  FilterCategory,
+  FilterBadge,
+  FilterPricing,
+  MarketFilterState,
+} from './components/market'
 
 // Export form components
 export { ContactForm } from './components/forms/ContactForm'
@@ -147,6 +238,33 @@ export type { FooterProps, FooterLink } from './components/layout/Footer'
 export { PageLayout, Container } from './components/layout/PageLayout'
 export type { PageLayoutProps, ContainerProps } from './components/layout/PageLayout'
 
+// Mock data utilities for prototypes
+export {
+  mockUsers,
+  mockPartnerUser,
+  mockFlowUser,
+  mockMarketUser,
+  defaultUserMenuItems,
+  mockNotifications,
+  mockRecentActivity,
+  mockPartnerKPIs,
+  mockFlowKPIs,
+  mockMarketKPIs,
+  simulateAction,
+  simulateRequest,
+  prototypeAlert,
+  prototypeLog,
+  randomName,
+  randomCompany,
+  randomId,
+  randomAmount,
+} from './components/layout/mock-data'
+export type {
+  Notification as MockNotification,
+  ActivityItem,
+  KPIData,
+} from './components/layout/mock-data'
+
 // Export design tokens
 export * from './constants/designTokens'
 
@@ -158,8 +276,38 @@ export { useIsMobile } from './hooks/useIsMobile'
 export { useMouseParticles } from './hooks/useMouseParticles'
 export type { MouseParticle } from './hooks/useMouseParticles'
 export { useHeroTitleRotation } from './hooks/useHeroTitleRotation'
+export { useHeaderContrast, useContrastColor } from './hooks/useHeaderContrast'
 
 // Export assets
 export { optimizedImages } from './assets/optimized'
 export { aboutImages } from './assets/optimized/about'
 export { productImages } from './assets/optimized/product'
+
+// =============================================================================
+// APP TEMPLATES (Pure UI - Consumer owns state/routing)
+// =============================================================================
+
+// Layout shell for product apps
+export { AppLayoutShell, useAppLayoutState } from './templates/layout/AppLayoutShell'
+export type {
+  AppLayoutShellProps,
+  AppNavItem,
+  ProductConfig as AppProductConfig,
+} from './templates/layout/AppLayoutShell'
+
+// Page templates (pure UI components)
+export { DashboardPage, PlaceholderPage } from './templates/pages'
+export type {
+  DashboardPageProps,
+  KPICardData,
+  ActivityItemData,
+  QuickActionData,
+  PlaceholderPageProps,
+} from './templates/pages'
+
+// Pre-built navigation configs
+export {
+  partnerNavItems,
+  flowNavItems,
+  marketNavItems,
+} from './templates/navigation/configs'

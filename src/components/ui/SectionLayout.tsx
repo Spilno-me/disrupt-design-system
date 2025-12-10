@@ -36,7 +36,7 @@ export function SectionWrapper({
   headerTheme,
   className = '',
 }: SectionWrapperProps) {
-  const bgClass = background === 'cream' ? 'bg-cream' : 'bg-white'
+  const bgClass = background === 'cream' ? 'bg-page' : 'bg-surface'
   const needsRelative = showBlob ? 'relative' : ''
 
   // Auto-detect header theme based on background if not specified
@@ -358,12 +358,12 @@ export function SectionHeading({
 
   return (
     <div className={`flex flex-col ${alignClass} ${className}`}>
-      <h2 className="text-2xl sm:text-3xl lg:text-3xl font-display font-bold text-dark leading-[1.2] mb-2">
+      <h2 className="text-2xl sm:text-3xl lg:text-3xl font-display font-bold text-primary leading-[1.2] mb-2">
         {title}
       </h2>
       {subtitle && (
         <div className="lg:w-fit mb-4">
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-teal">
+          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-accent">
             {subtitle}
           </p>
           {showSeparator && (

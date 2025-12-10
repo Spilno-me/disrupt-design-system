@@ -3,7 +3,7 @@ import { expect, within, userEvent } from 'storybook/test'
 import { Input } from './input'
 
 const meta = {
-  title: 'Components/Input',
+  title: 'Core/Input',
   component: Input,
   parameters: {
     layout: 'centered',
@@ -32,18 +32,18 @@ export const Disabled: Story = {
 // Form Example (matches website contact form)
 export const FormExample: Story = {
   render: () => (
-    <div className="w-[400px] space-y-4 p-6 border border-dashed border-slate-300 rounded-lg bg-white">
-      <h3 className="text-lg font-bold text-dark">Contact Form</h3>
+    <div className="w-[400px] space-y-4 p-6 border border-dashed border-default rounded-lg bg-white">
+      <h3 className="text-lg font-bold text-primary">Contact Form</h3>
       <div className="space-y-2">
-        <label className="text-sm font-medium text-dark">Name</label>
+        <label className="text-sm font-medium text-primary">Name</label>
         <Input placeholder="John Doe" />
       </div>
       <div className="space-y-2">
-        <label className="text-sm font-medium text-dark">Email</label>
+        <label className="text-sm font-medium text-primary">Email</label>
         <Input type="email" placeholder="john@example.com" />
       </div>
       <div className="space-y-2">
-        <label className="text-sm font-medium text-dark">Phone</label>
+        <label className="text-sm font-medium text-primary">Phone</label>
         <Input type="tel" placeholder="+1 (555) 000-0000" />
       </div>
     </div>

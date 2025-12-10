@@ -97,8 +97,8 @@ export const TwoColumnLayoutDemo: Story = {
               </div>
             </Column>
             <Column>
-              <div className="bg-teal/20 p-6 rounded-lg h-full aspect-[4/3] flex items-center justify-center">
-                <span className="text-teal font-medium">Image Column</span>
+              <div className="bg-accent/20 p-6 rounded-lg h-full aspect-[4/3] flex items-center justify-center">
+                <span className="text-accent font-medium">Image Column</span>
               </div>
             </Column>
           </TwoColumnLayout>
@@ -116,8 +116,8 @@ export const TwoColumnLayoutDemo: Story = {
               </div>
             </Column>
             <Column>
-              <div className="bg-teal/20 p-6 rounded-lg h-full aspect-[4/3] flex items-center justify-center">
-                <span className="text-teal font-medium">Image Column</span>
+              <div className="bg-accent/20 p-6 rounded-lg h-full aspect-[4/3] flex items-center justify-center">
+                <span className="text-accent font-medium">Image Column</span>
               </div>
             </Column>
           </TwoColumnLayout>
@@ -236,15 +236,15 @@ export const ContentSectionDemo: Story = {
         </p>
         <ul className="space-y-2">
           <li className="flex items-center gap-2">
-            <span className="w-5 h-5 rounded-full bg-teal/20 flex items-center justify-center text-teal text-xs">✓</span>
+            <span className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs">✓</span>
             Real-time compliance monitoring
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-5 h-5 rounded-full bg-teal/20 flex items-center justify-center text-teal text-xs">✓</span>
+            <span className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs">✓</span>
             Automated report generation
           </li>
           <li className="flex items-center gap-2">
-            <span className="w-5 h-5 rounded-full bg-teal/20 flex items-center justify-center text-teal text-xs">✓</span>
+            <span className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs">✓</span>
             Risk assessment tools
           </li>
         </ul>

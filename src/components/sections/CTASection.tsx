@@ -56,15 +56,15 @@ export function CTASection({
   children,
 }: CTASectionProps) {
   const bgClasses = {
-    white: 'bg-white',
-    cream: 'bg-cream',
-    dark: 'bg-dark',
+    white: 'bg-surface',
+    cream: 'bg-page',
+    dark: 'bg-inverse-bg',
   }
 
   const textClasses = {
-    white: 'text-dark',
-    cream: 'text-dark',
-    dark: 'text-white',
+    white: 'text-primary',
+    cream: 'text-primary',
+    dark: 'text-inverse',
   }
 
   const alignClasses = centered
@@ -97,7 +97,7 @@ export function CTASection({
             <p
               className={cn(
                 'text-sm sm:text-base lg:text-lg font-display font-medium max-w-[560px] mb-8',
-                background === 'dark' ? 'text-teal' : 'text-teal'
+                background === 'dark' ? 'text-accent' : 'text-accent'
               )}
             >
               {subtitle}

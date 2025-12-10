@@ -5,6 +5,15 @@
 > **This document is the single source of truth for AI agents building UI with DDS.**
 > Follow these rules exactly. No exceptions.
 
+## Git Commit Rules
+
+**IMPORTANT: NEVER add Claude attribution to commits.** Do NOT include:
+- "🤖 Generated with Claude Code"
+- "Co-Authored-By: Claude"
+- Any mention of Claude or AI in commit messages
+
+Use conventional commits: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`
+
 ---
 
 ## Table of Contents
@@ -407,9 +416,11 @@ Task: Build UI
 
 ### Complete Tailwind Color Reference
 
+**IMPORTANT:** Prefer semantic class names over brand-specific names.
+
 ```css
 /* ============================================================ */
-/* TEXT COLORS                                                   */
+/* TEXT COLORS (Use semantic names)                              */
 /* ============================================================ */
 text-primary      /* Main body text - #2D3142 */
 text-secondary    /* Muted/supporting text - #5E4F7E */
@@ -418,6 +429,7 @@ text-muted        /* Same as secondary - #5E4F7E */
 text-emphasis     /* Emphasized labels - #474F5F */
 text-disabled     /* Disabled text - #9F93B7 */
 text-inverse      /* Text on dark backgrounds - #FFFFFF */
+text-accent       /* Accent text - #08A4BD */
 text-link         /* Link text - #08A4BD */
 text-linkHover    /* Link hover - #068397 */
 text-error        /* Error messages - #F70D1A */
@@ -425,58 +437,44 @@ text-success      /* Success messages - #22C55E */
 text-warning      /* Warning messages - #EAB308 */
 text-info         /* Info messages - #3B82F6 */
 
-/* Brand text colors */
-text-dark         /* Same as primary - #2D3142 */
-text-teal         /* Accent teal - #08A4BD */
-text-darkPurple   /* Same as secondary - #5E4F7E */
-
 /* ============================================================ */
-/* BACKGROUND COLORS                                             */
+/* BACKGROUND COLORS (Use semantic names)                        */
 /* ============================================================ */
 bg-surface        /* Cards, panels - #FFFFFF */
-bg-surfaceHover   /* Surface hover state - #E8E9EB */
-bg-surfaceActive  /* Surface active state - #D1D3D7 */
+bg-surface-hover  /* Surface hover state - #E8E9EB */
+bg-surface-active /* Surface active state - #D1D3D7 */
 bg-page           /* Main page background - #FBFBF3 */
-bg-cream          /* Same as page - #FBFBF3 */
 bg-elevated       /* Elevated surfaces - #FFFFFF */
-bg-mutedBg        /* Muted backgrounds - #EFEDF3 */
-bg-lightPurple    /* Same as mutedBg - #EFEDF3 */
-bg-inverseBg      /* Dark backgrounds - #2D3142 */
-bg-dark           /* Same as inverseBg - #2D3142 */
-bg-inverseSubtle  /* Subtle dark - #1D1F2A */
-bg-accentBg       /* Light teal background - #E6F7FA */
-bg-accentStrong   /* Strong teal - #08A4BD */
-bg-teal           /* Same as accentStrong - #08A4BD */
-bg-tealLight      /* Light teal - #66CFE1 */
+bg-muted-bg       /* Muted backgrounds - #EFEDF3 */
+bg-inverse-bg     /* Dark backgrounds - #2D3142 */
+bg-inverse-subtle /* Subtle dark - #1D1F2A */
+bg-accent-bg      /* Light teal background - #E6F7FA */
+bg-accent-strong  /* Strong teal - #08A4BD */
 
 /* Status backgrounds */
 bg-error          /* Error background - #F70D1A */
-bg-errorLight     /* Light error - #FEF2F2 */
-bg-errorMuted     /* Muted error - #FEE2E2 */
+bg-error-light    /* Light error - #FEF2F2 */
+bg-error-muted    /* Muted error - #FEE2E2 */
 bg-success        /* Success - #22C55E */
-bg-successLight   /* Light success - #F0FDF4 */
-bg-successMuted   /* Muted success - #DCFCE7 */
+bg-success-light  /* Light success - #F0FDF4 */
+bg-success-muted  /* Muted success - #DCFCE7 */
 bg-warning        /* Warning - #EAB308 */
-bg-warningLight   /* Light warning - #FFFBEB */
-bg-warningMuted   /* Muted warning - #FEF3C7 */
+bg-warning-light  /* Light warning - #FFFBEB */
+bg-warning-muted  /* Muted warning - #FEF3C7 */
 bg-info           /* Info - #3B82F6 */
-bg-infoLight      /* Light info - #EFF6FF */
-bg-infoMuted      /* Muted info - #DBEAFE */
+bg-info-light     /* Light info - #EFF6FF */
+bg-info-muted     /* Muted info - #DBEAFE */
 
 /* Feature indicators */
-bg-featureBlue    /* Automate - #3B82F6 */
-bg-featureRed     /* Advice - #EF4444 */
-bg-featureYellow  /* Adapt - #EAB308 */
-bg-featureGreen   /* Scale - #22C55E */
-bg-circleBlue     /* Same as featureBlue */
-bg-circleRed      /* Same as featureRed */
-bg-circleYellow   /* Same as featureYellow */
-bg-circleGreen    /* Same as featureGreen */
+bg-feature-automate  /* Automate - #3B82F6 */
+bg-feature-advice    /* Advice - #EF4444 */
+bg-feature-adapt     /* Adapt - #EAB308 */
+bg-feature-scale     /* Scale - #22C55E */
 
 /* Aging/urgent */
 bg-aging          /* Orange urgent - #F97316 */
-bg-agingDark      /* Dark orange - #EA580C */
-bg-agingLight     /* Light orange - #FFF7ED */
+bg-aging-dark     /* Dark orange - #EA580C */
+bg-aging-light    /* Light orange - #FFF7ED */
 
 /* Utility */
 bg-white          /* Pure white - #FFFFFF */
@@ -485,16 +483,13 @@ bg-linkedin       /* LinkedIn blue - #0A66C2 */
 bg-transparent    /* Transparent */
 
 /* ============================================================ */
-/* BORDER COLORS                                                 */
+/* BORDER COLORS (Use semantic names)                            */
 /* ============================================================ */
 border-default    /* Standard borders - #CBD5E1 */
-border-slate      /* Same as default - #CBD5E1 */
 border-subtle     /* Subtle borders - #D1D3D7 */
 border-strong     /* Strong borders - #757B87 */
 border-focus      /* Focus rings - #08A4BD */
 border-accent     /* Accent borders - #08A4BD */
-border-teal       /* Same as accent - #08A4BD */
-border-dark       /* Dark borders - #2D3142 */
 border-error      /* Error borders - #F70D1A */
 border-success    /* Success borders - #22C55E */
 border-warning    /* Warning borders - #EAB308 */
@@ -650,12 +645,12 @@ export function MyComponent({
   return (
     <div
       className={cn(
-        // Base styles - USE DDS CLASSES ONLY
+        // Base styles - USE DDS SEMANTIC CLASSES ONLY
         'rounded-lg border p-4',
         // Variant styles
-        variant === 'default' && 'bg-white border-slate text-dark',
-        variant === 'accent' && 'bg-teal text-white border-teal',
-        variant === 'error' && 'bg-error text-white border-error',
+        variant === 'default' && 'bg-surface border-default text-primary',
+        variant === 'accent' && 'bg-accent-strong text-inverse border-accent',
+        variant === 'error' && 'bg-error text-inverse border-error',
         className
       )}
       style={{
@@ -753,7 +748,7 @@ const DialogContent = React.forwardRef<
         // Content uses DDS tokens
         'fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]',
         'w-full max-w-lg p-6',
-        'bg-white border border-slate rounded-lg',  // DDS classes
+        'bg-surface border border-default rounded-lg',  // DDS semantic classes
         'shadow-lg',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         className
@@ -828,10 +823,10 @@ rounded-full /* 9999px - pills, avatars */
 ```tsx
 <span className={cn(
   'inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm',
-  status === 'success' && 'bg-circleGreen/10 text-circleGreen',
-  status === 'warning' && 'bg-circleYellow/10 text-circleYellow',
-  status === 'error' && 'bg-circleRed/10 text-circleRed',
-  status === 'info' && 'bg-circleBlue/10 text-circleBlue',
+  status === 'success' && 'bg-success/10 text-success',
+  status === 'warning' && 'bg-warning/10 text-warning',
+  status === 'error' && 'bg-error/10 text-error',
+  status === 'info' && 'bg-info/10 text-info',
 )}>
   <span className="w-2 h-2 rounded-full bg-current" />
   {label}
@@ -840,15 +835,15 @@ rounded-full /* 9999px - pills, avatars */
 
 #### Card with Hover
 ```tsx
-<div className="bg-white border border-slate rounded-lg p-4
-                hover:border-teal hover:shadow-md transition-all">
+<div className="bg-surface border border-default rounded-lg p-4
+                hover:border-accent hover:shadow-md transition-all">
   {content}
 </div>
 ```
 
 #### Section with Background
 ```tsx
-<section className="bg-cream py-16 lg:py-24">
+<section className="bg-page py-16 lg:py-24">
   <div className="max-w-7xl mx-auto px-4">
     {content}
   </div>
@@ -858,33 +853,33 @@ rounded-full /* 9999px - pills, avatars */
 #### Form Field
 ```tsx
 <div className="space-y-2">
-  <Label className="text-dark font-medium">{label}</Label>
+  <Label className="text-primary font-medium">{label}</Label>
   <Input
-    className="border-slate focus:border-teal focus:ring-teal"
+    className="border-default focus:border-accent focus:ring-accent"
     placeholder={placeholder}
   />
-  {error && <p className="text-sm text-red">{error}</p>}
+  {error && <p className="text-sm text-error">{error}</p>}
 </div>
 ```
 
 #### Icon Button
 ```tsx
-<button className="p-2 rounded-lg bg-white border border-slate
-                   hover:bg-lightPurple hover:border-teal transition-colors">
-  <Icon className="w-5 h-5 text-dark" />
+<button className="p-2 rounded-lg bg-surface border border-default
+                   hover:bg-muted-bg hover:border-accent transition-colors">
+  <Icon className="w-5 h-5 text-primary" />
 </button>
 ```
 
 #### Nav Link
 ```tsx
-<a className="text-dark hover:text-teal transition-colors font-medium">
+<a className="text-primary hover:text-accent transition-colors font-medium">
   {label}
 </a>
 ```
 
 #### Avatar
 ```tsx
-<div className="w-10 h-10 rounded-full bg-teal text-white
+<div className="w-10 h-10 rounded-full bg-accent-strong text-inverse
                 flex items-center justify-center font-medium">
   {initials}
 </div>
@@ -898,12 +893,12 @@ rounded-full /* 9999px - pills, avatars */
 
 ```tsx
 // BAD: Raw hex colors
-<div style={{ color: '#2D3142' }}>  // Use text-dark or ALIAS.text.primary
+<div style={{ color: '#2D3142' }}>  // Use text-primary or ALIAS.text.primary
 
 // BAD: Standard Tailwind colors
-<div className="bg-slate-100">     // Use bg-lightPurple or bg-cream
-<div className="text-gray-600">    // Use text-muted
-<div className="border-gray-300">  // Use border-slate
+<div className="bg-slate-100">     // Use bg-muted-bg or bg-page
+<div className="text-gray-600">    // Use text-secondary or text-muted
+<div className="border-gray-300">  // Use border-default
 
 // BAD: Raw rgba
 <div style={{ background: 'rgba(0,0,0,0.5)' }}>  // Use ALIAS.overlay.dark
@@ -930,10 +925,10 @@ const MyModal = () => <div>...</div>         // Use <Dialog> component
 ### ALWAYS DO THIS
 
 ```tsx
-// GOOD: DDS Tailwind classes
-<div className="bg-dark text-white">
-<div className="bg-cream text-dark border-slate">
-<div className="text-muted hover:text-teal">
+// GOOD: DDS semantic Tailwind classes
+<div className="bg-inverse-bg text-inverse">
+<div className="bg-page text-primary border-default">
+<div className="text-secondary hover:text-accent">
 
 // GOOD: ALIAS for dynamic values
 import { ALIAS } from '@/constants/designTokens'
@@ -951,8 +946,8 @@ import { SHADOWS, RADIUS } from '@/constants/designTokens'
 // GOOD: Radix + DDS tokens for new components
 import * as Tabs from '@radix-ui/react-tabs'
 <Tabs.Root>
-  <Tabs.List className="bg-lightPurple rounded-lg p-1">
-    <Tabs.Trigger className="text-dark data-[state=active]:bg-white">
+  <Tabs.List className="bg-muted-bg rounded-lg p-1">
+    <Tabs.Trigger className="text-primary data-[state=active]:bg-surface">
       Tab 1
     </Tabs.Trigger>
   </Tabs.List>

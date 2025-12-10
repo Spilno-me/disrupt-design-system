@@ -14,7 +14,7 @@ import { Input } from './input'
 import { Label } from './label'
 
 const meta: Meta<typeof Sheet> = {
-  title: 'Components/Sheet',
+  title: 'Core/Sheet',
   component: Sheet,
   parameters: {
     layout: 'centered',

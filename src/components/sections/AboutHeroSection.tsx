@@ -125,7 +125,7 @@ export function AboutHeroSection() {
             {/* Right Column - Subtitle & Bullet Points */}
             <div className="lg:max-w-[420px]">
               {/* Subtitle */}
-              <p className="font-display font-medium text-teal text-sm sm:text-base lg:text-lg mb-5">
+              <p className="font-display font-medium text-accent text-sm sm:text-base lg:text-lg mb-5">
                 {SUBTITLE}
               </p>
 

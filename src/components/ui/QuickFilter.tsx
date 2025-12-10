@@ -2,7 +2,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { SHADOWS, RADIUS, ALIAS } from '../../constants/designTokens'
-import { FileText, Flag, Cylinder, Search, ClipboardCheck } from 'lucide-react'
+import { FileText, Flag, Barrel, Search, ClipboardCheck, Clock } from 'lucide-react'
 
 // =============================================================================
 // QUICK FILTER ITEM COMPONENT
@@ -53,25 +53,25 @@ const quickFilterItemVariants = cva(
 const getVariantColors = (variant: QuickFilterVariant) => {
   const variantMap = {
     default: {
-      border: ALIAS.border.default,
+      border: ALIAS.icon.secondary,  // Match icon color
       badge: ALIAS.text.secondary,
       text: ALIAS.text.secondary,
       icon: ALIAS.icon.secondary,
     },
     info: {
-      border: ALIAS.brand.secondary,
+      border: ALIAS.brand.secondary,  // Match icon color
       badge: ALIAS.interactive.accentHover,
       text: ALIAS.interactive.accentHover,
       icon: ALIAS.brand.secondary,
     },
     warning: {
-      border: ALIAS.aging.primary,
+      border: ALIAS.aging.primary,  // Match icon color
       badge: ALIAS.aging.dark,
       text: ALIAS.aging.dark,
       icon: ALIAS.aging.primary,
     },
     primary: {
-      border: ALIAS.brand.primary,
+      border: ALIAS.brand.primary,  // Match icon color
       badge: ALIAS.brand.primary,
       text: ALIAS.brand.primary,
       icon: ALIAS.brand.primary,
@@ -267,12 +267,12 @@ export const ReportedFilter: React.FC<Omit<QuickFilterItemProps, 'variant' | 'la
   ...props
 }) => <QuickFilterItem variant="info" label={label} icon={icon || <Flag size={24} />} {...props} />
 
-/** Pre-configured Aging filter - uses Cylinder (barrel) icon */
+/** Pre-configured Aging filter - uses Barrel icon */
 export const AgingFilter: React.FC<Omit<QuickFilterItemProps, 'variant' | 'label'> & { label?: string }> = ({
   label = 'Aging',
   icon,
   ...props
-}) => <QuickFilterItem variant="warning" label={label} icon={icon || <Cylinder size={24} />} {...props} />
+}) => <QuickFilterItem variant="warning" label={label} icon={icon || <Barrel size={24} />} {...props} />
 
 /** Pre-configured In Progress filter - uses Search icon */
 export const InProgressFilter: React.FC<Omit<QuickFilterItemProps, 'variant' | 'label'> & { label?: string }> = ({
@@ -288,10 +288,11 @@ export const ReviewsFilter: React.FC<Omit<QuickFilterItemProps, 'variant' | 'lab
   ...props
 }) => <QuickFilterItem variant="warning" label={label} icon={icon || <ClipboardCheck size={24} />} {...props} />
 
-/** Pre-configured DLB filter (no icon by default) */
+/** Pre-configured DLB filter - uses Clock icon */
 export const DLBFilter: React.FC<Omit<QuickFilterItemProps, 'variant' | 'label'> & { label?: string }> = ({
   label = 'DLB',
+  icon,
   ...props
-}) => <QuickFilterItem variant="warning" label={label} {...props} />
+}) => <QuickFilterItem variant="warning" label={label} icon={icon || <Clock size={24} />} {...props} />
 
 export default QuickFilter

@@ -178,7 +178,7 @@ function FeatureCell({
     <td
       className={`px-4 py-4 text-center align-middle ${
         isLastRow ? '' : 'border-b border-slate-200'
-      } ${isHighlighted ? 'bg-dark text-white' : ''}`}
+      } ${isHighlighted ? 'bg-inverse-bg text-inverse' : ''}`}
     >
       {isCheck && (
         <Check
@@ -260,10 +260,10 @@ export function PlatformTiersSection() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-[1]">
         {/* Header */}
         <div className="flex flex-col items-start lg:items-center gap-4 mb-10">
-          <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-display font-bold leading-[1.2] text-left lg:text-center text-dark">
+          <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-display font-bold leading-[1.2] text-left lg:text-center text-primary">
             Platform Tiers: Foundational EHS & Agentic AI
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-left lg:text-center max-w-[800px] text-teal">
+          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-left lg:text-center max-w-[800px] text-accent">
             Pricing is structured with two components
           </p>
         </div>
@@ -303,7 +303,7 @@ export function PlatformTiersSection() {
                     <th
                       key={tier.name}
                       className={`px-4 py-4 text-center font-sans font-semibold text-sm ${
-                        tier.isHighlighted ? 'bg-dark text-white' : 'bg-slate-100'
+                        tier.isHighlighted ? 'bg-inverse-bg text-inverse' : 'bg-muted-bg'
                       }`}
                       style={{ color: tier.isHighlighted ? undefined : ALIAS.text.primary }}
                     >
@@ -326,7 +326,7 @@ export function PlatformTiersSection() {
                   <td colSpan={4} className="px-4 py-4 text-center border-b border-slate-200">
                     <button
                       onClick={() => scrollToElement('contact')}
-                      className="text-sm font-medium text-teal hover:underline cursor-pointer"
+                      className="text-sm font-medium text-accent hover:underline cursor-pointer"
                     >
                       Get a Custom Quote
                     </button>
@@ -344,7 +344,7 @@ export function PlatformTiersSection() {
                     <td
                       key={tier.name}
                       className={`px-4 py-4 text-center border-b border-slate-200 ${
-                        tier.isHighlighted ? 'bg-dark' : ''
+                        tier.isHighlighted ? 'bg-inverse-bg' : ''
                       }`}
                     >
                       <span
@@ -369,7 +369,7 @@ export function PlatformTiersSection() {
                   {PRICING_TIERS.map((tier) => (
                     <td
                       key={tier.name}
-                      className={`px-4 py-4 ${tier.isHighlighted ? 'bg-dark' : ''}`}
+                      className={`px-4 py-4 ${tier.isHighlighted ? 'bg-inverse-bg' : ''}`}
                     >
                       <span
                         className={`text-xs leading-relaxed block ${
@@ -410,7 +410,7 @@ export function PlatformTiersSection() {
                     <th
                       key={tier.name}
                       className={`px-4 py-4 text-center font-sans font-semibold text-sm ${
-                        tier.isHighlighted ? 'bg-dark text-white' : 'bg-slate-100'
+                        tier.isHighlighted ? 'bg-inverse-bg text-inverse' : 'bg-muted-bg'
                       }`}
                       style={{ color: tier.isHighlighted ? undefined : ALIAS.text.primary }}
                     >
@@ -469,7 +469,7 @@ export function PlatformTiersSection() {
                     <th
                       key={tier.name}
                       className={`px-4 py-4 text-center font-sans font-semibold text-sm ${
-                        tier.isHighlighted ? 'bg-dark text-white' : 'bg-slate-100'
+                        tier.isHighlighted ? 'bg-inverse-bg text-inverse' : 'bg-muted-bg'
                       }`}
                       style={{ color: tier.isHighlighted ? undefined : ALIAS.text.primary }}
                     >

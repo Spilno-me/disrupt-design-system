@@ -54,20 +54,20 @@ export function Footer({
   }
 
   const variantClasses = {
-    default: 'bg-cream/30 backdrop-blur-[10px]',
+    default: 'bg-page/30 backdrop-blur-[10px]',
     transparent: 'bg-transparent',
-    dark: 'bg-dark text-white',
+    dark: 'bg-inverse-bg text-inverse',
   }
 
   const textClasses = {
-    default: 'text-dark',
-    transparent: 'text-dark',
-    dark: 'text-white',
+    default: 'text-primary',
+    transparent: 'text-primary',
+    dark: 'text-inverse',
   }
 
   const linkClasses = {
-    default: 'text-dark hover:text-teal',
-    transparent: 'text-dark hover:text-teal',
+    default: 'text-primary hover:text-accent',
+    transparent: 'text-primary hover:text-accent',
     dark: 'text-white/80 hover:text-white',
   }
 

@@ -7,7 +7,7 @@ const withSimulatedHeader = (Story: React.ComponentType) => (
   <div className="min-h-[500px] bg-gray-100 relative">
     {/* Simulated header bar */}
     <div className="fixed top-0 left-0 right-0 h-[70px] bg-white shadow-md z-50 flex items-center justify-between px-4">
-      <div className="font-bold text-dark">Logo</div>
+      <div className="font-bold text-primary">Logo</div>
       <Story />
     </div>
     {/* Page content */}
@@ -87,30 +87,30 @@ const SampleNavItems = () => (
     <div className="flex flex-col gap-2 mb-4">
       <a
         href="#"
-        className="px-4 py-3 rounded-[8px] text-base font-medium text-dark hover:bg-gray-100 block"
+        className="px-4 py-3 rounded-[8px] text-base font-medium text-primary hover:bg-gray-100 block"
       >
         Home
       </a>
       <a
         href="#"
-        className="px-4 py-3 rounded-[8px] text-base font-medium text-dark hover:bg-gray-100 block"
+        className="px-4 py-3 rounded-[8px] text-base font-medium text-primary hover:bg-gray-100 block"
       >
         Product
       </a>
       <a
         href="#"
-        className="px-4 py-3 rounded-[8px] text-base font-medium text-dark hover:bg-gray-100 block"
+        className="px-4 py-3 rounded-[8px] text-base font-medium text-primary hover:bg-gray-100 block"
       >
         About
       </a>
       <a
         href="#"
-        className="px-4 py-3 rounded-[8px] text-base font-medium bg-teal/10 text-teal block"
+        className="px-4 py-3 rounded-[8px] text-base font-medium bg-accent/10 text-accent block"
       >
         Active Item
       </a>
     </div>
-    <Button className="w-full bg-dark text-white">Contact us</Button>
+    <Button className="w-full bg-inverse-bg text-inverse">Contact us</Button>
   </>
 )
 
@@ -189,13 +189,13 @@ export const Minimal: Story = {
   args: {
     children: (
       <div className="flex flex-col gap-1">
-        <a href="#" className="px-4 py-2 text-dark hover:text-teal">
+        <a href="#" className="px-4 py-2 text-primary hover:text-accent">
           Link 1
         </a>
-        <a href="#" className="px-4 py-2 text-dark hover:text-teal">
+        <a href="#" className="px-4 py-2 text-primary hover:text-accent">
           Link 2
         </a>
-        <a href="#" className="px-4 py-2 text-dark hover:text-teal">
+        <a href="#" className="px-4 py-2 text-primary hover:text-accent">
           Link 3
         </a>
       </div>

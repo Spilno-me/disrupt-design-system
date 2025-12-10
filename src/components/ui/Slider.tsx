@@ -65,12 +65,12 @@ export function Slider({
       {(label || showValue) && (
         <div className="flex justify-between items-center">
           {label && (
-            <span className="font-sans font-semibold text-base text-dark tracking-tight">
+            <span className="font-sans font-semibold text-base text-primary tracking-tight">
               {label}
             </span>
           )}
           {showValue && (
-            <span className="font-sans font-bold text-base text-dark tracking-tight">
+            <span className="font-sans font-bold text-base text-primary tracking-tight">
               {value} {unit}
             </span>
           )}
@@ -80,7 +80,7 @@ export function Slider({
       {/* Radix Slider - custom implementation for precise thumb/range alignment */}
       <div className="relative w-full h-8 lg:h-5 flex items-center">
         {/* Track background */}
-        <div className="absolute inset-x-4 lg:inset-x-2.5 h-6 lg:h-4 rounded-full bg-slate-100" />
+        <div className="absolute inset-x-4 lg:inset-x-2.5 h-6 lg:h-4 rounded-full bg-surface-hover" />
 
         {/* Track fill (Range) */}
         <div

@@ -14,7 +14,7 @@ import {
 import {
   FileText,
   Flag,
-  Cylinder,
+  Barrel,
   Search,
   ClipboardCheck,
   AlertTriangle,
@@ -41,18 +41,35 @@ import {
  * - `warning` (Orange) - Used for aging, reviews, DLB
  * - `primary` (Dark) - Used for in progress items
  *
+ * ## Custom Filter Guidelines
+ * When creating custom filters:
+ * - **Label length**: Maximum 12 characters recommended
+ * - **Icon**: Always provide a Lucide icon (size={24})
+ * - Labels longer than 12 characters may cause layout issues
+ *
  * ## Usage
  * ```tsx
- * import { FileText, Flag } from 'lucide-react'
+ * import { FileText, Flag, Filter } from 'lucide-react'
  *
+ * // Using preset filters
  * <QuickFilter>
- *   <QuickFilterItem variant="default" icon={<FileText size={24} />} count={4} label="Drafts" />
- *   <QuickFilterItem variant="info" icon={<Flag size={24} />} count={10} label="Reported" />
+ *   <DraftsFilter count={4} />
+ *   <ReportedFilter count={10} />
+ * </QuickFilter>
+ *
+ * // Custom filter (max 12 chars for label)
+ * <QuickFilter>
+ *   <QuickFilterItem
+ *     variant="info"
+ *     icon={<Filter size={24} />}
+ *     count={5}
+ *     label="My Filter"  // 9 chars - OK
+ *   />
  * </QuickFilter>
  * ```
  */
 const meta = {
-  title: 'Components/QuickFilter',
+  title: 'Flow/Components/QuickFilter',
   component: QuickFilterItem,
   parameters: {
     layout: 'centered',
@@ -156,7 +173,7 @@ export const Warning: Story = {
     variant: 'warning',
     label: 'Aging',
     count: 4,
-    icon: <Cylinder size={24} />,
+    icon: <Barrel size={24} />,
   },
 }
 
@@ -213,13 +230,14 @@ export const AllSizes: Story = {
 // =============================================================================
 
 /**
- * Without icon - only badge and label
+ * DLB variant - Deadline/Days Late for Business
  */
-export const WithoutIcon: Story = {
+export const DLB: Story = {
   args: {
     variant: 'warning',
     label: 'DLB',
     count: 3,
+    icon: <Clock size={24} />,
   },
 }
 
@@ -272,7 +290,7 @@ export const AllVariants: Story = {
         variant="warning"
         label="Aging"
         count={4}
-        icon={<Cylinder size={24} />}
+        icon={<Barrel size={24} />}
       />
       <QuickFilterItem
         variant="primary"
@@ -313,7 +331,7 @@ export const FigmaDesign: Story = {
         variant="warning"
         label="Aging"
         count={4}
-        icon={<Cylinder size={24} />}
+        icon={<Barrel size={24} />}
       />
       <QuickFilterItem
         variant="primary"
@@ -331,6 +349,7 @@ export const FigmaDesign: Story = {
         variant="warning"
         label="DLB"
         count={3}
+        icon={<Clock size={24} />}
       />
     </QuickFilter>
   ),
@@ -367,7 +386,7 @@ export const PresetComponents: Story = {
     docs: {
       description: {
         story:
-          'Pre-configured filter components with default Lucide icons: DraftsFilter (FileText), ReportedFilter (Flag), AgingFilter (Cylinder/Barrel), InProgressFilter (Search), ReviewsFilter (ClipboardCheck), DLBFilter (no icon).',
+          'Pre-configured filter components with default Lucide icons: DraftsFilter (FileText), ReportedFilter (Flag), AgingFilter (Barrel), InProgressFilter (Search), ReviewsFilter (ClipboardCheck), DLBFilter (Clock).',
       },
     },
   },
@@ -393,7 +412,7 @@ export const Interactive: Story = {
     }> = [
       { id: 'drafts', variant: 'default', label: 'Drafts', count: 4, icon: <FileText size={24} /> },
       { id: 'reported', variant: 'info', label: 'Reported', count: 10, icon: <Flag size={24} /> },
-      { id: 'aging', variant: 'warning', label: 'Aging', count: 4, icon: <Cylinder size={24} /> },
+      { id: 'aging', variant: 'warning', label: 'Aging', count: 4, icon: <Barrel size={24} /> },
       { id: 'progress', variant: 'primary', label: 'In Progress', count: 4, icon: <Search size={24} /> },
       { id: 'reviews', variant: 'warning', label: 'Reviews', count: 3, icon: <ClipboardCheck size={24} /> },
     ]
@@ -454,7 +473,7 @@ export const MultiSelect: Story = {
     }> = [
       { id: 'drafts', variant: 'default', label: 'Drafts', count: 4, icon: <FileText size={24} /> },
       { id: 'reported', variant: 'info', label: 'Reported', count: 10, icon: <Flag size={24} /> },
-      { id: 'aging', variant: 'warning', label: 'Aging', count: 4, icon: <Cylinder size={24} /> },
+      { id: 'aging', variant: 'warning', label: 'Aging', count: 4, icon: <Barrel size={24} /> },
       { id: 'progress', variant: 'primary', label: 'In Progress', count: 4, icon: <Search size={24} /> },
     ]
 
@@ -535,7 +554,7 @@ export const GapVariants: Story = {
  */
 export const OnLightBackground: Story = {
   render: () => (
-    <div className="bg-cream p-8 rounded-lg">
+    <div className="bg-page p-8 rounded-lg">
       <QuickFilter gap="md">
         <DraftsFilter count={4} />
         <ReportedFilter count={10} />
@@ -602,26 +621,31 @@ export const ResponsiveWrap: Story = {
 // =============================================================================
 
 /**
- * Using different Lucide icons
+ * Custom filters with different Lucide icons
+ *
+ * Guidelines for custom filter labels:
+ * - Maximum 12 characters recommended
+ * - Always include an icon
+ * - Use appropriate variant for the filter type
  */
 export const CustomIcons: Story = {
   render: () => (
     <QuickFilter gap="md">
       <QuickFilterItem
         variant="default"
-        label="Pending"
+        label="Pending"      // 7 chars - OK
         count={5}
         icon={<Clock size={24} />}
       />
       <QuickFilterItem
         variant="info"
-        label="Completed"
+        label="Completed"    // 9 chars - OK
         count={12}
         icon={<CheckCircle size={24} />}
       />
       <QuickFilterItem
         variant="warning"
-        label="Alerts"
+        label="Alerts"       // 6 chars - OK
         count={3}
         icon={<AlertTriangle size={24} />}
       />
@@ -630,7 +654,8 @@ export const CustomIcons: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'You can use any Lucide icon by passing it to the `icon` prop.',
+        story:
+          'Custom filters with Lucide icons. **Label limit: 12 characters max.** Always provide an icon for consistency.',
       },
     },
   },

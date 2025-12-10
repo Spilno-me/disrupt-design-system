@@ -132,11 +132,11 @@ export const WithPrivacyPolicy: Story = {
     privacyPolicyLabel: (
       <>
         I agree to the{' '}
-        <a href="#" className="text-teal hover:underline">
+        <a href="#" className="text-accent hover:underline">
           Privacy Policy
         </a>{' '}
         and{' '}
-        <a href="#" className="text-teal hover:underline">
+        <a href="#" className="text-accent hover:underline">
           Terms of Service
         </a>
       </>
@@ -166,7 +166,7 @@ export const Submitting: Story = {
 export const InCard: Story = {
   render: (args) => (
     <div className="w-[450px] p-6 bg-white rounded-lg shadow-md border">
-      <h2 className="text-xl font-bold text-dark mb-2">Get in Touch</h2>
+      <h2 className="text-xl font-bold text-primary mb-2">Get in Touch</h2>
       <p className="text-muted-foreground text-sm mb-6">
         Fill out the form below and we'll get back to you within 24 hours.
       </p>

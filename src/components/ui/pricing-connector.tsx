@@ -58,7 +58,7 @@ function PricingConnector({
           ease: [0.34, 1.56, 0.64, 1] // Bouncy easing
         }}
       >
-        {icon || <Plus className="w-5 h-5 text-white" strokeWidth={3} />}
+        {icon || <Plus className="w-5 h-5 text-inverse" strokeWidth={3} />}
       </motion.div>
     </div>
   )

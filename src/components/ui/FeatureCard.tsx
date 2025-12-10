@@ -213,7 +213,7 @@ export function FeatureCard({
       </div>
 
       {/* Title - always visible */}
-      <h3 className="text-lg font-sans font-semibold text-dark leading-7">
+      <h3 className="text-lg font-sans font-semibold text-primary leading-7">
         {title}
       </h3>
 

@@ -80,7 +80,7 @@ export function ScrollableTableWrapper({ children, className = '' }: ScrollableT
             exit={{ opacity: 0, x: 10 }}
             transition={{ duration: 0.3 }}
             onClick={handleHintClick}
-            className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-dark text-white text-xs font-medium px-3 py-2 rounded-full shadow-lg lg:hidden"
+            className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-inverse-bg text-inverse text-xs font-medium px-3 py-2 rounded-full shadow-lg lg:hidden"
             aria-label="Scroll to see more"
           >
             <span>Swipe</span>

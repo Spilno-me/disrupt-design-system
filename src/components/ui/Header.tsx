@@ -5,6 +5,7 @@ import { ElectricButtonWrapper } from './GlassEffect'
 import { Button } from './button'
 import { cn } from '../../lib/utils'
 import { SHADOWS } from '../../constants/designTokens'
+import { useHeaderContrast } from '../../hooks/useHeaderContrast'
 
 // =============================================================================
 // TYPES
@@ -32,8 +33,8 @@ export interface HeaderProps {
   logoAlt?: string
   /** Whether to show the tagline in the logo */
   showLogoTagline?: boolean
-  /** Color mode for contrast on different backgrounds */
-  colorMode?: 'dark' | 'light'
+  /** Color mode for contrast on different backgrounds. Use 'auto' to detect based on scroll position. */
+  colorMode?: 'dark' | 'light' | 'auto'
   /** Callback when logo is clicked */
   onLogoClick?: () => void
   /** Callback when contact button is clicked */
@@ -69,11 +70,11 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
 export function Header({
   navItems = DEFAULT_NAV_ITEMS,
   showContactButton = true,
-  contactButtonText = 'Contact us',
+  contactButtonText = "Let's Talk",
   contactButtonPath = '/#contact',
   logoAlt = 'Disrupt Logo',
   showLogoTagline = true,
-  colorMode = 'dark',
+  colorMode = 'auto',
   onLogoClick,
   onContactClick,
   onNavItemClick,
@@ -83,8 +84,14 @@ export function Header({
   navClassName,
   disableMobileMenuPortal = false,
 }: HeaderProps) {
+  // Auto-detect color mode based on scroll position
+  const autoColorMode = useHeaderContrast()
+
+  // Use auto-detected mode if colorMode is 'auto', otherwise use the provided value
+  const effectiveColorMode = colorMode === 'auto' ? autoColorMode : colorMode
+
   // Text color based on background
-  const navTextColor = colorMode === 'dark' ? 'text-dark' : 'text-white'
+  const navTextColor = effectiveColorMode === 'dark' ? 'text-primary' : 'text-inverse'
 
   // Default link renderer (simple anchor)
   const defaultRenderNavLink = (item: NavItem, children: React.ReactNode) => (
@@ -113,7 +120,7 @@ export function Header({
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 backdrop-blur-[10px] bg-cream/30 border-b border-teal',
+        'fixed top-0 left-0 right-0 z-50 backdrop-blur-[10px] bg-page/30 border-b border-accent',
         className
       )}
       style={{ boxShadow: SHADOWS.header }}
@@ -130,7 +137,7 @@ export function Header({
               className="h-[54px] w-[178px] cursor-pointer overflow-visible"
               onClick={onLogoClick}
               alt={logoAlt}
-              colorMode={colorMode}
+              colorMode={effectiveColorMode}
               showTagline={showLogoTagline}
             />
           </div>
@@ -143,7 +150,7 @@ export function Header({
                   key={item.path}
                   className="nav-item"
                   isActive={item.isActive}
-                  colorMode={colorMode}
+                  colorMode={effectiveColorMode}
                 >
                   {navLinkRenderer(
                     item,
@@ -163,11 +170,11 @@ export function Header({
 
             {/* Contact Button */}
             {showContactButton && (
-              <ElectricButtonWrapper colorMode={colorMode}>
+              <ElectricButtonWrapper colorMode={effectiveColorMode}>
                 <Button
                   asChild
                   size="sm"
-                  className="bg-dark text-white hover:bg-dark/90"
+                  className="bg-inverse-bg text-inverse hover:bg-inverse-bg/90"
                 >
                   {contactLinkRenderer(contactButtonText)}
                 </Button>
@@ -187,8 +194,8 @@ export function Header({
                         className={cn(
                           'px-4 py-3 rounded-[8px] text-base font-medium cursor-pointer block w-full',
                           item.isActive
-                            ? 'bg-teal/10 text-teal'
-                            : 'text-dark hover:bg-white/10'
+                            ? 'bg-accent/10 text-accent'
+                            : 'text-primary hover:bg-surface/10'
                         )}
                       >
                         {item.label}
@@ -202,7 +209,7 @@ export function Header({
               {showContactButton && (
                 <ElectricButtonWrapper className="w-full">
                   {contactLinkRenderer(
-                    <span className="w-full h-11 px-4 py-2 rounded-[12px] text-base font-medium cursor-pointer bg-dark text-white flex items-center justify-center">
+                    <span className="w-full h-11 px-4 py-2 rounded-[12px] text-base font-medium cursor-pointer bg-inverse-bg text-inverse flex items-center justify-center">
                       {contactButtonText}
                     </span>
                   )}

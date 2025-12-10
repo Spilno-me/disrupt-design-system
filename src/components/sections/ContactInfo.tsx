@@ -133,7 +133,7 @@ export function ContactInfo() {
       <div className="flex flex-col gap-6" data-element="contact-info-details">
         {/* Email us header */}
         <div className="flex flex-col gap-3">
-          <h3 className="text-xl font-sans font-bold text-dark">
+          <h3 className="text-xl font-sans font-bold text-primary">
             Email us
           </h3>
           <p className="text-muted text-base">
@@ -143,10 +143,10 @@ export function ContactInfo() {
 
         {/* Contact email */}
         <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold text-dark">Contact</span>
+          <span className="text-sm font-bold text-primary">Contact</span>
           <a
             href={emailHref}
-            className="text-dark font-medium text-base underline underline-offset-4 transition-colors hover:text-teal"
+            className="text-primary font-medium text-base underline underline-offset-4 transition-colors hover:text-accent"
           >
             {COMPANY_INFO.EMAIL}
           </a>
@@ -158,7 +158,7 @@ export function ContactInfo() {
 
       {/* Follow Us Section - inline layout */}
       <div className="flex items-center gap-4">
-        <h3 className="text-xl font-sans font-bold text-dark">
+        <h3 className="text-xl font-sans font-bold text-primary">
           Follow us
         </h3>
         <LinkedInButton />

@@ -4,7 +4,7 @@ import { aboutImages } from '../assets/optimized/about'
 import { Zap, Globe, Shield, Image, FileImage, Layers } from 'lucide-react'
 
 const meta: Meta = {
-  title: 'Assets/Hero Images',
+  title: 'Foundation/Assets/HeroImages',
   parameters: {
     layout: 'fullscreen',
     docs: {

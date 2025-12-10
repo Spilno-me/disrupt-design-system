@@ -3,7 +3,7 @@ import { Badge } from './badge'
 import { COLORS } from '../../constants/designTokens'
 
 const meta = {
-  title: 'Components/Badge',
+  title: 'Core/Badge',
   component: Badge,
   parameters: {
     layout: 'centered',

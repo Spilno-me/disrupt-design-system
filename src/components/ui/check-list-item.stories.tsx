@@ -130,8 +130,8 @@ export const FeatureList: Story = {
 // Benefits section style
 export const BenefitsSection: Story = {
   render: () => (
-    <div className="p-6 bg-cream rounded-lg max-w-lg">
-      <h3 className="text-xl font-bold text-dark mb-4">Why Choose Us</h3>
+    <div className="p-6 bg-page rounded-lg max-w-lg">
+      <h3 className="text-xl font-bold text-primary mb-4">Why Choose Us</h3>
       <div className="space-y-4">
         <CheckListItem
           label="Save Time"
@@ -182,7 +182,7 @@ export const CompactList: Story = {
 // Dark background context
 export const OnDarkBackground: Story = {
   render: () => (
-    <div className="p-6 bg-dark rounded-lg max-w-lg">
+    <div className="p-6 bg-inverseBg rounded-lg max-w-lg">
       <h3 className="text-xl font-bold text-white mb-4">Platform Features</h3>
       <div className="space-y-4 text-white">
         <div className="flex items-start gap-3 sm:gap-4">

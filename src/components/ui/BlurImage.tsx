@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'motion/react'
 
 interface ImageSource {
@@ -33,11 +33,19 @@ export function BlurImage({
   onLoad,
 }: BlurImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
 
   const handleLoad = () => {
     setIsLoaded(true)
     onLoad?.()
   }
+
+  // Check if image is already loaded (cached)
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current?.naturalHeight > 0) {
+      handleLoad()
+    }
+  }, [])
 
   return (
     <div className={`relative w-full h-full overflow-hidden ${className}`}>
@@ -96,6 +104,7 @@ export function BlurImage({
         />
         {/* Fallback */}
         <img
+          ref={imgRef}
           src={images.desktop.fallback}
           alt={alt}
           className="w-full h-full object-cover"

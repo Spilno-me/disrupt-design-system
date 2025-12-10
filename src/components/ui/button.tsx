@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { motion, useMotionValue, useTransform, animate } from "motion/react"
 
 import { cn } from "../../lib/utils"
-import { GLASS_GRADIENTS } from "../../constants/designTokens"
+import { GLASS_GRADIENTS, Z_INDEX } from "../../constants/designTokens"
 
 // =============================================================================
 // GLASS EFFECT CONFIGURATION
@@ -20,33 +20,33 @@ const ANIMATION_DURATION = 1.5
 // =============================================================================
 
 const buttonVariants = cva(
-  "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium font-sans transition-all cursor-pointer disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-[3px] focus-visible:ring-teal/30 focus-visible:border-teal",
+  "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium font-sans transition-all cursor-pointer disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-[3px] focus-visible:ring-accent/30 focus-visible:border-accent",
   {
     variants: {
       variant: {
         // Primary - Dark background (brand primary)
         default:
-          "bg-dark text-white shadow-sm hover:bg-dark/90",
+          "bg-inverseBg text-inverse shadow-sm hover:bg-inverseBg/90",
         // Destructive - Error/danger state
         destructive:
-          "bg-error text-white shadow-sm hover:bg-error/90 focus-visible:ring-error/30",
+          "bg-error text-inverse shadow-sm hover:bg-error/90 focus-visible:ring-error/30",
         // Outline - Bordered variant
         outline:
-          "border border-slate bg-white text-dark shadow-sm hover:bg-cream",
+          "border border-default bg-surface text-primary shadow-sm hover:bg-page",
         // Secondary - Light background
         secondary:
-          "bg-lightPurple text-darkPurple shadow-sm hover:bg-lightPurple/80",
+          "bg-mutedBg text-secondary shadow-sm hover:bg-mutedBg/80",
         // Ghost - Transparent until hover
         ghost:
-          "text-dark hover:bg-cream",
+          "text-primary hover:bg-page",
         // Link - Text only
-        link: "text-teal underline-offset-4 hover:underline",
+        link: "text-accent underline-offset-4 hover:underline",
         // Contact - Specific CTA button
         contact:
-          "h-10 bg-dark text-white hover:bg-dark/90 px-6 py-2 font-medium",
+          "h-10 bg-inverseBg text-inverse hover:bg-inverseBg/90 px-6 py-2 font-medium",
         // Accent - Teal/brand secondary
         accent:
-          "bg-teal text-white shadow-sm hover:bg-teal/90",
+          "bg-accentStrong text-inverse shadow-sm hover:bg-accentStrong/90",
       },
       size: {
         default: "h-10 px-6 py-2 has-[>svg]:px-4",
@@ -164,7 +164,7 @@ function Button({
             maskComposite: 'exclude',
             WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
-            zIndex: 10,
+            zIndex: Z_INDEX.dropdown,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showEffect ? 1 : 0 }}
@@ -181,7 +181,7 @@ function Button({
             backgroundSize: '200% 100%',
             backgroundPosition,
             filter: 'blur(8px)',
-            zIndex: 10,
+            zIndex: Z_INDEX.dropdown,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showEffect ? 1 : 0 }}

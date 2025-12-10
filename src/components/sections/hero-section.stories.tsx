@@ -12,38 +12,32 @@ const meta: Meta<typeof HeroSection> = {
   argTypes: {
     title: {
       control: 'text',
-      description: 'Main hero title',
+      description: 'Main hero title (fallback when rotatingTitles not provided)',
+    },
+    rotatingTitles: {
+      control: 'object',
+      description: 'Array of titles to rotate through with animation',
+    },
+    rotationInterval: {
+      control: 'number',
+      description: 'Rotation interval in milliseconds',
     },
     subtitle: {
       control: 'text',
-      description: 'Subtitle text',
+      description: 'Subtitle text displayed below title',
     },
-    primaryButtonText: {
-      control: 'text',
-      description: 'Primary CTA button text',
-    },
-    secondaryButtonText: {
-      control: 'text',
-      description: 'Secondary CTA button text',
-    },
-    backgroundColor: {
+    layout: {
       control: 'select',
-      options: ['dark', 'primary', 'gradient'],
-      description: 'Background color when no image',
+      options: ['center', 'left-bottom', 'two-column'],
+      description: 'Content layout variant',
     },
-    alignment: {
-      control: 'select',
-      options: ['center', 'left'],
-      description: 'Content alignment',
-    },
-    height: {
-      control: 'select',
-      options: ['small', 'medium', 'large', 'full'],
-      description: 'Hero height',
-    },
-    showOverlay: {
+    showParticles: {
       control: 'boolean',
-      description: 'Show gradient overlay on background image',
+      description: 'Show particle effects',
+    },
+    showGridBlob: {
+      control: 'boolean',
+      description: 'Show grid blob background effect',
     },
   },
 }
@@ -51,106 +45,73 @@ const meta: Meta<typeof HeroSection> = {
 export default meta
 type Story = StoryObj<typeof HeroSection>
 
-// Default hero (matches website home page)
-export const Default: Story = {
+// Home Page Hero - Center Layout
+export const HomePageHero: Story = {
   args: {
-    title: 'Protect People. Empower Strategy.',
-    subtitle: 'Compliance should make workplaces safer and decisions smarter — not bury teams in forms.',
-    primaryButtonText: 'Get Started',
-    secondaryButtonText: 'Learn More',
-    backgroundColor: 'dark',
-    alignment: 'center',
-    height: 'medium',
-  },
-}
-
-// With background image (using optimized assets)
-export const WithBackgroundImage: Story = {
-  args: {
-    title: 'Protect People. Empower Strategy.',
-    subtitle: 'Compliance should make workplaces safer and decisions smarter — not bury teams in forms.',
-    primaryButtonText: 'Get Started',
-    secondaryButtonText: 'Learn More',
-    backgroundImage: optimizedImages.heroFrame.desktop.webp,
-    alignment: 'center',
-    height: 'large',
-    showOverlay: true,
-  },
-}
-
-// Rotating Titles (slideshow animation)
-export const RotatingTitles: Story = {
-  args: {
-    title: 'Fallback Title',
+    title: 'Protect People',
     rotatingTitles: ['Protect People', 'Empower Strategy', 'Cut the Admin'],
     rotationInterval: 4000,
     subtitle: 'Compliance should make workplaces safer and decisions smarter — not bury teams in forms.',
-    primaryButtonText: 'Get Started',
-    backgroundColor: 'dark',
-    alignment: 'center',
-    height: 'medium',
+    backgroundImage: optimizedImages.heroFrame,
+    layout: 'center',
+    showParticles: true,
+    showGridBlob: true,
   },
 }
 
-// Minimal (page header style)
-export const Minimal: Story = {
+// Product Page Hero - Left Bottom Layout
+export const ProductPageHero: Story = {
   args: {
-    title: 'About Us',
-    subtitle: 'Our story and mission',
-    backgroundColor: 'dark',
-    alignment: 'center',
-    height: 'small',
+    title: 'Platform Overview',
+    subtitle: 'The only EHS platform built for the way you actually work',
+    backgroundImage: optimizedImages.heroFrame,
+    layout: 'left-bottom',
+    showParticles: true,
+    showGridBlob: true,
   },
 }
 
-// With custom content (logos, trust badges, etc.)
-export const WithCustomContent: Story = {
+// About Page Hero - Two Column Layout
+export const AboutPageHero: Story = {
   render: () => (
     <HeroSection
-      title="Trusted by Industry Leaders"
-      subtitle="See why companies choose us"
-      primaryButtonText="Get Started"
-      backgroundColor="dark"
-      height="medium"
+      title="About Disrupt"
+      rotatingTitles={['About Disrupt', 'Our Mission', 'Our Story']}
+      subtitle="Building the future of workplace safety and compliance"
+      backgroundImage={optimizedImages.heroFrame}
+      layout="two-column"
+      showParticles={true}
+      showGridBlob={true}
     >
-      <div className="flex gap-8 justify-center items-center mt-4 opacity-60">
-        <div className="text-white text-xl font-bold">Company A</div>
-        <div className="text-white text-xl font-bold">Company B</div>
-        <div className="text-white text-xl font-bold">Company C</div>
-        <div className="text-white text-xl font-bold">Company D</div>
-      </div>
+      <ul className="space-y-2 text-cream/80 text-sm">
+        <li>Founded in 2020</li>
+        <li>100+ enterprise clients</li>
+        <li>Global team of experts</li>
+      </ul>
     </HeroSection>
   ),
 }
 
-// With responsive optimized images (recommended for production)
-export const WithResponsiveImage: Story = {
+// Static Title (no rotation)
+export const StaticTitle: Story = {
   args: {
-    title: 'Protect People. Empower Strategy.',
-    subtitle: 'Compliance should make workplaces safer and decisions smarter — not bury teams in forms.',
-    primaryButtonText: 'Get Started',
-    secondaryButtonText: 'Learn More',
-    responsiveBackgroundImage: optimizedImages.heroFrame,
-    alignment: 'center',
-    height: 'large',
-    showOverlay: true,
+    title: 'Single Static Title',
+    subtitle: 'Without rotating animation',
+    backgroundImage: optimizedImages.heroFrame,
+    layout: 'center',
+    showParticles: true,
+    showGridBlob: true,
   },
 }
 
-// Home Page Hero (production-ready)
-export const HomePageHero: Story = {
-  render: () => (
-    <HeroSection
-      title="Protect People. Empower Strategy."
-      rotatingTitles={['Protect People', 'Empower Strategy', 'Cut the Admin']}
-      rotationInterval={4000}
-      subtitle="Compliance should make workplaces safer and decisions smarter — not bury teams in forms."
-      primaryButtonText="Get Started"
-      secondaryButtonText="Learn More"
-      responsiveBackgroundImage={optimizedImages.heroFrame}
-      alignment="center"
-      height="large"
-      showOverlay={true}
-    />
-  ),
+// Without Particles
+export const WithoutParticles: Story = {
+  args: {
+    title: 'Minimal Hero',
+    subtitle: 'Without particle effects',
+    backgroundImage: optimizedImages.heroFrame,
+    layout: 'center',
+    showParticles: false,
+    showGridBlob: false,
+  },
 }

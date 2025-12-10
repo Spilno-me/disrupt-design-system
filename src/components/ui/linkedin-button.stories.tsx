@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { LinkedInButton } from './LinkedInButton'
 
 const meta = {
-  title: 'Components/LinkedInButton',
+  title: 'Website/LinkedInButton',
   component: LinkedInButton,
   parameters: {
     layout: 'centered',

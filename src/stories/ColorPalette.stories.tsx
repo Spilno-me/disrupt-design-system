@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ColorPalette } from './ColorPalette';
 
 const meta = {
-  title: 'Disrupt Design System/Brand/Color Swatches',
+  title: 'Foundation/Colors',
   component: ColorPalette,
   parameters: {
     layout: 'padded',

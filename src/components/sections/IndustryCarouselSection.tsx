@@ -192,7 +192,7 @@ const IndustryCard = forwardRef<HTMLDivElement, IndustryCardProps>(
   return (
     <motion.div
       ref={ref}
-      className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-xl overflow-hidden cursor-pointer border border-slate-200 flex-shrink-0"
+      className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-xl overflow-hidden cursor-pointer border border-default flex-shrink-0"
       style={{ scrollSnapAlign: 'center' }}
       data-dark-background="true"
       initial={false}
@@ -278,7 +278,7 @@ const IndustryCard = forwardRef<HTMLDivElement, IndustryCardProps>(
           animate={{ y: isExpanded ? -100 : 0 }}
           transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1], delay: isExpanded ? 0.5 : 0 }}
         >
-          <div className="flex items-center gap-2 sm:gap-3 text-white">
+          <div className="flex items-center gap-2 sm:gap-3 text-inverse">
             <motion.div
               className="flex items-center justify-center flex-shrink-0"
               initial={false}
@@ -301,8 +301,8 @@ const IndustryCard = forwardRef<HTMLDivElement, IndustryCardProps>(
           animate={{ opacity: isExpanded ? 1 : 0 }}
           transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1], delay: isExpanded ? 0.6 : 0 }}
         >
-          <p className="text-white/90 text-sm leading-relaxed mb-2">{industry.description}</p>
-          <span className="text-white/70 text-sm font-medium">Coming soon</span>
+          <p className="text-inverse/90 text-sm leading-relaxed mb-2">{industry.description}</p>
+          <span className="text-inverse/70 text-sm font-medium">Coming soon</span>
         </motion.div>
       </div>
     </motion.div>
@@ -318,10 +318,12 @@ IndustryCard.displayName = 'IndustryCard'
 export function IndustryCarouselSection({
   title = 'Empowering Disruptors in',
   subtitle = 'Industry-specific compliance solutions built for the way you work',
-  industries = DEFAULT_INDUSTRIES,
+  industries,
   defaultExpandedId,
   className,
 }: IndustryCarouselSectionProps) {
+  // Use DEFAULT_INDUSTRIES if industries is undefined or empty
+  const industriesData = industries && industries.length > 0 ? industries : DEFAULT_INDUSTRIES
   const isMobileInitial = typeof window !== 'undefined' && window.innerWidth < 768
   const [expandedId, setExpandedId] = useState<string | null>(
     defaultExpandedId !== undefined ? defaultExpandedId : (isMobileInitial ? null : 'logistics')
@@ -501,15 +503,15 @@ export function IndustryCarouselSection({
 
   return (
     <section
-      className={`bg-cream py-10 sm:py-14 lg:py-16 border-y-dashed-figma ${className || ''}`}
+      className={`bg-page py-10 sm:py-14 lg:py-16 border-y-dashed-figma ${className || ''}`}
       data-element="industry-carousel-section"
     >
       <SectionContainer>
         <div className="text-left lg:text-center mb-10 lg:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-display font-bold text-dark leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-display font-bold text-primary leading-tight">
             {title}
           </h2>
-          <p className="mt-3 text-sm sm:text-base lg:text-lg font-display font-medium text-teal">
+          <p className="mt-3 text-sm sm:text-base lg:text-lg font-display font-medium text-accent">
             {subtitle}
           </p>
         </div>
@@ -525,8 +527,8 @@ export function IndustryCarouselSection({
           onTouchMove={isMobile ? handleUserInteraction : undefined}
           onScroll={handleScroll}
         >
-          {industries.map((industry, index) => {
-            const cardPosition = index / (industries.length - 1)
+          {industriesData.map((industry, index) => {
+            const cardPosition = index / (industriesData.length - 1)
             const parallaxOffset = scrollProgress + (cardPosition * 0.5)
 
             return (

@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react'
 import { motion } from 'motion/react'
-import { GLASS_GRADIENTS } from '../../constants/designTokens'
+import { GLASS_GRADIENTS, Z_INDEX } from '../../constants/designTokens'
 
 // =============================================================================
 // CONFIGURATION
@@ -41,9 +41,8 @@ export function GlassInputWrapper({ children }: GlassInputWrapperProps) {
     >
       {/* Glass border - static */}
       <motion.div
-        className="absolute inset-[-2px] rounded-sm pointer-events-none"
+        className="absolute inset-[-2px] rounded-sm pointer-events-none p-0.5"
         style={{
-          padding: '2px',
           background: GLASS_GRADIENT,
           backgroundSize: '200% 100%',
           backgroundPosition: staticBackgroundPosition,
@@ -147,7 +146,7 @@ export function GlassButtonWrapper({ children, className = '', isActive = false,
             maskComposite: 'exclude',
             WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
-            zIndex: 10,
+            zIndex: Z_INDEX.dropdown,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showEffect ? borderOpacity : 0 }}
@@ -164,7 +163,7 @@ export function GlassButtonWrapper({ children, className = '', isActive = false,
             backgroundSize: '200% 100%',
             backgroundPosition: staticBackgroundPosition,
             filter: `blur(${glowBlur})`,
-            zIndex: 10,
+            zIndex: Z_INDEX.dropdown,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: showEffect ? glowOpacity : 0 }}

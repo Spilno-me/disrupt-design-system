@@ -61,7 +61,7 @@ export function ScrollToTopButton({ triggerSelector = '[data-element="faq-sectio
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2 }}
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-dark text-white shadow-lg flex items-center justify-center active:scale-95 transition-transform"
+          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-inverse-bg text-inverse shadow-lg flex items-center justify-center active:scale-95 transition-transform"
           aria-label="Scroll to top"
         >
           <ArrowUp className="w-5 h-5" />

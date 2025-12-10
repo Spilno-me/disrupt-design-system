@@ -106,7 +106,7 @@ export const InListContext: Story = {
             staggerDelay={0.15}
             autoAnimate
           />
-          <span className="text-dark">{item}</span>
+          <span className="text-primary">{item}</span>
         </div>
       ))}
     </div>
@@ -117,7 +117,7 @@ export const InListContext: Story = {
 export const WithBackground: Story = {
   render: () => (
     <div className="flex gap-4">
-      <div className="w-10 h-10 rounded-full bg-teal/10 flex items-center justify-center">
+      <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
         <AnimatedCheck className="w-5 h-5" autoAnimate />
       </div>
       <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">

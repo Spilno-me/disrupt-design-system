@@ -82,7 +82,7 @@ export function ProductHeroSection() {
         >
           {/* Title */}
           <h1
-            className="font-display font-bold text-cream text-[32px] sm:text-[32px] lg:text-[48px] leading-[44px] sm:leading-[48px] lg:leading-[60px] tracking-[2.5px] sm:tracking-[3px] lg:tracking-[4px] mb-4"
+            className="font-display font-bold text-page text-[32px] sm:text-[32px] lg:text-[48px] leading-[44px] sm:leading-[48px] lg:leading-[60px] tracking-[2.5px] sm:tracking-[3px] lg:tracking-[4px] mb-4"
             data-element="product-hero-title"
           >
             {HERO_TITLE}
@@ -90,7 +90,7 @@ export function ProductHeroSection() {
 
           {/* Subtitle */}
           <p
-            className="font-display font-medium text-teal text-sm sm:text-base lg:text-lg"
+            className="font-display font-medium text-accent text-sm sm:text-base lg:text-lg"
             data-element="product-hero-subtitle"
           >
             {HERO_SUBTITLE}

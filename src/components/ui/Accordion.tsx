@@ -1,6 +1,7 @@
+"use client"
+
 import * as React from 'react'
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { COLORS, ALIAS } from '../../constants/designTokens'
@@ -37,10 +38,13 @@ export interface AccordionProps {
   answerBgColor?: string
 }
 
-export interface AccordionItemProps {
+// =============================================================================
+// ACCORDION ITEM COMPONENT
+// =============================================================================
+
+interface AccordionItemComponentProps {
   item: AccordionItem
-  isOpen: boolean
-  onToggle: () => void
+  value: string
   isLast?: boolean
   borderColor?: string
   questionColor?: string
@@ -48,69 +52,66 @@ export interface AccordionItemProps {
   answerBgColor?: string
 }
 
-// =============================================================================
-// ACCORDION ITEM COMPONENT
-// =============================================================================
-
 function AccordionItemComponent({
   item,
-  isOpen,
-  onToggle,
+  value,
   isLast = false,
   borderColor = COLORS.teal,
-  questionColor = COLORS.darkPurple,
+  questionColor = COLORS.dark,
   answerColor = COLORS.darkPurple,
   answerBgColor = ALIAS.overlay.tealGlass,
-}: AccordionItemProps) {
+}: AccordionItemComponentProps) {
   return (
-    <div className={isLast ? '' : 'border-b border-dashed'} style={{ borderColor }}>
-      <button
-        className="w-full flex items-center justify-between py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-teal rounded-md"
-        onClick={onToggle}
-        aria-expanded={isOpen}
-      >
-        <span
-          className="font-sans font-medium text-sm pr-4"
-          style={{ color: questionColor }}
+    <AccordionPrimitive.Item
+      value={value}
+      className={cn(
+        isLast ? '' : 'border-b border-dashed'
+      )}
+      style={{ borderColor }}
+    >
+      <AccordionPrimitive.Header className="flex">
+        <AccordionPrimitive.Trigger
+          className={cn(
+            'flex flex-1 items-center justify-between py-4 text-left',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-teal rounded-md',
+            'group'
+          )}
         >
-          {item.question}
-        </span>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="flex-shrink-0"
-        >
+          <span
+            className="font-sans font-medium text-sm pr-4"
+            style={{ color: questionColor }}
+          >
+            {item.question}
+          </span>
           <ChevronDown
-            className="w-5 h-5"
+            className={cn(
+              'w-5 h-5 flex-shrink-0 transition-transform duration-200',
+              'group-data-[state=open]:rotate-180'
+            )}
             style={{ color: COLORS.muted }}
           />
-        </motion.div>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <div
-              className="rounded-md p-4 mb-4"
-              style={{ backgroundColor: answerBgColor }}
-            >
-              <p
-                className="font-sans text-sm leading-relaxed"
-                style={{ color: answerColor }}
-              >
-                {item.answer}
-              </p>
-            </div>
-          </motion.div>
+        </AccordionPrimitive.Trigger>
+      </AccordionPrimitive.Header>
+      <AccordionPrimitive.Content
+        className={cn(
+          'overflow-hidden',
+          'data-[state=open]:animate-accordion-down',
+          'data-[state=closed]:animate-accordion-up'
         )}
-      </AnimatePresence>
-    </div>
+      >
+        <div
+          className="rounded-md p-4 mb-4"
+          style={{ backgroundColor: answerBgColor }}
+        >
+          <p
+            className="font-sans text-sm leading-relaxed"
+            style={{ color: answerColor }}
+          >
+            {item.answer}
+          </p>
+        </div>
+      </AccordionPrimitive.Content>
+    </AccordionPrimitive.Item>
   )
 }
 
@@ -119,8 +120,13 @@ function AccordionItemComponent({
 // =============================================================================
 
 /**
- * Accordion - An expandable/collapsible content component.
- * Supports single or multiple open items.
+ * Accordion - An expandable/collapsible content component built on Radix UI.
+ *
+ * Features:
+ * - Keyboard navigation (Arrow keys, Home, End)
+ * - ARIA attributes handled automatically
+ * - Single or multiple expansion modes
+ * - Animated open/close transitions
  */
 export function Accordion({
   items,
@@ -128,40 +134,54 @@ export function Accordion({
   allowMultiple = false,
   className,
   borderColor = COLORS.teal,
-  questionColor = COLORS.darkPurple,
+  questionColor = COLORS.dark,
   answerColor = COLORS.darkPurple,
   answerBgColor = ALIAS.overlay.tealGlass,
 }: AccordionProps) {
-  const [openIndices, setOpenIndices] = useState<Set<number>>(() => {
-    if (defaultOpenIndex !== null && defaultOpenIndex >= 0) {
-      return new Set([defaultOpenIndex])
-    }
-    return new Set()
-  })
+  // Generate unique values for each item
+  const getItemValue = (index: number, item: AccordionItem) =>
+    item.id || `accordion-item-${index}`
 
-  const handleToggle = (index: number) => {
-    setOpenIndices((prev) => {
-      const next = new Set(prev)
-      if (next.has(index)) {
-        next.delete(index)
-      } else {
-        if (!allowMultiple) {
-          next.clear()
-        }
-        next.add(index)
-      }
-      return next
-    })
+  // Determine default value based on defaultOpenIndex
+  const defaultValue = defaultOpenIndex !== null && defaultOpenIndex >= 0
+    ? getItemValue(defaultOpenIndex, items[defaultOpenIndex])
+    : undefined
+
+  if (allowMultiple) {
+    return (
+      <AccordionPrimitive.Root
+        type="multiple"
+        defaultValue={defaultValue ? [defaultValue] : undefined}
+        className={cn('', className)}
+      >
+        {items.map((item, index) => (
+          <AccordionItemComponent
+            key={getItemValue(index, item)}
+            item={item}
+            value={getItemValue(index, item)}
+            isLast={index === items.length - 1}
+            borderColor={borderColor}
+            questionColor={questionColor}
+            answerColor={answerColor}
+            answerBgColor={answerBgColor}
+          />
+        ))}
+      </AccordionPrimitive.Root>
+    )
   }
 
   return (
-    <div className={cn('', className)}>
+    <AccordionPrimitive.Root
+      type="single"
+      collapsible
+      defaultValue={defaultValue}
+      className={cn('', className)}
+    >
       {items.map((item, index) => (
         <AccordionItemComponent
-          key={item.id || item.question}
+          key={getItemValue(index, item)}
           item={item}
-          isOpen={openIndices.has(index)}
-          onToggle={() => handleToggle(index)}
+          value={getItemValue(index, item)}
           isLast={index === items.length - 1}
           borderColor={borderColor}
           questionColor={questionColor}
@@ -169,6 +189,16 @@ export function Accordion({
           answerBgColor={answerBgColor}
         />
       ))}
-    </div>
+    </AccordionPrimitive.Root>
   )
 }
+
+// =============================================================================
+// PRIMITIVE EXPORTS (for custom compositions)
+// =============================================================================
+
+export const AccordionRoot = AccordionPrimitive.Root
+export const AccordionItemPrimitive = AccordionPrimitive.Item
+export const AccordionTrigger = AccordionPrimitive.Trigger
+export const AccordionContent = AccordionPrimitive.Content
+export const AccordionHeader = AccordionPrimitive.Header

@@ -57,7 +57,7 @@ const defaultFields: ContactFormField[] = [
  */
 export function ContactForm({
   fields = defaultFields,
-  submitButtonText = 'Send Message',
+  submitButtonText = 'Get in Touch',
   onSubmit,
   isSubmitting = false,
   showEffects: _showEffects = false,
@@ -91,7 +91,7 @@ export function ContactForm({
           {field.type !== 'checkbox' && (
             <Label htmlFor={field.name}>
               {field.label}
-              {field.required && <span className="text-destructive ml-1">*</span>}
+              {field.required && <span className="text-error ml-1">*</span>}
             </Label>
           )}
 
@@ -125,7 +125,7 @@ export function ContactForm({
       {privacyPolicyLabel && (
         <div className="flex items-start space-x-2">
           <Checkbox id="privacy" name="privacy" required />
-          <Label htmlFor="privacy" className="font-normal text-sm text-muted-foreground leading-tight">
+          <Label htmlFor="privacy" className="font-normal text-sm text-muted leading-tight">
             {privacyPolicyLabel}
           </Label>
         </div>

@@ -5,7 +5,7 @@ import { ContactFormErrorModal } from './ContactFormErrorModal'
 import { Button } from '../ui/button'
 
 const meta: Meta = {
-  title: 'Forms/Contact Form Modals',
+  title: 'Website/Forms/ContactFormModals',
   parameters: {
     layout: 'centered',
     docs: {

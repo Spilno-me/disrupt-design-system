@@ -133,7 +133,7 @@ export function WhatDisruptDoesSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-cream py-8 sm:py-12 lg:py-24 border-y-dashed-figma"
+      className="bg-page py-8 sm:py-12 lg:py-24 border-y-dashed-figma"
       data-element="what-disrupt-does-section"
     >
       <SectionContainer>

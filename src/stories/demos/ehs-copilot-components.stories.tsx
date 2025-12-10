@@ -35,7 +35,7 @@ import {
 import { ALIAS, WAVE, SUNRISE, CORAL, HARBOR, ABYSS, DEEP_CURRENT } from "../../constants/designTokens"
 
 const meta: Meta = {
-  title: "EHS Copilot/Components",
+  title: "Flow/EHSCopilot/Components",
   parameters: {
     layout: "padded",
   },

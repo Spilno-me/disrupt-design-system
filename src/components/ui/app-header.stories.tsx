@@ -3,7 +3,7 @@ import { AppHeader, type UserMenuItem } from './AppHeader'
 import { User, Settings, HelpCircle, LogOut, CreditCard } from 'lucide-react'
 
 const meta: Meta<typeof AppHeader> = {
-  title: 'App/AppHeader',
+  title: 'Shared/AppHeader',
   component: AppHeader,
   parameters: {
     layout: 'fullscreen',
@@ -62,7 +62,7 @@ Application header component for the Disrupt Family apps (Flow, Market, Partner)
   },
   decorators: [
     (Story) => (
-      <div className="min-h-[200px]" style={{ backgroundColor: '#E5E7EB' }}>
+      <div className="min-h-[200px] bg-white">
         <Story />
       </div>
     ),

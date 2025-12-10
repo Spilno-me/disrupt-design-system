@@ -60,7 +60,7 @@ function FeatureCard({
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-bold text-dark mb-2">{title}</h3>
+      <h3 className="text-lg font-bold text-primary mb-2">{title}</h3>
 
       {/* Description */}
       <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
@@ -87,7 +87,7 @@ export function FeaturesSection({
 }: FeaturesSectionProps) {
   const bgClasses = {
     white: 'bg-white',
-    cream: 'bg-cream',
+    cream: 'bg-page',
   }
 
   const gridClasses = {
@@ -113,11 +113,11 @@ export function FeaturesSection({
             centeredHeader ? 'text-center' : 'text-left lg:text-center'
           )}
         >
-          <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-display font-bold leading-[1.2] text-dark mb-4">
+          <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-display font-bold leading-[1.2] text-primary mb-4">
             {title}
           </h2>
           {subtitle && (
-            <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-teal max-w-[560px] mx-auto">
+            <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-accent max-w-[560px] mx-auto">
               {subtitle}
             </p>
           )}

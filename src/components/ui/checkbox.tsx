@@ -15,11 +15,11 @@ function Checkbox({
       data-slot="checkbox"
       className={cn(
         // Base styles
-        "peer size-4 shrink-0 rounded-xs border border-slate bg-white shadow-sm transition-shadow outline-none",
-        // Checked state - uses brand primary (dark)
-        "data-[state=checked]:bg-dark data-[state=checked]:text-white data-[state=checked]:border-dark",
-        // Focus state - teal ring
-        "focus-visible:border-teal focus-visible:ring-[3px] focus-visible:ring-teal/30",
+        "peer size-4 shrink-0 rounded-xs border border-default bg-surface shadow-sm transition-shadow outline-none",
+        // Checked state - uses brand primary
+        "data-[state=checked]:bg-inverse-bg data-[state=checked]:text-inverse data-[state=checked]:border-inverse-bg",
+        // Focus state - accent ring
+        "focus-visible:border-accent focus-visible:ring-[3px] focus-visible:ring-accent/30",
         // Error state
         "aria-invalid:ring-error/20 aria-invalid:border-error",
         // Disabled state

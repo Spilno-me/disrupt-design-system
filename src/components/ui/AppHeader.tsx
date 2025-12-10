@@ -61,6 +61,8 @@ export interface UserInfo {
 export interface AppHeaderProps {
   /** Which product app this header is for */
   product: ProductType
+  /** Whether to show the notification bell (default: true) */
+  showNotifications?: boolean
   /** Current notification count (0 or undefined to hide badge) */
   notificationCount?: number
   /** Callback when notification bell is clicked */
@@ -83,6 +85,8 @@ export interface AppHeaderProps {
   showWavePattern?: boolean
   /** Disable dropdown portal for Storybook testing */
   disablePortal?: boolean
+  /** Content to render on the left side (e.g., mobile hamburger menu) */
+  leftContent?: React.ReactNode
 }
 
 // =============================================================================
@@ -103,7 +107,7 @@ const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   partner: {
     logoLight: '/logos/partner-logo-full-light.svg',
     logoDark: '/logos/partner-logo-full-dark.svg',
-    tagline: 'Partner Portal',
+    tagline: '',
   },
 }
 
@@ -121,8 +125,7 @@ const DEFAULT_MENU_ITEMS: UserMenuItem[] = [
 function WavePattern() {
   return (
     <div
-      className="absolute inset-0 pointer-events-none overflow-hidden"
-      style={{ zIndex: 0 }}
+      className="absolute inset-0 pointer-events-none overflow-hidden z-0"
     >
       {/* Wave pattern layer - repeat horizontally, fit to header height */}
       <div
@@ -136,8 +139,7 @@ function WavePattern() {
       />
       {/* White overlay at 60% opacity - as per Figma rgba(255, 255, 255, 0.6) */}
       <div
-        className="absolute inset-0"
-        style={{ backgroundColor: ALIAS.overlay.white60 }}
+        className="absolute inset-0 bg-white/60"
       />
     </div>
   )
@@ -162,24 +164,27 @@ function LogoContainer({
   return (
     <div
       className={cn(
-        'flex items-center gap-3 h-full pl-4 pr-3 cursor-pointer',
+        'flex items-center gap-3 h-14 min-w-[219px] pl-4 pr-3 cursor-pointer rounded-r-[32.5px]',
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
       style={{
-        // Figma gradient: white to light gray (card=bg)
-        background: 'linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(225, 227, 234, 1) 100%)',
-        borderRadius: '0 32.5px 32.5px 0',
-        // Figma inner shadow for depth
-        boxShadow: 'inset 0px 1px 2px 0px rgba(0, 0, 0, 0.15), inset 0px 2px 4px 0px rgba(0, 0, 0, 0.05)',
-        minWidth: '219px',
-        height: '56px',
+        // Match search filter gradient for consistency
+        background: ALIAS.gradient.subtle,
+        border: `1px solid ${ALIAS.overlay.subtle}`,
+        borderLeft: 'none',
+        // Subtle shadow for depth
+        boxShadow: SHADOWS.sm,
       }}
     >
       <img
         src={logoSrc}
         alt={`${product} logo`}
-        className="h-[26px] w-auto object-contain"
+        className="h-[32px] w-auto object-contain"
+        style={{
+          // Add subtle drop shadow to logo
+          filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+        }}
       />
       <span
         className="text-xs font-medium whitespace-nowrap"
@@ -197,21 +202,12 @@ function NotificationBadge({ count }: { count: number }) {
 
   return (
     <div
-      className="absolute flex items-center justify-center font-medium"
+      className="absolute -top-2 -right-2.5 min-w-5 h-5 px-1.5 flex items-center justify-center font-medium text-[11px] leading-none z-10"
       style={{
-        top: '-8px',
-        right: '-10px',
-        minWidth: '20px',
-        height: '20px',
-        paddingLeft: '5px',
-        paddingRight: '5px',
         backgroundColor: ALIAS.status.error,
         color: ALIAS.text.inverse,
         borderRadius: RADIUS.sm, // 8px - rounded corners, NOT full circle
         border: `2px solid ${ALIAS.background.surface}`,
-        fontSize: '11px',
-        lineHeight: 1,
-        zIndex: 10,
       }}
     >
       {displayCount}
@@ -271,9 +267,7 @@ function IconButton({
         }}
       />
       {/* Content */}
-      <div className="relative z-[1]">
-        {children}
-      </div>
+      <div className="relative z-[1]">{children}</div>
     </motion.button>
   )
 }
@@ -376,8 +370,8 @@ function UserMenu({
         align="end"
         sideOffset={8}
         {...(disablePortal ? { container: undefined } : {})}
+        className="min-w-[200px]"
         style={{
-          minWidth: '200px',
           boxShadow: SHADOWS.md,
         }}
       >
@@ -460,6 +454,7 @@ function UserMenu({
  */
 export function AppHeader({
   product,
+  showNotifications = true,
   notificationCount = 0,
   onNotificationClick,
   user,
@@ -471,24 +466,33 @@ export function AppHeader({
   className,
   showWavePattern = true,
   disablePortal = false,
+  leftContent,
 }: AppHeaderProps) {
   return (
     <header
       className={cn(
-        'relative flex items-center justify-between w-full',
+        'relative z-20 flex items-center justify-between w-full h-[55px]',
         className
       )}
       style={{
-        height: '55px',
         boxShadow: SHADOWS.header,
       }}
+      // Header height defined via className for consistency
       data-element="app-header"
     >
       {/* Wave Pattern Background */}
       {showWavePattern && <WavePattern />}
 
-      {/* Logo Container (Left) */}
-      <div className="relative z-[1]">
+      {/* Left Side: Mobile menu + Logo */}
+      <div className="relative z-[1] flex items-center">
+        {/* Mobile hamburger menu (optional) */}
+        {leftContent && (
+          <div className="pl-2">
+            {leftContent}
+          </div>
+        )}
+
+        {/* Logo Container */}
         <LogoContainer
           product={product}
           tagline={tagline}
@@ -503,10 +507,12 @@ export function AppHeader({
         data-element="header-actions"
       >
         {/* Notifications */}
-        <NotificationBell
-          count={notificationCount}
-          onClick={onNotificationClick}
-        />
+        {showNotifications && (
+          <NotificationBell
+            count={notificationCount}
+            onClick={onNotificationClick}
+          />
+        )}
 
         {/* User Avatar + Menu */}
         {user && (

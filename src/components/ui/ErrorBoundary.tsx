@@ -89,7 +89,7 @@ export function SectionErrorBoundary({
     <ErrorBoundary
       componentName={sectionName}
       fallback={
-        <div className="py-16 text-center text-gray-400">
+        <div className="py-16 text-center text-disabled">
           <p>Unable to load section</p>
         </div>
       }
