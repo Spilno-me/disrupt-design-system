@@ -177,7 +177,7 @@ function DashboardPage({ kpis, onNavigate }: DashboardPageProps) {
             {mockRecentActivity.slice(0, 3).map((activity) => (
               <div
                 key={activity.id}
-                className="flex items-center gap-3 p-3 rounded-lg bg-mutedBg"
+                className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg"
               >
                 {activity.icon === 'clock' && (
                   <Clock className="w-5 h-5 text-teal" />
@@ -532,6 +532,148 @@ export const AutomaticMode: Story = {
         notificationCount={4}
         onNavigate={(item) => console.log('Navigated to:', item.id)}
       />
+    )
+  },
+}
+
+/**
+ * With search bar on data table page (Leads)
+ */
+export const WithSearch: Story = {
+  render: function WithSearchStory() {
+    const [currentPage, setCurrentPage] = useState('leads')
+    const [searchValue, setSearchValue] = useState('')
+    const [filters, setFilters] = useState({})
+
+    const filterGroups = [
+      {
+        id: 'status',
+        label: 'Status',
+        options: [
+          { id: 'new', label: 'New' },
+          { id: 'contacted', label: 'Contacted' },
+          { id: 'qualified', label: 'Qualified' },
+          { id: 'lost', label: 'Lost' },
+        ],
+      },
+      {
+        id: 'source',
+        label: 'Source',
+        options: [
+          { id: 'website', label: 'Website' },
+          { id: 'referral', label: 'Referral' },
+          { id: 'partner', label: 'Partner' },
+        ],
+      },
+    ]
+
+    const handleSearch = (value: string) => {
+      console.log('Search:', value)
+    }
+
+    // Mock leads data table
+    const mockLeads = [
+      { id: 1, company: 'Acme Corp', contact: 'John Doe', email: 'john@acme.com', status: 'New', source: 'Website' },
+      { id: 2, company: 'TechStart Inc', contact: 'Jane Smith', email: 'jane@techstart.com', status: 'Contacted', source: 'Referral' },
+      { id: 3, company: 'Global Industries', contact: 'Bob Johnson', email: 'bob@global.com', status: 'Qualified', source: 'Partner' },
+      { id: 4, company: 'Innovation Labs', contact: 'Alice Brown', email: 'alice@innovation.com', status: 'New', source: 'Website' },
+    ]
+
+    const LeadsPage = () => (
+      <div className="p-6 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-primary">Leads</h1>
+            <p className="text-sm text-secondary">Manage your sales leads</p>
+          </div>
+          <Button variant="primary">Add Lead</Button>
+        </div>
+
+        {/* Mock data table */}
+        <Card className="bg-surface border-default">
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-muted-bg border-b border-default">
+                  <tr>
+                    <th className="text-left p-4 text-sm font-medium text-primary">Company</th>
+                    <th className="text-left p-4 text-sm font-medium text-primary">Contact</th>
+                    <th className="text-left p-4 text-sm font-medium text-primary">Email</th>
+                    <th className="text-left p-4 text-sm font-medium text-primary">Status</th>
+                    <th className="text-left p-4 text-sm font-medium text-primary">Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mockLeads.map((lead) => (
+                    <tr key={lead.id} className="border-b border-default hover:bg-muted-bg transition-colors">
+                      <td className="p-4 text-sm text-primary font-medium">{lead.company}</td>
+                      <td className="p-4 text-sm text-primary">{lead.contact}</td>
+                      <td className="p-4 text-sm text-secondary">{lead.email}</td>
+                      <td className="p-4">
+                        <span className={`inline-flex px-2 py-1 text-xs rounded-full ${
+                          lead.status === 'New' ? 'bg-info/10 text-info' :
+                          lead.status === 'Contacted' ? 'bg-warning/10 text-warning' :
+                          lead.status === 'Qualified' ? 'bg-success/10 text-success' :
+                          'bg-error/10 text-error'
+                        }`}>
+                          {lead.status}
+                        </span>
+                      </td>
+                      <td className="p-4 text-sm text-secondary">{lead.source}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+
+    const renderContent = () => {
+      switch (currentPage) {
+        case 'dashboard':
+          return (
+            <DashboardPage
+              kpis={mockPartnerKPIs}
+              onNavigate={setCurrentPage}
+            />
+          )
+        case 'leads':
+          return <LeadsPage />
+        case 'invoices':
+          return <PlaceholderPage title="Invoice Management" icon={<FileText className="w-12 h-12" />} />
+        case 'partners':
+          return <PlaceholderPage title="Partner Companies" icon={<Building2 className="w-12 h-12" />} />
+        default:
+          return <PlaceholderPage title={currentPage} />
+      }
+    }
+
+    return (
+      <AppLayoutShell
+        product="partner"
+        navItems={partnerNavItems}
+        user={mockUsers.partner}
+        userMenuItems={defaultUserMenuItems}
+        notificationCount={4}
+        currentPageId={currentPage}
+        onPageChange={setCurrentPage}
+        onNotificationClick={() => prototypeAlert('Opening notifications panel')}
+        onMenuItemClick={(item) => prototypeAlert(`Menu: ${item.label}`)}
+        onHelpClick={() => prototypeAlert('Opening help documentation')}
+        onLogoClick={() => setCurrentPage('dashboard')}
+        showSearch={currentPage === 'leads'}
+        searchPlaceholder="Search leads by company, contact, or email..."
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        onSearch={handleSearch}
+        searchFilterGroups={filterGroups}
+        searchFilters={filters}
+        onSearchFiltersChange={setFilters}
+      >
+        {renderContent()}
+      </AppLayoutShell>
     )
   },
 }

@@ -46,7 +46,7 @@ export class SearchFilterErrorBoundary extends Component<Props, State> {
         <div
           className={cn(
             'flex items-center justify-center gap-3 p-3',
-            'bg-errorLight border border-error/20 rounded-md',
+            'bg-error-light border border-error/20 rounded-md',
             'text-sm text-error'
           )}
           role="alert"

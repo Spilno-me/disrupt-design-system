@@ -70,7 +70,7 @@ function CreateLeadDialogDemo({
       />
 
       {lastSubmission && (
-        <div className="p-4 bg-successLight border border-success rounded-lg max-w-md">
+        <div className="p-4 bg-success-light border border-success rounded-lg max-w-md">
           <h4 className="font-semibold text-success mb-2">Lead Created Successfully!</h4>
           <pre className="text-xs text-primary overflow-auto">
             {JSON.stringify(lastSubmission, null, 2)}
@@ -211,10 +211,10 @@ function FullWorkflowDemo() {
               <span
                 className={`px-2 py-0.5 text-xs font-semibold uppercase rounded ${
                   lead.priority === 'high'
-                    ? 'bg-errorLight text-error'
+                    ? 'bg-error-light text-error'
                     : lead.priority === 'medium'
-                    ? 'bg-warningLight text-warning'
-                    : 'bg-mutedBg text-primary'
+                    ? 'bg-warning-light text-warning'
+                    : 'bg-muted-bg text-primary'
                 }`}
               >
                 {lead.priority}

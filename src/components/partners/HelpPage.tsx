@@ -8,7 +8,7 @@ import {
   FileText,
   Search,
   ChevronRight,
-  ExternalLink,
+  
   Mail,
   Phone,
   Clock,
@@ -258,17 +258,17 @@ export function HelpPage({
             {defaultArticles.map((article) => (
               <button
                 key={article.id}
-                className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-mutedBg transition-colors text-left"
+                className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-muted-bg transition-colors text-left"
                 onClick={() => onArticleClick?.(article)}
               >
-                <div className="w-10 h-10 rounded-lg bg-mutedBg flex items-center justify-center flex-shrink-0 text-secondary">
+                <div className="w-10 h-10 rounded-lg bg-muted-bg flex items-center justify-center flex-shrink-0 text-secondary">
                   {article.icon}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-medium text-primary">{article.title}</h4>
                   <p className="text-sm text-muted truncate">{article.description}</p>
                 </div>
-                <span className="text-xs text-muted bg-mutedBg px-2 py-1 rounded">
+                <span className="text-xs text-muted bg-muted-bg px-2 py-1 rounded">
                   {article.category}
                 </span>
               </button>
@@ -291,7 +291,7 @@ export function HelpPage({
       </Card>
 
       {/* Contact Section */}
-      <Card className="bg-accentBg border-accent">
+      <Card className="bg-accent-bg border-accent">
         <CardContent className="p-6">
           <div className="flex flex-col lg:flex-row items-center gap-6">
             <div className="flex-1 text-center lg:text-left">

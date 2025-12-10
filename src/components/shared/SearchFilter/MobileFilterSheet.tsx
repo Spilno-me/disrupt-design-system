@@ -87,7 +87,7 @@ function CollapsibleFilterGroup({
                 className={cn(
                   'w-full flex items-center gap-3 py-3 px-4 rounded-md cursor-pointer',
                   'transition-colors',
-                  isChecked ? 'bg-accentBg' : 'hover:bg-muted-bg'
+                  isChecked ? 'bg-accent-bg' : 'hover:bg-muted-bg'
                 )}
               >
                 <Checkbox
@@ -180,7 +180,7 @@ export function MobileFilterSheet({
                   variant="ghost"
                   size="sm"
                   onClick={onClearAll}
-                  className="text-secondary hover:text-primary"
+                  className="text-primary hover:text-secondary font-medium"
                 >
                   Clear all
                 </Button>

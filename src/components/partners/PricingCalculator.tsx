@@ -2,7 +2,6 @@ import * as React from 'react'
 import { useState, useMemo } from 'react'
 import { Calculator, Users, Building2, DollarSign, Percent, Info, FileText } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { SHADOWS, RADIUS } from '../../constants/designTokens'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -445,7 +444,7 @@ export function PricingCalculator({
               </div>
 
               {/* Partner Commission */}
-              <div className="bg-accentBg rounded-lg p-4 mt-4">
+              <div className="bg-accent-bg rounded-lg p-4 mt-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Percent className="w-4 h-4 text-accent" />
                   <span className="text-sm font-medium text-primary">Your Commission</span>

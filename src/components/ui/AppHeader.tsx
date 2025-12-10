@@ -139,7 +139,7 @@ function WavePattern() {
       />
       {/* White overlay at 60% opacity - as per Figma rgba(255, 255, 255, 0.6) */}
       <div
-        className="absolute inset-0 bg-white/60"
+        className="absolute inset-0 bg-surface/60"
       />
     </div>
   )
@@ -181,10 +181,6 @@ function LogoContainer({
         src={logoSrc}
         alt={`${product} logo`}
         className="h-[32px] w-auto object-contain"
-        style={{
-          // Add subtle drop shadow to logo
-          filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
-        }}
       />
       <span
         className="text-xs font-medium whitespace-nowrap text-primary"
@@ -308,7 +304,7 @@ function UserAvatar({
     <div
       className={cn(
         'flex items-center justify-center overflow-hidden flex-shrink-0 rounded-full text-secondary',
-        user?.avatarUrl ? 'bg-transparent' : 'bg-mutedBg',
+        user?.avatarUrl ? 'bg-transparent' : 'bg-muted-bg',
         sizeMap[size]
       )}
     >

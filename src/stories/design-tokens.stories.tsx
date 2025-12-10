@@ -45,7 +45,6 @@ import { ALIAS, SHADOWS, SPACING } from '@/constants/designTokens'
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

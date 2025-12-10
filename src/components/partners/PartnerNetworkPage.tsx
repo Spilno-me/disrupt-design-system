@@ -15,8 +15,8 @@ import {
   Trash2,
   FileText,
   TrendingUp,
-  DollarSign,
-  Users,
+  
+  
   Building2,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
@@ -265,9 +265,9 @@ export const MOCK_NETWORK_PARTNERS: NetworkPartner[] = [
 
 function StatusBadge({ status }: { status: NetworkPartnerStatus }) {
   const config: Record<NetworkPartnerStatus, { label: string; className: string }> = {
-    active: { label: "active", className: "bg-successLight text-success" },
-    inactive: { label: "inactive", className: "bg-mutedBg text-primary" },
-    pending: { label: "pending", className: "bg-warningLight text-warning" },
+    active: { label: "active", className: "bg-success-light text-success" },
+    inactive: { label: "inactive", className: "bg-muted-bg text-primary" },
+    pending: { label: "pending", className: "bg-warning-light text-warning" },
   }
 
   const { label, className } = config[status]
@@ -312,7 +312,7 @@ function MetricBadge({
 
 function PartnerMetricsRow({ metrics }: { metrics: NetworkPartnerMetrics }) {
   return (
-    <div className="flex items-center gap-6 px-4 py-3 bg-mutedBg/50 border-t border-default">
+    <div className="flex items-center gap-6 px-4 py-3 bg-muted-bg/50 border-t border-default">
       <MetricBadge
         label="Total Leads"
         value={metrics.totalLeads}
@@ -372,8 +372,8 @@ function PartnerRow({
       <div
         className={cn(
           "flex items-center gap-4 px-4 py-3 border-b border-default",
-          "transition-colors hover:bg-accentBg/30",
-          depth > 0 && "bg-mutedBg/20"
+          "transition-colors hover:bg-accent-bg/30",
+          depth > 0 && "bg-muted-bg/20"
         )}
         style={{ paddingLeft: `${16 + indentPadding}px` }}
       >
@@ -382,7 +382,7 @@ function PartnerRow({
           {hasSubPartners ? (
             <button
               onClick={onToggleExpand}
-              className="p-1 rounded hover:bg-accentBg transition-colors"
+              className="p-1 rounded hover:bg-accent-bg transition-colors"
               aria-label={isExpanded ? "Collapse" : "Expand"}
             >
               {isExpanded ? (
@@ -397,7 +397,7 @@ function PartnerRow({
         </div>
 
         {/* Company icon */}
-        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-infoLight flex-shrink-0">
+        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-info-light flex-shrink-0">
           <FileText className="h-4 w-4 text-info" />
         </div>
 
@@ -408,7 +408,7 @@ function PartnerRow({
               {partner.companyName}
             </span>
             {partner.isMasterPartner && (
-              <span className="text-xs text-accent bg-accentBg px-1.5 py-0.5 rounded">
+              <span className="text-xs text-accent bg-accent-bg px-1.5 py-0.5 rounded">
                 Master
               </span>
             )}
@@ -486,7 +486,7 @@ function PartnerRow({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => onDelete?.(partner)}
-                className="text-error focus:text-error focus:bg-errorLight"
+                className="text-error focus:text-error focus:bg-error-light"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
                 Delete Partner
@@ -695,7 +695,7 @@ export function PartnerNetworkPage({
       {/* Partner Table */}
       <div className="rounded-lg border border-default bg-surface overflow-hidden">
         {/* Table Header */}
-        <div className="flex items-center gap-4 px-4 py-3 bg-mutedBg/50 border-b border-default text-sm font-medium text-muted">
+        <div className="flex items-center gap-4 px-4 py-3 bg-muted-bg/50 border-b border-default text-sm font-medium text-muted">
           <div className="w-6 flex-shrink-0" /> {/* Expand button space */}
           <div className="w-9 flex-shrink-0" /> {/* Icon space */}
           <div className="flex-1">Partner</div>
@@ -717,7 +717,7 @@ export function PartnerNetworkPage({
         {/* Empty state */}
         {!loading && filteredPartners.length === 0 && (
           <div className="flex flex-col items-center py-12 px-4">
-            <div className="w-16 h-16 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+            <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
               <Building2 className="h-8 w-8 text-muted" />
             </div>
             <h3 className="text-lg font-semibold text-primary mb-2">

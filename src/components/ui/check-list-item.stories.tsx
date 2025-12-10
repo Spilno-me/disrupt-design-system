@@ -182,7 +182,7 @@ export const CompactList: Story = {
 // Dark background context
 export const OnDarkBackground: Story = {
   render: () => (
-    <div className="p-6 bg-inverseBg rounded-lg max-w-lg">
+    <div className="p-6 bg-inverse-bg rounded-lg max-w-lg">
       <h3 className="text-xl font-bold text-white mb-4">Platform Features</h3>
       <div className="space-y-4 text-white">
         <div className="flex items-start gap-3 sm:gap-4">

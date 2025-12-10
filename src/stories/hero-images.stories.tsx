@@ -117,7 +117,7 @@ export const AllHeroImages: Story = {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-6 rounded-xl shadow-md">
-          <h3 className="text-xl font-display font-semibold text-darkPurple mb-4">Home Page Hero</h3>
+          <h3 className="text-xl font-display font-semibold text-dark-purple mb-4">Home Page Hero</h3>
           <img
             src={optimizedImages.heroFrame.desktop.webp}
             alt="Home hero"
@@ -127,7 +127,7 @@ export const AllHeroImages: Story = {
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-md">
-          <h3 className="text-xl font-display font-semibold text-darkPurple mb-4">About Page Hero</h3>
+          <h3 className="text-xl font-display font-semibold text-dark-purple mb-4">About Page Hero</h3>
           <img
             src={aboutImages.aboutHero.desktop.webp}
             alt="About hero"
@@ -151,7 +151,7 @@ export const ImageFormats: Story = {
         <h3 className="text-lg font-semibold text-dark mb-4">Home Hero - Desktop Formats</h3>
 
         <div className="space-y-4">
-          <div className="flex items-center gap-4 p-4 bg-lightPurple rounded-lg">
+          <div className="flex items-center gap-4 p-4 bg-light-purple rounded-lg">
             <div className="flex items-center justify-center w-10 h-10 bg-teal rounded-lg">
               <Zap className="w-5 h-5 text-white" />
             </div>
@@ -162,7 +162,7 @@ export const ImageFormats: Story = {
             <code className="ml-auto text-xs text-muted bg-cream px-2 py-1 rounded">optimizedImages.heroFrame.desktop.avif</code>
           </div>
 
-          <div className="flex items-center gap-4 p-4 bg-lightPurple rounded-lg">
+          <div className="flex items-center gap-4 p-4 bg-light-purple rounded-lg">
             <div className="flex items-center justify-center w-10 h-10 bg-circleBlue rounded-lg">
               <Globe className="w-5 h-5 text-white" />
             </div>
@@ -173,7 +173,7 @@ export const ImageFormats: Story = {
             <code className="ml-auto text-xs text-muted bg-cream px-2 py-1 rounded">optimizedImages.heroFrame.desktop.webp</code>
           </div>
 
-          <div className="flex items-center gap-4 p-4 bg-lightPurple rounded-lg">
+          <div className="flex items-center gap-4 p-4 bg-light-purple rounded-lg">
             <div className="flex items-center justify-center w-10 h-10 bg-circleGreen rounded-lg">
               <Shield className="w-5 h-5 text-white" />
             </div>
@@ -189,7 +189,7 @@ export const ImageFormats: Story = {
           <h4 className="text-md font-semibold text-dark mb-4">Responsive Variants</h4>
           <div className="grid grid-cols-3 gap-4">
             <div className="flex items-center gap-3 p-3 bg-cream rounded-lg">
-              <div className="flex items-center justify-center w-8 h-8 bg-darkPurple rounded">
+              <div className="flex items-center justify-center w-8 h-8 bg-dark-purple rounded">
                 <FileImage className="w-4 h-4 text-white" />
               </div>
               <div>
@@ -198,7 +198,7 @@ export const ImageFormats: Story = {
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-cream rounded-lg">
-              <div className="flex items-center justify-center w-8 h-8 bg-darkPurple rounded">
+              <div className="flex items-center justify-center w-8 h-8 bg-dark-purple rounded">
                 <Image className="w-4 h-4 text-white" />
               </div>
               <div>
@@ -207,7 +207,7 @@ export const ImageFormats: Story = {
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-cream rounded-lg">
-              <div className="flex items-center justify-center w-8 h-8 bg-darkPurple rounded">
+              <div className="flex items-center justify-center w-8 h-8 bg-dark-purple rounded">
                 <Layers className="w-4 h-4 text-white" />
               </div>
               <div>

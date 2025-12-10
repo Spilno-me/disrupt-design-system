@@ -348,7 +348,7 @@ export const COLORS = {
   // --- SEMANTIC NAMES (Tailwind classes) ---
   dark: ALIAS.brand.primary,           // bg-dark, text-dark
   teal: ALIAS.brand.secondary,         // bg-teal, text-teal
-  tealLight: DEEP_CURRENT[300],        // bg-tealLight, text-tealLight - lighter teal for hero subtitles
+  tealLight: DEEP_CURRENT[300],        // bg-teal-light, text-teal-light - lighter teal for hero subtitles
   red: ALIAS.status.error,             // bg-red, text-red
   cream: ALIAS.background.page,        // bg-cream
   muted: ALIAS.text.secondary,         // text-muted

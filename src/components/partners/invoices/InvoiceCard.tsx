@@ -203,7 +203,7 @@ export function InvoiceCard({
 
       {/* Payment Terms Badge */}
       <div className="flex items-center gap-2">
-        <span className="inline-flex px-2 py-1 text-xs font-medium rounded bg-mutedBg text-primary">
+        <span className="inline-flex px-2 py-1 text-xs font-medium rounded bg-muted-bg text-primary">
           {getPaymentTermsLabel(invoice.paymentTerms)}
         </span>
       </div>
@@ -220,27 +220,27 @@ function StatusBadge({ status }: { status: Invoice['status'] }) {
   const statusConfig = {
     draft: {
       label: 'Draft',
-      className: 'bg-mutedBg text-primary border border-default',
+      className: 'bg-muted-bg text-primary border border-default',
       showDot: true,
     },
     sent: {
       label: 'Sent',
-      className: 'bg-infoLight text-info',
+      className: 'bg-info-light text-info',
       showDot: false,
     },
     paid: {
       label: 'Paid',
-      className: 'bg-successLight text-success',
+      className: 'bg-success-light text-success',
       showDot: false,
     },
     overdue: {
       label: 'Overdue',
-      className: 'bg-errorLight text-error',
+      className: 'bg-error-light text-error',
       showDot: false,
     },
     partially_paid: {
       label: 'Partially Paid',
-      className: 'bg-warningLight text-warning',
+      className: 'bg-warning-light text-warning',
       showDot: false,
     },
   }

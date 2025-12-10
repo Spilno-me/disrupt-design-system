@@ -132,7 +132,7 @@ function StandaloneChatDemo() {
         />
       </div>
       {completedData && (
-        <div className="fixed bottom-4 right-4 p-4 bg-successLight border border-success rounded-lg text-sm text-success">
+        <div className="fixed bottom-4 right-4 p-4 bg-success-light border border-success rounded-lg text-sm text-success">
           Tenant "{completedData.companyName}" created!
         </div>
       )}
@@ -254,7 +254,7 @@ function CompletedFlowDemo() {
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {/* Welcome message */}
           <div className="flex justify-start">
-            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-mutedBg text-primary">
+            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-muted-bg text-primary">
               <p className="text-sm">Welcome! Let's set up a new tenant. What's the company name?</p>
             </div>
           </div>
@@ -266,7 +266,7 @@ function CompletedFlowDemo() {
 
           {/* Industry */}
           <div className="flex justify-start">
-            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-mutedBg text-primary">
+            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-muted-bg text-primary">
               <p className="text-sm">Great! What industry is Acme Manufacturing Co. in?</p>
             </div>
           </div>
@@ -278,7 +278,7 @@ function CompletedFlowDemo() {
 
           {/* Company size */}
           <div className="flex justify-start">
-            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-mutedBg text-primary">
+            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-muted-bg text-primary">
               <p className="text-sm">How many employees does the company have?</p>
             </div>
           </div>
@@ -290,14 +290,14 @@ function CompletedFlowDemo() {
 
           {/* More messages would continue... */}
           <div className="flex justify-start">
-            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-mutedBg text-primary">
+            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-muted-bg text-primary">
               <p className="text-sm">Creating tenant...</p>
             </div>
           </div>
 
           {/* Success message */}
           <div className="flex justify-start">
-            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-mutedBg text-primary">
+            <div className="max-w-[80%] px-4 py-3 rounded-lg bg-muted-bg text-primary">
               <p className="text-sm">Tenant 'Acme Manufacturing Co.' has been created successfully!</p>
             </div>
           </div>

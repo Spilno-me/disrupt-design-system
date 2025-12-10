@@ -259,11 +259,11 @@ export function DataTable<T>({
     return (
       <span className="ml-1 inline-flex flex-col">
         {direction === "asc" ? (
-          <ChevronUp className="h-4 w-4 text-accent" />
+          <ChevronUp className="h-4 w-4 text-primary" />
         ) : direction === "desc" ? (
-          <ChevronDown className="h-4 w-4 text-accent" />
+          <ChevronDown className="h-4 w-4 text-primary" />
         ) : (
-          <ChevronsUpDown className="h-4 w-4 text-secondary opacity-50" />
+          <ChevronsUpDown className="h-4 w-4 text-secondary" />
         )}
       </span>
     )
@@ -384,7 +384,7 @@ export function DataTable<T>({
         <div className="flex flex-col items-center justify-center py-12 bg-surface">
           {emptyState || (
             <>
-              <div className="w-12 h-12 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+              <div className="w-12 h-12 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
                 <Minus className="w-6 h-6 text-secondary" />
               </div>
               <p className="text-sm text-secondary">No data available</p>
@@ -426,7 +426,7 @@ export function DataTable<T>({
                   className={cn(
                     headerPadding,
                     "text-left text-xs font-semibold text-primary uppercase tracking-wider",
-                    column.sortable && "cursor-pointer select-none hover:text-accent transition-colors",
+                    column.sortable && "cursor-pointer select-none hover:text-secondary transition-colors",
                     column.headerClassName
                   )}
                   style={{

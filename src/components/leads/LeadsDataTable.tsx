@@ -9,7 +9,6 @@ import {
   Trash2,
   Building2,
 } from "lucide-react"
-import { cn } from "../../lib/utils"
 import { DataTable, ColumnDef, SortDirection, RowPriority } from "../ui/DataTable"
 import { SeverityIndicator, SeverityLevel } from "../ui/SeverityIndicator"
 import {
@@ -20,7 +19,7 @@ import {
   DropdownMenuSeparator,
 } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
-import { Lead, LeadStatus, LeadPriority, LeadSource, LeadAction } from "./LeadCard"
+import { StatusBadge, LEAD_STATUS_CONFIG, EmailLink, ScoreBadge } from "../ui/table"
 
 // =============================================================================
 // TYPES
@@ -119,46 +118,6 @@ function mapLeadPriorityToRowPriority(priority: LeadPriority): RowPriority {
     low: 'low',
   }
   return mapping[priority]
-}
-
-/** Score badge */
-function ScoreBadge({ score }: { score: number }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center justify-center w-10 h-6 text-xs font-semibold rounded",
-        score >= 80 && "bg-successLight text-success",
-        score >= 50 && score < 80 && "bg-warningLight text-warning",
-        score < 50 && "bg-mutedBg text-primary"
-      )}
-    >
-      {score}
-    </span>
-  )
-}
-
-/** Status badge */
-function StatusBadge({ status }: { status: LeadStatus }) {
-  const statusConfig: Record<LeadStatus, { label: string; className: string }> = {
-    new: { label: "New", className: "bg-infoLight text-info" },
-    contacted: { label: "Contacted", className: "bg-warningLight text-warning" },
-    qualified: { label: "Qualified", className: "bg-accentBg text-accent" },
-    converted: { label: "Converted", className: "bg-successLight text-success" },
-    lost: { label: "Lost", className: "bg-errorLight text-error" },
-  }
-
-  const config = statusConfig[status]
-
-  return (
-    <span
-      className={cn(
-        "inline-flex px-2 py-0.5 text-xs font-medium rounded",
-        config.className
-      )}
-    >
-      {config.label}
-    </span>
-  )
 }
 
 /** Source label */
@@ -305,15 +264,7 @@ export function LeadsDataTable({
       {
         id: "email",
         header: "Email",
-        accessor: (row) => (
-          <a
-            href={`mailto:${row.email}`}
-            className="text-accent hover:underline"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {row.email}
-          </a>
-        ),
+        accessor: (row) => <EmailLink email={row.email} />,
         sortable: true,
         sortValue: (row) => row.email.toLowerCase(),
         minWidth: "180px",
@@ -352,7 +303,7 @@ export function LeadsDataTable({
       {
         id: "status",
         header: "Status",
-        accessor: (row) => <StatusBadge status={row.status} />,
+        accessor: (row) => <StatusBadge status={row.status} statusConfig={LEAD_STATUS_CONFIG} />,
         sortable: true,
         sortValue: (row) => row.status,
         minWidth: "100px",
@@ -398,7 +349,7 @@ export function LeadsDataTable({
   // Empty state
   const emptyState = (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+      <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
         <Building2 className="w-8 h-8 text-muted" />
       </div>
       <h3 className="text-lg font-semibold text-primary mb-2">No leads found</h3>

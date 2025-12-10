@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { DataTable, ColumnDef, RowPriority } from './DataTable'
+import { StatusBadge, COMMON_STATUS_CONFIG, REQUEST_STATUS_CONFIG, EmailLink } from './table'
 
 // =============================================================================
 // SAMPLE DATA
@@ -38,11 +39,7 @@ const columns: ColumnDef<User>[] = [
   {
     id: 'email',
     header: 'Email',
-    accessor: (row) => (
-      <a href={`mailto:${row.email}`} className="text-accent hover:underline">
-        {row.email}
-      </a>
-    ),
+    accessor: (row) => <EmailLink email={row.email} />,
     sortable: true,
     sortValue: (row) => row.email.toLowerCase(),
     minWidth: '200px',
@@ -57,18 +54,7 @@ const columns: ColumnDef<User>[] = [
   {
     id: 'status',
     header: 'Status',
-    accessor: (row) => {
-      const statusStyles = {
-        active: 'bg-successLight text-success',
-        inactive: 'bg-errorLight text-error',
-        pending: 'bg-warningLight text-warning',
-      }
-      return (
-        <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded ${statusStyles[row.status]}`}>
-          {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
-        </span>
-      )
-    },
+    accessor: (row) => <StatusBadge status={row.status} statusConfig={COMMON_STATUS_CONFIG} />,
     sortable: true,
     sortValue: (row) => row.status,
     minWidth: '100px',
@@ -196,7 +182,7 @@ export const Empty: Story = {
       getRowId={(row) => row.id}
       emptyState={
         <div className="flex flex-col items-center">
-          <div className="w-12 h-12 mb-3 rounded-full bg-mutedBg flex items-center justify-center">
+          <div className="w-12 h-12 mb-3 rounded-full bg-muted-bg flex items-center justify-center">
             <svg className="w-6 h-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
@@ -350,7 +336,7 @@ const incidentColumns: ColumnDef<Incident>[] = [
     id: 'location',
     header: 'Location',
     accessor: (row) => (
-      <span className="text-accent font-medium">{row.location}</span>
+      <span className="text-primary font-medium">{row.location}</span>
     ),
     sortable: true,
     sortValue: (row) => row.location.toLowerCase(),
@@ -360,7 +346,7 @@ const incidentColumns: ColumnDef<Incident>[] = [
     id: 'reporter',
     header: 'Reporter',
     accessor: (row) => (
-      <span className="text-accent font-medium">{row.reporter}</span>
+      <span className="text-primary font-medium">{row.reporter}</span>
     ),
     sortable: true,
     sortValue: (row) => row.reporter.toLowerCase(),
@@ -369,27 +355,7 @@ const incidentColumns: ColumnDef<Incident>[] = [
   {
     id: 'status',
     header: 'Status',
-    accessor: (row) => {
-      const statusStyles: Record<Incident['status'], string> = {
-        draft: 'bg-mutedBg text-muted border border-dashed border-default',
-        reported: 'bg-accentBg text-accent border border-accent/30',
-        investigation: 'bg-errorLight text-error border border-error/30',
-        review: 'bg-warningLight text-warning border border-warning/30',
-        closed: 'bg-successLight text-success border border-success/30',
-      }
-      const statusLabels: Record<Incident['status'], string> = {
-        draft: 'Draft',
-        reported: 'Reported',
-        investigation: 'Investigation',
-        review: 'Review',
-        closed: 'Closed',
-      }
-      return (
-        <span className={`inline-flex px-2 py-0.5 text-xs font-semibold rounded ${statusStyles[row.status]}`}>
-          {statusLabels[row.status]}
-        </span>
-      )
-    },
+    accessor: (row) => <StatusBadge status={row.status} statusConfig={REQUEST_STATUS_CONFIG} />,
     sortable: true,
     sortValue: (row) => row.status,
     minWidth: '120px',
@@ -436,7 +402,7 @@ export const WithPriorityBorders: Story = {
               <span className="w-3 h-3 rounded-sm bg-accent-strong" /> None
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-sm border border-dashed border-default bg-mutedBg" /> Draft
+              <span className="w-3 h-3 rounded-sm border border-dashed border-default bg-muted-bg" /> Draft
             </span>
           </div>
         </div>

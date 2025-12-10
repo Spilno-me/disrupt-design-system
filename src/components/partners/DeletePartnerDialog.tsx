@@ -70,7 +70,7 @@ export function DeletePartnerDialog({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-errorLight">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-error-light">
               <AlertTriangle className="h-5 w-5 text-error" />
             </div>
             <DialogTitle className="text-lg font-semibold text-primary">
@@ -85,7 +85,7 @@ export function DeletePartnerDialog({
         </DialogHeader>
 
         {/* Partner details */}
-        <div className="rounded-lg border border-default bg-mutedBg/50 p-4 space-y-2">
+        <div className="rounded-lg border border-default bg-muted-bg/50 p-4 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted">Partner ID</span>
             <span className="font-mono text-primary">{partner.partnerId}</span>

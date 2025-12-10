@@ -8,6 +8,7 @@ import { BottomNav } from '../../components/ui/BottomNav'
 import { MobileNav } from '../../components/ui/MobileNav'
 import { GridBlobBackground } from '../../components/ui/GridBlobCanvas'
 import { NavItem, ProductType } from '../../components/ui/navigation'
+import { SearchFilter, FilterGroup, FilterState } from '../../components/shared/SearchFilter'
 
 // =============================================================================
 // TYPES
@@ -71,6 +72,24 @@ export interface AppLayoutShellProps extends ProductConfig {
   showFooter?: boolean
   /** Scale for the grid blob background */
   backgroundScale?: number
+  /** Show the search bar (default: false) */
+  showSearch?: boolean
+  /** Search placeholder text */
+  searchPlaceholder?: string
+  /** Current search value */
+  searchValue?: string
+  /** Callback when search value changes */
+  onSearchChange?: (value: string) => void
+  /** Callback when search is submitted (debounced) */
+  onSearch?: (value: string) => void
+  /** Filter groups for the search */
+  searchFilterGroups?: FilterGroup[]
+  /** Current filter state */
+  searchFilters?: FilterState
+  /** Callback when filters change */
+  onSearchFiltersChange?: (filters: FilterState) => void
+  /** Show loading state for search */
+  isSearching?: boolean
 }
 
 // =============================================================================
@@ -166,6 +185,15 @@ export function AppLayoutShell({
   showBackground = true,
   showFooter = true,
   backgroundScale = 1,
+  showSearch = false,
+  searchPlaceholder = 'Search...',
+  searchValue,
+  onSearchChange,
+  onSearch,
+  searchFilterGroups = [],
+  searchFilters = {},
+  onSearchFiltersChange,
+  isSearching = false,
 }: AppLayoutShellProps) {
   // Determine if we're in controlled mode
   const isControlled = controlledPageId !== undefined
@@ -283,6 +311,24 @@ export function AppLayoutShell({
           {/* Page Content - includes mobile footer at bottom of scroll */}
           <main className="flex-1 overflow-auto">
             <div className="flex flex-col min-h-full">
+              {/* Search Bar inside page content */}
+              {showSearch && (
+                <div className="border-b border-default bg-surface px-4 py-3 sticky top-0 z-20">
+                  <div className="max-w-7xl mx-auto">
+                    <SearchFilter
+                      placeholder={searchPlaceholder}
+                      value={searchValue}
+                      onChange={onSearchChange}
+                      onDebouncedChange={onSearch}
+                      filterGroups={searchFilterGroups}
+                      filters={searchFilters}
+                      onFiltersChange={onSearchFiltersChange}
+                      isSearching={isSearching}
+                      hideFilters={searchFilterGroups.length === 0}
+                    />
+                  </div>
+                </div>
+              )}
               <div className="flex-1">{pageContent}</div>
               {/* Mobile footer - appears at bottom of scrollable content, above BottomNav */}
               {showFooter && !useMobileDrawer && (
@@ -347,4 +393,4 @@ export function useAppLayoutState(initialPage: string = 'dashboard') {
 // =============================================================================
 
 export default AppLayoutShell
-export type { NavItem, UserInfo, UserMenuItem, ProductType }
+export type { NavItem, UserInfo, UserMenuItem, ProductType, FilterGroup, FilterState }

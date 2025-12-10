@@ -8,16 +8,16 @@
 /* ============================================================ */
 @layer utilities {
   /* Button variant classes - these are used dynamically by CVA */
-  .bg-inverseBg { background-color: var(--color-inverseBg); }
-  .bg-mutedBg { background-color: var(--color-mutedBg); }
-  .bg-accentStrong { background-color: var(--color-accentStrong); }
+  .bg-inverse-bg { background-color: var(--color-inverse-bg); }
+  .bg-muted-bg { background-color: var(--color-muted-bg); }
+  .bg-accent-strong { background-color: var(--color-accent-strong); }
   .text-inverse { color: var(--color-inverse); }
   .text-accent { color: var(--color-accent); }
 
   /* Hover variants with opacity */
-  .hover\:bg-inverseBg\/90:hover { background-color: color-mix(in srgb, var(--color-inverseBg) 90%, transparent); }
-  .hover\:bg-mutedBg\/80:hover { background-color: color-mix(in srgb, var(--color-mutedBg) 80%, transparent); }
-  .hover\:bg-accentStrong\/90:hover { background-color: color-mix(in srgb, var(--color-accentStrong) 90%, transparent); }
+  .hover\:bg-inverse-bg\/90:hover { background-color: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent); }
+  .hover\:bg-muted-bg\/80:hover { background-color: color-mix(in srgb, var(--color-muted-bg) 80%, transparent); }
+  .hover\:bg-accent-strong\/90:hover { background-color: color-mix(in srgb, var(--color-accent-strong) 90%, transparent); }
   .hover\:bg-error\/90:hover { background-color: color-mix(in srgb, var(--color-error) 90%, transparent); }
 
   /* Focus ring variants */
@@ -144,8 +144,8 @@ a[aria-hidden="true"],
   --color-dark: #2D3142;
   /* Usage: bg-teal, text-teal, border-teal */
   --color-teal: #08A4BD;
-  /* Usage: bg-tealLight, text-tealLight */
-  --color-tealLight: #66CFE1;
+  /* Usage: bg-teal-light, text-teal-light */
+  --color-teal-light: #66CFE1;
   /* Usage: bg-cream, text-cream */
   --color-cream: #FBFBF3;
 
@@ -166,30 +166,30 @@ a[aria-hidden="true"],
   --color-inverse: #FFFFFF;
   /* Usage: text-link */
   --color-link: #08A4BD;
-  /* Usage: text-linkHover */
-  --color-linkHover: #068397;
+  /* Usage: text-link-hover */
+  --color-link-hover: #068397;
 
   /* --- BACKGROUND COLORS --- */
   /* Usage: bg-surface (cards, panels) */
   --color-surface: #FFFFFF;
-  /* Usage: bg-surfaceHover */
-  --color-surfaceHover: #E8E9EB;
-  /* Usage: bg-surfaceActive */
-  --color-surfaceActive: #D1D3D7;
+  /* Usage: bg-surface-hover */
+  --color-surface-hover: #E8E9EB;
+  /* Usage: bg-surface-active */
+  --color-surface-active: #D1D3D7;
   /* Usage: bg-page (main page background) - same as cream */
   --color-page: #FBFBF3;
   /* Usage: bg-elevated (elevated surfaces) */
   --color-elevated: #FFFFFF;
-  /* Usage: bg-mutedBg (muted backgrounds) */
-  --color-mutedBg: #EFEDF3;
-  /* Usage: bg-inverseBg (dark backgrounds) */
-  --color-inverseBg: #2D3142;
-  /* Usage: bg-inverseSubtle (subtle dark) */
-  --color-inverseSubtle: #1D1F2A;
-  /* Usage: bg-accentBg (light teal background) */
-  --color-accentBg: #E6F7FA;
-  /* Usage: bg-accentStrong (strong teal) */
-  --color-accentStrong: #08A4BD;
+  /* Usage: bg-muted-bg (muted backgrounds) */
+  --color-muted-bg: #EFEDF3;
+  /* Usage: bg-inverse-bg (dark backgrounds) */
+  --color-inverse-bg: #2D3142;
+  /* Usage: bg-inverse-subtle (subtle dark) */
+  --color-inverse-subtle: #1D1F2A;
+  /* Usage: bg-accent-bg (light teal background) */
+  --color-accent-bg: #E6F7FA;
+  /* Usage: bg-accent-strong (strong teal) */
+  --color-accent-strong: #08A4BD;
 
   /* --- BORDER COLORS --- */
   /* Usage: border-default (standard borders) */
@@ -208,28 +208,28 @@ a[aria-hidden="true"],
   /* --- STATUS COLORS --- */
   /* Usage: bg-error, text-error, border-error */
   --color-error: #F70D1A;
-  /* Usage: bg-errorLight */
-  --color-errorLight: #FEF2F2;
-  /* Usage: bg-errorMuted */
-  --color-errorMuted: #FEE2E2;
+  /* Usage: bg-error-light */
+  --color-error-light: #FEF2F2;
+  /* Usage: bg-error-muted */
+  --color-error-muted: #FEE2E2;
   /* Usage: bg-success, text-success, border-success */
   --color-success: #22C55E;
-  /* Usage: bg-successLight */
-  --color-successLight: #F0FDF4;
-  /* Usage: bg-successMuted */
-  --color-successMuted: #DCFCE7;
+  /* Usage: bg-success-light */
+  --color-success-light: #F0FDF4;
+  /* Usage: bg-success-muted */
+  --color-success-muted: #DCFCE7;
   /* Usage: bg-warning, text-warning, border-warning */
   --color-warning: #EAB308;
-  /* Usage: bg-warningLight */
-  --color-warningLight: #FFFBEB;
-  /* Usage: bg-warningMuted */
-  --color-warningMuted: #FEF3C7;
+  /* Usage: bg-warning-light */
+  --color-warning-light: #FFFBEB;
+  /* Usage: bg-warning-muted */
+  --color-warning-muted: #FEF3C7;
   /* Usage: bg-info, text-info, border-info */
   --color-info: #3B82F6;
-  /* Usage: bg-infoLight */
-  --color-infoLight: #EFF6FF;
-  /* Usage: bg-infoMuted */
-  --color-infoMuted: #DBEAFE;
+  /* Usage: bg-info-light */
+  --color-info-light: #EFF6FF;
+  /* Usage: bg-info-muted */
+  --color-info-muted: #DBEAFE;
 
   /* --- FEATURE INDICATOR COLORS --- */
   /* Usage: bg-featureBlue, text-featureBlue (automate) */
@@ -247,18 +247,18 @@ a[aria-hidden="true"],
   --color-circleGreen: #22C55E;
 
   /* --- PURPLE SHADES --- */
-  /* Usage: bg-lightPurple, text-lightPurple */
-  --color-lightPurple: #EFEDF3;
-  /* Usage: bg-darkPurple, text-darkPurple */
-  --color-darkPurple: #5E4F7E;
+  /* Usage: bg-light-purple, text-light-purple */
+  --color-light-purple: #EFEDF3;
+  /* Usage: bg-dark-purple, text-dark-purple */
+  --color-dark-purple: #5E4F7E;
 
   /* --- AGING/URGENT INDICATORS --- */
   /* Usage: bg-aging, text-aging, border-aging */
   --color-aging: #F97316;
-  /* Usage: bg-agingDark */
-  --color-agingDark: #EA580C;
-  /* Usage: bg-agingLight */
-  --color-agingLight: #FFF7ED;
+  /* Usage: bg-aging-dark */
+  --color-aging-dark: #EA580C;
+  /* Usage: bg-aging-light */
+  --color-aging-light: #FFF7ED;
 
   /* --- UTILITY COLORS --- */
   /* Usage: bg-white, text-white */

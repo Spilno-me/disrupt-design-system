@@ -102,7 +102,7 @@ export function StrategicAdvisorySection() {
             </div>
 
             {/* Separator */}
-            <div className="w-full h-px bg-surfaceHover mb-6" />
+            <div className="w-full h-px bg-surface-hover mb-6" />
 
             {/* Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -12,7 +12,7 @@ import {
   Settings,
   TrendingUp,
   TrendingDown,
-  Clock,
+  
   CheckCircle2,
   AlertTriangle,
   ArrowRight,
@@ -240,7 +240,7 @@ function DashboardContent({
           <h1 className="text-2xl font-semibold text-primary">Dashboard</h1>
         </div>
 
-        <Card className="bg-errorLight border-error">
+        <Card className="bg-error-light border-error">
           <CardContent className="p-8 text-center">
             <AlertCircle className="w-12 h-12 text-error mx-auto mb-4" />
             <h2 className="text-lg font-semibold text-primary mb-2">Unable to load dashboard</h2>
@@ -287,7 +287,7 @@ function DashboardContent({
             </CardHeader>
             <CardContent className="space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-mutedBg">
+                <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg">
                   <Skeleton className="h-10 w-10 rounded-full" />
                   <div className="flex-1">
                     <Skeleton className="h-4 w-40 mb-1" />
@@ -374,7 +374,7 @@ function DashboardContent({
         </div>
 
         {/* Getting Started Card */}
-        <Card className="bg-accentBg border-teal">
+        <Card className="bg-accent-bg border-teal">
           <CardContent className="p-8 text-center">
             <Zap className="w-12 h-12 text-teal mx-auto mb-4" />
             <h2 className="text-lg font-semibold text-primary mb-2">Get Started</h2>
@@ -509,7 +509,7 @@ function DashboardContent({
           </CardHeader>
           <CardContent className="space-y-4">
             {activity.map((item) => (
-              <div key={item.id} className="flex items-center gap-3 p-3 rounded-lg bg-mutedBg">
+              <div key={item.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg">
                 <div className={item.iconColor}>{item.icon}</div>
                 <div className="flex-1">
                   <p className="text-sm font-medium text-primary">{item.title}</p>

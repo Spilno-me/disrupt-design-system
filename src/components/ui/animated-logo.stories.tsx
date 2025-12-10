@@ -48,7 +48,7 @@ export const LightMode: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-inverseBg p-8 rounded-lg">
+      <div className="bg-inverse-bg p-8 rounded-lg">
         <Story />
       </div>
     ),
@@ -87,7 +87,7 @@ export const BackgroundComparison: Story = {
         <p className="text-sm text-muted mb-4">Light background (colorMode: dark)</p>
         <AnimatedLogo colorMode="dark" showTagline={true} />
       </div>
-      <div className="bg-inverseBg p-8 rounded-lg">
+      <div className="bg-inverse-bg p-8 rounded-lg">
         <p className="text-sm text-white/70 mb-4">Dark background (colorMode: light)</p>
         <AnimatedLogo colorMode="light" showTagline={true} />
       </div>

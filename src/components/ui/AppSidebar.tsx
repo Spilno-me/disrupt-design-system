@@ -69,7 +69,7 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false }:
       disabled={item.disabled}
       className={cn(
         'relative w-full h-[41px] min-h-[41px] flex items-center gap-[9px] px-[17px] rounded-xs',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-teal',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
         isActive && 'bg-accent-bg',
         !isActive && !item.disabled && 'hover:bg-accent-bg',
         item.disabled && 'opacity-50 cursor-not-allowed',
@@ -87,9 +87,9 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false }:
 
       <span
         className={cn(
-          'text-[13px] text-primary whitespace-nowrap overflow-hidden',
+          'text-[13px] whitespace-nowrap overflow-hidden',
           'transition-opacity duration-200',
-          isActive ? 'font-bold' : 'font-medium',
+          isActive ? 'font-bold text-primary' : 'font-medium text-primary',
           collapsed ? 'opacity-0 w-0' : 'opacity-100'
         )}
       >
@@ -143,9 +143,9 @@ function NavGroup({
 
           <span
             className={cn(
-              'text-[13px] text-primary whitespace-nowrap overflow-hidden flex-1 text-left',
+              'text-[13px] whitespace-nowrap overflow-hidden flex-1 text-left',
               'transition-opacity duration-200',
-              groupActive ? 'font-bold' : 'font-medium',
+              groupActive ? 'font-bold text-primary' : 'font-medium text-primary',
               collapsed ? 'opacity-0 w-0' : 'opacity-100'
             )}
           >

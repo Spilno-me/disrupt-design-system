@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { Building2, Pencil, Trash2, Plus, Users, Key } from 'lucide-react'
+import { Building2, Pencil, Trash2, Plus } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import {
   EditPartnerDialog,
@@ -310,7 +310,7 @@ function AllDialogsShowcase() {
 
         {/* Edit Dialog */}
         <div className="flex flex-col items-center gap-3 p-6 border border-default rounded-lg">
-          <div className="w-12 h-12 rounded-lg bg-mutedBg flex items-center justify-center">
+          <div className="w-12 h-12 rounded-lg bg-muted-bg flex items-center justify-center">
             <Pencil className="w-6 h-6 text-secondary" />
           </div>
           <h3 className="font-medium text-primary">Edit Partner</h3>

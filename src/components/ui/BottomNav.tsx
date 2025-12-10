@@ -75,7 +75,7 @@ function BottomNavTab({
       <span
         className={cn(
           'text-[11px] leading-tight',
-          isActive ? 'font-semibold text-accent' : 'font-medium text-primary'
+          isActive ? 'font-semibold text-primary' : 'font-medium text-primary'
         )}
       >
         {item.label}
@@ -108,13 +108,13 @@ function MoreTab({
       aria-label="Open more navigation options"
     >
       <MoreHorizontal
-        className={cn('w-6 h-6', showActive ? 'text-accent' : 'text-primary')}
+        className={cn('w-6 h-6', showActive ? 'text-primary' : 'text-primary')}
         strokeWidth={showActive ? 2 : 1.5}
       />
       <span
         className={cn(
           'text-[11px] leading-tight',
-          showActive ? 'font-semibold text-accent' : 'font-medium text-primary'
+          showActive ? 'font-semibold text-primary' : 'font-medium text-primary'
         )}
       >
         {label}
@@ -158,7 +158,7 @@ function SheetNavItem({
       <span
         className={cn(
           'flex-1 text-left text-base',
-          isActive ? 'font-semibold text-accent' : 'font-medium text-primary'
+          isActive ? 'font-semibold text-primary' : 'font-medium text-primary'
         )}
       >
         {item.label}
@@ -192,7 +192,7 @@ function SheetNavGroup({
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
           'relative w-full flex items-center gap-4 px-5',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-inset',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
           'active:bg-accent-bg transition-colors',
           groupActive && 'bg-accent-bg',
           !groupActive && 'hover:bg-muted-bg'
@@ -204,7 +204,7 @@ function SheetNavGroup({
         <span
           className={cn(
             'flex-1 text-left text-base',
-            groupActive ? 'font-semibold text-accent' : 'font-medium text-primary'
+            groupActive ? 'font-semibold text-primary' : 'font-medium text-primary'
           )}
         >
           {item.label}
@@ -241,7 +241,7 @@ function SheetHelpItem({ onClick }: { onClick?: () => void }) {
       onClick={onClick}
       className={cn(
         'relative w-full flex items-center gap-4 px-5',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-inset',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
         'hover:bg-muted-bg active:bg-accent-bg transition-colors'
       )}
       style={{ height: ITEM_HEIGHT, minHeight: ITEM_HEIGHT }}

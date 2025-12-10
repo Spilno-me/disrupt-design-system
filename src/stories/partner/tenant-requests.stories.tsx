@@ -15,7 +15,7 @@ import {
   Clock,
   CheckCircle,
   Pencil,
-  Trash2,
+  
   X,
 } from 'lucide-react'
 import { AppSidebar, NavItem } from '../../components/ui/AppSidebar'
@@ -28,6 +28,7 @@ import { Card } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Pagination } from '../../components/ui/Pagination'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs'
+import { StatusBadge, REQUEST_STATUS_CONFIG } from '../../components/ui/table'
 import {
   Sheet,
   SheetContent,
@@ -532,38 +533,6 @@ const mockTenantRequests: TenantRequest[] = [
 // HELPER COMPONENTS
 // =============================================================================
 
-function StatusBadge({ status }: { status: RequestStatus }) {
-  const statusConfig: Record<RequestStatus, { label: string; className: string }> = {
-    pending_payment: {
-      label: 'Pending Payment',
-      className: 'bg-warningLight text-warning border border-warning/30',
-    },
-    pending_approval: {
-      label: 'Pending Approval',
-      className: 'bg-infoLight text-info border border-info/30',
-    },
-    approved: {
-      label: 'Approved',
-      className: 'bg-successLight text-success border border-success/30',
-    },
-    rejected: {
-      label: 'Rejected',
-      className: 'bg-errorLight text-error border border-error/30',
-    },
-    provisioned: {
-      label: 'Provisioned',
-      className: 'bg-accentBg text-teal border border-teal/30',
-    },
-  }
-
-  const config = statusConfig[status]
-
-  return (
-    <span className={cn('inline-flex px-2 py-0.5 text-xs font-semibold rounded', config.className)}>
-      {config.label}
-    </span>
-  )
-}
 
 interface StatCardProps {
   title: string
@@ -670,13 +639,13 @@ function TenantRequestDetailsSheet({
             </div>
             <div className="flex items-center gap-2">
               <button
-                className="p-2 hover:bg-mutedBg rounded-md transition-colors"
+                className="p-2 hover:bg-muted-bg rounded-md transition-colors"
                 onClick={() => console.log('Edit mode')}
               >
                 <Pencil className="w-4 h-4 text-secondary" />
               </button>
               <button
-                className="p-2 hover:bg-mutedBg rounded-md transition-colors"
+                className="p-2 hover:bg-muted-bg rounded-md transition-colors"
                 onClick={() => onOpenChange(false)}
               >
                 <X className="w-4 h-4 text-secondary" />
@@ -718,14 +687,14 @@ function TenantRequestDetailsSheet({
 
               {/* Dates */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-3 bg-mutedBg rounded-lg">
+                <div className="p-3 bg-muted-bg rounded-lg">
                   <p className="text-xs text-secondary uppercase font-medium">Created</p>
                   <p className="text-sm text-primary font-medium mt-1">
                     {formatDate(request.createdAt)}
                   </p>
                 </div>
                 {request.submittedAt && (
-                  <div className="p-3 bg-mutedBg rounded-lg">
+                  <div className="p-3 bg-muted-bg rounded-lg">
                     <p className="text-xs text-secondary uppercase font-medium">Submitted</p>
                     <p className="text-sm text-primary font-medium mt-1">
                       {formatDate(request.submittedAt)}
@@ -735,7 +704,7 @@ function TenantRequestDetailsSheet({
               </div>
 
               {/* Partner & Commission */}
-              <div className="p-4 border border-teal/30 bg-accentBg rounded-lg">
+              <div className="p-4 border border-teal/30 bg-accent-bg rounded-lg">
                 <p className="text-sm font-semibold text-primary">Partner & Commission</p>
                 <div className="mt-2 space-y-1">
                   {request.partnerName && (
@@ -888,14 +857,14 @@ function TenantRequestDetailsSheet({
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-semibold text-primary">Pricing Details</h3>
-                    <span className="inline-flex px-2 py-0.5 text-xs font-medium rounded bg-warningLight text-warning border border-warning/30">
+                    <span className="inline-flex px-2 py-0.5 text-xs font-medium rounded bg-warning-light text-warning border border-warning/30">
                       Legacy Format
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-4 bg-mutedBg rounded-lg">
+              <div className="p-4 bg-muted-bg rounded-lg">
                 <p className="text-sm text-secondary">
                   This request uses legacy pricing format. V19 pricing breakdown not available.
                 </p>
@@ -1113,7 +1082,7 @@ function TenantRequestsPageContent() {
     {
       id: 'status',
       header: 'Status',
-      accessor: (row) => <StatusBadge status={row.status} />,
+      accessor: (row) => <StatusBadge status={row.status} statusConfig={REQUEST_STATUS_CONFIG} />,
       sortable: true,
       sortValue: (row) => row.status,
       minWidth: '140px',
@@ -1194,25 +1163,25 @@ function TenantRequestsPageContent() {
             title="Total Requests"
             value={stats.total}
             icon={<Grid3X3 className="w-4 h-4 text-secondary" />}
-            iconBgClass="bg-mutedBg"
+            iconBgClass="bg-muted-bg"
           />
           <StatCard
             title="Pending"
             value={stats.pending}
             icon={<Clock className="w-4 h-4 text-warning" />}
-            iconBgClass="bg-warningLight"
+            iconBgClass="bg-warning-light"
           />
           <StatCard
             title="Approved"
             value={stats.approved}
             icon={<CheckCircle className="w-4 h-4 text-success" />}
-            iconBgClass="bg-successLight"
+            iconBgClass="bg-success-light"
           />
           <StatCard
             title="Total Value"
             value={formatCurrency(stats.totalValue)}
             icon={<DollarSign className="w-4 h-4 text-teal" />}
-            iconBgClass="bg-accentBg"
+            iconBgClass="bg-accent-bg"
           />
         </div>
 
@@ -1477,25 +1446,25 @@ export const EmptyRequests: Story = {
                 title="Total Requests"
                 value={0}
                 icon={<Grid3X3 className="w-4 h-4 text-secondary" />}
-                iconBgClass="bg-mutedBg"
+                iconBgClass="bg-muted-bg"
               />
               <StatCard
                 title="Pending"
                 value={0}
                 icon={<Clock className="w-4 h-4 text-warning" />}
-                iconBgClass="bg-warningLight"
+                iconBgClass="bg-warning-light"
               />
               <StatCard
                 title="Approved"
                 value={0}
                 icon={<CheckCircle className="w-4 h-4 text-success" />}
-                iconBgClass="bg-successLight"
+                iconBgClass="bg-success-light"
               />
               <StatCard
                 title="Total Value"
                 value="$0.00"
                 icon={<DollarSign className="w-4 h-4 text-teal" />}
-                iconBgClass="bg-accentBg"
+                iconBgClass="bg-accent-bg"
               />
             </div>
 
@@ -1514,7 +1483,7 @@ export const EmptyRequests: Story = {
               getRowId={(row: { id: string }) => row.id}
               emptyState={
                 <div className="flex flex-col items-center py-8">
-                  <div className="w-16 h-16 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+                  <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
                     <ClipboardList className="w-8 h-8 text-secondary" />
                   </div>
                   <h3 className="text-lg font-semibold text-primary mb-2">No tenant requests yet</h3>

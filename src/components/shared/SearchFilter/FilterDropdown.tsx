@@ -60,20 +60,22 @@ export function FilterDropdown({
           disabled={disabled}
           className={cn(
             'relative hidden md:flex items-center justify-center',
-            'w-9 h-9 flex-shrink-0',
-            'bg-overlay-white-50 border border-overlay-subtle rounded-sm',
-            'transition-all hover:opacity-80',
+            'w-10 h-10 flex-shrink-0',
+            'rounded-sm shadow-sm',
+            'transition-all',
+            // Active state - light teal background when filters are selected
+            activeCount > 0 ? 'bg-accent-bg border border-accent' : 'bg-surface border border-default hover:bg-surface-hover',
             'outline-none focus:outline-none',
-            'focus-visible:ring-[0.5px] focus-visible:ring-accent',
-            'data-[state=open]:ring-[0.5px] data-[state=open]:ring-accent',
-            disabled && 'opacity-50 cursor-not-allowed hover:opacity-50'
+            'focus-visible:border-accent focus-visible:ring-accent/20 focus-visible:ring-[3px]',
+            'data-[state=open]:border-accent data-[state=open]:ring-accent/20 data-[state=open]:ring-[3px]',
+            disabled && 'pointer-events-none cursor-not-allowed opacity-50 bg-muted-bg'
           )}
           aria-label={`Filter options${activeCount > 0 ? ` (${activeCount} active)` : ''}`}
         >
           {isLoading ? (
             <Loader2 className="w-4 h-4 text-accent animate-spin" aria-hidden="true" />
           ) : (
-            <FilterIcon className="text-accent" />
+            <FilterIcon className="text-primary" />
           )}
           <FilterBadge count={activeCount} size="sm" />
         </button>
@@ -108,7 +110,7 @@ export function FilterDropdown({
                   <button
                     type="button"
                     onClick={onClearAll}
-                    className="text-xs font-medium text-accent hover:text-accent/80 transition-colors"
+                    className="text-xs font-medium text-primary hover:text-secondary transition-colors"
                   >
                     Clear all
                   </button>

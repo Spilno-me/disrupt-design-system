@@ -88,15 +88,29 @@ Task: Build UI
 | Slider/range | `<Slider min={} max={} value={}>` |
 | Header/navbar | `<Header navItems={} colorMode="dark\|light">` |
 | App header (logged in) | `<AppHeader product="flow\|market\|partner" user={}>` |
+| Desktop sidebar nav | `<AppSidebar product="flow\|market\|partner" items={} activeItemId="">` |
+| Mobile drawer nav | `<MobileNav product="..." items={} activeItemId="">` |
+| Mobile bottom tabs | `<BottomNav items={} activeItemId={} maxVisibleItems={3}>` |
 | Mobile menu | `<MobileMenu>` |
+| App footer | `<AppFooter colorMode="dark\|light">` |
+| Data table | `<DataTable columns={} data={} getRowId={}>` |
+| Pagination | `<Pagination currentPage={} totalItems={} pageSize={}>` |
+| Tabs | `<Tabs>` with `<TabsList>`, `<TabsTrigger>`, `<TabsContent>` |
+| Notifications | `<NotificationsPanel notifications={}>` |
+| Severity indicator | `<SeverityIndicator level="critical\|high\|medium\|low\|none">` |
 | Feature card (with icon) | `<FeatureCard iconName="automate\|advice\|adapt\|scale">` |
 | Checklist item | `<CheckListItem label="" text="">` |
+| Stats card | `<StatsCard title="" value="" trend="">` |
+| Made with love | `<MadeWithLove colorMode="dark\|light">` |
 | Optimized image | `<OptimizedImage sources={} alt="">` |
 | Parallax image | `<ParallaxImage images={} intensity={20}>` |
 | Quick filter chips | `<QuickFilter variant="default\|info\|warning\|primary">` |
 | Animated logo | `<AnimatedLogo colorMode="dark\|light">` |
 | Blob background | `<GridBlobBackground scale={1}>` |
 | Error boundary | `<ErrorBoundary fallback={}>` |
+| Login form | `<LoginForm onSubmit={} onForgotPassword={}>` |
+| Wizard/stepper | `<Wizard steps={}>` with `<WizardStepper>`, `<WizardStep>` |
+| Scrollable table | `<ScrollableTableWrapper>` |
 
 ### Step 2: If component doesn't exist
 
@@ -297,6 +311,80 @@ Task: Build UI
   <QuickFilter label="In Review" count={3} variant="warning" />
   <QuickFilter label="Approved" count={12} variant="info" />
 </div>
+
+// Data table with sorting, selection, pagination
+<DataTable
+  data={items}
+  columns={[
+    { id: 'name', header: 'Name', accessor: (row) => row.name, sortable: true },
+    { id: 'status', header: 'Status', accessor: (row) => <Badge>{row.status}</Badge> },
+  ]}
+  getRowId={(row) => row.id}
+  selectable
+  selectedRows={selected}
+  onSelectionChange={setSelected}
+  stickyHeader
+  maxHeight="600px"
+  loading={isLoading}
+  onRowClick={(row) => navigate(`/items/${row.id}`)}
+  sortColumn="name"
+  sortDirection="asc"
+  onSortChange={handleSort}
+  bordered
+  hoverable
+  getRowPriority={(row) => row.severity}  // colored left border
+/>
+
+// Pagination controls
+<Pagination
+  currentPage={page}
+  totalItems={250}
+  pageSize={25}
+  onPageChange={setPage}
+  onPageSizeChange={setPageSize}
+  pageSizeOptions={[10, 25, 50, 100]}
+  showPageSizeSelector
+  showResultsText  // "Showing 1-25 of 250 results"
+  showFirstLastButtons
+/>
+
+// Tabs navigation
+<Tabs defaultValue="account">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">
+    Account settings...
+  </TabsContent>
+  <TabsContent value="password">
+    Change password...
+  </TabsContent>
+</Tabs>
+
+// Severity/priority indicator
+<SeverityIndicator level="critical" />  // red flame
+<SeverityIndicator level="high" />     // orange !!!
+<SeverityIndicator level="medium" />   // yellow !!
+<SeverityIndicator level="low" />      // green !
+<SeverityIndicator level="none" />     // cyan --
+
+// Notifications panel
+<NotificationsPanel
+  notifications={notifications}
+  onNotificationClick={handleClick}
+  onMarkAsRead={markRead}
+  onMarkAllAsRead={markAllRead}
+/>
+
+// Stats card
+<StatsCard
+  title="Total Leads"
+  value="1,234"
+  trend="+12%"
+  trendDirection="up"
+  icon={<Users />}
+/>
 ```
 
 ### Navigation
@@ -335,6 +423,48 @@ Task: Build UI
 <MobileMenu open={open} onOpenChange={setOpen}>
   <nav>Menu items</nav>
 </MobileMenu>
+
+// Desktop sidebar (collapsible navigation)
+<AppSidebar
+  product="flow"  // flow | market | partner
+  items={navItems}
+  activeItemId="dashboard"
+  collapsed={false}
+  onCollapsedChange={setCollapsed}
+  onNavigate={(item) => navigate(item.id)}
+  showHelpItem
+  onHelpClick={() => navigate('/help')}
+/>
+
+// Mobile drawer navigation
+<MobileNav
+  product="flow"
+  items={navItems}
+  activeItemId={currentRoute}
+  onNavigate={(item) => navigate(item.id)}
+  productTitle="Disrupt Flow"
+  showHelpItem
+  onHelpClick={() => navigate('/help')}
+/>
+
+// Mobile bottom tabs (iOS/Android style)
+<BottomNav
+  items={navItems}
+  activeItemId={currentRoute}
+  onNavigate={(item) => navigate(item.id)}
+  maxVisibleItems={3}  // Shows 3 tabs + More sheet
+  showHelpItem
+  moreLabel="More"
+/>
+
+// App footer with branding
+<AppFooter colorMode="dark" compactOnMobile />
+
+// Made with love logo
+<MadeWithLove
+  colorMode="dark"
+  onClick={() => window.open('https://disrupt.com')}
+/>
 ```
 
 ### Feature Components
@@ -395,6 +525,93 @@ Task: Build UI
 />
 ```
 
+### Auth Components
+
+```tsx
+// Login form
+<LoginForm
+  companyName="Acme Inc"
+  onSubmit={handleLogin}
+  onForgotPassword={() => setShowForgotPassword(true)}
+  isLoading={isLoading}
+/>
+
+// Forgot password form
+<ForgotPasswordForm
+  onSubmit={handleResetRequest}
+  onBackToLogin={() => setView('login')}
+/>
+
+// Reset password form
+<ResetPasswordForm
+  onSubmit={handlePasswordReset}
+  token={resetToken}
+/>
+
+// Set initial password
+<SetInitialPasswordForm
+  onSubmit={handleSetPassword}
+  email="user@example.com"
+/>
+
+// Auth layout wrapper
+<AuthLayout>
+  <LoginForm />
+</AuthLayout>
+
+// Social login buttons
+<SocialLoginButtons
+  onGoogleLogin={handleGoogle}
+  onLinkedInLogin={handleLinkedIn}
+/>
+
+// Complete login page
+<LoginPage />
+
+// Forgot password dialog
+<ForgotPasswordDialog
+  open={open}
+  onOpenChange={setOpen}
+  onSubmit={handleReset}
+/>
+```
+
+### Wizard Components
+
+```tsx
+// Multi-step wizard
+<Wizard
+  steps={[
+    { id: 'step1', label: 'Account', description: 'Set up account' },
+    { id: 'step2', label: 'Profile', description: 'Complete profile' },
+    { id: 'step3', label: 'Confirm', description: 'Review and submit' },
+  ]}
+  onStepChange={handleStepChange}
+  allowStepNavigation
+>
+  <WizardStepper />
+  <WizardStep stepId="step1">
+    <h2>Account Setup</h2>
+    {/* Step 1 content */}
+  </WizardStep>
+  <WizardStep stepId="step2">
+    <h2>Profile</h2>
+    {/* Step 2 content */}
+  </WizardStep>
+  <WizardStep stepId="step3">
+    <h2>Confirm</h2>
+    {/* Step 3 content */}
+  </WizardStep>
+  <WizardNavigation />
+</Wizard>
+
+// Or use complete provisioning wizard
+<TenantProvisioningWizard
+  onComplete={handleComplete}
+  onCancel={handleCancel}
+/>
+```
+
 ---
 
 ## Styling Rules
@@ -431,7 +648,7 @@ text-disabled     /* Disabled text - #9F93B7 */
 text-inverse      /* Text on dark backgrounds - #FFFFFF */
 text-accent       /* Accent text - #08A4BD */
 text-link         /* Link text - #08A4BD */
-text-linkHover    /* Link hover - #068397 */
+text-link-hover    /* Link hover - #068397 */
 text-error        /* Error messages - #F70D1A */
 text-success      /* Success messages - #22C55E */
 text-warning      /* Warning messages - #EAB308 */

@@ -1,5 +1,9 @@
 "use client"
 
+/* eslint-disable no-restricted-syntax */
+// This component requires specific color shades from color ramps (DEEP_CURRENT, WAVE, CORAL, SLATE)
+// for chat UI styling that are not available in ALIAS tokens
+
 import * as React from "react"
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
@@ -22,11 +26,9 @@ import {
 } from "../ui/dialog"
 import {
   DEEP_CURRENT,
-  ABYSS,
   WAVE,
   CORAL,
   SLATE,
-  PRIMITIVES,
   ALIAS,
   RADIUS,
 } from "../../constants/designTokens"
@@ -58,12 +60,12 @@ const logoPositions = {
 const logoColors = {
   dark: {
     large: DEEP_CURRENT[500],
-    medium: PRIMITIVES.cream,
+    medium: ALIAS.background.page,
     small: CORAL[500],
   },
   light: {
     large: DEEP_CURRENT[500],
-    medium: ABYSS[500],
+    medium: ALIAS.brand.primary,
     small: CORAL[500],
   },
 }
@@ -383,7 +385,7 @@ const STEP_ORDER: ChatStep[] = [
 // VALIDATION HELPERS
 // =============================================================================
 
-function formatPhoneNumber(value: string): string {
+function _formatPhoneNumber(value: string): string {
   // Allow + at the start and digits only
   // Don't auto-format - let user enter their country code
   return value
@@ -466,7 +468,7 @@ function QuickReplyButtons({ options, onSelect }: QuickReplyButtonsProps) {
           onClick={() => onSelect(option)}
           className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium transition-colors"
           style={{
-            backgroundColor: PRIMITIVES.white,
+            backgroundColor: ALIAS.background.surface,
             color: DEEP_CURRENT[600],
             border: `1px dashed ${DEEP_CURRENT[300]}`,
             borderRadius: RADIUS.md,
@@ -502,7 +504,7 @@ function SelectOptions({ options, onSelect, label }: SelectOptionsProps) {
       <div
         className="p-3 inline-block min-w-[200px]"
         style={{
-          backgroundColor: PRIMITIVES.white,
+          backgroundColor: ALIAS.background.surface,
           border: `1px dashed ${DEEP_CURRENT[300]}`,
           borderRadius: RADIUS.md,
         }}
@@ -527,7 +529,7 @@ interface ChatBubbleProps {
   isLatest?: boolean
 }
 
-function ChatBubble({ message, isLatest }: ChatBubbleProps) {
+function ChatBubble({ message }: ChatBubbleProps) {
   const isUser = message.role === "user"
 
   return (
@@ -566,7 +568,7 @@ function ChatBubble({ message, isLatest }: ChatBubbleProps) {
         className="px-3 py-2"
         style={{
           backgroundColor: isUser ? CORAL[50] : WAVE[50],
-          color: ABYSS[700],
+          color: ALIAS.text.primary,
           borderRadius: isUser ? `${RADIUS.md} ${RADIUS.md} ${RADIUS.xs} ${RADIUS.md}` : `${RADIUS.md} ${RADIUS.md} ${RADIUS.md} ${RADIUS.xs}`,
         }}
       >
@@ -634,7 +636,7 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
       <div
         className="overflow-hidden"
         style={{
-          backgroundColor: PRIMITIVES.white,
+          backgroundColor: ALIAS.background.surface,
           border: `1px dashed ${SLATE[300]}`,
           borderRadius: RADIUS.md,
         }}
@@ -656,7 +658,7 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
             <div key={section.title}>
               <div className="flex items-center gap-2 mb-2">
                 <span style={{ color: DEEP_CURRENT[500] }}>{section.icon}</span>
-                <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: ABYSS[500] }}>
+                <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: ALIAS.brand.primary }}>
                   {section.title}
                 </span>
               </div>
@@ -664,8 +666,8 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
                 {section.items.map((item) => (
                   <div key={item.label} className="flex items-center justify-between group">
                     <div className="flex-1 min-w-0">
-                      <span className="text-xs" style={{ color: ABYSS[400] }}>{item.label}: </span>
-                      <span className="text-sm font-medium" style={{ color: ABYSS[700] }}>{item.value || "—"}</span>
+                      <span className="text-xs" style={{ color: ALIAS.text.secondary }}>{item.label}: </span>
+                      <span className="text-sm font-medium" style={{ color: ALIAS.text.primary }}>{item.value || "—"}</span>
                     </div>
                     <button
                       onClick={() => onEdit(item.step)}
@@ -689,7 +691,7 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
             className="w-full font-medium"
             style={{
               backgroundColor: DEEP_CURRENT[500],
-              color: PRIMITIVES.white,
+              color: ALIAS.background.surface,
               borderRadius: RADIUS.md,
             }}
           >
@@ -740,10 +742,10 @@ function TenantSummaryCard({ data }: TenantSummaryCardProps) {
           <h3 className="font-semibold text-sm" style={{ color: DEEP_CURRENT[700] }}>
             Tenant Created Successfully!
           </h3>
-          <p className="text-sm mt-1" style={{ color: ABYSS[600] }}>
+          <p className="text-sm mt-1" style={{ color: ALIAS.text.primary }}>
             <strong>{data.companyName}</strong> has been provisioned with the <strong>{data.pricingTier}</strong> plan.
           </p>
-          <p className="text-xs mt-2" style={{ color: ABYSS[400] }}>
+          <p className="text-xs mt-2" style={{ color: ALIAS.text.secondary }}>
             A welcome email has been sent to {data.contactEmail}
           </p>
         </div>
@@ -769,7 +771,7 @@ function ThinkingIndicator({ state }: ThinkingIndicatorProps) {
           <circle cx="18" cy="18" r="17" fill="none" stroke={DEEP_CURRENT[400]} strokeWidth="1" strokeDasharray="3 2" />
         </motion.svg>
       </div>
-      <span className="text-xs font-medium" style={{ color: ABYSS[400] }}>
+      <span className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>
         {state === "thinking" && "Analyzing..."}
         {state === "planning" && "Planning..."}
         {state === "executing" && "Processing..."}
@@ -814,8 +816,8 @@ function ConfirmationCard({ value, label, onConfirm, onEdit }: ConfirmationCardP
         {/* Content */}
         <div className="p-3">
           <div className="mb-2.5">
-            <span className="text-xs" style={{ color: ABYSS[500] }}>{label}</span>
-            <p className="text-sm font-medium mt-0.5" style={{ color: ABYSS[700] }}>{value}</p>
+            <span className="text-xs" style={{ color: ALIAS.brand.primary }}>{label}</span>
+            <p className="text-sm font-medium mt-0.5" style={{ color: ALIAS.text.primary }}>{value}</p>
           </div>
 
           {/* Actions */}
@@ -1032,13 +1034,13 @@ export function TenantProvisioningChat({
     <>
       <div
         className={cn("h-full w-full flex flex-col overflow-hidden", className)}
-        style={{ backgroundColor: PRIMITIVES.white }}
+        style={{ backgroundColor: ALIAS.background.surface }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3" style={{ backgroundColor: PRIMITIVES.white, borderBottom: `1px solid ${SLATE[200]}` }}>
+        <div className="flex items-center justify-between px-4 py-3" style={{ backgroundColor: ALIAS.background.surface, borderBottom: `1px solid ${SLATE[200]}` }}>
           <div className="flex items-center gap-3">
             {onCancel && (
-              <button onClick={handleBack} className="p-1.5 rounded-lg transition-colors hover:bg-slate-100" title="Exit (progress will be saved)">
+              <button onClick={handleBack} className="p-1.5 rounded-lg transition-colors hover:bg-surface-hover" title="Exit (progress will be saved)">
                 <ArrowLeft className="w-4 h-4" style={{ color: SLATE[500] }} />
               </button>
             )}
@@ -1063,7 +1065,7 @@ export function TenantProvisioningChat({
           {onSaveProgress && currentStepIndex > 0 && currentStep !== "complete" && (
             <button
               onClick={() => setShowExitDialog(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors hover:bg-slate-100"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors hover:bg-surface-hover"
               style={{ color: SLATE[600] }}
             >
               <Save className="w-3.5 h-3.5" />
@@ -1124,7 +1126,7 @@ export function TenantProvisioningChat({
 
         {/* Input Area - hide when there's a pending value awaiting confirmation */}
         {(stepConfig?.inputType === "text" || stepConfig?.inputType === "email" || stepConfig?.inputType === "tel") && agentState === "idle" && !pendingValue && (
-          <div className="p-3" style={{ backgroundColor: PRIMITIVES.white, borderTop: `1px solid ${SLATE[200]}` }}>
+          <div className="p-3" style={{ backgroundColor: ALIAS.background.surface, borderTop: `1px solid ${SLATE[200]}` }}>
             <form onSubmit={handleTextSubmit} className="space-y-2" noValidate>
               <div className="flex gap-2">
                 <div className="flex-1 relative">
@@ -1147,7 +1149,7 @@ export function TenantProvisioningChat({
                       inputError && "border-error"
                     )}
                     style={{
-                      backgroundColor: PRIMITIVES.white,
+                      backgroundColor: ALIAS.background.surface,
                       border: `1px solid ${inputError ? CORAL[500] : SLATE[300]}`,
                       borderRadius: RADIUS.md,
                       color: ALIAS.text.primary,
@@ -1167,7 +1169,7 @@ export function TenantProvisioningChat({
                   className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
                   style={{
                     backgroundColor: inputValue.trim() ? DEEP_CURRENT[500] : SLATE[100],
-                    color: inputValue.trim() ? PRIMITIVES.white : SLATE[400],
+                    color: inputValue.trim() ? ALIAS.background.surface : SLATE[400],
                   }}
                 >
                   <Send className="w-4 h-4" />

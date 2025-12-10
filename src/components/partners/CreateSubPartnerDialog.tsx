@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { MapPin, Globe, Building2 } from "lucide-react"
 import { cn } from "../../lib/utils"
@@ -166,7 +165,7 @@ export function CreateSubPartnerDialog({
 
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           {/* Parent Partner Info */}
-          <div className="flex items-center gap-3 p-3 rounded-lg bg-accentBg border border-accent">
+          <div className="flex items-center gap-3 p-3 rounded-lg bg-accent-bg border border-accent">
             <div className="flex h-10 w-10 items-center justify-center rounded-md bg-surface">
               <Building2 className="h-5 w-5 text-accent" />
             </div>

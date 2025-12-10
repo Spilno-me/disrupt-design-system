@@ -78,7 +78,7 @@ export function InvoicePreviewSheet({
             <h3 className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">
               Bill To
             </h3>
-            <div className="flex flex-col gap-2 p-4 rounded-lg bg-mutedBg border border-subtle">
+            <div className="flex flex-col gap-2 p-4 rounded-lg bg-muted-bg border border-subtle">
               <div className="flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-muted flex-shrink-0" />
                 <span className="font-semibold text-primary">{invoice.company.name}</span>
@@ -115,7 +115,7 @@ export function InvoicePreviewSheet({
           </section>
 
           {/* Total Amount */}
-          <section className="flex items-center justify-between p-4 rounded-lg bg-accentBg border border-accent">
+          <section className="flex items-center justify-between p-4 rounded-lg bg-accent-bg border border-accent">
             <div>
               <div className="text-sm text-muted mb-1">Total Amount</div>
               <div className="text-3xl font-bold text-primary">{formatCurrency(invoice.total)}</div>
@@ -145,11 +145,11 @@ export function InvoicePreviewSheet({
 
           {/* Dates */}
           <section className="grid grid-cols-2 gap-3">
-            <div className="p-3 rounded-lg bg-mutedBg">
+            <div className="p-3 rounded-lg bg-muted-bg">
               <div className="text-xs text-muted mb-1">Invoice Date</div>
               <div className="text-sm font-medium text-primary">{formatDate(invoice.invoiceDate)}</div>
             </div>
-            <div className="p-3 rounded-lg bg-mutedBg">
+            <div className="p-3 rounded-lg bg-muted-bg">
               <div className="text-xs text-muted mb-1">Due Date</div>
               <div className="text-sm font-medium text-primary">{formatDate(invoice.dueDate)}</div>
             </div>
@@ -172,7 +172,7 @@ export function InvoicePreviewSheet({
             </h3>
             <div className="border border-default rounded-lg overflow-hidden">
               {/* Table Header */}
-              <div className="grid grid-cols-12 gap-2 px-4 py-3 bg-mutedBg border-b border-default text-xs font-semibold text-primary uppercase tracking-wider">
+              <div className="grid grid-cols-12 gap-2 px-4 py-3 bg-muted-bg border-b border-default text-xs font-semibold text-primary uppercase tracking-wider">
                 <div className="col-span-5">Description</div>
                 <div className="col-span-2 text-center">Qty</div>
                 <div className="col-span-2 text-right">Unit Price</div>
@@ -189,7 +189,7 @@ export function InvoicePreviewSheet({
                 ))}
               </div>
               {/* Totals */}
-              <div className="border-t-2 border-default bg-mutedBg">
+              <div className="border-t-2 border-default bg-muted-bg">
                 {invoice.tax !== undefined && (
                   <div className="grid grid-cols-12 gap-2 px-4 py-2 text-sm">
                     <div className="col-span-9 text-right text-muted">Subtotal:</div>
@@ -218,7 +218,7 @@ export function InvoicePreviewSheet({
 
           {/* Notes */}
           {invoice.notes && (
-            <section className="p-4 rounded-lg bg-mutedBg border border-subtle">
+            <section className="p-4 rounded-lg bg-muted-bg border border-subtle">
               <h3 className="text-sm font-semibold text-primary mb-2">Notes</h3>
               <p className="text-sm text-muted leading-relaxed whitespace-pre-wrap">
                 {invoice.notes}
@@ -240,27 +240,27 @@ function StatusBadge({ status }: { status: Invoice['status'] }) {
   const statusConfig = {
     draft: {
       label: 'Draft',
-      className: 'bg-mutedBg text-primary border border-default',
+      className: 'bg-muted-bg text-primary border border-default',
       showDot: true,
     },
     sent: {
       label: 'Sent',
-      className: 'bg-infoLight text-info',
+      className: 'bg-info-light text-info',
       showDot: false,
     },
     paid: {
       label: 'Paid',
-      className: 'bg-successLight text-success',
+      className: 'bg-success-light text-success',
       showDot: false,
     },
     overdue: {
       label: 'Overdue',
-      className: 'bg-errorLight text-error',
+      className: 'bg-error-light text-error',
       showDot: false,
     },
     partially_paid: {
       label: 'Partially Paid',
-      className: 'bg-warningLight text-warning',
+      className: 'bg-warning-light text-warning',
       showDot: false,
     },
   }
@@ -278,7 +278,7 @@ function StatusBadge({ status }: { status: Invoice['status'] }) {
 /** Metadata item */
 function MetadataItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-3 rounded-lg bg-mutedBg">
+    <div className="p-3 rounded-lg bg-muted-bg">
       <div className="text-xs text-muted mb-1">{label}</div>
       <div className="text-sm font-medium text-primary">{value}</div>
     </div>
@@ -317,15 +317,15 @@ function LineItemTypeBadge({ type }: { type: LineItem['type'] }) {
   const typeConfig = {
     platform: {
       label: 'Platform',
-      className: 'bg-infoLight text-info',
+      className: 'bg-info-light text-info',
     },
     process: {
       label: 'Process',
-      className: 'bg-accentBg text-accent',
+      className: 'bg-accent-bg text-accent',
     },
     license: {
       label: 'License',
-      className: 'bg-successLight text-success',
+      className: 'bg-success-light text-success',
     },
   }
 

@@ -23,44 +23,67 @@ When receiving Figma data via MCP, Figma designs contain HARDCODED colors (hex v
 
 ### Figma-to-DDS Color Mapping
 
-Use this mapping to translate Figma hex colors to DDS semantic tokens:
+Use this mapping to translate Figma hex colors to DDS semantic tokens. **Always use ALIAS tokens or Tailwind classes** - never expose primitives.
 
-| Figma Hex | DDS Token | Tailwind Class |
-|-----------|-----------|----------------|
+| Figma Hex | DDS ALIAS Token | Tailwind Class |
+|-----------|-----------------|----------------|
 | `#2D3142` | `ALIAS.text.primary` | `text-primary`, `bg-inverse-bg` |
 | `#5E4F7E` | `ALIAS.text.secondary` | `text-secondary`, `text-muted` |
 | `#7F6F9F` | `ALIAS.text.tertiary` | `text-tertiary` |
 | `#474F5F` | `ALIAS.text.emphasis` | `text-emphasis` |
 | `#9F93B7` | `ALIAS.text.disabled` | `text-disabled` |
-| `#FFFFFF` | `ALIAS.text.inverse` | `text-inverse`, `bg-surface` |
-| `#08A4BD` | `ALIAS.brand.secondary` | `text-accent`, `bg-accent-strong` |
-| `#66CFE1` | `DEEP_CURRENT[300]` | `text-accent-light` |
+| `#FFFFFF` | `ALIAS.text.inverse` | `text-inverse`, `bg-surface`, `bg-elevated` |
+| `#E8E9EB` | `ALIAS.background.surfaceHover` | `bg-surface-hover` |
+| `#D1D3D7` | `ALIAS.background.surfaceActive` | `bg-surface-active` |
+| `#08A4BD` | `ALIAS.brand.secondary` | `text-accent`, `text-link`, `bg-accent-strong` |
+| `#068397` | `ALIAS.text.linkHover` | `text-link-hover` |
+| `#66CFE1` | `ALIAS.background.accentSubtle` | `bg-accent-subtle` |
 | `#FBFBF3` | `ALIAS.background.page` | `bg-page` |
-| `#F70D1A` | `ALIAS.status.error` | `text-error`, `bg-error` |
-| `#22C55E` | `ALIAS.status.success` | `text-success`, `bg-success` |
-| `#EAB308` | `ALIAS.status.warning` | `text-warning`, `bg-warning` |
-| `#3B82F6` | `ALIAS.status.info` | `text-info`, `bg-info` |
-| `#CBD5E1` | `ALIAS.border.default` | `border-default` |
+| `#E6F7FA` | `ALIAS.background.accent` | `bg-accent-bg` |
 | `#EFEDF3` | `ALIAS.background.muted` | `bg-muted-bg` |
-| `#0A66C2` | `PRIMITIVES.linkedIn` | `bg-linkedin` |
+| `#1D1F2A` | `ALIAS.background.inverseSubtle` | `bg-inverse-subtle` |
+| `#F70D1A` | `ALIAS.status.error` | `text-error`, `bg-error` |
+| `#FEF2F2` | `ALIAS.background.errorLight` | `bg-error-light` |
+| `#FEE2E2` | `ALIAS.background.errorMuted` | `bg-error-muted` |
+| `#22C55E` | `ALIAS.status.success` | `text-success`, `bg-success` |
+| `#F0FDF4` | `ALIAS.background.successLight` | `bg-success-light` |
+| `#DCFCE7` | `ALIAS.background.successMuted` | `bg-success-muted` |
+| `#EAB308` | `ALIAS.status.warning` | `text-warning`, `bg-warning` |
+| `#FFFBEB` | `ALIAS.background.warningLight` | `bg-warning-light` |
+| `#FEF3C7` | `ALIAS.background.warningMuted` | `bg-warning-muted` |
+| `#3B82F6` | `ALIAS.status.info` | `text-info`, `bg-info` |
+| `#EFF6FF` | `ALIAS.background.infoLight` | `bg-info-light` |
+| `#DBEAFE` | `ALIAS.background.infoMuted` | `bg-info-muted` |
+| `#CBD5E1` | `ALIAS.border.default` | `border-default` |
+| `#D1D3D7` | `ALIAS.border.subtle` | `border-subtle` |
+| `#757B87` | `ALIAS.border.strong` | `border-strong` |
+| `#0A66C2` | `ALIAS.brand.linkedIn` | `bg-linkedin` |
 | `#EF4444` | `ALIAS.feature.advice` | `bg-feature-advice` |
+| `#3B82F6` | `ALIAS.feature.automate` | `bg-feature-automate` |
+| `#EAB308` | `ALIAS.feature.adapt` | `bg-feature-adapt` |
+| `#22C55E` | `ALIAS.feature.scale` | `bg-feature-scale` |
 | `#F97316` | `ALIAS.aging.primary` | `bg-aging` |
+| `#EA580C` | `ALIAS.aging.dark` | `bg-aging-dark` |
+| `#FFF7ED` | `ALIAS.aging.light` | `bg-aging-light` |
 
 ### Color Matching Algorithm
 
 When you encounter a Figma color not in the exact mapping:
 
 1. **Extract RGB values** from the hex
-2. **Calculate color distance** to known DDS primitives
-3. **Choose the semantically appropriate** DDS token
-4. **Prefer semantic tokens** over raw primitives
+2. **Calculate color distance** to known DDS semantic tokens
+3. **Choose the semantically appropriate** DDS token based on context
+4. **Always use ALIAS tokens or Tailwind classes** - never expose primitives
 
-```typescript
+```tsx
 // Example: Figma gives #2E3243 (close to #2D3142)
-// Match: ALIAS.text.primary (ABYSS[500])
+// Match: ALIAS.text.primary → className="text-primary"
 
 // Example: Figma gives #07A3BC (close to #08A4BD)
-// Match: ALIAS.brand.secondary (DEEP_CURRENT[500])
+// Match: ALIAS.brand.secondary → className="text-accent" or "text-link"
+
+// Example: Figma gives #E7F6F9 (close to #E6F7FA)
+// Match: ALIAS.background.accent → className="bg-accent-bg"
 ```
 
 ### NEVER DO THIS with Figma Colors

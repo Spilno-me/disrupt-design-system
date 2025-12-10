@@ -115,7 +115,7 @@ function KPICard({ kpi }: { kpi: KPICardData }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {kpi.icon && (
-              <div className="p-2 rounded-lg bg-mutedBg">{kpi.icon}</div>
+              <div className="p-2 rounded-lg bg-muted-bg">{kpi.icon}</div>
             )}
             <div>
               <p className="text-sm text-secondary">{kpi.label}</p>
@@ -181,8 +181,8 @@ function ActivityCard({
   return (
     <div
       className={cn(
-        'flex items-center gap-3 p-3 rounded-lg bg-mutedBg',
-        onClick && 'cursor-pointer hover:bg-surfaceHover transition-colors'
+        'flex items-center gap-3 p-3 rounded-lg bg-muted-bg',
+        onClick && 'cursor-pointer hover:bg-surface-hover transition-colors'
       )}
       onClick={onClick || activity.onClick}
     >
@@ -202,7 +202,7 @@ function ActivityCard({
 
 function ActivitySkeleton() {
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg bg-mutedBg">
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg">
       <Skeleton className="w-5 h-5 rounded" />
       <div className="flex-1">
         <Skeleton className="h-4 w-3/4 mb-1" />

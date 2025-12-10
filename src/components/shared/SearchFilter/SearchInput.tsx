@@ -30,7 +30,7 @@ export interface SearchInputProps {
 
 /**
  * Search input with icon and styled container.
- * Pure Tailwind classes - zero inline styles.
+ * Matches Radix Input styling with search icon.
  */
 export function SearchInput({
   value,
@@ -48,14 +48,14 @@ export function SearchInput({
   return (
     <div
       className={cn(
-        // Base styles
-        'relative flex flex-1 items-center h-9',
-        'bg-overlay-white-50 border border-overlay-subtle rounded-sm',
-        'transition-all duration-150',
-        // Focus state
-        isFocused && !disabled && 'ring-[0.5px] ring-accent',
+        // Base styles - matching Radix Input
+        'relative flex flex-1 items-center h-10',
+        'rounded-sm border border-default bg-surface shadow-sm',
+        'transition-[color,box-shadow]',
+        // Focus state - matching Radix Input
+        isFocused && !disabled && 'border-accent ring-accent/20 ring-[3px]',
         // Disabled state
-        disabled && 'opacity-50 cursor-not-allowed',
+        disabled && 'pointer-events-none cursor-not-allowed opacity-50 bg-muted-bg',
         className
       )}
     >
@@ -70,7 +70,7 @@ export function SearchInput({
           <SearchIcon
             className={cn(
               'transition-colors duration-150',
-              isFocused && !disabled ? 'text-icon-accent' : 'text-icon-secondary'
+              'text-secondary'
             )}
           />
         )}
@@ -90,9 +90,11 @@ export function SearchInput({
         aria-label={placeholder}
         aria-busy={isSearching}
         className={cn(
+          // Base input styles - matching Radix Input
           'w-full h-full bg-transparent border-none outline-none',
-          'text-sm font-normal font-sans tracking-tight',
-          'text-primary placeholder:text-tertiary',
+          'text-base md:text-sm font-sans',
+          'text-primary placeholder:text-muted',
+          'selection:bg-accent-strong selection:text-inverse',
           'pl-9 pr-3',
           disabled && 'cursor-not-allowed'
         )}

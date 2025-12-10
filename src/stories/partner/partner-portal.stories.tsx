@@ -489,7 +489,7 @@ function DashboardPage({ onNavigate }: { onNavigate: (page: string) => void }) {
             <CardTitle className="text-lg">Recent Activity</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-mutedBg">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg">
               <Clock className="w-5 h-5 text-teal" />
               <div className="flex-1">
                 <p className="text-sm font-medium text-primary">New lead from website</p>
@@ -497,7 +497,7 @@ function DashboardPage({ onNavigate }: { onNavigate: (page: string) => void }) {
               </div>
               <span className="text-xs text-muted">2h ago</span>
             </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-mutedBg">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg">
               <CheckCircle2 className="w-5 h-5 text-success" />
               <div className="flex-1">
                 <p className="text-sm font-medium text-primary">Invoice paid</p>
@@ -505,7 +505,7 @@ function DashboardPage({ onNavigate }: { onNavigate: (page: string) => void }) {
               </div>
               <span className="text-xs text-muted">1d ago</span>
             </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-mutedBg">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg">
               <Zap className="w-5 h-5 text-warning" />
               <div className="flex-1">
                 <p className="text-sm font-medium text-primary">Tenant provisioned</p>
@@ -582,7 +582,7 @@ function TenantProvisioningContent() {
   }
 
   const handleChatComplete = (data: TenantChatFormData) => {
-    console.log('Chat completed with data:', data)
+    console.log('Chat completed with data:')
     alert(`Tenant "${data.companyName}" configuration complete!`)
   }
 
@@ -628,21 +628,21 @@ function TenantRequestsContent() {
           <h2 className="text-lg font-semibold text-primary mb-2">Pending Requests</h2>
           <p className="text-secondary mb-4">3 tenant requests are awaiting review</p>
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 rounded-lg bg-warningLight border border-warning">
+            <div className="flex items-center justify-between p-4 rounded-lg bg-warning-light border border-warning">
               <div>
                 <p className="font-medium text-primary">Fine Goods Corp</p>
                 <p className="text-sm text-secondary">Pending payment verification</p>
               </div>
               <Button size="sm">Review</Button>
             </div>
-            <div className="flex items-center justify-between p-4 rounded-lg bg-mutedBg border border-subtle">
+            <div className="flex items-center justify-between p-4 rounded-lg bg-muted-bg border border-subtle">
               <div>
                 <p className="font-medium text-primary">Tech Innovations LLC</p>
                 <p className="text-sm text-secondary">Pending approval</p>
               </div>
               <Button size="sm">Review</Button>
             </div>
-            <div className="flex items-center justify-between p-4 rounded-lg bg-mutedBg border border-subtle">
+            <div className="flex items-center justify-between p-4 rounded-lg bg-muted-bg border border-subtle">
               <div>
                 <p className="font-medium text-primary">Northern Solutions</p>
                 <p className="text-sm text-secondary">Pending approval</p>
@@ -729,7 +729,7 @@ function PartnerPortal() {
               }
             }}
             onCreateInvoice={() => alert('Create new invoice')}
-            onUpdateInvoice={(invoice, data) => alert(`Invoice ${invoice.invoiceNumber} updated`)}
+            onUpdateInvoice={(invoice) => alert(`Invoice ${invoice.invoiceNumber} updated`)}
           />
         )
 

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Accordion } from './Accordion'
 import { Card } from './card'
-import { COLORS } from '../../constants/designTokens'
 
 const meta = {
   title: 'Core/Accordion',
@@ -80,7 +79,7 @@ export const AllowMultiple: Story = {
 // In Card
 export const InCard: Story = {
   render: () => (
-    <Card variant="pricing" shadow="sm" style={{ borderColor: COLORS.teal }}>
+    <Card variant="pricing" shadow="sm" className="border-accent">
       <Accordion items={FAQ_ITEMS} defaultOpenIndex={1} />
     </Card>
   ),
@@ -91,7 +90,10 @@ export const CustomColors: Story = {
   args: {
     items: FAQ_ITEMS,
     defaultOpenIndex: 0,
-    borderColor: COLORS.circleBlue,
-    answerBgColor: 'rgba(60, 118, 236, 0.1)',
   },
+  render: (args) => (
+    <div className="border border-info rounded-lg" style={{ backgroundColor: 'rgba(59, 130, 246, 0.05)' }}>
+      <Accordion {...args} />
+    </div>
+  ),
 }

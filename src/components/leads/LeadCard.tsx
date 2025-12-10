@@ -289,9 +289,9 @@ function ScoreBadge({ score }: { score: number }) {
     <span
       className={cn(
         'inline-flex items-center px-3 py-1.5 text-sm font-semibold rounded-full',
-        score >= 80 && 'bg-successLight text-success',
-        score >= 50 && score < 80 && 'bg-warningLight text-warning',
-        score < 50 && 'bg-mutedBg text-primary'
+        score >= 80 && 'bg-success-light text-success',
+        score >= 50 && score < 80 && 'bg-warning-light text-warning',
+        score < 50 && 'bg-muted-bg text-primary'
       )}
     >
       Score {score}
@@ -302,11 +302,11 @@ function ScoreBadge({ score }: { score: number }) {
 /** Status badge */
 function StatusBadge({ status }: { status: LeadStatus }) {
   const statusConfig: Record<LeadStatus, { label: string; className: string }> = {
-    new: { label: 'New', className: 'bg-infoLight text-info' },
-    contacted: { label: 'Contacted', className: 'bg-warningLight text-warning' },
-    qualified: { label: 'Qualified', className: 'bg-accentBg text-accent' },
-    converted: { label: 'Converted', className: 'bg-successLight text-success' },
-    lost: { label: 'Lost', className: 'bg-errorLight text-error' },
+    new: { label: 'New', className: 'bg-info-light text-info' },
+    contacted: { label: 'Contacted', className: 'bg-warning-light text-warning' },
+    qualified: { label: 'Qualified', className: 'bg-accent-bg text-accent' },
+    converted: { label: 'Converted', className: 'bg-success-light text-success' },
+    lost: { label: 'Lost', className: 'bg-error-light text-error' },
   }
 
   const config = statusConfig[status]
@@ -331,7 +331,7 @@ function SourceBadge({ source }: { source: LeadSource }) {
   const config = sourceConfig[source]
 
   return (
-    <span className="inline-flex items-center gap-1.5 px-3 py-1 text-sm text-primary bg-mutedBg rounded">
+    <span className="inline-flex items-center gap-1.5 px-3 py-1 text-sm text-primary bg-muted-bg rounded">
       {config.icon}
       {config.label}
     </span>

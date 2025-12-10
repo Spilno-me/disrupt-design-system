@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Badge } from './badge'
-import { COLORS } from '../../constants/designTokens'
 
 const meta = {
   title: 'Core/Badge',
@@ -68,8 +67,7 @@ export const StrategicAdvisory: Story = {
   render: () => (
     <Badge
       shape="pill"
-      className="text-[10px] sm:text-xs font-semibold"
-      style={{ backgroundColor: COLORS.circleRed, color: 'white', borderColor: 'transparent' }}
+      className="text-[10px] sm:text-xs font-semibold bg-feature-advice text-white border-transparent"
     >
       STRATEGIC ADVISORY ADD-ON
     </Badge>

@@ -94,9 +94,9 @@ function TrendBadge({ trend, direction }: TrendBadgeProps) {
     <span
       className={cn(
         'inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-md border',
-        direction === 'up' && 'text-success border-success/30 bg-successLight',
-        direction === 'down' && 'text-error border-error/30 bg-errorLight',
-        direction === 'neutral' && 'text-muted border-default bg-mutedBg'
+        direction === 'up' && 'text-success border-success/30 bg-success-light',
+        direction === 'down' && 'text-error border-error/30 bg-error-light',
+        direction === 'neutral' && 'text-muted border-default bg-muted-bg'
       )}
     >
       {direction !== 'neutral' && <Icon className="w-3 h-3" />}

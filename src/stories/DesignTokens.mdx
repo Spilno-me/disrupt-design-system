@@ -1,0 +1,1650 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundation/Design Tokens" />
+
+# Design Tokens
+
+Complete reference for all design tokens in the Disrupt Design System. These tokens ensure consistency across all products.
+
+---
+
+## 📐 Spacing & Sizing
+
+### Spacing for Websites
+
+Spacing tokens for marketing sites, landing pages, and public-facing content. Larger spacing creates breathing room for content-focused layouts.
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Token</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>sectionPaddingY</code></td>
+      <td style={{ padding: '8px' }}><code>py-16 lg:py-24</code></td>
+      <td style={{ padding: '8px' }}>Vertical padding for sections (64px / 96px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>sectionPaddingX</code></td>
+      <td style={{ padding: '8px' }}><code>px-6 lg:px-10</code></td>
+      <td style={{ padding: '8px' }}>Horizontal padding for sections (24px / 40px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>headingGap</code></td>
+      <td style={{ padding: '8px' }}><code>mb-1</code></td>
+      <td style={{ padding: '8px' }}>Space between heading and subheading (4px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>subheadingGap</code></td>
+      <td style={{ padding: '8px' }}><code>mb-8</code></td>
+      <td style={{ padding: '8px' }}>Space after subheading (32px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>listItemGap</code></td>
+      <td style={{ padding: '8px' }}><code>gap-4</code></td>
+      <td style={{ padding: '8px' }}>Space between list items (16px)</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><code>sectionContentGap</code></td>
+      <td style={{ padding: '8px' }}><code>gap-12 lg:gap-16</code></td>
+      <td style={{ padding: '8px' }}>Gap between section content blocks (48px / 64px)</td>
+    </tr>
+  </tbody>
+</table>
+
+**Example - Website Hero Section:**
+```tsx
+<section className="py-16 lg:py-24 px-6 lg:px-10">
+  <div className="max-w-[1440px] mx-auto">
+    <h1 className="text-4xl md:text-6xl mb-1">Hero Title</h1>
+    <p className="text-lg mb-8">Subtitle text</p>
+    <div className="gap-12 lg:gap-16">
+      {/* Content blocks */}
+    </div>
+  </div>
+</section>
+```
+
+### Spacing for Apps
+
+Spacing tokens for web applications (Flow, Market, Partner portals). More compact spacing optimizes for dense information and productivity workflows.
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Component</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Pattern</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Page Container</strong></td>
+      <td style={{ padding: '8px' }}><code>p-6</code></td>
+      <td style={{ padding: '8px' }}>Main page wrapper padding (24px all sides)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Card Padding</strong></td>
+      <td style={{ padding: '8px' }}><code>p-4</code> or <code>p-6</code></td>
+      <td style={{ padding: '8px' }}>Card content padding: 16px (compact) or 24px (default)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Card Header</strong></td>
+      <td style={{ padding: '8px' }}><code>px-6 gap-1.5</code></td>
+      <td style={{ padding: '8px' }}>Card title section: 24px horizontal, 6px gap between title/description</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Card Content</strong></td>
+      <td style={{ padding: '8px' }}><code>px-6</code></td>
+      <td style={{ padding: '8px' }}>Card body section: 24px horizontal padding</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Form Fields</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-2</code></td>
+      <td style={{ padding: '8px' }}>Space between label and input (8px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Form Items</strong></td>
+      <td style={{ padding: '8px' }}><code>space-y-4</code></td>
+      <td style={{ padding: '8px' }}>Space between form fields (16px vertical)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Dialog Content</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-4 p-6</code></td>
+      <td style={{ padding: '8px' }}>Dialog spacing: 24px padding, 16px between sections</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Dialog Header</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-2</code></td>
+      <td style={{ padding: '8px' }}>Space between dialog title and description (8px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Table Cells</strong></td>
+      <td style={{ padding: '8px' }}><code>px-4 py-3</code> (default)<br /><code>px-3 py-2</code> (compact)</td>
+      <td style={{ padding: '8px' }}>Data table cell padding</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Table Header</strong></td>
+      <td style={{ padding: '8px' }}><code>px-4 py-3</code></td>
+      <td style={{ padding: '8px' }}>Data table header padding (16px horizontal, 12px vertical)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Page Header</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-2</code> to <code>gap-4</code></td>
+      <td style={{ padding: '8px' }}>Space between title and actions (8-16px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Button Groups</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-2</code> or <code>gap-3</code></td>
+      <td style={{ padding: '8px' }}>Space between buttons (8px or 12px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Icon + Text</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-2</code> or <code>gap-3</code></td>
+      <td style={{ padding: '8px' }}>Space between icon and label (8px or 12px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Stats/KPI Cards</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-3</code> or <code>gap-4</code></td>
+      <td style={{ padding: '8px' }}>Space between stat elements (12px or 16px)</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><strong>Content Sections</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-6</code></td>
+      <td style={{ padding: '8px' }}>Space between major content sections (24px)</td>
+    </tr>
+  </tbody>
+</table>
+
+**Example - App Page Layout:**
+```tsx
+// Full page with data table
+<div className="flex flex-col gap-6 p-6">
+  {/* Page header */}
+  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <h1 className="text-2xl font-semibold">Partners</h1>
+    <Button><Plus className="mr-2 h-4 w-4" /> Add Partner</Button>
+  </div>
+
+  {/* Stats cards */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <Card>
+      <CardContent className="p-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-muted-bg">{icon}</div>
+          <div>
+            <div className="text-2xl font-semibold">{value}</div>
+            <div className="text-sm text-muted">{label}</div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+
+  {/* Data table */}
+  <DataTable ... />
+</div>
+```
+
+**Example - Form in Dialog:**
+```tsx
+<Dialog>
+  <DialogContent className="gap-4 p-6">
+    <DialogHeader className="gap-2">
+      <DialogTitle>Create Lead</DialogTitle>
+      <DialogDescription>Add a new lead to the system</DialogDescription>
+    </DialogHeader>
+
+    <Form>
+      <div className="space-y-4">
+        <FormItem className="gap-2">
+          <FormLabel>Company Name</FormLabel>
+          <FormControl><Input /></FormControl>
+        </FormItem>
+
+        <FormItem className="gap-2">
+          <FormLabel>Email</FormLabel>
+          <FormControl><Input type="email" /></FormControl>
+        </FormItem>
+      </div>
+    </Form>
+
+    <DialogFooter className="gap-2">
+      <Button variant="secondary">Cancel</Button>
+      <Button>Create Lead</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+**Example - Card with List:**
+```tsx
+<Card>
+  <CardHeader className="px-6 gap-1.5">
+    <CardTitle>Recent Activity</CardTitle>
+    <CardDescription>Latest actions in your account</CardDescription>
+  </CardHeader>
+  <CardContent className="px-6">
+    <div className="space-y-3">
+      {items.map(item => (
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-muted-bg">
+          <div className="p-2 rounded-lg bg-accent-bg">{item.icon}</div>
+          <div className="flex-1">
+            <div className="font-medium">{item.title}</div>
+            <div className="text-sm text-muted">{item.time}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </CardContent>
+</Card>
+```
+
+### Key Differences: Website vs. App Spacing
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '32px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Aspect</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Website</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>App</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Section Padding</strong></td>
+      <td style={{ padding: '8px' }}><code>py-16 lg:py-24</code> (64-96px)</td>
+      <td style={{ padding: '8px' }}><code>p-6</code> (24px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Content Gaps</strong></td>
+      <td style={{ padding: '8px' }}><code>gap-12 lg:gap-16</code> (48-64px)</td>
+      <td style={{ padding: '8px' }}><code>gap-4</code> to <code>gap-6</code> (16-24px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Card Padding</strong></td>
+      <td style={{ padding: '8px' }}><code>p-6</code> to <code>p-8</code> (24-32px)</td>
+      <td style={{ padding: '8px' }}><code>p-4</code> to <code>p-6</code> (16-24px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><strong>Goal</strong></td>
+      <td style={{ padding: '8px' }}>Breathing room, storytelling, visual hierarchy</td>
+      <td style={{ padding: '8px' }}>Information density, productivity, efficiency</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><strong>Use Case</strong></td>
+      <td style={{ padding: '8px' }}>Marketing pages, landing pages, public content</td>
+      <td style={{ padding: '8px' }}>Flow, Market, Partner portals, data tables, forms</td>
+    </tr>
+  </tbody>
+</table>
+
+### Container Sizes
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Token</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>containerMaxWidth</code></td>
+      <td style={{ padding: '8px' }}>1440px</td>
+      <td style={{ padding: '8px' }}>Maximum content container width</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>headerHeight</code></td>
+      <td style={{ padding: '8px' }}>82px</td>
+      <td style={{ padding: '8px' }}>Standard header height</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>inputHeight</code></td>
+      <td style={{ padding: '8px' }}>40px</td>
+      <td style={{ padding: '8px' }}>Standard input field height</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>buttonHeight</code></td>
+      <td style={{ padding: '8px' }}>40px</td>
+      <td style={{ padding: '8px' }}>Standard button height</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><code>textareaMinHeight</code></td>
+      <td style={{ padding: '8px' }}>120px</td>
+      <td style={{ padding: '8px' }}>Minimum textarea height</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 🔲 Border Radius
+
+Rounded corner values for consistent component styling.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+  <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#08A4BD', borderRadius: '4px', marginBottom: '12px' }} />
+    <strong>XS</strong>
+    <div style={{ fontSize: '14px', color: '#666' }}>4px</div>
+    <code style={{ fontSize: '12px' }}>rounded-xs</code>
+    <div style={{ fontSize: '13px', marginTop: '8px' }}>Small elements, tags</div>
+  </div>
+
+  <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#08A4BD', borderRadius: '8px', marginBottom: '12px' }} />
+    <strong>SM</strong>
+    <div style={{ fontSize: '14px', color: '#666' }}>8px</div>
+    <code style={{ fontSize: '12px' }}>rounded-sm</code>
+    <div style={{ fontSize: '13px', marginTop: '8px' }}>Inputs, buttons</div>
+  </div>
+
+  <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#08A4BD', borderRadius: '12px', marginBottom: '12px' }} />
+    <strong>MD</strong>
+    <div style={{ fontSize: '14px', color: '#666' }}>12px</div>
+    <code style={{ fontSize: '12px' }}>rounded-md</code>
+    <div style={{ fontSize: '13px', marginTop: '8px' }}>Cards, panels (default)</div>
+  </div>
+
+  <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#08A4BD', borderRadius: '16px', marginBottom: '12px' }} />
+    <strong>LG</strong>
+    <div style={{ fontSize: '14px', color: '#666' }}>16px</div>
+    <code style={{ fontSize: '12px' }}>rounded-lg</code>
+    <div style={{ fontSize: '13px', marginTop: '8px' }}>Large cards</div>
+  </div>
+
+  <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#08A4BD', borderRadius: '20px', marginBottom: '12px' }} />
+    <strong>XL</strong>
+    <div style={{ fontSize: '14px', color: '#666' }}>20px</div>
+    <code style={{ fontSize: '12px' }}>rounded-xl</code>
+    <div style={{ fontSize: '13px', marginTop: '8px' }}>Modals, overlays</div>
+  </div>
+
+  <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#08A4BD', borderRadius: '24px', marginBottom: '12px' }} />
+    <strong>2XL</strong>
+    <div style={{ fontSize: '14px', color: '#666' }}>24px</div>
+    <code style={{ fontSize: '12px' }}>rounded-2xl</code>
+    <div style={{ fontSize: '13px', marginTop: '8px' }}>Large containers</div>
+  </div>
+
+  <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#08A4BD', borderRadius: '9999px', marginBottom: '12px' }} />
+    <strong>FULL</strong>
+    <div style={{ fontSize: '14px', color: '#666' }}>9999px</div>
+    <code style={{ fontSize: '12px' }}>rounded-full</code>
+    <div style={{ fontSize: '13px', marginTop: '8px' }}>Pills, avatars, badges</div>
+  </div>
+</div>
+
+### Usage Examples
+
+```tsx
+// Tailwind classes
+<div className="rounded-md">Card with 12px radius</div>
+<div className="rounded-lg">Large card with 16px radius</div>
+<div className="rounded-full">Pill or avatar</div>
+
+// TypeScript constant
+import { RADIUS } from '@adrozdenko/design-system/tokens'
+<div style={{ borderRadius: RADIUS.md }}>12px radius</div>
+```
+
+---
+
+## 🎨 Border Width
+
+Standard border thickness values.
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Token</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Example</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border-0</code></td>
+      <td style={{ padding: '8px' }}>0px</td>
+      <td style={{ padding: '8px' }}><div style={{ width: '60px', height: '4px', border: 'none', backgroundColor: '#e5e7eb' }} /></td>
+      <td style={{ padding: '8px' }}>No border</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border</code></td>
+      <td style={{ padding: '8px' }}>1px</td>
+      <td style={{ padding: '8px' }}><div style={{ width: '60px', height: '4px', border: '1px solid #2D3142' }} /></td>
+      <td style={{ padding: '8px' }}>Default borders (most common)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border-2</code></td>
+      <td style={{ padding: '8px' }}>2px</td>
+      <td style={{ padding: '8px' }}><div style={{ width: '60px', height: '4px', border: '2px solid #2D3142' }} /></td>
+      <td style={{ padding: '8px' }}>Emphasized borders, focus rings</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border-4</code></td>
+      <td style={{ padding: '8px' }}>4px</td>
+      <td style={{ padding: '8px' }}><div style={{ width: '60px', height: '4px', border: '4px solid #2D3142' }} /></td>
+      <td style={{ padding: '8px' }}>Strong emphasis</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><code>border-8</code></td>
+      <td style={{ padding: '8px' }}>8px</td>
+      <td style={{ padding: '8px' }}><div style={{ width: '60px', height: '8px', border: '8px solid #2D3142' }} /></td>
+      <td style={{ padding: '8px' }}>Heavy borders, decorative</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 🌑 Shadows
+
+Elevation system using box shadows for depth and hierarchy.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+  <div>
+    <div style={{
+      padding: '32px',
+      backgroundColor: '#FFFFFF',
+      borderRadius: '12px',
+      boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+      marginBottom: '12px',
+      minHeight: '120px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '14px',
+      color: '#666'
+    }}>
+      Subtle elevation
+    </div>
+    <strong>Small (sm)</strong>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>Minimal depth</div>
+    <code style={{ fontSize: '11px', display: 'block', marginTop: '4px' }}>shadow-sm</code>
+  </div>
+
+  <div>
+    <div style={{
+      padding: '32px',
+      backgroundColor: '#FFFFFF',
+      borderRadius: '12px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+      marginBottom: '12px',
+      minHeight: '120px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '14px',
+      color: '#666'
+    }}>
+      Cards, dropdowns
+    </div>
+    <strong>Medium (md)</strong>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>Default elevation</div>
+    <code style={{ fontSize: '11px', display: 'block', marginTop: '4px' }}>shadow-md</code>
+  </div>
+
+  <div>
+    <div style={{
+      padding: '32px',
+      backgroundColor: '#FFFFFF',
+      borderRadius: '12px',
+      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+      marginBottom: '12px',
+      minHeight: '120px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '14px',
+      color: '#666'
+    }}>
+      Modals, popovers
+    </div>
+    <strong>Large (lg)</strong>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>Strong elevation</div>
+    <code style={{ fontSize: '11px', display: 'block', marginTop: '4px' }}>shadow-lg</code>
+  </div>
+
+  <div>
+    <div style={{
+      padding: '32px',
+      backgroundColor: '#FFFFFF',
+      borderRadius: '12px',
+      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+      marginBottom: '12px',
+      minHeight: '120px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '14px',
+      color: '#666'
+    }}>
+      High elevation
+    </div>
+    <strong>Extra Large (xl)</strong>
+    <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>Maximum depth</div>
+    <code style={{ fontSize: '11px', display: 'block', marginTop: '4px' }}>shadow-xl</code>
+  </div>
+</div>
+
+### Special Shadows
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Name</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>shadow-header</code></td>
+      <td style={{ padding: '8px' }}>Header/navigation bars</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>shadow-footer</code></td>
+      <td style={{ padding: '8px' }}>Footer shadows (inverted)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>shadow-image</code></td>
+      <td style={{ padding: '8px' }}>Hero images, photos</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><code>shadow-ambient</code></td>
+      <td style={{ padding: '8px' }}>Realistic ambient shadow (hard + soft)</td>
+    </tr>
+  </tbody>
+</table>
+
+### Usage Examples
+
+```tsx
+// Tailwind classes
+<div className="shadow-md">Card with medium shadow</div>
+<div className="shadow-lg">Modal with large shadow</div>
+
+// TypeScript constant
+import { SHADOWS } from '@adrozdenko/design-system/tokens'
+<div style={{ boxShadow: SHADOWS.md }}>Medium shadow</div>
+```
+
+---
+
+## ✍️ Typography
+
+The design system uses two primary fonts optimized for different contexts:
+
+- **Pilat Extended** (`font-display`) - Marketing websites, landing pages, hero sections
+- **Fixel** (`font-sans`) - Application interfaces, dashboards, forms, data tables
+
+---
+
+### Typography for Website (Marketing Pages)
+
+**Use Pilat Extended for marketing websites, landing pages, and hero sections.**
+
+<div style={{ padding: '24px', backgroundColor: '#f9fafb', borderRadius: '12px', marginBottom: '24px', border: '2px solid #08A4BD' }}>
+  <div style={{ fontFamily: '"Pilat Extended", Arial, sans-serif', fontSize: '32px', fontWeight: 600, marginBottom: '8px' }}>
+    Pilat Extended
+  </div>
+  <div style={{ fontSize: '14px', color: '#666', marginBottom: '12px' }}>Display Font - Headings, hero text, section titles, emphasis</div>
+  <code style={{ fontSize: '12px', backgroundColor: '#fff', padding: '4px 8px', borderRadius: '4px' }}>font-display</code>
+</div>
+
+#### Website Typography Scale
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Element</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Classes</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Hero H1</code></td>
+      <td style={{ padding: '8px' }}><code>text-4xl md:text-6xl lg:text-7xl font-display font-bold</code></td>
+      <td style={{ padding: '8px' }}>Hero headlines, main page titles</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Hero H2</code></td>
+      <td style={{ padding: '8px' }}><code>text-3xl md:text-4xl lg:text-5xl font-display font-bold</code></td>
+      <td style={{ padding: '8px' }}>Large section headings</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Section Heading</code></td>
+      <td style={{ padding: '8px' }}><code>text-2xl lg:text-[32px] font-display font-semibold</code></td>
+      <td style={{ padding: '8px' }}>Standard section headings</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Section Subheading</code></td>
+      <td style={{ padding: '8px' }}><code>text-base lg:text-lg font-display font-medium</code></td>
+      <td style={{ padding: '8px' }}>Section descriptions, subtitles</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Card Heading</code></td>
+      <td style={{ padding: '8px' }}><code>text-xl lg:text-2xl font-display font-semibold</code></td>
+      <td style={{ padding: '8px' }}>Feature cards, content cards</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Website Examples
+
+```tsx
+// Hero section
+<h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight text-primary">
+  Disrupt Your Workflow
+</h1>
+
+// Section heading with subheading
+<div>
+  <h2 className="text-2xl lg:text-[32px] font-display font-semibold leading-tight text-primary">
+    Our Features
+  </h2>
+  <p className="text-base lg:text-lg font-display font-medium text-secondary mt-2">
+    Everything you need to succeed
+  </p>
+</div>
+
+// Feature card
+<h3 className="text-xl font-display font-semibold text-primary">
+  Automate Everything
+</h3>
+```
+
+---
+
+### Typography for Apps (Application Interfaces)
+
+**Use Fixel for application interfaces, dashboards, forms, data tables, and UI components.**
+
+<div style={{ padding: '24px', backgroundColor: '#f9fafb', borderRadius: '12px', marginBottom: '24px', border: '2px solid #08A4BD' }}>
+  <div style={{ fontFamily: '"Fixel", system-ui, sans-serif', fontSize: '24px', marginBottom: '8px' }}>
+    Fixel
+  </div>
+  <div style={{ fontSize: '14px', color: '#666', marginBottom: '12px' }}>UI Font - Application interfaces, forms, tables, buttons, navigation</div>
+  <code style={{ fontSize: '12px', backgroundColor: '#fff', padding: '4px 8px', borderRadius: '4px' }}>font-sans</code>
+</div>
+
+#### App Typography Scale
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Element</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Classes</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Page Title</code></td>
+      <td style={{ padding: '8px' }}><code>text-2xl font-sans font-semibold</code></td>
+      <td style={{ padding: '8px' }}>Dashboard page titles</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Card Title</code></td>
+      <td style={{ padding: '8px' }}><code>text-lg font-sans font-semibold</code></td>
+      <td style={{ padding: '8px' }}>Card headers, panel titles</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Subheading</code></td>
+      <td style={{ padding: '8px' }}><code>text-base font-sans font-medium</code></td>
+      <td style={{ padding: '8px' }}>Section labels, group headers</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Body Text</code></td>
+      <td style={{ padding: '8px' }}><code>text-base font-sans</code></td>
+      <td style={{ padding: '8px' }}>Paragraphs, descriptions (16px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Body Large</code></td>
+      <td style={{ padding: '8px' }}><code>text-lg font-sans</code></td>
+      <td style={{ padding: '8px' }}>Emphasized body text (18px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Body Small</code></td>
+      <td style={{ padding: '8px' }}><code>text-sm font-sans</code></td>
+      <td style={{ padding: '8px' }}>UI labels, form labels (14px)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>Caption</code></td>
+      <td style={{ padding: '8px' }}><code>text-xs font-sans</code></td>
+      <td style={{ padding: '8px' }}>Small labels, timestamps (12px)</td>
+    </tr>
+  </tbody>
+</table>
+
+#### App Examples
+
+```tsx
+// Dashboard page title
+<h1 className="text-2xl font-sans font-semibold text-primary">
+  Partner Dashboard
+</h1>
+
+// Card with content
+<div className="bg-surface rounded-lg p-6">
+  <h3 className="text-lg font-sans font-semibold text-primary mb-2">
+    Recent Invoices
+  </h3>
+  <p className="text-base font-sans text-secondary">
+    View and manage your invoices
+  </p>
+</div>
+
+// Form label and input
+<label className="text-sm font-sans font-medium text-emphasis">
+  Email Address
+</label>
+<input className="text-base font-sans" />
+
+// Table cell
+<td className="text-sm font-sans text-primary">
+  John Doe
+</td>
+
+// Button text (Fixel is already applied in button component)
+<Button>Submit Application</Button>
+
+// Timestamp or metadata
+<span className="text-xs font-sans text-muted">
+  Updated 2 hours ago
+</span>
+```
+
+---
+
+### Code Font (Both Contexts)
+
+<div style={{ padding: '24px', backgroundColor: '#f9fafb', borderRadius: '12px', marginBottom: '24px', border: '1px solid #e5e7eb' }}>
+  <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: '16px', marginBottom: '8px' }}>
+    Monospace
+  </div>
+  <div style={{ fontSize: '14px', color: '#666', marginBottom: '12px' }}>Code, technical content, logs</div>
+  <code style={{ fontSize: '12px', backgroundColor: '#fff', padding: '4px 8px', borderRadius: '4px' }}>font-mono</code>
+</div>
+
+```tsx
+<code className="font-mono text-sm">npm install @adrozdenko/design-system</code>
+```
+
+### Quick Reference: Font Sizes & Weights
+
+**Font Size Scale** (use with either font-display or font-sans):
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Size</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>XS</td>
+      <td style={{ padding: '8px' }}>12px</td>
+      <td style={{ padding: '8px' }}><code>text-xs</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>SM</td>
+      <td style={{ padding: '8px' }}>14px</td>
+      <td style={{ padding: '8px' }}><code>text-sm</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Base</td>
+      <td style={{ padding: '8px' }}>16px</td>
+      <td style={{ padding: '8px' }}><code>text-base</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>LG</td>
+      <td style={{ padding: '8px' }}>18px</td>
+      <td style={{ padding: '8px' }}><code>text-lg</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>XL</td>
+      <td style={{ padding: '8px' }}>20px</td>
+      <td style={{ padding: '8px' }}><code>text-xl</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>2XL</td>
+      <td style={{ padding: '8px' }}>24px</td>
+      <td style={{ padding: '8px' }}><code>text-2xl</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>3XL</td>
+      <td style={{ padding: '8px' }}>30px</td>
+      <td style={{ padding: '8px' }}><code>text-3xl</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>4XL</td>
+      <td style={{ padding: '8px' }}>36px</td>
+      <td style={{ padding: '8px' }}><code>text-4xl</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>5XL</td>
+      <td style={{ padding: '8px' }}>48px</td>
+      <td style={{ padding: '8px' }}><code>text-5xl</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>6XL</td>
+      <td style={{ padding: '8px' }}>60px</td>
+      <td style={{ padding: '8px' }}><code>text-6xl</code></td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}>7XL</td>
+      <td style={{ padding: '8px' }}>72px</td>
+      <td style={{ padding: '8px' }}><code>text-7xl</code></td>
+    </tr>
+  </tbody>
+</table>
+
+### Font Weights
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Weight</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Class</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Normal</td>
+      <td style={{ padding: '8px' }}>400</td>
+      <td style={{ padding: '8px' }}><code>font-normal</code></td>
+      <td style={{ padding: '8px' }}>Body text, default</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Medium</td>
+      <td style={{ padding: '8px' }}>500</td>
+      <td style={{ padding: '8px' }}><code>font-medium</code></td>
+      <td style={{ padding: '8px' }}>Slight emphasis, UI labels</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Semibold</td>
+      <td style={{ padding: '8px' }}>600</td>
+      <td style={{ padding: '8px' }}><code>font-semibold</code></td>
+      <td style={{ padding: '8px' }}>Headings, emphasis</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}>Bold</td>
+      <td style={{ padding: '8px' }}>700</td>
+      <td style={{ padding: '8px' }}><code>font-bold</code></td>
+      <td style={{ padding: '8px' }}>Strong emphasis, titles</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+### Decision Guide: Which Font Should I Use?
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '32px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Context</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Font</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Marketing website hero</td>
+      <td style={{ padding: '8px' }}>Pilat Extended</td>
+      <td style={{ padding: '8px' }}><code>font-display</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Marketing section headings</td>
+      <td style={{ padding: '8px' }}>Pilat Extended</td>
+      <td style={{ padding: '8px' }}><code>font-display</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Landing page feature cards</td>
+      <td style={{ padding: '8px' }}>Pilat Extended</td>
+      <td style={{ padding: '8px' }}><code>font-display</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>App dashboard</td>
+      <td style={{ padding: '8px' }}>Fixel</td>
+      <td style={{ padding: '8px' }}><code>font-sans</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>App forms and inputs</td>
+      <td style={{ padding: '8px' }}>Fixel</td>
+      <td style={{ padding: '8px' }}><code>font-sans</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>App data tables</td>
+      <td style={{ padding: '8px' }}>Fixel</td>
+      <td style={{ padding: '8px' }}><code>font-sans</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>App buttons</td>
+      <td style={{ padding: '8px' }}>Fixel</td>
+      <td style={{ padding: '8px' }}><code>font-sans</code></td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>App navigation</td>
+      <td style={{ padding: '8px' }}>Fixel</td>
+      <td style={{ padding: '8px' }}><code>font-sans</code></td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}>Code blocks (any context)</td>
+      <td style={{ padding: '8px' }}>Monospace</td>
+      <td style={{ padding: '8px' }}><code>font-mono</code></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## ⚡ Transitions & Animations
+
+Timing values for smooth, consistent motion.
+
+### Duration
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Speed</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Class</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Fast</td>
+      <td style={{ padding: '8px' }}>150ms</td>
+      <td style={{ padding: '8px' }}><code>duration-150</code></td>
+      <td style={{ padding: '8px' }}>Hover effects, simple states</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Normal</td>
+      <td style={{ padding: '8px' }}>200ms</td>
+      <td style={{ padding: '8px' }}><code>duration-200</code></td>
+      <td style={{ padding: '8px' }}>Default transitions</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Smooth</td>
+      <td style={{ padding: '8px' }}>300ms</td>
+      <td style={{ padding: '8px' }}><code>duration-300</code></td>
+      <td style={{ padding: '8px' }}>Smooth movements, modals</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}>Slow</td>
+      <td style={{ padding: '8px' }}>500ms</td>
+      <td style={{ padding: '8px' }}><code>duration-500</code></td>
+      <td style={{ padding: '8px' }}>Prominent animations</td>
+    </tr>
+  </tbody>
+</table>
+
+### Easing Functions
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Function</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Class</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Ease</td>
+      <td style={{ padding: '8px' }}><code>ease</code></td>
+      <td style={{ padding: '8px' }}>Standard easing</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Ease In</td>
+      <td style={{ padding: '8px' }}><code>ease-in</code></td>
+      <td style={{ padding: '8px' }}>Accelerate from rest</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>Ease Out</td>
+      <td style={{ padding: '8px' }}><code>ease-out</code></td>
+      <td style={{ padding: '8px' }}>Decelerate to rest (most common)</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}>Ease In Out</td>
+      <td style={{ padding: '8px' }}><code>ease-in-out</code></td>
+      <td style={{ padding: '8px' }}>Accelerate and decelerate</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+### Interactive Examples
+
+#### 1. Button Hover Transitions
+
+Hover over these buttons to see different duration and easing combinations:
+
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
+  <button style={{
+    padding: '12px 24px',
+    backgroundColor: '#08A4BD',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontFamily: 'Fixel, sans-serif',
+    fontSize: '14px',
+    fontWeight: 500,
+    transition: 'all 150ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = '#068397'
+    e.currentTarget.style.transform = 'translateY(-2px)'
+    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = '#08A4BD'
+    e.currentTarget.style.transform = 'translateY(0)'
+    e.currentTarget.style.boxShadow = 'none'
+  }}>
+    Fast (150ms ease-out)
+  </button>
+
+  <button style={{
+    padding: '12px 24px',
+    backgroundColor: '#08A4BD',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontFamily: 'Fixel, sans-serif',
+    fontSize: '14px',
+    fontWeight: 500,
+    transition: 'all 200ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = '#068397'
+    e.currentTarget.style.transform = 'translateY(-2px)'
+    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = '#08A4BD'
+    e.currentTarget.style.transform = 'translateY(0)'
+    e.currentTarget.style.boxShadow = 'none'
+  }}>
+    Normal (200ms ease-out)
+  </button>
+
+  <button style={{
+    padding: '12px 24px',
+    backgroundColor: '#08A4BD',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontFamily: 'Fixel, sans-serif',
+    fontSize: '14px',
+    fontWeight: 500,
+    transition: 'all 300ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = '#068397'
+    e.currentTarget.style.transform = 'translateY(-2px)'
+    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = '#08A4BD'
+    e.currentTarget.style.transform = 'translateY(0)'
+    e.currentTarget.style.boxShadow = 'none'
+  }}>
+    Smooth (300ms ease-out)
+  </button>
+
+  <button style={{
+    padding: '12px 24px',
+    backgroundColor: '#08A4BD',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontFamily: 'Fixel, sans-serif',
+    fontSize: '14px',
+    fontWeight: 500,
+    transition: 'all 500ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = '#068397'
+    e.currentTarget.style.transform = 'translateY(-2px)'
+    e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = '#08A4BD'
+    e.currentTarget.style.transform = 'translateY(0)'
+    e.currentTarget.style.boxShadow = 'none'
+  }}>
+    Slow (500ms ease-out)
+  </button>
+</div>
+
+```tsx
+// Fast hover (150ms) - Best for subtle feedback
+<button className="transition-all duration-150 ease-out hover:bg-accent-strong/90">
+  Fast Button
+</button>
+
+// Normal hover (200ms) - Default for most interactions
+<button className="transition-all duration-200 ease-out hover:bg-accent-strong/90">
+  Normal Button
+</button>
+
+// Smooth hover (300ms) - For emphasized interactions
+<button className="transition-all duration-300 ease-out hover:bg-accent-strong/90">
+  Smooth Button
+</button>
+```
+
+#### 2. Card Hover Effects
+
+Hover over these cards to see elevation and border transitions:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+  <div style={{
+    padding: '24px',
+    backgroundColor: '#FFFFFF',
+    border: '1px solid #CBD5E1',
+    borderRadius: '12px',
+    cursor: 'pointer',
+    transition: 'all 200ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.borderColor = '#08A4BD'
+    e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)'
+    e.currentTarget.style.transform = 'translateY(-2px)'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.borderColor = '#CBD5E1'
+    e.currentTarget.style.boxShadow = 'none'
+    e.currentTarget.style.transform = 'translateY(0)'
+  }}>
+    <div style={{ fontWeight: 600, marginBottom: '8px', color: '#2D3142' }}>Quick Transition</div>
+    <div style={{ fontSize: '14px', color: '#5E4F7E' }}>200ms ease-out - Responsive and snappy</div>
+  </div>
+
+  <div style={{
+    padding: '24px',
+    backgroundColor: '#FFFFFF',
+    border: '1px solid #CBD5E1',
+    borderRadius: '12px',
+    cursor: 'pointer',
+    transition: 'all 300ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.borderColor = '#08A4BD'
+    e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)'
+    e.currentTarget.style.transform = 'translateY(-4px)'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.borderColor = '#CBD5E1'
+    e.currentTarget.style.boxShadow = 'none'
+    e.currentTarget.style.transform = 'translateY(0)'
+  }}>
+    <div style={{ fontWeight: 600, marginBottom: '8px', color: '#2D3142' }}>Smooth Transition</div>
+    <div style={{ fontSize: '14px', color: '#5E4F7E' }}>300ms ease-out - Polished and elegant</div>
+  </div>
+</div>
+
+```tsx
+// Quick card hover
+<div className="border border-default hover:border-accent hover:shadow-md
+                transition-all duration-200 ease-out">
+  Quick response card
+</div>
+
+// Smooth card hover with elevation
+<div className="border border-default hover:border-accent hover:shadow-lg
+                hover:-translate-y-1 transition-all duration-300 ease-out">
+  Smooth elevation card
+</div>
+```
+
+#### 3. Modal/Dialog Animations
+
+Example of fade-in/zoom-in animation used in dialogs:
+
+<div style={{
+  padding: '48px',
+  backgroundColor: '#FBFBF3',
+  borderRadius: '12px',
+  marginBottom: '32px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  minHeight: '300px',
+}}>
+  <div style={{
+    backgroundColor: '#FFFFFF',
+    padding: '32px',
+    borderRadius: '12px',
+    border: '1px solid #CBD5E1',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+    maxWidth: '400px',
+    width: '100%',
+    animation: 'fadeInZoom 300ms ease-out',
+  }}>
+    <div style={{ fontWeight: 600, fontSize: '18px', marginBottom: '8px', color: '#2D3142' }}>Dialog Title</div>
+    <div style={{ fontSize: '14px', color: '#5E4F7E', marginBottom: '24px' }}>
+      This dialog uses fade-in and zoom-in animation (300ms ease-out)
+    </div>
+    <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+      <button style={{
+        padding: '8px 16px',
+        backgroundColor: '#EFEDF3',
+        color: '#5E4F7E',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontFamily: 'Fixel, sans-serif',
+        fontSize: '14px',
+        fontWeight: 500,
+      }}>
+        Cancel
+      </button>
+      <button style={{
+        padding: '8px 16px',
+        backgroundColor: '#08A4BD',
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        fontFamily: 'Fixel, sans-serif',
+        fontSize: '14px',
+        fontWeight: 500,
+      }}>
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>
+
+```tsx
+// Dialog with fade + zoom animation (uses Radix UI animations)
+<DialogContent className="data-[state=open]:animate-in
+                          data-[state=closed]:animate-out
+                          data-[state=open]:fade-in-0
+                          data-[state=closed]:fade-out-0
+                          data-[state=open]:zoom-in-95
+                          data-[state=closed]:zoom-out-95
+                          duration-200">
+  <DialogHeader>
+    <DialogTitle>Dialog Title</DialogTitle>
+  </DialogHeader>
+  Dialog content here
+</DialogContent>
+```
+
+#### 4. Loading State Animations
+
+Different skeleton loading animations:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px', marginBottom: '32px' }}>
+  <div>
+    <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '12px', color: '#2D3142' }}>Pulse</div>
+    <div style={{
+      height: '80px',
+      backgroundColor: '#EFEDF3',
+      borderRadius: '8px',
+      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+    }} />
+    <div style={{ fontSize: '12px', color: '#5E4F7E', marginTop: '8px' }}>Simple opacity pulse</div>
+  </div>
+
+  <div>
+    <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '12px', color: '#2D3142' }}>Shimmer</div>
+    <div style={{
+      height: '80px',
+      backgroundColor: '#EFEDF3',
+      borderRadius: '8px',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: '-100%',
+        width: '200%',
+        height: '100%',
+        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
+        animation: 'shimmer 2s ease-in-out infinite',
+      }} />
+    </div>
+    <div style={{ fontSize: '12px', color: '#5E4F7E', marginTop: '8px' }}>Sliding highlight effect</div>
+  </div>
+
+  <div>
+    <div style={{ fontWeight: 600, fontSize: '14px', marginBottom: '12px', color: '#2D3142' }}>Wave</div>
+    <div style={{
+      height: '80px',
+      backgroundColor: '#EFEDF3',
+      borderRadius: '8px',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '100%',
+        background: 'linear-gradient(90deg, #EFEDF3 0%, #DFDBE7 50%, #EFEDF3 100%)',
+        backgroundSize: '200% 100%',
+        animation: 'wave 1.5s ease-in-out infinite',
+      }} />
+    </div>
+    <div style={{ fontSize: '12px', color: '#5E4F7E', marginTop: '8px' }}>Wave gradient effect</div>
+  </div>
+</div>
+
+```tsx
+// Pulse animation (simple opacity)
+<Skeleton variant="pulse" className="h-4 w-full" />
+
+// Shimmer animation (sliding highlight - default)
+<Skeleton variant="shimmer" className="h-4 w-full" />
+
+// Wave animation (gradient wave)
+<Skeleton variant="wave" className="h-4 w-full" />
+```
+
+#### 5. Common Animation Patterns
+
+##### Icon Button Hover
+<div style={{ marginBottom: '24px' }}>
+  <button style={{
+    width: '40px',
+    height: '40px',
+    padding: '8px',
+    backgroundColor: '#FFFFFF',
+    border: '1px solid #CBD5E1',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all 200ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.backgroundColor = '#EFEDF3'
+    e.currentTarget.style.borderColor = '#08A4BD'
+    e.currentTarget.querySelector('svg').style.transform = 'scale(1.1)'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.backgroundColor = '#FFFFFF'
+    e.currentTarget.style.borderColor = '#CBD5E1'
+    e.currentTarget.querySelector('svg').style.transform = 'scale(1)'
+  }}>
+    <svg style={{ width: '20px', height: '20px', transition: 'transform 200ms ease-out' }} viewBox="0 0 24 24" fill="none" stroke="#2D3142" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  </button>
+</div>
+
+```tsx
+<button className="p-2 bg-surface border border-default rounded-lg
+                   hover:bg-muted-bg hover:border-accent
+                   transition-all duration-200 ease-out">
+  <Icon className="transition-transform duration-200 hover:scale-110" />
+</button>
+```
+
+##### Link Hover
+<div style={{ marginBottom: '24px' }}>
+  <a href="#" style={{
+    color: '#2D3142',
+    textDecoration: 'none',
+    fontWeight: 500,
+    fontSize: '16px',
+    position: 'relative',
+    transition: 'color 200ms ease-out',
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.color = '#08A4BD'
+    e.currentTarget.querySelector('span').style.width = '100%'
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.color = '#2D3142'
+    e.currentTarget.querySelector('span').style.width = '0%'
+  }}>
+    Hover me
+    <span style={{
+      position: 'absolute',
+      bottom: '-2px',
+      left: 0,
+      width: '0%',
+      height: '2px',
+      backgroundColor: '#08A4BD',
+      transition: 'width 200ms ease-out',
+    }} />
+  </a>
+</div>
+
+```tsx
+<a className="text-primary hover:text-accent transition-colors duration-200
+              relative after:absolute after:bottom-0 after:left-0
+              after:w-0 after:h-0.5 after:bg-accent
+              hover:after:w-full after:transition-all after:duration-200">
+  Link Text
+</a>
+```
+
+##### Badge Pulse
+<div style={{ marginBottom: '32px' }}>
+  <span style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px',
+    padding: '4px 12px',
+    backgroundColor: '#E6F7FA',
+    color: '#08A4BD',
+    borderRadius: '9999px',
+    fontSize: '12px',
+    fontWeight: 500,
+  }}>
+    <span style={{
+      width: '6px',
+      height: '6px',
+      backgroundColor: '#08A4BD',
+      borderRadius: '50%',
+      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+    }} />
+    Live Status
+  </span>
+</div>
+
+```tsx
+<Badge className="animate-pulse">
+  <span className="w-1.5 h-1.5 bg-accent rounded-full" />
+  Live
+</Badge>
+```
+
+### Animation Keyframes
+
+Add these keyframes to your CSS for the examples above:
+
+```css
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes wave {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes fadeInZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+```
+## 📱 Breakpoints
+
+Responsive design breakpoints for different screen sizes.
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Size</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Value</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Prefix</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600 }}>Device</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>SM</td>
+      <td style={{ padding: '8px' }}>640px</td>
+      <td style={{ padding: '8px' }}><code>sm:</code></td>
+      <td style={{ padding: '8px' }}>Large mobile, small tablet</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>MD</td>
+      <td style={{ padding: '8px' }}>768px</td>
+      <td style={{ padding: '8px' }}><code>md:</code></td>
+      <td style={{ padding: '8px' }}>Tablet</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>LG</td>
+      <td style={{ padding: '8px' }}>1024px</td>
+      <td style={{ padding: '8px' }}><code>lg:</code></td>
+      <td style={{ padding: '8px' }}>Desktop</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}>XL</td>
+      <td style={{ padding: '8px' }}>1280px</td>
+      <td style={{ padding: '8px' }}><code>xl:</code></td>
+      <td style={{ padding: '8px' }}>Large desktop</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}>2XL</td>
+      <td style={{ padding: '8px' }}>1536px</td>
+      <td style={{ padding: '8px' }}><code>2xl:</code></td>
+      <td style={{ padding: '8px' }}>Extra large screens</td>
+    </tr>
+  </tbody>
+</table>
+
+### Example
+
+```tsx
+<div className="text-base lg:text-lg">
+  16px on mobile, 18px on desktop (1024px+)
+</div>
+```
+
+---
+
+## 📚 Usage in Code
+
+### Import Tokens
+
+```typescript
+// Import specific tokens
+import {
+  SHADOWS,
+  RADIUS,
+  SPACING,
+  TYPOGRAPHY,
+  BORDER_WIDTH,
+  TRANSITIONS
+} from '@adrozdenko/design-system/tokens'
+
+// Use in components
+<div style={{
+  boxShadow: SHADOWS.md,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  transition: `all ${TRANSITIONS.duration.normal} ${TRANSITIONS.timing.easeOut}`
+}}>
+  Content
+</div>
+```
+
+### Use with Tailwind Classes (Recommended)
+
+```tsx
+// Prefer Tailwind classes for static styling
+<div className="shadow-md rounded-lg p-6 transition-all duration-200 ease-out">
+  Content
+</div>
+
+// Use tokens for dynamic values
+<div style={{
+  boxShadow: isElevated ? SHADOWS.lg : SHADOWS.sm
+}}>
+  Dynamic elevation
+</div>
+```
+
+---
+
+## 🎯 Best Practices
+
+1. **Use Tailwind classes for static styling** - Faster, cached, optimized
+2. **Use tokens for dynamic values** - When values depend on state/props
+3. **Follow the design system** - Don't create custom values
+4. **Be consistent** - Use the same tokens across products
+5. **Reference documentation** - Check this page when unsure
+
+---
+
+## 📖 Related Documentation
+
+- **[Colors](/docs/brand-colors--docs)** - Complete color palette and usage
+- **[Components](/docs)** - All available UI components
+- **[Typography Guide](/)** - Detailed type system documentation

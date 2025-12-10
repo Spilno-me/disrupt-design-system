@@ -48,7 +48,8 @@ export function NavIcon({
       className={cn(
         'relative flex items-center justify-center flex-shrink-0 transition-all duration-150',
         config.container,
-        showActiveBackground && isActive && 'bg-surface rounded-md shadow-sm'
+        showActiveBackground && isActive && 'bg-surface rounded-md shadow-sm',
+        'text-primary'
       )}
     >
       {React.isValidElement(icon) &&
@@ -60,7 +61,7 @@ export function NavIcon({
           {
             className: cn(
               config.icon,
-              isActive ? 'text-accent' : 'text-primary',
+              'text-primary',
               (icon.props as { className?: string }).className
             ),
             strokeWidth: config.strokeWidth,

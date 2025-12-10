@@ -101,7 +101,7 @@ export function Header({
       className={cn(
         'h-9 px-4 py-2 rounded-[12px] text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer',
         navTextColor,
-        !item.isActive && 'hover:bg-white/10'
+        !item.isActive && 'hover:bg-surface/10'
       )}
     >
       {children}
@@ -158,7 +158,7 @@ export function Header({
                       className={cn(
                         'h-9 px-4 py-2 rounded-[12px] text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer',
                         navTextColor,
-                        !item.isActive && 'hover:bg-white/10'
+                        !item.isActive && 'hover:bg-surface/10'
                       )}
                     >
                       {item.label}

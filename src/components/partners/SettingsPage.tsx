@@ -5,8 +5,8 @@ import {
   Building2,
   Bell,
   Shield,
-  Palette,
-  CreditCard,
+  
+  
   Save,
   Mail,
   Phone,
@@ -612,7 +612,7 @@ export function SettingsPage({
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-mutedBg flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-muted-bg flex items-center justify-center">
                     <Shield className="w-5 h-5 text-muted" />
                   </div>
                   <div>

@@ -104,7 +104,7 @@ export function InvoicePDFDialog({
 /** Placeholder when PDF is not available */
 function PDFPlaceholder({ invoice }: { invoice: Invoice }) {
   return (
-    <div className="flex flex-col items-center justify-center h-full bg-mutedBg">
+    <div className="flex flex-col items-center justify-center h-full bg-muted-bg">
       <div className="w-24 h-24 mb-6 rounded-full bg-surface flex items-center justify-center shadow-md">
         <svg
           className="w-12 h-12 text-muted"

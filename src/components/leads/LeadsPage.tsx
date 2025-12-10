@@ -391,7 +391,7 @@ export function LeadsPage({
             {Array.from({ length: 3 }).map((_, i) => (
               <div
                 key={i}
-                className="h-40 bg-mutedBg rounded-lg animate-pulse"
+                className="h-40 bg-muted-bg rounded-lg animate-pulse"
               />
             ))}
           </div>
@@ -447,7 +447,7 @@ export function LeadsPage({
 function EmptyState({ searchValue }: { searchValue: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-16 h-16 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+      <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
         <svg
           className="w-8 h-8 text-secondary"
           fill="none"

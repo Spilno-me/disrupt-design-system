@@ -19,6 +19,7 @@ import { Pagination } from "../ui/Pagination"
 import { ResetPasswordDialog } from "./ResetPasswordDialog"
 import { CreateLoginAccountDialog } from "./CreateLoginAccountDialog"
 import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
+import { StatusBadge, COMMON_STATUS_CONFIG } from "../ui/table"
 
 // =============================================================================
 // TYPES
@@ -89,33 +90,11 @@ export const MOCK_LOGIN_ACCOUNTS: LoginAccount[] = [
 // HELPER COMPONENTS
 // =============================================================================
 
-/** Status badge with appropriate styling - uses light bg with dark text for contrast */
-function StatusBadge({ status }: { status: LoginAccountStatus }) {
-  const statusConfig: Record<LoginAccountStatus, { label: string; className: string }> = {
-    active: { label: "active", className: "bg-successLight text-success" },
-    inactive: { label: "inactive", className: "bg-mutedBg text-primary" },
-    pending: { label: "pending", className: "bg-warningLight text-warning" },
-  }
-
-  const config = statusConfig[status]
-
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-        config.className
-      )}
-    >
-      {config.label}
-    </span>
-  )
-}
-
-/** User avatar with icon */
+/** User avatar with icon - fixed contrast */
 function UserAvatar() {
   return (
-    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accentBg">
-      <User className="h-4 w-4 text-accent" />
+    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-bg">
+      <User className="h-4 w-4 text-primary" />
     </div>
   )
 }
@@ -278,7 +257,6 @@ export function PartnerLoginAccountsPage({
       header: "Login Account",
       sortable: true,
       sortValue: (row) => `${row.firstName} ${row.lastName}`,
-      minWidth: "280px",
       accessor: (row) => (
         <div className="flex items-center gap-3">
           <UserAvatar />
@@ -296,15 +274,13 @@ export function PartnerLoginAccountsPage({
       header: "Status",
       sortable: true,
       sortValue: (row) => row.status,
-      width: "100px",
-      accessor: (row) => <StatusBadge status={row.status} />,
+      accessor: (row) => <StatusBadge status={row.status} statusConfig={COMMON_STATUS_CONFIG} variant="pill" />,
     },
     {
       id: "created",
       header: "Created",
       sortable: true,
       sortValue: (row) => row.createdAt,
-      width: "120px",
       accessor: (row) => (
         <span className="text-sm text-primary">{formatDate(row.createdAt)}</span>
       ),
@@ -312,7 +288,6 @@ export function PartnerLoginAccountsPage({
     {
       id: "actions",
       header: "Actions",
-      width: "100px",
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
@@ -331,7 +306,7 @@ export function PartnerLoginAccountsPage({
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 hover:bg-errorLight hover:text-error"
+            className="h-8 w-8 hover:bg-error-light hover:text-error"
             onClick={(e) => {
               e.stopPropagation()
               handleDeleteClick(row)
@@ -359,7 +334,7 @@ export function PartnerLoginAccountsPage({
       {/* Header Section */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-mutedBg">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted-bg">
             <Users className="h-6 w-6 text-muted" />
           </div>
           <div>
@@ -403,7 +378,7 @@ export function PartnerLoginAccountsPage({
         bordered
         emptyState={
           <div className="flex flex-col items-center py-8">
-            <div className="w-16 h-16 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+            <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
               <Users className="h-8 w-8 text-muted" />
             </div>
             <h3 className="text-lg font-semibold text-primary mb-2">

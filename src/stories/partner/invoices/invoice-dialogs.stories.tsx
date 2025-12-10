@@ -292,7 +292,7 @@ function AllDialogsShowcase() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Edit Dialog */}
         <div className="flex flex-col items-center gap-3 p-6 border border-default rounded-lg">
-          <div className="w-12 h-12 rounded-lg bg-mutedBg flex items-center justify-center">
+          <div className="w-12 h-12 rounded-lg bg-muted-bg flex items-center justify-center">
             <Pencil className="w-6 h-6 text-secondary" />
           </div>
           <h3 className="font-medium text-primary">Edit Invoice</h3>

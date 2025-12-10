@@ -448,8 +448,8 @@ function ArchitectureDiagram() {
           <div className="w-px h-4 bg-slate" />
         </div>
 
-        <div className="p-3 bg-darkPurple/10 border border-darkPurple rounded-lg text-center">
-          <span className="text-darkPurple font-medium">[Agent: Interpreter → Planner → Executor]</span>
+        <div className="p-3 bg-dark-purple/10 border border-dark-purple rounded-lg text-center">
+          <span className="text-dark-purple font-medium">[Agent: Interpreter → Planner → Executor]</span>
         </div>
 
         <div className="flex justify-center">

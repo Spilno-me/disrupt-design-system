@@ -294,15 +294,418 @@ Semantic tokens that define **what the color means**. Use these in components.
 
 ## Usage Examples
 
-### TypeScript (Recommended)
+### Tailwind Classes (Recommended for Static Styles)
+
+**IMPORTANT:** All Tailwind classes use **kebab-case** naming.
+
+#### Text Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '16px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-primary</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#2D3142', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#2D3142</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Main body text</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-secondary</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#5E4F7E', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#5E4F7E</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Muted text</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-inverse</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FFFFFF', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#FFFFFF</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Text on dark backgrounds</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-accent</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#08A4BD</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Accent/teal text</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-link</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#08A4BD</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Link text</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-link-hover</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#068397', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#068397</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Link hover state</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-error</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#F70D1A', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#F70D1A</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Error messages</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>text-success</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#22C55E', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#22C55E</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Success messages</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><code>text-warning</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#EAB308', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#EAB308</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Warning messages</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Background Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '16px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-page</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FBFBF3', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#FBFBF3</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Main page background (cream)</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-surface</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FFFFFF', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#FFFFFF</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Cards, panels, surfaces</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-surface-hover</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#E8E9EB', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#E8E9EB</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Surface hover state</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-surface-active</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#D1D3D7', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#D1D3D7</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Surface active state</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-muted-bg</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#EFEDF3', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#EFEDF3</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Subtle muted backgrounds</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-inverse-bg</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#2D3142', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#2D3142</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Dark backgrounds</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-inverse-subtle</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#1D1F2A', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#1D1F2A</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Subtle dark backgrounds</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-accent-bg</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#E6F7FA', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#E6F7FA</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Light teal accent background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-accent-strong</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#08A4BD</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Strong teal background</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Status & State Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '16px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-error-light</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FEF2F2', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#FEF2F2</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Light error background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-error-muted</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FEE2E2', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#FEE2E2</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Muted error background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-success-light</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#F0FDF4', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#F0FDF4</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Light success background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-success-muted</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#DCFCE7', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#DCFCE7</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Muted success background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-warning-light</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FFFBEB', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#FFFBEB</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Light warning background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-warning-muted</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FEF3C7', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#FEF3C7</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Muted warning background</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>bg-info-light</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#EFF6FF', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#EFF6FF</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Light info background</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><code>bg-info-muted</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#DBEAFE', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#DBEAFE</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Muted info background</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Border Colors
+
+<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+  <thead>
+    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
+      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border-default</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#CBD5E1', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#CBD5E1</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Default borders</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border-subtle</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#D1D3D7', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#D1D3D7</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Subtle borders</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border-focus</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#08A4BD</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Focus rings</td>
+    </tr>
+    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <td style={{ padding: '8px' }}><code>border-accent</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#08A4BD</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Accent borders</td>
+    </tr>
+    <tr>
+      <td style={{ padding: '8px' }}><code>border-error</code></td>
+      <td style={{ padding: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#F70D1A', border: '1px solid #e5e7eb' }} />
+          <code style={{ fontSize: '12px' }}>#F70D1A</code>
+        </div>
+      </td>
+      <td style={{ padding: '8px' }}>Error borders</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Tailwind Usage Examples
+
+```tsx
+// Static styling with Tailwind classes (RECOMMENDED)
+<div className="bg-surface text-primary border-default rounded-lg">
+  <h1 className="text-primary font-bold">Heading</h1>
+  <p className="text-secondary">Description text</p>
+  <button className="bg-accent-strong text-inverse hover:bg-accent-strong/90">
+    Click me
+  </button>
+</div>
+
+// Hover and state variants
+<button className="bg-muted-bg hover:bg-surface-hover active:bg-surface-active">
+  Hover me
+</button>
+
+// Status indicators
+<div className="bg-success-light text-success border-success">Success</div>
+<div className="bg-error-light text-error border-error">Error</div>
+<div className="bg-warning-light text-warning">Warning</div>
+
+// Navigation active state
+<nav className="bg-accent-bg">Active nav item</nav>
+```
+
+---
+
+### TypeScript ALIAS Tokens (For Dynamic Styles)
+
+Use ALIAS tokens when you need **dynamic/computed values** based on state or props.
 
 ```typescript
 import { ALIAS, ABYSS, DEEP_CURRENT } from '@adrozdenko/design-system'
 
-// Tier 2: Semantic usage (recommended for components)
-const textColor = ALIAS.text.primary // Abyss 500
-const bgColor = ALIAS.background.page // Tide Foam
-const buttonBg = ALIAS.interactive.primary // Abyss 500
+// Dynamic styling based on state (use ALIAS)
+const bgColor = isError ? ALIAS.status.error : ALIAS.background.surface
+const textColor = isActive ? ALIAS.text.accent : ALIAS.text.primary
+
+<div style={{ backgroundColor: bgColor, color: textColor }}>
+  Dynamic content
+</div>
 
 // Tier 1: Raw primitives (only when needed for custom scales)
 const darkScale = ABYSS[600] // Darker shade

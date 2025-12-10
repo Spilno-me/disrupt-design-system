@@ -177,7 +177,7 @@ export const FullDemo: Story = {
 // On dark background
 export const OnDarkBackground: Story = {
   render: () => (
-    <div className="bg-inverseBg p-8 rounded-lg">
+    <div className="bg-inverse-bg p-8 rounded-lg">
       <div className="flex gap-8">
         <ElectricLucideIcon name="automate" size={48} />
         <ElectricLucideIcon name="advice" size={48} />

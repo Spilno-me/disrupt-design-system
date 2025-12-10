@@ -17,6 +17,7 @@ import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
 import type { FilterGroup, FilterState } from "../shared/SearchFilter/types"
 import { EditPartnerDialog, PartnerFormData } from "./EditPartnerDialog"
 import { DeletePartnerDialog } from "./DeletePartnerDialog"
+import { StatusBadge, COMMON_STATUS_CONFIG } from "../ui/table"
 
 // =============================================================================
 // FILTER CONFIGURATION
@@ -193,34 +194,12 @@ export const MOCK_PARTNERS: Partner[] = [
 // HELPER COMPONENTS
 // =============================================================================
 
-/** Status badge with appropriate styling - uses light bg with dark text for contrast */
-function StatusBadge({ status }: { status: PartnerStatus }) {
-  const statusConfig: Record<PartnerStatus, { label: string; className: string }> = {
-    active: { label: "active", className: "bg-successLight text-success" },
-    inactive: { label: "inactive", className: "bg-mutedBg text-primary" },
-    pending: { label: "pending", className: "bg-warningLight text-warning" },
-  }
-
-  const config = statusConfig[status]
-
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-        config.className
-      )}
-    >
-      {config.label}
-    </span>
-  )
-}
-
-/** Tier badge with outline styling - high contrast colors */
+/** Tier badge with outline styling - fixed contrast */
 function TierBadge({ tier }: { tier: PartnerTier }) {
   const tierConfig: Record<PartnerTier, { label: string; className: string }> = {
-    Standard: { label: "Standard", className: "border-success text-success bg-successLight/50" },
-    Premium: { label: "Premium", className: "border-accent text-accent bg-accentBg/50" },
-    Enterprise: { label: "Enterprise", className: "border-secondary text-secondary bg-mutedBg/50" },
+    Standard: { label: "Standard", className: "border-success text-primary bg-success-light" },
+    Premium: { label: "Premium", className: "border-accent text-primary bg-accent-bg" },
+    Enterprise: { label: "Enterprise", className: "border-default text-primary bg-muted-bg" },
   }
 
   const config = tierConfig[tier]
@@ -228,7 +207,7 @@ function TierBadge({ tier }: { tier: PartnerTier }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border",
+        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border",
         config.className
       )}
     >
@@ -419,10 +398,9 @@ export function PartnersPage({
       header: "Partner",
       sortable: true,
       sortValue: (row) => row.name,
-      minWidth: "200px",
       accessor: (row) => (
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-mutedBg">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-muted-bg">
             <Building2 className="h-4 w-4 text-muted" />
           </div>
           <div className="flex flex-col">
@@ -437,7 +415,6 @@ export function PartnersPage({
       header: "Contact",
       sortable: true,
       sortValue: (row) => row.contactName,
-      minWidth: "180px",
       accessor: (row) => (
         <div className="flex flex-col">
           <span className="text-sm text-primary">{row.contactName}</span>
@@ -450,7 +427,6 @@ export function PartnersPage({
       header: "Tier",
       sortable: true,
       sortValue: (row) => row.tier,
-      width: "100px",
       accessor: (row) => <TierBadge tier={row.tier} />,
     },
     {
@@ -458,15 +434,13 @@ export function PartnersPage({
       header: "Status",
       sortable: true,
       sortValue: (row) => row.status,
-      width: "100px",
-      accessor: (row) => <StatusBadge status={row.status} />,
+      accessor: (row) => <StatusBadge status={row.status} statusConfig={COMMON_STATUS_CONFIG} variant="pill" />,
     },
     {
       id: "created",
       header: "Created",
       sortable: true,
       sortValue: (row) => row.createdAt,
-      width: "120px",
       accessor: (row) => (
         <span className="text-sm text-primary">{formatDate(row.createdAt)}</span>
       ),
@@ -474,7 +448,6 @@ export function PartnersPage({
     {
       id: "actions",
       header: "Actions",
-      width: "120px",
       align: "right",
       accessor: (row) => (
         <div className="flex items-center justify-end gap-1">
@@ -505,7 +478,7 @@ export function PartnersPage({
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 hover:bg-errorLight hover:text-error"
+            className="h-8 w-8 hover:bg-error-light hover:text-error"
             onClick={(e) => {
               e.stopPropagation()
               handleDeletePartnerClick(row)
@@ -562,7 +535,7 @@ export function PartnersPage({
         bordered
         emptyState={
           <div className="flex flex-col items-center py-8">
-            <div className="w-16 h-16 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+            <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
               <Building2 className="h-8 w-8 text-muted" />
             </div>
             <h3 className="text-lg font-semibold text-primary mb-2">

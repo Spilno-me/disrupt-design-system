@@ -175,7 +175,7 @@ export function ResetPasswordDialog({
         </div>
 
         {/* Warning Note */}
-        <div className="flex items-start gap-3 rounded-lg bg-warningLight border border-warning/30 p-3">
+        <div className="flex items-start gap-3 rounded-lg bg-warning-light border border-warning/30 p-3">
           <AlertTriangle className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
           <p className="text-sm text-primary">
             <span className="font-medium">Note:</span> The user will be required to change this password on first login.

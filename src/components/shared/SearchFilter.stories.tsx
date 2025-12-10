@@ -184,7 +184,7 @@ export const WithFilters: Story = {
           onFiltersChange={setFilters}
         />
 
-        <div className="p-4 bg-mutedBg rounded-lg text-sm">
+        <div className="p-4 bg-muted-bg rounded-lg text-sm">
           <p className="font-medium mb-2 text-primary">Current State:</p>
           <p className="text-muted"><strong>Search:</strong> {search || '(empty)'}</p>
           <p className="text-muted"><strong>Status:</strong> {filters.status?.join(', ') || 'None'}</p>
@@ -326,7 +326,7 @@ export const DebouncedSearch: Story = {
           hideFilters
         />
 
-        <div className="p-4 bg-mutedBg rounded-lg text-sm space-y-2">
+        <div className="p-4 bg-muted-bg rounded-lg text-sm space-y-2">
           <p className="text-muted">
             <strong>Immediate value:</strong> {search || '(empty)'}
           </p>

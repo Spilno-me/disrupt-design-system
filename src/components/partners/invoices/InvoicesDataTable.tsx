@@ -2,9 +2,9 @@ import * as React from 'react'
 import { Copy, Eye, Download, Pencil, Send } from 'lucide-react'
 import { DataTable, ColumnDef, SortDirection, RowPriority } from '../../ui/DataTable'
 import { Button } from '../../ui/button'
-import { cn } from '../../../lib/utils'
 import type { Invoice, InvoiceAction } from './types'
 import { formatCurrency, formatDate, getPaymentTermsLabel } from './types'
+import { StatusBadge, INVOICE_STATUS_CONFIG } from '../../ui/table'
 
 // =============================================================================
 // TYPES
@@ -73,7 +73,7 @@ export function InvoicesDataTable({
     {
       id: "status",
       header: "Status",
-      accessor: (invoice) => <StatusCell status={invoice.status} />,
+      accessor: (invoice) => <StatusBadge status={invoice.status} statusConfig={INVOICE_STATUS_CONFIG} />,
       sortable: true,
       sortValue: (invoice) => invoice.status,
       minWidth: "140px",
@@ -132,7 +132,7 @@ export function InvoicesDataTable({
       id: "terms",
       header: "Terms",
       accessor: (invoice) => (
-        <span className="inline-flex px-2 py-1 text-xs font-medium rounded bg-mutedBg text-primary">
+        <span className="inline-flex px-2 py-1 text-xs font-medium rounded bg-muted-bg text-primary">
           {getPaymentTermsLabel(invoice.paymentTerms)}
         </span>
       ),
@@ -191,7 +191,7 @@ export function InvoicesDataTable({
       className={className}
       emptyState={
         <div className="flex flex-col items-center justify-center py-12">
-          <div className="w-16 h-16 mb-4 rounded-full bg-mutedBg flex items-center justify-center">
+          <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
             <svg
               className="w-8 h-8 text-secondary"
               fill="none"
@@ -218,45 +218,6 @@ export function InvoicesDataTable({
 // CELL COMPONENTS
 // =============================================================================
 
-/** Status badge cell */
-function StatusCell({ status }: { status: Invoice['status'] }) {
-  const statusConfig = {
-    draft: {
-      label: 'Draft',
-      className: 'bg-mutedBg text-primary border border-default',
-      showDot: true,
-    },
-    sent: {
-      label: 'Sent',
-      className: 'bg-infoLight text-info',
-      showDot: false,
-    },
-    paid: {
-      label: 'Paid',
-      className: 'bg-successLight text-success',
-      showDot: false,
-    },
-    overdue: {
-      label: 'Overdue',
-      className: 'bg-errorLight text-error',
-      showDot: false,
-    },
-    partially_paid: {
-      label: 'Partially Paid',
-      className: 'bg-warningLight text-warning',
-      showDot: false,
-    },
-  }
-
-  const config = statusConfig[status]
-
-  return (
-    <span className={cn('inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded', config.className)}>
-      {config.showDot && <span className="w-1.5 h-1.5 rounded-full bg-current" />}
-      {config.label}
-    </span>
-  )
-}
 
 /** Actions cell with icon buttons */
 function ActionsCell({

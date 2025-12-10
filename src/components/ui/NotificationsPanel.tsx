@@ -14,7 +14,6 @@ import {
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from './button'
-import { Separator } from './separator'
 import {
   Sheet,
   SheetContent,
@@ -168,7 +167,7 @@ export function NotificationsPanel({
               variant="ghost"
               size="sm"
               onClick={onClearAll}
-              className="w-full text-error hover:text-error hover:bg-errorLight"
+              className="w-full text-error hover:text-error hover:bg-error-light"
             >
               <Trash2 className="w-4 h-4 mr-2" />
               Clear all notifications

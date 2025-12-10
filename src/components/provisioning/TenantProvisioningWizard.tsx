@@ -292,7 +292,7 @@ function CompanyInfoStep() {
           </div>
 
           {selectedTier && (
-            <div className="flex items-center gap-2 p-3 rounded-md bg-accentBg border border-accent">
+            <div className="flex items-center gap-2 p-3 rounded-md bg-accent-bg border border-accent">
               <Info className="w-4 h-4 text-accent shrink-0" />
               <span className="text-sm text-primary">
                 Based on your employee count, you qualify for the <strong>{selectedTier}</strong> tier.
@@ -505,7 +505,7 @@ function PackageCard({ pkg, selected, onSelect }: PackageCardProps) {
       className={cn(
         'relative flex flex-col p-4 rounded-lg border-2 text-left transition-all w-full font-sans',
         selected
-          ? 'border-accent bg-accentBg'
+          ? 'border-accent bg-accent-bg'
           : 'border-default bg-surface hover:border-accent'
       )}
     >
@@ -555,7 +555,7 @@ function PricingStep({ commissionPercentage }: { commissionPercentage?: number }
       />
 
       {/* Tier Info Banner */}
-      <div className="flex items-center gap-3 p-4 rounded-lg bg-mutedBg border border-default">
+      <div className="flex items-center gap-3 p-4 rounded-lg bg-muted-bg border border-default">
         <Building2 className="w-5 h-5 text-primary shrink-0" />
         <div>
           <p className="text-sm font-sans text-primary">
@@ -661,7 +661,7 @@ function PricingStep({ commissionPercentage }: { commissionPercentage?: number }
                 {commissionPercentage && commission > 0 && (
                   <>
                     <Separator className="my-2" />
-                    <div className="flex justify-between p-2 rounded bg-successLight">
+                    <div className="flex justify-between p-2 rounded bg-success-light">
                       <span className="text-success font-medium">
                         Your Commission ({commissionPercentage}%)
                       </span>
@@ -816,7 +816,7 @@ function ReviewPayStep({ commissionPercentage }: { commissionPercentage?: number
                   className={cn(
                     'flex items-center gap-3 w-full p-4 rounded-lg border-2 text-left transition-all font-sans',
                     paymentMethod === 'invoice'
-                      ? 'border-accent bg-accentBg'
+                      ? 'border-accent bg-accent-bg'
                       : 'border-default hover:border-accent'
                   )}
                 >
@@ -844,7 +844,7 @@ function ReviewPayStep({ commissionPercentage }: { commissionPercentage?: number
                   className={cn(
                     'flex items-center gap-3 w-full p-4 rounded-lg border-2 text-left transition-all font-sans',
                     paymentMethod === 'credit_card'
-                      ? 'border-accent bg-accentBg'
+                      ? 'border-accent bg-accent-bg'
                       : 'border-default hover:border-accent'
                   )}
                 >
@@ -870,7 +870,7 @@ function ReviewPayStep({ commissionPercentage }: { commissionPercentage?: number
           </Card>
 
           {/* Terms & Conditions */}
-          <div className="flex items-start gap-3 p-4 rounded-lg bg-mutedBg border border-default">
+          <div className="flex items-start gap-3 p-4 rounded-lg bg-muted-bg border border-default">
             <Checkbox
               id="acceptTerms"
               checked={acceptTerms}
@@ -917,7 +917,7 @@ function ReviewPayStep({ commissionPercentage }: { commissionPercentage?: number
                 {commissionPercentage && commission > 0 && (
                   <>
                     <Separator className="my-2" />
-                    <div className="p-3 rounded-lg bg-successLight">
+                    <div className="p-3 rounded-lg bg-success-light">
                       <div className="flex justify-between text-success">
                         <span className="font-medium">
                           Your Commission ({commissionPercentage}%)

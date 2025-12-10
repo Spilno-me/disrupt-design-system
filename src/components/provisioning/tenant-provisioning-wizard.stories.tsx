@@ -73,7 +73,7 @@ function DefaultDemo() {
         <Card className="max-w-2xl w-full">
           <CardContent className="pt-6">
             <div className="text-center mb-6">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-successLight flex items-center justify-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-success-light flex items-center justify-center">
                 <svg className="w-8 h-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -86,7 +86,7 @@ function DefaultDemo() {
               </p>
             </div>
 
-            <div className="bg-mutedBg rounded-lg p-4 mb-6">
+            <div className="bg-muted-bg rounded-lg p-4 mb-6">
               <pre className="text-xs text-primary overflow-auto max-h-96">
                 {JSON.stringify(result, null, 2)}
               </pre>
@@ -139,7 +139,7 @@ function PartnerPortalDemo() {
       <div className="min-h-screen bg-page flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="pt-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-successLight flex items-center justify-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-success-light flex items-center justify-center">
               <svg className="w-8 h-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>

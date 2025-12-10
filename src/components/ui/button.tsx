@@ -26,7 +26,7 @@ const buttonVariants = cva(
       variant: {
         // Primary - Dark background (brand primary)
         default:
-          "bg-inverseBg text-inverse shadow-sm hover:bg-inverseBg/90",
+          "bg-inverse-bg text-inverse shadow-sm hover:bg-inverse-bg/90",
         // Destructive - Error/danger state
         destructive:
           "bg-error text-inverse shadow-sm hover:bg-error/90 focus-visible:ring-error/30",
@@ -35,7 +35,7 @@ const buttonVariants = cva(
           "border border-default bg-surface text-primary shadow-sm hover:bg-page",
         // Secondary - Light background
         secondary:
-          "bg-mutedBg text-secondary shadow-sm hover:bg-mutedBg/80",
+          "bg-muted-bg text-secondary shadow-sm hover:bg-muted-bg/80",
         // Ghost - Transparent until hover
         ghost:
           "text-primary hover:bg-page",
@@ -43,10 +43,10 @@ const buttonVariants = cva(
         link: "text-accent underline-offset-4 hover:underline",
         // Contact - Specific CTA button
         contact:
-          "h-10 bg-inverseBg text-inverse hover:bg-inverseBg/90 px-6 py-2 font-medium",
+          "h-10 bg-inverse-bg text-inverse hover:bg-inverse-bg/90 px-6 py-2 font-medium",
         // Accent - Teal/brand secondary
         accent:
-          "bg-accentStrong text-inverse shadow-sm hover:bg-accentStrong/90",
+          "bg-accent-strong text-inverse shadow-sm hover:bg-accent-strong/90",
       },
       size: {
         default: "h-10 px-6 py-2 has-[>svg]:px-4",

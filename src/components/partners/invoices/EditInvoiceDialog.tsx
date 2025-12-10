@@ -214,7 +214,7 @@ export function EditInvoiceDialog({
                   {lineItems.map((item) => (
                     <div
                       key={item.id}
-                      className="grid grid-cols-12 gap-2 p-3 rounded-lg border border-default bg-mutedBg"
+                      className="grid grid-cols-12 gap-2 p-3 rounded-lg border border-default bg-muted-bg"
                     >
                       {/* Description */}
                       <div className="col-span-12 md:col-span-5">
@@ -277,7 +277,7 @@ export function EditInvoiceDialog({
               </div>
 
               {/* Totals */}
-              <div className="flex flex-col items-end gap-2 p-4 rounded-lg bg-accentBg border border-accent">
+              <div className="flex flex-col items-end gap-2 p-4 rounded-lg bg-accent-bg border border-accent">
                 <div className="flex items-center justify-between w-64">
                   <span className="text-sm text-muted">Subtotal:</span>
                   <span className="text-sm font-medium text-primary">{formatCurrency(subtotal)}</span>

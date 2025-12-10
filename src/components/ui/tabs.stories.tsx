@@ -164,8 +164,8 @@ export const WithCards: Story = {
             <h3 className="font-semibold text-primary mb-4">Team Members</h3>
             <div className="space-y-3">
               {['Alice Smith', 'Bob Johnson', 'Carol Williams'].map((name) => (
-                <div key={name} className="flex items-center gap-3 p-2 hover:bg-mutedBg rounded-md">
-                  <div className="w-8 h-8 rounded-full bg-mutedBg text-secondary flex items-center justify-center text-sm font-medium">
+                <div key={name} className="flex items-center gap-3 p-2 hover:bg-muted-bg rounded-md">
+                  <div className="w-8 h-8 rounded-full bg-muted-bg text-secondary flex items-center justify-center text-sm font-medium">
                     {name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <span className="text-primary text-sm">{name}</span>
@@ -178,7 +178,7 @@ export const WithCards: Story = {
           <div className="p-4 bg-white border border-default rounded-lg shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-primary">Current Plan</h3>
-              <span className="px-2 py-1 bg-accentBg text-accent text-xs font-semibold rounded">
+              <span className="px-2 py-1 bg-accent-bg text-accent text-xs font-semibold rounded">
                 Pro
               </span>
             </div>
@@ -189,7 +189,7 @@ export const WithCards: Story = {
               <button className="px-4 py-2 bg-accent-strong text-white rounded-md text-sm font-medium hover:bg-accent-strong/90">
                 Upgrade
               </button>
-              <button className="px-4 py-2 border border-default text-secondary rounded-md text-sm font-medium hover:bg-mutedBg">
+              <button className="px-4 py-2 border border-default text-secondary rounded-md text-sm font-medium hover:bg-muted-bg">
                 Manage
               </button>
             </div>
@@ -207,25 +207,25 @@ export const Vertical: Story = {
         <TabsList className="flex flex-col h-auto bg-transparent p-0 gap-1">
           <TabsTrigger
             value="general"
-            className="justify-start data-[state=active]:bg-accentBg data-[state=active]:text-accent"
+            className="justify-start data-[state=active]:bg-accent-bg data-[state=active]:text-accent"
           >
             General
           </TabsTrigger>
           <TabsTrigger
             value="security"
-            className="justify-start data-[state=active]:bg-accentBg data-[state=active]:text-accent"
+            className="justify-start data-[state=active]:bg-accent-bg data-[state=active]:text-accent"
           >
             Security
           </TabsTrigger>
           <TabsTrigger
             value="notifications"
-            className="justify-start data-[state=active]:bg-accentBg data-[state=active]:text-accent"
+            className="justify-start data-[state=active]:bg-accent-bg data-[state=active]:text-accent"
           >
             Notifications
           </TabsTrigger>
           <TabsTrigger
             value="integrations"
-            className="justify-start data-[state=active]:bg-accentBg data-[state=active]:text-accent"
+            className="justify-start data-[state=active]:bg-accent-bg data-[state=active]:text-accent"
           >
             Integrations
           </TabsTrigger>
@@ -276,7 +276,7 @@ export const InCard: Story = {
           <div className="flex justify-between items-start">
             <div>
               <span className="text-sm font-medium text-primary">REQ-20251208-5313</span>
-              <span className="ml-2 px-2 py-0.5 bg-warningLight text-warning text-xs font-semibold rounded">
+              <span className="ml-2 px-2 py-0.5 bg-warning-light text-warning text-xs font-semibold rounded">
                 Pending Payment
               </span>
             </div>
@@ -285,7 +285,7 @@ export const InCard: Story = {
               <p className="text-sm text-secondary">$18,416.67/month</p>
             </div>
           </div>
-          <div className="p-3 bg-accentBg rounded-lg border border-accent/30">
+          <div className="p-3 bg-accent-bg rounded-lg border border-accent/30">
             <p className="text-sm font-medium text-primary">Partner & Commission</p>
             <p className="text-sm text-secondary mt-1">Commission Eligible: <span className="text-success">Yes</span></p>
           </div>

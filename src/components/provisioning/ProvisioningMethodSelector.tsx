@@ -138,11 +138,11 @@ export function ProvisioningMethodSelector({
           {/* Chat Assistant Option */}
           <MethodCard
             icon={<MessageSquare className="w-8 h-8 text-info" strokeWidth={1.5} />}
-            iconBgClass="bg-infoLight"
+            iconBgClass="bg-info-light"
             title="Chat Assistant"
             description="Answer questions conversationally with AI guidance"
             badge="Best for: Quick setup, guidance"
-            badgeBgClass="bg-infoMuted"
+            badgeBgClass="bg-info-muted"
             badgeTextClass="text-info"
             selected={selectedMethod === 'chat'}
             onClick={() => handleMethodClick('chat')}
@@ -151,11 +151,11 @@ export function ProvisioningMethodSelector({
           {/* Classic Wizard Option */}
           <MethodCard
             icon={<ClipboardList className="w-8 h-8 text-success" strokeWidth={1.5} />}
-            iconBgClass="bg-successLight"
+            iconBgClass="bg-success-light"
             title="Classic Wizard"
             description="Fill out forms step by step with full control"
             badge="Best for: Detailed control, review"
-            badgeBgClass="bg-successMuted"
+            badgeBgClass="bg-success-muted"
             badgeTextClass="text-success"
             selected={selectedMethod === 'wizard'}
             onClick={() => handleMethodClick('wizard')}

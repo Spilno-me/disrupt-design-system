@@ -5,27 +5,150 @@ Unified design language and component library powering all Disrupt products.
 ## Products Using This System
 
 - **Disrupt Inc.** – Corporate website
-- **Disrupt Flow** – Product 1
-- **Disrupt Market** – Product 2
-- **Disrupt Partner** – Product 3
+- **Disrupt Flow** – EHS compliance platform
+- **Disrupt Market** – Marketplace platform
+- **Disrupt Partner** – Partner portal
 
 ## Installation
+
+```bash
+npm install @adrozdenko/design-system
+```
+
+Or install from GitHub:
 
 ```bash
 npm install git+https://github.com/Spilno-me/disrupt-design-system.git
 ```
 
-## Usage
+## Quick Start
+
+### 1. Install the package
+
+```bash
+npm install @adrozdenko/design-system
+```
+
+### 2. Configure Tailwind CSS
+
+Import the DDS preset in your `tailwind.config.js`:
+
+```javascript
+import preset from '@adrozdenko/design-system/tailwind-preset'
+
+export default {
+  presets: [preset],
+  content: [
+    './src/**/*.{ts,tsx}',
+    './node_modules/@adrozdenko/design-system/dist/**/*.js',
+  ],
+}
+```
+
+### 3. Import styles
+
+Add to your main CSS or entry point:
+
+```css
+/* Import DDS CSS variables and utilities */
+@import '@adrozdenko/design-system/tokens.css';
+@import '@adrozdenko/design-system/styles';
+```
+
+Or in your TypeScript/React entry:
 
 ```typescript
-// Import components
-import { Button, Card, Input } from '@disrupt/design-system'
+import '@adrozdenko/design-system/styles'
+```
 
-// Import design tokens
-import { COLORS, TYPOGRAPHY, SPACING } from '@disrupt/design-system/tokens'
+### 4. Use components
 
-// Import styles (in your main CSS/entry point)
-import '@disrupt/design-system/styles'
+```tsx
+import { Button, Card, Input, DataTable } from '@adrozdenko/design-system'
+
+function App() {
+  return (
+    <Card>
+      <h1 className="text-primary text-2xl font-bold">Hello DDS</h1>
+      <Input placeholder="Enter text..." />
+      <Button variant="primary">Submit</Button>
+    </Card>
+  )
+}
+```
+
+## Usage
+
+### Importing Components
+
+```typescript
+// Import UI components
+import {
+  Button,
+  Card,
+  Input,
+  Textarea,
+  Select,
+  Dialog,
+  DataTable,
+  Pagination,
+  AppSidebar,
+  Tabs,
+} from '@adrozdenko/design-system'
+
+// Import form components
+import { ContactForm } from '@adrozdenko/design-system'
+
+// Import layout components
+import { Header, Footer, PageLayout } from '@adrozdenko/design-system'
+```
+
+### Importing Design Tokens
+
+```typescript
+// Import semantic tokens (recommended)
+import {
+  ALIAS,      // Semantic color tokens
+  SHADOWS,    // Shadow system
+  RADIUS,     // Border radius
+  SPACING,    // Spacing scale
+  TYPOGRAPHY, // Typography system
+  TRANSITIONS // Animation timings
+} from '@adrozdenko/design-system/tokens'
+
+// Use in components (for dynamic values only)
+<div style={{
+  backgroundColor: isError ? ALIAS.status.error : ALIAS.background.surface,
+  boxShadow: SHADOWS.md,
+  borderRadius: RADIUS.lg
+}}>
+  Dynamic styling
+</div>
+```
+
+### Using Tailwind Classes (Recommended)
+
+**For static styling, always prefer Tailwind classes:**
+
+```tsx
+// ✅ GOOD: Static styling with semantic classes
+<div className="bg-surface text-primary border-default rounded-lg shadow-md">
+  <h1 className="text-2xl font-bold">Heading</h1>
+  <p className="text-secondary">Description</p>
+  <Button className="bg-accent-strong text-inverse">Action</Button>
+</div>
+
+// ❌ BAD: Using ALIAS for static values
+<div style={{ backgroundColor: ALIAS.background.surface }}>
+```
+
+**Use ALIAS tokens only for dynamic values:**
+
+```tsx
+// ✅ GOOD: Dynamic color based on state
+<div style={{
+  backgroundColor: status === 'error' ? ALIAS.status.error : ALIAS.background.surface
+}}>
 ```
 
 ## Development
@@ -43,22 +166,56 @@ npm run build
 
 ## What's Inside
 
-### Design Tokens
-- Colors (brand scales, semantic colors)
-- Typography (Pilat Extended, Fixel)
-- Spacing (T-shirt sizing)
-- Shadows (elevation system)
-- Border Radius
-- Glassmorphism effects
-- Grid patterns
+### Design Tokens (2-Tier System)
 
-### Components
-- Button, Card, Badge
-- Input, Textarea, Select, Checkbox
-- Separator, Skeleton
-- FeatureCard (animated)
-- Glass Effects (ElectricButtonWrapper)
-- Grid (animated GridBlobCanvas)
+**Tier 1: Brand Primitives**
+- ABYSS (navy dark) - Primary brand color scale
+- DEEP_CURRENT (teal) - Secondary brand color scale
+- DUSK_REEF (purple) - Tertiary brand color scale
+- CORAL, WAVE, SUNRISE, HARBOR - Status colors
+
+**Tier 2: Semantic Tokens (ALIAS)**
+- Text colors: `primary`, `secondary`, `inverse`, `error`, `success`, etc.
+- Backgrounds: `page`, `surface`, `accent`, `muted`, status variants
+- Borders: `default`, `focus`, `error`, etc.
+- Interactive states: `primary`, `hover`, `active`, `disabled`
+- Shadows: `sm`, `md`, `lg`, `xl`, specialized (header, image)
+- Typography: Pilat Extended (display), Fixel (body)
+- Spacing: Consistent scale for sections, containers, gaps
+- Border radius: `xs` (4px) → `full` (pill)
+
+### Components (67 Components)
+
+**Forms & Inputs:**
+- Button (7 variants), Input, Textarea, Checkbox, Select, Form (react-hook-form)
+
+**Layout & Containers:**
+- Card (3 variants), Dialog, Sheet, Separator, PageLayout, SectionLayout
+
+**Navigation:**
+- AppSidebar (desktop), MobileNav (drawer), BottomNav (mobile tabs)
+- Header (marketing), AppHeader (app), MobileMenu
+
+**Data Display:**
+- DataTable (sortable, selectable), Pagination, Badge, Accordion
+- Skeleton (3 variants), SeverityIndicator, QuickFilter
+
+**Overlays:**
+- Dialog/Modal, Sheet (side panel), DropdownMenu, Tooltip
+
+**Specialized:**
+- FeatureCard (animated icons), CheckListItem, AnimatedLogo
+- OptimizedImage, ParallaxImage, BlurImage
+- GridBlobBackground, GlassEffect, HeroParticles
+
+**Auth & Wizards:**
+- LoginForm, ForgotPasswordForm, ResetPasswordForm, AuthLayout
+- Wizard, WizardStepper, WizardNavigation
+
+**Domain-Specific:**
+- ContactForm (with success/error modals)
+- LeadsDataTable, StatsCard, CreateLeadDialog
+- InvoicesDataTable, InvoiceCard, InvoicePreviewSheet
 
 ## Technology Stack
 

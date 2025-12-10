@@ -62,9 +62,9 @@ function MobileNavItemButton({
       className={cn(
         'relative w-full flex items-center gap-4',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-        'active:bg-accentBg transition-colors',
-        isActive && 'bg-accentBg',
-        !isActive && !item.disabled && 'hover:bg-mutedBg',
+        'active:bg-accent-bg transition-colors',
+        isActive && 'bg-accent-bg',
+        !isActive && !item.disabled && 'hover:bg-muted-bg',
         item.disabled && 'opacity-50 cursor-not-allowed',
         isNested ? 'pl-14' : 'px-4'
       )}
@@ -79,7 +79,7 @@ function MobileNavItemButton({
       <span
         className={cn(
           'flex-1 text-left text-base',
-          isActive ? 'font-semibold text-accent' : 'font-medium text-primary'
+          isActive ? 'font-semibold text-primary' : 'font-medium text-primary'
         )}
       >
         {item.label}
@@ -116,9 +116,9 @@ function MobileNavGroup({
         className={cn(
           'relative w-full flex items-center gap-4 px-4',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-          'active:bg-accentBg transition-colors',
-          groupActive && 'bg-accentBg',
-          !groupActive && 'hover:bg-mutedBg'
+          'active:bg-accent-bg transition-colors',
+          groupActive && 'bg-accent-bg',
+          !groupActive && 'hover:bg-muted-bg'
         )}
         style={{
           height: ITEM_HEIGHT,
@@ -130,7 +130,7 @@ function MobileNavGroup({
         <span
           className={cn(
             'flex-1 text-left text-base',
-            groupActive ? 'font-semibold text-accent' : 'font-medium text-primary'
+            groupActive ? 'font-semibold text-primary' : 'font-medium text-primary'
           )}
         >
           {item.label}
@@ -168,7 +168,7 @@ function MobileHelpItem({ onClick }: { onClick?: () => void }) {
       className={cn(
         'relative w-full flex items-center gap-4 px-4',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-        'hover:bg-mutedBg active:bg-accentBg transition-colors'
+        'hover:bg-muted-bg active:bg-accent-bg transition-colors'
       )}
       style={{ height: ITEM_HEIGHT, minHeight: ITEM_HEIGHT }}
     >
