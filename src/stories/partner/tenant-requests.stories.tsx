@@ -671,7 +671,7 @@ function TenantRequestDetailsSheet({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-primary">{request.requestId}</span>
-                    <StatusBadge status={request.status} />
+                    <StatusBadge status={request.status} statusConfig={REQUEST_STATUS_CONFIG} />
                   </div>
                   <p className="text-sm text-secondary mt-1">{request.companyName}</p>
                 </div>

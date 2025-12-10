@@ -547,7 +547,7 @@ export const WithSearch: Story = {
 
     const filterGroups = [
       {
-        id: 'status',
+        key: 'status',
         label: 'Status',
         options: [
           { id: 'new', label: 'New' },
@@ -557,7 +557,7 @@ export const WithSearch: Story = {
         ],
       },
       {
-        id: 'source',
+        key: 'source',
         label: 'Source',
         options: [
           { id: 'website', label: 'Website' },
@@ -586,7 +586,7 @@ export const WithSearch: Story = {
             <h1 className="text-2xl font-semibold text-primary">Leads</h1>
             <p className="text-sm text-secondary">Manage your sales leads</p>
           </div>
-          <Button variant="primary">Add Lead</Button>
+          <Button variant="accent">Add Lead</Button>
         </div>
 
         {/* Mock data table */}

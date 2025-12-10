@@ -20,6 +20,7 @@ import {
 } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
 import { StatusBadge, LEAD_STATUS_CONFIG, EmailLink, ScoreBadge } from "../ui/table"
+import type { Lead, LeadAction, LeadPriority, LeadSource } from "./LeadCard"
 
 // =============================================================================
 // TYPES

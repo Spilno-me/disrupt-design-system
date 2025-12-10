@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { MapPin, Globe, Building2 } from "lucide-react"
 import { cn } from "../../lib/utils"
