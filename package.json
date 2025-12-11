@@ -17,11 +17,13 @@
     },
     "./tokens.css": "./dist/styles/tokens.css",
     "./styles": "./dist/assets/index.css",
-    "./tailwind-preset": "./tailwind-preset.js"
+    "./tailwind-preset": "./tailwind-preset.js",
+    "./plugins/dashed-borders": "./dashed-borders-plugin.js"
   },
   "files": [
     "dist",
     "tailwind-preset.js",
+    "dashed-borders-plugin.js",
     "README.md"
   ],
   "scripts": {
