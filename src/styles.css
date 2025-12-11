@@ -1,5 +1,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
+/* ============================================================ */
+/* DESIGN SYSTEM STYLES                                         */
+/* Import order matters - tokens first, then base, then extras */
+/* ============================================================ */
+
+/* Design tokens - CSS variables and theme definitions */
+@import "./styles/tokens.css";
+
+/* Base layer styles - foundational element styling */
+@import "./styles/base.css";
+
+/* RTL support - right-to-left language support */
+@import "./styles/rtl.css";
+
+/* Component-specific styles */
 @import "./components/ui/HeroParticles.css";
 
 /* ============================================================ */

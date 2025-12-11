@@ -511,7 +511,7 @@ export function IndustryCarouselSection({
           <h2 className="text-2xl sm:text-3xl lg:text-[36px] font-display font-bold text-primary leading-tight">
             {title}
           </h2>
-          <p className="mt-3 text-sm sm:text-base lg:text-lg font-display font-medium text-accent">
+          <p className="mt-3 text-sm sm:text-base lg:text-lg font-display font-medium text-secondary">
             {subtitle}
           </p>
         </div>

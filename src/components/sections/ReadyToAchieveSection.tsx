@@ -22,7 +22,7 @@ export function ReadyToAchieveSection() {
           </h2>
 
           {/* Subheading */}
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium max-w-[560px] mb-8 text-accent">
+          <p className="text-sm sm:text-base lg:text-lg font-display font-medium max-w-[560px] mb-8 text-secondary">
             Stop paying extra for AI, upgrades, and consulting that drains your ROI today.
           </p>
 

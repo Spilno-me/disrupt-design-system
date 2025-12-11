@@ -1,0 +1,110 @@
+/**
+ * Disrupt Design System - RTL (Right-to-Left) Support
+ *
+ * Provides comprehensive RTL support for Arabic and other RTL languages.
+ * These styles ensure proper text direction, layout, and form handling.
+ */
+
+/* ============================================================ */
+/* TEXT DIRECTION                                               */
+/* ============================================================ */
+
+[dir="rtl"] {
+  text-align: right;
+  font-family: "Fixel", "Tahoma", "Arial", sans-serif;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+[dir="rtl"] .text-center {
+  text-align: center;
+}
+
+/* ============================================================ */
+/* HEADINGS                                                     */
+/* ============================================================ */
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6 {
+  font-family: "Pilat Extended", "Tahoma", "Arial", sans-serif;
+}
+
+/* ============================================================ */
+/* MARGIN AND PADDING                                           */
+/* ============================================================ */
+
+[dir="rtl"] .ml-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+/* ============================================================ */
+/* FLEX DIRECTION                                               */
+/* ============================================================ */
+
+[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+/* ============================================================ */
+/* POSITIONING                                                  */
+/* ============================================================ */
+
+[dir="rtl"] .left-0 {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .right-0 {
+  right: auto;
+  left: 0;
+}
+
+/* ============================================================ */
+/* FORMS                                                        */
+/* ============================================================ */
+
+/* Text inputs and textareas align right in RTL */
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
+/* Email inputs stay LTR (emails are always LTR) */
+[dir="rtl"] input[type="email"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* ============================================================ */
+/* SELECT ELEMENTS                                              */
+/* Adjust chevron/arrow position for language switchers         */
+/* ============================================================ */
+
+[dir="rtl"] select {
+  background-position: left 8px center;
+  padding-left: 32px;
+  padding-right: 12px;
+}
+
+[dir="ltr"] select {
+  background-position: right 8px center;
+  padding-right: 32px;
+  padding-left: 12px;
+}

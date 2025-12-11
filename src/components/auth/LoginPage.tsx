@@ -14,6 +14,7 @@ import {
   DialogDescription,
 } from "../ui/dialog"
 import { SHADOWS } from "../../constants/designTokens"
+import { ExecutingAnimation } from "../ui/ExecutingAnimation"
 
 // =============================================================================
 // PRODUCT TYPES & CONFIG
@@ -81,6 +82,12 @@ export interface LoginPageProps {
   successMessage?: string
   /** Duration to show success state before calling onLoginSuccess (ms) */
   successDuration?: number
+  /** Custom hero image URL (overrides default Unsplash image) */
+  heroImage?: string
+  /** Hero image alt text */
+  heroImageAlt?: string
+  /** Position of the login form - "left" (default) or "right" */
+  loginPosition?: "left" | "right"
   /** Optional className */
   className?: string
 }
@@ -108,7 +115,7 @@ function ProductLogo({ product, customLogo, alt, onClick }: ProductLogoProps) {
         src={logoSrc}
         alt={logoAlt}
         className={cn(
-          "h-10 w-auto",
+          "h-12 w-auto",
           onClick && "cursor-pointer hover:opacity-80 transition-opacity"
         )}
         onClick={onClick}
@@ -133,7 +140,7 @@ function SuccessState({ message, product, customLogo }: SuccessStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">
       {logoSrc && (
-        <img src={logoSrc} alt="Logo" className="mb-6 h-8 w-auto" />
+        <img src={logoSrc} alt="Logo" className="mb-6 h-12 w-auto" />
       )}
       <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
         <svg
@@ -174,6 +181,9 @@ export function LoginPage({
   blobScale = 1.2,
   successMessage,
   successDuration = 1500,
+  heroImage,
+  heroImageAlt = "Team collaboration",
+  loginPosition = "left",
   className,
 }: LoginPageProps) {
   const [pageState, setPageState] = useState<PageState>("login")
@@ -229,18 +239,31 @@ export function LoginPage({
   return (
     <div
       className={cn(
-        "relative flex min-h-screen w-full flex-col items-center justify-center bg-surface overflow-hidden",
+        "relative flex min-h-screen w-full overflow-hidden bg-page",
         className
       )}
     >
-      {/* Animated grid blob background */}
-      <GridBlobBackground scale={blobScale} />
+      {/* Animated grid blob background - full page */}
+      <div className="absolute inset-0 z-0">
+        <GridBlobBackground scale={blobScale} />
+      </div>
 
-      {/* Content container */}
-      <div className="relative z-10 w-full max-w-md px-4 py-8">
+      {/* Two-column grid layout */}
+      <div className="grid lg:grid-cols-2 w-full relative z-10">
+        {/* Login Form - order changes based on loginPosition prop */}
+        <div
+          className={cn(
+            "relative flex flex-col items-center justify-center p-6 sm:p-8 lg:p-12",
+            loginPosition === "right" ? "lg:order-2" : "lg:order-1"
+          )}
+          data-testid="login-form-section"
+          data-position={loginPosition}
+        >
+          {/* Content container */}
+          <div className="relative z-10 w-full max-w-md">
         {/* Main card */}
         <div
-          className="rounded-[14px] border border-dashed border-default bg-surface p-6 sm:p-8"
+          className="rounded-xl border border-dashed border-default bg-surface p-5 sm:p-6 lg:p-8"
           style={{ boxShadow: SHADOWS.ambient }}
         >
           {/* Product Logo */}
@@ -265,7 +288,7 @@ export function LoginPage({
           {/* Loading state */}
           {pageState === "loading" && (
             <div className="flex flex-col items-center justify-center py-12">
-              <div className="h-10 w-10 animate-spin rounded-full border-4 border-default border-t-accent" />
+              <ExecutingAnimation className="w-32 h-32" />
               <p className="mt-4 text-sm text-muted">Signing you in...</p>
             </div>
           )}
@@ -291,6 +314,77 @@ export function LoginPage({
             Privacy Policy
           </a>
         </p>
+        </div>
+        </div>
+
+        {/* Hero Section with Image - order changes based on loginPosition prop */}
+        <div
+          className={cn(
+            "hidden lg:flex relative overflow-hidden",
+            loginPosition === "right" ? "lg:order-1" : "lg:order-2"
+          )}
+          data-testid="hero-section"
+          data-position={loginPosition}
+        >
+          {/* Hero image background */}
+          <div className="absolute inset-0">
+            <img
+              src={heroImage || "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80"}
+              alt={heroImageAlt}
+              className="w-full h-full object-cover opacity-40"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-surface/80 via-surface/70 to-transparent" />
+          </div>
+
+          {/* Hero content */}
+          <div className="relative z-10 flex items-center justify-center w-full p-12">
+            <div className="max-w-lg mx-auto space-y-8">
+              {/* Main headline */}
+              <div className="text-center space-y-4">
+                <h2 className="text-4xl font-bold text-primary">
+                  Welcome to {product ? PRODUCT_CONFIGS[product].name : "Disrupt"}
+                </h2>
+                <p className="text-lg text-muted">
+                  {product === "partner"
+                    ? "Manage your partnerships, track commissions, and grow your business with our comprehensive partner platform."
+                    : product === "market"
+                    ? "Discover and manage EHS solutions in our comprehensive marketplace platform."
+                    : "Streamline your EHS workflows with intelligent automation and compliance tools."
+                  }
+                </p>
+              </div>
+
+              {/* Stats grid */}
+              <div className="grid grid-cols-3 gap-6 mt-12">
+                <div className="text-center space-y-2">
+                  <div className="text-4xl font-bold text-primary">
+                    {product === "partner" ? "10K+" : "50K+"}
+                  </div>
+                  <div className="text-sm text-secondary">
+                    {product === "partner" ? "Active Partners" : "Active Users"}
+                  </div>
+                </div>
+                <div className="text-center space-y-2">
+                  <div className="text-4xl font-bold text-primary">
+                    {product === "partner" ? "$50M+" : "99.9%"}
+                  </div>
+                  <div className="text-sm text-secondary">
+                    {product === "partner" ? "Commissions Paid" : "Uptime"}
+                  </div>
+                </div>
+                <div className="text-center space-y-2">
+                  <div className="text-4xl font-bold text-primary">
+                    {product === "partner" ? "99.9%" : "24/7"}
+                  </div>
+                  <div className="text-sm text-secondary">
+                    {product === "partner" ? "Uptime" : "Support"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Forgot Password Dialog */}

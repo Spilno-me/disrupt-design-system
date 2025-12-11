@@ -71,7 +71,7 @@ export function StrategicAdvisorySection() {
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex justify-center relative z-[1]">
         {/* Card */}
-        <div className="max-w-[894px] w-full bg-surface rounded-[14px] border border-dashed border-accent relative">
+        <div className="max-w-[894px] w-full bg-surface rounded-[14px] border border-dashed border-muted relative">
           {/* Badge */}
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold text-white whitespace-nowrap bg-featureRed">

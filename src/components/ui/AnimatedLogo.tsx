@@ -221,7 +221,7 @@ export function AnimatedLogo({
   const isMobile = useIsMobile()
 
   const textColor = colorMode === 'light' ? ALIAS.text.inverse : ALIAS.text.primary
-  const taglineColor = colorMode === 'light' ? ALIAS.text.inverse : ALIAS.brand.secondary
+  const taglineColor = colorMode === 'light' ? ALIAS.text.inverse : ALIAS.text.secondary
 
   const handleClick = useCallback(() => {
     if (clickLockRef.current) return

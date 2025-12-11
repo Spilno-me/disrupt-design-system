@@ -10,7 +10,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
         // Base styles
         "flex field-sizing-content min-h-textarea w-full rounded-sm border border-default bg-surface px-3 py-3 text-base text-primary font-sans shadow-sm transition-[color,box-shadow] outline-none md:text-sm",
         // Placeholder
-        "placeholder:text-muted",
+        "placeholder:text-tertiary",
         // Focus state - accent
         "focus-visible:border-accent focus-visible:ring-accent/20 focus-visible:ring-[3px]",
         // Error state

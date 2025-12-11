@@ -295,7 +295,7 @@ export function PricingCardsSection() {
           <h2 className="text-2xl sm:text-3xl lg:text-3xl font-display font-bold leading-[1.2] text-left lg:text-center text-primary">
             Platform Tiers: Foundational EHS & Agentic AI
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-accent text-left lg:text-center max-w-[672px]">
+          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-secondary text-left lg:text-center max-w-[672px]">
             Pricing is structured with two components
           </p>
         </div>

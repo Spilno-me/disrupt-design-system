@@ -173,7 +173,7 @@ export function HeroSection({
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="text-center text-accent-light font-display font-medium text-sm sm:text-base lg:text-lg max-w-[340px] sm:max-w-none z-10">
+              <p className="text-center text-inverse/90 font-display font-medium text-sm sm:text-base lg:text-lg max-w-[340px] sm:max-w-none z-10">
                 {subtitle}
               </p>
             )}
@@ -195,7 +195,7 @@ export function HeroSection({
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="font-display font-medium text-accent-light text-sm sm:text-base lg:text-lg">
+              <p className="font-display font-medium text-inverse/90 text-sm sm:text-base lg:text-lg">
                 {subtitle}
               </p>
             )}
@@ -238,7 +238,7 @@ export function HeroSection({
               {/* Right Column - Subtitle & Children (bullet points) */}
               <div className="lg:max-w-[420px]">
                 {subtitle && (
-                  <p className="font-display font-medium text-accent-light text-sm sm:text-base lg:text-lg mb-5">
+                  <p className="font-display font-medium text-inverse/90 text-sm sm:text-base lg:text-lg mb-5">
                     {subtitle}
                   </p>
                 )}

@@ -50,7 +50,7 @@ function FeatureGridCard({ title, subtitle, description }: FeatureCardData) {
         <h3 className="font-display font-bold text-2xl sm:text-[28px] leading-[1.2] tracking-[-0.02em] text-primary">
           {title}
         </h3>
-        <span className="font-display font-medium text-lg sm:text-xl leading-[1.3] text-accent">
+        <span className="font-display font-medium text-lg sm:text-xl leading-[1.3] text-secondary">
           {subtitle}
         </span>
       </div>
@@ -80,7 +80,7 @@ export function FeaturesGridSection() {
           <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-display font-bold leading-[1.2] text-left lg:text-center text-primary">
             The Monolith is Dead. Architecture Matters.
           </h2>
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-accent text-left lg:text-center max-w-[672px]">
+          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-secondary text-left lg:text-center max-w-[672px]">
             We replace outdated, monolithic EHS systems with a modern M-MACH-1
             infrastructure.
           </p>

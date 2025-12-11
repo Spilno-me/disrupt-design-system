@@ -8,10 +8,12 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       type={type}
       data-slot="input"
       className={cn(
-        // Base styles
-        "flex h-input w-full min-w-0 rounded-sm border border-default bg-surface px-3 py-2 text-base text-primary font-sans shadow-sm transition-[color,box-shadow] outline-none md:text-sm",
-        // Placeholder
-        "placeholder:text-muted",
+        // Base styles - mobile-first with 44px min height (touch standard), desktop 40px
+        "flex h-12 md:h-10 w-full min-w-0 rounded-sm border border-default bg-surface px-4 py-3 md:px-3 md:py-2 text-base md:text-sm text-primary font-sans shadow-sm transition-[color,box-shadow] outline-none",
+        // Password field styling - larger text and wider letter spacing for better readability
+        type === "password" && "text-lg tracking-[0.15em]",
+        // Placeholder - 16px minimum on mobile to prevent iOS zoom
+        "placeholder:text-tertiary placeholder:text-base md:placeholder:text-sm placeholder:tracking-normal",
         // Selection
         "selection:bg-accent-strong selection:text-inverse",
         // File input

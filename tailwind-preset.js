@@ -478,9 +478,9 @@ module.exports = {
         // --- TEXT COLORS ---
         // Usage: text-primary, text-secondary, text-muted, etc.
         primary: ABYSS[500],
-        secondary: DUSK_REEF[500],
-        tertiary: DUSK_REEF[400],
-        muted: DUSK_REEF[500],
+        secondary: ABYSS[400], // WCAG AA compliant - 5.8:1 contrast
+        tertiary: DUSK_REEF[500],
+        muted: DUSK_REEF[400],
         emphasis: ABYSS[400],
         disabled: DUSK_REEF[300],
         inverse: PRIMITIVES.white,
@@ -514,8 +514,8 @@ module.exports = {
         // --- ICON COLORS ---
         // Usage: text-icon-primary, text-icon-secondary, etc.
         'icon-primary': ABYSS[500],
-        'icon-secondary': DUSK_REEF[500],
-        'icon-tertiary': DUSK_REEF[400],
+        'icon-secondary': ABYSS[400], // WCAG AA compliant
+        'icon-tertiary': DUSK_REEF[500],
         'icon-disabled': DUSK_REEF[300],
         'icon-inverse': PRIMITIVES.white,
         'icon-accent': DEEP_CURRENT[500],

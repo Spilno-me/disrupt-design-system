@@ -68,18 +68,32 @@ export function LoginForm({
     await onSubmit?.(values)
   }
 
+  // Helper to render company name with styling
+  const renderCompanyName = () => {
+    if (companyName.startsWith("Disrupt ")) {
+      const parts = companyName.split(" ")
+      return (
+        <>
+          <span className="font-bold text-error">Disrupt</span>{" "}
+          <span className="font-bold">{parts.slice(1).join(" ")}</span>
+        </>
+      )
+    }
+    return <span className="font-bold">{companyName}</span>
+  }
+
   return (
     <div className={cn("flex flex-col", className)}>
       {/* Header */}
-      <div className="mb-6 text-center">
-        <p className="text-sm text-muted">
-          Login to your {companyName} account
+      <div className="mb-5 sm:mb-6 text-center">
+        <p className="text-sm sm:text-sm text-muted">
+          Login to your {renderCompanyName()} account
         </p>
       </div>
 
       {/* Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5 sm:space-y-6">
           {/* Email field */}
           <FormField
             control={form.control}

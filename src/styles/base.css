@@ -1,0 +1,35 @@
+/**
+ * Disrupt Design System - Base Layer Styles
+ *
+ * Foundational styles applied to all elements.
+ * These styles establish the baseline behavior for the design system.
+ */
+
+@layer base {
+  /* Apply design system borders and focus rings to all elements */
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* Reset margins and prevent overscroll on root elements */
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+  }
+
+  /* Apply design system background and text colors to body */
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Ensure all interactive elements have pointer cursor */
+  a,
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    cursor: pointer;
+  }
+}

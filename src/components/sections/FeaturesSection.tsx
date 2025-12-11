@@ -117,7 +117,7 @@ export function FeaturesSection({
             {title}
           </h2>
           {subtitle && (
-            <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-accent max-w-[560px] mx-auto">
+            <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-secondary max-w-[560px] mx-auto">
               {subtitle}
             </p>
           )}

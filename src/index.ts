@@ -184,6 +184,12 @@ export type { PartnersPageProps, Partner, PartnerStatus, PartnerTier, EditPartne
 export { PartnerLoginAccountsPage, MOCK_LOGIN_ACCOUNTS, ResetPasswordDialog, CreateLoginAccountDialog, DeleteLoginAccountDialog } from './components/partners'
 export type { LoginAccount, LoginAccountStatus, PartnerLoginAccountsPageProps, CreateLoginAccountData, ResetPasswordDialogProps, CreateLoginAccountDialogProps, DeleteLoginAccountDialogProps } from './components/partners'
 
+// Export auth components
+export { LoginPage, LoginForm } from './components/auth'
+export type { LoginPageProps, LoginFormProps, LoginFormValues } from './components/auth'
+export { ExecutingAnimation } from './components/ui/ExecutingAnimation'
+export type { ExecutingAnimationProps, ColorVariant } from './components/ui/ExecutingAnimation'
+
 // Export leads components
 export { LeadsPage } from './components/leads/LeadsPage'
 export type { LeadsPageProps } from './components/leads/LeadsPage'
@@ -311,3 +317,6 @@ export {
   flowNavItems,
   marketNavItems,
 } from './templates/navigation/configs'
+
+// Tailwind plugins
+export { dashedBordersPlugin } from './plugins/dashed-borders'

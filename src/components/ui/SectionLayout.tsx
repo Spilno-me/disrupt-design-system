@@ -363,7 +363,7 @@ export function SectionHeading({
       </h2>
       {subtitle && (
         <div className="lg:w-fit mb-4">
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-accent">
+          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-secondary">
             {subtitle}
           </p>
           {showSeparator && (

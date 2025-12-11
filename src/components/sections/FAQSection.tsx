@@ -65,7 +65,7 @@ interface AccordionItemProps {
 
 function AccordionItem({ item, isOpen, onToggle, isLast = false }: AccordionItemProps) {
   return (
-    <div className={isLast ? '' : 'border-b border-dashed border-accent'}>
+    <div className={isLast ? '' : 'border-b border-dashed border-muted'}>
       <button
         className="w-full flex items-center justify-between py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
         onClick={onToggle}
@@ -135,7 +135,7 @@ export function FAQSection({
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 relative z-[1]">
         {/* Dashed separator */}
         <div className="max-w-[900px] mx-auto mb-10">
-          <div className="border-t-2 border-dashed border-accent/40" />
+          <div className="border-t-2 border-dashed border-muted" />
         </div>
 
         <div className="max-w-[620px] mx-auto">
@@ -145,7 +145,7 @@ export function FAQSection({
           </h2>
 
           {/* Accordion */}
-          <div className="bg-surface rounded-lg border border-dashed border-accent p-6">
+          <div className="bg-surface rounded-lg border border-dashed border-muted p-6">
             {faqItems.map((item, index) => (
               <AccordionItem
                 key={item.question}

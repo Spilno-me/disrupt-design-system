@@ -1,6 +1,6 @@
 # Disrupt Design System (DDS) - AI Agent Guidelines
 
-> Last updated: 2025-12-10
+> Last updated: 2025-12-11
 
 > **This document is the single source of truth for AI agents building UI with DDS.**
 > Follow these rules exactly. No exceptions.
@@ -34,9 +34,60 @@ Use conventional commits: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`
 ### The Golden Rules
 
 1. **ALWAYS check for existing components first** - Never build what already exists
-2. **ALL styling must use design tokens** - No raw colors, no standard Tailwind colors
+2. **ALL styling MUST use design tokens** - No raw colors, no standard Tailwind colors, ANYWHERE
 3. **New components use Radix UI primitives** - For accessibility and behavior
 4. **Tokens flow through CSS variables** - Change once, update everywhere
+
+### CRITICAL: Design Token Enforcement
+
+**ABSOLUTE RULE: ZERO RAW COLORS ALLOWED**
+
+This applies to:
+- ✅ Components (`src/components/**/*.tsx`)
+- ✅ Stories (`src/stories/**/*.tsx`, `**/*.stories.tsx`)
+- ✅ Tests (`src/**/*.test.tsx`)
+- ✅ Demos (`src/demos/**/*.tsx`)
+- ✅ ALL TypeScript/JavaScript files
+
+**What is forbidden:**
+```tsx
+// ❌ NEVER use raw hex colors
+const color = "#08A4BD"
+<div style={{ color: "#2D3142" }}>
+backgroundColor: "#F70D1A"
+
+// ❌ NEVER use standard Tailwind colors
+<div className="bg-blue-500 text-gray-600">
+
+// ❌ NEVER use rgb/rgba literals
+<div style={{ color: "rgb(8, 164, 189)" }}>
+```
+
+**What you MUST use:**
+```tsx
+// ✅ Import design tokens
+import { DEEP_CURRENT, ABYSS, CORAL, PRIMITIVES } from '@/constants/designTokens'
+
+// ✅ Use in code
+const color = DEEP_CURRENT[500]
+<div style={{ color: ABYSS[500] }}>
+
+// ✅ Use semantic Tailwind classes (preferred for static styles)
+<div className="bg-surface text-primary border-default">
+```
+
+**Why this is non-negotiable:**
+1. **Single source of truth** - All colors defined in one place
+2. **Theme support** - Dark mode and theme switching require tokens
+3. **Brand consistency** - Color updates propagate everywhere
+4. **Documentation accuracy** - Stories show real system colors
+5. **Maintainability** - No scattered color definitions
+
+**Enforcement:**
+- Hookify blocks raw colors in code
+- ESLint warns about violations
+- Pre-commit hooks check for compliance
+- Code review requires token usage
 
 ### Agent Workflow
 
