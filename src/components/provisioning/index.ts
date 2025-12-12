@@ -40,3 +40,13 @@ export type {
   TenantProvisioningWizardProps,
   TenantFormData,
 } from './TenantProvisioningWizard'
+
+// Tenant Request Action Dialogs
+export { ApproveRequestDialog } from './ApproveRequestDialog'
+export type { ApproveRequestDialogProps, TenantRequest } from './ApproveRequestDialog'
+
+export { RejectRequestDialog } from './RejectRequestDialog'
+export type { RejectRequestDialogProps } from './RejectRequestDialog'
+
+export { DeleteRequestDialog } from './DeleteRequestDialog'
+export type { DeleteRequestDialogProps } from './DeleteRequestDialog'

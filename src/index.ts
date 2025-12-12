@@ -158,9 +158,8 @@ export { MapWithMarkers } from './components/ui/MapWithMarkers'
 export { ErrorBoundary, CanvasErrorBoundary, SectionErrorBoundary } from './components/ui/ErrorBoundary'
 export { ErrorState, errorStateVariants } from './components/ui/ErrorState'
 export type { ErrorStateProps } from './components/ui/ErrorState'
-// TODO: Re-enable in v2.4.0 after fixing ESLint errors
-// export { GenericErrorPage } from './components/ui/GenericErrorPage'
-// export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
+export { GenericErrorPage } from './components/ui/GenericErrorPage'
+export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
 export { SeverityIndicator } from './components/ui/SeverityIndicator'
 export type { SeverityIndicatorProps, SeverityLevel } from './components/ui/SeverityIndicator'
 
@@ -263,14 +262,13 @@ export type {
   TenantFormData,
 } from './components/provisioning/TenantProvisioningWizard'
 
-// TODO: Re-enable in v2.4.0 after fixing ESLint errors
 // Tenant Request Action Dialogs
-// export { ApproveRequestDialog } from './components/provisioning/ApproveRequestDialog'
-// export type { ApproveRequestDialogProps, TenantRequest } from './components/provisioning/ApproveRequestDialog'
-// export { RejectRequestDialog } from './components/provisioning/RejectRequestDialog'
-// export type { RejectRequestDialogProps } from './components/provisioning/RejectRequestDialog'
-// export { DeleteRequestDialog as DeleteTenantRequestDialog } from './components/provisioning/DeleteRequestDialog'
-// export type { DeleteRequestDialogProps as DeleteTenantRequestDialogProps } from './components/provisioning/DeleteRequestDialog'
+export { ApproveRequestDialog } from './components/provisioning/ApproveRequestDialog'
+export type { ApproveRequestDialogProps, TenantRequest } from './components/provisioning/ApproveRequestDialog'
+export { RejectRequestDialog } from './components/provisioning/RejectRequestDialog'
+export type { RejectRequestDialogProps } from './components/provisioning/RejectRequestDialog'
+export { DeleteRequestDialog as DeleteTenantRequestDialog } from './components/provisioning/DeleteRequestDialog'
+export type { DeleteRequestDialogProps as DeleteTenantRequestDialogProps } from './components/provisioning/DeleteRequestDialog'
 
 // Export SearchFilter (Shared component - universal search & filter)
 export { SearchFilter } from './components/shared/SearchFilter/SearchFilter'

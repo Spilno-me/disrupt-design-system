@@ -156,22 +156,22 @@ export function HelpPage({
     <div className={cn('flex flex-col gap-6 p-6', className)}>
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
-        <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-4">
           <HelpCircle className="w-8 h-8 text-accent" />
         </div>
         <h1 className="text-2xl font-semibold text-primary">How can we help you?</h1>
-        <p className="text-muted mt-2">
+        <p className="text-secondary mt-2">
           Search our knowledge base or browse popular topics below
         </p>
 
         {/* Search */}
         <form onSubmit={handleSearch} className="mt-6">
           <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none z-10" />
             <Input
               type="search"
               placeholder="Search for help..."
-              className="pl-10 pr-4"
+              className="pl-10 pr-4 h-11"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -193,12 +193,12 @@ export function HelpPage({
           }
         >
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-              <Book className="w-6 h-6 text-accent" />
+            <div className="w-12 h-12 rounded-lg bg-info-light flex items-center justify-center flex-shrink-0">
+              <Book className="w-6 h-6 text-info" />
             </div>
             <div className="flex-1">
               <h3 className="font-medium text-primary">Documentation</h3>
-              <p className="text-sm text-muted">Browse guides and tutorials</p>
+              <p className="text-sm text-secondary">Browse guides and tutorials</p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted" />
           </CardContent>
@@ -216,12 +216,12 @@ export function HelpPage({
           }
         >
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-info/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-info-light flex items-center justify-center flex-shrink-0">
               <Video className="w-6 h-6 text-info" />
             </div>
             <div className="flex-1">
               <h3 className="font-medium text-primary">Video Tutorials</h3>
-              <p className="text-sm text-muted">Watch step-by-step guides</p>
+              <p className="text-sm text-secondary">Watch step-by-step guides</p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted" />
           </CardContent>
@@ -232,12 +232,12 @@ export function HelpPage({
           onClick={onContactSupport}
         >
           <CardContent className="p-4 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-warning/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-warning-light flex items-center justify-center flex-shrink-0">
               <MessageSquare className="w-6 h-6 text-warning" />
             </div>
             <div className="flex-1">
               <h3 className="font-medium text-primary">Contact Support</h3>
-              <p className="text-sm text-muted">Get help from our team</p>
+              <p className="text-sm text-secondary">Get help from our team</p>
             </div>
             <ChevronRight className="w-5 h-5 text-muted" />
           </CardContent>
@@ -258,17 +258,17 @@ export function HelpPage({
             {defaultArticles.map((article) => (
               <button
                 key={article.id}
-                className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-muted-bg transition-colors text-left"
+                className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-accent/5 transition-colors text-left group"
                 onClick={() => onArticleClick?.(article)}
               >
-                <div className="w-10 h-10 rounded-lg bg-muted-bg flex items-center justify-center flex-shrink-0 text-secondary">
+                <div className="w-10 h-10 rounded-lg bg-muted-bg group-hover:bg-info-light flex items-center justify-center flex-shrink-0 text-muted group-hover:text-info transition-colors">
                   {article.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-medium text-primary">{article.title}</h4>
-                  <p className="text-sm text-muted truncate">{article.description}</p>
+                  <h4 className="font-medium text-primary group-hover:text-accent transition-colors">{article.title}</h4>
+                  <p className="text-sm text-secondary truncate">{article.description}</p>
                 </div>
-                <span className="text-xs text-muted bg-muted-bg px-2 py-1 rounded">
+                <span className="text-xs text-muted bg-muted-bg px-2.5 py-1 rounded-md font-medium">
                   {article.category}
                 </span>
               </button>
@@ -291,27 +291,27 @@ export function HelpPage({
       </Card>
 
       {/* Contact Section */}
-      <Card className="bg-accent-bg border-accent">
+      <Card className="bg-accent/10 border-accent/30">
         <CardContent className="p-6">
           <div className="flex flex-col lg:flex-row items-center gap-6">
             <div className="flex-1 text-center lg:text-left">
               <h3 className="text-lg font-semibold text-primary">Still need help?</h3>
-              <p className="text-muted mt-1">
+              <p className="text-secondary mt-1">
                 Our support team is available Monday through Friday, 9am-6pm EST.
               </p>
             </div>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-secondary">
-                <Mail className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-sm text-primary font-medium">
+                <Mail className="w-4 h-4 text-accent" />
                 <span>support@partner.com</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-secondary">
-                <Phone className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-sm text-primary font-medium">
+                <Phone className="w-4 h-4 text-accent" />
                 <span>1-800-PARTNER</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-secondary">
-                <Clock className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-sm text-primary font-medium">
+                <Clock className="w-4 h-4 text-accent" />
                 <span>Mon-Fri 9am-6pm EST</span>
               </div>
             </div>
