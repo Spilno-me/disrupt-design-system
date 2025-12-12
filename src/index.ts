@@ -65,9 +65,29 @@ export { LinkedInButton } from './components/ui/LinkedInButton'
 export type { LinkedInButtonProps } from './components/ui/LinkedInButton'
 export { ScrollableTableWrapper } from './components/ui/ScrollableTableWrapper'
 export { DataTable } from './components/ui/DataTable'
-export type { DataTableProps, ColumnDef, SortDirection } from './components/ui/DataTable'
+export type { DataTableProps, ColumnDef, SortDirection, RowPriority } from './components/ui/DataTable'
 export { Pagination } from './components/ui/Pagination'
 export type { PaginationProps } from './components/ui/Pagination'
+
+// Data Table unified system - composable components
+export {
+  DataTableBadge,
+  DataTableActions,
+  DataTableMobileCard,
+  ACTIVE_STATUS_MAP,
+  WORKFLOW_STATUS_MAP,
+  REQUEST_STATUS_MAP,
+  PARTNER_STATUS_MAP,
+} from './components/ui/table'
+export type {
+  DataTableBadgeProps,
+  StatusMapping,
+  DataTableActionsProps,
+  ActionItem,
+  ActionVariant,
+  DataTableMobileCardProps,
+  MobileCardField,
+} from './components/ui/table'
 export { SectionWrapper, SectionHeading, SectionContainer, ContentSection, TwoColumnLayout, Column } from './components/ui/SectionLayout'
 export {
   Dialog,
@@ -136,6 +156,10 @@ export { ElectricInputWrapper as ElectricInput } from './components/ui/ElectricI
 export { GridBlobBackground, GridBlobCanvas, BlobSection } from './components/ui/GridBlobCanvas'
 export { MapWithMarkers } from './components/ui/MapWithMarkers'
 export { ErrorBoundary, CanvasErrorBoundary, SectionErrorBoundary } from './components/ui/ErrorBoundary'
+export { ErrorState, errorStateVariants } from './components/ui/ErrorState'
+export type { ErrorStateProps } from './components/ui/ErrorState'
+export { GenericErrorPage } from './components/ui/GenericErrorPage'
+export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
 export { SeverityIndicator } from './components/ui/SeverityIndicator'
 export type { SeverityIndicatorProps, SeverityLevel } from './components/ui/SeverityIndicator'
 
@@ -183,6 +207,17 @@ export type { PartnersPageProps, Partner, PartnerStatus, PartnerTier, EditPartne
 // Export partner login accounts components
 export { PartnerLoginAccountsPage, MOCK_LOGIN_ACCOUNTS, ResetPasswordDialog, CreateLoginAccountDialog, DeleteLoginAccountDialog } from './components/partners'
 export type { LoginAccount, LoginAccountStatus, PartnerLoginAccountsPageProps, CreateLoginAccountData, ResetPasswordDialogProps, CreateLoginAccountDialogProps, DeleteLoginAccountDialogProps } from './components/partners'
+export { HelpPage } from './components/partners/HelpPage'
+export type { HelpPageProps, HelpArticle, FAQItem as HelpFAQItem } from './components/partners/HelpPage'
+export { PricingCalculator } from './components/partners/PricingCalculator'
+export type { PricingCalculatorProps, PricingInput, PricingBreakdown, CompanySize, BillingCycle, PricingTier } from './components/partners/PricingCalculator'
+export { InvoicesPage } from './components/partners/invoices/InvoicesPage'
+export type { InvoicesPageProps } from './components/partners/invoices/InvoicesPage'
+export { InvoiceCard } from './components/partners/invoices/InvoiceCard'
+export { EditInvoiceDialog } from './components/partners/invoices/EditInvoiceDialog'
+export type { EditInvoiceFormData } from './components/partners/invoices/EditInvoiceDialog'
+export type { Invoice, InvoiceStatus, InvoiceAction, LineItem, LineItemType, PaymentTerms } from './components/partners/invoices/types'
+export { formatCurrency, formatDate, getPaymentTermsLabel, getDaysUntilDue, isInvoiceOverdue } from './components/partners/invoices/types'
 
 // Export auth components
 export { LoginPage, LoginForm } from './components/auth'
@@ -199,9 +234,33 @@ export { LeadsDataTable } from './components/leads/LeadsDataTable'
 export type { LeadsDataTableProps } from './components/leads/LeadsDataTable'
 export { StatsCard } from './components/leads/StatsCard'
 export type { StatsCardProps, TrendDirection } from './components/leads/StatsCard'
+export { CreateLeadDialog } from './components/leads/CreateLeadDialog'
+export type { CreateLeadDialogProps, CreateLeadFormData, Partner as LeadPartner } from './components/leads/CreateLeadDialog'
+export { EditLeadDialog } from './components/leads/EditLeadDialog'
+export type { EditLeadDialogProps } from './components/leads/EditLeadDialog'
+export { AssignLeadDialog } from './components/leads/AssignLeadDialog'
+export type { AssignLeadDialogProps } from './components/leads/AssignLeadDialog'
+export { StatusUpdateDialog } from './components/leads/StatusUpdateDialog'
+export type { StatusUpdateDialogProps } from './components/leads/StatusUpdateDialog'
+export { DeleteLeadDialog } from './components/leads/DeleteLeadDialog'
+export type { DeleteLeadDialogProps } from './components/leads/DeleteLeadDialog'
 // Export provisioning components
 export { ProvisioningMethodSelector } from './components/provisioning/ProvisioningMethodSelector'
 export type { ProvisioningMethodSelectorProps, ProvisioningMethod } from './components/provisioning/ProvisioningMethodSelector'
+
+// Tenant Provisioning Chat
+export { TenantProvisioningChat } from './components/provisioning/TenantProvisioningChat'
+export type {
+  TenantProvisioningChatProps,
+  TenantFormData as TenantChatFormData,
+} from './components/provisioning/TenantProvisioningChat'
+
+// Tenant Provisioning Wizard
+export { TenantProvisioningWizard } from './components/provisioning/TenantProvisioningWizard'
+export type {
+  TenantProvisioningWizardProps,
+  TenantFormData,
+} from './components/provisioning/TenantProvisioningWizard'
 
 // Export SearchFilter (Shared component - universal search & filter)
 export { SearchFilter } from './components/shared/SearchFilter/SearchFilter'

@@ -1,6 +1,6 @@
 # Disrupt Design System (DDS) - AI Agent Guidelines
 
-> Last updated: 2025-12-11
+> Last updated: 2025-12-12
 
 > **This document is the single source of truth for AI agents building UI with DDS.**
 > Follow these rules exactly. No exceptions.
@@ -159,6 +159,7 @@ Task: Build UI
 | Animated logo | `<AnimatedLogo colorMode="dark\|light">` |
 | Blob background | `<GridBlobBackground scale={1}>` |
 | Error boundary | `<ErrorBoundary fallback={}>` |
+| Failed loading state | `<ErrorState title="" message="" onRetry={}>` |
 | Login form | `<LoginForm onSubmit={} onForgotPassword={}>` |
 | Wizard/stepper | `<Wizard steps={}>` with `<WizardStepper>`, `<WizardStep>` |
 | Scrollable table | `<ScrollableTableWrapper>` |
@@ -435,6 +436,32 @@ Task: Build UI
   trend="+12%"
   trendDirection="up"
   icon={<Users />}
+/>
+
+// Error state (failed loading)
+<ErrorState
+  variant="default"  // subtle | default | prominent
+  size="md"         // sm | md | lg
+  icon="alert"      // alert | error | network
+  title="Failed to load data"
+  message="We encountered an error while loading this content. Please try again."
+  showRetry
+  retryText="Try again"
+  onRetry={handleRetry}
+  isRetrying={isRetrying}
+  secondaryAction={{
+    label: "Go Back",
+    onClick: () => navigate(-1)
+  }}
+/>
+
+// Error state with custom icon
+<ErrorState
+  customIcon={<Database className="text-error" />}
+  title="Database Error"
+  message="Could not connect to the database."
+  showRetry
+  onRetry={handleRetry}
 />
 ```
 
