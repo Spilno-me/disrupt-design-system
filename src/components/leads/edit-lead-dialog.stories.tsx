@@ -154,7 +154,7 @@ export const OpenByDefault: Story = {
     open: true,
     onOpenChange: () => {},
     lead: sampleLead,
-    onSubmit: (leadId, data) => console.log('Submitted:', leadId, data),
+    onSubmit: (leadId: string, data: CreateLeadFormData) => console.log('Submitted:', leadId, data),
     partners: samplePartners,
   },
 }
@@ -196,7 +196,7 @@ function ValidationDemo() {
         open={open}
         onOpenChange={setOpen}
         lead={leadWithMissingData}
-        onSubmit={(leadId, data) => {
+        onSubmit={(leadId: string, data: CreateLeadFormData) => {
           console.log('Form submitted:', leadId, data)
           setOpen(false)
         }}
