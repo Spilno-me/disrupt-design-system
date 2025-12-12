@@ -75,10 +75,29 @@ export default defineConfig({
           react: 'React',
           'react-dom': 'ReactDOM',
         },
-        assetFileNames: 'assets/[name][extname]',
+        assetFileNames: (assetInfo) => {
+          const name = assetInfo.name || ''
+
+          // Keep logos in logos/ directory
+          if (name.includes('logo')) {
+            return 'logos/[name][extname]'
+          }
+
+          // Keep patterns in patterns/ directory
+          if (name.includes('pattern')) {
+            return 'patterns/[name][extname]'
+          }
+
+          // Everything else in assets/
+          return 'assets/[name][extname]'
+        },
         chunkFileNames: 'chunks/[name].js',
       },
     },
     cssCodeSplit: false,
+    // Ensure assets are copied
+    assetsInlineLimit: 0, // Don't inline assets, always emit files
   },
+  // Configure public directory
+  publicDir: 'public',
 })

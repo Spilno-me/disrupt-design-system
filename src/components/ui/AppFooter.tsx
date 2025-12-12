@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { cn } from '../../lib/utils'
 import { ALIAS } from '../../constants/designTokens'
+import { PATTERNS } from '../../assets/logos'
 import { MadeWithLove } from './MadeWithLove'
 
 // =============================================================================
@@ -27,7 +28,7 @@ function WavePattern() {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: 'url(/patterns/wave-pattern.svg)',
+          backgroundImage: `url(${PATTERNS.wave})`,
           backgroundRepeat: 'repeat-x',
           backgroundSize: '135px 269%',
           backgroundPosition: '0% 50%',

@@ -262,6 +262,14 @@ export type {
   TenantFormData,
 } from './components/provisioning/TenantProvisioningWizard'
 
+// Tenant Request Action Dialogs
+export { ApproveRequestDialog } from './components/provisioning/ApproveRequestDialog'
+export type { ApproveRequestDialogProps, TenantRequest } from './components/provisioning/ApproveRequestDialog'
+export { RejectRequestDialog } from './components/provisioning/RejectRequestDialog'
+export type { RejectRequestDialogProps } from './components/provisioning/RejectRequestDialog'
+export { DeleteRequestDialog as DeleteTenantRequestDialog } from './components/provisioning/DeleteRequestDialog'
+export type { DeleteRequestDialogProps as DeleteTenantRequestDialogProps } from './components/provisioning/DeleteRequestDialog'
+
 // Export SearchFilter (Shared component - universal search & filter)
 export { SearchFilter } from './components/shared/SearchFilter/SearchFilter'
 export type { SearchFilterProps } from './components/shared/SearchFilter/SearchFilter'
@@ -332,6 +340,10 @@ export type {
 
 // Export design tokens
 export * from './constants/designTokens'
+
+// Export assets (logos and patterns)
+export { LOGOS, PATTERNS } from './assets/logos'
+export type { ProductLogoType, PatternType } from './assets/logos'
 
 // Export utilities
 export { cn } from './lib/utils'

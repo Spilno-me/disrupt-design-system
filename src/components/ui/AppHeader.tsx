@@ -4,6 +4,7 @@ import { Bell, LogOut, Settings, User } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cn } from '../../lib/utils'
 import { ALIAS, SHADOWS } from '../../constants/designTokens'
+import { LOGOS, PATTERNS } from '../../assets/logos'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -95,18 +96,18 @@ export interface AppHeaderProps {
 
 const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   flow: {
-    logoLight: '/logos/flow-logo-full-light.svg',
-    logoDark: '/logos/flow-logo-full-dark.svg',
+    logoLight: LOGOS.flow.light,
+    logoDark: LOGOS.flow.dark,
     tagline: 'Smart EHS Automation',
   },
   market: {
-    logoLight: '/logos/market-logo-full-ligh.svg', // Note: typo in actual filename
-    logoDark: '/logos/market-logo-full-dark.svg',
+    logoLight: LOGOS.market.light,
+    logoDark: LOGOS.market.dark,
     tagline: 'EHS Marketplace',
   },
   partner: {
-    logoLight: '/logos/partner-logo-full-light.svg',
-    logoDark: '/logos/partner-logo-full-dark.svg',
+    logoLight: LOGOS.partner.light,
+    logoDark: LOGOS.partner.dark,
     tagline: '',
   },
 }
@@ -131,7 +132,7 @@ function WavePattern() {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: 'url(/patterns/wave-pattern.svg)',
+          backgroundImage: `url(${PATTERNS.wave})`,
           backgroundRepeat: 'repeat-x',
           backgroundSize: 'auto 100%', // Height fits header (55px), width scales proportionally
           backgroundPosition: 'left center',

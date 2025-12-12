@@ -1,9 +1,20 @@
 import { ALIAS } from './designTokens'
 
+/**
+ * API Configuration
+ *
+ * Consumers should override BASE_URL in their own application:
+ * @example
+ * ```typescript
+ * import { API_CONFIG } from '@adrozdenko/design-system'
+ * const myApiConfig = {
+ *   ...API_CONFIG,
+ *   BASE_URL: process.env.NEXT_PUBLIC_API_URL
+ * }
+ * ```
+ */
 export const API_CONFIG = {
-  BASE_URL: import.meta.env.MODE === 'production'
-    ? ''
-    : 'http://localhost:3001',
+  BASE_URL: '',
   ENDPOINTS: {
     SEND_EMAIL: '/api/send-email'
   }

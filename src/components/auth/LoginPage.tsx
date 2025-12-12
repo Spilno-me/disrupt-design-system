@@ -14,6 +14,7 @@ import {
   DialogDescription,
 } from "../ui/dialog"
 import { SHADOWS } from "../../constants/designTokens"
+import { LOGOS } from "../../assets/logos"
 import { ExecutingAnimation } from "../ui/ExecutingAnimation"
 
 // =============================================================================
@@ -33,17 +34,17 @@ interface ProductConfig {
 /** Product configurations - matching AppHeader */
 const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   flow: {
-    logo: "/logos/flow-logo-full-dark.svg",
+    logo: LOGOS.flow.dark,
     name: "Disrupt Flow",
     tagline: "Smart EHS Automation",
   },
   market: {
-    logo: "/logos/market-logo-full-dark.svg",
+    logo: LOGOS.market.dark,
     name: "Disrupt Market",
     tagline: "EHS Marketplace",
   },
   partner: {
-    logo: "/logos/partner-logo-full-dark.svg",
+    logo: LOGOS.partner.dark,
     name: "Disrupt Partner",
     tagline: "Partner Portal",
   },
