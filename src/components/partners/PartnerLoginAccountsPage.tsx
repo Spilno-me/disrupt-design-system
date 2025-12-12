@@ -19,7 +19,7 @@ import { Pagination } from "../ui/Pagination"
 import { ResetPasswordDialog } from "./ResetPasswordDialog"
 import { CreateLoginAccountDialog } from "./CreateLoginAccountDialog"
 import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
-import { StatusBadge, COMMON_STATUS_CONFIG } from "../ui/table"
+import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem } from "../ui/table"
 
 // =============================================================================
 // TYPES
@@ -85,6 +85,16 @@ export const MOCK_LOGIN_ACCOUNTS: LoginAccount[] = [
     createdAt: new Date("2024-08-15"),
   },
 ]
+
+// =============================================================================
+// STATUS MAPPING - Using DDS Unified System
+// =============================================================================
+
+const LOGIN_ACCOUNT_STATUS_MAP: StatusMapping<LoginAccountStatus> = {
+  active: { variant: 'success', label: 'Active' },
+  inactive: { variant: 'secondary', label: 'Inactive' },
+  pending: { variant: 'warning', label: 'Pending' },
+}
 
 // =============================================================================
 // HELPER COMPONENTS
@@ -250,7 +260,25 @@ export function PartnerLoginAccountsPage({
     }
   }, [onDeleteLoginAccount])
 
-  // Column definitions
+  // Define login account actions using unified system
+  const loginAccountActions: ActionItem<LoginAccount>[] = [
+    {
+      id: 'reset-password',
+      label: 'Reset Password',
+      icon: Key,
+      onClick: (row) => handleResetPasswordClick(row),
+    },
+    {
+      id: 'delete',
+      label: 'Delete Account',
+      icon: Trash2,
+      variant: 'destructive',
+      onClick: (row) => handleDeleteClick(row),
+    },
+  ]
+
+  // Column definitions - using CSS property values for DataTable API (not hardcoded styling)
+  /* eslint-disable no-restricted-syntax */
   const columns: ColumnDef<LoginAccount>[] = [
     {
       id: "account",
@@ -274,7 +302,7 @@ export function PartnerLoginAccountsPage({
       header: "Status",
       sortable: true,
       sortValue: (row) => row.status,
-      accessor: (row) => <StatusBadge status={row.status} statusConfig={COMMON_STATUS_CONFIG} variant="pill" />,
+      accessor: (row) => <DataTableBadge status={row.status} mapping={LOGIN_ACCOUNT_STATUS_MAP} />,
     },
     {
       id: "created",
@@ -287,38 +315,21 @@ export function PartnerLoginAccountsPage({
     },
     {
       id: "actions",
-      header: "Actions",
+      header: "",
       align: "right",
+      width: "50px",
+      sticky: "right",
       accessor: (row) => (
-        <div className="flex items-center justify-end gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleResetPasswordClick(row)
-            }}
-            aria-label={`Reset password for ${row.firstName} ${row.lastName}`}
-          >
-            <Key className="h-4 w-4 text-muted" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 hover:bg-error-light hover:text-error"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleDeleteClick(row)
-            }}
-            aria-label={`Delete ${row.firstName} ${row.lastName}`}
-          >
-            <Trash2 className="h-4 w-4 text-error" />
-          </Button>
-        </div>
+        <DataTableActions
+          actions={loginAccountActions}
+          row={row}
+          maxVisible={0}
+          align="right"
+        />
       ),
     },
   ]
+  /* eslint-enable no-restricted-syntax */
 
   return (
     <div className={cn("flex flex-col gap-6", className)}>

@@ -28,7 +28,7 @@ import { Card } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Pagination } from '../../components/ui/Pagination'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs'
-import { StatusBadge, REQUEST_STATUS_CONFIG } from '../../components/ui/table'
+import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem } from '../../components/ui/table'
 import {
   Sheet,
   SheetContent,
@@ -96,6 +96,18 @@ interface TenantRequest {
   commissionEligible: boolean
   partnerName?: string
   notes?: string
+}
+
+// =============================================================================
+// STATUS MAPPING - Using DDS Unified System
+// =============================================================================
+
+const TENANT_REQUEST_STATUS_MAP: StatusMapping<RequestStatus> = {
+  pending_payment: { variant: 'warning', label: 'Pending Payment' },
+  pending_approval: { variant: 'info', label: 'Pending Approval' },
+  approved: { variant: 'info', label: 'Approved' },
+  rejected: { variant: 'destructive', label: 'Rejected' },
+  provisioned: { variant: 'success', label: 'Provisioned' },
 }
 
 // =============================================================================
@@ -671,7 +683,7 @@ function TenantRequestDetailsSheet({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-primary">{request.requestId}</span>
-                    <StatusBadge status={request.status} statusConfig={REQUEST_STATUS_CONFIG} />
+                    <DataTableBadge status={request.status} mapping={TENANT_REQUEST_STATUS_MAP} />
                   </div>
                   <p className="text-sm text-secondary mt-1">{request.companyName}</p>
                 </div>
@@ -1029,6 +1041,28 @@ function TenantRequestsPageContent() {
     }).format(date)
   }
 
+  // Define tenant request actions using unified system
+  const tenantRequestActions: ActionItem<TenantRequest>[] = [
+    {
+      id: 'edit',
+      label: 'Edit Request',
+      icon: Pencil,
+      onClick: (row) => {
+        setSelectedRequest(row)
+        setSheetOpen(true)
+      },
+    },
+    {
+      id: 'delete',
+      label: 'Delete Request',
+      icon: X,
+      variant: 'destructive',
+      onClick: (row) => {
+        console.log('Delete request:', row.id)
+      },
+    },
+  ]
+
   // Define table columns
   const columns: ColumnDef<TenantRequest>[] = [
     {
@@ -1082,7 +1116,7 @@ function TenantRequestsPageContent() {
     {
       id: 'status',
       header: 'Status',
-      accessor: (row) => <StatusBadge status={row.status} statusConfig={REQUEST_STATUS_CONFIG} />,
+      accessor: (row) => <DataTableBadge status={row.status} mapping={TENANT_REQUEST_STATUS_MAP} />,
       sortable: true,
       sortValue: (row) => row.status,
       minWidth: '140px',
@@ -1100,32 +1134,18 @@ function TenantRequestsPageContent() {
     },
     {
       id: 'actions',
-      header: 'Actions',
+      header: '',
       accessor: (row) => (
-        <div className="flex items-center gap-2">
-          <button
-            className="text-teal hover:text-teal/80 text-sm font-medium"
-            onClick={(e) => {
-              e.stopPropagation()
-              setSelectedRequest(row)
-              setSheetOpen(true)
-            }}
-          >
-            Edit
-          </button>
-          <button
-            className="text-error hover:text-error/80 text-sm font-medium"
-            onClick={(e) => {
-              e.stopPropagation()
-              console.log('Delete request:', row.id)
-            }}
-          >
-            Delete
-          </button>
-        </div>
+        <DataTableActions
+          actions={tenantRequestActions}
+          row={row}
+          maxVisible={0}
+          align="right"
+        />
       ),
-      minWidth: '100px',
-      align: 'center',
+      width: '50px',
+      align: 'right',
+      sticky: 'right',
     },
   ]
 

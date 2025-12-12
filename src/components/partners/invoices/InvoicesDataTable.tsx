@@ -1,10 +1,21 @@
 import * as React from 'react'
 import { Copy, Eye, Download, Pencil, Send } from 'lucide-react'
 import { DataTable, ColumnDef, SortDirection, RowPriority } from '../../ui/DataTable'
-import { Button } from '../../ui/button'
 import type { Invoice, InvoiceAction } from './types'
 import { formatCurrency, formatDate, getPaymentTermsLabel } from './types'
-import { StatusBadge, INVOICE_STATUS_CONFIG } from '../../ui/table'
+import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem } from '../../ui/table'
+
+// =============================================================================
+// STATUS MAPPING - Using DDS Unified System
+// =============================================================================
+
+const INVOICE_STATUS_MAP: StatusMapping<'draft' | 'sent' | 'paid' | 'overdue' | 'partially_paid'> = {
+  draft: { variant: 'secondary', label: 'Draft' },
+  sent: { variant: 'info', label: 'Sent' },
+  paid: { variant: 'success', label: 'Paid' },
+  overdue: { variant: 'destructive', label: 'Overdue' },
+  partially_paid: { variant: 'warning', label: 'Partially Paid' },
+}
 
 // =============================================================================
 // TYPES
@@ -55,6 +66,43 @@ export function InvoicesDataTable({
   loading = false,
   className,
 }: InvoicesDataTableProps) {
+  // Define invoice actions using unified system
+  const invoiceActions: ActionItem<Invoice>[] = [
+    {
+      id: 'copy',
+      label: 'Copy Invoice Number',
+      icon: Copy,
+      onClick: (invoice) => onActionClick?.(invoice, 'copy'),
+    },
+    {
+      id: 'preview',
+      label: 'Preview Invoice',
+      icon: Eye,
+      onClick: (invoice) => onActionClick?.(invoice, 'preview'),
+    },
+    {
+      id: 'download',
+      label: 'Download PDF',
+      icon: Download,
+      onClick: (invoice) => onActionClick?.(invoice, 'download'),
+    },
+    {
+      id: 'edit',
+      label: 'Edit Invoice',
+      icon: Pencil,
+      onClick: (invoice) => onActionClick?.(invoice, 'edit'),
+      showWhen: (invoice) => invoice.status === 'draft',
+    },
+    {
+      id: 'mark-sent',
+      label: 'Mark as Sent',
+      icon: Send,
+      variant: 'accent',
+      onClick: (invoice) => onActionClick?.(invoice, 'mark_sent'),
+      showWhen: (invoice) => invoice.status === 'draft',
+    },
+  ]
+
   // Define columns - using CSS property values for DataTable API (not hardcoded styling)
   /* eslint-disable no-restricted-syntax */
   const columns: ColumnDef<Invoice>[] = [
@@ -73,7 +121,7 @@ export function InvoicesDataTable({
     {
       id: "status",
       header: "Status",
-      accessor: (invoice) => <StatusBadge status={invoice.status} statusConfig={INVOICE_STATUS_CONFIG} />,
+      accessor: (invoice) => <DataTableBadge status={invoice.status} mapping={INVOICE_STATUS_MAP} />,
       sortable: true,
       sortValue: (invoice) => invoice.status,
       minWidth: "140px",
@@ -141,15 +189,18 @@ export function InvoicesDataTable({
     },
     {
       id: "actions",
-      header: "Actions",
+      header: "",
       accessor: (invoice) => (
-        <ActionsCell
-          invoice={invoice}
-          onAction={onActionClick}
+        <DataTableActions
+          actions={invoiceActions}
+          row={invoice}
+          maxVisible={0}
+          align="right"
         />
       ),
-      minWidth: "240px",
+      width: "50px",
       align: "right",
+      sticky: "right",
     },
   ]
   /* eslint-enable no-restricted-syntax */
@@ -211,91 +262,6 @@ export function InvoicesDataTable({
         </div>
       }
     />
-  )
-}
-
-// =============================================================================
-// CELL COMPONENTS
-// =============================================================================
-
-
-/** Actions cell with icon buttons */
-function ActionsCell({
-  invoice,
-  onAction,
-}: {
-  invoice: Invoice
-  onAction?: (invoice: Invoice, action: InvoiceAction) => void
-}) {
-  const isDraft = invoice.status === 'draft'
-
-  return (
-    <div className="flex items-center gap-1 justify-end" onClick={(e) => e.stopPropagation()}>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8"
-        onClick={(e) => {
-          e.stopPropagation()
-          onAction?.(invoice, 'copy')
-        }}
-        title="Copy Invoice"
-      >
-        <Copy className="h-4 w-4" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8"
-        onClick={(e) => {
-          e.stopPropagation()
-          onAction?.(invoice, 'preview')
-        }}
-        title="Preview"
-      >
-        <Eye className="h-4 w-4" />
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8"
-        onClick={(e) => {
-          e.stopPropagation()
-          onAction?.(invoice, 'download')
-        }}
-        title="Download PDF"
-      >
-        <Download className="h-4 w-4" />
-      </Button>
-      {isDraft && (
-        <>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation()
-              onAction?.(invoice, 'edit')
-            }}
-            title="Edit"
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="accent"
-            size="sm"
-            className="h-8 px-3"
-            onClick={(e) => {
-              e.stopPropagation()
-              onAction?.(invoice, 'mark_sent')
-            }}
-          >
-            <Send className="h-3.5 w-3.5 mr-1.5" />
-            Mark Sent
-          </Button>
-        </>
-      )}
-    </div>
   )
 }
 

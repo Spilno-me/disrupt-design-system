@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useMemo } from "react"
 import {
-  MoreVertical,
   Eye,
   Edit,
   Trash2,
@@ -11,16 +10,8 @@ import {
 } from "lucide-react"
 import { DataTable, ColumnDef, SortDirection, RowPriority } from "../ui/DataTable"
 import { SeverityIndicator, SeverityLevel } from "../ui/SeverityIndicator"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "../ui/dropdown-menu"
-import { Button } from "../ui/button"
-import { StatusBadge, LEAD_STATUS_CONFIG, EmailLink, ScoreBadge } from "../ui/table"
-import type { Lead, LeadAction, LeadPriority, LeadSource } from "./LeadCard"
+import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem, EmailLink, ScoreBadge } from "../ui/table"
+import type { Lead, LeadAction, LeadPriority, LeadSource, LeadStatus } from "./LeadCard"
 
 // =============================================================================
 // TYPES
@@ -49,6 +40,18 @@ export interface LeadsDataTableProps {
   loading?: boolean
   /** Additional className */
   className?: string
+}
+
+// =============================================================================
+// STATUS MAPPING - Using DDS Unified System
+// =============================================================================
+
+const LEAD_STATUS_MAP: StatusMapping<LeadStatus> = {
+  new: { variant: 'info', label: 'New' },
+  contacted: { variant: 'warning', label: 'Contacted' },
+  qualified: { variant: 'info', label: 'Qualified' },
+  converted: { variant: 'success', label: 'Converted' },
+  lost: { variant: 'secondary', label: 'Lost' },
 }
 
 // =============================================================================
@@ -149,61 +152,6 @@ function formatCurrency(value: number): string {
   }).format(value)
 }
 
-/** Actions cell with dropdown */
-function ActionsCell({
-  lead: _lead,
-  onAction,
-}: {
-  lead: Lead
-  onAction?: (action: LeadAction) => void
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <MoreVertical className="h-4 w-4" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          onClick={(e) => {
-            e.stopPropagation()
-            onAction?.("view")
-          }}
-        >
-          <Eye className="mr-2 h-4 w-4" />
-          View Details
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={(e) => {
-            e.stopPropagation()
-            onAction?.("edit")
-          }}
-        >
-          <Edit className="mr-2 h-4 w-4" />
-          Edit Lead
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={(e) => {
-            e.stopPropagation()
-            onAction?.("delete")
-          }}
-          className="text-error focus:text-error"
-        >
-          <Trash2 className="mr-2 h-4 w-4" />
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
 
 // =============================================================================
 // LEADS DATA TABLE COMPONENT
@@ -242,6 +190,32 @@ export function LeadsDataTable({
   loading = false,
   className,
 }: LeadsDataTableProps) {
+  // Define lead actions using unified system
+  const leadActions: ActionItem<Lead>[] = useMemo(
+    () => [
+      {
+        id: 'view',
+        label: 'View Details',
+        icon: Eye,
+        onClick: (row) => onActionClick?.(row, 'view'),
+      },
+      {
+        id: 'edit',
+        label: 'Edit Lead',
+        icon: Edit,
+        onClick: (row) => onActionClick?.(row, 'edit'),
+      },
+      {
+        id: 'delete',
+        label: 'Delete',
+        icon: Trash2,
+        variant: 'destructive',
+        onClick: (row) => onActionClick?.(row, 'delete'),
+      },
+    ],
+    [onActionClick]
+  )
+
   /* eslint-disable no-restricted-syntax -- minWidth/width values are CSS column widths, not spacing */
   // Define columns
   const columns: ColumnDef<Lead>[] = useMemo(
@@ -304,7 +278,7 @@ export function LeadsDataTable({
       {
         id: "status",
         header: "Status",
-        accessor: (row) => <StatusBadge status={row.status} statusConfig={LEAD_STATUS_CONFIG} />,
+        accessor: (row) => <DataTableBadge status={row.status} mapping={LEAD_STATUS_MAP} />,
         sortable: true,
         sortValue: (row) => row.status,
         minWidth: "100px",
@@ -334,16 +308,19 @@ export function LeadsDataTable({
         id: "actions",
         header: "",
         accessor: (row) => (
-          <ActionsCell
-            lead={row}
-            onAction={(action) => onActionClick?.(row, action)}
+          <DataTableActions
+            actions={leadActions}
+            row={row}
+            maxVisible={0}
+            align="right"
           />
         ),
         width: "50px",
-        align: "center",
+        align: "right",
+        sticky: "right",
       },
     ],
-    [onActionClick]
+    [onActionClick, leadActions]
   )
   /* eslint-enable no-restricted-syntax */
 

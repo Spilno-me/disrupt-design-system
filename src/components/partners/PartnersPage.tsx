@@ -17,7 +17,7 @@ import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
 import type { FilterGroup, FilterState } from "../shared/SearchFilter/types"
 import { EditPartnerDialog, PartnerFormData } from "./EditPartnerDialog"
 import { DeletePartnerDialog } from "./DeletePartnerDialog"
-import { StatusBadge, COMMON_STATUS_CONFIG } from "../ui/table"
+import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem } from "../ui/table"
 
 // =============================================================================
 // FILTER CONFIGURATION
@@ -43,6 +43,16 @@ const PARTNER_FILTER_GROUPS: FilterGroup[] = [
     ],
   },
 ]
+
+// =============================================================================
+// STATUS MAPPING - Using DDS Unified System
+// =============================================================================
+
+const PARTNER_STATUS_MAP: StatusMapping<PartnerStatus> = {
+  active: { variant: 'success', label: 'Active' },
+  inactive: { variant: 'secondary', label: 'Inactive' },
+  pending: { variant: 'warning', label: 'Pending' },
+}
 
 // =============================================================================
 // TYPES
@@ -331,10 +341,10 @@ export function PartnersPage({
       // Use external handler if provided
       onViewPartner(partner)
     } else {
-      // Use built-in dialog
+      // Use built-in dialog with delay to prevent focus conflicts
       setSelectedPartner(partner)
       setDialogMode("edit")
-      setEditDialogOpen(true)
+      setTimeout(() => setEditDialogOpen(true), 150)
     }
   }, [onViewPartner])
 
@@ -372,9 +382,9 @@ export function PartnersPage({
       // Use external handler if provided
       onDeletePartner(partner)
     } else {
-      // Use built-in dialog
+      // Use built-in dialog with delay to prevent focus conflicts
       setPartnerToDelete(partner)
-      setDeleteDialogOpen(true)
+      setTimeout(() => setDeleteDialogOpen(true), 150)
     }
   }, [onDeletePartner])
 
@@ -391,7 +401,31 @@ export function PartnersPage({
     }
   }, [onConfirmDelete])
 
-  // Column definitions
+  // Define partner actions using unified system
+  const partnerActions: ActionItem<Partner>[] = [
+    {
+      id: 'edit',
+      label: 'Edit Partner',
+      icon: Pencil,
+      onClick: (row) => handleViewPartnerClick(row),
+    },
+    {
+      id: 'manage-users',
+      label: 'Manage Users',
+      icon: Users,
+      onClick: (row) => onManageUsers?.(row),
+    },
+    {
+      id: 'delete',
+      label: 'Delete Partner',
+      icon: Trash2,
+      variant: 'destructive',
+      onClick: (row) => handleDeletePartnerClick(row),
+    },
+  ]
+
+  // Column definitions - using CSS property values for DataTable API (not hardcoded styling)
+  /* eslint-disable no-restricted-syntax */
   const columns: ColumnDef<Partner>[] = [
     {
       id: "partner",
@@ -434,7 +468,7 @@ export function PartnersPage({
       header: "Status",
       sortable: true,
       sortValue: (row) => row.status,
-      accessor: (row) => <StatusBadge status={row.status} statusConfig={COMMON_STATUS_CONFIG} variant="pill" />,
+      accessor: (row) => <DataTableBadge status={row.status} mapping={PARTNER_STATUS_MAP} />,
     },
     {
       id: "created",
@@ -447,50 +481,21 @@ export function PartnersPage({
     },
     {
       id: "actions",
-      header: "Actions",
+      header: "",
       align: "right",
+      width: "50px",
+      sticky: "right",
       accessor: (row) => (
-        <div className="flex items-center justify-end gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleViewPartnerClick(row)
-            }}
-            aria-label={`Edit ${row.name}`}
-          >
-            <Pencil className="h-4 w-4 text-muted" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation()
-              onManageUsers?.(row)
-            }}
-            aria-label={`Manage users for ${row.name}`}
-          >
-            <Users className="h-4 w-4 text-muted" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 hover:bg-error-light hover:text-error"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleDeletePartnerClick(row)
-            }}
-            aria-label={`Delete ${row.name}`}
-          >
-            <Trash2 className="h-4 w-4 text-error" />
-          </Button>
-        </div>
+        <DataTableActions
+          actions={partnerActions}
+          row={row}
+          maxVisible={0}
+          align="right"
+        />
       ),
     },
   ]
+  /* eslint-enable no-restricted-syntax */
 
   return (
     <div className={cn("flex flex-col gap-6", className)}>
