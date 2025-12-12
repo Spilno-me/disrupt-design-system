@@ -79,24 +79,31 @@ export interface DataTableActionsProps<T = unknown> {
  */
 function hasPermission(user: unknown, requires?: string | string[]): boolean {
   if (!requires) return true
-  if (!user) return false
+  if (!user || typeof user !== 'object') return false
 
   const permissions = Array.isArray(requires) ? requires : [requires]
+  const userObj = user as Record<string, unknown>
 
   // Check user.role
-  if (user.role && permissions.some(p => user.role.toLowerCase() === p.toLowerCase())) {
-    return true
+  const userRole = userObj.role
+  if (userRole && typeof userRole === 'string') {
+    if (permissions.some(p => userRole.toLowerCase() === p.toLowerCase())) {
+      return true
+    }
   }
 
   // Check user.roles array
-  if (user.roles && Array.isArray(user.roles)) {
+  const userRoles = userObj.roles
+  if (Array.isArray(userRoles)) {
     return permissions.some(p =>
-      user.roles.some((r: string) => r.toLowerCase() === p.toLowerCase())
+      userRoles.some((r: unknown) =>
+        typeof r === 'string' && r.toLowerCase() === p.toLowerCase()
+      )
     )
   }
 
   // Check user.isAdmin flag
-  if (permissions.includes('admin') && user.isAdmin === true) {
+  if (permissions.includes('admin') && userObj.isAdmin === true) {
     return true
   }
 
