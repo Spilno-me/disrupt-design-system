@@ -158,8 +158,9 @@ export { MapWithMarkers } from './components/ui/MapWithMarkers'
 export { ErrorBoundary, CanvasErrorBoundary, SectionErrorBoundary } from './components/ui/ErrorBoundary'
 export { ErrorState, errorStateVariants } from './components/ui/ErrorState'
 export type { ErrorStateProps } from './components/ui/ErrorState'
-export { GenericErrorPage } from './components/ui/GenericErrorPage'
-export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
+// TODO: Re-enable in v2.4.0 after fixing ESLint errors
+// export { GenericErrorPage } from './components/ui/GenericErrorPage'
+// export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
 export { SeverityIndicator } from './components/ui/SeverityIndicator'
 export type { SeverityIndicatorProps, SeverityLevel } from './components/ui/SeverityIndicator'
 
@@ -236,8 +237,9 @@ export { StatsCard } from './components/leads/StatsCard'
 export type { StatsCardProps, TrendDirection } from './components/leads/StatsCard'
 export { CreateLeadDialog } from './components/leads/CreateLeadDialog'
 export type { CreateLeadDialogProps, CreateLeadFormData, Partner as LeadPartner } from './components/leads/CreateLeadDialog'
-export { EditLeadDialog } from './components/leads/EditLeadDialog'
-export type { EditLeadDialogProps } from './components/leads/EditLeadDialog'
+// TODO: Re-enable in v2.4.0 after completing EditLeadDialog
+// export { EditLeadDialog } from './components/leads/EditLeadDialog'
+// export type { EditLeadDialogProps } from './components/leads/EditLeadDialog'
 export { AssignLeadDialog } from './components/leads/AssignLeadDialog'
 export type { AssignLeadDialogProps } from './components/leads/AssignLeadDialog'
 export { StatusUpdateDialog } from './components/leads/StatusUpdateDialog'
@@ -262,13 +264,14 @@ export type {
   TenantFormData,
 } from './components/provisioning/TenantProvisioningWizard'
 
+// TODO: Re-enable in v2.4.0 after fixing ESLint errors
 // Tenant Request Action Dialogs
-export { ApproveRequestDialog } from './components/provisioning/ApproveRequestDialog'
-export type { ApproveRequestDialogProps, TenantRequest } from './components/provisioning/ApproveRequestDialog'
-export { RejectRequestDialog } from './components/provisioning/RejectRequestDialog'
-export type { RejectRequestDialogProps } from './components/provisioning/RejectRequestDialog'
-export { DeleteRequestDialog as DeleteTenantRequestDialog } from './components/provisioning/DeleteRequestDialog'
-export type { DeleteRequestDialogProps as DeleteTenantRequestDialogProps } from './components/provisioning/DeleteRequestDialog'
+// export { ApproveRequestDialog } from './components/provisioning/ApproveRequestDialog'
+// export type { ApproveRequestDialogProps, TenantRequest } from './components/provisioning/ApproveRequestDialog'
+// export { RejectRequestDialog } from './components/provisioning/RejectRequestDialog'
+// export type { RejectRequestDialogProps } from './components/provisioning/RejectRequestDialog'
+// export { DeleteRequestDialog as DeleteTenantRequestDialog } from './components/provisioning/DeleteRequestDialog'
+// export type { DeleteRequestDialogProps as DeleteTenantRequestDialogProps } from './components/provisioning/DeleteRequestDialog'
 
 // Export SearchFilter (Shared component - universal search & filter)
 export { SearchFilter } from './components/shared/SearchFilter/SearchFilter'
