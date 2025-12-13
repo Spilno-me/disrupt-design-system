@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-13",
+  "totalFindings": 2,
+
+  "findings": [
+    {
+      "id": "001",
+      "title": "Versioning Strategy to Prevent Breaking Changes",
+      "category": "versioning",
+      "severity": "critical",
+      "status": "active",
+      "date": "2025-12-13",
+      "tags": ["breaking-changes", "semver", "v3.0.0", "api-stability"],
+
+      "problem": "No versioning strategy existed. Risk of breaking consumer apps with refactors in minor versions.",
+
+      "solution": "Implemented semantic versioning rules. v2.x = NO breaking changes. v3.0.0 = All breaking changes together.",
+
+      "agentAction": {
+        "whenEditingComponents": [
+          "Check: Is this backwards compatible?",
+          "Breaking (rename/remove/change props)? → STOP → v3.0.0 only",
+          "Safe (optional prop/bugfix)? → MINOR/PATCH → Proceed"
+        ],
+        "whenBumpingVersion": [
+          "PATCH: Bug fix (2.3.1 → 2.3.2)",
+          "MINOR: New feature (2.3.1 → 2.4.0)",
+          "MAJOR: Breaking (2.3.1 → 3.0.0) [NOT NOW]",
+          "Always: Update CHANGELOG.md"
+        ],
+        "query": "jq '.quickLookup.isBreaking' .claude/agent-context.json"
+      },
+
+      "breaking": ["Rename props", "Remove props", "Change prop types", "Change defaults", "Remove exports"],
+      "safe": ["Add optional props (with defaults)", "Add new components", "Fix bugs (no API change)", "Add variants", "Deprecate (keep working)"],
+
+      "prevention": [
+        "Added versioning rules to agent-context.json",
+        "Created CHANGELOG.md",
+        "Updated CLAUDE.md",
+        "SessionStart hookify reminder"
+      ],
+
+      "relatedFiles": ["agent-context.json", "CHANGELOG.md", "CLAUDE.md"],
+      "detailsFile": "2025-12-13-versioning-strategy.md"
+    },
+
+    {
+      "id": "002",
+      "title": "Missing Component Exports - Audit",
+      "category": "export",
+      "severity": "high",
+      "status": "active",
+      "date": "2025-12-13",
+      "tags": ["export", "public-api", "components", "missing-exports"],
+
+      "problem": "27 components exist but NOT exported from src/index.ts. 4 HIGH priority documented but inaccessible.",
+
+      "solution": "Conducted comprehensive audit. Categorized missing exports. Added to component-registry.json with exported: false flag.",
+
+      "agentAction": {
+        "whenCreatingComponent": [
+          "Check: jq '.ui.ComponentName' .claude/component-registry.json",
+          "If exists → Use it",
+          "If not → Create, export from src/index.ts + types",
+          "Update: component-registry.json + CLAUDE.md",
+          "Version: MINOR bump"
+        ],
+        "whenEditingExports": [
+          "Check missing: jq '.components.exports.missing' .claude/agent-context.json",
+          "Export: Component + Types + Sub-components + Hooks",
+          "Update: CLAUDE.md Component Export Status"
+        ],
+        "query": "jq '.ui | to_entries | map(select(.value.exported == false))' component-registry.json"
+      },
+
+      "missingHighPriority": ["NotificationsPanel", "QuickFilter", "DropdownMenu", "Tabs"],
+      "missingMedium": ["Wizard", "WizardStepper", "WizardStep", "WizardNavigation", "useWizard", "WizardContent", "CompactStepper"],
+
+      "exportChecklist": [
+        "Export component from src/index.ts",
+        "Export all TypeScript types",
+        "Export sub-components if any",
+        "Export hooks if component has them",
+        "Update CLAUDE.md Component Export Status",
+        "Verify: import { X } from 'dds'"
+      ],
+
+      "prevention": [
+        "Created component-registry.json",
+        "Added Component Export Status to CLAUDE.md",
+        "Hookify reminds on component creation"
+      ],
+
+      "relatedFiles": ["src/index.ts", "component-registry.json", "agent-context.json"],
+      "detailsFile": "2025-12-13-missing-exports-audit.md"
+    }
+  ],
+
+  "bySeverity": {
+    "critical": ["001"],
+    "high": ["002"],
+    "medium": [],
+    "low": []
+  },
+
+  "byCategory": {
+    "versioning": ["001"],
+    "export": ["002"],
+    "component": [],
+    "token": [],
+    "tooling": [],
+    "architecture": []
+  },
+
+  "byStatus": {
+    "active": ["001", "002"],
+    "resolved": [],
+    "deprecated": []
+  },
+
+  "quickActions": {
+    "editingComponent": "Check backwards compatible. Breaking → v3.0.0. Safe → Proceed. Query: jq '.quickLookup.isBreaking' agent-context.json",
+    "creatingComponent": "Check exists first. Export from src/index.ts + types. MINOR bump. Query: jq '.ui.ComponentName' component-registry.json",
+    "bumpingVersion": "PATCH=bugfix, MINOR=feature, MAJOR=breaking(v3 only). Update CHANGELOG.md",
+    "editingExports": "Check missing exports. Export component+types+subs+hooks. Query: jq '.components.exports.missing' agent-context.json"
+  }
+}

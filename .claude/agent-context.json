@@ -1,0 +1,275 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "lastUpdated": "2025-12-13",
+  "description": "AGENT-FIRST: Single source of truth for AI agents working on DDS. Read this FIRST.",
+
+  "meta": {
+    "projectName": "Disrupt Design System (DDS)",
+    "currentVersion": "2.3.1",
+    "nextVersion": "2.4.0",
+    "majorVersion": "3.0.0",
+    "phase": "pre-v3-development",
+    "philosophy": "OPINIONATED - Strong design vision, minimal variants, maximum consistency"
+  },
+
+  "criticalRules": {
+    "git": {
+      "noClaudeAttribution": true,
+      "commitFormat": "feat:|fix:|chore:|refactor:|docs:",
+      "hookifyEnabled": true
+    },
+    "versioning": {
+      "policy": "NO_BREAKING_CHANGES_UNTIL_V3",
+      "breakingChanges": [
+        "Rename props",
+        "Remove props",
+        "Change prop types (non-compatible)",
+        "Change required/optional status",
+        "Change default values",
+        "Remove exports"
+      ],
+      "safeChanges": [
+        "Add new components",
+        "Add optional props with defaults",
+        "Add new variants",
+        "Fix bugs (no API change)",
+        "Add deprecation warnings (keep working)",
+        "Internal refactoring (same API)"
+      ],
+      "versionBumps": {
+        "patch": "Bug fixes only, no API change",
+        "minor": "New features, backwards compatible",
+        "major": "Breaking changes (v3.0.0 only!)"
+      }
+    },
+    "tokens": {
+      "zeroRawColors": true,
+      "forbidden": ["#hex", "rgb()", "bg-blue-500", "text-gray-600"],
+      "required": ["ALIAS tokens", "Semantic Tailwind classes"],
+      "hookifyEnforces": true
+    },
+    "exports": {
+      "twoLevelSystem": true,
+      "mustExportFrom": ["src/components/*/index.ts", "src/index.ts"],
+      "alsoExport": ["Types", "Sub-components", "Hooks"],
+      "missingHighPriority": ["NotificationsPanel", "QuickFilter", "DropdownMenu", "Tabs"]
+    }
+  },
+
+  "workflow": {
+    "stabilizeComponent": {
+      "priority": "CRITICAL",
+      "description": "Review and stabilize components for production without breaking changes",
+      "steps": [
+        "1. Read: .claude/component-stabilization-plan.md",
+        "2. Check component category: Website-Only (FROZEN) | App-Only (CAREFUL) | Shared (EXTREME CARE)",
+        "3. Website components → STOP → Do not touch",
+        "4. App/Shared → Use review checklist from stabilization plan",
+        "5. Only SAFE changes: add optional props, fix bugs, improve internals",
+        "6. Update CHANGELOG.md",
+        "7. Run: npm run typecheck && npm run lint"
+      ],
+      "reference": ".claude/component-stabilization-plan.md"
+    },
+    "editComponent": {
+      "priority": "CRITICAL",
+      "steps": [
+        "1. Check: Is change backwards compatible?",
+        "2. Breaking? → STOP → Mark for v3.0.0 → Ask user",
+        "3. Safe? → Proceed → Update CHANGELOG.md",
+        "4. Use design tokens only (ALIAS or semantic Tailwind)",
+        "5. Run: npm run typecheck"
+      ],
+      "reference": "findings/index.json → 001"
+    },
+    "createComponent": {
+      "priority": "HIGH",
+      "steps": [
+        "1. Use Radix UI for interactive components",
+        "2. Style with ALIAS tokens or semantic Tailwind classes",
+        "3. Add data-testid support: ATOM (accept via props) | MOLECULE (auto-generate from props) | PAGE (hardcode)",
+        "4. Export from src/index.ts + types",
+        "5. Update CLAUDE.md component reference",
+        "6. Create Storybook story",
+        "7. This is MINOR version bump"
+      ],
+      "reference": ".claude/testing-quick-ref.md for testId strategy"
+    },
+    "refactorComponent": {
+      "priority": "CRITICAL",
+      "steps": [
+        "1. Check if API changes",
+        "2. API changes? → BREAKING → v3.0.0 only",
+        "3. Internal only? → SAFE → Proceed",
+        "4. Add tests for backwards compatibility"
+      ],
+      "reference": "findings/index.json → 001"
+    },
+    "bumpVersion": {
+      "priority": "CRITICAL",
+      "steps": [
+        "1. Identify change type: PATCH | MINOR | MAJOR",
+        "2. MAJOR? → Must be v3.0.0 (not now!)",
+        "3. Update package.json version",
+        "4. Update CHANGELOG.md",
+        "5. Commit"
+      ],
+      "reference": "findings/index.json → 001"
+    }
+  },
+
+  "components": {
+    "existingCheck": {
+      "searchFirst": "src/components/ui/",
+      "beforeBuilding": "ALWAYS check if component exists",
+      "registry": ".claude/component-registry.json"
+    },
+    "stabilization": {
+      "websiteComponents": {
+        "status": "FROZEN",
+        "location": "src/components/sections/, src/components/layout/Footer.tsx",
+        "rule": "DO NOT TOUCH - Website is production-ready",
+        "sharedDependencies": ["Button", "GridBlobCanvas", "Card"],
+        "count": 32
+      },
+      "appComponents": {
+        "status": "CAN_STABILIZE_CAREFULLY",
+        "location": "src/components/partners/, src/components/leads/, src/components/provisioning/",
+        "rule": "SAFE changes only (add optional props, fix bugs, improve internals)",
+        "count": 40
+      },
+      "sharedPrimitives": {
+        "status": "EXTREME_CARE",
+        "location": "src/components/ui/",
+        "rule": "ADD ONLY, NEVER CHANGE existing props/variants/defaults",
+        "highRisk": ["Button", "GridBlobCanvas", "Input", "Dialog", "Card", "DataTable"],
+        "count": 48
+      },
+      "planFile": ".claude/component-stabilization-plan.md"
+    },
+    "styling": {
+      "preferTailwind": true,
+      "staticStyles": "Use semantic Tailwind classes (bg-surface, text-primary)",
+      "dynamicStyles": "Use ALIAS tokens (style={{ color: ALIAS.text.error }})",
+      "shadows": "SHADOWS.sm|md|lg or shadow-sm|md|lg",
+      "radius": "RADIUS.xs|sm|md|lg or rounded-xs|sm|md|lg"
+    },
+    "variants": {
+      "philosophy": "OPINIONATED - Minimal variants, maximum consistency",
+      "keepIf": [
+        "Different functional purpose (primary vs destructive vs ghost)",
+        "Different semantic meaning (success vs error vs warning)",
+        "Improves accessibility or UX (size for touch targets)",
+        "Limited options (≤3-5 variants)",
+        "Consumer NEEDS the choice"
+      ],
+      "removeIf": [
+        "Purely aesthetic (shimmer vs wave vs pulse)",
+        "Too many options (>5 variants)",
+        "Redundant with another variant",
+        "Consumer doesn't care about difference",
+        "Creates inconsistency risk"
+      ],
+      "targetLimits": {
+        "stateVariants": "4-5 max (success, warning, error, info, default)",
+        "actionVariants": "4-5 max (primary, secondary, ghost, destructive, outline)",
+        "sizes": "2-3 max (sm, default, lg only if essential)",
+        "shapes": "2 max",
+        "animations": "1 (no choice)",
+        "decorative": "0-1 (avoid)"
+      },
+      "reductionPlan": ".claude/variant-reduction-strategy.md"
+    },
+    "testing": {
+      "dataTestId": {
+        "required": true,
+        "strategy": "3-tier: Atoms accept, Molecules auto-generate, Pages hardcode",
+        "atoms": {
+          "description": "Primitives (Button, Badge, Input, Skeleton) - Accept data-testid, NO defaults",
+          "implementation": "Extend React.HTMLAttributes, spread {...props}",
+          "example": "<Button data-testid=\"login-submit-button\">Submit</Button>",
+          "why": "Context-agnostic, reusable everywhere"
+        },
+        "molecules": {
+          "description": "Composed components (LeadCard, InvoiceCard, StatsCard) - Auto-generate with override",
+          "implementation": "Optional testId prop, auto-generate from props (e.g., lead.id)",
+          "pattern": "const baseTestId = testId || `${componentName}-${id}`",
+          "example": "<LeadCard lead={lead} /> → data-testid=\"lead-card-123\"",
+          "childTestIds": "Generate from base: `${baseTestId}-priority`, `${baseTestId}-edit-button`",
+          "why": "QA gets testIds automatically, developers don't need to think"
+        },
+        "pages": {
+          "description": "Top-level pages (LeadsPage, PartnersPage) - Hardcoded testIds",
+          "implementation": "Hardcode data-testid on major sections",
+          "example": "<div data-testid=\"leads-page\"><header data-testid=\"leads-header\">",
+          "why": "Not reusable, testIds are stable and predictable"
+        },
+        "naming": {
+          "format": "kebab-case",
+          "pattern": "section-element-type",
+          "atomExamples": ["login-submit-button", "settings-email-input", "user-role-select"],
+          "moleculeExamples": ["lead-card-123", "invoice-card-456", "stats-card-revenue"],
+          "pageExamples": ["leads-page", "leads-header", "leads-filters", "leads-table-container"]
+        },
+        "decisionTree": "Reusable? → Composed? → MOLECULE (auto-gen) : ATOM (accept) : PAGE (hardcode)",
+        "quickRef": ".claude/testing-quick-ref.md"
+      }
+    },
+    "exports": {
+      "current": {
+        "Button": true,
+        "Input": true,
+        "Dialog": true,
+        "DataTable": true,
+        "NotificationsPanel": false,
+        "QuickFilter": false,
+        "DropdownMenu": false,
+        "Tabs": false
+      },
+      "missing": ["NotificationsPanel", "QuickFilter", "DropdownMenu", "Tabs"],
+      "detailsFile": "findings/index.json → 002"
+    }
+  },
+
+  "quickLookup": {
+    "isBreaking": {
+      "renameProp": true,
+      "removeProp": true,
+      "changeType": true,
+      "changeDefault": true,
+      "removeExport": true
+    },
+    "isSafe": {
+      "addOptionalProp": true,
+      "addComponent": true,
+      "fixBug": true,
+      "addVariant": true,
+      "deprecate": true
+    }
+  },
+
+  "files": {
+    "findings": ".claude/findings/index.json",
+    "quickRef": ".claude/findings/quick-ref.json",
+    "componentRegistry": ".claude/component-registry.json",
+    "stabilizationPlan": ".claude/component-stabilization-plan.md",
+    "coreComponentsPlan": ".claude/core-components-stabilization.md",
+    "testingQuickRef": ".claude/testing-quick-ref.md",
+    "testingQA": "TESTING.md",
+    "variantReduction": ".claude/variant-reduction-strategy.md",
+    "v3BreakingChanges": ".claude/v3-breaking-changes.md",
+    "componentBuilder": ".claude/agents/component-builder.md",
+    "quickStartAgents": ".claude/QUICK-START-AGENTS.md",
+    "claudeMd": "CLAUDE.md",
+    "changelog": "CHANGELOG.md",
+    "tokens": "src/constants/designTokens.ts"
+  },
+
+  "commands": {
+    "typecheck": "npm run typecheck",
+    "lint": "npm run lint",
+    "build": "npm run build",
+    "storybook": "npm run storybook"
+  }
+}

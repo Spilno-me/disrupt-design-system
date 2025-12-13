@@ -36,13 +36,18 @@ You're creating a new component in `src/components/ui/`. Before proceeding, plea
 
 **If building a new component:**
 
-1. **Use Radix UI for interactive components:**
+1. **Categorize component type:**
+   - ATOM: Reusable primitive (Button, Badge, Input) → Accept data-testid
+   - MOLECULE: Composed component (LeadCard, InvoiceCard) → Auto-generate testId
+   - PAGE: Top-level page → Hardcode data-testid
+
+2. **Use Radix UI for interactive components:**
    ```tsx
    import * as Dialog from '@radix-ui/react-dialog'
    import * as Select from '@radix-ui/react-select'
    ```
 
-2. **Style with DDS tokens ONLY:**
+3. **Style with DDS tokens ONLY:**
    ```tsx
    // Use Tailwind semantic classes
    className="bg-surface text-primary border-default rounded-lg"
@@ -55,10 +60,24 @@ You're creating a new component in `src/components/ui/`. Before proceeding, plea
    }}
    ```
 
-3. **Create a story file:**
-   - `src/components/ui/{component}.stories.tsx`
-   - Document all variants and props
+4. **Add data-testid support:**
+   - ATOM: `interface Props extends React.HTMLAttributes<HTMLDivElement>` + `{...props}`
+   - MOLECULE: `testId?: string` prop + auto-generate from data
+   - JSDoc with testId examples
 
-**Reference:** See "Building New Components" section in CLAUDE.md
+5. **Minimize variants (OPINIONATED):**
+   - State variants: ≤5 (success, warning, error, default)
+   - Sizes: ≤3 (sm, default, lg only if essential)
+   - Animations: 1 (no choice - consistency over freedom)
+   - Ask: Is this functional or just aesthetic?
+
+6. **Create a story file:**
+   - `src/components/ui/{component}.stories.tsx`
+   - Document essential variants only (not deprecated/aesthetic ones)
+
+**References:**
+- `.claude/testing-quick-ref.md` - testId strategy
+- `.claude/variant-reduction-strategy.md` - Variant philosophy
+- `.claude/agent-context.json` - Core rules
 
 If you're sure this component doesn't exist, you may proceed. Otherwise, please use an existing component.

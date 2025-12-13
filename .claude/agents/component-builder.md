@@ -15,7 +15,14 @@ Build production-ready React components that:
 1. Follow DDS token architecture exactly
 2. Use Radix UI primitives for interactivity
 3. Transform Figma hardcoded colors to DDS tokens
-4. Create accompanying Storybook stories
+4. Implement testId strategy (ATOM/MOLECULE/PAGE)
+5. Follow variant reduction philosophy (minimal, opinionated variants)
+6. Create accompanying Storybook stories
+
+**READ FIRST:**
+- `.claude/agent-context.json` → Core rules
+- `.claude/testing-quick-ref.md` → testId strategy
+- `.claude/variant-reduction-strategy.md` → Variant philosophy
 
 ## CRITICAL: Figma Color Translation
 
@@ -129,38 +136,76 @@ grep -r "ComponentName" src/components/
 | Popover | `@radix-ui/react-popover` |
 | Sheet/Drawer | `@radix-ui/react-dialog` |
 
-### Step 3: Create Component Structure
+### Step 3: Determine Component Type (CRITICAL)
+
+**Before writing code, categorize the component:**
+
+```
+Is it reusable in multiple contexts?
+├─ YES → Is it composed of multiple atoms?
+│  ├─ YES → MOLECULE → Auto-generate testId from props
+│  └─ NO  → ATOM → Accept data-testid from consumer
+└─ NO  → PAGE → Hardcode data-testid
+```
+
+**Examples:**
+- **ATOM:** Button, Badge, Input, Skeleton (context-agnostic primitives)
+- **MOLECULE:** LeadCard, InvoiceCard, StatsCard (composed, know their context)
+- **PAGE:** LeadsPage, PartnersPage (top-level, not reusable)
+
+---
+
+### Step 4: Create Component Structure
+
+#### ATOM Pattern (Most common for design system components)
 
 ```tsx
 // src/components/ui/MyComponent.tsx
+import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { ALIAS, SHADOWS, RADIUS } from '@/constants/designTokens'
 
-export interface MyComponentProps {
-  variant?: 'default' | 'accent' | 'destructive'
-  size?: 'sm' | 'md' | 'lg'
+// ATOM: Extend React.HTMLAttributes to accept data-testid
+export interface MyComponentProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'accent' | 'destructive'  // Max 4-5 variants
+  size?: 'sm' | 'md'  // Max 2-3 sizes
   children: React.ReactNode
   className?: string
 }
 
+/**
+ * MyComponent - Brief description
+ *
+ * ATOM: Accepts data-testid via props. Consumer provides context-specific testId.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <MyComponent variant="accent">Content</MyComponent>
+ *
+ * // With data-testid (consumer provides context)
+ * <MyComponent data-testid="profile-card-header">Content</MyComponent>
+ * ```
+ */
 export function MyComponent({
   variant = 'default',
   size = 'md',
   children,
   className,
+  ...props  // ← Spread for data-testid
 }: MyComponentProps) {
   return (
     <div
+      {...props}  // ← Enable data-testid
       className={cn(
         // Base styles - ALWAYS use Tailwind DDS classes
         'rounded-lg border transition-colors',
 
-        // Size variants
+        // Size variants (2-3 max for consistency)
         size === 'sm' && 'p-2 text-sm',
         size === 'md' && 'p-4 text-base',
-        size === 'lg' && 'p-6 text-lg',
 
-        // Color variants - ONLY semantic DDS classes
+        // Color variants (4-5 max for consistency)
         variant === 'default' && 'bg-surface border-default text-primary',
         variant === 'accent' && 'bg-accent-bg border-accent text-accent',
         variant === 'destructive' && 'bg-error-light border-error text-error',
@@ -172,7 +217,104 @@ export function MyComponent({
     </div>
   )
 }
+
+MyComponent.displayName = "MyComponent"
 ```
+
+#### MOLECULE Pattern (For composed components)
+
+```tsx
+// src/components/ui/MyCard.tsx
+import * as React from 'react'
+import { Badge } from './badge'
+import { Button } from './button'
+
+export interface MyCardProps {
+  data: SomeDataType
+  testId?: string  // ← Optional override
+  onEdit?: () => void
+}
+
+/**
+ * MyCard - Brief description
+ *
+ * MOLECULE: Auto-generates data-testid from props. Optional testId override.
+ *
+ * @example
+ * ```tsx
+ * // Auto-generates testIds
+ * <MyCard data={item} />
+ * // → data-testid="my-card-123"
+ * // → data-testid="my-card-123-status"
+ * // → data-testid="my-card-123-edit-button"
+ * ```
+ */
+export function MyCard({ data, testId, onEdit }: MyCardProps) {
+  const baseTestId = testId || `my-card-${data.id}`
+
+  return (
+    <div data-testid={baseTestId}>
+      <Badge data-testid={`${baseTestId}-status`}>
+        {data.status}
+      </Badge>
+      <Button
+        data-testid={`${baseTestId}-edit-button`}
+        onClick={onEdit}
+      >
+        Edit
+      </Button>
+    </div>
+  )
+}
+
+MyCard.displayName = "MyCard"
+```
+
+---
+
+### Step 5: Variant Reduction (OPINIONATED)
+
+**⚠️ CRITICAL: Minimize variants for design consistency**
+
+Before adding variants, ask:
+1. ❓ Is this variant **functional** or just aesthetic?
+2. ❓ Does it have **different semantic meaning**?
+3. ❓ Would removing it **hurt consumers**?
+
+**Target Limits:**
+- State variants (success, error, warning): **4-5 max**
+- Action variants (primary, secondary, ghost): **4-5 max**
+- Sizes: **2-3 max** (sm, default, lg only if essential)
+- Shapes: **2 max** (default, rounded/pill)
+- Animations: **1** (no choice - consistency over flexibility)
+- Decorative: **0-1** (avoid if possible)
+
+**Examples:**
+
+```tsx
+// ✅ GOOD: Minimal, functional variants
+variant?: 'default' | 'destructive' | 'success' | 'warning'  // 4 variants
+size?: 'sm' | 'md'  // 2 sizes
+
+// ❌ BAD: Too many aesthetic variants
+variant?: 'default' | 'primary' | 'secondary' | 'accent' | 'info' | 'success' | 'warning' | 'error' | 'ghost' | 'outline'  // 10 variants!
+animation?: 'shimmer' | 'wave' | 'pulse' | 'fade' | 'slide'  // 5 animations!
+
+// ✅ GOOD: One animation, no choice
+// Component uses single consistent animation
+const animation = 'skeleton-shimmer'  // Hardcoded
+
+// ❌ BAD: Giving consumers animation choice
+variant?: 'shimmer' | 'wave' | 'pulse'  // Creates inconsistency
+```
+
+**Philosophy:**
+- We are building an **OPINIONATED** design system
+- Strong design vision > unlimited flexibility
+- Consistency > consumer freedom
+- Quality > quantity of variants
+
+**Reference:** `.claude/variant-reduction-strategy.md`
 
 ### Step 4: Create Storybook Story
 
@@ -352,6 +494,7 @@ export * from './ComponentName'
 
 ## Checklist Before Completion
 
+### Code Quality
 - [ ] Component uses ONLY DDS Tailwind classes for static styling
 - [ ] No raw hex colors anywhere in the component
 - [ ] Figma colors translated to nearest DDS token
@@ -359,8 +502,37 @@ export * from './ComponentName'
 - [ ] Props interface defined with TypeScript
 - [ ] Default values provided for optional props
 - [ ] `cn()` utility used for className merging
-- [ ] Storybook story created with all variants
-- [ ] Component exported from index
+- [ ] React display name added (`Component.displayName = "Component"`)
+
+### Testing (data-testid)
+- [ ] Component type identified: ATOM | MOLECULE | PAGE
+- [ ] ATOM: Extends `React.HTMLAttributes`, spreads `{...props}`
+- [ ] MOLECULE: Has optional `testId` prop, auto-generates from data
+- [ ] PAGE: Hardcoded data-testid on major sections
+- [ ] JSDoc includes testId examples
+- [ ] testId pattern documented: kebab-case, section-element-type
+
+### Variant Reduction (Opinionated)
+- [ ] Variants are **functional**, not aesthetic
+- [ ] State variants: ≤5 (default, success, warning, error, destructive)
+- [ ] Action variants: ≤5 (default, ghost, outline, destructive, accent)
+- [ ] Sizes: ≤3 (sm, default, lg only if essential)
+- [ ] Shapes: ≤2 (default, pill/rounded)
+- [ ] Animations: **1** (no consumer choice)
+- [ ] Each variant serves different purpose (not just aesthetic)
+
+### Documentation
+- [ ] JSDoc with component type (ATOM/MOLECULE/PAGE)
+- [ ] JSDoc with usage examples
+- [ ] JSDoc with data-testid examples
+- [ ] Storybook story created
+- [ ] Storybook shows all essential variants (not deprecated ones)
+- [ ] Component exported from `src/index.ts`
+
+### References
+- [ ] Read: `.claude/testing-quick-ref.md` for testId patterns
+- [ ] Read: `.claude/variant-reduction-strategy.md` for variant guidelines
+- [ ] Read: `.claude/agent-context.json` for quick rules
 
 ## Remember
 
