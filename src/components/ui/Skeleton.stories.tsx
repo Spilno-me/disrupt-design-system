@@ -80,21 +80,67 @@ export const PricingCardSkeleton: Story = {
   ),
 };
 
-// Rounded Variants (functional - different use cases)
-export const RoundedVariants: Story = {
+// All States (Visual Matrix - No interaction needed)
+export const AllStates: Story = {
   render: () => (
-    <div className="w-[500px] grid gap-8">
+    <div className="w-[600px] space-y-6 p-6">
       <div>
-        <h4 className="mb-3 text-sm font-semibold text-primary">Rounded SM (Text lines)</h4>
-        <Skeleton className="w-full h-[20px]" rounded="sm" />
+        <h4 className="text-sm font-semibold text-primary mb-4">Default (Shimmer Animation)</h4>
+        <Skeleton className="w-full h-[60px]" />
       </div>
+
       <div>
-        <h4 className="mb-3 text-sm font-semibold text-primary">Rounded LG (Cards, default)</h4>
-        <Skeleton className="w-full h-[60px]" rounded="lg" />
+        <h4 className="text-sm font-semibold text-primary mb-4">Rounded Variants</h4>
+        <div className="space-y-3">
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-secondary w-24">SM:</span>
+            <Skeleton className="flex-1 h-[20px]" rounded="sm" />
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-secondary w-24">MD:</span>
+            <Skeleton className="flex-1 h-[40px]" rounded="md" />
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-secondary w-24">LG (default):</span>
+            <Skeleton className="flex-1 h-[60px]" rounded="lg" />
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-secondary w-24">Full (avatar):</span>
+            <Skeleton className="size-16" rounded="full" />
+          </div>
+        </div>
       </div>
+
       <div>
-        <h4 className="mb-3 text-sm font-semibold text-primary">Rounded Full (Avatars)</h4>
-        <Skeleton className="size-16" rounded="full" />
+        <h4 className="text-sm font-semibold text-primary mb-4">SkeletonImage (Aspect Ratios)</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-xs text-secondary mb-2">Square</p>
+            <SkeletonImage aspectRatio="square" className="w-32" />
+          </div>
+          <div>
+            <p className="text-xs text-secondary mb-2">4/3</p>
+            <SkeletonImage aspectRatio="4/3" className="w-32" />
+          </div>
+          <div>
+            <p className="text-xs text-secondary mb-2">16/9</p>
+            <SkeletonImage aspectRatio="16/9" className="w-48" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">SkeletonText (Line Counts)</h4>
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs text-secondary mb-2">2 lines</p>
+            <SkeletonText lines={2} />
+          </div>
+          <div>
+            <p className="text-xs text-secondary mb-2">4 lines</p>
+            <SkeletonText lines={4} />
+          </div>
+        </div>
       </div>
     </div>
   ),

@@ -62,21 +62,50 @@ export const ContactForm: Story = {
   ),
 };
 
-// Different Sizes
-export const DifferentSizes: Story = {
+// All States (Visual Matrix - No interaction needed)
+export const AllStates: Story = {
   render: () => (
-    <div className="w-[500px] space-y-6">
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-primary">Small (3 rows)</label>
-        <Textarea placeholder="Small textarea..." rows={3} />
+    <div className="w-[500px] space-y-6 p-6">
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Default (Empty)</h4>
+        <Textarea placeholder="Enter your message..." rows={3} />
       </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-primary">Medium (5 rows)</label>
-        <Textarea placeholder="Medium textarea..." rows={5} />
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">With Value</h4>
+        <Textarea
+          defaultValue="This is sample text content in a textarea component."
+          rows={3}
+        />
       </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-primary">Large (8 rows)</label>
-        <Textarea placeholder="Large textarea..." rows={8} />
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Simulated)</h4>
+        <Textarea
+          placeholder="Focused textarea"
+          rows={3}
+          className="border-accent ring-[3px] ring-accent/20"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Error State (aria-invalid)</h4>
+        <Textarea
+          placeholder="Invalid input"
+          aria-invalid="true"
+          rows={3}
+          defaultValue="Error state example"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Disabled State</h4>
+        <Textarea
+          placeholder="Disabled textarea"
+          disabled
+          rows={3}
+          defaultValue="Cannot edit this text"
+        />
       </div>
     </div>
   ),

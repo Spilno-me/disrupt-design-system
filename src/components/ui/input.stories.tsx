@@ -90,6 +90,58 @@ export const ErrorState: Story = {
   },
 }
 
+// All States (Visual Matrix - No interaction needed)
+export const AllStates: Story = {
+  render: () => (
+    <div className="w-[500px] space-y-6 p-6">
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Default (Empty)</h4>
+        <Input placeholder="Enter text" />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">With Value</h4>
+        <Input defaultValue="John Doe" placeholder="Enter name" />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Simulated)</h4>
+        <Input
+          placeholder="Focused input"
+          className="border-accent ring-[3px] ring-accent/20"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Error State (aria-invalid)</h4>
+        <Input
+          placeholder="Invalid email"
+          aria-invalid="true"
+          defaultValue="invalid-email"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Disabled State</h4>
+        <Input
+          placeholder="Disabled input"
+          disabled
+          defaultValue="Cannot edit"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Password Type</h4>
+        <Input
+          type="password"
+          defaultValue="password123"
+          placeholder="Enter password"
+        />
+      </div>
+    </div>
+  ),
+};
+
 // Interactive typing test
 export const WithTyping: Story = {
   args: {

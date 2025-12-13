@@ -87,45 +87,62 @@ export const MultipleCheckboxes: Story = {
   ),
 };
 
-// Form Example
-export const FormExample: Story = {
+// All States (Visual Matrix - No interaction needed)
+export const AllStates: Story = {
   render: () => (
-    <div className="w-[400px] space-y-4 p-6 border border-dashed border-default rounded-lg bg-white">
-      <h3 className="text-lg font-bold text-primary">Preferences</h3>
-      <div className="space-y-4">
-        <div>
-          <h4 className="text-sm font-semibold text-primary mb-3">Email Notifications</h4>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Checkbox id="email1" defaultChecked />
-              <label htmlFor="email1" className="text-sm text-primary cursor-pointer">
-                Weekly summary
-              </label>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox id="email2" />
-              <label htmlFor="email2" className="text-sm text-primary cursor-pointer">
-                Product updates
-              </label>
-            </div>
-          </div>
-        </div>
-        <div className="border-t border-default pt-4">
-          <h4 className="text-sm font-semibold text-primary mb-3">Privacy</h4>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Checkbox id="privacy1" defaultChecked />
-              <label htmlFor="privacy1" className="text-sm text-primary cursor-pointer">
-                Make profile public
-              </label>
-            </div>
-            <div className="flex items-center gap-2">
-              <Checkbox id="privacy2" defaultChecked />
-              <label htmlFor="privacy2" className="text-sm text-primary cursor-pointer">
-                Allow data collection
-              </label>
-            </div>
-          </div>
+    <div className="w-[500px] space-y-6 p-6">
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Unchecked (Default)</h4>
+        <Checkbox aria-label="Unchecked" />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Checked</h4>
+        <Checkbox defaultChecked aria-label="Checked" />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Simulated)</h4>
+        <Checkbox
+          aria-label="Focused"
+          className="border-accent ring-[3px] ring-accent/30"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Checked + Focused (Simulated)</h4>
+        <Checkbox
+          defaultChecked
+          aria-label="Checked and focused"
+          className="border-accent ring-[3px] ring-accent/30"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Error State (aria-invalid)</h4>
+        <Checkbox
+          aria-invalid="true"
+          aria-label="Invalid"
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Disabled (Unchecked)</h4>
+        <Checkbox disabled aria-label="Disabled unchecked" />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">Disabled (Checked)</h4>
+        <Checkbox disabled defaultChecked aria-label="Disabled checked" />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-3">With Label</h4>
+        <div className="flex items-center gap-2">
+          <Checkbox id="with-label" defaultChecked />
+          <label htmlFor="with-label" className="text-sm font-medium text-primary cursor-pointer">
+            Accept terms and conditions
+          </label>
         </div>
       </div>
     </div>
