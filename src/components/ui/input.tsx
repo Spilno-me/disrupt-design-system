@@ -2,7 +2,55 @@ import * as React from "react"
 
 import { cn } from "../../lib/utils"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+export interface InputProps extends React.ComponentProps<"input"> {}
+
+/**
+ * Input component for text entry, password, email, and other input types.
+ *
+ * ATOM: Accepts data-testid via props. Consumer provides context-specific testId.
+ *
+ * Features:
+ * - Mobile-first responsive (44px touch target on mobile, 40px desktop)
+ * - Password field optimization (larger text, wider spacing for readability)
+ * - iOS-optimized (16px placeholder prevents zoom)
+ * - File input styling
+ * - Full accessibility support (aria-invalid, focus-visible, disabled)
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Input type="text" placeholder="Enter name" />
+ * <Input type="email" placeholder="Email" />
+ * <Input type="password" placeholder="Password" />
+ *
+ * // With data-testid (consumer provides context)
+ * <Input
+ *   type="email"
+ *   data-testid="login-email-input"
+ *   placeholder="Email"
+ * />
+ * <Input
+ *   type="password"
+ *   data-testid="login-password-input"
+ * />
+ *
+ * // In forms with labels
+ * <Label htmlFor="email">Email</Label>
+ * <Input
+ *   id="email"
+ *   type="email"
+ *   data-testid="profile-email-input"
+ * />
+ *
+ * // Error state
+ * <Input
+ *   type="email"
+ *   aria-invalid="true"
+ *   data-testid="email-input"
+ * />
+ * ```
+ */
+function Input({ className, type, ...props }: InputProps) {
   return (
     <input
       type={type}
@@ -30,5 +78,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
     />
   )
 }
+
+Input.displayName = "Input"
 
 export { Input }

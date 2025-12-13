@@ -50,6 +50,46 @@ export const FormExample: Story = {
   ),
 }
 
+// Input Types
+export const AllTypes: Story = {
+  render: () => (
+    <div className="w-[400px] space-y-4">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-primary">Text</label>
+        <Input type="text" placeholder="Enter text" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-primary">Email</label>
+        <Input type="email" placeholder="email@example.com" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-primary">Password</label>
+        <Input type="password" placeholder="••••••••" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-primary">Number</label>
+        <Input type="number" placeholder="0" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-primary">Date</label>
+        <Input type="date" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-primary">File</label>
+        <Input type="file" />
+      </div>
+    </div>
+  ),
+}
+
+// Error State
+export const ErrorState: Story = {
+  args: {
+    placeholder: 'Invalid email',
+    'aria-invalid': true,
+  },
+}
+
 // Interactive typing test
 export const WithTyping: Story = {
   args: {
