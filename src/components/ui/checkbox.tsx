@@ -6,10 +6,52 @@ import { CheckIcon } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+export interface CheckboxProps extends React.ComponentProps<typeof CheckboxPrimitive.Root> {}
+
+/**
+ * Checkbox component for selections and toggles. Built on Radix UI Checkbox primitive.
+ *
+ * ATOM: Accepts data-testid via props. Consumer provides context-specific testId.
+ *
+ * Features:
+ * - Radix UI primitive (keyboard navigation, accessibility)
+ * - Checked state indicator
+ * - Error state support (aria-invalid)
+ * - Focus visible states
+ * - Disabled state handling
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Checkbox />
+ * <Checkbox defaultChecked />
+ *
+ * // With label
+ * <div className="flex items-center gap-2">
+ *   <Checkbox id="terms" />
+ *   <Label htmlFor="terms">Accept terms</Label>
+ * </div>
+ *
+ * // With data-testid (consumer provides context)
+ * <Checkbox
+ *   id="terms"
+ *   data-testid="terms-checkbox"
+ * />
+ * <Label htmlFor="terms" data-testid="terms-label">
+ *   I agree to the terms
+ * </Label>
+ *
+ * // Error state
+ * <Checkbox
+ *   aria-invalid="true"
+ *   data-testid="required-checkbox"
+ * />
+ * ```
+ */
 function Checkbox({
   className,
   ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
+}: CheckboxProps) {
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"
@@ -37,5 +79,7 @@ function Checkbox({
     </CheckboxPrimitive.Root>
   )
 }
+
+Checkbox.displayName = "Checkbox"
 
 export { Checkbox }
