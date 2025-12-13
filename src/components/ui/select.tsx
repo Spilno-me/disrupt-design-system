@@ -4,11 +4,86 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+export interface SelectProps extends React.ComponentProps<typeof SelectPrimitive.Root> {}
+export interface SelectGroupProps extends React.ComponentProps<typeof SelectPrimitive.Group> {}
+export interface SelectValueProps extends React.ComponentProps<typeof SelectPrimitive.Value> {}
+export interface SelectTriggerProps extends React.ComponentProps<typeof SelectPrimitive.Trigger> {
+  size?: "sm" | "default"
+}
+export interface SelectContentProps extends React.ComponentProps<typeof SelectPrimitive.Content> {}
+export interface SelectLabelProps extends React.ComponentProps<typeof SelectPrimitive.Label> {}
+export interface SelectItemProps extends React.ComponentProps<typeof SelectPrimitive.Item> {}
+export interface SelectSeparatorProps extends React.ComponentProps<typeof SelectPrimitive.Separator> {}
+export interface SelectScrollUpButtonProps extends React.ComponentProps<typeof SelectPrimitive.ScrollUpButton> {}
+export interface SelectScrollDownButtonProps extends React.ComponentProps<typeof SelectPrimitive.ScrollDownButton> {}
+
+/**
+ * Select component for dropdowns and selectors. Built on Radix UI Select primitive.
+ *
+ * ATOM: All sub-components accept data-testid via props. Consumer provides context-specific testId.
+ *
+ * ⚠️ ACCESSIBILITY REQUIREMENT:
+ * SelectTrigger MUST have an associated label for screen readers. Use one of:
+ * - <Label> component with htmlFor (recommended)
+ * - aria-label attribute
+ * - aria-labelledby attribute
+ *
+ * @example
+ * ```tsx
+ * // ✅ CORRECT: With Label component (recommended)
+ * <Label htmlFor="role">User Role</Label>
+ * <Select>
+ *   <SelectTrigger id="role" data-testid="user-role-select">
+ *     <SelectValue placeholder="Select role" />
+ *   </SelectTrigger>
+ *   <SelectContent>
+ *     <SelectItem value="admin" data-testid="role-option-admin">Admin</SelectItem>
+ *     <SelectItem value="user" data-testid="role-option-user">User</SelectItem>
+ *   </SelectContent>
+ * </Select>
+ *
+ * // ✅ CORRECT: With aria-label
+ * <Select>
+ *   <SelectTrigger aria-label="User role" data-testid="user-role-select">
+ *     <SelectValue placeholder="Select role" />
+ *   </SelectTrigger>
+ *   <SelectContent>
+ *     <SelectItem value="admin">Admin</SelectItem>
+ *     <SelectItem value="user">User</SelectItem>
+ *   </SelectContent>
+ * </Select>
+ *
+ * // ❌ WRONG: No label (accessibility error)
+ * <Select>
+ *   <SelectTrigger data-testid="role-select">
+ *     <SelectValue placeholder="Select role" />
+ *   </SelectTrigger>
+ * </Select>
+ * ```
+ */
 function Select({
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Root>) {
+}: SelectProps) {
   return <SelectPrimitive.Root data-slot="select" {...props} />
 }
+
+Select.displayName = "Select"
+
+function SelectGroup({
+  ...props
+}: SelectGroupProps) {
+  return <SelectPrimitive.Group data-slot="select-group" {...props} />
+}
+
+SelectGroup.displayName = "SelectGroup"
+
+function SelectValue({
+  ...props
+}: SelectValueProps) {
+  return <SelectPrimitive.Value data-slot="select-value" {...props} />
+}
+
+SelectValue.displayName = "SelectValue"
 
 function SelectGroup({
   ...props
@@ -27,9 +102,7 @@ function SelectTrigger({
   size = "default",
   children,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: "sm" | "default"
-}) {
+}: SelectTriggerProps) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -48,12 +121,14 @@ function SelectTrigger({
   )
 }
 
+SelectTrigger.displayName = "SelectTrigger"
+
 function SelectContent({
   className,
   children,
   position = "popper",
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: SelectContentProps) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -83,10 +158,12 @@ function SelectContent({
   )
 }
 
+SelectContent.displayName = "SelectContent"
+
 function SelectLabel({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Label>) {
+}: SelectLabelProps) {
   return (
     <SelectPrimitive.Label
       data-slot="select-label"
@@ -96,11 +173,13 @@ function SelectLabel({
   )
 }
 
+SelectLabel.displayName = "SelectLabel"
+
 function SelectItem({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
+}: SelectItemProps) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
@@ -120,10 +199,12 @@ function SelectItem({
   )
 }
 
+SelectItem.displayName = "SelectItem"
+
 function SelectSeparator({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Separator>) {
+}: SelectSeparatorProps) {
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
@@ -133,10 +214,12 @@ function SelectSeparator({
   )
 }
 
+SelectSeparator.displayName = "SelectSeparator"
+
 function SelectScrollUpButton({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+}: SelectScrollUpButtonProps) {
   return (
     <SelectPrimitive.ScrollUpButton
       data-slot="select-scroll-up-button"
@@ -151,10 +234,12 @@ function SelectScrollUpButton({
   )
 }
 
+SelectScrollUpButton.displayName = "SelectScrollUpButton"
+
 function SelectScrollDownButton({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+}: SelectScrollDownButtonProps) {
   return (
     <SelectPrimitive.ScrollDownButton
       data-slot="select-scroll-down-button"
@@ -168,6 +253,8 @@ function SelectScrollDownButton({
     </SelectPrimitive.ScrollDownButton>
   )
 }
+
+SelectScrollDownButton.displayName = "SelectScrollDownButton"
 
 export {
   Select,
