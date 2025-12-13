@@ -57,6 +57,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added comprehensive JSDoc with ATOM testId pattern and usage examples
   - Already excellent: Uses Radix UI primitive (accessibility), no variants, proper states
 
+- **Select**: Enhanced code quality and documentation (backwards compatible)
+  - Exported TypeScript interfaces for all 9 sub-components (SelectProps, SelectTriggerProps, SelectContentProps, SelectItemProps, etc.)
+  - Added React display names for all 9 sub-components
+  - Added comprehensive JSDoc with ATOM testId pattern and usage examples
+  - Documented all sub-components: Trigger, Content, Item, Value, Group, Label, Separator, ScrollButtons
+  - Already excellent: Uses Radix UI primitive (full accessibility), size variants (sm, default)
+
+- **Textarea**: Enhanced code quality and documentation (backwards compatible)
+  - Exported TextareaProps interface for better TypeScript DX
+  - Added React display name for debugging
+  - Added comprehensive JSDoc with ATOM testId pattern and usage examples
+  - Already excellent: No variants (opinionated), auto-sizing, mobile-friendly, perfect design token usage
+
 ### Added
 - **Testing Guidelines**: Implemented 3-tier testId strategy (Atoms/Molecules/Pages)
   - ATOMS: Accept data-testid via props (no defaults, consumer provides context)

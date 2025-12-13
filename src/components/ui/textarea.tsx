@@ -2,7 +2,38 @@ import * as React from "react"
 
 import { cn } from "../../lib/utils"
 
-function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
+export interface TextareaProps extends React.ComponentProps<"textarea"> {}
+
+/**
+ * Textarea component for multi-line text entry.
+ *
+ * ATOM: Accepts data-testid via props. Consumer provides context-specific testId.
+ *
+ * Features:
+ * - Auto-sizing (field-sizing-content)
+ * - Mobile-friendly (larger text on mobile)
+ * - Full accessibility support (aria-invalid, focus-visible, disabled)
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <Textarea placeholder="Enter description" />
+ *
+ * // With data-testid (consumer provides context)
+ * <Textarea
+ *   data-testid="lead-notes-textarea"
+ *   placeholder="Add notes"
+ * />
+ *
+ * // With label
+ * <Label htmlFor="description">Description</Label>
+ * <Textarea
+ *   id="description"
+ *   data-testid="profile-description-textarea"
+ * />
+ * ```
+ */
+function Textarea({ className, ...props }: TextareaProps) {
   return (
     <textarea
       data-slot="textarea"
@@ -23,5 +54,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
     />
   )
 }
+
+Textarea.displayName = "Textarea"
 
 export { Textarea }
