@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "version": "1.0.0",
-  "lastUpdated": "2025-12-13",
+  "lastUpdated": "2025-12-14",
   "description": "AGENT-FIRST: Single source of truth for AI agents working on DDS. Read this FIRST.",
 
   "meta": {
@@ -60,7 +60,17 @@
       "oklchFormat": "oklch(L C H) - Lightness (0-1), Chroma (saturation), Hue (0-360)",
       "example": "oklch(0.533 0.195 264.05) instead of #2563EB",
       "why": "Perceptually uniform, consistent with existing tokens, better color scales, accessible contrast",
-      "hookifyEnforces": true
+      "hookifyEnforces": true,
+      "automation": {
+        "required": true,
+        "description": "MANDATORY: After editing designTokens.ts, ALWAYS run npm run generate-tokens",
+        "sourceOfTruth": "src/constants/designTokens.ts",
+        "generatedFiles": ["src/styles/tokens.css"],
+        "script": "scripts/generate-tokens.js",
+        "converts": "TypeScript ALIAS tokens → CSS custom properties (--ring) in OKLCH format",
+        "syncs": "ALIAS.border.focus → --ring CSS variable for focus rings across all components",
+        "mustRunWhen": "ANY change to src/constants/designTokens.ts"
+      }
     },
     "exports": {
       "twoLevelSystem": true,
@@ -71,6 +81,26 @@
   },
 
   "workflow": {
+    "editTokens": {
+      "priority": "CRITICAL",
+      "description": "Modify design tokens with mandatory automated CSS generation",
+      "steps": [
+        "1. Edit: src/constants/designTokens.ts",
+        "2. MANDATORY: Run npm run generate-tokens",
+        "3. Verify: src/styles/tokens.css updated automatically",
+        "4. Check: Focus ring color synced (--ring CSS variable)",
+        "5. Run: npm run typecheck",
+        "6. Update CHANGELOG.md if user-facing"
+      ],
+      "automation": {
+        "script": "scripts/generate-tokens.js",
+        "input": "src/constants/designTokens.ts",
+        "output": "src/styles/tokens.css",
+        "converts": "ALIAS.border.focus (hex) → --ring (oklch)",
+        "why": "Single source of truth - TypeScript tokens automatically generate CSS"
+      },
+      "critical": "NEVER edit src/styles/tokens.css manually - it's auto-generated"
+    },
     "stabilizeComponent": {
       "priority": "CRITICAL",
       "description": "Review and stabilize components for production without breaking changes",
@@ -285,6 +315,7 @@
     "typecheck": "npm run typecheck",
     "lint": "npm run lint",
     "build": "npm run build",
-    "storybook": "npm run storybook"
+    "storybook": "npm run storybook",
+    "generateTokens": "npm run generate-tokens"
   }
 }
