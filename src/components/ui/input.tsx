@@ -66,8 +66,8 @@ function Input({ className, type, ...props }: InputProps) {
         "selection:bg-accent-strong selection:text-inverse",
         // File input
         "file:text-primary file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium",
-        // Focus state - accent
-        "focus-visible:border-accent focus-visible:ring-accent/20 focus-visible:ring-[3px]",
+        // Focus state - uses design token (now dark blue for high contrast)
+        "focus-visible:border-ring focus-visible:ring-ring/40 focus-visible:ring-4",
         // Error state
         "aria-invalid:ring-error/20 aria-invalid:border-error",
         // Disabled state

@@ -199,7 +199,7 @@ export const ALIAS = {
     default: SLATE[300],
     subtle: ABYSS[100],
     strong: ABYSS[300],
-    focus: DEEP_CURRENT[500],
+    focus: WAVE[600],           // Changed to dark blue for better contrast
     error: CORAL[500],
     success: HARBOR[500],
     warning: SUNRISE[500],

@@ -80,11 +80,11 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Simulated)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Real Component Behavior)</h4>
         <Textarea
           placeholder="Focused textarea"
           rows={3}
-          className="border-accent ring-[3px] ring-accent/20"
+          autoFocus
         />
       </div>
 

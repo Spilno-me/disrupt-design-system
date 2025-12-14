@@ -254,7 +254,7 @@ export const ShadowLevels: Story = {
 // Elevated card - gradient background with gradient border
 export const Elevated: Story = {
   render: () => (
-    <Card variant="elevated" className="w-[408px] h-[199px]">
+    <Card variant="default" shadow="md" className="w-[408px] h-[199px]">
       <CardHeader className="p-0">
         <CardTitle className="text-primary text-lg">Card Title</CardTitle>
         <CardDescription>Card description goes here</CardDescription>
@@ -273,7 +273,7 @@ export const Elevated: Story = {
 export const ElevatedInAppCards: Story = {
   render: () => (
     <div className="flex gap-6">
-      <Card variant="elevated" className="w-[408px]">
+      <Card variant="default" shadow="md" className="w-[408px]">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
             <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -289,7 +289,7 @@ export const ElevatedInAppCards: Story = {
           Track and manage active safety incidents across all facilities.
         </p>
       </Card>
-      <Card variant="elevated" className="w-[408px]">
+      <Card variant="default" shadow="md" className="w-[408px]">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-lg bg-circleBlue/10 flex items-center justify-center">
             <svg className="w-6 h-6 text-circleBlue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -325,7 +325,7 @@ export const AllVariants: Story = {
       </div>
       <div>
         <h3 className="text-sm font-medium text-muted mb-4">Elevated (In-App)</h3>
-        <Card variant="elevated" className="w-[300px]">
+        <Card variant="default" shadow="md" className="w-[300px]">
           <CardHeader className="p-0">
             <CardTitle>Elevated Card</CardTitle>
             <CardDescription>Gradient background & border</CardDescription>

@@ -19,6 +19,14 @@
       "commitFormat": "feat:|fix:|chore:|refactor:|docs:",
       "hookifyEnabled": true
     },
+    "storybook": {
+      "reflectReality": true,
+      "noHardcodedOverrides": true,
+      "rule": "Stories MUST show real component behavior. Change component/tokens first, NEVER hardcode colors in stories.",
+      "changeSource": "Component code or design tokens",
+      "notStories": "Don't fake behavior in stories with className overrides",
+      "reference": ".claude/storybook-rules.md"
+    },
     "versioning": {
       "policy": "NO_BREAKING_CHANGES_UNTIL_V3",
       "breakingChanges": [
@@ -47,6 +55,11 @@
       "zeroRawColors": true,
       "forbidden": ["#hex", "rgb()", "bg-blue-500", "text-gray-600"],
       "required": ["ALIAS tokens", "Semantic Tailwind classes"],
+      "colorFormat": "oklch",
+      "colorFormatRule": "ALWAYS use oklch() when defining colors in tokens.css or designTokens.ts",
+      "oklchFormat": "oklch(L C H) - Lightness (0-1), Chroma (saturation), Hue (0-360)",
+      "example": "oklch(0.533 0.195 264.05) instead of #2563EB",
+      "why": "Perceptually uniform, consistent with existing tokens, better color scales, accessible contrast",
       "hookifyEnforces": true
     },
     "exports": {
@@ -258,6 +271,8 @@
     "testingQuickRef": ".claude/testing-quick-ref.md",
     "testingQA": "TESTING.md",
     "variantReduction": ".claude/variant-reduction-strategy.md",
+    "storybookRules": ".claude/storybook-rules.md",
+    "colorFormatRule": ".claude/color-format-rule.md",
     "v3BreakingChanges": ".claude/v3-breaking-changes.md",
     "componentBuilder": ".claude/agents/component-builder.md",
     "quickStartAgents": ".claude/QUICK-START-AGENTS.md",

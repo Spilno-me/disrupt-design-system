@@ -555,7 +555,7 @@ interface StatCardProps {
 
 function StatCard({ title, value, icon, iconBgClass }: StatCardProps) {
   return (
-    <Card variant="elevated" className="gap-3">
+    <Card variant="default" shadow="md" className="gap-3">
       <div className="flex items-center justify-between">
         <span className="text-sm text-secondary font-medium">{title}</span>
         <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', iconBgClass)}>

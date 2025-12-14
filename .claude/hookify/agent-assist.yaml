@@ -67,6 +67,7 @@ type: "callback"
     🎨 TOKENS ONLY → Read: .claude/agent-context.json → tokens
     ❌ NO: #hex, rgb(), bg-blue-500
     ✅ YES: ALIAS.text.primary, bg-surface, text-primary
+    Format: Use oklch() in tokens.css (not hex/rgb)
 
 # =============================================================================
 # RECORD FINDING (Minimal prompt)

@@ -79,7 +79,7 @@ function StatusUpdateDialogDemo({
   const [isUpdating, setIsUpdating] = useState(isUpdatingProp)
   const [lastUpdate, setLastUpdate] = useState<{ status: LeadStatus; notes?: string } | null>(null)
 
-  const handleStatusUpdate = async (leadId: string, newStatus: LeadStatus, _notes?: string) => {
+  const handleStatusUpdate = async (leadId: string, newStatus: LeadStatus, notes?: string) => {
     setIsUpdating(true)
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500))

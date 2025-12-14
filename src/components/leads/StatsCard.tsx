@@ -54,7 +54,8 @@ export function StatsCard({
 }: StatsCardProps) {
   return (
     <Card
-      variant="elevated"
+      variant="default"
+      shadow="md"
       className={cn('gap-2', className)}
     >
       {/* Header row with title and trend */}

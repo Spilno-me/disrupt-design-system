@@ -2,7 +2,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
-import { SHADOWS, type ShadowLevel, ALIAS, GRADIENTS } from "../../constants/designTokens"
+import { SHADOWS, type ShadowLevel, ALIAS } from "../../constants/designTokens"
 
 // =============================================================================
 // ANIMATED BORDER COMPONENT
@@ -52,13 +52,13 @@ const cardVariants = cva(
     variants: {
       variant: {
         // Default card - white background with subtle border
-        default: "bg-surface text-primary gap-6 border border-default py-6",
+        default: "bg-white text-dark gap-6 border border-slate py-6",
         // Pricing card - dashed border
-        pricing: "bg-surface p-6 h-full border border-dashed border-default rounded-[14px]",
+        pricing: "bg-white p-6 h-full border border-dashed border-slate rounded-[14px]",
         // Highlighted pricing card - animated marching ants border
-        pricingHighlight: "bg-surface p-6 rounded-[14px] relative overflow-hidden",
-        // Elevated card - gradient background with gradient border, for in-app use (Flow/Market/Partner)
-        elevated: "p-4 rounded-[10px] relative",
+        pricingHighlight: "bg-white p-6 rounded-[14px] relative overflow-hidden",
+        // Product card - gradient background with gradient border effect
+        product: "p-4 rounded-[10px] relative",
       },
     },
     defaultVariants: {
@@ -89,37 +89,6 @@ function Card({ className, variant, shadow, style, children, ...props }: CardPro
         {...props}
       >
         <AnimatedDashedBorder />
-        <div className="relative z-10 flex flex-col h-full">
-          {children}
-        </div>
-      </div>
-    )
-  }
-
-  // For elevated variant, use gradient background with gradient border via pseudo-element
-  // Used for in-app cards across Flow, Market, and Partner products
-  if (variant === 'elevated') {
-    return (
-      <div
-        data-slot="card"
-        className={cn(cardVariants({ variant }), className)}
-        style={{
-          background: GRADIENTS.cardBg,
-          boxShadow: SHADOWS.ambient,
-          ...style,
-        }}
-        {...props}
-      >
-        {/* Gradient border using pseudo-element technique */}
-        <div
-          className="absolute inset-0 rounded-[10px] pointer-events-none p-px"
-          style={{
-            background: GRADIENTS.cardBorder,
-            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-            WebkitMaskComposite: 'xor',
-            maskComposite: 'exclude',
-          }}
-        />
         <div className="relative z-10 flex flex-col h-full">
           {children}
         </div>

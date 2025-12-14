@@ -60,8 +60,8 @@ function Checkbox({
         "peer size-4 shrink-0 rounded-xs border border-default bg-surface shadow-sm transition-shadow outline-none",
         // Checked state - uses brand primary
         "data-[state=checked]:bg-inverse-bg data-[state=checked]:text-inverse data-[state=checked]:border-inverse-bg",
-        // Focus state - accent ring
-        "focus-visible:border-accent focus-visible:ring-[3px] focus-visible:ring-accent/30",
+        // Focus state - uses design token (now dark blue for high contrast)
+        "focus-visible:border-ring focus-visible:ring-4 focus-visible:ring-ring/40",
         // Error state
         "aria-invalid:ring-error/20 aria-invalid:border-error",
         // Disabled state

@@ -102,20 +102,23 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Simulated)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Real Component Behavior)</h4>
         <Checkbox
           aria-label="Focused"
-          className="border-accent ring-[3px] ring-accent/30"
+          autoFocus
         />
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Checked + Focused (Simulated)</h4>
-        <Checkbox
-          defaultChecked
-          aria-label="Checked and focused"
-          className="border-accent ring-[3px] ring-accent/30"
-        />
+        <h4 className="text-sm font-semibold text-primary mb-3">Checked + Focused (Real Behavior)</h4>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            defaultChecked
+            aria-label="Checked and focused"
+            id="checked-focused"
+          />
+          <label htmlFor="checked-focused" className="text-sm">Click to see focus ring</label>
+        </div>
       </div>
 
       <div>

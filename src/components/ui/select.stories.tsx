@@ -108,11 +108,12 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Simulated)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior)</h4>
         <Select>
           <SelectTrigger
-            className="w-[300px] !border-accent !ring-4 !ring-accent/50"
+            className="w-[300px]"
             aria-label="Focused"
+            autoFocus
           >
             <SelectValue placeholder="Focus state" />
           </SelectTrigger>

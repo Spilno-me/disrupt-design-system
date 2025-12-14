@@ -42,8 +42,8 @@ function Textarea({ className, ...props }: TextareaProps) {
         "flex field-sizing-content min-h-textarea w-full rounded-sm border border-default bg-surface px-3 py-3 text-base text-primary font-sans shadow-sm transition-[color,box-shadow] outline-none md:text-sm",
         // Placeholder
         "placeholder:text-tertiary",
-        // Focus state - accent
-        "focus-visible:border-accent focus-visible:ring-accent/20 focus-visible:ring-[3px]",
+        // Focus state - uses design token (now dark blue for high contrast)
+        "focus-visible:border-ring focus-visible:ring-ring/40 focus-visible:ring-4",
         // Error state
         "aria-invalid:ring-error/20 aria-invalid:border-error",
         // Disabled state

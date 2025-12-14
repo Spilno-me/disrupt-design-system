@@ -80,7 +80,7 @@ function AssignLeadDialogDemo({
   const [isAssigning, setIsAssigning] = useState(isAssigningProp)
   const [assignment, setAssignment] = useState<{ partnerId: string; notes?: string } | null>(null)
 
-  const handleAssign = async (leadId: string, partnerId: string, _notes?: string) => {
+  const handleAssign = async (leadId: string, partnerId: string, notes?: string) => {
     setIsAssigning(true)
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500))

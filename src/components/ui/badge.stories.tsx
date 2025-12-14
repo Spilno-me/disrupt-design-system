@@ -149,9 +149,11 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Simulated)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior - Click to See)</h4>
         <div className="flex flex-wrap gap-3">
-          <Badge className="ring-[3px] ring-ring/50 border-ring">Focus Ring</Badge>
+          <Badge asChild>
+            <button type="button">Focusable Badge (Click Me)</button>
+          </Badge>
         </div>
       </div>
 
