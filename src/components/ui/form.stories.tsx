@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import {
   Form,
@@ -323,4 +324,137 @@ function ContactFormExample() {
 
 export const ContactForm: Story = {
   render: () => <ContactFormExample />,
+}
+
+// All States (Visual Matrix - No interaction needed)
+function AllStatesExample() {
+  const form = useForm({
+    defaultValues: {
+      normal: '',
+      error: 'invalid',
+      disabled: '',
+      input: '',
+      checkbox: false,
+      focus: '',
+    },
+    mode: 'all',
+  })
+
+  // Trigger validation to show error state
+  React.useEffect(() => {
+    form.trigger('error')
+  }, [form])
+
+  return (
+    <Form {...form}>
+      <div className="w-[500px] space-y-8 p-6">
+        <div>
+          <h4 className="text-sm font-semibold text-primary mb-4">Form Item States</h4>
+          <div className="space-y-6">
+            <FormField
+              control={form.control}
+              name="normal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Normal State</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter text" {...field} />
+                  </FormControl>
+                  <FormDescription>This is a helper description.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="error"
+              rules={{ required: 'This field is required' }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Error State</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Invalid value" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="disabled"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Disabled State</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Disabled" disabled {...field} />
+                  </FormControl>
+                  <FormDescription>This field is disabled.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-primary mb-4">Field Types</h4>
+          <div className="space-y-6">
+            <FormField
+              control={form.control}
+              name="input"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Input Field</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Text input" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="checkbox"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Checkbox Field</FormLabel>
+                    <FormDescription>With label and description</FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior - Tab to See)</h4>
+          <FormField
+            control={form.control}
+            name="focus"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Focusable Input</FormLabel>
+                <FormControl>
+                  <Input placeholder="Click or tab to focus" {...field} />
+                </FormControl>
+                <FormDescription>Focus ring color matches design tokens.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </div>
+    </Form>
+  )
+}
+
+export const AllStates: Story = {
+  render: () => <AllStatesExample />,
 }

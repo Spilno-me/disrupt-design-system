@@ -22,7 +22,7 @@
 
 ---
 
-## 📋 Core Components List (48 total)
+## 📋 Core Components List (47 total)
 
 ### Category 1: Form Controls (11 components) - PRIORITY HIGH
 **Why:** Used in every form, dialog, and page
@@ -60,13 +60,13 @@
 
 ---
 
-### Category 4: Data Display (5 components) - PRIORITY MEDIUM
+### Category 4: Data Display (4 components) - PRIORITY MEDIUM
 **Why:** Complex but essential
 
 1. ⬜ **DataTable** - TODO (Complex - do last)
 2. ⬜ **Pagination** - TODO
 3. ✅ **Skeleton** - STABILIZED (+ SkeletonImage, SkeletonText)
-4. ✅ **SeverityIndicator** - STABILIZED
+4. ~~**SeverityIndicator**~~ - MOVED TO LEADS DOMAIN (not a core UI primitive)
 
 ---
 
@@ -208,6 +208,8 @@
 ### Documentation
 - [ ] JSDoc complete with examples
 - [ ] Storybook story exists
+- [ ] **CRITICAL:** Storybook has AllStates story (visual matrix showing all variants/sizes/states + focus behavior)
+- [ ] AllStates story follows standardized pattern (see agent-context.json → storybook.allStatesStory)
 - [ ] Storybook shows essential variants only
 - [ ] Component exported from `src/index.ts`
 - [ ] Types exported
@@ -223,15 +225,17 @@
 
 ## 📊 Progress Tracking
 
-### ✅ Completed (3/48 core components)
-1. **Badge** - ATOM, variants reviewed (7→5 recommended for v3.0.0)
-2. **SeverityIndicator** - ATOM, token violation documented
-3. **Skeleton** - ATOM, variant deprecated (3→1)
+### ✅ Completed (2/47 core components)
+1. **Badge** - ATOM, variants reviewed (7→5 recommended for v3.0.0), AllStates story standardized
+2. **Skeleton** - ATOM, variant deprecated (3→1), AllStates story standardized
 
-### 🔄 In Progress (0/48)
+### 🔧 Utility Systems (Infrastructure - Not Core Components)
+- **Form** - Composition helpers (FormItem, FormLabel, FormControl, FormMessage, FormDescription), AllStates story added
+
+### 🔄 In Progress (0/47)
 None
 
-### ⬜ To Do (45/48)
+### ⬜ To Do (45/47)
 
 **Priority HIGH (14):**
 - Button, Input, Textarea, Checkbox, Select, Label, Form, Slider

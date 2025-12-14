@@ -259,6 +259,36 @@
         "quickRef": ".claude/testing-quick-ref.md"
       }
     },
+    "storybook": {
+      "allStatesStory": {
+        "required": true,
+        "description": "MANDATORY: Every stabilized component must have an AllStates story",
+        "purpose": "Single comprehensive story showing ALL possible states/variants without requiring interaction",
+        "structure": {
+          "storyName": "AllStates",
+          "comment": "// All States (Visual Matrix - No interaction needed)",
+          "wrapper": "<div className=\"space-y-8 p-6\"> or <div className=\"w-[Npx] space-y-8 p-6\">",
+          "sections": "Multiple <div> blocks, each with <h4> header",
+          "headerFormat": "<h4 className=\"text-sm font-semibold text-primary mb-4\">Section Title</h4>",
+          "mustInclude": [
+            "All variants (if component has variant prop)",
+            "All sizes (if component has size prop)",
+            "All shapes (if component has shape prop)",
+            "Focus state with real behavior (Tab/Click to See) if interactive",
+            "Any other props that change visual appearance"
+          ]
+        },
+        "example": "See Badge.stories.tsx lines 113-179, Skeleton.stories.tsx lines 84-147",
+        "standardizedComponents": ["Badge", "Skeleton"],
+        "utilitySystemsWithAllStates": ["Form (infrastructure, not a core component)"],
+        "focusStatePattern": {
+          "required": "If component accepts focus or can be interactive",
+          "header": "Focus State (Real Component Behavior - Click to See) or (Tab to See)",
+          "implementation": "Show actual focusable component, not fake CSS",
+          "why": "Demonstrates real focus ring color from design tokens (--ring variable)"
+        }
+      }
+    },
     "exports": {
       "current": {
         "Button": true,
