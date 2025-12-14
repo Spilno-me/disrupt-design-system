@@ -43,6 +43,14 @@ NO Claude attribution
 Format: feat:|fix:|chore:|refactor:|docs:
 ```
 
+### Error Handling
+```
+TypeScript/ESLint errors: FIX, never revert/reset commits
+NO git reset --hard, NO git checkout to discard changes
+Fix the root cause: update types, fix imports, use correct tokens
+Acceptable solutions only - no workarounds, no temp fixes
+```
+
 ---
 
 ## Workflows (agent-context.json → workflow)
