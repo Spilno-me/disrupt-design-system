@@ -291,8 +291,8 @@
             "Any other props that change visual appearance"
           ]
         },
-        "example": "See Badge.stories.tsx lines 113-179, Skeleton.stories.tsx lines 84-147, Input.stories.tsx lines 94-163",
-        "standardizedComponents": ["Badge", "Skeleton", "Input"],
+        "example": "See Badge.stories.tsx lines 113-179, Skeleton.stories.tsx lines 84-147, Input.stories.tsx lines 94-163, Textarea.stories.tsx lines 66-113",
+        "standardizedComponents": ["Badge", "Skeleton", "Input", "Textarea"],
         "focusStatePattern": {
           "required": "If component accepts focus or can be interactive",
           "header": "Focus State (Real Component Behavior - Click to See) or (Tab to See)",

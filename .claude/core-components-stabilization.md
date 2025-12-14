@@ -47,7 +47,7 @@
 1. ✅ **Badge** - STABILIZED
 2. ⬜ **Button** - TODO
 3. ✅ **Input** - STABILIZED
-4. ⬜ **Textarea** - TODO
+4. ✅ **Textarea** - STABILIZED
 5. ⬜ **Checkbox** - TODO
 6. ⬜ **Select** + sub-components (SelectTrigger, SelectContent, SelectItem, SelectValue) - TODO
 7. ⬜ **Label** - TODO
@@ -242,10 +242,11 @@
 
 ## 📊 Progress Tracking
 
-### ✅ Completed (3/46 core components)
+### ✅ Completed (4/46 core components)
 1. **Badge** - ATOM, variants reviewed (7→5 recommended for v3.0.0), AllStates story standardized
 2. **Skeleton** - ATOM, variant deprecated (3→1), AllStates story standardized
 3. **Input** - ATOM, AllStates story standardized, comprehensive JSDoc with testId examples
+4. **Textarea** - ATOM, AllStates story standardized, comprehensive JSDoc with testId examples
 
 ### 🔧 Utility Systems (Infrastructure - Not Core Components)
 - **Form** - Composition helpers (FormItem, FormLabel, FormControl, FormMessage, FormDescription)
@@ -255,10 +256,10 @@
 ### 🔄 In Progress (0/47)
 None
 
-### ⬜ To Do (43/46)
+### ⬜ To Do (42/46)
 
-**Priority HIGH (12):**
-- Button, Textarea, Checkbox, Select, Label, Slider
+**Priority HIGH (11):**
+- Button, Checkbox, Select, Label, Slider
 - Dialog, Sheet, Tooltip
 - ErrorBoundary, ErrorState
 - Card
