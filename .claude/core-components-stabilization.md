@@ -46,7 +46,7 @@
 
 1. ✅ **Badge** - STABILIZED
 2. ⬜ **Button** - TODO
-3. ⬜ **Input** - TODO
+3. ✅ **Input** - STABILIZED
 4. ⬜ **Textarea** - TODO
 5. ⬜ **Checkbox** - TODO
 6. ⬜ **Select** + sub-components (SelectTrigger, SelectContent, SelectItem, SelectValue) - TODO
@@ -254,10 +254,10 @@
 ### 🔄 In Progress (0/47)
 None
 
-### ⬜ To Do (44/46)
+### ⬜ To Do (43/46)
 
-**Priority HIGH (13):**
-- Button, Input, Textarea, Checkbox, Select, Label, Slider
+**Priority HIGH (12):**
+- Button, Textarea, Checkbox, Select, Label, Slider
 - Dialog, Sheet, Tooltip
 - ErrorBoundary, ErrorState
 - Card

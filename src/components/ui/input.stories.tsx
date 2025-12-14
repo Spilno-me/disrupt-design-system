@@ -93,27 +93,28 @@ export const ErrorState: Story = {
 // All States (Visual Matrix - No interaction needed)
 export const AllStates: Story = {
   render: () => (
-    <div className="w-[500px] space-y-6 p-6">
+    <div className="w-[500px] space-y-8 p-6">
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Default (Empty)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Default (Empty)</h4>
         <Input placeholder="Enter text" />
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">With Value</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">With Value</h4>
         <Input defaultValue="John Doe" placeholder="Enter name" />
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Real Component Behavior)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior - Tab to See)</h4>
         <Input
-          placeholder="Focused input"
+          placeholder="Click or tab to focus"
           autoFocus
         />
+        <p className="text-xs text-secondary mt-2">Focus ring color matches design tokens (--ring variable)</p>
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Error State (aria-invalid)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Error State (aria-invalid)</h4>
         <Input
           placeholder="Invalid email"
           aria-invalid="true"
@@ -122,7 +123,7 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Disabled State</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Disabled State</h4>
         <Input
           placeholder="Disabled input"
           disabled
@@ -131,12 +132,31 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Password Type</h4>
-        <Input
-          type="password"
-          defaultValue="password123"
-          placeholder="Enter password"
-        />
+        <h4 className="text-sm font-semibold text-primary mb-4">Input Types</h4>
+        <div className="space-y-3">
+          <div>
+            <p className="text-xs text-secondary mb-2">Password (larger text, wider spacing)</p>
+            <Input
+              type="password"
+              defaultValue="password123"
+              placeholder="Enter password"
+            />
+          </div>
+          <div>
+            <p className="text-xs text-secondary mb-2">Email</p>
+            <Input
+              type="email"
+              placeholder="email@example.com"
+            />
+          </div>
+          <div>
+            <p className="text-xs text-secondary mb-2">Number</p>
+            <Input
+              type="number"
+              placeholder="0"
+            />
+          </div>
+        </div>
       </div>
     </div>
   ),
