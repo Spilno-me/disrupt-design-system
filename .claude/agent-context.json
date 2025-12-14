@@ -260,6 +260,19 @@
       }
     },
     "storybook": {
+      "moleculeDocumentation": {
+        "required": true,
+        "description": "Molecules must document the atoms they use with visible clickable links",
+        "linkFormat": "Use bold markdown with arrow: **[→ `ComponentName`](?path=/story/core-component--all-states)**",
+        "sections": [
+          "List all core atoms used by the molecule",
+          "Links must be bold and have → arrow for visibility",
+          "Link directly to AllStates story when available",
+          "Add emoji header: 📦 for atom dependencies, 🔗 for related links"
+        ],
+        "example": "See Utilities/Form stories documentation",
+        "why": "Helps developers understand dependencies and find atom documentation easily"
+      },
       "allStatesStory": {
         "required": true,
         "description": "MANDATORY: Every stabilized component must have an AllStates story",

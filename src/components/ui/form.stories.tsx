@@ -32,12 +32,13 @@ Form is a composition helper system built on top of [react-hook-form](https://re
 ## Architecture
 
 ### Core Components (Atoms):
-Form utilities wrap these core atoms:
-- [\`<Input />\`](?path=/docs/core-input--docs) - Standalone text input primitive
-- [\`<Label />\`](?path=/docs/core-label--docs) - Standalone label primitive
-- [\`<Checkbox />\`](?path=/docs/core-checkbox--docs) - Standalone checkbox primitive
-- [\`<Textarea />\`](?path=/docs/core-textarea--docs) - Standalone textarea primitive
-- [\`<Select />\`](?path=/docs/core-select--docs) - Standalone select primitive
+**📦 Form utilities wrap these core atoms (click to view):**
+
+- **[→ \`<Input />\`](?path=/docs/core-input--docs)** - Standalone text input primitive
+- **[→ \`<Label />\`](?path=/docs/core-label--docs)** - Standalone label primitive
+- **[→ \`<Checkbox />\`](?path=/docs/core-checkbox--docs)** - Standalone checkbox primitive
+- **[→ \`<Textarea />\`](?path=/docs/core-textarea--docs)** - Standalone textarea primitive
+- **[→ \`<Select />\`](?path=/docs/core-select--docs)** - Standalone select primitive
 
 ### Form Utilities (Infrastructure):
 - \`<Form>\` - Context provider that wraps react-hook-form
@@ -88,11 +89,12 @@ MOLECULES (Business Components):
 \`\`\`
 
 ## See Also
-For the actual UI primitives and their AllStates stories, see:
-- [\`Input\`](?path=/docs/core-input--docs) - Text input atom
-- [\`Label\`](?path=/docs/core-label--docs) - Label atom
-- [\`Checkbox\`](?path=/docs/core-checkbox--docs) - Checkbox atom
-- [\`Button\`](?path=/docs/core-button--docs) - Button atom (for form submission)
+**🔗 View AllStates stories for these atoms (click to view):**
+
+- **[→ \`Input\` AllStates Story](?path=/story/core-input--all-states)** - See all input states
+- **[→ \`Label\` Documentation](?path=/docs/core-label--docs)** - Label atom
+- **[→ \`Checkbox\` AllStates Story](?path=/story/core-checkbox--all-states)** - See all checkbox states
+- **[→ \`Button\` AllStates Story](?path=/story/core-button--all-states)** - See all button states for form submission
         `,
       },
     },
