@@ -28,6 +28,8 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
+    "generate-tokens": "node scripts/generate-tokens.js",
+    "prebuild": "npm run generate-tokens",
     "build": "tsc && vite build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
