@@ -22,9 +22,26 @@
 
 ---
 
-## 📋 Core Components List (47 total)
+## 📋 Core Components List (46 total)
 
-### Category 1: Form Controls (11 components) - PRIORITY HIGH
+---
+
+## 🔧 Utility Systems (Infrastructure - NOT Core Components)
+
+**What are these?**
+- Infrastructure that helps compose core components
+- NOT standalone UI primitives
+- Provide context, validation, or composition helpers
+
+1. **Form** + sub-components (FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription)
+   - Status: ✅ Documentation complete with links to core atoms
+   - Purpose: react-hook-form wrapper utilities
+   - Note: The actual atoms are Input, Label, Checkbox (listed below in core components)
+   - AllStates: Not needed - states are demonstrated in the wrapped atoms
+
+---
+
+### Category 1: Form Controls (10 components) - PRIORITY HIGH
 **Why:** Used in every form, dialog, and page
 
 1. ✅ **Badge** - STABILIZED
@@ -34,8 +51,8 @@
 5. ⬜ **Checkbox** - TODO
 6. ⬜ **Select** + sub-components (SelectTrigger, SelectContent, SelectItem, SelectValue) - TODO
 7. ⬜ **Label** - TODO
-8. ⬜ **Form** + sub-components (FormField, FormItem, FormLabel, FormControl, FormMessage) - TODO
-9. ⬜ **Slider** - TODO
+8. ⬜ **Slider** - TODO
+9. ~~**Form**~~ - MOVED TO UTILITY SYSTEMS (infrastructure, not a UI component)
 
 ---
 
@@ -230,15 +247,17 @@
 2. **Skeleton** - ATOM, variant deprecated (3→1), AllStates story standardized
 
 ### 🔧 Utility Systems (Infrastructure - Not Core Components)
-- **Form** - Composition helpers (FormItem, FormLabel, FormControl, FormMessage, FormDescription), AllStates story added
+- **Form** - Composition helpers (FormItem, FormLabel, FormControl, FormMessage, FormDescription)
+  - Note: No AllStates story needed (states are shown in Input, Label, Checkbox atoms)
+  - Documentation added with links to core atoms
 
 ### 🔄 In Progress (0/47)
 None
 
-### ⬜ To Do (45/47)
+### ⬜ To Do (44/46)
 
-**Priority HIGH (14):**
-- Button, Input, Textarea, Checkbox, Select, Label, Form, Slider
+**Priority HIGH (13):**
+- Button, Input, Textarea, Checkbox, Select, Label, Slider
 - Dialog, Sheet, Tooltip
 - ErrorBoundary, ErrorState
 - Card

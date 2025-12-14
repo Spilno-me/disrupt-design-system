@@ -15,9 +15,87 @@ import { Checkbox } from './checkbox'
 import { Button } from './button'
 
 const meta: Meta = {
-  title: 'Core/Form',
+  title: 'Utilities/Form',
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `
+# Form - Utility System
+
+**Classification:** Utility System / Infrastructure (NOT a Core Component)
+
+## What is Form?
+
+Form is a composition helper system built on top of [react-hook-form](https://react-hook-form.com/). It provides context and utilities to connect core UI components (Input, Label, Checkbox, etc.) with form validation and state management.
+
+## Architecture
+
+### Core Components (Atoms):
+Form utilities wrap these core atoms:
+- [\`<Input />\`](?path=/docs/core-input--docs) - Standalone text input primitive
+- [\`<Label />\`](?path=/docs/core-label--docs) - Standalone label primitive
+- [\`<Checkbox />\`](?path=/docs/core-checkbox--docs) - Standalone checkbox primitive
+- [\`<Textarea />\`](?path=/docs/core-textarea--docs) - Standalone textarea primitive
+- [\`<Select />\`](?path=/docs/core-select--docs) - Standalone select primitive
+
+### Form Utilities (Infrastructure):
+- \`<Form>\` - Context provider that wraps react-hook-form
+- \`<FormItem>\` - Layout wrapper (\`<div>\`) for form fields
+- \`<FormLabel>\` - Wraps \`<Label>\` + connects to form context
+- \`<FormControl>\` - Passes field props to Input/Checkbox/etc.
+- \`<FormMessage>\` - Displays validation errors
+- \`<FormDescription>\` - Helper text for fields
+- \`<FormField>\` - Connects individual fields to react-hook-form
+
+## Why is Form a Utility System?
+
+1. **Not a UI Primitive**: Form doesn't render any unique UI. It wraps existing atoms.
+2. **Infrastructure Role**: Provides context, validation, and state management.
+3. **Composition Helper**: Helps you BUILD form molecules (LoginForm, ContactForm) from atoms.
+4. **No testId Generation**: Form utilities don't auto-generate testIds like molecules do.
+
+## Form Layout Pattern
+
+**CRITICAL: Buttons in forms must ALWAYS be right-aligned:**
+
+\`\`\`tsx
+<form>
+  {/* Form fields... */}
+  <div className="flex justify-end">
+    <Button type="submit">Submit</Button>
+  </div>
+</form>
+\`\`\`
+
+This creates consistent UX across all forms in the application.
+
+## Component Hierarchy
+
+\`\`\`
+ATOMS (Core Components):
+  ├─ Input
+  ├─ Label
+  └─ Checkbox
+      ↓
+UTILITIES (Infrastructure):
+  └─ Form (wraps atoms with validation)
+      ↓
+MOLECULES (Business Components):
+  ├─ LoginForm
+  ├─ ContactForm
+  └─ LeadFilterForm
+\`\`\`
+
+## See Also
+For the actual UI primitives and their AllStates stories, see:
+- [\`Input\`](?path=/docs/core-input--docs) - Text input atom
+- [\`Label\`](?path=/docs/core-label--docs) - Label atom
+- [\`Checkbox\`](?path=/docs/core-checkbox--docs) - Checkbox atom
+- [\`Button\`](?path=/docs/core-button--docs) - Button atom (for form submission)
+        `,
+      },
+    },
   },
   tags: ['autodocs'],
 }
@@ -110,7 +188,9 @@ function BasicFormExample() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="flex justify-end">
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   )
@@ -176,7 +256,9 @@ function ValidationErrorsExample() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="flex justify-end">
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   )
@@ -239,7 +321,9 @@ function CheckboxFormExample() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <div className="flex justify-end">
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   )
@@ -314,9 +398,9 @@ function ContactFormExample() {
             </FormItem>
           )}
         />
-        <Button variant="contact" className="w-full">
-          Send Message
-        </Button>
+        <div className="flex justify-end">
+          <Button variant="contact">Send Message</Button>
+        </div>
       </form>
     </Form>
   )
@@ -326,135 +410,70 @@ export const ContactForm: Story = {
   render: () => <ContactFormExample />,
 }
 
-// All States (Visual Matrix - No interaction needed)
-function AllStatesExample() {
+// Login Form Example (showcasing Form + Input + Button atoms)
+function LoginFormExample() {
   const form = useForm({
     defaultValues: {
-      normal: '',
-      error: 'invalid',
-      disabled: '',
-      input: '',
-      checkbox: false,
-      focus: '',
+      email: '',
+      password: '',
     },
-    mode: 'all',
   })
 
-  // Trigger validation to show error state
-  React.useEffect(() => {
-    form.trigger('error')
-  }, [form])
+  const onSubmit = (data: { email: string; password: string }) => {
+    console.log('Login submitted:', data)
+  }
 
   return (
     <Form {...form}>
-      <div className="w-[500px] space-y-8 p-6">
-        <div>
-          <h4 className="text-sm font-semibold text-primary mb-4">Form Item States</h4>
-          <div className="space-y-6">
-            <FormField
-              control={form.control}
-              name="normal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Normal State</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter text" {...field} />
-                  </FormControl>
-                  <FormDescription>This is a helper description.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="error"
-              rules={{ required: 'This field is required' }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Error State</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Invalid value" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="disabled"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Disabled State</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Disabled" disabled {...field} />
-                  </FormControl>
-                  <FormDescription>This field is disabled.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-[350px] space-y-6">
+        <FormField
+          control={form.control}
+          name="email"
+          rules={{
+            required: 'Email is required',
+            pattern: {
+              value: /^\S+@\S+$/i,
+              message: 'Invalid email address',
+            },
+          }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="you@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          rules={{
+            required: 'Password is required',
+            minLength: {
+              value: 8,
+              message: 'Password must be at least 8 characters',
+            },
+          }}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="••••••••" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex justify-end">
+          <Button type="submit">Sign In</Button>
         </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-primary mb-4">Field Types</h4>
-          <div className="space-y-6">
-            <FormField
-              control={form.control}
-              name="input"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Input Field</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Text input" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="checkbox"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>Checkbox Field</FormLabel>
-                    <FormDescription>With label and description</FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior - Tab to See)</h4>
-          <FormField
-            control={form.control}
-            name="focus"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Focusable Input</FormLabel>
-                <FormControl>
-                  <Input placeholder="Click or tab to focus" {...field} />
-                </FormControl>
-                <FormDescription>Focus ring color matches design tokens.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-      </div>
+      </form>
     </Form>
   )
 }
 
-export const AllStates: Story = {
-  render: () => <AllStatesExample />,
+export const LoginForm: Story = {
+  render: () => <LoginFormExample />,
 }
