@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { InvoiceCard } from './InvoiceCard'
-import type { Invoice, InvoiceAction } from './types'
+import type { Invoice, InvoiceAction as _InvoiceAction } from './types'
 
 const meta: Meta<typeof InvoiceCard> = {
   title: 'Partner/Invoices/InvoiceCard',

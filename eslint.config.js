@@ -354,5 +354,15 @@ export default tseslint.config(
     rules: {
       'no-restricted-syntax': 'off',
     },
+  },
+  {
+    // Website-specific hooks that parse browser computed CSS values
+    // These hooks read getComputedStyle() which returns strings like 'rgba(0,0,0,0)'
+    // and 'rgb(251,251,243)' - we MUST compare against these exact browser-returned
+    // strings, not design tokens. This is runtime color detection, not color application.
+    files: ['src/hooks/useHeaderContrast.ts'],
+    rules: {
+      'no-restricted-syntax': 'off',
+    },
   }
 )

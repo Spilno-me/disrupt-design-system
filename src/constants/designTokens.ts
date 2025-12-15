@@ -534,6 +534,7 @@ export const RADIUS = {
 // =============================================================================
 
 export const SPACING = {
+  // Tailwind classes for component usage
   sectionPaddingY: 'py-16 lg:py-24',
   sectionPaddingX: 'px-6 lg:px-10',
   containerMaxWidth: '1440px',
@@ -544,6 +545,26 @@ export const SPACING = {
   subheadingGap: 'mb-8',
   listItemGap: 'gap-4',
   sectionContentGap: 'gap-12 lg:gap-16',
+
+  // Pixel values for inline styles (MDX, dynamic styling)
+  // Based on 4px base unit: 4 → 8 → 12 → 16 → 20 → 24 → 32 → 40 → 48 → 64 → 80 → 96
+  px: {
+    micro: '4px',        // Icon-to-text, inline elements
+    tight: '8px',        // Related items (label + input)
+    base: '16px',        // Items within a component
+    comfortable: '24px', // Between components in a section
+    spacious: '32px',    // Between sections within a page
+    section: '48px',     // Major page sections
+    page: '96px',        // Hero to content, footer margins
+
+    // Semantic aliases for documentation
+    sectionHeadingTop: '32px',    // Gap after separator (spacious)
+    sectionHeadingBottom: '24px', // Gap to content (comfortable)
+    cardGap: '20px',              // Between cards
+    cardGapCompact: '16px',       // Compact card grids
+    cardPadding: '24px',          // Internal card padding
+    gridGap: '16px',              // Standard grid gap
+  },
 } as const
 
 // =============================================================================

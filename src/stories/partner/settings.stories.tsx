@@ -210,7 +210,7 @@ function SettingsFullPage() {
                 console.log('Saving notifications:', notifications)
                 alert('Notification preferences saved!')
               }}
-              onChangePassword={(current, newPass) => {
+              onChangePassword={(_current, _newPass) => {
                 console.log('Changing password')
                 alert('Password changed successfully!')
               }}
@@ -290,9 +290,9 @@ function SettingsPageExpanded() {
               user={mockUser}
               company={mockCompany}
               notifications={mockNotifications}
-              onSaveProfile={(profile) => alert('Profile saved!')}
-              onSaveCompany={(company) => alert('Company saved!')}
-              onSaveNotifications={(n) => alert('Notifications saved!')}
+              onSaveProfile={(_profile) => alert('Profile saved!')}
+              onSaveCompany={(_company) => alert('Company saved!')}
+              onSaveNotifications={(_n) => alert('Notifications saved!')}
               onChangePassword={() => alert('Password changed!')}
             />
           </main>
@@ -321,7 +321,7 @@ export const ContentOnly: Story = {
           onSaveProfile={(profile) => console.log('Save profile:', profile)}
           onSaveCompany={(company) => console.log('Save company:', company)}
           onSaveNotifications={(n) => console.log('Save notifications:', n)}
-          onChangePassword={(c, n) => console.log('Change password')}
+          onChangePassword={(_c, _n) => console.log('Change password')}
         />
       </div>
     </div>
@@ -345,9 +345,9 @@ export const Mobile: Story = {
           user={mockUser}
           company={mockCompany}
           notifications={mockNotifications}
-          onSaveProfile={(profile) => alert('Profile saved!')}
-          onSaveCompany={(company) => alert('Company saved!')}
-          onSaveNotifications={(n) => alert('Notifications saved!')}
+          onSaveProfile={(_profile) => alert('Profile saved!')}
+          onSaveCompany={(_company) => alert('Company saved!')}
+          onSaveNotifications={(_n) => alert('Notifications saved!')}
           onChangePassword={() => alert('Password changed!')}
         />
       </div>

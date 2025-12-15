@@ -18,47 +18,23 @@ function getColorBrightness(color: string): number {
 }
 
 /**
- * Check if any element at a point indicates a dark image background
+ * Check if any element at a point has a dark image background marker
  * Only checks for explicit data-dark-background markers, not dark CSS colors
  */
-function checkPointForDarkImageBackground(x: number, y: number): { foundDarkImage: boolean; bgColor: string } {
+function checkPointForDarkImageBackground(x: number, y: number): boolean {
   const elementsAtPoint = document.elementsFromPoint(x, y)
 
-  let bgColor = 'rgb(251, 251, 243)' // Default cream
-  let foundDarkImage = false
-
-  // First pass: check for elements with dark background images (explicit markers only)
   for (const el of elementsAtPoint) {
     // Skip header and its children
     if (el.closest('[data-element="main-header"]')) continue
 
     // Check for dark background image marker on this element
     if (el.getAttribute('data-dark-background') === 'true') {
-      foundDarkImage = true
-      break
+      return true
     }
   }
 
-  // If we found a dark image section, return early
-  if (foundDarkImage) {
-    return { foundDarkImage: true, bgColor }
-  }
-
-  // Second pass: find background color (for non-image based contrast detection)
-  for (const el of elementsAtPoint) {
-    // Skip header and its children
-    if (el.closest('[data-element="main-header"]')) continue
-
-    const style = window.getComputedStyle(el)
-    const bg = style.backgroundColor
-
-    if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
-      bgColor = bg
-      break
-    }
-  }
-
-  return { foundDarkImage, bgColor }
+  return false
 }
 
 /**
@@ -204,17 +180,11 @@ export function useHeaderContrast(): 'dark' | 'light' {
       ]
 
       let foundDarkImage = false
-      let bgColor = 'rgb(251, 251, 243)' // Default cream
 
       for (const x of samplePoints) {
-        const result = checkPointForDarkImageBackground(x, y)
-        if (result.foundDarkImage) {
+        if (checkPointForDarkImageBackground(x, y)) {
           foundDarkImage = true
           break
-        }
-        // Use the first non-default background color found
-        if (result.bgColor !== 'rgb(251, 251, 243)') {
-          bgColor = result.bgColor
         }
       }
 

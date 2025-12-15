@@ -41,6 +41,41 @@ export {
   ALIAS,
 };
 
+/**
+ * SPACING - Pixel-based spacing tokens for MDX inline styles
+ * Based on 4px base unit scale from .claude/spacing-rules.md
+ */
+export const SPACING = {
+  // Micro: 2-4px - Icon-to-text, inline elements
+  micro: '4px',
+
+  // Tight: 6-8px - Related items (label + input)
+  tight: '8px',
+
+  // Base: 12-16px - Items within a component
+  base: '16px',
+
+  // Comfortable: 20-24px - Between components
+  comfortable: '24px',
+
+  // Spacious: 32-40px - Between sections within a page
+  spacious: '32px',
+
+  // Section: 48-64px - Major page sections
+  section: '48px',
+
+  // Page: 80-96px - Hero to content, footer margins
+  page: '96px',
+
+  // Semantic aliases for documentation
+  sectionHeadingTop: '32px',    // Spacious - gap after separator
+  sectionHeadingBottom: '24px', // Comfortable - gap to content
+  cardGap: '20px',              // Comfortable - between cards
+  cardGapCompact: '16px',       // Base - compact card grids
+  cardPadding: '24px',          // Comfortable - internal card padding
+  gridGap: '16px',              // Base - standard grid gap
+} as const;
+
 interface HeroHeaderProps {
   icon: React.ReactNode;
   title: string;

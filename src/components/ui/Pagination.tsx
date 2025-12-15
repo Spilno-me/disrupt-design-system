@@ -95,7 +95,7 @@ export function Pagination({
   maxPageButtons = 7,
   loading = false,
   className,
-  compact = false,
+  compact: _compact = false,
   resultsTextFormat,
 }: PaginationProps) {
   // Calculate pagination values
