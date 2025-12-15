@@ -24,7 +24,7 @@ import { AppFooter } from '../../components/ui/AppFooter'
 import { BottomNav } from '../../components/ui/BottomNav'
 import { GridBlobBackground } from '../../components/ui/GridBlobCanvas'
 import { DataTable, ColumnDef } from '../../components/ui/DataTable'
-import { Card } from '../../components/ui/card'
+import { AppCard } from '../../components/ui/app-card'
 import { Button } from '../../components/ui/button'
 import { Pagination } from '../../components/ui/Pagination'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs'
@@ -555,7 +555,7 @@ interface StatCardProps {
 
 function StatCard({ title, value, icon, iconBgClass }: StatCardProps) {
   return (
-    <Card variant="default" shadow="md" className="gap-3">
+    <AppCard variant="default" shadow="md" className="gap-3">
       <div className="flex items-center justify-between">
         <span className="text-sm text-secondary font-medium">{title}</span>
         <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', iconBgClass)}>
@@ -563,7 +563,7 @@ function StatCard({ title, value, icon, iconBgClass }: StatCardProps) {
         </div>
       </div>
       <div className="text-2xl font-semibold text-primary">{value}</div>
-    </Card>
+    </AppCard>
   )
 }
 

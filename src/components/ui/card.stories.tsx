@@ -6,12 +6,11 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from './card'
 import { Button } from './button'
 
 const meta: Meta<typeof Card> = {
-  title: 'Core/Card',
+  title: 'Core/Card (Website Only)',
   component: Card,
   parameters: {
     layout: 'centered',
@@ -20,13 +19,13 @@ const meta: Meta<typeof Card> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'pricing', 'pricingHighlight', 'elevated'],
-      description: 'Card variant style',
+      options: ['pricing', 'pricingHighlight'],
+      description: 'Card variant style (website pricing only)',
     },
     shadow: {
       control: 'select',
-      options: ['none', 'sm', 'md', 'lg', 'xl'],
-      description: 'Shadow elevation level',
+      options: ['none', 'sm', 'md', 'lg', 'xl', 'elevated'],
+      description: 'Shadow elevation level (elevated = natural light from above)',
     },
   },
 }
@@ -104,7 +103,7 @@ const PRICING_CARD_TIERS: PricingCardTier[] = [
 function FeatureListItem({ feature, isHighlighted }: { feature: TierFeature; isHighlighted?: boolean }) {
   return (
     <div className="flex items-start gap-3">
-      <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isHighlighted ? 'text-accent' : 'text-accent'}`} />
+      <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${isHighlighted ? 'text-accent' : 'text-muted'}`} />
       <div className="flex-1">
         <span className={`font-sans text-sm leading-[1.625] ${isHighlighted ? 'text-primary' : 'text-muted'}`}>
           {feature.label}
@@ -163,29 +162,13 @@ function PricingCardComponent({ tier }: { tier: PricingCardTier }) {
 }
 
 // =============================================================================
-// STORIES
+// STORIES - Website Pricing Cards Only
 // =============================================================================
-
-// Basic card with header/content/footer
-export const Default: Story = {
-  render: () => (
-    <Card className="w-[380px]" shadow="sm">
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card description goes here</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted leading-relaxed">
-          This is the main content area of the card.
-        </p>
-      </CardContent>
-      <CardFooter className="justify-end gap-2">
-        <Button variant="outline" size="sm">Cancel</Button>
-        <Button size="sm" variant="contact">Confirm</Button>
-      </CardFooter>
-    </Card>
-  ),
-}
+//
+// ⚠️ IMPORTANT: This component is FROZEN for website use only.
+// For in-app cards, see AppCard component (app-card.stories.tsx).
+//
+// =============================================================================
 
 // Pricing card variants
 export const PricingVariants: Story = {
@@ -224,135 +207,3 @@ export const AllPricingTiers: Story = {
   ),
 }
 
-// Shadow levels
-export const ShadowLevels: Story = {
-  render: () => (
-    <div className="flex gap-6">
-      <Card shadow="none" className="w-[150px] p-4">
-        <p className="text-sm text-center">none</p>
-      </Card>
-      <Card shadow="sm" className="w-[150px] p-4">
-        <p className="text-sm text-center">sm</p>
-      </Card>
-      <Card shadow="md" className="w-[150px] p-4">
-        <p className="text-sm text-center">md</p>
-      </Card>
-      <Card shadow="lg" className="w-[150px] p-4">
-        <p className="text-sm text-center">lg</p>
-      </Card>
-      <Card shadow="xl" className="w-[150px] p-4">
-        <p className="text-sm text-center">xl</p>
-      </Card>
-    </div>
-  ),
-}
-
-// =============================================================================
-// ELEVATED CARD STORIES (For in-app use across Flow/Market/Partner)
-// =============================================================================
-
-// Elevated card - gradient background with gradient border
-export const Elevated: Story = {
-  render: () => (
-    <Card variant="default" shadow="md" className="w-[408px] h-[199px]">
-      <CardHeader className="p-0">
-        <CardTitle className="text-primary text-lg">Card Title</CardTitle>
-        <CardDescription>Card description goes here</CardDescription>
-      </CardHeader>
-      <CardContent className="p-0 mt-4">
-        <p className="text-sm text-muted leading-relaxed">
-          The elevated card variant features a gradient background transitioning from white to light gray,
-          with a subtle gradient border effect for added depth. Ideal for in-app content cards.
-        </p>
-      </CardContent>
-    </Card>
-  ),
-}
-
-// Elevated card examples for different app contexts
-export const ElevatedInAppCards: Story = {
-  render: () => (
-    <div className="flex gap-6">
-      <Card variant="default" shadow="md" className="w-[408px]">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
-            <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="font-semibold text-primary">Active Incidents</h3>
-            <p className="text-sm text-muted">12 open items</p>
-          </div>
-        </div>
-        <p className="text-sm text-muted mt-4">
-          Track and manage active safety incidents across all facilities.
-        </p>
-      </Card>
-      <Card variant="default" shadow="md" className="w-[408px]">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-circleBlue/10 flex items-center justify-center">
-            <svg className="w-6 h-6 text-circleBlue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="font-semibold text-primary">Compliance Score</h3>
-            <p className="text-sm text-muted">94% compliant</p>
-          </div>
-        </div>
-        <p className="text-sm text-muted mt-4">
-          Monitor regulatory compliance across your organization.
-        </p>
-      </Card>
-    </div>
-  ),
-}
-
-// All card variants comparison
-export const AllVariants: Story = {
-  render: () => (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h3 className="text-sm font-medium text-muted mb-4">Default</h3>
-        <Card variant="default" className="w-[300px]">
-          <CardHeader>
-            <CardTitle>Default Card</CardTitle>
-            <CardDescription>Standard card style</CardDescription>
-          </CardHeader>
-          <CardContent>Content area</CardContent>
-        </Card>
-      </div>
-      <div>
-        <h3 className="text-sm font-medium text-muted mb-4">Elevated (In-App)</h3>
-        <Card variant="default" shadow="md" className="w-[300px]">
-          <CardHeader className="p-0">
-            <CardTitle>Elevated Card</CardTitle>
-            <CardDescription>Gradient background & border</CardDescription>
-          </CardHeader>
-          <CardContent className="p-0 mt-4">Content area</CardContent>
-        </Card>
-      </div>
-      <div>
-        <h3 className="text-sm font-medium text-muted mb-4">Pricing</h3>
-        <Card variant="pricing" className="w-[300px]">
-          <CardHeader className="p-0">
-            <CardTitle>Pricing Card</CardTitle>
-            <CardDescription>Dashed border style</CardDescription>
-          </CardHeader>
-          <CardContent className="p-0 mt-4">Content area</CardContent>
-        </Card>
-      </div>
-      <div>
-        <h3 className="text-sm font-medium text-muted mb-4">Pricing Highlight</h3>
-        <Card variant="pricingHighlight" className="w-[300px]">
-          <CardHeader className="p-0">
-            <CardTitle>Highlighted Card</CardTitle>
-            <CardDescription>Animated border</CardDescription>
-          </CardHeader>
-          <CardContent className="p-0 mt-4">Content area</CardContent>
-        </Card>
-      </div>
-    </div>
-  ),
-}

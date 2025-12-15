@@ -402,16 +402,50 @@ export const COLORS = {
 } as const
 
 // =============================================================================
-// SHADOWS
+// SHADOWS - Natural Light Physics System
+// =============================================================================
+//
+// Real shadows are composed of 2-3 layers mimicking natural light:
+//
+// 1. UMBRA (Core Shadow) - Direct light blockage
+//    - Close to object, sharp edges, darker (12-15% opacity)
+//    - Small Y-offset, medium blur, negative spread
+//
+// 2. PENUMBRA (Soft Shadow) - Partial light blockage
+//    - Far from object, soft edges, lighter (6-8% opacity)
+//    - Large Y-offset, large blur, negative spread
+//
+// 3. AMBIENT OCCLUSION (Contact Shadow) - Surface contact
+//    - Very close, very dark (18-20% opacity), minimal blur
+//    - Only for grounded elements (sm level)
+//
+// Progression Rules:
+// - Opacity DECREASES with distance (umbra 12% → penumbra 8%)
+// - Blur INCREASES with distance (umbra 6px → penumbra 16px)
+// - Offset INCREASES with elevation (sm 1px → xl 12px)
+// - Negative spread contracts shadow for subtlety
+//
 // =============================================================================
 
 export const SHADOWS = {
   none: 'none',
-  sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-  lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
-  xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-  /** Ambient shadow: hard close shadow + soft spread for realistic depth */
+
+  /** SM: Subtle elevation - cards resting on surface */
+  sm: '0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px -1px rgba(0, 0, 0, 0.08)',
+
+  /** MD: Standard elevation - most cards, buttons, dropdowns */
+  md: '0 2px 8px -1px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.08)',
+
+  /** LG: Prominent elevation - modals, dialogs, sheets */
+  lg: '0 4px 16px -2px rgba(0, 0, 0, 0.12), 0 8px 24px -4px rgba(0, 0, 0, 0.08)',
+
+  /** XL: Maximum elevation - full-screen overlays, critical notifications */
+  xl: '0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 12px 32px -6px rgba(0, 0, 0, 0.08)',
+
+  /** ELEVATED: Natural light from above - premium emphasized content */
+  elevated: '0 3px 12px -1px rgba(0, 0, 0, 0.14), 0 10px 28px -4px rgba(0, 0, 0, 0.10)',
+
+  /** Legacy/Special Purpose Shadows */
   ambient: '0 2px 4px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08)',
   image: '0 6px 12px -2px rgba(0,0,0,0.3), 0 20px 50px -8px rgba(0,0,0,0.2)',
   header: ALIAS.shadow.header,
@@ -419,7 +453,7 @@ export const SHADOWS = {
   buttonDefault: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
 } as const
 
-export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl'
+export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'elevated'
 
 // =============================================================================
 // GRADIENTS

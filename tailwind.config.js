@@ -16,7 +16,7 @@ export default {
 
   content: [
     './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
 
   // DDS-specific extensions (if any) go here

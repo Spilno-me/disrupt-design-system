@@ -22,22 +22,21 @@ type: "callback"
     📖 REQUIRED READING (read in this order):
 
     1. ⭐ .claude/agent-context.json
-       → Master file: rules, workflows, quick lookups (100 lines)
+       → Master file: rules, workflows, quick lookups
 
     2. 📦 .claude/component-registry.json
-       → Component existence check (200 lines)
+       → Component existence check
 
-    3. 📚 .claude/findings/index.json
-       → Lessons learned (150 lines)
+    3. 🎨 .claude/DESIGN-SYSTEM.md
+       → Visual design decisions (shadows, colors, spacing)
 
-    OPTIONAL (if building/stabilizing components):
+    OPTIONAL (if building components):
     4. 🧪 .claude/testing-quick-ref.md
-       → testId strategy (ATOM/MOLECULE/PAGE)
-    5. 🎯 .claude/variant-reduction-strategy.md
-       → Variant reduction philosophy
+       → testId strategy
+    5. 📖 .claude/storybook-rules.md
+       → Story patterns
 
-    ⚡ Core: ~450 lines = 5 seconds
-    ⚡ With testing+variants: ~650 lines = 8 seconds
+    ⚡ Core: ~400 lines = 5 seconds
 
     ═══════════════════════════════════════════════════════════════
     CRITICAL RULES:

@@ -1,0 +1,291 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Circle } from 'lucide-react';
+import {
+  SectionHeader,
+  InfoBox,
+  RadiusShowcase,
+  TokenTable,
+  CodeBlock,
+  TOKENS,
+} from './DocComponents';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from '../../constants/designTokens';
+
+<Meta title="Foundation/Design Tokens/Radius" />
+
+{/* Page Header */}
+<div style={{
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[600]} 0%, ${DEEP_CURRENT[800]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '40px',
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '12px',
+  }}>
+    <Circle size={28} color={PRIMITIVES.white} />
+  </div>
+
+  <h1 style={{
+    margin: '0 0 12px 0',
+    fontSize: '36px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: PRIMITIVES.white,
+  }}>
+    Border Radius
+  </h1>
+
+  <p style={{
+    margin: 0,
+    fontSize: '16px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DEEP_CURRENT[100],
+    lineHeight: 1.6,
+    maxWidth: '500px',
+  }}>
+    Consistent corner rounding creates visual harmony and signals interactivity.
+    Larger radius = more prominent or interactive.
+  </p>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Rule:</strong> Larger radius indicates more prominence or interactivity.
+  Use consistent radius within component groups.
+</InfoBox>
+
+---
+
+## Radius Scale
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  <RadiusShowcase name="xs" value={RADIUS.xs} usage="Badges, tags, small buttons" />
+  <RadiusShowcase name="sm" value={RADIUS.sm} usage="Input fields, cards (DEFAULT)" />
+  <RadiusShowcase name="md" value={RADIUS.md} usage="Buttons, dialogs, prominent cards" />
+  <RadiusShowcase name="lg" value={RADIUS.lg} usage="Large cards, feature sections" />
+  <RadiusShowcase name="xl" value={RADIUS.xl} usage="Hero elements, featured content" />
+  <RadiusShowcase name="2xl" value={RADIUS['2xl']} usage="Large containers" />
+  <RadiusShowcase name="full" value={RADIUS.full} usage="Pills, avatars, circular elements" />
+</div>
+
+---
+
+## Visual Comparison
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'flex',
+    gap: '24px',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  }}>
+    {Object.entries(RADIUS).map(([name, value]) => (
+      <div key={name} style={{ textAlign: 'center' }}>
+        <div
+          style={{
+            width: name === 'full' ? '64px' : '80px',
+            height: '80px',
+            background: DEEP_CURRENT[500],
+            borderRadius: value,
+            marginBottom: '12px',
+          }}
+        />
+        <div style={{
+          fontSize: '13px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          {name}
+        </div>
+        <div style={{
+          fontSize: '11px',
+          fontFamily: 'ui-monospace, monospace',
+          color: SLATE[500],
+        }}>
+          {value}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+## Token Reference
+
+<TokenTable
+  tokens={[
+    { name: 'RADIUS.xs', value: '4px', tailwind: 'rounded-xs', usage: 'Badges, tags, small buttons' },
+    { name: 'RADIUS.sm', value: '8px', tailwind: 'rounded-sm', usage: 'Input fields, cards (default)' },
+    { name: 'RADIUS.md', value: '12px', tailwind: 'rounded-md', usage: 'Buttons, dialogs, prominent cards' },
+    { name: 'RADIUS.lg', value: '16px', tailwind: 'rounded-lg', usage: 'Large cards, feature sections' },
+    { name: 'RADIUS.xl', value: '20px', tailwind: 'rounded-xl', usage: 'Hero elements, featured content' },
+    { name: 'RADIUS.2xl', value: '24px', tailwind: 'rounded-2xl', usage: 'Large containers' },
+    { name: 'RADIUS.full', value: '9999px', tailwind: 'rounded-full', usage: 'Pills, avatars, circular' },
+  ]}
+/>
+
+---
+
+## Common Patterns
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '24px',
+  marginBottom: '48px',
+}}>
+  {/* Card */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.sm,
+    padding: '20px',
+    boxShadow: SHADOWS.md,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+      marginBottom: '8px',
+    }}>
+      Card
+    </div>
+    <div style={{
+      fontSize: '12px',
+      fontFamily: 'ui-monospace, monospace',
+      color: SLATE[500],
+    }}>
+      rounded-sm (8px)
+    </div>
+  </div>
+
+  {/* Button */}
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: SLATE[50],
+    borderRadius: RADIUS.sm,
+    padding: '20px',
+  }}>
+    <button style={{
+      background: DEEP_CURRENT[600],  // [600] for 4.89:1 contrast (AA compliant)
+      color: PRIMITIVES.white,
+      border: 'none',
+      borderRadius: RADIUS.md,
+      padding: '10px 20px',
+      fontSize: '14px',
+      fontWeight: 500,
+      fontFamily: '"Fixel", sans-serif',
+      cursor: 'pointer',
+      marginBottom: '12px',
+    }}>
+      Button
+    </button>
+    <div style={{
+      fontSize: '12px',
+      fontFamily: 'ui-monospace, monospace',
+      color: SLATE[500],
+    }}>
+      rounded-md (12px)
+    </div>
+  </div>
+
+  {/* Badge */}
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: SLATE[50],
+    borderRadius: RADIUS.sm,
+    padding: '20px',
+  }}>
+    <span style={{
+      background: DEEP_CURRENT[50],
+      color: DEEP_CURRENT[700],
+      borderRadius: RADIUS.xs,
+      padding: '4px 12px',
+      fontSize: '12px',
+      fontWeight: 500,
+      fontFamily: '"Fixel", sans-serif',
+      marginBottom: '12px',
+    }}>
+      Badge
+    </span>
+    <div style={{
+      fontSize: '12px',
+      fontFamily: 'ui-monospace, monospace',
+      color: SLATE[500],
+    }}>
+      rounded-xs (4px)
+    </div>
+  </div>
+</div>
+
+---
+
+## Usage Examples
+
+<CodeBlock
+  language="tsx"
+  code={`// Card (default)
+<div className="bg-surface rounded-sm shadow-md p-6">
+  Card content
+</div>
+
+// Button
+<button className="bg-accent-strong text-inverse rounded-md px-4 py-2">
+  Click me
+</button>
+
+// Badge
+<span className="bg-accent-bg text-accent rounded-xs px-2 py-0.5 text-xs">
+  New
+</span>
+
+// Avatar (circular)
+<img
+  className="rounded-full w-10 h-10"
+  src="/avatar.jpg"
+  alt="User"
+/>
+
+// Dialog
+<div className="bg-surface rounded-lg shadow-lg p-8">
+  Dialog content
+</div>
+
+// Feature card (prominent)
+<div className="bg-surface rounded-xl shadow-elevated p-8">
+  Featured content
+</div>`}
+/>

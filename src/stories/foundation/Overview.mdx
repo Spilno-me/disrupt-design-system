@@ -1,0 +1,350 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Palette, Type, Space, Layers, Circle, Sparkles, ArrowRight, BookOpen } from 'lucide-react';
+import { NavCard, InfoBox, CodeBlock, TOKENS } from './DocComponents';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+} from '../../constants/designTokens';
+
+<Meta title="Foundation/Design Tokens/Overview" />
+
+{/* Hero Section */}
+<div style={{
+  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[700]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '48px',
+  marginBottom: '48px',
+  position: 'relative',
+  overflow: 'hidden',
+}}>
+  {/* Decorative circles */}
+  <div style={{
+    position: 'absolute',
+    top: '-50px',
+    right: '-50px',
+    width: '200px',
+    height: '200px',
+    borderRadius: '50%',
+    background: DEEP_CURRENT[500],
+    opacity: 0.1,
+  }} />
+  <div style={{
+    position: 'absolute',
+    bottom: '-30px',
+    left: '30%',
+    width: '100px',
+    height: '100px',
+    borderRadius: '50%',
+    background: DUSK_REEF[500],
+    opacity: 0.1,
+  }} />
+
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      background: 'rgba(255,255,255,0.1)',
+      padding: '6px 12px',
+      borderRadius: RADIUS.full,
+      marginBottom: '16px',
+    }}>
+      <BookOpen size={14} color={DEEP_CURRENT[300]} />
+      <span style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: DEEP_CURRENT[300],
+        fontFamily: '"Fixel", sans-serif',
+        letterSpacing: '0.5px',
+      }}>
+        DESIGN SYSTEM FOUNDATION
+      </span>
+    </div>
+
+    <h1 style={{
+      margin: '0 0 16px 0',
+      fontSize: '42px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+      lineHeight: 1.1,
+    }}>
+      Design Tokens
+    </h1>
+
+    <p style={{
+      margin: 0,
+      fontSize: '18px',
+      fontFamily: '"Fixel", sans-serif',
+      color: SLATE[300],
+      lineHeight: 1.6,
+      maxWidth: '600px',
+    }}>
+      The foundational building blocks of the Disrupt Design System.
+      Tokens ensure consistency across all products while enabling scalable, maintainable design.
+    </p>
+  </div>
+</div>
+
+{/* Architecture Overview */}
+<div style={{ marginBottom: '48px' }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '24px',
+  }}>
+    Token Architecture
+  </h2>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '16px',
+    marginBottom: '24px',
+  }}>
+    {/* Tier 1 */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `1px solid ${TOKENS.colors.border}`,
+      boxShadow: SHADOWS.sm,
+    }}>
+      <div style={{
+        width: '32px',
+        height: '32px',
+        borderRadius: RADIUS.sm,
+        background: DUSK_REEF[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '16px',
+      }}>
+        <span style={{ fontSize: '14px', fontWeight: 700, color: DUSK_REEF[500] }}>1</span>
+      </div>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        Primitives
+      </h3>
+      <p style={{
+        margin: 0,
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+      }}>
+        Raw values. Color scales, spacing units, font sizes. The source of truth.
+      </p>
+    </div>
+
+    {/* Arrow */}
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <div style={{
+        background: DEEP_CURRENT[50],
+        borderRadius: RADIUS.full,
+        padding: '12px',
+      }}>
+        <ArrowRight size={24} color={DEEP_CURRENT[500]} />
+      </div>
+    </div>
+
+    {/* Tier 2 */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${DEEP_CURRENT[500]}`,
+      boxShadow: SHADOWS.md,
+    }}>
+      <div style={{
+        width: '32px',
+        height: '32px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '16px',
+      }}>
+        <span style={{ fontSize: '14px', fontWeight: 700, color: DEEP_CURRENT[500] }}>2</span>
+      </div>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        Alias (Semantic)
+      </h3>
+      <p style={{
+        margin: 0,
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+      }}>
+        What colors <strong>mean</strong>. Use these in components. Always.
+      </p>
+    </div>
+  </div>
+
+  <InfoBox variant="tip">
+    <strong>Rule:</strong> Components always use <strong>Alias tokens</strong> (Tier 2).
+    Never hardcode hex values. This ensures changes propagate automatically across the entire system.
+  </InfoBox>
+</div>
+
+{/* Quick Reference */}
+<div style={{ marginBottom: '48px' }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '24px',
+  }}>
+    Quick Reference
+  </h2>
+
+  <CodeBlock
+    language="tsx"
+    code={`// Import tokens in your component
+import { ALIAS, SHADOWS, RADIUS } from '@adrozdenko/design-system'
+
+// Use semantic tokens (recommended)
+<div style={{
+  background: ALIAS.background.surface,
+  color: ALIAS.text.primary,
+  borderRadius: RADIUS.md,
+  boxShadow: SHADOWS.md,
+}}>
+
+// Or use Tailwind classes
+<div className="bg-surface text-primary rounded-md shadow-md">
+  Content
+</div>`}
+  />
+</div>
+
+{/* Navigation Grid */}
+<div style={{ marginBottom: '48px' }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '24px',
+  }}>
+    Explore Tokens
+  </h2>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '20px',
+  }}>
+    <NavCard
+      title="Colors"
+      description="Brand colors, semantic palettes, and usage guidelines for the complete color system."
+      href="?path=/docs/foundation-design-tokens-colors--docs"
+      icon={<Palette size={24} />}
+      color={DEEP_CURRENT[500]}
+    />
+
+    <NavCard
+      title="Typography"
+      description="Font families, sizes, weights, and text styling patterns for web and app."
+      href="?path=/docs/foundation-design-tokens-typography--docs"
+      icon={<Type size={24} />}
+      color={DUSK_REEF[500]}
+    />
+
+    <NavCard
+      title="Spacing"
+      description="Consistent spacing scale for margins, padding, and layout gaps."
+      href="?path=/docs/foundation-design-tokens-spacing--docs"
+      icon={<Space size={24} />}
+      color={ABYSS[400]}
+    />
+
+    <NavCard
+      title="Shadows"
+      description="Elevation system with natural light physics for depth and hierarchy."
+      href="?path=/docs/foundation-design-tokens-shadows--docs"
+      icon={<Layers size={24} />}
+      color={ABYSS[500]}
+    />
+
+    <NavCard
+      title="Border Radius"
+      description="Consistent corner rounding from sharp to fully rounded elements."
+      href="?path=/docs/foundation-design-tokens-radius--docs"
+      icon={<Circle size={24} />}
+      color={DEEP_CURRENT[600]}
+    />
+
+    <NavCard
+      title="Animations"
+      description="Transitions, timing functions, and motion patterns for interactions."
+      href="?path=/docs/foundation-design-tokens-animations--docs"
+      icon={<Sparkles size={24} />}
+      color={DUSK_REEF[400]}
+    />
+  </div>
+</div>
+
+{/* Source of Truth */}
+<div style={{
+  background: ABYSS[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${ABYSS[100]}`,
+}}>
+  <h3 style={{
+    margin: '0 0 12px 0',
+    fontSize: '16px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    Source of Truth
+  </h3>
+  <p style={{
+    margin: '0 0 16px 0',
+    fontSize: '14px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    lineHeight: 1.5,
+  }}>
+    All token values are defined in a single file. Changes here automatically update all documentation and components.
+  </p>
+  <code style={{
+    display: 'block',
+    background: ABYSS[700],
+    color: DEEP_CURRENT[300],
+    padding: '12px 16px',
+    borderRadius: RADIUS.sm,
+    fontSize: '13px',
+    fontFamily: 'ui-monospace, monospace',
+  }}>
+    src/constants/designTokens.ts
+  </code>
+</div>

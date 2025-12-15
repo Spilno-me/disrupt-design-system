@@ -259,41 +259,197 @@ export const ColorScales: Story = {
 }
 
 // =============================================================================
-// SHADOWS STORY
+// SHADOWS STORY - Natural Light Physics System
 // =============================================================================
 
 export const Shadows: Story = {
   render: () => {
-    const elevationShadows = ['none', 'sm', 'md', 'lg', 'xl'] as const
+    const elevationShadows = ['none', 'sm', 'md', 'elevated', 'lg', 'xl'] as const
+
+    // Shadow use case mapping
+    const shadowUseCases: Record<string, { description: string; examples: string[] }> = {
+      none: { description: 'Flat elements', examples: ['Inline buttons', 'Text links'] },
+      sm: { description: 'Subtle resting', examples: ['Tags', 'Badges', 'List items'] },
+      md: { description: 'Standard depth', examples: ['Cards', 'Buttons', 'Dropdowns'] },
+      elevated: { description: 'Premium emphasis', examples: ['Featured cards', 'KPIs', 'Hero'] },
+      lg: { description: 'Prominent overlay', examples: ['Modals', 'Sheets', 'Drawers'] },
+      xl: { description: 'Maximum elevation', examples: ['Critical alerts', 'Full overlays'] },
+    }
 
     return (
       <div className="p-8 bg-cream">
-        <h1 className="text-3xl font-display font-bold text-dark mb-8">Shadows</h1>
+        <h1 className="text-3xl font-display font-bold text-dark mb-2">Shadows</h1>
+        <p className="text-muted mb-8">Natural light physics for realistic depth perception.</p>
+
+        {/* Core Principle - Hierarchy */}
+        <section className="mb-12 p-6 bg-gradient-to-r from-coral/5 to-sunrise/5 rounded-lg border border-coral/20">
+          <h2 className="text-xl font-semibold text-dark mb-4">🎯 Core Principle: Elevation = Importance + Interactivity</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <p className="text-muted mb-4">
+                <strong>Closer to user (larger shadows)</strong> = More important / Interactive<br />
+                <strong>Further from user (smaller shadows)</strong> = Less important / Data display
+              </p>
+              <div className="text-sm space-y-1">
+                <div className="flex gap-2"><code className="bg-white px-1 rounded">xl</code><span className="text-muted">→ Critical: alerts, error dialogs</span></div>
+                <div className="flex gap-2"><code className="bg-white px-1 rounded">lg</code><span className="text-muted">→ Interactive: modals, sheets</span></div>
+                <div className="flex gap-2"><code className="bg-white px-1 rounded">elevated</code><span className="text-muted">→ Premium: KPIs, CTAs, featured</span></div>
+                <div className="flex gap-2"><code className="bg-white px-1 rounded">md</code><span className="text-muted">→ Standard: cards, buttons</span></div>
+                <div className="flex gap-2"><code className="bg-white px-1 rounded">sm</code><span className="text-muted">→ Data: tags, badges, stats</span></div>
+              </div>
+            </div>
+            <div className="bg-white/60 p-4 rounded-lg">
+              <h4 className="font-medium text-dark mb-2 text-sm">Decision Tree</h4>
+              <pre className="text-xs text-muted whitespace-pre-wrap">
+{`Interactive (user action)?
+├─ YES: Immediate attention?
+│  ├─ YES → xl/lg
+│  └─ NO: Featured/CTA?
+│     ├─ YES → elevated
+│     └─ NO → md
+└─ NO (data only):
+   ├─ Important → md
+   └─ Secondary → sm`}
+              </pre>
+            </div>
+          </div>
+        </section>
+
+        {/* Physics Explanation */}
+        <section className="mb-12 p-6 bg-white rounded-lg border border-slate-200">
+          <h2 className="text-xl font-semibold text-dark mb-4">🎨 Natural Light Physics</h2>
+          <p className="text-muted mb-6">
+            Our shadow system mimics how light creates shadows in the real world, using a 2-layer approach
+            inspired by artist techniques for painting realistic shadows.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            {/* Umbra */}
+            <div className="p-4 bg-slate-50 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-4 h-4 rounded-full bg-slate-600"></span>
+                <h3 className="font-semibold text-dark">Umbra (Core)</h3>
+              </div>
+              <ul className="text-sm text-muted space-y-1">
+                <li>• Direct light blocked</li>
+                <li>• Close to object</li>
+                <li>• Sharp edges</li>
+                <li>• <strong>Darker</strong> (12-14% opacity)</li>
+              </ul>
+            </div>
+
+            {/* Penumbra */}
+            <div className="p-4 bg-slate-50 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-4 h-4 rounded-full bg-slate-300"></span>
+                <h3 className="font-semibold text-dark">Penumbra (Soft)</h3>
+              </div>
+              <ul className="text-sm text-muted space-y-1">
+                <li>• Partial light blocked</li>
+                <li>• Far from object</li>
+                <li>• Soft, diffused edges</li>
+                <li>• <strong>Lighter</strong> (6-10% opacity)</li>
+              </ul>
+            </div>
+
+            {/* Key Principle */}
+            <div className="p-4 bg-teal/10 rounded-lg border border-teal/30">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">💡</span>
+                <h3 className="font-semibold text-dark">Key Principle</h3>
+              </div>
+              <p className="text-sm text-muted">
+                <strong>Opacity decreases with distance.</strong> The farther light travels,
+                the more it scatters and fills in the shadow.
+              </p>
+            </div>
+          </div>
+
+          {/* Visual Anatomy */}
+          <div className="p-4 bg-slate-100 rounded-lg">
+            <h4 className="font-medium text-dark mb-3">Shadow Anatomy (md level)</h4>
+            <div className="flex items-start gap-8 flex-wrap">
+              <div className="flex-1 min-w-[200px]">
+                <pre className="bg-dark text-cream p-3 rounded text-xs overflow-x-auto">
+{`/* Umbra: close, sharp, DARKER */
+0 2px 8px -1px rgba(0,0,0,0.12)
+
+/* Penumbra: far, soft, LIGHTER */
+0 4px 12px -2px rgba(0,0,0,0.08)`}
+                </pre>
+              </div>
+              <div className="flex-1 min-w-[200px] text-sm text-muted">
+                <p className="mb-2">Notice:</p>
+                <ul className="space-y-1">
+                  <li>• Umbra (12%) &gt; Penumbra (8%) opacity</li>
+                  <li>• Penumbra blur (12px) &gt; Umbra blur (8px)</li>
+                  <li>• Negative spread (-1px, -2px) for softness</li>
+                  <li>• Y-offset only (light from above)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Elevation Scale */}
         <section className="mb-12">
           <h2 className="text-xl font-semibold text-dark mb-4">Elevation Scale</h2>
-          <p className="text-muted mb-6">Use these shadows for consistent depth and elevation.</p>
-          <div className="flex flex-wrap gap-8">
+          <p className="text-muted mb-6">
+            From subtle resting (sm) to maximum elevation (xl), with <strong>elevated</strong> for premium emphasis.
+          </p>
+          <div className="flex flex-wrap gap-6">
             {elevationShadows.map((level) => (
               <div key={level} className="flex flex-col items-center gap-3">
                 <div
-                  className="w-32 h-32 bg-white rounded-lg flex items-center justify-center"
+                  className="w-36 h-28 bg-white rounded-lg flex flex-col items-center justify-center p-3"
                   style={{ boxShadow: SHADOWS[level] }}
                 >
-                  <span className="text-sm font-medium text-dark">{level}</span>
+                  <span className="text-lg font-semibold text-dark">{level}</span>
+                  <span className="text-[10px] text-muted text-center mt-1">
+                    {shadowUseCases[level]?.description}
+                  </span>
                 </div>
                 <code className="text-xs text-muted bg-white px-2 py-1 rounded border">
                   SHADOWS.{level}
                 </code>
+                <div className="text-[10px] text-slate-400 text-center max-w-[120px]">
+                  {shadowUseCases[level]?.examples.join(', ')}
+                </div>
               </div>
             ))}
           </div>
         </section>
 
+        {/* Elevated Highlight */}
+        <section className="mb-12 p-6 bg-gradient-to-r from-teal/5 to-purple/5 rounded-lg border border-teal/20">
+          <h2 className="text-xl font-semibold text-dark mb-4">✨ Elevated: Premium Emphasis</h2>
+          <div className="flex gap-8 items-start flex-wrap">
+            <div
+              className="w-48 h-32 bg-white rounded-lg flex items-center justify-center"
+              style={{ boxShadow: SHADOWS.elevated }}
+            >
+              <span className="text-sm font-medium text-dark">elevated</span>
+            </div>
+            <div className="flex-1 min-w-[250px]">
+              <p className="text-muted mb-3">
+                Between <code className="bg-slate-100 px-1 rounded">md</code> and{' '}
+                <code className="bg-slate-100 px-1 rounded">lg</code> in size, but with
+                <strong> richer opacity</strong> (14%/10% vs 12%/8%) for a more premium feel.
+              </p>
+              <p className="text-sm text-muted mb-2"><strong>Use for:</strong></p>
+              <ul className="text-sm text-muted list-disc list-inside">
+                <li>Featured dashboard cards</li>
+                <li>KPI widgets</li>
+                <li>Hero elements</li>
+                <li>Premium content areas</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Special Shadows */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-dark mb-4">Special Shadows</h2>
+          <h2 className="text-xl font-semibold text-dark mb-4">Special Purpose Shadows</h2>
           <div className="flex flex-wrap gap-8">
             <div className="flex flex-col items-center gap-3">
               <div
@@ -302,7 +458,7 @@ export const Shadows: Story = {
               >
                 <span className="text-sm font-medium text-dark">image</span>
               </div>
-              <span className="text-xs text-muted">Hero images</span>
+              <span className="text-xs text-muted">Hero images (dramatic)</span>
             </div>
             <div className="flex flex-col items-center gap-3">
               <div
@@ -313,6 +469,15 @@ export const Shadows: Story = {
               </div>
               <span className="text-xs text-muted">Header glass effect</span>
             </div>
+            <div className="flex flex-col items-center gap-3">
+              <div
+                className="w-40 h-32 bg-white rounded-lg flex items-center justify-center"
+                style={{ boxShadow: SHADOWS.buttonDefault }}
+              >
+                <span className="text-sm font-medium text-dark">buttonDefault</span>
+              </div>
+              <span className="text-xs text-muted">Subtle button depth</span>
+            </div>
           </div>
         </section>
 
@@ -322,14 +487,28 @@ export const Shadows: Story = {
           <pre className="bg-dark text-cream p-4 rounded text-sm overflow-x-auto">
 {`import { SHADOWS } from '@/constants/designTokens'
 import { Card } from '@/components/ui/card'
+import { AppCard } from '@/components/ui/app-card'
 
-// Using Card shadow prop
-<Card shadow="sm">...</Card>
-<Card shadow="lg">...</Card>
+// AppCard (default: md, use elevated for premium)
+<AppCard>Standard card</AppCard>
+<AppCard shadow="elevated">Featured card</AppCard>
 
-// In inline styles
-<div style={{ boxShadow: SHADOWS.md }}>...</div>`}
+// Card component
+<Card shadow="sm">Subtle card</Card>
+<Card shadow="lg">Modal-like prominence</Card>
+
+// Inline styles
+<div style={{ boxShadow: SHADOWS.md }}>...</div>
+<div style={{ boxShadow: SHADOWS.elevated }}>Premium content</div>`}
           </pre>
+        </section>
+
+        {/* Quick Reference */}
+        <section className="mt-8 p-4 bg-slate-50 rounded-lg">
+          <h3 className="font-semibold text-dark mb-2">Quick Reference</h3>
+          <div className="text-sm text-muted font-mono">
+            sm → Tags, badges | md → Cards, dropdowns | elevated → KPIs, featured | lg → Modals | xl → Critical
+          </div>
         </section>
       </div>
     )

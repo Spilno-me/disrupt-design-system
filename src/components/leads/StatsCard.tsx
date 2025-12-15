@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { Card } from '../ui/card'
+import { AppCard } from '../ui/app-card'
 
 // =============================================================================
 // TYPES
@@ -53,7 +53,7 @@ export function StatsCard({
   className,
 }: StatsCardProps) {
   return (
-    <Card
+    <AppCard
       variant="default"
       shadow="md"
       className={cn('gap-2', className)}
@@ -75,7 +75,7 @@ export function StatsCard({
       {description && (
         <p className="text-sm text-muted">{description}</p>
       )}
-    </Card>
+    </AppCard>
   )
 }
 

@@ -1,385 +1,539 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "version": "1.0.0",
-  "lastUpdated": "2025-12-14",
-  "description": "AGENT-FIRST: Single source of truth for AI agents working on DDS. Read this FIRST.",
-
+  "$schema": ".claude/agent-context.schema.json",
+  "version": "2.1.0",
+  "description": "SINGLE SOURCE OF TRUTH for AI agents. Read this ONE file for complete context.",
   "meta": {
-    "projectName": "Disrupt Design System (DDS)",
-    "currentVersion": "2.3.1",
-    "nextVersion": "2.4.0",
-    "majorVersion": "3.0.0",
-    "phase": "pre-v3-development",
-    "philosophy": "OPINIONATED - Strong design vision, minimal variants, maximum consistency"
+    "project": "Disrupt Design System (DDS)",
+    "version": "2.3.1",
+    "designPhilosophy": "OPINIONATED - Strong design vision, minimal variants",
+    "engineeringPhilosophy": "Wu Wei (無為) - See criticalRules.philosophy",
+    "lastUpdated": "2025-12-15"
   },
-
   "criticalRules": {
-    "git": {
-      "noClaudeAttribution": true,
-      "commitFormat": "feat:|fix:|chore:|refactor:|docs:",
-      "hookifyEnabled": true
-    },
-    "storybook": {
-      "reflectReality": true,
-      "noHardcodedOverrides": true,
-      "rule": "Stories MUST show real component behavior. Change component/tokens first, NEVER hardcode colors in stories.",
-      "changeSource": "Component code or design tokens",
-      "notStories": "Don't fake behavior in stories with className overrides",
-      "reference": ".claude/storybook-rules.md"
+    "philosophy": {
+      "name": "Wu Wei (無為) - Effortless Action",
+      "principle": "Work with the grain, not against it",
+      "rules": {
+        "simpleOverClever": {
+          "do": "Let solutions emerge naturally from problems",
+          "dont": "Over-engineer, add abstractions prematurely",
+          "test": "Can a junior dev understand this in 30 seconds?"
+        },
+        "addOnlyWhatsNeeded": {
+          "do": "Three similar lines > premature abstraction",
+          "dont": "DRY zealotry, speculative generalization",
+          "test": "Am I solving today's problem or imaginary future ones?"
+        },
+        "trustTheFlow": {
+          "do": "Use existing patterns/tokens/components first",
+          "dont": "Invent new patterns when existing ones work",
+          "test": "Does agent-context.json already have this?"
+        },
+        "noForce": {
+          "signal": "If implementation feels like a fight → STOP",
+          "action": "Step back, find the natural path",
+          "test": "Am I working around the system or with it?"
+        },
+        "backwardsCompatibility": {
+          "metaphor": "Like water around rocks—adapt, don't break",
+          "do": "ADD new, DEPRECATE old, never REMOVE until v3",
+          "test": "Will existing consumers break?"
+        }
+      },
+      "preCommitChecklist": [
+        "Am I adding more complexity than needed?",
+        "Does an existing pattern already solve this?",
+        "Am I fighting the codebase structure?",
+        "Will this break existing consumers?",
+        "Would deletion be better than addition?"
+      ],
+      "quote": "The sage does not act, yet nothing is left undone. — Tao Te Ching"
     },
     "versioning": {
-      "policy": "NO_BREAKING_CHANGES_UNTIL_V3",
-      "breakingChanges": [
-        "Rename props",
-        "Remove props",
-        "Change prop types (non-compatible)",
-        "Change required/optional status",
-        "Change default values",
-        "Remove exports"
+      "policy": "NO_BREAKING_UNTIL_V3",
+      "breaking": [
+        "rename props",
+        "remove props",
+        "change types",
+        "change defaults",
+        "remove exports"
       ],
-      "safeChanges": [
-        "Add new components",
-        "Add optional props with defaults",
-        "Add new variants",
-        "Fix bugs (no API change)",
-        "Add deprecation warnings (keep working)",
-        "Internal refactoring (same API)"
-      ],
-      "versionBumps": {
-        "patch": "Bug fixes only, no API change",
-        "minor": "New features, backwards compatible",
-        "major": "Breaking changes (v3.0.0 only!)"
-      }
+      "safe": [
+        "add optional props",
+        "new components",
+        "bug fixes",
+        "add variants",
+        "deprecate with warning"
+      ]
     },
     "tokens": {
-      "zeroRawColors": true,
-      "forbidden": ["#hex", "rgb()", "bg-blue-500", "text-gray-600"],
-      "required": ["ALIAS tokens", "Semantic Tailwind classes"],
+      "forbidden": [
+        "#hex",
+        "rgb()",
+        "hsl()",
+        "bg-blue-500",
+        "text-red-600"
+      ],
+      "required": "ALIAS tokens OR semantic Tailwind (bg-surface, text-primary)",
       "colorFormat": "oklch",
-      "colorFormatRule": "ALWAYS use oklch() when defining colors in tokens.css or designTokens.ts",
-      "oklchFormat": "oklch(L C H) - Lightness (0-1), Chroma (saturation), Hue (0-360)",
-      "example": "oklch(0.533 0.195 264.05) instead of #2563EB",
-      "why": "Perceptually uniform, consistent with existing tokens, better color scales, accessible contrast",
-      "hookifyEnforces": true,
-      "automation": {
-        "required": true,
-        "description": "MANDATORY: After editing designTokens.ts, ALWAYS run npm run generate-tokens",
-        "sourceOfTruth": "src/constants/designTokens.ts",
-        "generatedFiles": ["src/styles/tokens.css"],
-        "script": "scripts/generate-tokens.js",
-        "converts": "TypeScript ALIAS tokens → CSS custom properties (--ring) in OKLCH format",
-        "syncs": "ALIAS.border.focus → --ring CSS variable for focus rings across all components",
-        "mustRunWhen": "ANY change to src/constants/designTokens.ts"
+      "afterEdit": "npm run generate-tokens",
+      "colorMatrix": {
+        "_CRITICAL": "CONSULT BEFORE WRITING ANY COLOR CODE",
+        "file": ".claude/color-matrix.json",
+        "workflow": [
+          "1. Identify background category (dark/light/accent/subtle)",
+          "2. Look up allowed text/icon/border colors",
+          "3. Check FORBIDDEN list - never use those"
+        ],
+        "goldenRule": "Same color family on itself = INVISIBLE (ABYSS on ABYSS = WRONG)"
+      },
+      "contrastValidation": {
+        "_CRITICAL": "VALIDATE WCAG CONTRAST FOR ALL COLOR COMBINATIONS",
+        "file": ".claude/contrast-matrix.json",
+        "wcag": {
+          "AA_normalText": "4.5:1",
+          "AA_largeText": "3.0:1",
+          "AA_graphics": "3.0:1",
+          "AAA_normalText": "7.0:1"
+        },
+        "commonFailures": {
+          "ABYSS[200]_on_ABYSS[500]": "3.98:1 FAIL for text",
+          "DEEP_CURRENT[500]_on_white": "3.57:1 FAIL for normal text (OK for large/icons)",
+          "white_on_white": "1:1 INVISIBLE"
+        },
+        "safeDefaults": {
+          "darkBg": "PRIMITIVES.white (12:1+) or SLATE[300] (8:1+)",
+          "lightBg": "ABYSS[500] (12:1+) or DUSK_REEF[500] (7:1+)",
+          "tealButtons": "Use DEEP_CURRENT[600] not [500] for white text"
+        },
+        "agentBehavior": "If user specifies failing color, REPORT contrast ratio and suggest alternative"
       }
     },
-    "exports": {
-      "twoLevelSystem": true,
-      "mustExportFrom": ["src/components/*/index.ts", "src/index.ts"],
-      "alsoExport": ["Types", "Sub-components", "Hooks"],
-      "missingHighPriority": ["NotificationsPanel", "QuickFilter", "DropdownMenu", "Tabs"]
+    "git": {
+      "noClaudeAttribution": true,
+      "format": "feat:|fix:|chore:|refactor:|docs:"
+    },
+    "errors": {
+      "typescript": "FIX, never revert",
+      "forbidden": "git reset --hard"
     }
   },
-
-  "workflow": {
-    "editTokens": {
-      "priority": "CRITICAL",
-      "description": "Modify design tokens with mandatory automated CSS generation",
-      "steps": [
-        "1. Edit: src/constants/designTokens.ts",
-        "2. MANDATORY: Run npm run generate-tokens",
-        "3. Verify: src/styles/tokens.css updated automatically",
-        "4. Check: Focus ring color synced (--ring CSS variable)",
-        "5. Run: npm run typecheck",
-        "6. Update CHANGELOG.md if user-facing"
-      ],
-      "automation": {
-        "script": "scripts/generate-tokens.js",
-        "input": "src/constants/designTokens.ts",
-        "output": "src/styles/tokens.css",
-        "converts": "ALIAS.border.focus (hex) → --ring (oklch)",
-        "why": "Single source of truth - TypeScript tokens automatically generate CSS"
+  "colors": {
+    "_note": "Quick lookup - use Tailwind classes, not raw values",
+    "brand": {
+      "primary": {
+        "class": "bg-dark text-dark",
+        "hex": "#2D3142",
+        "name": "Abyss"
       },
-      "critical": "NEVER edit src/styles/tokens.css manually - it's auto-generated"
+      "accent": {
+        "class": "bg-accent-strong text-accent",
+        "hex": "#08A4BD",
+        "name": "Deep Current (Teal)"
+      },
+      "tertiary": {
+        "class": "bg-muted text-muted",
+        "hex": "#5E4F7E",
+        "name": "Dusk Reef (Purple)"
+      }
     },
-    "stabilizeComponent": {
-      "priority": "CRITICAL",
-      "description": "Review and stabilize components for production without breaking changes",
-      "steps": [
-        "1. Read: .claude/component-stabilization-plan.md",
-        "2. Check component category: Website-Only (FROZEN) | App-Only (CAREFUL) | Shared (EXTREME CARE)",
-        "3. Website components → STOP → Do not touch",
-        "4. App/Shared → Use review checklist from stabilization plan",
-        "5. Only SAFE changes: add optional props, fix bugs, improve internals",
-        "6. Update CHANGELOG.md",
-        "7. Run: npm run typecheck && npm run lint"
-      ],
-      "reference": ".claude/component-stabilization-plan.md"
+    "semantic": {
+      "error": {
+        "class": "bg-error text-error border-error",
+        "hex": "#F70D1A"
+      },
+      "success": {
+        "class": "bg-success text-success border-success",
+        "hex": "#22C55E"
+      },
+      "warning": {
+        "class": "bg-warning text-warning border-warning",
+        "hex": "#EAB308"
+      },
+      "info": {
+        "class": "bg-info text-info border-info",
+        "hex": "#3B82F6"
+      }
     },
-    "editComponent": {
-      "priority": "CRITICAL",
-      "steps": [
-        "1. Check: Is change backwards compatible?",
-        "2. Breaking? → STOP → Mark for v3.0.0 → Ask user",
-        "3. Safe? → Proceed → Update CHANGELOG.md",
-        "4. Use design tokens only (ALIAS or semantic Tailwind)",
-        "5. Run: npm run typecheck"
-      ],
-      "reference": "findings/index.json → 001"
+    "surfaces": {
+      "page": {
+        "class": "bg-cream",
+        "hex": "#FBFBF3"
+      },
+      "card": {
+        "class": "bg-surface bg-card",
+        "hex": "#FFFFFF"
+      },
+      "muted": {
+        "class": "bg-muted-bg",
+        "hex": "#EFEDF3"
+      },
+      "accent": {
+        "class": "bg-accent-bg",
+        "hex": "#E6F7FA"
+      }
     },
-    "createComponent": {
-      "priority": "HIGH",
-      "steps": [
-        "1. Use Radix UI for interactive components",
-        "2. Style with ALIAS tokens or semantic Tailwind classes",
-        "3. Add data-testid support: ATOM (accept via props) | MOLECULE (auto-generate from props) | PAGE (hardcode)",
-        "4. Export from src/index.ts + types",
-        "5. Update CLAUDE.md component reference",
-        "6. Create Storybook story",
-        "7. This is MINOR version bump"
-      ],
-      "reference": ".claude/testing-quick-ref.md for testId strategy"
+    "text": {
+      "primary": {
+        "class": "text-primary",
+        "hex": "#2D3142"
+      },
+      "secondary": {
+        "class": "text-secondary text-muted",
+        "hex": "#5E4F7E"
+      },
+      "emphasis": {
+        "class": "text-emphasis",
+        "hex": "#474F5F"
+      },
+      "inverse": {
+        "class": "text-inverse",
+        "hex": "#FFFFFF"
+      }
     },
-    "refactorComponent": {
-      "priority": "CRITICAL",
-      "steps": [
-        "1. Check if API changes",
-        "2. API changes? → BREAKING → v3.0.0 only",
-        "3. Internal only? → SAFE → Proceed",
-        "4. Add tests for backwards compatibility"
-      ],
-      "reference": "findings/index.json → 001"
-    },
-    "bumpVersion": {
-      "priority": "CRITICAL",
-      "steps": [
-        "1. Identify change type: PATCH | MINOR | MAJOR",
-        "2. MAJOR? → Must be v3.0.0 (not now!)",
-        "3. Update package.json version",
-        "4. Update CHANGELOG.md",
-        "5. Commit"
-      ],
-      "reference": "findings/index.json → 001"
+    "border": {
+      "default": {
+        "class": "border-default",
+        "hex": "#CBD5E1"
+      },
+      "focus": {
+        "class": "border-accent ring-accent",
+        "hex": "#08A4BD"
+      }
     }
   },
-
+  "shadows": {
+    "rule": "Elevation = Importance + Interactivity",
+    "lookup": {
+      "sm": {
+        "use": "data display",
+        "examples": "tags, badges, stats"
+      },
+      "md": {
+        "use": "standard",
+        "examples": "cards, buttons, dropdowns"
+      },
+      "elevated": {
+        "use": "premium emphasis",
+        "examples": "KPIs, CTAs, featured"
+      },
+      "lg": {
+        "use": "interactive overlays",
+        "examples": "modals, sheets, drawers"
+      },
+      "xl": {
+        "use": "critical attention",
+        "examples": "alerts, error dialogs"
+      }
+    },
+    "values": {
+      "sm": "0 1px 3px 0 rgba(0,0,0,0.12), 0 1px 2px -1px rgba(0,0,0,0.08)",
+      "md": "0 2px 8px -1px rgba(0,0,0,0.12), 0 4px 12px -2px rgba(0,0,0,0.08)",
+      "elevated": "0 3px 12px -1px rgba(0,0,0,0.14), 0 10px 28px -4px rgba(0,0,0,0.10)",
+      "lg": "0 4px 16px -2px rgba(0,0,0,0.12), 0 8px 24px -4px rgba(0,0,0,0.08)",
+      "xl": "0 8px 24px -4px rgba(0,0,0,0.12), 0 12px 32px -6px rgba(0,0,0,0.08)"
+    }
+  },
+  "radius": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "12px",
+    "lg": "16px",
+    "xl": "20px",
+    "full": "9999px"
+  },
+  "typography": {
+    "website": {
+      "font": "Pilat Extended",
+      "class": "font-display"
+    },
+    "app": {
+      "font": "Fixel",
+      "class": "font-sans"
+    },
+    "code": {
+      "font": "Monospace",
+      "class": "font-mono"
+    }
+  },
+  "spacing": {
+    "website": {
+      "sectionY": "py-16 lg:py-24",
+      "sectionX": "px-6 lg:px-10",
+      "gap": "gap-12 lg:gap-16"
+    },
+    "app": {
+      "page": "p-6",
+      "card": "p-4 or p-6",
+      "form": "gap-2",
+      "section": "gap-6"
+    }
+  },
   "components": {
-    "existingCheck": {
-      "searchFirst": "src/components/ui/",
-      "beforeBuilding": "ALWAYS check if component exists",
-      "registry": ".claude/component-registry.json"
-    },
     "stabilization": {
-      "websiteComponents": {
+      "website": {
         "status": "FROZEN",
-        "location": "src/components/sections/, src/components/layout/Footer.tsx",
-        "rule": "DO NOT TOUCH - Website is production-ready",
-        "sharedDependencies": ["Button", "GridBlobCanvas", "Card"],
-        "count": 32
+        "rule": "DO NOT TOUCH"
       },
-      "appComponents": {
-        "status": "CAN_STABILIZE_CAREFULLY",
-        "location": "src/components/partners/, src/components/leads/, src/components/provisioning/",
-        "rule": "SAFE changes only (add optional props, fix bugs, improve internals)",
-        "count": 40
+      "app": {
+        "status": "CAN_STABILIZE",
+        "rule": "SAFE changes only"
       },
-      "sharedPrimitives": {
+      "shared": {
         "status": "EXTREME_CARE",
-        "location": "src/components/ui/",
-        "rule": "ADD ONLY, NEVER CHANGE existing props/variants/defaults",
-        "highRisk": ["Button", "GridBlobCanvas", "Input", "Dialog", "Card", "DataTable"],
-        "count": 48
+        "rule": "ADD ONLY, never change existing"
       },
-      "planFile": ".claude/component-stabilization-plan.md"
-    },
-    "styling": {
-      "preferTailwind": true,
-      "staticStyles": "Use semantic Tailwind classes (bg-surface, text-primary)",
-      "dynamicStyles": "Use ALIAS tokens (style={{ color: ALIAS.text.error }})",
-      "shadows": "SHADOWS.sm|md|lg or shadow-sm|md|lg",
-      "radius": "RADIUS.xs|sm|md|lg or rounded-xs|sm|md|lg"
-    },
-    "variants": {
-      "philosophy": "OPINIONATED - Minimal variants, maximum consistency",
-      "keepIf": [
-        "Different functional purpose (primary vs destructive vs ghost)",
-        "Different semantic meaning (success vs error vs warning)",
-        "Improves accessibility or UX (size for touch targets)",
-        "Limited options (≤3-5 variants)",
-        "Consumer NEEDS the choice"
-      ],
-      "removeIf": [
-        "Purely aesthetic (shimmer vs wave vs pulse)",
-        "Too many options (>5 variants)",
-        "Redundant with another variant",
-        "Consumer doesn't care about difference",
-        "Creates inconsistency risk"
-      ],
-      "targetLimits": {
-        "stateVariants": "4-5 max (success, warning, error, info, default)",
-        "actionVariants": "4-5 max (primary, secondary, ghost, destructive, outline)",
-        "sizes": "2-3 max (sm, default, lg only if essential)",
-        "shapes": "2 max",
-        "animations": "1 (no choice)",
-        "decorative": "0-1 (avoid)"
-      },
-      "reductionPlan": ".claude/variant-reduction-strategy.md"
-    },
-    "testing": {
-      "dataTestId": {
-        "required": true,
-        "strategy": "3-tier: Atoms accept, Molecules auto-generate, Pages hardcode",
-        "atoms": {
-          "description": "Primitives (Button, Badge, Input, Skeleton) - Accept data-testid, NO defaults",
-          "implementation": "Extend React.HTMLAttributes, spread {...props}",
-          "example": "<Button data-testid=\"login-submit-button\">Submit</Button>",
-          "why": "Context-agnostic, reusable everywhere"
-        },
-        "molecules": {
-          "description": "Composed components (LeadCard, InvoiceCard, StatsCard) - Auto-generate with override",
-          "implementation": "Optional testId prop, auto-generate from props (e.g., lead.id)",
-          "pattern": "const baseTestId = testId || `${componentName}-${id}`",
-          "example": "<LeadCard lead={lead} /> → data-testid=\"lead-card-123\"",
-          "childTestIds": "Generate from base: `${baseTestId}-priority`, `${baseTestId}-edit-button`",
-          "why": "QA gets testIds automatically, developers don't need to think"
-        },
-        "pages": {
-          "description": "Top-level pages (LeadsPage, PartnersPage) - Hardcoded testIds",
-          "implementation": "Hardcode data-testid on major sections",
-          "example": "<div data-testid=\"leads-page\"><header data-testid=\"leads-header\">",
-          "why": "Not reusable, testIds are stable and predictable"
-        },
-        "naming": {
-          "format": "kebab-case",
-          "pattern": "section-element-type",
-          "atomExamples": ["login-submit-button", "settings-email-input", "user-role-select"],
-          "moleculeExamples": ["lead-card-123", "invoice-card-456", "stats-card-revenue"],
-          "pageExamples": ["leads-page", "leads-header", "leads-filters", "leads-table-container"]
-        },
-        "decisionTree": "Reusable? → Composed? → MOLECULE (auto-gen) : ATOM (accept) : PAGE (hardcode)",
-        "quickRef": ".claude/testing-quick-ref.md"
+      "progress": {
+        "stabilized": 10,
+        "total": 46,
+        "percentage": "22%"
       }
     },
-    "storybook": {
-      "moleculeDocumentation": {
-        "required": true,
-        "description": "Molecules and components with patterns must document dependencies and examples with visible clickable links",
-        "linkFormat": "Use bold markdown with arrow: **[→ `ComponentName`](?path=/story/core-component--all-states)**",
-        "sections": [
-          "List all core atoms used by the molecule",
-          "Links must be bold and have → arrow for visibility",
-          "Link directly to AllStates story when available",
-          "For components with patterns (like Skeleton), link to each pattern story",
-          "Add emoji header: 📦 for atom dependencies, 🔗 for related links"
-        ],
-        "example": "See Utilities/Form (atom links), Core/Skeleton (pattern links)",
-        "why": "Helps developers understand dependencies, find examples, and navigate easily",
-        "patternLinks": "Components with recommended patterns MUST link to each pattern story in docs"
-      },
-      "storySimplification": {
-        "philosophy": "Minimize redundancy - AllStates shows everything, individual state stories are redundant",
-        "keepOnly": [
-          "Default - For Storybook Controls panel and autodocs",
-          "AllStates - Comprehensive visual reference showing all states/variants",
-          "1-2 usage examples - Show real-world context (WithLabel, FormExample, etc.)"
-        ],
-        "remove": [
-          "Individual state stories (Checked, Disabled, Error, etc.) - Redundant with AllStates",
-          "Variant-specific stories if variants shown in AllStates"
-        ],
-        "example": "Checkbox has: Default, WithLabel, MultipleCheckboxes, AllStates (removed: Checked, Disabled, DisabledChecked)"
-      },
-      "allStatesStory": {
-        "required": true,
-        "description": "MANDATORY: Every stabilized component must have an AllStates story",
-        "purpose": "Single comprehensive story showing ALL possible states/variants without requiring interaction",
-        "structure": {
-          "storyName": "AllStates",
-          "comment": "// All States (Visual Matrix - No interaction needed)",
-          "wrapper": "<div className=\"space-y-8 p-6\"> or <div className=\"w-[Npx] space-y-8 p-6\">",
-          "sections": "Multiple <div> blocks, each with <h4> header",
-          "headerFormat": "<h4 className=\"text-sm font-semibold text-primary mb-4\">Section Title</h4>",
-          "mustInclude": [
-            "All variants (if component has variant prop)",
-            "All sizes (if component has size prop)",
-            "All shapes (if component has shape prop)",
-            "Focus state with real behavior (Tab/Click to See) if interactive",
-            "Any other props that change visual appearance"
+    "registry": {
+      "ui": {
+        "Badge": {
+          "path": "ui/badge.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "default",
+            "secondary",
+            "destructive",
+            "outline"
           ]
         },
-        "example": "See Badge.stories.tsx, Skeleton.stories.tsx, Input.stories.tsx, Textarea.stories.tsx, Label.stories.tsx, Checkbox.stories.tsx, Select.stories.tsx",
-        "standardizedComponents": ["Badge", "Skeleton", "Input", "Textarea", "Label", "Checkbox", "Select"],
-        "focusStatePattern": {
-          "required": "If component accepts focus or can be interactive",
-          "header": "Focus State (Real Component Behavior - Click to See) or (Tab to See)",
-          "implementation": "Show actual focusable component with focus ring VISIBLE by default",
-          "why": "Demonstrates real focus ring color from design tokens (--ring variable)",
-          "criticalRule": "Focus ring MUST be visible without user interaction in AllStates story",
-          "techniques": {
-            "simpleComponents": "Use autoFocus prop (Input, Checkbox, Select)",
-            "complexComponents": "Use useEffect + querySelector + programmatic focus (Slider)",
-            "example": "Slider uses autoFocusThumb prop with useEffect to focus thumb on mount"
-          },
-          "antiPattern": "DO NOT use fake CSS or simulated focus states - must be real component behavior"
+        "Button": {
+          "path": "ui/button.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO",
+          "variants": [
+            "primary",
+            "secondary",
+            "accent",
+            "ghost",
+            "destructive",
+            "outline"
+          ]
+        },
+        "Card": {
+          "path": "ui/card.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A",
+          "for": "website pricing only"
+        },
+        "AppCard": {
+          "path": "ui/app-card.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "default",
+            "elevated",
+            "flat"
+          ],
+          "for": "in-app use"
+        },
+        "Checkbox": {
+          "path": "ui/checkbox.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Input": {
+          "path": "ui/input.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Label": {
+          "path": "ui/label.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Select": {
+          "path": "ui/select.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "subs": [
+            "SelectTrigger",
+            "SelectContent",
+            "SelectItem",
+            "SelectValue"
+          ]
+        },
+        "Separator": {
+          "path": "ui/separator.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Skeleton": {
+          "path": "ui/Skeleton.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "pulse",
+            "shimmer",
+            "wave"
+          ]
+        },
+        "Slider": {
+          "path": "ui/Slider.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "TODO"
+        },
+        "Textarea": {
+          "path": "ui/textarea.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Dialog": {
+          "path": "ui/dialog.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO",
+          "subs": [
+            "DialogTrigger",
+            "DialogContent",
+            "DialogHeader",
+            "DialogTitle",
+            "DialogDescription",
+            "DialogFooter"
+          ]
+        },
+        "Sheet": {
+          "path": "ui/sheet.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "Tooltip": {
+          "path": "ui/tooltip.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "DataTable": {
+          "path": "ui/DataTable.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO",
+          "features": [
+            "sorting",
+            "selection",
+            "pagination",
+            "filtering"
+          ]
+        },
+        "Form": {
+          "path": "ui/form.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A",
+          "subs": [
+            "FormField",
+            "FormItem",
+            "FormLabel",
+            "FormControl",
+            "FormMessage"
+          ]
+        },
+        "ErrorState": {
+          "path": "ui/ErrorState.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO",
+          "variants": [
+            "default",
+            "subtle",
+            "prominent"
+          ]
+        },
+        "SeverityIndicator": {
+          "path": "ui/SeverityIndicator.tsx",
+          "type": "ATOM",
+          "status": "DOMAIN",
+          "testId": "ready",
+          "levels": [
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ]
         }
-      }
-    },
-    "exports": {
-      "current": {
-        "Button": true,
-        "Input": true,
-        "Dialog": true,
-        "DataTable": true,
-        "NotificationsPanel": false,
-        "QuickFilter": false,
-        "DropdownMenu": false,
-        "Tabs": false
       },
-      "missing": ["NotificationsPanel", "QuickFilter", "DropdownMenu", "Tabs"],
-      "detailsFile": "findings/index.json → 002"
+      "statusLegend": {
+        "STABILIZED": "Production ready, AllStates story, tokens compliant",
+        "FROZEN": "DO NOT TOUCH - website production use",
+        "TODO": "Needs stabilization review",
+        "UTILITY": "Infrastructure helper, not a UI primitive",
+        "DOMAIN": "Domain-specific, stabilize after core"
+      },
+      "testIdLegend": {
+        "ready": "Props spread + JSDoc examples for ATOM, or auto-gen for MOLECULE",
+        "TODO": "Needs data-testid implementation per testing-quick-ref.md",
+        "N/A": "Not applicable (FROZEN or UTILITY)"
+      },
+      "testIdProgress": {
+        "ready": 10,
+        "todo": 7,
+        "na": 2
+      },
+      "missingExports": {
+        "high": [
+          "QuickFilter",
+          "NotificationsPanel",
+          "DropdownMenu",
+          "Tabs"
+        ],
+        "medium": [
+          "Wizard",
+          "WizardStepper",
+          "WizardStep",
+          "WizardNavigation"
+        ]
+      }
     }
   },
-
-  "quickLookup": {
-    "isBreaking": {
-      "renameProp": true,
-      "removeProp": true,
-      "changeType": true,
-      "changeDefault": true,
-      "removeExport": true
-    },
-    "isSafe": {
-      "addOptionalProp": true,
-      "addComponent": true,
-      "fixBug": true,
-      "addVariant": true,
-      "deprecate": true
-    }
+  "workflows": {
+    "editComponent": "Breaking? → STOP → v3.0.0 | Safe? → Update CHANGELOG",
+    "createComponent": "1. Check registry 2. Radix UI 3. Tokens only 4. Export src/index.ts 5. MINOR bump",
+    "writeStory": "1. AllStates required 2. autoFocus for focus 3. No hardcoded overrides 4. Composition only",
+    "writeTest": "Atoms=accept testId | Molecules=auto-gen | Pages=named regions",
+    "editTokens": "1. Update designTokens.ts 2. Update tokens-reference.json 3. Update DesignTokens.mdx 4. Run npm run sync-docs",
+    "afterChanges": "Run npm run sync-components && npm run sync-docs && npm run validate-context"
   },
-
-  "files": {
-    "findings": ".claude/findings/index.json",
-    "quickRef": ".claude/findings/quick-ref.json",
-    "componentRegistry": ".claude/component-registry.json",
-    "stabilizationPlan": ".claude/component-stabilization-plan.md",
-    "coreComponentsPlan": ".claude/core-components-stabilization.md",
-    "testingQuickRef": ".claude/testing-quick-ref.md",
-    "testingQA": "TESTING.md",
-    "variantReduction": ".claude/variant-reduction-strategy.md",
-    "storybookRules": ".claude/storybook-rules.md",
-    "colorFormatRule": ".claude/color-format-rule.md",
-    "v3BreakingChanges": ".claude/v3-breaking-changes.md",
-    "componentBuilder": ".claude/agents/component-builder.md",
-    "quickStartAgents": ".claude/QUICK-START-AGENTS.md",
-    "claudeMd": "CLAUDE.md",
-    "changelog": "CHANGELOG.md",
-    "tokens": "src/constants/designTokens.ts"
-  },
-
   "commands": {
     "typecheck": "npm run typecheck",
     "lint": "npm run lint",
     "build": "npm run build",
     "storybook": "npm run storybook",
-    "generateTokens": "npm run generate-tokens"
+    "generateTokens": "npm run generate-tokens",
+    "syncComponents": "npm run sync-components",
+    "syncDocs": "npm run sync-docs",
+    "validateContext": "npm run validate-context",
+    "syncAll": "npm run sync-components && npm run sync-docs && npm run validate-context"
+  },
+  "lazyLoad": {
+    "colorMatrix": ".claude/color-matrix.json",
+    "contrastMatrix": ".claude/contrast-matrix.json",
+    "tokens": ".claude/tokens-reference.json",
+    "storybookPatterns": ".claude/storybook-rules.md",
+    "testingPatterns": ".claude/testing-quick-ref.md",
+    "changelog": ".claude/changelog.json"
+  },
+
+  "humanOnly": {
+    "_note": "These files are for humans in Storybook, not for agents",
+    "visualTokenDocs": "src/stories/DesignTokens.mdx"
   }
 }

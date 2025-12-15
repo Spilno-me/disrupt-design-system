@@ -5,6 +5,7 @@ import './components/ui/HeroParticles.css'
 // Export all components
 export { Button, buttonVariants } from './components/ui/button'
 export { Badge, badgeVariants } from './components/ui/badge'
+// Card - Website pricing cards only (FROZEN)
 export {
   Card,
   cardVariants,
@@ -13,8 +14,20 @@ export {
   CardDescription,
   CardContent,
   CardFooter,
-  CardAction,
 } from './components/ui/card'
+export type { CardProps } from './components/ui/card'
+// AppCard - Application cards (for in-app use)
+export {
+  AppCard,
+  appCardVariants,
+  AppCardHeader,
+  AppCardTitle,
+  AppCardDescription,
+  AppCardContent,
+  AppCardFooter,
+  AppCardAction,
+} from './components/ui/app-card'
+export type { AppCardProps } from './components/ui/app-card'
 export { PricingConnector } from './components/ui/pricing-connector'
 export { Input } from './components/ui/input'
 export { Textarea } from './components/ui/textarea'

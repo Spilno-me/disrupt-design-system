@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Base Wizard components exports (Wizard, WizardStepper, WizardStep, WizardNavigation, useWizard)
 
 ### Improved
+- **Design Tokens - Shadows**: Enhanced Storybook documentation with natural light physics system
+  - Added comprehensive "Natural Light Physics" explanation (umbra/penumbra concepts)
+  - Added `elevated` shadow level to elevation scale (for premium/featured content)
+  - Added shadow anatomy visualization showing CSS breakdown
+  - Added use case mapping for each shadow level (sm→tags, md→cards, elevated→KPIs, lg→modals, xl→critical)
+  - Added "Elevated: Premium Emphasis" featured section
+  - Added `buttonDefault` to special shadows display
+  - Added Quick Reference footer for easy lookup
+
 - **Badge**: Enhanced code quality and documentation (backwards compatible)
   - Fixed text color consistency (`text-white` → `text-inverse`)
   - Added JSDoc comments for better DX
@@ -70,7 +79,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added comprehensive JSDoc with ATOM testId pattern and usage examples
   - Already excellent: No variants (opinionated), auto-sizing, mobile-friendly, perfect design token usage
 
+### Changed
+- **Card**: FROZEN for website-only use (pricing cards) (backwards compatible)
+  - Variants reduced: `pricing`, `pricingHighlight` only (removed `default`, `product`)
+  - CardAction removed (moved to AppCard)
+  - Clear JSDoc documentation: ⚠️ FROZEN - Website production use only
+  - Storybook updated: Only pricing variants shown
+  - Fixed FeatureListItem check icon contrast: non-highlighted items now use `text-muted` instead of `text-accent`
+  - All app code migrated to AppCard (StatsCard, tenant-requests stories)
+  - Breaking changes deferred to v3.0.0
+
 ### Added
+- **AppCard**: New application card component for in-app use (MOLECULE)
+  - Variants: `default`, `elevated` (gradient bg matching AppHeader), `flat` (semantic, app-focused)
+  - Elevated variant uses ALIAS.gradient.subtle: `linear-gradient(0deg, teal → cream)` matching AppHeader
+  - Shadow levels: `none`, `sm`, `md` (default), `lg`, `xl`, `elevated` (natural light from above)
+  - Default shadow: `md` for consistent depth across all cards
+  - Elevated shadow combines 2 shadows for realistic depth: direct shadow (2px-8px) + ambient occlusion (8px-16px)
+  - Sub-components: AppCardHeader, AppCardTitle, AppCardDescription, AppCardContent, AppCardFooter, AppCardAction
+  - Complete Storybook documentation with 8 stories including:
+    - AllStates story (comprehensive visual matrix)
+    - UsageGuidelines story (icon contrast best practices: use 20%+ opacity for icon backgrounds)
+    - Fixed elevated variant in AllStates to use `shadow="elevated"` for consistency
+  - Fixed icon contrast: Dashboard cards now use dark, saturated colors (`text-error`, `text-success`) instead of light teal to ensure visibility on light gradient backgrounds
+  - Full TypeScript support with exported interfaces
+  - Replaces Card for all app contexts (Partners, Leads, Dashboard, etc.)
+  - See: `src/components/ui/app-card.tsx`, `src/components/ui/app-card.stories.tsx`
+
+- **Shadow System Redesign**: Complete overhaul based on natural light physics (SYSTEM-WIDE)
+  - All shadows now use 2-layer approach: Umbra (core shadow) + Penumbra (soft shadow)
+  - Natural opacity progression: Darker close (12-14%) → Lighter far (8-10%)
+  - Blur increases with distance: Umbra (sharp) → Penumbra (soft)
+  - Negative spread on all layers for organic, natural feel
+  - Y-offset only (light from above)
+  - New shadow scale: `sm < md < elevated < lg < xl`
+  - **sm:** Subtle (1px/3px umbra, 1px/2px penumbra) - resting on surface
+  - **md:** Standard (2px/8px umbra, 4px/12px penumbra) - DEFAULT for cards
+  - **elevated:** Premium (3px/12px umbra, 10px/28px penumbra) - featured content, 14%/10% opacity
+  - **lg:** Prominent (4px/16px umbra, 8px/24px penumbra) - modals, dialogs
+  - **xl:** Maximum (8px/24px umbra, 12px/32px penumbra) - critical overlays
+  - Comprehensive documentation: `.claude/shadows.md`
+  - Physics principles: Umbra/Penumbra/Ambient Occlusion explained
+  - Usage guidelines per component type
+  - Available in all components that accept shadow prop
+
 - **Testing Guidelines**: Implemented 3-tier testId strategy (Atoms/Molecules/Pages)
   - ATOMS: Accept data-testid via props (no defaults, consumer provides context)
   - MOLECULES: Auto-generate default testId from props with optional override
@@ -79,6 +131,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Agent Documentation: `.claude/testing-quick-ref.md` with decision tree and implementation patterns
   - Agent enforcement: Updated hookify rules and agent-context.json
   - Naming propagation: Page-level naming flows down to all nested components (critical for consistency)
+
+- **Storybook Composition Rules**: Documentation for story file best practices
+  - Stories should ONLY compose exported atoms/components
+  - NO custom component functions inside story files
+  - Reusable patterns must be extracted as proper components first
+  - Prevents hidden complexity and ensures discoverability
+  - See: `.claude/storybook-composition-rules.md`
 
 - **Variant Reduction Strategy**: Opinionated design system philosophy
   - Minimal variants for design consistency

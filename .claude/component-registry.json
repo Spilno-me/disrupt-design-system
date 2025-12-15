@@ -7,7 +7,8 @@
   "ui": {
     "Button": { "exported": true, "location": "src/components/ui/button.tsx", "variants": ["primary", "secondary", "accent", "ghost", "destructive", "outline"] },
     "Badge": { "exported": true, "location": "src/components/ui/badge.tsx", "variants": ["default", "secondary", "destructive", "outline"] },
-    "Card": { "exported": true, "location": "src/components/ui/card.tsx", "subComponents": ["CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"] },
+    "Card": { "exported": true, "location": "src/components/ui/card.tsx", "variants": ["pricing", "pricingHighlight"], "subComponents": ["CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"], "status": "FROZEN", "note": "Website pricing cards only" },
+    "AppCard": { "exported": true, "location": "src/components/ui/app-card.tsx", "variants": ["default", "elevated", "flat"], "subComponents": ["AppCardHeader", "AppCardTitle", "AppCardDescription", "AppCardContent", "AppCardFooter", "AppCardAction"], "for": "in-app use" },
     "Input": { "exported": true, "location": "src/components/ui/input.tsx" },
     "Textarea": { "exported": true, "location": "src/components/ui/textarea.tsx" },
     "Checkbox": { "exported": true, "location": "src/components/ui/checkbox.tsx" },

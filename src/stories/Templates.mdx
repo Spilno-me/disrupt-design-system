@@ -1,13 +1,86 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
+import { FileText, Presentation, Mail, Layout } from 'lucide-react';
+import {
+  HeroHeader,
+  ComingSoon,
+  InfoBox,
+  NavCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from './brand/BrandComponents';
 
 <Meta title="Brand/Templates" />
 
-# Presentation Templates
+{/* Hero Header */}
+<HeroHeader
+  icon={<FileText size={28} color={PRIMITIVES.white} />}
+  title="Templates"
+  description="Pre-designed templates to maintain brand consistency across all communications."
+  gradient="purple"
+/>
 
-*Coming soon*
+<InfoBox variant="info">
+  <strong>Templates are being prepared.</strong> Our design team is creating comprehensive
+  templates for various use cases. Check back soon or contact the brand team for urgent needs.
+</InfoBox>
 
-This section will provide:
-- PowerPoint/Keynote templates
-- Google Slides templates
-- Social media templates
-- Email signature templates
+---
+
+## Coming Soon
+
+<ComingSoon
+  title="Template Library"
+  items={[
+    'PowerPoint / Keynote',
+    'Google Slides',
+    'Email Signatures',
+    'Social Media Posts',
+    'Letterheads',
+    'Business Cards',
+    'Report Templates',
+    'Proposal Templates',
+  ]}
+/>
+
+---
+
+## In the Meantime
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginTop: '32px',
+}}>
+  <NavCard
+    icon="🎨"
+    title="Design Tokens"
+    description="Use our design tokens to create consistent designs"
+    href="?path=/docs/foundation-design-tokens-overview--docs"
+  />
+  <NavCard
+    icon="📥"
+    title="Asset Downloads"
+    description="Download logos, fonts, and color palettes"
+    href="?path=/docs/brand-downloads--docs"
+  />
+  <NavCard
+    icon="📖"
+    title="Brand Guidelines"
+    description="Learn the rules for using brand assets"
+    href="?path=/docs/brand-guidelines--docs"
+  />
+  <NavCard
+    icon="🧩"
+    title="Components"
+    description="Browse our component library"
+    href="?path=/docs/components-button--docs"
+  />
+</div>

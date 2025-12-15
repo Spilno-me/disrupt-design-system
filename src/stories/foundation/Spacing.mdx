@@ -1,0 +1,395 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Space, Monitor, Smartphone, LayoutGrid } from 'lucide-react';
+import {
+  SectionHeader,
+  InfoBox,
+  TokenTable,
+  CodeBlock,
+  TOKENS,
+} from './DocComponents';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from '../../constants/designTokens';
+
+<Meta title="Foundation/Design Tokens/Spacing" />
+
+{/* Page Header */}
+<div style={{
+  background: `linear-gradient(135deg, ${ABYSS[400]} 0%, ${ABYSS[600]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '40px',
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '12px',
+  }}>
+    <Space size={28} color={PRIMITIVES.white} />
+  </div>
+
+  <h1 style={{
+    margin: '0 0 12px 0',
+    fontSize: '36px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: PRIMITIVES.white,
+  }}>
+    Spacing System
+  </h1>
+
+  <p style={{
+    margin: 0,
+    fontSize: '16px',
+    fontFamily: '"Fixel", sans-serif',
+    color: SLATE[300],
+    lineHeight: 1.6,
+    maxWidth: '500px',
+  }}>
+    Two spacing systems for two contexts: generous spacing for marketing impact,
+    compact spacing for application efficiency.
+  </p>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Rule:</strong> Websites use larger spacing for content breathing room.
+  Apps use compact spacing for information density and productivity.
+</InfoBox>
+
+---
+
+## Website Spacing
+
+For marketing sites, landing pages, and public-facing content. Larger spacing creates breathing room.
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '24px',
+  }}>
+    <Monitor size={20} color={ABYSS[500]} />
+    <h3 style={{
+      margin: 0,
+      fontSize: '18px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      Website Patterns
+    </h3>
+  </div>
+
+  <TokenTable
+    tokens={[
+      { name: 'Section Padding Y', value: '64px / 96px', tailwind: 'py-16 lg:py-24', usage: 'Vertical section padding' },
+      { name: 'Section Padding X', value: '24px / 40px', tailwind: 'px-6 lg:px-10', usage: 'Horizontal section padding' },
+      { name: 'Heading Gap', value: '4px', tailwind: 'mb-1', usage: 'Between heading and subheading' },
+      { name: 'Subheading Gap', value: '32px', tailwind: 'mb-8', usage: 'After subheading to content' },
+      { name: 'List Item Gap', value: '16px', tailwind: 'gap-4', usage: 'Between list items' },
+      { name: 'Content Gap', value: '48px / 64px', tailwind: 'gap-12 lg:gap-16', usage: 'Between content blocks' },
+    ]}
+  />
+</div>
+
+### Website Section Example
+
+<div style={{
+  background: PRIMITIVES.cream,
+  borderRadius: RADIUS.lg,
+  padding: '64px 40px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <div style={{ maxWidth: '600px' }}>
+    <h2 style={{
+      fontFamily: '"Pilat Extended", sans-serif',
+      fontSize: '32px',
+      fontWeight: 600,
+      color: ABYSS[500],
+      margin: '0 0 4px 0',
+    }}>
+      Section Heading
+    </h2>
+    <p style={{
+      fontFamily: '"Pilat Extended", sans-serif',
+      fontSize: '18px',
+      fontWeight: 500,
+      color: DUSK_REEF[500],
+      margin: '0 0 32px 0',
+    }}>
+      Section subheading with supporting information
+    </p>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+    }}>
+      <div style={{
+        background: PRIMITIVES.white,
+        padding: '16px',
+        borderRadius: RADIUS.sm,
+        boxShadow: SHADOWS.sm,
+      }}>
+        Content block 1
+      </div>
+      <div style={{
+        background: PRIMITIVES.white,
+        padding: '16px',
+        borderRadius: RADIUS.sm,
+        boxShadow: SHADOWS.sm,
+      }}>
+        Content block 2
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## App Spacing
+
+For web applications (Flow, Market, Partner). Compact spacing optimizes for dense information.
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '24px',
+  }}>
+    <Smartphone size={20} color={DEEP_CURRENT[500]} />
+    <h3 style={{
+      margin: 0,
+      fontSize: '18px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      App Patterns
+    </h3>
+  </div>
+
+  <TokenTable
+    tokens={[
+      { name: 'Page Container', value: '24px', tailwind: 'p-6', usage: 'Page padding all sides' },
+      { name: 'Card Padding', value: '16px / 24px', tailwind: 'p-4 or p-6', usage: 'Compact / default card padding' },
+      { name: 'Card Header', value: '24px / 6px', tailwind: 'px-6 gap-1.5', usage: 'Header horizontal / title gap' },
+      { name: 'Form Gap', value: '8px', tailwind: 'gap-2', usage: 'Between form fields' },
+      { name: 'Section Gap', value: '24px', tailwind: 'gap-6', usage: 'Between content sections' },
+      { name: 'Table Row Height', value: '44px min', tailwind: 'min-h-11', usage: 'Touch-friendly row height' },
+    ]}
+  />
+</div>
+
+### App Card Example
+
+<div style={{
+  background: PRIMITIVES.cream,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.sm,
+    boxShadow: SHADOWS.md,
+    border: `1px solid ${SLATE[200]}`,
+    overflow: 'hidden',
+    maxWidth: '400px',
+  }}>
+    <div style={{
+      padding: '16px 24px',
+      borderBottom: `1px solid ${SLATE[200]}`,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '6px',
+    }}>
+      <h3 style={{
+        margin: 0,
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        Card Title
+      </h3>
+      <p style={{
+        margin: 0,
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        Card description text
+      </p>
+    </div>
+    <div style={{ padding: '24px' }}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}>
+        <div style={{
+          background: SLATE[50],
+          padding: '12px',
+          borderRadius: RADIUS.xs,
+          fontSize: '14px',
+          fontFamily: '"Fixel", sans-serif',
+        }}>
+          Form field 1
+        </div>
+        <div style={{
+          background: SLATE[50],
+          padding: '12px',
+          borderRadius: RADIUS.xs,
+          fontSize: '14px',
+          fontFamily: '"Fixel", sans-serif',
+        }}>
+          Form field 2
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## Spacing Scale
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <h3 style={{
+    margin: '0 0 24px 0',
+    fontSize: '18px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    Base 4px Scale
+  </h3>
+
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    {[
+      { name: '0.5', value: '2px', tailwind: 'p-0.5' },
+      { name: '1', value: '4px', tailwind: 'p-1' },
+      { name: '2', value: '8px', tailwind: 'p-2' },
+      { name: '3', value: '12px', tailwind: 'p-3' },
+      { name: '4', value: '16px', tailwind: 'p-4' },
+      { name: '6', value: '24px', tailwind: 'p-6' },
+      { name: '8', value: '32px', tailwind: 'p-8' },
+      { name: '12', value: '48px', tailwind: 'p-12' },
+      { name: '16', value: '64px', tailwind: 'p-16' },
+      { name: '24', value: '96px', tailwind: 'p-24' },
+    ].map((item) => (
+      <div
+        key={item.name}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+        }}
+      >
+        <div style={{
+          width: '60px',
+          fontSize: '14px',
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+          fontWeight: 500,
+        }}>
+          {item.name}
+        </div>
+        <div
+          style={{
+            width: item.value,
+            height: '24px',
+            background: DEEP_CURRENT[500],
+            borderRadius: '2px',
+          }}
+        />
+        <div style={{
+          fontSize: '13px',
+          fontFamily: 'ui-monospace, monospace',
+          color: SLATE[500],
+          width: '50px',
+        }}>
+          {item.value}
+        </div>
+        <code style={{
+          background: DEEP_CURRENT[50],
+          padding: '2px 8px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          fontFamily: 'ui-monospace, monospace',
+          color: DEEP_CURRENT[700],
+        }}>
+          {item.tailwind}
+        </code>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+## Usage Examples
+
+<CodeBlock
+  language="tsx"
+  code={`// Website section
+<section className="py-16 lg:py-24 px-6 lg:px-10">
+  <div className="max-w-[1440px] mx-auto">
+    <h2 className="mb-1">Heading</h2>
+    <p className="mb-8">Subheading</p>
+    <div className="gap-12 lg:gap-16">
+      {/* Content */}
+    </div>
+  </div>
+</section>
+
+// App card
+<div className="bg-surface rounded-lg shadow-md">
+  <div className="px-6 py-4 border-b border-default">
+    <h3 className="font-semibold">Title</h3>
+  </div>
+  <div className="p-6">
+    <form className="flex flex-col gap-2">
+      {/* Form fields */}
+    </form>
+  </div>
+</div>
+
+// Page layout
+<div className="p-6">
+  <div className="flex flex-col gap-6">
+    {/* Sections */}
+  </div>
+</div>`}
+/>

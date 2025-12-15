@@ -77,6 +77,5 @@ type: "callback"
     tool: "Edit"
     filePattern: "src/.+\\.(tsx?|css)$"
   check: |
-    💡 >30min debug? → Record finding
-    Template: .claude/findings/TEMPLATE.md
-    Update: .claude/findings/index.json
+    💡 New design pattern? → Update .claude/DESIGN-SYSTEM.md
+    💡 New rule discovered? → Update .claude/agent-context.json

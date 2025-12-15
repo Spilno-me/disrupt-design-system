@@ -1,0 +1,177 @@
+# COLOR & CONTRAST ENFORCEMENT
+# WCAG-compliant contrast validation for all color decisions
+# Agents MUST consult matrices BEFORE writing any color code
+
+name: "contrast-validation"
+description: "Enforces WCAG contrast ratios and color matrix compliance"
+enabled: true
+type: "callback"
+
+# =============================================================================
+# WCAG CONTRAST THRESHOLDS (memorize these!)
+# =============================================================================
+#
+# | Level | Category     | Ratio | When to Use                    |
+# |-------|--------------|-------|--------------------------------|
+# | AA    | Normal text  | 4.5:1 | Body text, labels, inputs      |
+# | AA    | Large text   | 3.0:1 | 18pt+ regular or 14pt+ bold    |
+# | AA    | Graphics     | 3.0:1 | Icons, UI components, borders  |
+# | AAA   | Normal text  | 7.0:1 | Enhanced accessibility         |
+# | AAA   | Large text   | 4.5:1 | Enhanced for large text        |
+#
+# =============================================================================
+
+# =============================================================================
+# BEFORE WRITING ANY COLOR - VALIDATE CONTRAST
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "\\.(tsx?|mdx)$"
+  check: |
+    🎨 CONTRAST CHECK REQUIRED → Read: .claude/contrast-matrix.json
+
+    VALIDATION WORKFLOW:
+    1. Identify background color (hex or token)
+    2. Find entry in contrast-matrix.json → matrix.[background]
+    3. Look up your foreground color
+    4. Check "passes" field:
+       - "AAA" or "AA" → SAFE for text
+       - "AA-G" → ONLY for icons, borders, 18pt+ text
+       - "FAIL" → NEVER USE - pick alternative
+
+    WCAG QUICK THRESHOLDS:
+      Normal text: need 4.5:1 minimum
+      Large text:  need 3.0:1 minimum
+      Icons/UI:    need 3.0:1 minimum
+
+    ❌ COMMON FAILURES (memorize these!):
+       - ABYSS[200-300] on ABYSS[500-700] = 2-4:1 FAIL
+       - DUSK_REEF[400] on DUSK_REEF[600] = ~2:1 FAIL
+       - DEEP_CURRENT[500] on white = 3.57:1 (AA-G only!)
+       - white on white = 1:1 INVISIBLE
+       - light gray on white = <3:1 FAIL
+
+    ✅ SAFE COMBINATIONS (pre-validated AAA):
+       - PRIMITIVES.white on ABYSS[500+] = 12:1+
+       - SLATE[300] on ABYSS[500+] = 8:1+
+       - ABYSS[500] on white/cream = 12:1+
+       - DUSK_REEF[500] on white = 7:1+
+
+# =============================================================================
+# NEW FILE - FULL MATRIX CONSULTATION
+# =============================================================================
+
+- trigger:
+    tool: "Write"
+    filePattern: "\\.(tsx?|mdx)$"
+  check: |
+    📖 NEW FILE → Consult BOTH matrices:
+       - .claude/color-matrix.json (allowed combinations)
+       - .claude/contrast-matrix.json (exact ratios)
+
+    CHECKLIST before writing colors:
+    [ ] Background identified and categorized
+    [ ] Foreground from "passes: AA" or better
+    [ ] Text contrast >= 4.5:1
+    [ ] Icon contrast >= 3.0:1
+    [ ] No colors from FORBIDDEN/NEVER lists
+
+    QUICK SAFE CHOICES BY BACKGROUND:
+    ┌─────────────────────┬──────────────────────────────┐
+    │ Background          │ Safe Text Colors             │
+    ├─────────────────────┼──────────────────────────────┤
+    │ ABYSS[500-900]      │ white (12:1), SLATE[300] (8:1)│
+    │ DEEP_CURRENT[600+]  │ white (4.9:1)                │
+    │ white/cream         │ ABYSS[500] (12:1)            │
+    │ SLATE[50-100]       │ ABYSS[500], DUSK_REEF[500]   │
+    │ CORAL[50]           │ CORAL[700] (5:1)             │
+    └─────────────────────┴──────────────────────────────┘
+
+# =============================================================================
+# USER-SPECIFIED COLOR - VALIDATE AND REPORT
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "\\.(tsx?|mdx)$"
+  check: |
+    👤 USER SPECIFIED A COLOR? → Validate before implementing!
+
+    If user requests specific color combination:
+    1. Look up in contrast-matrix.json
+    2. Calculate/find the contrast ratio
+    3. REPORT to user with this format:
+
+    ┌────────────────────────────────────────────────┐
+    │ CONTRAST VALIDATION                            │
+    │ Background: [color]                            │
+    │ Foreground: [color]                            │
+    │ Ratio: X.XX:1                                  │
+    │ Status: [PASS AA | PASS AAA | FAIL]            │
+    │ Use: [text | large text only | icons only]     │
+    │                                                │
+    │ [If FAIL] Suggested alternative: [color]       │
+    └────────────────────────────────────────────────┘
+
+    DO NOT silently implement failing combinations!
+    Always inform the user of contrast issues.
+
+# =============================================================================
+# COMPONENT VARIANTS - VALIDATE EACH STATE
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "src/components/.+\\.tsx$"
+  check: |
+    🧩 COMPONENT VARIANTS → Validate contrast per variant
+
+    Each variant has different bg → needs separate validation:
+
+    variant="default" (white/light bg):
+      text: ABYSS[500] (12:1 AAA)
+      icons: ABYSS[500] (12:1 AAA)
+
+    variant="dark" / inverse (ABYSS bg):
+      text: PRIMITIVES.white (12:1 AAA)
+      icons: PRIMITIVES.white (12:1 AAA)
+
+    variant="accent" / "primary" (DEEP_CURRENT bg):
+      ⚠️ CAREFUL: DEEP_CURRENT[500] + white = 3.57:1
+      → Use DEEP_CURRENT[600]+ for AA text compliance
+      text: white (4.9:1 AA on [600])
+      icons: white (4.9:1 AA on [600])
+
+    variant="destructive" (CORAL bg):
+      ⚠️ CAREFUL: Red has borderline contrast
+      text: white (4.8:1 AA)
+      icons: white (4.8:1 AA)
+
+    HOVER/FOCUS STATES:
+      - Darker bg = better contrast (usually safe)
+      - Lighter bg = verify contrast still passes
+
+# =============================================================================
+# TEAL BUTTON WARNING (common mistake!)
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "\\.(tsx?|mdx)$"
+  check: |
+    ⚠️ TEAL BUTTON CONTRAST WARNING
+
+    DEEP_CURRENT[500] (#08A4BD) + white text = 3.57:1
+    This FAILS WCAG AA for normal text (needs 4.5:1)
+
+    SOLUTIONS:
+    1. Use DEEP_CURRENT[600] (#068397) → 4.89:1 AA PASS
+    2. Use larger text (18pt+) → 3.0:1 threshold applies
+    3. Accept for icons/graphics only (3.0:1 threshold)
+
+    If you MUST use DEEP_CURRENT[500]:
+    - Only for large headings (18pt+)
+    - Only for icons/graphics
+    - Add aria-label for accessibility
+    - Document the intentional exception

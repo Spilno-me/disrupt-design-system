@@ -1,3 +1,17 @@
+/**
+ * Card - Website pricing card component (FROZEN)
+ *
+ * ⚠️ FROZEN FOR WEBSITE USE - DO NOT MODIFY
+ *
+ * This component is used exclusively by the production website's pricing section.
+ * Any changes risk breaking the live website.
+ *
+ * For in-app cards, use the `AppCard` component instead.
+ *
+ * @frozen Website component - no changes allowed until v3.0.0
+ * @see AppCard for app-specific card usage
+ */
+
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -51,26 +65,40 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        // Default card - white background with subtle border
-        default: "bg-white text-dark gap-6 border border-slate py-6",
-        // Pricing card - dashed border
+        // Pricing card - dashed border (WEBSITE ONLY)
         pricing: "bg-white p-6 h-full border border-dashed border-slate rounded-[14px]",
-        // Highlighted pricing card - animated marching ants border
+        // Highlighted pricing card - animated marching ants border (WEBSITE ONLY)
         pricingHighlight: "bg-white p-6 rounded-[14px] relative overflow-hidden",
-        // Product card - gradient background with gradient border effect
-        product: "p-4 rounded-[10px] relative",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "pricing",
     },
   }
 )
 
 interface CardProps extends React.ComponentProps<"div">, VariantProps<typeof cardVariants> {
-  /** Shadow elevation level: none, sm, md, lg, xl */
+  /** Shadow elevation level: none, sm, md, lg, xl, elevated (natural light from above) */
   shadow?: ShadowLevel
 }
+
+/**
+ * Card component for website pricing cards only.
+ *
+ * ⚠️ FROZEN - Website production use only
+ *
+ * @example
+ * ```tsx
+ * // Pricing card (website only)
+ * <Card variant="pricing" shadow="sm">
+ *   <CardHeader>
+ *     <CardTitle>Standard</CardTitle>
+ *     <CardDescription>$30/mo</CardDescription>
+ *   </CardHeader>
+ *   <CardContent>Features list</CardContent>
+ * </Card>
+ * ```
+ */
 
 function Card({ className, variant, shadow, style, children, ...props }: CardProps) {
   // Build combined styles using SHADOWS tokens (Tier 1 primitive for shadows)
@@ -141,18 +169,6 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function CardAction({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
-      {...props}
-    />
-  )
-}
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -174,13 +190,21 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+Card.displayName = "Card"
+CardHeader.displayName = "CardHeader"
+CardTitle.displayName = "CardTitle"
+CardDescription.displayName = "CardDescription"
+CardContent.displayName = "CardContent"
+CardFooter.displayName = "CardFooter"
+
 export {
   Card,
   cardVariants,
   CardHeader,
   CardFooter,
   CardTitle,
-  CardAction,
   CardDescription,
   CardContent,
 }
+
+export type { CardProps }

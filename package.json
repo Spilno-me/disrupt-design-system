@@ -38,6 +38,9 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "update-docs": "node scripts/update-claude-docs.js",
+    "validate-context": "node scripts/validate-agent-context.js",
+    "sync-components": "node scripts/sync-component-status.js",
+    "sync-docs": "node scripts/sync-docs.js",
     "prepare": "simple-git-hooks"
   },
   "simple-git-hooks": {

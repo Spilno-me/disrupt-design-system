@@ -1,0 +1,479 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Type, Monitor, Smartphone } from 'lucide-react';
+import {
+  SectionHeader,
+  InfoBox,
+  TokenTable,
+  CodeBlock,
+  TOKENS,
+} from './DocComponents';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  TYPOGRAPHY,
+} from '../../constants/designTokens';
+
+<Meta title="Foundation/Design Tokens/Typography" />
+
+{/* Page Header */}
+<div style={{
+  background: `linear-gradient(135deg, ${DUSK_REEF[500]} 0%, ${DUSK_REEF[700]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '40px',
+  marginBottom: '48px',
+  position: 'relative',
+  overflow: 'hidden',
+}}>
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '12px',
+    }}>
+      <Type size={28} color={PRIMITIVES.white} />
+    </div>
+
+    <h1 style={{
+      margin: '0 0 12px 0',
+      fontSize: '36px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+    }}>
+      Typography
+    </h1>
+
+    <p style={{
+      margin: 0,
+      fontSize: '16px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[100],
+      lineHeight: 1.6,
+      maxWidth: '500px',
+    }}>
+      Two font families for two contexts: Pilat Extended for marketing impact,
+      Fixel for application clarity.
+    </p>
+  </div>
+</div>
+
+---
+
+## Font Families
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '48px',
+}}>
+  {/* Display Font */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '32px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.md,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      marginBottom: '24px',
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: ABYSS[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Monitor size={20} color={ABYSS[500]} />
+      </div>
+      <div>
+        <h3 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: 600,
+          fontFamily: '"Pilat Extended", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Pilat Extended
+        </h3>
+        <code style={{
+          fontSize: '12px',
+          fontFamily: 'ui-monospace, monospace',
+          color: SLATE[500],
+        }}>
+          font-display
+        </code>
+      </div>
+    </div>
+
+    <p style={{
+      margin: '0 0 24px 0',
+      fontSize: '14px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.6,
+    }}>
+      Bold, extended letterforms for marketing websites, landing pages, and hero sections.
+      Creates strong visual impact.
+    </p>
+
+    <div style={{
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <div style={{ fontSize: '48px', fontWeight: 700, lineHeight: 1.1, marginBottom: '8px' }}>
+        Disrupt
+      </div>
+      <div style={{ fontSize: '24px', fontWeight: 600, marginBottom: '8px' }}>
+        Transform Your Business
+      </div>
+      <div style={{ fontSize: '16px', fontWeight: 500 }}>
+        The quick brown fox jumps over the lazy dog
+      </div>
+    </div>
+  </div>
+
+  {/* App Font */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '32px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.md,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      marginBottom: '24px',
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Smartphone size={20} color={DEEP_CURRENT[500]} />
+      </div>
+      <div>
+        <h3 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Fixel
+        </h3>
+        <code style={{
+          fontSize: '12px',
+          fontFamily: 'ui-monospace, monospace',
+          color: SLATE[500],
+        }}>
+          font-sans
+        </code>
+      </div>
+    </div>
+
+    <p style={{
+      margin: '0 0 24px 0',
+      fontSize: '14px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.6,
+    }}>
+      Clean, readable typeface for applications, dashboards, forms, and data tables.
+      Optimized for extended reading.
+    </p>
+
+    <div style={{
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <div style={{ fontSize: '24px', fontWeight: 600, marginBottom: '8px' }}>
+        Dashboard Overview
+      </div>
+      <div style={{ fontSize: '16px', fontWeight: 500, marginBottom: '8px' }}>
+        Your environmental metrics at a glance
+      </div>
+      <div style={{ fontSize: '14px', fontWeight: 400 }}>
+        The quick brown fox jumps over the lazy dog
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## Type Scale
+
+### Website Typography
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+  }}>
+    <div style={{ borderBottom: `1px solid ${SLATE[200]}`, paddingBottom: '24px' }}>
+      <code style={{
+        display: 'inline-block',
+        background: ABYSS[50],
+        padding: '4px 8px',
+        borderRadius: '4px',
+        fontSize: '11px',
+        fontFamily: 'ui-monospace, monospace',
+        color: ABYSS[500],
+        marginBottom: '8px',
+      }}>
+        text-4xl md:text-6xl lg:text-7xl font-display font-bold
+      </code>
+      <div style={{
+        fontFamily: '"Pilat Extended", sans-serif',
+        fontSize: '48px',
+        fontWeight: 700,
+        color: ABYSS[500],
+        lineHeight: 1.1,
+      }}>
+        Hero Headline
+      </div>
+      <div style={{ fontSize: '13px', color: SLATE[500], marginTop: '8px', fontFamily: '"Fixel", sans-serif' }}>
+        Hero titles, main page headlines
+      </div>
+    </div>
+
+    <div style={{ borderBottom: `1px solid ${SLATE[200]}`, paddingBottom: '24px' }}>
+      <code style={{
+        display: 'inline-block',
+        background: ABYSS[50],
+        padding: '4px 8px',
+        borderRadius: '4px',
+        fontSize: '11px',
+        fontFamily: 'ui-monospace, monospace',
+        color: ABYSS[500],
+        marginBottom: '8px',
+      }}>
+        text-2xl lg:text-[32px] font-display font-semibold
+      </code>
+      <div style={{
+        fontFamily: '"Pilat Extended", sans-serif',
+        fontSize: '32px',
+        fontWeight: 600,
+        color: ABYSS[500],
+        lineHeight: 1.2,
+      }}>
+        Section Heading
+      </div>
+      <div style={{ fontSize: '13px', color: SLATE[500], marginTop: '8px', fontFamily: '"Fixel", sans-serif' }}>
+        Standard section headings
+      </div>
+    </div>
+
+    <div>
+      <code style={{
+        display: 'inline-block',
+        background: ABYSS[50],
+        padding: '4px 8px',
+        borderRadius: '4px',
+        fontSize: '11px',
+        fontFamily: 'ui-monospace, monospace',
+        color: ABYSS[500],
+        marginBottom: '8px',
+      }}>
+        text-base lg:text-lg font-display font-medium
+      </code>
+      <div style={{
+        fontFamily: '"Pilat Extended", sans-serif',
+        fontSize: '18px',
+        fontWeight: 500,
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+      }}>
+        Section subheading with supporting information
+      </div>
+      <div style={{ fontSize: '13px', color: SLATE[500], marginTop: '8px', fontFamily: '"Fixel", sans-serif' }}>
+        Section descriptions, subtitles
+      </div>
+    </div>
+  </div>
+</div>
+
+### App Typography
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  }}>
+    {[
+      { class: 'text-2xl font-sans font-semibold', size: '24px', weight: 600, label: 'Page Title', usage: 'Page headings' },
+      { class: 'text-lg font-sans font-semibold', size: '18px', weight: 600, label: 'Section Title', usage: 'Section headings' },
+      { class: 'text-base font-sans font-semibold', size: '16px', weight: 600, label: 'Card Title', usage: 'Card titles' },
+      { class: 'text-sm font-sans', size: '14px', weight: 400, label: 'Body text for content and descriptions', usage: 'Body text' },
+      { class: 'text-sm font-sans font-medium', size: '14px', weight: 500, label: 'Form Label', usage: 'Form labels' },
+      { class: 'text-xs font-sans text-muted', size: '12px', weight: 400, label: 'Caption or help text', usage: 'Captions, metadata', muted: true },
+    ].map((item, i) => (
+      <div
+        key={i}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          padding: '12px 0',
+          borderBottom: i < 5 ? `1px solid ${SLATE[100]}` : 'none',
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <div style={{
+            fontFamily: '"Fixel", sans-serif',
+            fontSize: item.size,
+            fontWeight: item.weight,
+            color: item.muted ? DUSK_REEF[500] : ABYSS[500],
+          }}>
+            {item.label}
+          </div>
+        </div>
+        <code style={{
+          background: DEEP_CURRENT[50],
+          padding: '4px 8px',
+          borderRadius: '4px',
+          fontSize: '11px',
+          fontFamily: 'ui-monospace, monospace',
+          color: DEEP_CURRENT[700],
+          whiteSpace: 'nowrap',
+        }}>
+          {item.class}
+        </code>
+        <div style={{
+          fontSize: '12px',
+          color: SLATE[500],
+          fontFamily: '"Fixel", sans-serif',
+          width: '120px',
+        }}>
+          {item.usage}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+## Font Weights
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {[
+    { weight: 400, name: 'Normal', class: 'font-normal' },
+    { weight: 500, name: 'Medium', class: 'font-medium' },
+    { weight: 600, name: 'Semibold', class: 'font-semibold' },
+    { weight: 700, name: 'Bold', class: 'font-bold' },
+  ].map((item) => (
+    <div
+      key={item.weight}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+        textAlign: 'center',
+      }}
+    >
+      <div style={{
+        fontFamily: '"Fixel", sans-serif',
+        fontSize: '32px',
+        fontWeight: item.weight,
+        color: ABYSS[500],
+        marginBottom: '8px',
+      }}>
+        Aa
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        marginBottom: '4px',
+      }}>
+        {item.name}
+      </div>
+      <code style={{
+        fontSize: '11px',
+        fontFamily: 'ui-monospace, monospace',
+        color: SLATE[500],
+      }}>
+        {item.weight} / {item.class}
+      </code>
+    </div>
+  ))}
+</div>
+
+---
+
+## Usage Examples
+
+<CodeBlock
+  language="tsx"
+  code={`// Website hero
+<h1 className="text-4xl md:text-6xl font-display font-bold text-primary">
+  Transform Your Business
+</h1>
+
+// App page title
+<h1 className="text-2xl font-sans font-semibold text-primary">
+  Dashboard
+</h1>
+
+// Card with proper hierarchy
+<div className="bg-surface rounded-lg p-6">
+  <h3 className="text-base font-semibold text-primary mb-2">
+    Card Title
+  </h3>
+  <p className="text-sm text-secondary">
+    Description text goes here
+  </p>
+</div>
+
+// Form field
+<label className="text-sm font-medium text-primary">
+  Email Address
+</label>
+<input className="text-sm" />
+<p className="text-xs text-muted mt-1">
+  We'll never share your email
+</p>`}
+/>

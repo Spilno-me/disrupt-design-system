@@ -1,0 +1,193 @@
+{
+  "_description": "Color Combination Matrix - CONSULT BEFORE WRITING ANY COLOR CODE",
+  "_usage": "1. Identify your background category, 2. Use ONLY the allowed foreground colors",
+
+  "backgrounds": {
+    "dark": {
+      "_description": "Dark backgrounds - use light foreground colors",
+      "tokens": [
+        "ABYSS[500]", "ABYSS[600]", "ABYSS[700]", "ABYSS[800]", "ABYSS[900]",
+        "DEEP_CURRENT[600]", "DEEP_CURRENT[700]", "DEEP_CURRENT[800]",
+        "DUSK_REEF[600]", "DUSK_REEF[700]", "DUSK_REEF[800]",
+        "SLATE[700]", "SLATE[800]", "SLATE[900]",
+        "linear-gradient with ABYSS", "linear-gradient with dark colors"
+      ],
+      "text": {
+        "primary": "PRIMITIVES.white",
+        "secondary": "SLATE[300]",
+        "muted": "SLATE[400]",
+        "link": "DEEP_CURRENT[300]"
+      },
+      "icons": {
+        "primary": "PRIMITIVES.white",
+        "secondary": "SLATE[300]",
+        "accent": "DEEP_CURRENT[300]"
+      },
+      "borders": {
+        "default": "rgba(255,255,255,0.1)",
+        "strong": "rgba(255,255,255,0.2)",
+        "accent": "DEEP_CURRENT[400]"
+      },
+      "FORBIDDEN": [
+        "ABYSS[200-600] for text",
+        "DUSK_REEF[400-600] for text",
+        "DEEP_CURRENT[400-600] for text",
+        "Any dark color for text/icons"
+      ]
+    },
+
+    "light": {
+      "_description": "Light backgrounds - use dark foreground colors",
+      "tokens": [
+        "PRIMITIVES.white", "PRIMITIVES.cream",
+        "SLATE[50]", "SLATE[100]", "SLATE[200]",
+        "DEEP_CURRENT[50]", "DUSK_REEF[50]", "CORAL[50]",
+        "bg-surface", "bg-background"
+      ],
+      "text": {
+        "primary": "ABYSS[500]",
+        "secondary": "DUSK_REEF[500]",
+        "muted": "SLATE[500]",
+        "link": "DEEP_CURRENT[500]"
+      },
+      "icons": {
+        "primary": "ABYSS[500]",
+        "secondary": "SLATE[500]",
+        "accent": "DEEP_CURRENT[500]"
+      },
+      "borders": {
+        "default": "SLATE[200]",
+        "strong": "SLATE[300]",
+        "accent": "DEEP_CURRENT[500]"
+      },
+      "FORBIDDEN": [
+        "PRIMITIVES.white for text",
+        "SLATE[100-300] for text",
+        "Any light color for text/icons"
+      ]
+    },
+
+    "accent-teal": {
+      "_description": "Teal accent backgrounds (buttons, CTAs)",
+      "tokens": [
+        "DEEP_CURRENT[500]", "DEEP_CURRENT[600]",
+        "bg-accent-strong", "bg-brand-secondary"
+      ],
+      "text": {
+        "primary": "PRIMITIVES.white",
+        "secondary": "DEEP_CURRENT[100]"
+      },
+      "icons": {
+        "primary": "PRIMITIVES.white"
+      },
+      "borders": {
+        "default": "DEEP_CURRENT[600]",
+        "focus": "PRIMITIVES.white"
+      },
+      "FORBIDDEN": [
+        "ABYSS colors for text",
+        "DEEP_CURRENT[400-700] for text"
+      ]
+    },
+
+    "accent-purple": {
+      "_description": "Purple accent backgrounds",
+      "tokens": [
+        "DUSK_REEF[500]", "DUSK_REEF[600]"
+      ],
+      "text": {
+        "primary": "PRIMITIVES.white",
+        "secondary": "DUSK_REEF[100]"
+      },
+      "icons": {
+        "primary": "PRIMITIVES.white"
+      },
+      "borders": {
+        "default": "DUSK_REEF[600]"
+      },
+      "FORBIDDEN": [
+        "DUSK_REEF[400-700] for text"
+      ]
+    },
+
+    "subtle": {
+      "_description": "Subtle tinted backgrounds",
+      "tokens": [
+        "SLATE[50]", "SLATE[100]",
+        "DEEP_CURRENT[50]", "DUSK_REEF[50]",
+        "bg-muted", "bg-accent-bg"
+      ],
+      "text": {
+        "primary": "ABYSS[500]",
+        "secondary": "DUSK_REEF[600]",
+        "muted": "SLATE[600]"
+      },
+      "icons": {
+        "primary": "ABYSS[500]",
+        "secondary": "SLATE[500]",
+        "accent": "DEEP_CURRENT[600]"
+      },
+      "borders": {
+        "default": "SLATE[200]",
+        "strong": "SLATE[300]"
+      },
+      "FORBIDDEN": [
+        "Light colors for text",
+        "White for text"
+      ]
+    },
+
+    "error": {
+      "_description": "Error/danger backgrounds",
+      "tokens": [
+        "CORAL[500]", "CORAL[600]", "bg-destructive"
+      ],
+      "text": {
+        "primary": "PRIMITIVES.white"
+      },
+      "icons": {
+        "primary": "PRIMITIVES.white"
+      },
+      "FORBIDDEN": [
+        "CORAL colors for text"
+      ]
+    },
+
+    "error-subtle": {
+      "_description": "Subtle error backgrounds",
+      "tokens": [
+        "CORAL[50]", "CORAL[100]"
+      ],
+      "text": {
+        "primary": "CORAL[700]",
+        "secondary": "CORAL[600]"
+      },
+      "icons": {
+        "primary": "CORAL[600]"
+      },
+      "borders": {
+        "default": "CORAL[200]"
+      }
+    }
+  },
+
+  "quickLookup": {
+    "_description": "Fast lookup: background → text color",
+    "ABYSS[500-900]": "PRIMITIVES.white or SLATE[300]",
+    "DEEP_CURRENT[500-700]": "PRIMITIVES.white",
+    "DUSK_REEF[500-700]": "PRIMITIVES.white",
+    "PRIMITIVES.white": "ABYSS[500]",
+    "PRIMITIVES.cream": "ABYSS[500]",
+    "SLATE[50-200]": "ABYSS[500] or DUSK_REEF[500]",
+    "SLATE[700-900]": "PRIMITIVES.white or SLATE[200]",
+    "gradients(dark)": "PRIMITIVES.white + SLATE[300]",
+    "gradients(light)": "ABYSS[500] + DUSK_REEF[500]"
+  },
+
+  "rules": {
+    "golden": "Same color family on itself = BAD (ABYSS text on ABYSS bg)",
+    "contrast": "Dark bg → Light text | Light bg → Dark text",
+    "hierarchy": "primary = strongest contrast, muted = weakest (but still readable)",
+    "test": "Would this be visible if printed in grayscale? No = wrong choice"
+  }
+}

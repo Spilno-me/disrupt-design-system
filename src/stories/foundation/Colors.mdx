@@ -1,0 +1,458 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Palette, Droplet, AlertCircle, CheckCircle, Info, Sun } from 'lucide-react';
+import {
+  SectionHeader,
+  InfoBox,
+  ColorSwatch,
+  ColorScale,
+  TokenTable,
+  CodeBlock,
+  TOKENS,
+} from './DocComponents';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  WAVE,
+  SUNRISE,
+  HARBOR,
+  ORANGE,
+  SLATE,
+  PRIMITIVES,
+  ALIAS,
+  SHADOWS,
+  RADIUS,
+} from '../../constants/designTokens';
+
+<Meta title="Foundation/Design Tokens/Colors" />
+
+{/* Page Header */}
+<div style={{
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '40px',
+  marginBottom: '48px',
+  position: 'relative',
+  overflow: 'hidden',
+}}>
+  <div style={{
+    position: 'absolute',
+    top: '-30px',
+    right: '-30px',
+    width: '150px',
+    height: '150px',
+    borderRadius: '50%',
+    background: PRIMITIVES.white,
+    opacity: 0.1,
+  }} />
+
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '12px',
+    }}>
+      <Palette size={28} color={PRIMITIVES.white} />
+    </div>
+
+    <h1 style={{
+      margin: '0 0 12px 0',
+      fontSize: '36px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+    }}>
+      Color System
+    </h1>
+
+    <p style={{
+      margin: 0,
+      fontSize: '16px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DEEP_CURRENT[100],
+      lineHeight: 1.6,
+      maxWidth: '500px',
+    }}>
+      A two-tiered color architecture ensuring consistency and maintainability
+      across all Disrupt products.
+    </p>
+  </div>
+</div>
+
+{/* Architecture Reminder */}
+<InfoBox variant="tip">
+  <strong>Two-Tier System:</strong> Primitives (raw values) → Alias (semantic meaning).
+  Always use <strong>Alias tokens</strong> in components. Click any swatch to copy.
+</InfoBox>
+
+---
+
+## Tier 1: Brand Primitives
+
+Raw color scales with brand naming. These are the **source of truth** for all color values.
+
+### Abyss (Primary Dark)
+
+The foundation of the Disrupt brand. Used for text, backgrounds, and UI elements.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))',
+  gap: '8px',
+  marginBottom: '32px',
+}}>
+  {Object.entries(ABYSS).map(([shade, hex]) => (
+    <ColorSwatch
+      key={shade}
+      name={shade === '500' ? '500 (base)' : shade}
+      value={hex}
+      tokenPath={`ABYSS[${shade}]`}
+      size="sm"
+    />
+  ))}
+</div>
+
+### Deep Current (Teal Accent)
+
+The signature accent color. Represents innovation, trust, and the digital realm.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))',
+  gap: '8px',
+  marginBottom: '32px',
+}}>
+  {Object.entries(DEEP_CURRENT).map(([shade, hex]) => (
+    <ColorSwatch
+      key={shade}
+      name={shade === '500' ? '500 (base)' : shade}
+      value={hex}
+      tokenPath={`DEEP_CURRENT[${shade}]`}
+      size="sm"
+    />
+  ))}
+</div>
+
+### Dusk Reef (Purple Secondary)
+
+Secondary brand color for muted text, backgrounds, and subtle accents.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))',
+  gap: '8px',
+  marginBottom: '32px',
+}}>
+  {Object.entries(DUSK_REEF).map(([shade, hex]) => (
+    <ColorSwatch
+      key={shade}
+      name={shade === '500' ? '500 (base)' : shade}
+      value={hex}
+      tokenPath={`DUSK_REEF[${shade}]`}
+      size="sm"
+    />
+  ))}
+</div>
+
+### Status Colors
+
+Semantic colors for feedback and state communication.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {/* Error */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: CORAL[500],
+      padding: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <AlertCircle size={32} color={PRIMITIVES.white} />
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        Coral (Error)
+      </div>
+      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+        {CORAL[500]}
+      </div>
+    </div>
+  </div>
+
+  {/* Success */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: HARBOR[500],
+      padding: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <CheckCircle size={32} color={PRIMITIVES.white} />
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        Harbor (Success)
+      </div>
+      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+        {HARBOR[500]}
+      </div>
+    </div>
+  </div>
+
+  {/* Warning */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: SUNRISE[500],
+      padding: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Sun size={32} color={PRIMITIVES.white} />
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        Sunrise (Warning)
+      </div>
+      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+        {SUNRISE[500]}
+      </div>
+    </div>
+  </div>
+
+  {/* Info */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: WAVE[500],
+      padding: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Info size={32} color={PRIMITIVES.white} />
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        Wave (Info)
+      </div>
+      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+        {WAVE[500]}
+      </div>
+    </div>
+  </div>
+</div>
+
+### Neutrals & Base
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(5, 1fr)',
+  gap: '12px',
+  marginBottom: '48px',
+}}>
+  <ColorSwatch name="Cream" value={PRIMITIVES.cream} tokenPath="PRIMITIVES.cream" usage="Page background" />
+  <ColorSwatch name="White" value={PRIMITIVES.white} tokenPath="PRIMITIVES.white" usage="Card surface" />
+  <ColorSwatch name="Slate 200" value={SLATE[200]} tokenPath="SLATE[200]" usage="Borders" />
+  <ColorSwatch name="Slate 300" value={SLATE[300]} tokenPath="SLATE[300]" usage="Border default" />
+  <ColorSwatch name="Black" value={PRIMITIVES.black} tokenPath="PRIMITIVES.black" usage="Absolute dark" />
+</div>
+
+---
+
+## Tier 2: Alias Tokens (Semantic)
+
+Semantic tokens that define **what the color means**. Use these in components.
+
+### Text Colors
+
+<TokenTable
+  tokens={[
+    { name: 'text.primary', value: 'Abyss 500', tailwind: 'text-primary', usage: 'Main body text, headings' },
+    { name: 'text.secondary', value: 'Dusk Reef 500', tailwind: 'text-secondary', usage: 'Muted text, descriptions' },
+    { name: 'text.tertiary', value: 'Dusk Reef 400', tailwind: 'text-tertiary', usage: 'Subtle text, captions' },
+    { name: 'text.disabled', value: 'Dusk Reef 300', tailwind: 'text-disabled', usage: 'Disabled state' },
+    { name: 'text.inverse', value: 'White', tailwind: 'text-inverse', usage: 'Text on dark backgrounds' },
+    { name: 'text.link', value: 'Deep Current 500', tailwind: 'text-link', usage: 'Link text' },
+    { name: 'text.error', value: 'Coral 500', tailwind: 'text-error', usage: 'Error messages' },
+    { name: 'text.success', value: 'Harbor 600', tailwind: 'text-success', usage: 'Success messages' },
+  ]}
+/>
+
+### Background Colors
+
+<TokenTable
+  tokens={[
+    { name: 'background.page', value: 'Cream', tailwind: 'bg-page', usage: 'Main page background' },
+    { name: 'background.surface', value: 'White', tailwind: 'bg-surface', usage: 'Cards, panels' },
+    { name: 'background.surfaceHover', value: 'Abyss 50', tailwind: 'hover:bg-surface-hover', usage: 'Surface hover state' },
+    { name: 'background.muted', value: 'Dusk Reef 50', tailwind: 'bg-muted-bg', usage: 'Subtle backgrounds' },
+    { name: 'background.inverse', value: 'Abyss 500', tailwind: 'bg-inverse-bg', usage: 'Dark backgrounds' },
+    { name: 'background.accent', value: 'Deep Current 50', tailwind: 'bg-accent-bg', usage: 'Light accent background' },
+    { name: 'background.accentStrong', value: 'Deep Current 500', tailwind: 'bg-accent-strong', usage: 'Strong accent (buttons)' },
+  ]}
+/>
+
+### Border Colors
+
+<TokenTable
+  tokens={[
+    { name: 'border.default', value: 'Slate 300', tailwind: 'border-default', usage: 'Default borders' },
+    { name: 'border.subtle', value: 'Abyss 100', tailwind: 'border-subtle', usage: 'Subtle borders' },
+    { name: 'border.strong', value: 'Abyss 300', tailwind: 'border-strong', usage: 'Emphasized borders' },
+    { name: 'border.focus', value: 'Deep Current 500', tailwind: 'border-focus', usage: 'Focus rings' },
+    { name: 'border.error', value: 'Coral 500', tailwind: 'border-error', usage: 'Error state' },
+    { name: 'border.accent', value: 'Deep Current 500', tailwind: 'border-accent', usage: 'Accent borders' },
+  ]}
+/>
+
+---
+
+## Usage Examples
+
+### Tailwind Classes (Recommended)
+
+<CodeBlock
+  language="tsx"
+  code={`// Text colors
+<p className="text-primary">Main text</p>
+<p className="text-secondary">Muted text</p>
+<p className="text-error">Error message</p>
+
+// Background colors
+<div className="bg-surface">Card</div>
+<div className="bg-accent-bg">Accent highlight</div>
+
+// Combined patterns
+<button className="bg-accent-strong text-inverse hover:bg-accent-strong/90">
+  Primary Button
+</button>
+
+<div className="bg-error-light text-error border-error rounded-md p-4">
+  Error alert message
+</div>`}
+/>
+
+### TypeScript Tokens (Dynamic Styles)
+
+<CodeBlock
+  language="typescript"
+  code={`import { ALIAS, ABYSS, DEEP_CURRENT } from '@adrozdenko/design-system'
+
+// Use ALIAS tokens for semantic meaning
+const styles = {
+  background: ALIAS.background.surface,
+  color: ALIAS.text.primary,
+  borderColor: ALIAS.border.default,
+}
+
+// Dynamic state
+const bgColor = isError
+  ? ALIAS.status.error
+  : ALIAS.background.surface`}
+/>
+
+---
+
+## Guidelines
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h4 style={{
+      margin: '0 0 12px 0',
+      fontSize: '16px',
+      fontWeight: 600,
+      color: HARBOR[700],
+      fontFamily: '"Fixel", sans-serif',
+    }}>
+      Do's
+    </h4>
+    <ul style={{
+      margin: 0,
+      paddingLeft: '20px',
+      fontSize: '14px',
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      lineHeight: 1.8,
+    }}>
+      <li>Use <strong>ALIAS tokens</strong> for all component styling</li>
+      <li>Use semantic names that describe intent</li>
+      <li>Use Tailwind classes for static styles</li>
+      <li>Use TypeScript tokens for dynamic values</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <h4 style={{
+      margin: '0 0 12px 0',
+      fontSize: '16px',
+      fontWeight: 600,
+      color: CORAL[700],
+      fontFamily: '"Fixel", sans-serif',
+    }}>
+      Don'ts
+    </h4>
+    <ul style={{
+      margin: 0,
+      paddingLeft: '20px',
+      fontSize: '14px',
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      lineHeight: 1.8,
+    }}>
+      <li>Don't hardcode hex values in components</li>
+      <li>Don't use Primitives directly when ALIAS exists</li>
+      <li>Don't create new colors outside the system</li>
+      <li>Don't use Tailwind's default colors (blue-500, etc.)</li>
+    </ul>
+  </div>
+</div>

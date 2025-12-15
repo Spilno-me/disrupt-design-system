@@ -1,13 +1,396 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Smile,
+  Home,
+  Settings,
+  User,
+  Search,
+  Bell,
+  Mail,
+  Calendar,
+  Clock,
+  Star,
+  Heart,
+  Share2,
+  Download,
+  Upload,
+  Trash2,
+  Edit,
+  Plus,
+  Minus,
+  Check,
+  X,
+  ChevronRight,
+  ChevronDown,
+  ArrowRight,
+  ArrowLeft,
+  ExternalLink,
+  Link,
+  Eye,
+  EyeOff,
+  Lock,
+  Unlock,
+  AlertCircle,
+  AlertTriangle,
+  Info,
+  HelpCircle,
+  CheckCircle,
+  XCircle,
+  Loader,
+  RefreshCw,
+  Filter,
+  SortAsc,
+  Grid,
+  List,
+  MoreHorizontal,
+  MoreVertical,
+  Menu,
+  Copy,
+  Clipboard,
+  File,
+  Folder,
+  Image,
+  FileText,
+  Database,
+  Server,
+  Cloud,
+  Zap,
+  Activity,
+  BarChart2,
+  PieChart,
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  CreditCard,
+  ShoppingCart,
+  Package,
+  Truck,
+  MapPin,
+  Phone,
+  MessageSquare,
+  Send,
+  Paperclip,
+} from 'lucide-react';
+import {
+  HeroHeader,
+  IconShowcase,
+  InfoBox,
+  SectionHeader,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from './brand/BrandComponents';
 
 <Meta title="Brand/Iconography" />
 
-# Iconography
+{/* Hero Header */}
+<HeroHeader
+  icon={<Smile size={28} color={PRIMITIVES.white} />}
+  title="Iconography"
+  description="Lucide icons power our interface. Consistent sizing, stroke width, and color usage create visual harmony."
+  gradient="teal"
+/>
 
-*Coming soon*
+<InfoBox variant="info">
+  <strong>We use Lucide React</strong> for all icons. These are open-source, consistently designed
+  icons with a 24x24 grid and 2px stroke width.
+</InfoBox>
 
-This section will document:
-- Icon library (Lucide icons)
-- Custom icons
-- Icon sizing and usage
-- Icon colors and states
+---
+
+## Icon Library
+
+Our design system uses [Lucide Icons](https://lucide.dev) - a beautiful, consistent icon set that's open source and actively maintained.
+
+### Navigation & Actions
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <IconShowcase
+    icons={[
+      { name: 'Home', icon: <Home size={24} /> },
+      { name: 'Search', icon: <Search size={24} /> },
+      { name: 'Menu', icon: <Menu size={24} /> },
+      { name: 'Settings', icon: <Settings size={24} /> },
+      { name: 'User', icon: <User size={24} /> },
+      { name: 'Bell', icon: <Bell size={24} /> },
+      { name: 'Plus', icon: <Plus size={24} /> },
+      { name: 'Edit', icon: <Edit size={24} /> },
+      { name: 'Trash', icon: <Trash2 size={24} /> },
+      { name: 'Download', icon: <Download size={24} /> },
+      { name: 'Upload', icon: <Upload size={24} /> },
+      { name: 'Share', icon: <Share2 size={24} /> },
+    ]}
+  />
+</div>
+
+### Directional
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <IconShowcase
+    icons={[
+      { name: 'Arrow Right', icon: <ArrowRight size={24} /> },
+      { name: 'Arrow Left', icon: <ArrowLeft size={24} /> },
+      { name: 'Chevron Right', icon: <ChevronRight size={24} /> },
+      { name: 'Chevron Down', icon: <ChevronDown size={24} /> },
+      { name: 'External', icon: <ExternalLink size={24} /> },
+      { name: 'Link', icon: <Link size={24} /> },
+    ]}
+  />
+</div>
+
+### Status & Feedback
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <IconShowcase
+    icons={[
+      { name: 'Check', icon: <Check size={24} /> },
+      { name: 'X', icon: <X size={24} /> },
+      { name: 'Check Circle', icon: <CheckCircle size={24} /> },
+      { name: 'X Circle', icon: <XCircle size={24} /> },
+      { name: 'Alert Circle', icon: <AlertCircle size={24} /> },
+      { name: 'Alert Triangle', icon: <AlertTriangle size={24} /> },
+      { name: 'Info', icon: <Info size={24} /> },
+      { name: 'Help', icon: <HelpCircle size={24} /> },
+      { name: 'Loader', icon: <Loader size={24} /> },
+      { name: 'Refresh', icon: <RefreshCw size={24} /> },
+    ]}
+  />
+</div>
+
+### Data & Charts
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <IconShowcase
+    icons={[
+      { name: 'Activity', icon: <Activity size={24} /> },
+      { name: 'Bar Chart', icon: <BarChart2 size={24} /> },
+      { name: 'Pie Chart', icon: <PieChart size={24} /> },
+      { name: 'Trending Up', icon: <TrendingUp size={24} /> },
+      { name: 'Trending Down', icon: <TrendingDown size={24} /> },
+      { name: 'Database', icon: <Database size={24} /> },
+      { name: 'Server', icon: <Server size={24} /> },
+      { name: 'Cloud', icon: <Cloud size={24} /> },
+    ]}
+  />
+</div>
+
+### Communication
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <IconShowcase
+    icons={[
+      { name: 'Mail', icon: <Mail size={24} /> },
+      { name: 'Message', icon: <MessageSquare size={24} /> },
+      { name: 'Send', icon: <Send size={24} /> },
+      { name: 'Phone', icon: <Phone size={24} /> },
+      { name: 'Paperclip', icon: <Paperclip size={24} /> },
+    ]}
+  />
+</div>
+
+---
+
+## Icon Sizes
+
+<SectionHeader
+  icon={<Grid size={20} />}
+  title="Size Guidelines"
+  description="Use consistent sizes based on context."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    gap: '48px',
+  }}>
+    {[
+      { size: 16, label: 'XS', usage: 'Inline text, badges' },
+      { size: 20, label: 'SM', usage: 'Buttons, inputs' },
+      { size: 24, label: 'MD', usage: 'Navigation, cards' },
+      { size: 32, label: 'LG', usage: 'Feature highlights' },
+      { size: 48, label: 'XL', usage: 'Empty states, heroes' },
+    ].map((item) => (
+      <div key={item.label} style={{ textAlign: 'center' }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '16px',
+          color: ABYSS[500],
+        }}>
+          <Star size={item.size} />
+        </div>
+        <div style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+          marginBottom: '4px',
+        }}>
+          {item.size}px
+        </div>
+        <div style={{
+          fontSize: '12px',
+          fontFamily: '"Fixel", sans-serif',
+          color: SLATE[500],
+          marginBottom: '4px',
+        }}>
+          {item.label}
+        </div>
+        <div style={{
+          fontSize: '11px',
+          fontFamily: '"Fixel", sans-serif',
+          color: DUSK_REEF[500],
+        }}>
+          {item.usage}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+## Icon Colors
+
+<SectionHeader
+  icon={<Eye size={20} />}
+  title="Color Usage"
+  description="Icons inherit text color by default. Use semantic colors for states."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {[
+    { color: ABYSS[500], name: 'Default', desc: 'Primary actions' },
+    { color: DEEP_CURRENT[500], name: 'Interactive', desc: 'Links, CTAs' },
+    { color: SLATE[400], name: 'Muted', desc: 'Secondary, disabled' },
+    { color: '#22C55E', name: 'Success', desc: 'Confirmations' },
+  ].map((item) => (
+    <div
+      key={item.name}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+        textAlign: 'center',
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '12px',
+      }}>
+        <CheckCircle size={32} color={item.color} />
+      </div>
+      <div style={{
+        fontSize: '13px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        marginBottom: '4px',
+      }}>
+        {item.name}
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        {item.desc}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Usage Examples
+
+<div style={{
+  background: SLATE[900],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <pre style={{
+    margin: 0,
+    fontSize: '13px',
+    fontFamily: 'ui-monospace, monospace',
+    color: SLATE[100],
+    lineHeight: 1.6,
+  }}>
+{`import { Search, Bell, Settings } from 'lucide-react';
+
+// Basic usage
+<Search size={20} />
+
+// With color
+<Bell size={24} color="#08A4BD" />
+
+// In a button
+<button className="flex items-center gap-2">
+  <Settings size={16} />
+  Settings
+</button>
+
+// Animated (with Tailwind)
+<Loader className="animate-spin" size={20} />`}
+  </pre>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Pro tip:</strong> Use <code>strokeWidth</code> prop to adjust icon weight.
+  Default is 2, use 1.5 for lighter or 2.5 for bolder icons.
+</InfoBox>

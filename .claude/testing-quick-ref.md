@@ -1,85 +1,48 @@
-# Testing Quick Reference (Agents)
+# data-testid Quick Reference
 
-**Last Updated:** 2025-12-13
+**Agent-only. data-testid attribute strategy by component type.**
+
+> **Note:** This is about `data-testid` attribute implementation in components,
+> NOT about unit tests. The goal is testability - making components ready for
+> future test automation.
 
 ---
 
-## 🎯 testId Strategy by Component Type
+## testId by Layer
 
-Design systems have **3 component layers** - each needs different testId handling:
+| Layer | Examples | Strategy | Default |
+|-------|----------|----------|---------|
+| **Atoms** | Button, Badge, Input | Accept via props | NONE |
+| **Molecules** | LeadCard, StatsCard | Auto-generate | `{type}-{id}` |
+| **Pages** | Dashboard, Settings | Named regions | Region-based |
 
-### 1. ATOMS (Primitives)
-**Examples:** Button, Badge, Input, Skeleton, Separator
-**Strategy:** Accept data-testid, NO defaults
-**Why:** Context-agnostic, reusable everywhere
+---
+
+## Atoms (Primitives)
 
 ```tsx
-// Component accepts via HTML attributes
+// NO default testId - consumer provides context
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
 
-// Consumer provides context
-<Button data-testid="login-submit-button">Submit</Button>
-<Button data-testid="cancel-modal-button">Cancel</Button>
+// Usage
+<Button data-testid="login-submit">Submit</Button>
 ```
 
 ---
 
-### 2. MOLECULES (Composed Components)
-**Examples:** LeadCard, InvoiceCard, StatsCard, NotificationsPanel
-**Strategy:** Auto-generate default, allow override
-**Why:** Know their context, can generate meaningful defaults
+## Molecules (Composed)
 
 ```tsx
-// Component has optional testId prop + auto-generation
 interface LeadCardProps {
   lead: Lead
   testId?: string  // Optional override
 }
 
-export function LeadCard({ lead, testId, ...props }: LeadCardProps) {
+function LeadCard({ lead, testId }: LeadCardProps) {
   return (
-    <div data-testid={testId || `lead-card-${lead.id}`} {...props}>
-      {/* Internal atoms get context-specific testIds */}
-      <SeverityIndicator
-        level={lead.priority}
-        data-testid={`lead-priority-${lead.id}`}
-      />
-      <Badge data-testid={`lead-status-${lead.id}`}>
-        {lead.status}
-      </Badge>
-      <Button data-testid={`lead-edit-button-${lead.id}`}>
-        Edit
-      </Button>
-    </div>
-  )
-}
-
-// Usage: QA gets testIds automatically! ✅
-<LeadCard lead={lead} />
-// Generates: data-testid="lead-card-123"
-//           data-testid="lead-priority-123"
-//           data-testid="lead-status-123"
-//           data-testid="lead-edit-button-123"
-```
-
----
-
-### 3. PAGES (Top-level)
-**Examples:** LeadsPage, PartnersPage, InvoicesPage
-**Strategy:** Hardcoded data-testids on major sections
-**Why:** Not reusable, testIds are stable
-
-```tsx
-export function LeadsPage() {
-  return (
-    <div data-testid="leads-page">
-      <header data-testid="leads-header">...</header>
-      <div data-testid="leads-filters">...</div>
-      <div data-testid="leads-table-container">
-        {leads.map(lead => (
-          <LeadCard key={lead.id} lead={lead} />
-        ))}
-      </div>
+    <div data-testid={testId || `lead-card-${lead.id}`}>
+      <Badge data-testid={`lead-status-${lead.id}`} />
+      <Button data-testid={`lead-edit-${lead.id}`} />
     </div>
   )
 }
@@ -87,247 +50,169 @@ export function LeadsPage() {
 
 ---
 
-## 📋 Quick Decision Tree
-
-```
-Is it reusable in multiple contexts?
-├─ YES → Is it composed of multiple atoms?
-│  ├─ YES → MOLECULE → Auto-generate testId from props
-│  └─ NO  → ATOM → Accept data-testid from consumer
-└─ NO  → PAGE → Hardcode data-testid
-```
-
----
-
-## 🧪 Naming Convention (All Types)
-
-**Format:** `section-element-type` (kebab-case)
-
-```typescript
-// Pages
-data-testid="leads-page"
-data-testid="partners-page"
-
-// Sections within pages
-data-testid="leads-header"
-data-testid="leads-filters"
-data-testid="leads-table-container"
-
-// Molecules (auto-generated)
-data-testid="lead-card-123"
-data-testid="invoice-card-456"
-data-testid="stats-card-revenue"
-
-// Atoms (context-specific)
-data-testid="login-submit-button"
-data-testid="settings-email-input"
-data-testid="user-role-select"
-
-// Repeating elements
-data-testid="lead-card-${id}"
-data-testid="lead-priority-${id}"
-data-testid="lead-edit-button-${id}"
-```
-
----
-
-## 📋 Component Checklist
-
-**When creating/editing components:**
-
-1. ✅ Add `data-testid` to interactive elements
-2. ✅ Use kebab-case naming
-3. ✅ Add to actual DOM node (not wrapper)
-4. ✅ Include context in name (`login-submit-button`, not just `button`)
-5. ✅ For lists: use dynamic IDs (`item-${id}`)
-
----
-
-## ✅ Implementation Examples by Type
-
-### ATOMS - Accept data-testid (Context from Consumer)
+## Pages/Templates
 
 ```tsx
-// Component code - accepts data-testid
+<main data-testid="dashboard-page">
+  <section data-testid="dashboard-stats" />
+  <section data-testid="dashboard-table" />
+</main>
+```
+
+---
+
+## Naming Convention
+
+```
+{context}-{component}-{identifier}
+
+Examples:
+- lead-card-123
+- login-submit-button
+- dashboard-stats-section
+- user-profile-avatar
+```
+
+---
+
+## Testing Selectors
+
+```tsx
+// ✅ Preferred
+getByTestId('lead-card-123')
+getByRole('button', { name: /submit/i })
+
+// ❌ Avoid
+getByClassName('lead-card')
+querySelector('.btn-primary')
+```
+
+---
+
+## Quick Checklist
+
+- [ ] Atoms: testId via spread props, no default
+- [ ] Molecules: auto-generate with entity ID
+- [ ] Pages: named regions/sections
+- [ ] Follow naming convention
+
+---
+
+## Copy-Paste Patterns
+
+### Atom Component (Button, Input, Badge)
+
+```tsx
+/**
+ * Button - Primary action trigger
+ *
+ * @component ATOM
+ * @testId Consumer provides via data-testid prop
+ * @example <Button data-testid="login-submit">Submit</Button>
+ */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: string
-  // data-testid comes from HTMLButtonHTMLAttributes
+  variant?: 'primary' | 'secondary' | 'ghost'
 }
 
-function Button({ variant, ...props }: ButtonProps) {
-  return <button {...props} className={...} />  // Spreads data-testid
-}
-
-// Consumer usage - provides context
-<Button data-testid="login-submit-button">Submit</Button>
-<Button data-testid="cancel-modal-button">Cancel</Button>
-
-// Other atoms
-<Input data-testid="login-email-input" type="email" />
-<Badge data-testid="user-status-badge">Active</Badge>
-<Skeleton data-testid="profile-skeleton" />
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = 'primary', ...props }, ref) => (
+    <button ref={ref} className={cn(variants[variant], className)} {...props} />
+  )
+)
+Button.displayName = 'Button'
 ```
 
----
-
-### MOLECULES - Auto-generate with Override
+### Molecule Component (LeadCard, StatsCard)
 
 ```tsx
-// Component code - auto-generates default
+/**
+ * LeadCard - Displays lead information with actions
+ *
+ * @component MOLECULE
+ * @testId Auto-generated: lead-card-{id}, lead-status-{id}, lead-edit-{id}
+ * @example <LeadCard lead={lead} />
+ */
 interface LeadCardProps {
   lead: Lead
   testId?: string  // Optional override
-  onEdit?: () => void
-  onDelete?: () => void
 }
 
-export function LeadCard({ lead, testId, onEdit, onDelete }: LeadCardProps) {
+function LeadCard({ lead, testId }: LeadCardProps) {
   const baseTestId = testId || `lead-card-${lead.id}`
-
   return (
     <div data-testid={baseTestId}>
-      {/* Auto-generate child testIds from base */}
-      <SeverityIndicator
-        level={lead.priority}
-        data-testid={`${baseTestId}-priority`}
-      />
-      <Badge data-testid={`${baseTestId}-status`}>
-        {lead.status}
-      </Badge>
-      <Button
-        data-testid={`${baseTestId}-edit-button`}
-        onClick={onEdit}
-      >
-        Edit
-      </Button>
-      <Button
-        data-testid={`${baseTestId}-delete-button`}
-        onClick={onDelete}
-      >
-        Delete
-      </Button>
+      <Badge data-testid={`lead-status-${lead.id}`}>{lead.status}</Badge>
+      <Button data-testid={`lead-edit-${lead.id}`}>Edit</Button>
     </div>
   )
 }
-
-// Consumer usage - QA gets testIds automatically!
-<LeadCard lead={lead} />
-// Generates:
-// data-testid="lead-card-123"
-// data-testid="lead-card-123-priority"
-// data-testid="lead-card-123-status"
-// data-testid="lead-card-123-edit-button"
-// data-testid="lead-card-123-delete-button"
-
-// Can override if needed
-<LeadCard lead={lead} testId="featured-lead" />
-// Generates:
-// data-testid="featured-lead"
-// data-testid="featured-lead-priority"
-// data-testid="featured-lead-status"
 ```
 
-**Pattern for other molecules:**
-```tsx
-// InvoiceCard
-<InvoiceCard invoice={invoice} />
-→ data-testid="invoice-card-456"
-
-// StatsCard with semantic ID
-<StatsCard testId="revenue-stats" />
-→ data-testid="revenue-stats"
-
-// NotificationsPanel
-<NotificationsPanel />
-→ data-testid="notifications-panel"
-```
-
----
-
-### PAGES - Hardcoded testIds
+### Page/Template Component
 
 ```tsx
-export function LeadsPage() {
+/**
+ * DashboardPage - Main dashboard layout
+ *
+ * @component PAGE
+ * @testId Named regions: dashboard-page, dashboard-stats, dashboard-table
+ */
+function DashboardPage() {
   return (
-    <div data-testid="leads-page">
-      <header data-testid="leads-header">
-        <h1>Leads</h1>
+    <main data-testid="dashboard-page">
+      <header data-testid="dashboard-header">
+        <h1>Dashboard</h1>
       </header>
-
-      <div data-testid="leads-filters">
-        <SearchFilter />
-        <QuickFilter />
-      </div>
-
-      <div data-testid="leads-stats">
-        <StatsCard testId="leads-stats-total" />
-        <StatsCard testId="leads-stats-converted" />
-      </div>
-
-      <div data-testid="leads-table-container">
-        <LeadsDataTable data={leads} />
-      </div>
-    </div>
+      <section data-testid="dashboard-stats">
+        <StatsCard stat={totalLeads} />
+      </section>
+      <section data-testid="dashboard-table">
+        <DataTable data={leads} />
+      </section>
+    </main>
   )
 }
-
-// QA can now test predictably:
-await page.getByTestId('leads-page').waitFor()
-await page.getByTestId('leads-filters').click()
-await page.getByTestId('leads-stats-total').textContent()
 ```
 
----
-
-## 🚫 Common Mistakes
+### Test File Pattern
 
 ```tsx
-// ❌ BAD: Adding default testId to atoms
-function Button({ ...props }) {
-  return <button data-testid="button" {...props} />  // Too generic!
-}
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { LeadCard } from './LeadCard'
 
-// ✅ GOOD: Accept from consumer
-function Button({ ...props }) {
-  return <button {...props} />  // Consumer provides context
-}
-<Button data-testid="login-submit-button">Submit</Button>
+describe('LeadCard', () => {
+  const mockLead = { id: '123', name: 'Test Lead', status: 'new' }
 
-// ❌ BAD: Molecule without auto-generation
-function LeadCard({ lead }) {
-  return <div>{lead.name}</div>  // QA can't test!
-}
+  it('renders lead information', () => {
+    render(<LeadCard lead={mockLead} />)
 
-// ✅ GOOD: Auto-generate from props
-function LeadCard({ lead, testId }) {
-  return <div data-testid={testId || `lead-card-${lead.id}`}>
-    {lead.name}
-  </div>
-}
+    expect(screen.getByTestId('lead-card-123')).toBeInTheDocument()
+    expect(screen.getByTestId('lead-status-123')).toHaveTextContent('new')
+  })
 
-// ❌ BAD: camelCase
-<button data-testid="loginSubmitButton">Submit</button>
+  it('handles edit action', async () => {
+    const user = userEvent.setup()
+    render(<LeadCard lead={mockLead} />)
 
-// ✅ GOOD: kebab-case
-<button data-testid="login-submit-button">Submit</button>
-
-// ❌ BAD: On wrapper div
-<div data-testid="submit-button">
-  <button>Submit</button>
-</div>
-
-// ✅ GOOD: On actual interactive element
-<button data-testid="submit-button">Submit</button>
+    await user.click(screen.getByTestId('lead-edit-123'))
+    // assertions...
+  })
+})
 ```
 
 ---
 
-## 🔍 Where to Find
+## JSDoc Template
 
-- **Full guidelines:** `.claude/agent-context.json` → `components.testing.dataTestId`
-- **Hookify enforcement:** `.claude/hookify/agent-assist.yaml`
-- **This file:** `.claude/testing-quick-ref.md`
+Always include component type and testId documentation:
 
----
-
-**Total read time: 30 seconds ⚡**
+```tsx
+/**
+ * ComponentName - Brief description
+ *
+ * @component ATOM | MOLECULE | PAGE
+ * @testId How testId is handled
+ * @example Usage example
+ */
+```
