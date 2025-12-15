@@ -311,8 +311,15 @@
         "focusStatePattern": {
           "required": "If component accepts focus or can be interactive",
           "header": "Focus State (Real Component Behavior - Click to See) or (Tab to See)",
-          "implementation": "Show actual focusable component, not fake CSS",
-          "why": "Demonstrates real focus ring color from design tokens (--ring variable)"
+          "implementation": "Show actual focusable component with focus ring VISIBLE by default",
+          "why": "Demonstrates real focus ring color from design tokens (--ring variable)",
+          "criticalRule": "Focus ring MUST be visible without user interaction in AllStates story",
+          "techniques": {
+            "simpleComponents": "Use autoFocus prop (Input, Checkbox, Select)",
+            "complexComponents": "Use useEffect + querySelector + programmatic focus (Slider)",
+            "example": "Slider uses autoFocusThumb prop with useEffect to focus thumb on mount"
+          },
+          "antiPattern": "DO NOT use fake CSS or simulated focus states - must be real component behavior"
         }
       }
     },
