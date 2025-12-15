@@ -207,6 +207,7 @@ export const ALIAS = {
     info: WAVE[500],
     disabled: ABYSS[200],
     accent: DEEP_CURRENT[500],
+    accentDark: DEEP_CURRENT[700],
     inverse: ABYSS[700],
   },
 

@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../lib/utils"
-import { COLORS } from "../../constants/designTokens"
+import { ALIAS } from "../../constants/designTokens"
 
 // =============================================================================
 // TYPES
@@ -86,7 +86,7 @@ export function Slider({
         <div
           className="absolute left-4 lg:left-2.5 h-6 lg:h-4 rounded-l-full"
           style={{
-            backgroundColor: COLORS.circleRed,
+            backgroundColor: ALIAS.background.accentStrong,
             width: `calc(${((value - min) / (max - min)) * 100}% - ${((value - min) / (max - min)) * 16}px)`,
           }}
         />
@@ -109,11 +109,11 @@ export function Slider({
               "block rounded-full shadow-md border-2",
               "w-8 h-8 lg:w-5 lg:h-5",
               "cursor-grab active:cursor-grabbing",
-              "focus:outline-none focus-visible:ring-4 focus-visible:ring-[#E8524F]/20"
+              "focus:outline-none focus-visible:ring-4 focus-visible:ring-ring/40",
+              "bg-surface"
             )}
             style={{
-              backgroundColor: 'white',
-              borderColor: COLORS.circleRed,
+              borderColor: ALIAS.border.accentDark,
             }}
             aria-label={label}
           />

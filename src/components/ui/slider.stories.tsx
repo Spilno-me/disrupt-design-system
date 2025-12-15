@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Slider } from './Slider'
 
 const meta = {
@@ -9,7 +9,7 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A customizable range slider built on Radix UI primitives. Uses design system color tokens (circleRed). Used in ROI calculators and other interactive components.',
+        component: 'A customizable range slider built on Radix UI primitives. Uses teal brand colors for visual consistency. Supports labels, units, step increments, and disabled states.',
       },
     },
   },
@@ -61,12 +61,27 @@ export default meta
 type Story = StoryObj<typeof Slider>
 
 // Interactive wrapper for controlled stories
-function InteractiveSlider(props: Omit<React.ComponentProps<typeof Slider>, 'onChange'> & { onChange?: (value: number) => void }) {
+function InteractiveSlider(props: Omit<React.ComponentProps<typeof Slider>, 'onChange'> & { onChange?: (value: number) => void, autoFocusThumb?: boolean }) {
   const [value, setValue] = useState(props.value)
-  return <Slider {...props} value={value} onChange={setValue} />
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (props.autoFocusThumb && containerRef.current) {
+      const thumb = containerRef.current.querySelector('[role="slider"]') as HTMLElement
+      if (thumb) {
+        setTimeout(() => thumb.focus(), 100)
+      }
+    }
+  }, [props.autoFocusThumb])
+
+  return (
+    <div ref={containerRef}>
+      <Slider {...props} value={value} onChange={setValue} />
+    </div>
+  )
 }
 
-// Default
+// Default (for Controls panel)
 export const Default: Story = {
   render: () => (
     <InteractiveSlider
@@ -80,95 +95,46 @@ export const Default: Story = {
   ),
 }
 
-// Without Label
-export const NoLabel: Story = {
+// All States (Visual Matrix - Interactive component)
+export const AllStates: Story = {
   render: () => (
-    <InteractiveSlider
-      value={50}
-      min={0}
-      max={100}
-      step={1}
-    />
-  ),
-}
+    <div className="w-[500px] space-y-8 p-6">
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">Default State</h4>
+        <InteractiveSlider
+          value={50}
+          min={0}
+          max={100}
+          label="Volume"
+          unit="%"
+        />
+      </div>
 
-// Without Value Display
-export const NoValueDisplay: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={50}
-      min={0}
-      max={100}
-      step={1}
-      label="Volume"
-      showValue={false}
-    />
-  ),
-}
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior)</h4>
+        <InteractiveSlider
+          value={50}
+          min={0}
+          max={100}
+          label="Focused Slider"
+          unit="units"
+          autoFocusThumb
+        />
+        <p className="text-xs text-secondary mt-2">Thumb shows visible teal focus ring (4px, --ring variable)</p>
+      </div>
 
-// Disabled State
-export const Disabled: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={50}
-      min={0}
-      max={100}
-      step={1}
-      label="Disabled Slider"
-      unit="%"
-      disabled
-    />
-  ),
-}
-
-// Large Range (Workers)
-export const LargeRange: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={100}
-      min={10}
-      max={1000}
-      step={10}
-      label="Number of Field Workers"
-      unit="Workers"
-    />
-  ),
-}
-
-// Small Range (Tasks)
-export const SmallRange: Story = {
-  render: () => (
-    <InteractiveSlider
-      value={5}
-      min={1}
-      max={20}
-      step={1}
-      label="Daily AI Tasks Per Worker"
-      unit="Tasks/Day"
-    />
-  ),
-}
-
-// ROI Calculator Example
-export const ROICalculatorExample: Story = {
-  render: () => (
-    <div className="flex flex-col gap-10">
-      <InteractiveSlider
-        value={100}
-        min={10}
-        max={1000}
-        step={10}
-        label="Number of Field Workers"
-        unit="Workers"
-      />
-      <InteractiveSlider
-        value={5}
-        min={1}
-        max={20}
-        step={1}
-        label="Daily AI Tasks Per Worker (Photos/Video)"
-        unit="Tasks/Day"
-      />
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">Disabled State</h4>
+        <Slider
+          value={60}
+          min={0}
+          max={100}
+          label="Disabled Slider"
+          unit="%"
+          disabled
+          onChange={() => {}}
+        />
+      </div>
     </div>
   ),
-}
+};
