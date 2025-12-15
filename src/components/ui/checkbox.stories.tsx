@@ -6,6 +6,22 @@ const meta = {
   component: Checkbox,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `
+Checkbox component for selections and toggles. Built on Radix UI Checkbox primitive.
+
+## Styling
+- **Unchecked**: Darker teal border (DEEP_CURRENT[600] = #068397) for visibility on light backgrounds
+- **Checked**: Teal background (DEEP_CURRENT[500] = #08A4BD) matching Button accent variant
+- **Focus**: Teal focus ring matching design token system
+- **Size**: 16px (size-4) for easy clicking
+
+## Visual Consistency
+Checkbox checked state matches Button accent variant for brand consistency across interactive elements.
+        `,
+      },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Checkbox>;
@@ -94,11 +110,13 @@ export const AllStates: Story = {
       <div>
         <h4 className="text-sm font-semibold text-primary mb-4">Unchecked (Default)</h4>
         <Checkbox aria-label="Unchecked" />
+        <p className="text-xs text-secondary mt-2">Darker teal border (2px) for visibility on light backgrounds</p>
       </div>
 
       <div>
         <h4 className="text-sm font-semibold text-primary mb-4">Checked</h4>
         <Checkbox defaultChecked aria-label="Checked" />
+        <p className="text-xs text-secondary mt-2">Teal background matches Button accent variant</p>
       </div>
 
       <div>

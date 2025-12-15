@@ -184,6 +184,7 @@ export const ALIAS = {
     accent: DEEP_CURRENT[50],
     accentSubtle: DEEP_CURRENT[100],
     accentStrong: DEEP_CURRENT[500],
+    accentDark: DEEP_CURRENT[600],
     error: CORAL[50],
     errorSubtle: CORAL[100],
     success: HARBOR[50],

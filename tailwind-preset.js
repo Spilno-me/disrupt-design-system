@@ -386,6 +386,7 @@ const SAFELIST = [
   'bg-inverse-subtle',
   'bg-accent-bg',
   'bg-accent-strong',
+  'bg-accent-dark',
   'bg-error',
   'bg-error-light',
   'bg-error-muted',
@@ -404,6 +405,7 @@ const SAFELIST = [
   'border-strong',
   'border-focus',
   'border-accent',
+  'border-accent-dark',
   'border-error',
   'border-success',
   'border-warning',
@@ -500,6 +502,7 @@ module.exports = {
         'accent-bg': DEEP_CURRENT[50],
         'accent-subtle': DEEP_CURRENT[100],
         'accent-strong': DEEP_CURRENT[500],
+        'accent-dark': DEEP_CURRENT[600],
 
         // --- BORDER COLORS ---
         // Usage: border-default, border-subtle, border-focus, etc.
