@@ -262,16 +262,31 @@
     "storybook": {
       "moleculeDocumentation": {
         "required": true,
-        "description": "Molecules must document the atoms they use with visible clickable links",
+        "description": "Molecules and components with patterns must document dependencies and examples with visible clickable links",
         "linkFormat": "Use bold markdown with arrow: **[→ `ComponentName`](?path=/story/core-component--all-states)**",
         "sections": [
           "List all core atoms used by the molecule",
           "Links must be bold and have → arrow for visibility",
           "Link directly to AllStates story when available",
+          "For components with patterns (like Skeleton), link to each pattern story",
           "Add emoji header: 📦 for atom dependencies, 🔗 for related links"
         ],
-        "example": "See Utilities/Form stories documentation",
-        "why": "Helps developers understand dependencies and find atom documentation easily"
+        "example": "See Utilities/Form (atom links), Core/Skeleton (pattern links)",
+        "why": "Helps developers understand dependencies, find examples, and navigate easily",
+        "patternLinks": "Components with recommended patterns MUST link to each pattern story in docs"
+      },
+      "storySimplification": {
+        "philosophy": "Minimize redundancy - AllStates shows everything, individual state stories are redundant",
+        "keepOnly": [
+          "Default - For Storybook Controls panel and autodocs",
+          "AllStates - Comprehensive visual reference showing all states/variants",
+          "1-2 usage examples - Show real-world context (WithLabel, FormExample, etc.)"
+        ],
+        "remove": [
+          "Individual state stories (Checked, Disabled, Error, etc.) - Redundant with AllStates",
+          "Variant-specific stories if variants shown in AllStates"
+        ],
+        "example": "Checkbox has: Default, WithLabel, MultipleCheckboxes, AllStates (removed: Checked, Disabled, DisabledChecked)"
       },
       "allStatesStory": {
         "required": true,

@@ -502,7 +502,7 @@ module.exports = {
         'accent-bg': DEEP_CURRENT[50],
         'accent-subtle': DEEP_CURRENT[100],
         'accent-strong': DEEP_CURRENT[500],
-        'accent-dark': DEEP_CURRENT[600],
+        'accent-dark': DEEP_CURRENT[700],
 
         // --- BORDER COLORS ---
         // Usage: border-default, border-subtle, border-focus, etc.
