@@ -49,7 +49,7 @@
 3. ✅ **Input** - STABILIZED
 4. ✅ **Textarea** - STABILIZED
 5. ✅ **Checkbox** - STABILIZED
-6. ⬜ **Select** + sub-components (SelectTrigger, SelectContent, SelectItem, SelectValue) - TODO
+6. ✅ **Select** + sub-components (SelectTrigger, SelectContent, SelectItem, SelectValue) - STABILIZED
 7. ✅ **Label** - STABILIZED
 8. ⬜ **Slider** - TODO
 9. ~~**Form**~~ - MOVED TO UTILITY SYSTEMS (infrastructure, not a UI component)
@@ -242,13 +242,14 @@
 
 ## 📊 Progress Tracking
 
-### ✅ Completed (6/46 core components)
-1. **Badge** - ATOM, variants reviewed (7→5 recommended for v3.0.0), AllStates story standardized
-2. **Skeleton** - ATOM, variant deprecated (3→1), AllStates story standardized
-3. **Input** - ATOM, AllStates story standardized, comprehensive JSDoc with testId examples
-4. **Textarea** - ATOM, AllStates story standardized, comprehensive JSDoc with testId examples
-5. **Label** - ATOM, AllStates story added, Radix UI primitive, comprehensive JSDoc
-6. **Checkbox** - ATOM, AllStates story standardized, Radix UI primitive, comprehensive JSDoc
+### ✅ Completed (7/46 core components)
+1. **Badge** - ATOM, variants reviewed (7→5 recommended for v3.0.0), stories simplified (8→4)
+2. **Skeleton** - ATOM, variant deprecated (3→1), stories simplified (6→7 with patterns), comprehensive usage docs
+3. **Input** - ATOM, stories simplified (7→3), AllStates story standardized
+4. **Textarea** - ATOM, stories simplified (6→2), AllStates story standardized
+5. **Label** - ATOM, stories simplified (10→2), AllStates story standardized
+6. **Checkbox** - ATOM, stories simplified (8→2), darker teal border for visibility
+7. **Select** - ATOM (compound), stories simplified (4→3), teal menu hover, semibold selected items
 
 ### 🔧 Utility Systems (Infrastructure - Not Core Components)
 - **Form** - Composition helpers (FormItem, FormLabel, FormControl, FormMessage, FormDescription)
@@ -258,10 +259,10 @@
 ### 🔄 In Progress (0/47)
 None
 
-### ⬜ To Do (40/46)
+### ⬜ To Do (39/46)
 
-**Priority HIGH (9):**
-- Button, Select, Slider
+**Priority HIGH (8):**
+- Button, Slider
 - Dialog, Sheet, Tooltip
 - ErrorBoundary, ErrorState
 - Card

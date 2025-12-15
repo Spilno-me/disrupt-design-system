@@ -21,7 +21,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof Select>;
 
-// Default Select
+// Default Select (for Controls panel)
 export const Default: Story = {
   render: () => (
     <Select>
@@ -37,58 +37,34 @@ export const Default: Story = {
   ),
 };
 
-// With Groups
-export const WithGroups: Story = {
+// Open Menu - Review Colors
+export const OpenMenu: Story = {
   render: () => (
-    <Select>
-      <SelectTrigger className="w-[250px]">
-        <SelectValue placeholder="Select a fruit" />
+    <Select defaultOpen>
+      <SelectTrigger className="w-[300px]">
+        <SelectValue placeholder="Select option" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="orange">Orange</SelectItem>
+          <SelectLabel>Common Options</SelectLabel>
+          <SelectItem value="option1">Option 1</SelectItem>
+          <SelectItem value="option2">Option 2</SelectItem>
+          <SelectItem value="option3">Option 3</SelectItem>
         </SelectGroup>
         <SelectGroup>
-          <SelectLabel>Vegetables</SelectLabel>
-          <SelectItem value="carrot">Carrot</SelectItem>
-          <SelectItem value="broccoli">Broccoli</SelectItem>
-          <SelectItem value="spinach">Spinach</SelectItem>
+          <SelectLabel>More Options</SelectLabel>
+          <SelectItem value="option4">Option 4</SelectItem>
+          <SelectItem value="option5" disabled>Option 5 (Disabled)</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
   ),
 };
 
-// Language Selector
-export const LanguageSelector: Story = {
-  render: () => (
-    <div style={{ width: '300px' }}>
-      <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500' }}>
-        Language
-      </label>
-      <Select defaultValue="en">
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select language" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="en">English</SelectItem>
-          <SelectItem value="es">Español</SelectItem>
-          <SelectItem value="fr">Français</SelectItem>
-          <SelectItem value="it">Italiano</SelectItem>
-          <SelectItem value="ar">العربية</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-  ),
-};
-
 // All States (Visual Matrix - No interaction needed)
 export const AllStates: Story = {
   render: () => (
-    <div className="w-[600px] space-y-8 p-6">
+    <div className="w-[500px] space-y-8 p-6">
       <div>
         <h4 className="text-sm font-semibold text-primary mb-4">Default State</h4>
         <Select>
@@ -99,25 +75,20 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-4">Hover State (Simulated)</h4>
-        <Select>
-          <SelectTrigger className="w-[300px] hover:bg-input/50" aria-label="Hover" style={{ backgroundColor: 'rgba(var(--color-input), 0.3)' }}>
-            <SelectValue placeholder="Hover state" />
-          </SelectTrigger>
-        </Select>
-      </div>
-
-      <div>
-        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior - Tab to See)</h4>
         <Select>
           <SelectTrigger
             className="w-[300px]"
-            aria-label="Focused"
+            aria-label="Focused select"
             autoFocus
           >
             <SelectValue placeholder="Focus state" />
           </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="demo">Demo option</SelectItem>
+          </SelectContent>
         </Select>
+        <p className="text-xs text-secondary mt-2">Focus ring: Teal border + 4px teal ring (--ring variable)</p>
       </div>
 
       <div>
