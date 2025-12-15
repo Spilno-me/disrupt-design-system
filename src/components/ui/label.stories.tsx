@@ -152,3 +152,78 @@ export const Sizes: Story = {
     </div>
   ),
 }
+
+// All States (Visual Matrix - No interaction needed)
+export const AllStates: Story = {
+  render: () => (
+    <div className="w-[500px] space-y-8 p-6">
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">Default Label</h4>
+        <div className="grid gap-1.5">
+          <Label htmlFor="default-input">Email Address</Label>
+          <Input id="default-input" type="email" placeholder="you@example.com" />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">Required Field (with asterisk)</h4>
+        <div className="grid gap-1.5">
+          <Label htmlFor="required-input">
+            Password <span className="text-destructive">*</span>
+          </Label>
+          <Input id="required-input" type="password" placeholder="Enter password" />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">With Checkbox</h4>
+        <div className="flex items-center space-x-2">
+          <Checkbox id="terms-check" />
+          <Label htmlFor="terms-check">Accept terms and conditions</Label>
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">Disabled State</h4>
+        <div className="grid gap-1.5 group" data-disabled="true">
+          <Label htmlFor="disabled-input">Disabled Field</Label>
+          <Input id="disabled-input" disabled placeholder="Cannot edit" />
+        </div>
+        <p className="text-xs text-secondary mt-2">Label inherits disabled opacity from group</p>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">With Icon</h4>
+        <div className="grid gap-1.5">
+          <Label htmlFor="icon-input" className="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            Email Address
+          </Label>
+          <Input id="icon-input" type="email" placeholder="you@example.com" />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">With Helper Text</h4>
+        <div className="grid gap-1.5">
+          <Label htmlFor="helper-input">Username</Label>
+          <Input id="helper-input" placeholder="johndoe" />
+          <p className="text-xs text-secondary">Choose a unique username</p>
+        </div>
+      </div>
+    </div>
+  ),
+}
