@@ -90,39 +90,40 @@ export const MultipleCheckboxes: Story = {
 // All States (Visual Matrix - No interaction needed)
 export const AllStates: Story = {
   render: () => (
-    <div className="w-[500px] space-y-6 p-6">
+    <div className="w-[500px] space-y-8 p-6">
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Unchecked (Default)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Unchecked (Default)</h4>
         <Checkbox aria-label="Unchecked" />
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Checked</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Checked</h4>
         <Checkbox defaultChecked aria-label="Checked" />
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Focus State (Real Component Behavior)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Focus State (Real Component Behavior - Tab to See)</h4>
         <Checkbox
           aria-label="Focused"
           autoFocus
         />
+        <p className="text-xs text-secondary mt-2">Focus ring color matches design tokens (--ring variable)</p>
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Checked + Focused (Real Behavior)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Checked + Focused (Real Behavior - Click to See)</h4>
         <div className="flex items-center gap-2">
           <Checkbox
             defaultChecked
             aria-label="Checked and focused"
             id="checked-focused"
           />
-          <label htmlFor="checked-focused" className="text-sm">Click to see focus ring</label>
+          <label htmlFor="checked-focused" className="text-sm text-secondary cursor-pointer">Click checkbox to see focus ring</label>
         </div>
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Error State (aria-invalid)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Error State (aria-invalid)</h4>
         <Checkbox
           aria-invalid="true"
           aria-label="Invalid"
@@ -130,17 +131,17 @@ export const AllStates: Story = {
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Disabled (Unchecked)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Disabled (Unchecked)</h4>
         <Checkbox disabled aria-label="Disabled unchecked" />
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">Disabled (Checked)</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">Disabled (Checked)</h4>
         <Checkbox disabled defaultChecked aria-label="Disabled checked" />
       </div>
 
       <div>
-        <h4 className="text-sm font-semibold text-primary mb-3">With Label</h4>
+        <h4 className="text-sm font-semibold text-primary mb-4">With Label</h4>
         <div className="flex items-center gap-2">
           <Checkbox id="with-label" defaultChecked />
           <label htmlFor="with-label" className="text-sm font-medium text-primary cursor-pointer">
