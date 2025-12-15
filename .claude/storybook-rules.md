@@ -1,288 +1,268 @@
-# Storybook Rules - Stories Reflect Reality
+# Storybook Rules
 
-**Date:** 2025-12-13
-**Philosophy:** Stories document real component behavior, NOT idealized versions
-
----
-
-## 🎯 Core Principle
-
-**Stories MUST reflect the actual component code, not hardcoded overrides.**
-
-### ✅ CORRECT Approach
-```tsx
-// Change the COMPONENT
-export function Input({ className, ...props }: InputProps) {
-  return (
-    <input
-      className={cn(
-        "focus-visible:border-blue-600 focus-visible:ring-blue-600/40"
-        // ↑ Real component behavior
-      )}
-    />
-  )
-}
-
-// Story shows REAL behavior
-export const AllStates: Story = {
-  render: () => (
-    <Input autoFocus />  // Uses component's actual focus ring
-  )
-}
-```
-
-### ❌ WRONG Approach
-```tsx
-// Component has teal focus ring
-export function Input({ className, ...props }: InputProps) {
-  return (
-    <input
-      className={cn(
-        "focus-visible:border-accent"  // Teal
-      )}
-    />
-  )
-}
-
-// Story OVERRIDES with hardcoded blue
-export const AllStates: Story = {
-  render: () => (
-    <Input
-      className="!border-blue-600 !ring-blue-600"  // ❌ Hardcoded override
-    />
-  )
-}
-```
-
-**Problem:** Stories show blue, real components use teal. Mismatch!
+**Agent-only. Enforce on all story edits.**
 
 ---
 
-## 📋 Rules
+## CRITICAL: MDX Paragraph Wrapping Bug
 
-### Rule 1: Change Source, Not Stories
-**When you need to change appearance:**
-1. ✅ Change the **component code** or **design tokens**
-2. ✅ Stories automatically reflect the change
-3. ❌ DON'T hardcode values in stories
+**This cost hours of debugging. NEVER FORGET.**
 
-### Rule 2: Use autoFocus for State Visibility
-**To show focus states without interaction:**
-```tsx
-// ✅ CORRECT: Use autoFocus (uses real focus ring)
-<Input autoFocus />
+### The Problem
+MDX automatically wraps standalone text in `<p>` tags. Storybook's docs CSS applies `colorPrimary` (Ferrari Red) to `<p>` elements, **overriding your inline styles**.
 
-// ❌ WRONG: Hardcode focus styles
-<Input className="!border-blue-600 !ring-4" />
-```
+```jsx
+// What you write:
+<div style={{ color: '#ffffff' }}>
+  White text
+</div>
 
-### Rule 3: Only Override When Explicitly Requested
-**Stories can use className overrides ONLY if:**
-- User explicitly asks to "show it differently in the story"
-- Demonstrating customization capabilities
-- Showing "what if" scenarios
-
-**Default:** Always show real component behavior
-
-### Rule 4: State Simulation Must Match Reality
-**If simulating hover/focus/active:**
-```tsx
-// ✅ CORRECT: Use same classes component uses
-<Button className="hover:bg-inverse-bg/90" />
-// ↑ Matches component's hover class
-
-// ❌ WRONG: Use different colors
-<Button className="!bg-blue-500" />  // Component doesn't use blue
-```
-
----
-
-## 🧪 Testing States Pattern
-
-### Use Real Browser States
-```tsx
-// Focus states
-<Input autoFocus />                    // Real focus
-<Checkbox autoFocus />                 // Real focus
-
-// Checked states
-<Checkbox defaultChecked />            // Real checked
-
-// Disabled states
-<Input disabled />                     // Real disabled
-
-// Error states
-<Input aria-invalid="true" />          // Real error
-```
-
-### For Hover (Can't autoHover)
-**Document that user must interact:**
-```tsx
-// Hover State (Hover over to see)
-<div>
-  <h4>Hover State (Hover Mouse to See)</h4>
-  <Button>Hover over me</Button>
+// What MDX renders:
+<div style="color: rgb(255, 255, 255);">
+  <p>White text</p>  <!-- <p> has red color from Storybook! -->
 </div>
 ```
 
-**OR use data attributes if component supports:**
+### The Fix (Two Options)
+
+**Option 1: Wrap text in `<span>`**
+```jsx
+<div style={{ color: '#ffffff' }}>
+  <span>White text</span>  {/* No <p> wrapper = color works */}
+</div>
+```
+
+**Option 2: Global CSS fix (already in styles.css)**
+```css
+.sbdocs-content div[style*="color"] p {
+  color: inherit !important;
+}
+```
+
+### Symptoms
+- Inline `color` styles appear to "not work"
+- Text shows as red/coral instead of expected color
+- Only affects MDX docs, not .stories.tsx files
+- `style` attribute in DOM shows correct value, but text is wrong color
+
+### When This Happens
+- Any styled text in MDX files (Introduction.mdx, Colors.mdx, etc.)
+- Custom hero sections, branded content, dark backgrounds
+- Any inline `color` or `PRIMITIVES.white` usage
+
+---
+
+## Two Rules
+
+1. **Reflect Reality** - Stories show actual component behavior, NO hardcoded overrides
+2. **Composition Only** - Stories compose exported components, NO custom functions
+
+---
+
+## Rule 1: No Style Overrides
+
 ```tsx
-<Button data-hover="true" />  // If component has [data-hover]:styles
+// ✅ CORRECT
+<Input autoFocus />
+
+// ❌ WRONG
+<Input className="!border-blue-600" />
+```
+
+**Change flow:**
+```
+Need different appearance?
+→ Change component/tokens FIRST
+→ Story reflects automatically
+→ NEVER hardcode in story
 ```
 
 ---
 
-## 🎯 Focus Ring Example (Correct)
+## Rule 2: No Custom Components
 
-### What We Did for Focus Ring Color Change
+```tsx
+// ❌ WRONG - function in story
+function CustomCard({ title }) {
+  return <Card><CardTitle>{title}</CardTitle></Card>
+}
 
-**Step 1:** Changed design tokens (source of truth)
-```css
-/* src/styles/tokens.css */
---color-focus: #2563EB;  /* Changed from #08A4BD (teal) to dark blue */
---ring: #2563EB;          /* Changed ring color */
+// ✅ CORRECT - inline composition
+render: () => (
+  <Card><CardTitle>Test</CardTitle></Card>
+)
 ```
 
-```typescript
-/* src/constants/designTokens.ts */
-ALIAS.border.focus = WAVE[600]  // Changed from DEEP_CURRENT[500]
+**Reusable pattern?** → Extract as real component, export, then use in stories.
+
+---
+
+## States
+
+Use real browser mechanisms:
+
+```tsx
+<Input autoFocus />           // focus
+<Checkbox defaultChecked />   // checked
+<Input disabled />            // disabled
+<Input aria-invalid="true" /> // error
 ```
 
-**Step 2:** Stories use `autoFocus` (real behavior)
+Hover: Document "hover to see" (can't auto-hover)
+
+---
+
+## AllStates Story (Required)
+
+Every stabilized component needs:
+
 ```tsx
 export const AllStates: Story = {
   render: () => (
-    <Input autoFocus />  // Shows REAL focus ring (now dark blue)
-  )
-}
-```
-
-**Result:**
-- ✅ Component uses dark blue focus ring
-- ✅ Story shows dark blue focus ring
-- ✅ Reality = Documentation
-- ✅ No hardcoded overrides
-
----
-
-## 📝 Agent Guidelines
-
-### When Creating Stories
-
-**ALWAYS:**
-1. Show real component behavior
-2. Use `autoFocus` for focus states
-3. Use `defaultChecked` for checked states
-4. Use `disabled` for disabled states
-5. Use `aria-invalid` for error states
-
-**NEVER (unless explicitly requested):**
-1. Hardcode colors in className (`!bg-blue-600`)
-2. Override component styles in stories
-3. Show ideal behavior that doesn't match component
-4. Use inline styles to fake states
-
-### When User Requests Visual Change
-
-**Process:**
-1. Ask: "Should I change the component or just the story?"
-2. Default: Change the component (or tokens)
-3. If user says "just the story", then override is OK
-4. Document why the story differs from component
-
----
-
-##Examples
-
-### ✅ Good Story (Reflects Reality)
-```tsx
-// Component
-export function Button({ variant = 'default', ...props }) {
-  return (
-    <button
-      className={cn(
-        variant === 'default' && 'bg-inverse-bg text-inverse',
-        'focus-visible:ring-blue-600/40'
-      )}
-      {...props}
-    />
-  )
-}
-
-// Story
-export const AllStates = {
-  render: () => (
-    <div>
-      <Button>Default</Button>          {/* Shows bg-inverse-bg */}
-      <Button autoFocus>Focused</Button> {/* Shows blue ring */}
+    <div className="space-y-8 p-6">
+      <section>
+        <h4 className="text-sm font-semibold mb-4">Variants</h4>
+        {/* all variants */}
+      </section>
+      <section>
+        <h4 className="text-sm font-semibold mb-4">Focus (Click)</h4>
+        <Input autoFocus />
+      </section>
     </div>
   )
 }
 ```
 
-### ❌ Bad Story (Hardcoded Override)
+---
+
+## Checklist
+
+- [ ] `autoFocus` for focus (not className)
+- [ ] Real variants (not hardcoded)
+- [ ] No `function` declarations
+- [ ] No `const Component = () =>`
+- [ ] Uses exported components only
+- [ ] Has AllStates story
+
+---
+
+## Copy-Paste Patterns
+
+### Basic Component Story
+
 ```tsx
-// Component
-export function Button({ variant = 'default', ...props }) {
-  return (
-    <button
-      className={cn(
-        variant === 'default' && 'bg-inverse-bg',  // Dark navy
-        'focus-visible:ring-accent/20'              // Light teal
-      )}
-      {...props}
-    />
-  )
+import type { Meta, StoryObj } from '@storybook/react'
+import { ComponentName } from './component-name'
+
+const meta: Meta<typeof ComponentName> = {
+  title: 'UI/ComponentName',
+  component: ComponentName,
+  tags: ['autodocs'],
 }
 
-// Story
-export const AllStates = {
+export default meta
+type Story = StoryObj<typeof ComponentName>
+
+export const Default: Story = {
+  args: { children: 'Default' },
+}
+
+export const AllStates: Story = {
   render: () => (
-    <div>
-      <Button className="!bg-blue-500">Default</Button>      {/* ❌ Override */}
-      <Button className="!ring-blue-600/50">Focused</Button> {/* ❌ Override */}
+    <div className="space-y-8 p-6">
+      <section>
+        <h4 className="text-sm font-semibold text-muted mb-4">Variants</h4>
+        <div className="flex flex-wrap gap-4">
+          <ComponentName variant="default">Default</ComponentName>
+          <ComponentName variant="secondary">Secondary</ComponentName>
+        </div>
+      </section>
+      <section>
+        <h4 className="text-sm font-semibold text-muted mb-4">States</h4>
+        <div className="flex flex-wrap gap-4">
+          <ComponentName disabled>Disabled</ComponentName>
+          <ComponentName autoFocus>Focused (click)</ComponentName>
+        </div>
+      </section>
     </div>
-  )
+  ),
 }
 ```
 
-**Problem:** Story shows blue, component is navy/teal. Misleading!
+### Compound Component (Select, Dialog)
 
----
+```tsx
+export const AllStates: Story = {
+  render: () => (
+    <div className="space-y-8 p-6">
+      <section>
+        <h4 className="text-sm font-semibold text-muted mb-4">Default</h4>
+        <Select>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Select..." />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+            <SelectItem value="b">Option B</SelectItem>
+          </SelectContent>
+        </Select>
+      </section>
+      <section>
+        <h4 className="text-sm font-semibold text-muted mb-4">With Focus</h4>
+        <Select>
+          <SelectTrigger className="w-[200px]" autoFocus>
+            <SelectValue placeholder="Focused trigger" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Option A</SelectItem>
+          </SelectContent>
+        </Select>
+      </section>
+    </div>
+  ),
+}
+```
 
-## 🚀 Enforcement
+### Form Control with States
 
-### Agent Checklist
-- [ ] Story uses `autoFocus` for focus states (not className override)
-- [ ] Story uses component's real variants (not hardcoded colors)
-- [ ] Story labels clearly state "Real Component Behavior"
-- [ ] No `!important` overrides in stories (unless explicitly requested)
-- [ ] If override needed, user explicitly requested it
+```tsx
+export const AllStates: Story = {
+  render: () => (
+    <div className="space-y-8 p-6">
+      <section>
+        <h4 className="text-sm font-semibold text-muted mb-4">States</h4>
+        <div className="space-y-4 max-w-sm">
+          <Input placeholder="Default" />
+          <Input placeholder="Focused" autoFocus />
+          <Input placeholder="Disabled" disabled />
+          <Input placeholder="Error" aria-invalid="true" />
+        </div>
+      </section>
+    </div>
+  ),
+}
+```
 
-### Hookify Rule (Future)
-```yaml
-- trigger:
-    tool: "Write"
-    filePattern: "src/components/.+\\.stories\\.tsx$"
-  check: |
-    📖 STORYBOOK → Stories reflect reality
-    ❌ NO hardcoded color overrides (!bg-blue-500, style={{ color }})
-    ✅ YES: autoFocus, defaultChecked, disabled, aria-invalid
-    Change component/tokens first, then stories show real behavior
+### Loading/Skeleton Pattern
+
+```tsx
+export const LoadingStates: Story = {
+  render: () => (
+    <div className="space-y-4 p-6 max-w-md">
+      <Skeleton className="h-4 w-[200px]" />
+      <Skeleton className="h-4 w-[150px]" />
+      <Skeleton className="h-10 w-full" />
+    </div>
+  ),
+}
 ```
 
 ---
 
-## 💡 Why This Matters
+## Section Header Pattern
 
-1. **Trust** - Designers/QA trust stories to show truth
-2. **Consistency** - Stories match production
-3. **Debugging** - If story looks wrong, component IS wrong
-4. **Documentation** - Stories are source of truth for behavior
+Always use consistent styling for AllStates sections:
 
-**Bad stories = misleading documentation**
-
----
-
-**Last Updated:** 2025-12-13
-**Status:** Active - Enforce in all story creation/updates
+```tsx
+<h4 className="text-sm font-semibold text-muted mb-4">Section Title</h4>
+```

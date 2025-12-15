@@ -79,6 +79,16 @@ a[aria-hidden="true"],
   font-family: 'Fixel', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
 }
 
+/* FIX: MDX paragraph color inheritance
+ * MDX wraps standalone text in <p> tags which have Storybook's colorPrimary applied.
+ * This rule makes paragraphs inside styled containers inherit their parent's color.
+ */
+.sbdocs-content div[style*="color"] p,
+.sbdocs-content a[style*="color"] p,
+.sbdocs-content span[style*="color"] p {
+  color: inherit !important;
+}
+
 /* Storybook docs - ensure full width for color palettes and grids */
 .sbdocs-content {
   max-width: 100% !important;

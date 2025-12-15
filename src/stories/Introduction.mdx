@@ -1,94 +1,423 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Palette, Component, Sparkles, LayoutTemplate } from 'lucide-react';
+import {
+  Palette,
+  Component,
+  Sparkles,
+  LayoutTemplate,
+  Zap,
+  Shield,
+  Scale,
+  Users,
+  Heart,
+  ArrowRight,
+} from 'lucide-react';
+import {
+  HeroHeader,
+  ProductCard,
+  FeatureCard,
+  NavCard,
+  TechStackItem,
+  SectionHeader,
+  InfoBox,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from './brand/BrandComponents';
 
 <Meta title="Brand/Introduction" />
 
-# Disrupt Design System
+{/* Hero Header */}
+<div style={{
+  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[800]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '48px',
+  marginBottom: '48px',
+  position: 'relative',
+  overflow: 'hidden',
+}}>
+  {/* Decorative elements */}
+  <div style={{
+    position: 'absolute',
+    top: '-20%',
+    right: '-5%',
+    width: '400px',
+    height: '400px',
+    background: `radial-gradient(circle, ${DEEP_CURRENT[500]}25 0%, transparent 70%)`,
+    borderRadius: '50%',
+  }} />
+  <div style={{
+    position: 'absolute',
+    bottom: '-30%',
+    left: '10%',
+    width: '300px',
+    height: '300px',
+    background: `radial-gradient(circle, ${DUSK_REEF[500]}20 0%, transparent 70%)`,
+    borderRadius: '50%',
+  }} />
 
-Welcome to the **Disrupt Design System** – a unified design language and component library powering all Disrupt products.
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '12px',
+      background: 'rgba(255,255,255,0.1)',
+      padding: '8px 16px',
+      borderRadius: RADIUS.full,
+      marginBottom: '24px',
+    }}>
+      <Sparkles size={16} color={DEEP_CURRENT[300]} />
+      <span style={{
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DEEP_CURRENT[300],
+        fontWeight: 500,
+      }}>
+        Design System v2.3
+      </span>
+    </div>
 
-## Products Using This System
+    <div
+      style={{
+        margin: '0 0 16px 0',
+        fontSize: '48px',
+        fontWeight: 700,
+        fontFamily: '"Pilat Extended", sans-serif',
+        lineHeight: 1.1,
+        color: PRIMITIVES.white,
+      }}
+    >
+      <span>Disrupt</span><br /><span>Design System</span>
+    </div>
 
-This design system provides a consistent, scalable foundation for:
+    <div
+      style={{
+        margin: '0 0 32px 0',
+        fontSize: '18px',
+        fontFamily: '"Fixel", sans-serif',
+        lineHeight: 1.6,
+        maxWidth: '500px',
+        color: PRIMITIVES.white,
+      }}
+    >
+      <span>A unified design language and component library powering all Disrupt products. Built for consistency, accessibility, and developer experience.</span>
+    </div>
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', marginTop: '24px', marginBottom: '32px' }}>
-  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
-    <img src="/logos/D-pixels-dark-full.svg" alt="Disrupt Inc." style={{ height: '48px' }} />
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <a
+        href="?path=/docs/foundation-design-tokens-overview--docs"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: DEEP_CURRENT[600],
+          color: PRIMITIVES.white,
+          padding: '12px 24px',
+          borderRadius: RADIUS.md,
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          textDecoration: 'none',
+          transition: 'all 200ms ease-out',
+        }}
+      >
+        <span>Get Started</span>
+        <ArrowRight size={16} />
+      </a>
+      <a
+        href="?path=/docs/components-button--docs"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: 'rgba(255,255,255,0.1)',
+          color: PRIMITIVES.white,
+          padding: '12px 24px',
+          borderRadius: RADIUS.md,
+          fontSize: '14px',
+          fontWeight: 500,
+          fontFamily: '"Fixel", sans-serif',
+          textDecoration: 'none',
+          border: '1px solid rgba(255,255,255,0.2)',
+        }}
+      >
+        <span>Browse Components</span>
+      </a>
+    </div>
   </div>
-  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
-    <img src="/logos/flow-logo-full-dark.svg" alt="Disrupt Flow" style={{ width: '140px' }} />
-  </div>
-  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
-    <img src="/logos/market-logo-full-dark.svg" alt="Disrupt Market" style={{ width: '180px' }} />
-  </div>
-  <div style={{ background: '#f5f5f5', borderRadius: '12px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80px' }}>
-    <img src="/logos/partner-logo-full-dark.svg" alt="Disrupt Partner" style={{ width: '140px' }} />
-  </div>
 </div>
-
-## What's Inside
-
-<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
-  <Palette size={20} color="#2D3142" />
-  <h3 style={{ margin: 0 }}>Design Tokens</h3>
-</div>
-
-Centralized design values including colors, typography, spacing, shadows, and more. All tokens are defined in `designTokens.ts` and consumed across all products.
-
-<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
-  <Component size={20} color="#2D3142" />
-  <h3 style={{ margin: 0 }}>Components</h3>
-</div>
-
-Reusable React components built with TypeScript, styled with Tailwind CSS, and designed for maximum flexibility.
-
-<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
-  <Sparkles size={20} color="#2D3142" />
-  <h3 style={{ margin: 0 }}>Visual Effects</h3>
-</div>
-
-- **Glassmorphism** – Frosted glass UI effects with 4 surface presets
-- **Grid Patterns** – Background decorative grids with customizable sizes and colors
-- **Gradients** – Predefined gradient overlays for hero sections
-
-<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '24px', marginBottom: '8px' }}>
-  <LayoutTemplate size={20} color="#2D3142" />
-  <h3 style={{ margin: 0 }}>Patterns</h3>
-</div>
-
-Common UI patterns and compositions like hero sections, pricing cards, feature grids, and contact forms.
-
-## Technology Stack
-
-- **React 19** with TypeScript
-- **Tailwind CSS v4** for styling
-- **Vite** for build tooling
-- **Framer Motion** for animations
-- **Radix UI** for accessible primitives
-
-## Design Principles
-
-1. **Consistency** – Same look and feel across all products
-2. **Accessibility** – WCAG 2.1 AA compliant
-3. **Performance** – Optimized components and minimal bundle size
-4. **Scalability** – Easy to extend and maintain
-5. **Developer Experience** – Well-documented with TypeScript support
-
-## Getting Started
-
-Browse the sections in the sidebar to explore:
-
-- **Design Tokens** → Colors, Typography, Spacing, Shadows
-- **Components** → Buttons, Cards, Inputs, Images
-- **Patterns** → Hero Sections, Pricing, Features
-- **Visual Effects** → Glassmorphism, Grids, Gradients
-
-## Need Help?
-
-- **GitHub**: [github.com/Spilno-me/disrupt-website](https://github.com/Spilno-me/disrupt-website)
-- **Issues**: Report bugs or request features
-- **Documentation**: Check the `/docs` folder for detailed guides
 
 ---
 
-**Built by the Disrupt team**
+## Products Using This System
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <ProductCard
+    name="Disrupt Inc."
+    logo="/logos/D-pixels-dark-full.svg"
+    description="Corporate website and brand presence"
+    color={ABYSS[500]}
+  />
+  <ProductCard
+    name="Disrupt Flow"
+    logo="/logos/flow-logo-full-dark.svg"
+    description="Environmental compliance platform"
+    color={DEEP_CURRENT[500]}
+  />
+  <ProductCard
+    name="Disrupt Market"
+    logo="/logos/market-logo-full-dark.svg"
+    description="Carbon credits marketplace"
+    color={DUSK_REEF[500]}
+  />
+  <ProductCard
+    name="Disrupt Partner"
+    logo="/logos/partner-logo-full-dark.svg"
+    description="Partner management portal"
+    color={DEEP_CURRENT[600]}
+  />
+</div>
+
+---
+
+## What's Inside
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <FeatureCard
+    icon={<Palette size={24} color={DEEP_CURRENT[500]} />}
+    title="Design Tokens"
+    description="Centralized design values including colors, typography, spacing, shadows, and animations. All tokens defined in a single source of truth."
+    link="?path=/docs/foundation-design-tokens-overview--docs"
+  />
+  <FeatureCard
+    icon={<Component size={24} color={DEEP_CURRENT[500]} />}
+    title="Components"
+    description="Reusable React components built with TypeScript, styled with Tailwind CSS, and designed for maximum flexibility and accessibility."
+    link="?path=/docs/components-button--docs"
+  />
+  <FeatureCard
+    icon={<Sparkles size={24} color={DEEP_CURRENT[500]} />}
+    title="Visual Effects"
+    description="Glassmorphism, grid patterns, gradients, and particle effects for creating stunning visual experiences."
+    link="?path=/docs/effects-glassmorphism--docs"
+  />
+  <FeatureCard
+    icon={<LayoutTemplate size={24} color={DEEP_CURRENT[500]} />}
+    title="Patterns"
+    description="Common UI patterns and compositions like hero sections, pricing cards, feature grids, and contact forms."
+    link="?path=/docs/patterns-hero--docs"
+  />
+</div>
+
+---
+
+## Technology Stack
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '12px',
+  marginBottom: '48px',
+}}>
+  <TechStackItem
+    icon="⚛️"
+    name="React"
+    version="19"
+    description="Modern UI library with hooks and concurrent features"
+  />
+  <TechStackItem
+    icon="📘"
+    name="TypeScript"
+    version="5.x"
+    description="Full type safety and developer tooling"
+  />
+  <TechStackItem
+    icon="🎨"
+    name="Tailwind CSS"
+    version="v4"
+    description="Utility-first styling with custom tokens"
+  />
+  <TechStackItem
+    icon="⚡"
+    name="Vite"
+    version="7.x"
+    description="Lightning-fast build tooling"
+  />
+  <TechStackItem
+    icon="🎬"
+    name="Framer Motion"
+    description="Production-ready animations"
+  />
+  <TechStackItem
+    icon="♿"
+    name="Radix UI"
+    description="Accessible component primitives"
+  />
+</div>
+
+---
+
+## Design Principles
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(5, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {[
+    { icon: <Scale size={20} />, title: 'Consistency', desc: 'Same look across all products' },
+    { icon: <Shield size={20} />, title: 'Accessibility', desc: 'WCAG 2.1 AA compliant' },
+    { icon: <Zap size={20} />, title: 'Performance', desc: 'Optimized bundle size' },
+    { icon: <Users size={20} />, title: 'Scalability', desc: 'Easy to extend' },
+    { icon: <Heart size={20} />, title: 'DX', desc: 'Great dev experience' },
+  ].map((item) => (
+    <div
+      key={item.title}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: '20px',
+        textAlign: 'center',
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto 12px',
+        color: DEEP_CURRENT[600],
+      }}>
+        {item.icon}
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        marginBottom: '4px',
+      }}>
+        {item.title}
+      </div>
+      <div style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        {item.desc}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Quick Navigation
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  <NavCard
+    icon="🎨"
+    title="Design Tokens"
+    description="Colors, Typography, Spacing, Shadows"
+    href="?path=/docs/foundation-design-tokens-overview--docs"
+  />
+  <NavCard
+    icon="🧩"
+    title="Components"
+    description="Buttons, Cards, Inputs, Dialogs"
+    href="?path=/docs/components-button--docs"
+  />
+  <NavCard
+    icon="✨"
+    title="Visual Effects"
+    description="Glassmorphism, Grids, Gradients"
+    href="?path=/docs/effects-glassmorphism--docs"
+  />
+  <NavCard
+    icon="📐"
+    title="Patterns"
+    description="Hero Sections, Pricing, Features"
+    href="?path=/docs/patterns-hero--docs"
+  />
+</div>
+
+---
+
+## Need Help?
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}}>
+  <div>
+    <h3 style={{
+      margin: '0 0 8px 0',
+      fontSize: '16px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      Questions or Feedback?
+    </h3>
+    <span style={{
+      display: 'block',
+      margin: 0,
+      fontSize: '14px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+    }}>
+      Check the documentation or open an issue on GitHub
+    </span>
+  </div>
+  <a
+    href="https://github.com/Spilno-me/disrupt-website"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      background: ABYSS[500],
+      color: PRIMITIVES.white,
+      padding: '10px 20px',
+      borderRadius: RADIUS.sm,
+      fontSize: '13px',
+      fontWeight: 500,
+      fontFamily: '"Fixel", sans-serif',
+      textDecoration: 'none',
+    }}
+  >
+    View on GitHub
+    <ArrowRight size={14} />
+  </a>
+</div>
+

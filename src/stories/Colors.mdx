@@ -1,740 +1,270 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { ColorPalette } from './ColorPalette';
+import { ArrowRight, Palette, Info } from 'lucide-react';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from '../constants/designTokens';
 
 <Meta title="Brand/Colors" />
 
-# Color System
+{/* Redirect Notice */}
+<div style={{
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '48px',
+  marginBottom: '32px',
+  textAlign: 'center',
+}}>
+  <div style={{
+    width: '64px',
+    height: '64px',
+    borderRadius: '50%',
+    background: 'rgba(255,255,255,0.15)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '0 auto 24px',
+  }}>
+    <Palette size={32} color={PRIMITIVES.white} />
+  </div>
 
-The Disrupt Design System uses a **Two-Tiered Color Architecture** for simplicity and maintainability.
+  <h1 style={{
+    margin: '0 0 16px 0',
+    fontSize: '32px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: PRIMITIVES.white,
+  }}>
+    <span>Color Documentation Has Moved</span>
+  </h1>
 
-## The Two Tiers
+  <div style={{
+    margin: '0 0 32px 0',
+    fontSize: '16px',
+    fontFamily: '"Fixel", sans-serif',
+    color: PRIMITIVES.white,
+    lineHeight: 1.6,
+    maxWidth: '500px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  }}>
+    <span>We've upgraded our color documentation to a comprehensive, token-synced system. All colors now import directly from the single source of truth.</span>
+  </div>
 
-<div style={{ background: '#FFFBEB', border: '1px solid #EAB308', borderRadius: '8px', padding: '16px', marginBottom: '32px' }}>
-  <strong>Primitives → Alias</strong>
-  <p style={{ margin: '8px 0 0 0', fontSize: '14px' }}>
-    Raw values → Semantic meaning (use ALIAS in components)
-  </p>
+  <a
+    href="?path=/docs/foundation-design-tokens-colors--docs"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      background: PRIMITIVES.white,
+      color: DEEP_CURRENT[600],
+      padding: '14px 28px',
+      borderRadius: RADIUS.md,
+      fontSize: '16px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      textDecoration: 'none',
+      transition: 'all 200ms ease-out',
+      boxShadow: SHADOWS.md,
+    }}
+  >
+    <span>View New Color Documentation</span>
+    <ArrowRight size={18} />
+  </a>
+</div>
+
+{/* Benefits */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '24px',
+  }}>
+    <Info size={20} color={DEEP_CURRENT[500]} />
+    <h2 style={{
+      margin: 0,
+      fontSize: '18px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      Why We Moved
+    </h2>
+  </div>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '24px',
+  }}>
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.sm,
+      padding: '20px',
+    }}>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>🔗 Single Source of Truth</span>
+      </h3>
+      <div style={{
+        margin: 0,
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+      }}>
+        <span>All documentation now imports directly from designTokens.ts, ensuring 100% accuracy.</span>
+      </div>
+    </div>
+
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.sm,
+      padding: '20px',
+    }}>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>📚 Organized Structure</span>
+      </h3>
+      <div style={{
+        margin: 0,
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+      }}>
+        <span>Colors are now part of a complete Design Tokens section with Typography, Spacing, and more.</span>
+      </div>
+    </div>
+
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.sm,
+      padding: '20px',
+    }}>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>✨ Better Experience</span>
+      </h3>
+      <div style={{
+        margin: 0,
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+      }}>
+        <span>Beautiful visual showcases, code examples, and Tailwind class references in one place.</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 ---
 
-## Tier 1: Brand Colors (Primitives)
+## Quick Links
 
-Raw color values with brand naming. These are the **source of truth** for all colors.
+Navigate directly to the new documentation sections:
 
-### Abyss Scale (Primary Dark)
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginTop: '24px',
+}}>
+  <a
+    href="?path=/docs/foundation-design-tokens-overview--docs"
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.sm,
+      padding: '16px 20px',
+      border: `1px solid ${SLATE[200]}`,
+      textDecoration: 'none',
+      transition: 'all 200ms ease-out',
+    }}
+  >
+    <span style={{ fontSize: '24px' }}>🎨</span>
+    <div>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>Design Tokens Overview</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        <span>Start here for the complete system</span>
+      </div>
+    </div>
+  </a>
 
-<ColorPalette
-  colors={[
-    { name: 'Abyss 50', hex: '#E8E9EB', usage: 'Lightest' },
-    { name: 'Abyss 100', hex: '#D1D3D7', usage: '' },
-    { name: 'Abyss 200', hex: '#A3A7AF', usage: '' },
-    { name: 'Abyss 300', hex: '#757B87', usage: '' },
-    { name: 'Abyss 400', hex: '#474F5F', usage: '' },
-    { name: 'Abyss 500', hex: '#2D3142', usage: 'Base' },
-    { name: 'Abyss 600', hex: '#252836', usage: '' },
-    { name: 'Abyss 700', hex: '#1D1F2A', usage: '' },
-    { name: 'Abyss 800', hex: '#14161E', usage: '' },
-    { name: 'Abyss 900', hex: '#0C0D12', usage: 'Darkest' },
-  ]}
-  variant="scale"
-/>
-
-### Deep Current Scale (Teal Accent)
-
-<ColorPalette
-  colors={[
-    { name: 'Deep Current 50', hex: '#E6F7FA', usage: 'Lightest' },
-    { name: 'Deep Current 100', hex: '#CCEFF5', usage: '' },
-    { name: 'Deep Current 200', hex: '#99DFEB', usage: '' },
-    { name: 'Deep Current 300', hex: '#66CFE1', usage: '' },
-    { name: 'Deep Current 400', hex: '#33BFD7', usage: '' },
-    { name: 'Deep Current 500', hex: '#08A4BD', usage: 'Base' },
-    { name: 'Deep Current 600', hex: '#068397', usage: '' },
-    { name: 'Deep Current 700', hex: '#056271', usage: '' },
-    { name: 'Deep Current 800', hex: '#03424B', usage: '' },
-    { name: 'Deep Current 900', hex: '#022125', usage: 'Darkest' },
-  ]}
-  variant="scale"
-/>
-
-### Dusk Reef Scale (Purple Secondary)
-
-<ColorPalette
-  colors={[
-    { name: 'Dusk Reef 50', hex: '#EFEDF3', usage: 'Lightest' },
-    { name: 'Dusk Reef 100', hex: '#DFDBE7', usage: '' },
-    { name: 'Dusk Reef 200', hex: '#BFB7CF', usage: '' },
-    { name: 'Dusk Reef 300', hex: '#9F93B7', usage: '' },
-    { name: 'Dusk Reef 400', hex: '#7F6F9F', usage: '' },
-    { name: 'Dusk Reef 500', hex: '#5E4F7E', usage: 'Base' },
-    { name: 'Dusk Reef 600', hex: '#4B3F65', usage: '' },
-    { name: 'Dusk Reef 700', hex: '#382F4C', usage: '' },
-    { name: 'Dusk Reef 800', hex: '#262033', usage: '' },
-    { name: 'Dusk Reef 900', hex: '#13101A', usage: 'Darkest' },
-  ]}
-  variant="scale"
-/>
-
-### Other Brand Primitives
-
-<ColorPalette
-  colors={[
-    { name: 'Red Coral', hex: '#F70D1A', usage: 'Brand red, CTAs' },
-    { name: 'Tide Foam', hex: '#FBFBF3', usage: 'Cream background' },
-    { name: 'Slate', hex: '#CBD5E1', usage: 'Borders' },
-    { name: 'White', hex: '#FFFFFF', usage: 'Surface' },
-    { name: 'Black', hex: '#000000', usage: 'Absolute dark' },
-  ]}
-  variant="neutral"
-/>
-
-### Status Primitives
-
-<ColorPalette
-  colors={[
-    { name: 'Wave', hex: '#3B82F6', usage: 'Info blue' },
-    { name: 'Tide Alert', hex: '#F70D1A', usage: 'Error red' },
-    { name: 'Sunrise', hex: '#EAB308', usage: 'Warning yellow' },
-    { name: 'Harbor', hex: '#22C55E', usage: 'Success green' },
-  ]}
-  variant="semantic"
-/>
-
----
-
-## Tier 2: Alias Tokens (Semantic)
-
-Semantic tokens that define **what the color means**. Use these in components.
-
-### Text Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>text.primary</code></td>
-      <td style={{ padding: '12px 8px' }}>Abyss 500</td>
-      <td style={{ padding: '12px 8px' }}>Main body text, headings</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>text.secondary</code></td>
-      <td style={{ padding: '12px 8px' }}>Dusk Reef 500</td>
-      <td style={{ padding: '12px 8px' }}>Muted text, descriptions</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>text.tertiary</code></td>
-      <td style={{ padding: '12px 8px' }}>Dusk Reef 400</td>
-      <td style={{ padding: '12px 8px' }}>Subtle text, captions</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>text.disabled</code></td>
-      <td style={{ padding: '12px 8px' }}>Dusk Reef 300</td>
-      <td style={{ padding: '12px 8px' }}>Disabled text</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>text.inverse</code></td>
-      <td style={{ padding: '12px 8px' }}>White</td>
-      <td style={{ padding: '12px 8px' }}>Text on dark backgrounds</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>text.link</code></td>
-      <td style={{ padding: '12px 8px' }}>Deep Current 500</td>
-      <td style={{ padding: '12px 8px' }}>Link text</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>text.error</code></td>
-      <td style={{ padding: '12px 8px' }}>Tide Alert</td>
-      <td style={{ padding: '12px 8px' }}>Error messages</td>
-    </tr>
-    <tr>
-      <td style={{ padding: '12px 8px' }}><code>text.success</code></td>
-      <td style={{ padding: '12px 8px' }}>Harbor</td>
-      <td style={{ padding: '12px 8px' }}>Success messages</td>
-    </tr>
-  </tbody>
-</table>
-
-### Background Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>background.page</code></td>
-      <td style={{ padding: '12px 8px' }}>Tide Foam</td>
-      <td style={{ padding: '12px 8px' }}>Main page background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>background.surface</code></td>
-      <td style={{ padding: '12px 8px' }}>White</td>
-      <td style={{ padding: '12px 8px' }}>Card/panel backgrounds</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>background.surfaceHover</code></td>
-      <td style={{ padding: '12px 8px' }}>Abyss 50</td>
-      <td style={{ padding: '12px 8px' }}>Surface hover state</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>background.muted</code></td>
-      <td style={{ padding: '12px 8px' }}>Dusk Reef 50</td>
-      <td style={{ padding: '12px 8px' }}>Subtle areas</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>background.inverse</code></td>
-      <td style={{ padding: '12px 8px' }}>Abyss 500</td>
-      <td style={{ padding: '12px 8px' }}>Dark backgrounds</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>background.accent</code></td>
-      <td style={{ padding: '12px 8px' }}>Deep Current 50</td>
-      <td style={{ padding: '12px 8px' }}>Light teal accent</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>background.error</code></td>
-      <td style={{ padding: '12px 8px' }}>#FEF2F2</td>
-      <td style={{ padding: '12px 8px' }}>Error background</td>
-    </tr>
-    <tr>
-      <td style={{ padding: '12px 8px' }}><code>background.success</code></td>
-      <td style={{ padding: '12px 8px' }}>#F0FDF4</td>
-      <td style={{ padding: '12px 8px' }}>Success background</td>
-    </tr>
-  </tbody>
-</table>
-
-### Border Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>border.default</code></td>
-      <td style={{ padding: '12px 8px' }}>Slate</td>
-      <td style={{ padding: '12px 8px' }}>Default borders</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>border.subtle</code></td>
-      <td style={{ padding: '12px 8px' }}>Abyss 100</td>
-      <td style={{ padding: '12px 8px' }}>Subtle borders</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>border.focus</code></td>
-      <td style={{ padding: '12px 8px' }}>Deep Current 500</td>
-      <td style={{ padding: '12px 8px' }}>Focus rings</td>
-    </tr>
-    <tr>
-      <td style={{ padding: '12px 8px' }}><code>border.error</code></td>
-      <td style={{ padding: '12px 8px' }}>Tide Alert</td>
-      <td style={{ padding: '12px 8px' }}>Error borders</td>
-    </tr>
-  </tbody>
-</table>
-
-### Interactive Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb' }}>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Token</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Value</th>
-      <th style={{ textAlign: 'left', padding: '12px 8px', fontWeight: 600 }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>interactive.primary</code></td>
-      <td style={{ padding: '12px 8px' }}>Abyss 500</td>
-      <td style={{ padding: '12px 8px' }}>Primary buttons</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>interactive.primaryHover</code></td>
-      <td style={{ padding: '12px 8px' }}>Abyss 600</td>
-      <td style={{ padding: '12px 8px' }}>Primary hover</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>interactive.accent</code></td>
-      <td style={{ padding: '12px 8px' }}>Deep Current 500</td>
-      <td style={{ padding: '12px 8px' }}>Accent buttons</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '12px 8px' }}><code>interactive.accentHover</code></td>
-      <td style={{ padding: '12px 8px' }}>Deep Current 600</td>
-      <td style={{ padding: '12px 8px' }}>Accent hover</td>
-    </tr>
-    <tr>
-      <td style={{ padding: '12px 8px' }}><code>interactive.danger</code></td>
-      <td style={{ padding: '12px 8px' }}>Red Coral</td>
-      <td style={{ padding: '12px 8px' }}>Destructive actions</td>
-    </tr>
-  </tbody>
-</table>
-
----
-
-## Usage Examples
-
-### Tailwind Classes (Recommended for Static Styles)
-
-**IMPORTANT:** All Tailwind classes use **kebab-case** naming.
-
-#### Text Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '16px', fontSize: '14px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-primary</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#2D3142', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#2D3142</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Main body text</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-secondary</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#5E4F7E', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#5E4F7E</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Muted text</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-inverse</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FFFFFF', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#FFFFFF</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Text on dark backgrounds</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-accent</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#08A4BD</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Accent/teal text</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-link</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#08A4BD</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Link text</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-link-hover</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#068397', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#068397</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Link hover state</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-error</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#F70D1A', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#F70D1A</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Error messages</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>text-success</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#22C55E', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#22C55E</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Success messages</td>
-    </tr>
-    <tr>
-      <td style={{ padding: '8px' }}><code>text-warning</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#EAB308', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#EAB308</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Warning messages</td>
-    </tr>
-  </tbody>
-</table>
-
-#### Background Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '16px', fontSize: '14px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-page</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FBFBF3', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#FBFBF3</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Main page background (cream)</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-surface</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FFFFFF', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#FFFFFF</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Cards, panels, surfaces</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-surface-hover</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#E8E9EB', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#E8E9EB</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Surface hover state</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-surface-active</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#D1D3D7', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#D1D3D7</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Surface active state</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-muted-bg</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#EFEDF3', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#EFEDF3</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Subtle muted backgrounds</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-inverse-bg</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#2D3142', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#2D3142</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Dark backgrounds</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-inverse-subtle</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#1D1F2A', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#1D1F2A</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Subtle dark backgrounds</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-accent-bg</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#E6F7FA', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#E6F7FA</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Light teal accent background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-accent-strong</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#08A4BD</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Strong teal background</td>
-    </tr>
-  </tbody>
-</table>
-
-#### Status & State Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '16px', fontSize: '14px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-error-light</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FEF2F2', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#FEF2F2</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Light error background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-error-muted</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FEE2E2', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#FEE2E2</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Muted error background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-success-light</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#F0FDF4', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#F0FDF4</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Light success background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-success-muted</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#DCFCE7', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#DCFCE7</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Muted success background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-warning-light</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FFFBEB', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#FFFBEB</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Light warning background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-warning-muted</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#FEF3C7', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#FEF3C7</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Muted warning background</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>bg-info-light</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#EFF6FF', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#EFF6FF</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Light info background</td>
-    </tr>
-    <tr>
-      <td style={{ padding: '8px' }}><code>bg-info-muted</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#DBEAFE', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#DBEAFE</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Muted info background</td>
-    </tr>
-  </tbody>
-</table>
-
-#### Border Colors
-
-<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
-  <thead>
-    <tr style={{ borderBottom: '2px solid #e5e7eb', backgroundColor: '#f9fafb' }}>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Class Name</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '30%' }}>Color</th>
-      <th style={{ textAlign: 'left', padding: '8px', fontWeight: 600, width: '40%' }}>Usage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>border-default</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#CBD5E1', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#CBD5E1</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Default borders</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>border-subtle</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#D1D3D7', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#D1D3D7</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Subtle borders</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>border-focus</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#08A4BD</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Focus rings</td>
-    </tr>
-    <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
-      <td style={{ padding: '8px' }}><code>border-accent</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#08A4BD', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#08A4BD</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Accent borders</td>
-    </tr>
-    <tr>
-      <td style={{ padding: '8px' }}><code>border-error</code></td>
-      <td style={{ padding: '8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '6px', backgroundColor: '#F70D1A', border: '1px solid #e5e7eb' }} />
-          <code style={{ fontSize: '12px' }}>#F70D1A</code>
-        </div>
-      </td>
-      <td style={{ padding: '8px' }}>Error borders</td>
-    </tr>
-  </tbody>
-</table>
-
-#### Tailwind Usage Examples
-
-```tsx
-// Static styling with Tailwind classes (RECOMMENDED)
-<div className="bg-surface text-primary border-default rounded-lg">
-  <h1 className="text-primary font-bold">Heading</h1>
-  <p className="text-secondary">Description text</p>
-  <button className="bg-accent-strong text-inverse hover:bg-accent-strong/90">
-    Click me
-  </button>
+  <a
+    href="?path=/docs/foundation-design-tokens-colors--docs"
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.sm,
+      padding: '16px 20px',
+      border: `1px solid ${SLATE[200]}`,
+      textDecoration: 'none',
+      transition: 'all 200ms ease-out',
+    }}
+  >
+    <span style={{ fontSize: '24px' }}>🌈</span>
+    <div>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>Color System</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        <span>Complete color documentation</span>
+      </div>
+    </div>
+  </a>
 </div>
-
-// Hover and state variants
-<button className="bg-muted-bg hover:bg-surface-hover active:bg-surface-active">
-  Hover me
-</button>
-
-// Status indicators
-<div className="bg-success-light text-success border-success">Success</div>
-<div className="bg-error-light text-error border-error">Error</div>
-<div className="bg-warning-light text-warning">Warning</div>
-
-// Navigation active state
-<nav className="bg-accent-bg">Active nav item</nav>
-```
-
----
-
-### TypeScript ALIAS Tokens (For Dynamic Styles)
-
-Use ALIAS tokens when you need **dynamic/computed values** based on state or props.
-
-```typescript
-import { ALIAS, ABYSS, DEEP_CURRENT } from '@adrozdenko/design-system'
-
-// Dynamic styling based on state (use ALIAS)
-const bgColor = isError ? ALIAS.status.error : ALIAS.background.surface
-const textColor = isActive ? ALIAS.text.accent : ALIAS.text.primary
-
-<div style={{ backgroundColor: bgColor, color: textColor }}>
-  Dynamic content
-</div>
-
-// Tier 1: Raw primitives (only when needed for custom scales)
-const darkScale = ABYSS[600] // Darker shade
-```
-
-### CSS Variables
-
-```css
-/* Tier 2: Alias (use these in components) */
-color: var(--alias-text-primary);
-background: var(--alias-bg-surface);
-border-color: var(--alias-border-focus);
-
-/* Tier 1: Primitives (rarely needed directly) */
-color: var(--brand-abyss-500);
-```
-
----
-
-## Guidelines
-
-### Do's
-
-- Use **ALIAS tokens** for all component styling
-- Reference **Primitives** only when you need raw scale values
-- Use semantic names that describe intent (text.primary, background.surface)
-
-### Don'ts
-
-- Don't hardcode hex values - always use tokens
-- Don't use Primitives directly when an ALIAS token exists
-- Don't create new colors outside the system

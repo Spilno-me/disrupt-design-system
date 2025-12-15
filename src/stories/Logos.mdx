@@ -1,10 +1,146 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Image } from 'lucide-react';
 import { LogoGallery } from './LogoGallery';
+import {
+  HeroHeader,
+  InfoBox,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from './brand/BrandComponents';
 
 <Meta title="Brand/Logos" />
 
-# Brand Logos
+{/* Hero Header */}
+<HeroHeader
+  icon={<Image size={28} color={PRIMITIVES.white} />}
+  title="Brand Logos"
+  description="Download official Disrupt brand logos in various formats. Select the variant and format you need."
+  gradient="teal"
+/>
 
-Download official Disrupt brand logos in various formats. Select the variant and format you need.
+<InfoBox variant="tip">
+  <strong>Quick Export:</strong> Select your preferred format (PNG or SVG) and scale,
+  then click Export to download. SVG is recommended for most uses.
+</InfoBox>
+
+---
+
+## Logo Gallery
+
+Download logos for Disrupt and all product brands. Each logo is available in dark and light variants.
 
 <LogoGallery />
+
+---
+
+## Usage Guidelines
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
+  marginTop: '24px',
+}}>
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '24px',
+      marginBottom: '12px',
+    }}>
+      🌙
+    </div>
+    <h4 style={{
+      margin: '0 0 8px 0',
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <span>Dark Variant</span>
+    </h4>
+    <div style={{
+      margin: 0,
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.5,
+    }}>
+      <span>Use on light backgrounds (white, cream, light gray)</span>
+    </div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '24px',
+      marginBottom: '12px',
+    }}>
+      ☀️
+    </div>
+    <h4 style={{
+      margin: '0 0 8px 0',
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <span>Light Variant</span>
+    </h4>
+    <div style={{
+      margin: 0,
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.5,
+    }}>
+      <span>Use on dark backgrounds (navy, black, dark images)</span>
+    </div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '24px',
+      marginBottom: '12px',
+    }}>
+      📐
+    </div>
+    <h4 style={{
+      margin: '0 0 8px 0',
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <span>Clear Space</span>
+    </h4>
+    <div style={{
+      margin: 0,
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.5,
+    }}>
+      <span>Always maintain minimum padding equal to the "D" icon height</span>
+    </div>
+  </div>
+</div>

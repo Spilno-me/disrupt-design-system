@@ -1,154 +1,152 @@
 # DDS - Agent Context
 
-**Agent-only. Optimized for speed.**
+**SINGLE SOURCE OF TRUTH**: `.claude/agent-context.json`
 
 ---
 
-## 🚀 READ THESE FILES (5 seconds)
+## Meta: Writing Rules for Agents
 
-1. `.claude/agent-context.json` (100 lines) ⭐ MASTER FILE
-2. `.claude/component-registry.json` (200 lines) ⭐ COMPONENT LOOKUP
-3. `.claude/findings/index.json` (150 lines) ⭐ LESSONS LEARNED
+Rules in this file are for **AI agents**, not humans. Optimize accordingly:
 
-**Total: ~450 lines JSON = 5-second load ⚡**
+| Do | Don't |
+|----|-------|
+| Terse, scannable format | Verbose explanations |
+| Code examples with ✅/❌ | Paragraphs of prose |
+| Tables for lookups | Nested bullet lists |
+| `keyword: action` patterns | "You should consider..." |
+| Symptoms → Fix (direct) | Background context first |
 
----
-
-## Quick Reference (From JSON)
-
-### Versioning (agent-context.json → criticalRules.versioning)
+**Template:**
 ```
-NO breaking changes until v3.0.0
-Breaking: rename/remove props, change types, change defaults
-Safe: add optional props, new components, bug fixes
-Version: 2.3.1 → 2.4.0 (MINOR)
-```
-
-### Tokens (agent-context.json → criticalRules.tokens)
-```
-ZERO raw colors: NO #hex, rgb(), bg-blue-500, text-gray-600
-Use: ALIAS.text.primary OR bg-surface (semantic Tailwind)
-```
-
-### Exports (agent-context.json → criticalRules.exports)
-```
-Two-level: component/index.ts + src/index.ts
-Missing: NotificationsPanel, QuickFilter, DropdownMenu, Tabs
-Export: component + types + sub-components + hooks
-```
-
-### Git
-```
-NO Claude attribution
-Format: feat:|fix:|chore:|refactor:|docs:
-```
-
-### Error Handling
-```
-TypeScript/ESLint errors: FIX, never revert/reset commits
-NO git reset --hard, NO git checkout to discard changes
-Fix the root cause: update types, fix imports, use correct tokens
-Acceptable solutions only - no workarounds, no temp fixes
+## Rule Name (SEVERITY)
+Symptom: [what you'll see]
+Cause: [one line]
+Fix: [code or command]
 ```
 
 ---
 
-## Workflows (agent-context.json → workflow)
+## 🌊 Wu Wei (無為) - Effortless Action
 
-### editComponent
-```
-1. Backwards compatible check
-2. Breaking? → STOP → v3.0.0
-3. Safe? → Update CHANGELOG
-```
+**Project Philosophy: Work with the grain, not against it.**
 
-### createComponent
-```
-1. Check component-registry.json (exists?)
-2. Radix UI for interactive
-3. ALIAS or semantic Tailwind
-4. Export from src/index.ts + types
-5. MINOR bump
-```
+| Principle | Do | Don't | Self-Test |
+|-----------|----|----|-----------|
+| **Simple over clever** | Let solutions emerge naturally | Over-engineer, premature abstraction | Can a junior dev understand this in 30s? |
+| **Add only what's needed** | Three similar lines > abstraction | DRY zealotry, speculative features | Am I solving today's problem or imaginary ones? |
+| **Trust the flow** | Use existing patterns first | Invent when existing works | Does agent-context.json already have this? |
+| **No force** | Step back if fighting | Hack around the system | Am I working with or against the codebase? |
+| **Backwards compat** | ADD new, DEPRECATE old | REMOVE until v3 | Will existing consumers break? |
 
-### refactorComponent
-```
-1. API changes? → BREAKING → v3.0.0
-2. Internal only? → SAFE → Proceed
-```
+**Pre-commit checklist:**
+- Am I adding more complexity than needed?
+- Does an existing pattern already solve this?
+- Would deletion be better than addition?
 
-### bumpVersion
+*"The sage does not act, yet nothing is left undone."* — Tao Te Ching
+
+---
+
+## 🎨 BEFORE WRITING ANY COLOR: Read `.claude/color-matrix.json`
+
+**This is NOT optional.** The color matrix defines ALL allowed color combinations.
+
+### Workflow:
+1. **Identify background** → Find category (dark/light/accent/subtle)
+2. **Look up allowed colors** → text.primary, icons.primary, borders.default
+3. **Check FORBIDDEN list** → Never use those combinations
+
+### Quick Reference:
+| Background | Text | Icons |
+|------------|------|-------|
+| `ABYSS[500+]`, dark gradients | `PRIMITIVES.white`, `SLATE[300]` | `PRIMITIVES.white` |
+| `DEEP_CURRENT[500+]` | `PRIMITIVES.white` | `PRIMITIVES.white` |
+| `PRIMITIVES.white`, `cream` | `ABYSS[500]` | `ABYSS[500]` |
+| `SLATE[50-200]` | `ABYSS[500]`, `DUSK_REEF[500]` | `DEEP_CURRENT[500]` |
+
+### Golden Rule:
 ```
-1. PATCH|MINOR|MAJOR
-2. MAJOR → v3.0.0 only
-3. Update CHANGELOG
+❌ Same color family on itself = INVISIBLE
+   ABYSS[200] on ABYSS[500] = WRONG
+   DUSK_REEF[500] on DUSK_REEF[600] = WRONG
 ```
 
 ---
 
-## Fast Queries
+## WCAG Contrast Validation
+
+**Read:** `.claude/contrast-matrix.json` for exact ratios
+
+| Level | Category | Ratio | Use |
+|-------|----------|-------|-----|
+| AA | Normal text | 4.5:1 | Body, labels |
+| AA | Large text | 3.0:1 | 18pt+ |
+| AA | Graphics | 3.0:1 | Icons, UI |
+| AAA | Normal text | 7.0:1 | Enhanced |
+
+### Common Failures:
+```
+ABYSS[200] on ABYSS[500]    = 3.98:1 FAIL text
+DEEP_CURRENT[500] on white  = 3.57:1 FAIL text (OK icons)
+```
+
+### If User Specifies Failing Color:
+Report: `Contrast {X}:1 - {PASS|FAIL} WCAG AA` + suggest alternative
+
+---
+
+## MDX Text Color Bug (CRITICAL)
+
+**Symptom:** Inline `color` styles show red/coral instead of expected color in MDX files
+**Cause:** MDX wraps text in `<p>` → Storybook CSS overrides with `colorPrimary`
+**Fix:**
+```jsx
+// ❌ <div style={{ color: '#fff' }}>Text</div>
+// ✅ <div style={{ color: '#fff' }}><span>Text</span></div>
+```
+**Details:** `.claude/storybook-rules.md` § "MDX Paragraph Wrapping Bug"
+
+---
+
+## Spacing Hierarchy (4px Base)
+
+**Rule:** Related items = LESS space | Unrelated items = MORE space
+
+| Level | Size | Tailwind | Use |
+|-------|------|----------|-----|
+| Micro | 4-8px | `gap-1`, `gap-2` | Icon↔text, label↔input |
+| Base | 12-16px | `gap-3`, `gap-4` | Items within component |
+| Comfortable | 20-24px | `gap-5`, `gap-6` | Between components |
+| Spacious | 32-48px | `gap-8`, `gap-12` | Between sections |
+| Page | 64-96px | `gap-16`, `gap-24` | Hero, footer, major divisions |
+
+**Quick decisions:**
+```
+Label → Input:  8px (gap-2)
+Input → Input:  16px (space-y-4)
+Card → Card:    16-24px (gap-4, gap-6)
+Section → Section: 48-64px (py-12, py-16)
+```
+
+**Details:** `.claude/spacing-rules.md`
+
+---
+
+## Quick Commands
 
 ```bash
-jq '.workflow.editComponent' .claude/agent-context.json
-jq '.ui.ComponentName' .claude/component-registry.json
-jq '.quickLookup.isBreaking' .claude/agent-context.json
-jq '.components.exports.missing' .claude/agent-context.json
+npm run typecheck && npm run lint && npm run build
+npm run generate-tokens  # after token changes
 ```
 
----
+## Lazy Load (task-specific)
 
-## Component Registry Quick Check
-
-**Exported:** Button, Input, Dialog, Card, Select, DataTable, Form, Badge, Skeleton, Tooltip, Separator, Slider, Header, AppHeader, AppSidebar, AppFooter, LoginForm, ErrorState, SeverityIndicator
-
-**Missing (HIGH):** NotificationsPanel, QuickFilter, DropdownMenu, Tabs
-
-**Query:** `jq '.ui' .claude/component-registry.json`
-
----
-
-## Breaking vs Safe
-
-**Breaking (v3.0.0 ONLY):**
-- Rename props
-- Remove props
-- Change prop types
-- Change defaults
-- Remove exports
-
-**Safe (v2.x OK):**
-- Add optional props (with defaults)
-- Add new components
-- Fix bugs (no API change)
-- Add variants
-- Deprecate (keep working)
-
----
-
-## Commands
-
-```bash
-npm run typecheck
-npm run lint
-npm run build
-npm run storybook
-```
-
----
-
-**DO NOT read below. All info is in JSON files above.** ⚠️
-
----
-
-## [DEPRECATED - For migration reference only]
-
-This section preserved for historical context during v2 → v3 migration.
-All active rules are in JSON files above.
-
-<details>
-<summary>Old verbose guidelines (click to expand - not needed for agents)</summary>
-
-[Previous CLAUDE.md content preserved here for reference during migration]
-[Will be removed in v3.0.0]
-
-</details>
+| Task | Read |
+|------|------|
+| **Color combinations** | **`.claude/color-matrix.json`** |
+| **Contrast ratios** | **`.claude/contrast-matrix.json`** |
+| **Spacing/layout** | **`.claude/spacing-rules.md`** |
+| Detailed tokens | `src/stories/DesignTokens.mdx` |
+| Writing stories | `.claude/storybook-rules.md` |
+| Writing tests | `.claude/testing-quick-ref.md` |
+| Stabilization | `.claude/core-components-stabilization.md` |

@@ -1,14 +1,313 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Download, Package, FileImage, Type, Palette, Layout } from 'lucide-react';
+import {
+  HeroHeader,
+  DownloadCard,
+  InfoBox,
+  SectionHeader,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from './brand/BrandComponents';
 
 <Meta title="Brand/Downloads" />
 
-# Asset Downloads
+{/* Hero Header */}
+<HeroHeader
+  icon={<Download size={28} color={PRIMITIVES.white} />}
+  title="Asset Downloads"
+  description="Download official brand assets, logos, and design resources for your projects."
+  gradient="primary"
+/>
 
-*Coming soon*
+<InfoBox variant="info">
+  <strong>Need specific assets?</strong> Contact the brand team for custom formats,
+  sizes, or additional resources not listed here.
+</InfoBox>
 
-Quick access to downloadable brand assets:
-- Logo pack (SVG, PNG, PDF)
-- Color palette files (ASE, CLR)
-- Font files
-- Presentation templates
-- Social media kit
+---
+
+## Logo Packages
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <DownloadCard
+    icon="🎨"
+    title="Primary Logos"
+    description="Full logo suite including Disrupt, Flow, Market, and Partner logos in both dark and light variants."
+    formats={['SVG', 'PNG', 'PDF']}
+  />
+  <DownloadCard
+    icon="⬛"
+    title="Monochrome Logos"
+    description="Single-color logo variants for print, merchandise, and special applications."
+    formats={['SVG', 'PNG']}
+  />
+  <DownloadCard
+    icon="📱"
+    title="App Icons"
+    description="Favicon sets, app icons, and social media profile images in all required sizes."
+    formats={['ICO', 'PNG', 'SVG']}
+  />
+</div>
+
+---
+
+## Design Resources
+
+<SectionHeader
+  icon={<Layout size={20} />}
+  title="Design Files"
+  description="Source files and design resources for designers."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <DownloadCard
+    icon="🎭"
+    title="Figma UI Kit"
+    description="Complete component library, design tokens, and templates in Figma format."
+    formats={['Figma']}
+  />
+  <DownloadCard
+    icon="📐"
+    title="Brand Guidelines PDF"
+    description="Comprehensive brand guidelines document with usage rules and examples."
+    formats={['PDF']}
+  />
+  <DownloadCard
+    icon="🖼️"
+    title="Illustration Pack"
+    description="Custom illustrations and graphics used across Disrupt products."
+    formats={['SVG', 'PNG']}
+  />
+</div>
+
+---
+
+## Typography
+
+<SectionHeader
+  icon={<Type size={20} />}
+  title="Font Files"
+  description="Web and desktop font packages."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <DownloadCard
+    icon="✍️"
+    title="Pilat Extended"
+    description="Display font for marketing and headlines. Includes Regular, Medium, Semibold, and Bold weights."
+    formats={['WOFF2', 'OTF']}
+  />
+  <DownloadCard
+    icon="📝"
+    title="Fixel"
+    description="Application font for UI and body text. Includes Regular, Medium, Semibold, and Bold weights."
+    formats={['WOFF2', 'OTF']}
+  />
+</div>
+
+---
+
+## Color Palettes
+
+<SectionHeader
+  icon={<Palette size={20} />}
+  title="Color Files"
+  description="Import brand colors directly into your design tools."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <DownloadCard
+    icon="🎨"
+    title="Adobe Swatch"
+    description="Color palette for Adobe Creative Suite applications."
+    formats={['ASE']}
+  />
+  <DownloadCard
+    icon="🍎"
+    title="Apple Color"
+    description="macOS color palette for Sketch, Figma, and system apps."
+    formats={['CLR']}
+  />
+  <DownloadCard
+    icon="📄"
+    title="CSS Variables"
+    description="Ready-to-use CSS custom properties for web development."
+    formats={['CSS']}
+  />
+</div>
+
+---
+
+## Presentation Templates
+
+<SectionHeader
+  icon={<FileImage size={20} />}
+  title="Templates"
+  description="Pre-designed templates for presentations and documents."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <DownloadCard
+    icon="📊"
+    title="Pitch Deck"
+    description="Investor presentation template with brand styling and placeholder content."
+    formats={['PPTX', 'KEY', 'Figma']}
+  />
+  <DownloadCard
+    icon="📋"
+    title="Document Templates"
+    description="Word and Google Docs templates for proposals, reports, and documentation."
+    formats={['DOCX', 'GDOC']}
+  />
+</div>
+
+---
+
+## Social Media Kit
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    marginBottom: '24px',
+  }}>
+    <div style={{
+      width: '48px',
+      height: '48px',
+      borderRadius: RADIUS.md,
+      background: DEEP_CURRENT[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '24px',
+    }}>
+      📱
+    </div>
+    <div>
+      <h3 style={{
+        margin: 0,
+        fontSize: '18px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>Social Media Kit</span>
+      </h3>
+      <div style={{
+        margin: '4px 0 0 0',
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        <span>Profile images, cover photos, and post templates for all major platforms</span>
+      </div>
+    </div>
+  </div>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(5, 1fr)',
+    gap: '12px',
+    marginBottom: '24px',
+  }}>
+    {['LinkedIn', 'Twitter/X', 'Facebook', 'Instagram', 'YouTube'].map((platform) => (
+      <div
+        key={platform}
+        style={{
+          background: SLATE[50],
+          borderRadius: RADIUS.sm,
+          padding: '12px',
+          textAlign: 'center',
+          fontSize: '13px',
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}
+      >
+        {platform}
+      </div>
+    ))}
+  </div>
+
+  <div style={{
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '8px',
+    marginBottom: '20px',
+  }}>
+    {['PNG', 'PSD', 'Figma'].map((format) => (
+      <span
+        key={format}
+        style={{
+          background: DEEP_CURRENT[50],
+          color: DEEP_CURRENT[700],
+          padding: '4px 10px',
+          borderRadius: RADIUS.xs,
+          fontSize: '11px',
+          fontWeight: 500,
+          fontFamily: '"Fixel", sans-serif',
+          textTransform: 'uppercase',
+        }}
+      >
+        {format}
+      </span>
+    ))}
+  </div>
+
+  <button
+    style={{
+      padding: '12px 24px',
+      background: ABYSS[500],
+      color: PRIMITIVES.white,
+      border: 'none',
+      borderRadius: RADIUS.sm,
+      fontSize: '14px',
+      fontWeight: 500,
+      fontFamily: '"Fixel", sans-serif',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+    }}
+  >
+    <Download size={16} />
+    <span>Download Full Kit</span>
+  </button>
+</div>
