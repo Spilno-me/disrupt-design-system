@@ -242,7 +242,7 @@
 
 ## 📊 Progress Tracking
 
-### ✅ Completed (8/46 core components)
+### ✅ Completed (9/46 core components)
 1. **Badge** - ATOM, variants reviewed (7→5 recommended for v3.0.0), stories simplified (8→4)
 2. **Skeleton** - ATOM, variant deprecated (3→1), stories simplified (6→7 with patterns), comprehensive usage docs
 3. **Input** - ATOM, stories simplified (7→3), AllStates story standardized
@@ -251,6 +251,7 @@
 6. **Checkbox** - ATOM, stories simplified (8→2), darker teal border for visibility
 7. **Select** - ATOM (compound), stories simplified (4→3), teal menu hover, semibold selected items
 8. **Slider** - ATOM, stories simplified (7→2), fixed token violations (red→teal), AllStates added
+9. **Separator** - ATOM, stories simplified (6→2), teal brand color, dashed variant documented
 
 ### 🔧 Utility Systems (Infrastructure - Not Core Components)
 - **Form** - Composition helpers (FormItem, FormLabel, FormControl, FormMessage, FormDescription)
@@ -260,7 +261,7 @@
 ### 🔄 In Progress (0/47)
 None
 
-### ⬜ To Do (38/46)
+### ⬜ To Do (37/46)
 
 **Priority HIGH (7):**
 - Button

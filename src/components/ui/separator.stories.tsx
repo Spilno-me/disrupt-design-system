@@ -6,108 +6,101 @@ const meta = {
   component: Separator,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `
+Separator component for visual division of content.
+
+## Two Separator Types
+
+### 1. Solid Separator (Component)
+Use the \`<Separator />\` component for solid divider lines.
+
+- Horizontal (default) or vertical orientation
+- Teal brand color for consistency
+
+### 2. Dashed Separator (CSS Class)
+Use \`<div className="separator-dashed" />\` for dashed dividers.
+
+- Same teal brand color
+- 4px dash, 4px gap pattern
+- Used in website sections
+
+## Accessibility
+
+- **Decorative** (default): Not announced to screen readers
+- **Semantic**: Set \`decorative={false}\` for meaningful separators that should be announced
+        `,
+      },
+    },
   },
   tags: ['autodocs'],
+  argTypes: {
+    orientation: {
+      control: 'select',
+      options: ['horizontal', 'vertical'],
+      description: 'Separator orientation',
+      table: {
+        type: { summary: 'horizontal | vertical' },
+      },
+    },
+    decorative: {
+      control: 'boolean',
+      description: 'Whether separator is decorative or semantic for screen readers',
+      table: {
+        type: { summary: 'boolean' },
+      },
+    },
+  },
 } satisfies Meta<typeof Separator>;
 
 export default meta;
 type Story = StoryObj<typeof Separator>;
 
-// Horizontal Separator (Solid)
-export const Horizontal: Story = {
+// Default Separator (for Controls panel)
+export const Default: Story = {
   render: () => (
-    <div style={{ width: '400px' }}>
-      <p style={{ marginBottom: '16px' }}>Section above</p>
+    <div className="w-[400px]">
+      <p className="mb-4 text-primary">Section above</p>
       <Separator />
-      <p style={{ marginTop: '16px' }}>Section below</p>
+      <p className="mt-4 text-primary">Section below</p>
     </div>
   ),
 };
 
-// Dashed Separator (Disrupt Style)
-export const Dashed: Story = {
+// All States (Visual Matrix - No interaction needed)
+export const AllStates: Story = {
   render: () => (
-    <div style={{ width: '400px' }}>
-      <p style={{ marginBottom: '16px' }}>Section above</p>
-      <div className="separator-dashed" />
-      <p style={{ marginTop: '16px' }}>Section below (4px-4px dashed pattern)</p>
-    </div>
-  ),
-};
-
-// Vertical Separator
-export const Vertical: Story = {
-  render: () => (
-    <div style={{ display: 'flex', alignItems: 'center', height: '100px', gap: '16px' }}>
-      <span>Item 1</span>
-      <Separator orientation="vertical" />
-      <span>Item 2</span>
-      <Separator orientation="vertical" />
-      <span>Item 3</span>
-    </div>
-  ),
-};
-
-// Card with Sections (Solid Separator)
-export const CardWithSections: Story = {
-  render: () => (
-    <div style={{
-      width: '400px',
-      background: '#FFFFFF',
-      border: '1px dashed #CBD5E1',
-      borderRadius: '8px',
-      padding: '24px',
-    }}>
-      <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '8px' }}>Card Title</h3>
-      <p style={{ fontSize: '14px', color: '#5E4F7E', marginBottom: '16px' }}>First section content</p>
-
-      <Separator className="my-6" />
-
-      <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px' }}>Details</h4>
-      <p style={{ fontSize: '14px', color: '#5E4F7E' }}>Second section content with solid separator</p>
-    </div>
-  ),
-};
-
-// Card with Dashed Separator (Disrupt Style)
-export const CardWithDashedSeparator: Story = {
-  render: () => (
-    <div style={{
-      width: '400px',
-      background: '#FFFFFF',
-      border: '1px dashed #CBD5E1',
-      borderRadius: '8px',
-      padding: '24px',
-    }}>
-      <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '8px' }}>Pricing Card</h3>
-      <p style={{ fontSize: '14px', color: '#5E4F7E', marginBottom: '16px' }}>Plan description</p>
-
-      <div className="separator-dashed my-6" />
-
-      <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px' }}>Features</h4>
-      <ul style={{ fontSize: '14px', color: '#5E4F7E', lineHeight: '1.8' }}>
-        <li>Feature 1</li>
-        <li>Feature 2</li>
-        <li>Feature 3</li>
-      </ul>
-    </div>
-  ),
-};
-
-// Comparison
-export const Comparison: Story = {
-  render: () => (
-    <div style={{ width: '500px', display: 'grid', gap: '48px' }}>
+    <div className="w-[500px] space-y-8 p-6">
       <div>
-        <h4 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: '600' }}>Solid Separator (Default Radix)</h4>
-        <Separator />
+        <h4 className="text-sm font-semibold text-primary mb-4">Horizontal Orientation (Default)</h4>
+        <div className="w-full">
+          <p className="mb-4 text-primary text-sm">Content above</p>
+          <Separator />
+          <p className="mt-4 text-primary text-sm">Content below</p>
+        </div>
       </div>
+
       <div>
-        <h4 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: '600' }}>Dashed Separator (Disrupt Style - 4px dash, 4px gap)</h4>
-        <div className="separator-dashed" />
-        <p style={{ marginTop: '8px', fontSize: '12px', fontFamily: 'monospace', color: '#9FA5B0' }}>
-          className="separator-dashed"
-        </p>
+        <h4 className="text-sm font-semibold text-primary mb-4">Vertical Orientation</h4>
+        <div className="flex items-center h-16 gap-4">
+          <span className="text-primary">Item 1</span>
+          <Separator orientation="vertical" />
+          <span className="text-primary">Item 2</span>
+          <Separator orientation="vertical" />
+          <span className="text-primary">Item 3</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-sm font-semibold text-primary mb-4">Dashed Variant (Website Style)</h4>
+        <div className="w-full">
+          <p className="mb-4 text-primary text-sm">Section above</p>
+          <div className="separator-dashed" />
+          <p className="mt-4 text-primary text-sm">Section below</p>
+        </div>
+        <p className="text-xs text-secondary mt-2">Uses .separator-dashed CSS class (teal #08A4BD, 4px dash, 4px gap)</p>
+        <p className="text-xs text-secondary">Used in website: ContactInfo, SectionLayout</p>
       </div>
     </div>
   ),
