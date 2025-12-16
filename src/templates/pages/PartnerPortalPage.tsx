@@ -25,7 +25,6 @@ import {
   FileText,
   Building2,
   Settings,
-  DollarSign,
   ClipboardList,
 } from 'lucide-react'
 import { AppLayoutShell, AppNavItem } from '../layout/AppLayoutShell'
@@ -54,6 +53,14 @@ import {
   TenantProvisioningChat,
   TenantFormData,
 } from '../../components/provisioning/TenantProvisioningChat'
+import {
+  SettingsPage,
+  UserProfile,
+  CompanyProfile,
+  NotificationSettings,
+} from '../../components/partners/SettingsPage'
+import { HelpPage, HelpArticle } from '../../components/partners/HelpPage'
+import { PricingCalculator, PricingInput, PricingBreakdown } from '../../components/partners/PricingCalculator'
 
 // =============================================================================
 // TYPES
@@ -137,6 +144,32 @@ export interface PartnerPortalPageProps {
 
   // === Provisioning callbacks ===
   onProvisioningComplete?: (data: TenantFormData) => void
+
+  // === Settings data ===
+  /** User profile for settings */
+  settingsUser?: UserProfile
+  /** Company profile for settings */
+  settingsCompany?: CompanyProfile
+  /** Notification settings */
+  settingsNotifications?: NotificationSettings
+
+  // === Settings callbacks ===
+  onSaveProfile?: (profile: UserProfile) => void
+  onSaveCompany?: (company: CompanyProfile) => void
+  onSaveNotifications?: (notifications: NotificationSettings) => void
+  onChangePassword?: (currentPassword: string, newPassword: string) => void
+  onChangeAvatar?: (file: File) => void
+
+  // === Help callbacks ===
+  onArticleClick?: (article: HelpArticle) => void
+  onContactSupport?: () => void
+  onHelpSearch?: (query: string) => void
+
+  // === Pricing Calculator ===
+  /** Commission percentage for pricing calculator */
+  commissionPercentage?: number
+  onCalculatePricing?: (input: PricingInput, breakdown: PricingBreakdown) => void
+  onGenerateQuote?: (input: PricingInput, breakdown: PricingBreakdown) => void
 
   // === Navigation & Layout ===
   /** Initial page to show */
@@ -227,22 +260,6 @@ function TenantRequestsContent() {
   )
 }
 
-/** Pricing Calculator Page (placeholder) */
-function PricingCalculatorContent() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold text-primary mb-6">Pricing Calculator</h1>
-      <Card className="bg-surface border-default">
-        <CardContent className="p-8 text-center">
-          <DollarSign className="w-12 h-12 text-teal mx-auto mb-4" />
-          <h2 className="text-lg font-semibold text-primary mb-2">Calculate Tenant Pricing</h2>
-          <p className="text-secondary mb-4">Use the chat-based provisioning for interactive pricing</p>
-          <Button variant="accent">Open Pricing Chat</Button>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
 
 // =============================================================================
 // MAIN COMPONENT
@@ -299,6 +316,26 @@ export function PartnerPortalPage({
   // Provisioning callbacks
   onProvisioningComplete,
 
+  // Settings data & callbacks
+  settingsUser,
+  settingsCompany,
+  settingsNotifications,
+  onSaveProfile,
+  onSaveCompany,
+  onSaveNotifications,
+  onChangePassword,
+  onChangeAvatar,
+
+  // Help callbacks
+  onArticleClick,
+  onContactSupport,
+  onHelpSearch,
+
+  // Pricing Calculator
+  commissionPercentage = 15,
+  onCalculatePricing,
+  onGenerateQuote,
+
   // Navigation & Layout
   initialPage = 'dashboard',
   currentPageId,
@@ -347,6 +384,36 @@ export function PartnerPortalPage({
     { id: '3', label: 'Manage Invoices', icon: <FileText className="w-4 h-4" />, onClick: () => handlePageChange('invoices') },
     { id: '4', label: 'Partner Management', icon: <Building2 className="w-4 h-4" />, onClick: () => handlePageChange('partners') },
   ]
+
+  // Default settings data (derived from user if not provided)
+  const defaultSettingsUser: UserProfile = settingsUser ?? {
+    firstName: user.name?.split(' ')[0] ?? 'Partner',
+    lastName: user.name?.split(' ').slice(1).join(' ') ?? 'User',
+    email: user.email ?? 'user@partner.com',
+    phone: '+1 (555) 123-4567',
+    role: 'Partner Administrator',
+    timezone: 'America/New_York',
+  }
+
+  const defaultSettingsCompany: CompanyProfile = settingsCompany ?? {
+    name: 'Partner Company',
+    address: '123 Business Park Drive',
+    city: 'San Francisco',
+    state: 'CA',
+    zip: '94102',
+    country: 'United States',
+    website: 'https://partnercompany.com',
+    phone: '+1 (555) 987-6543',
+  }
+
+  const defaultSettingsNotifications: NotificationSettings = settingsNotifications ?? {
+    emailNewLeads: true,
+    emailInvoices: true,
+    emailTenantRequests: true,
+    emailWeeklyDigest: false,
+    pushNotifications: true,
+    smsAlerts: false,
+  }
 
   // Render page content based on active page
   const renderPageContent = () => {
@@ -423,7 +490,38 @@ export function PartnerPortalPage({
         )
 
       case 'pricing-calculator':
-        return <PricingCalculatorContent />
+        return (
+          <div className="p-6">
+            <PricingCalculator
+              commissionPercentage={commissionPercentage}
+              onCalculate={onCalculatePricing}
+              onGenerateQuote={onGenerateQuote}
+            />
+          </div>
+        )
+
+      case 'settings':
+        return (
+          <SettingsPage
+            user={defaultSettingsUser}
+            company={defaultSettingsCompany}
+            notifications={defaultSettingsNotifications}
+            onSaveProfile={onSaveProfile}
+            onSaveCompany={onSaveCompany}
+            onSaveNotifications={onSaveNotifications}
+            onChangePassword={onChangePassword}
+            onChangeAvatar={onChangeAvatar}
+          />
+        )
+
+      case 'help':
+        return (
+          <HelpPage
+            onArticleClick={onArticleClick}
+            onContactSupport={onContactSupport}
+            onSearch={onHelpSearch}
+          />
+        )
 
       default:
         return (
@@ -437,6 +535,23 @@ export function PartnerPortalPage({
     }
   }
 
+  // Handle help click - navigate to help page
+  const handleHelpClick = useCallback(() => {
+    handlePageChange('help')
+    onHelpClick?.()
+  }, [handlePageChange, onHelpClick])
+
+  // Handle settings click from user menu
+  const handleMenuItemClick = useCallback(
+    (item: UserMenuItem) => {
+      if (item.id === 'settings') {
+        handlePageChange('settings')
+      }
+      onMenuItemClick?.(item)
+    },
+    [handlePageChange, onMenuItemClick]
+  )
+
   return (
     <AppLayoutShell
       product="partner"
@@ -449,8 +564,8 @@ export function PartnerPortalPage({
       notificationCount={notificationCount}
       onNavigate={onNavigate}
       onNotificationClick={onNotificationClick}
-      onMenuItemClick={onMenuItemClick}
-      onHelpClick={onHelpClick}
+      onMenuItemClick={handleMenuItemClick}
+      onHelpClick={handleHelpClick}
       onLogoClick={onLogoClick}
       showBackground={showBackground}
       showHelpItem={true}

@@ -11,7 +11,7 @@ import { formatCurrency } from '../../components/partners/invoices/types'
 // =============================================================================
 
 const meta: Meta<typeof PartnerPortalPage> = {
-  title: 'Pages/Partner/PartnerPortal',
+  title: 'Partner/Complete App',
   component: PartnerPortalPage,
   parameters: {
     layout: 'fullscreen',
@@ -60,6 +60,12 @@ function App() {
 - **Partners** - Partner company management
 - **Partner Network** - Network and sub-partner management
 - **Pricing Calculator** - Calculate pricing for tenants
+- **Settings** - User profile, company info, notifications, security
+- **Help** - Documentation, FAQs, and support contact
+
+## Interactive Navigation
+
+Click on sidebar items, bottom navigation (mobile), or use the user menu to navigate between pages. All pages are fully connected and interactive.
         `,
       },
     },
@@ -320,6 +326,31 @@ export const Default: Story = {
     },
     onCreateInvoice: () => alert('Create new invoice'),
     onProvisioningComplete: (data) => alert(`Tenant "${data.companyName}" configuration complete!`),
+
+    // Settings callbacks
+    onSaveProfile: (profile) => alert(`Profile saved for ${profile.firstName} ${profile.lastName}`),
+    onSaveCompany: (company) => alert(`Company "${company.name}" information saved`),
+    onSaveNotifications: (notifications) => {
+      const enabled = Object.entries(notifications).filter(([, v]) => v).map(([k]) => k)
+      alert(`Notification preferences saved. Enabled: ${enabled.length} settings`)
+    },
+    onChangePassword: () => alert('Password changed successfully!'),
+    onChangeAvatar: (file) => alert(`Avatar "${file.name}" uploaded!`),
+
+    // Help callbacks
+    onArticleClick: (article) => alert(`Opening article: ${article.title}`),
+    onContactSupport: () => alert('Opening support chat...'),
+    onHelpSearch: (query) => alert(`Searching help for: "${query}"`),
+
+    // Pricing Calculator callbacks
+    commissionPercentage: 15,
+    onCalculatePricing: (input, breakdown) => {
+      console.log('Pricing calculated:', { input, breakdown })
+    },
+    onGenerateQuote: (input, breakdown) => {
+      alert(`Quote Generated!\n\nCompany: ${input.companySize}\nTier: ${input.tier}\nTotal: $${breakdown.total.toLocaleString()}/year\nYour Commission: $${breakdown.partnerCommission.toLocaleString()}`)
+    },
+
     onMenuItemClick: (item) => {
       if (item.id === 'logout') {
         alert('Logging out...')
@@ -327,7 +358,6 @@ export const Default: Story = {
         console.log('Menu item clicked:', item.id)
       }
     },
-    onHelpClick: () => alert('Opening help documentation...'),
   },
 }
 
@@ -389,5 +419,71 @@ export const StartOnInvoices: Story = {
   args: {
     ...Default.args,
     initialPage: 'invoices',
+  },
+}
+
+/**
+ * Start on settings page - shows user profile, company info, notifications
+ */
+export const StartOnSettings: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    initialPage: 'settings',
+  },
+}
+
+/**
+ * Start on help page - shows documentation, FAQs, and support
+ */
+export const StartOnHelp: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    initialPage: 'help',
+  },
+}
+
+/**
+ * Start on pricing calculator - calculate tenant pricing and generate quotes
+ */
+export const StartOnPricingCalculator: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    initialPage: 'pricing-calculator',
+  },
+}
+
+/**
+ * Start on partners page - manage partner companies
+ */
+export const StartOnPartners: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    initialPage: 'partners',
+  },
+}
+
+/**
+ * Start on partner network page - view partner hierarchy
+ */
+export const StartOnPartnerNetwork: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    initialPage: 'partner-network',
+  },
+}
+
+/**
+ * Start on tenant provisioning - create new tenant accounts
+ */
+export const StartOnTenantProvisioning: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    initialPage: 'tenant-provisioning',
   },
 }
