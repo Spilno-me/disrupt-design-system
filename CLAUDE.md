@@ -225,3 +225,4 @@ npm run generate-tokens  # after token changes
 | Writing stories | `.claude/storybook-rules.md` |
 | Writing tests | `.claude/testing-quick-ref.md` |
 | Stabilization | `.claude/core-components-stabilization.md` |
+| **Delivery packages** | **`.claude/delivery-package-guide.md`** |
