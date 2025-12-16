@@ -38,10 +38,10 @@ You're importing PRIMITIVE tokens (ABYSS, CORAL, SAGE, TEAL, etc.) directly, whi
 - Components should use semantic meaning, not raw colors
 - Makes future design changes harder
 
-**DDS 3-Tier Architecture:**
+**DDS 2-Tier Architecture:**
 ```
-PRIMITIVES → ALIAS → Components
-(Tier 1)     (Tier 2)  (Tier 3)
+PRIMITIVES → ALIAS → Components consume via Tailwind
+(Tier 1)     (Tier 2)
 ```
 
 **What to use instead:**

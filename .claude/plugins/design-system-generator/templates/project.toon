@@ -1,0 +1,38 @@
+# Design System Project Template
+# TOON format for multi-model orchestration
+
+project: {{name}}-ds
+
+gates[5]{id,name,requires}:
+  g1,foundation,
+  g2,build-system,g1
+  g3,token-architecture,g2
+  g4,utilities,g3
+  g5,complete,g4
+
+tasks[16]{id,name,model,phase,parallel,gate,prompt}:
+  # Phase 1: Foundation (Haiku - fast parallel)
+  f1,create-directories,haiku,foundation,true,g1,Create directory structure: src/components/ui src/constants src/lib src/styles .claude .storybook
+  f2,init-package-json,haiku,foundation,true,g1,Create package.json with name {{name}}-ds and dependencies: react react-dom typescript tailwindcss class-variance-authority clsx tailwind-merge @radix-ui/react-slot
+  f3,create-tsconfig,haiku,foundation,true,g1,Create tsconfig.json with strict mode and path alias @/* to src/*
+  f4,create-eslint-config,haiku,foundation,true,g1,Create eslint.config.js with typescript-eslint recommended rules
+  f5,create-gitignore,haiku,foundation,true,g1,Create .gitignore for node_modules dist .DS_Store
+
+  # Phase 2: Build System (Sonnet - integration decisions)
+  b1,setup-vite-library,sonnet,build,true,g2,Create vite.config.ts for library mode with react plugin and dts generation
+  b2,setup-tailwind,sonnet,build,true,g2,Create tailwind.config.js that extends tailwind-preset.js
+  b3,setup-storybook,sonnet,build,true,g2,Create .storybook/main.ts and preview.ts with tailwind support
+
+  # Phase 3: Token Architecture (Opus - critical decisions)
+  t1,design-tokens,opus,tokens,false,g3,Design 2-tier token system: PRIMITIVES (color scales) ALIAS (semantic). Components consume via Tailwind. Ask user for brand colors. Generate src/constants/tokens.ts and tailwind-preset.js
+
+  # Phase 4: Utilities (Haiku - fast parallel)
+  u1,create-cn-utility,haiku,utils,true,g4,Create src/lib/utils.ts with cn() function using clsx and tailwind-merge
+  u2,create-base-css,haiku,utils,true,g4,Create src/styles/base.css with @tailwind directives and font imports
+  u3,create-index-exports,haiku,utils,true,g4,Create src/index.ts with style imports and component re-exports
+  u4,create-claude-md,haiku,utils,true,g4,Create CLAUDE.md with token constraints: FORBIDDEN raw hex and standard tailwind colors. REQUIRED semantic classes only
+
+  # Phase 5: Agent Context (Sonnet - structured)
+  a1,create-agent-context,sonnet,context,true,g5,Create .claude/agent-context.json with token rules color-matrix and component patterns
+  a2,create-color-matrix,sonnet,context,true,g5,Create .claude/color-matrix.json defining valid background/text/border combinations
+  a3,create-readme,haiku,context,true,g5,Create README.md with project overview setup instructions and usage examples

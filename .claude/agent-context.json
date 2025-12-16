@@ -245,15 +245,18 @@
   "typography": {
     "website": {
       "font": "Pilat Extended",
-      "class": "font-display"
+      "class": "font-display",
+      "scope": "website headings only"
     },
     "app": {
       "font": "Fixel",
-      "class": "font-sans"
+      "class": "font-sans",
+      "scope": "ALL app UI - the only allowed font"
     },
-    "code": {
-      "font": "Monospace",
-      "class": "font-mono"
+    "forbidden": {
+      "_CRITICAL": "ONLY Fixel is allowed in app UI",
+      "fonts": ["font-mono", "font-serif", "font-display (in app)", "any Google Font"],
+      "reason": "Consistent brand identity - Fixel for all UI"
     }
   },
   "spacing": {
@@ -284,9 +287,9 @@
         "rule": "ADD ONLY, never change existing"
       },
       "progress": {
-        "stabilized": 10,
+        "stabilized": 11,
         "total": 46,
-        "percentage": "22%"
+        "percentage": "24%"
       }
     },
     "registry": {
@@ -398,15 +401,17 @@
         "Dialog": {
           "path": "ui/dialog.tsx",
           "type": "MOLECULE",
-          "status": "TODO",
-          "testId": "TODO",
+          "status": "STABILIZED",
+          "testId": "data-slot",
           "subs": [
             "DialogTrigger",
             "DialogContent",
             "DialogHeader",
             "DialogTitle",
             "DialogDescription",
-            "DialogFooter"
+            "DialogFooter",
+            "DialogClose",
+            "DialogOverlay"
           ]
         },
         "Sheet": {
@@ -480,6 +485,7 @@
       },
       "testIdLegend": {
         "ready": "Props spread + JSDoc examples for ATOM, or auto-gen for MOLECULE",
+        "data-slot": "Compound component uses data-slot attributes (Dialog, Select, Sheet)",
         "TODO": "Needs data-testid implementation per testing-quick-ref.md",
         "N/A": "Not applicable (FROZEN or UTILITY)"
       },
@@ -511,6 +517,44 @@
     "writeTest": "Atoms=accept testId | Molecules=auto-gen | Pages=named regions",
     "editTokens": "1. Update designTokens.ts 2. Update tokens-reference.json 3. Update DesignTokens.mdx 4. Run npm run sync-docs",
     "afterChanges": "Run npm run sync-components && npm run sync-docs && npm run validate-context"
+  },
+  "storybook": {
+    "modalOverlayPattern": {
+      "_CRITICAL": "Modals use portals + fixed positioning - won't render inline",
+      "staticPreview": {
+        "use": "Default, WithForm stories (always visible)",
+        "pattern": "Plain HTML div with dialog classes",
+        "classes": "bg-surface text-primary font-sans rounded-lg border border-default p-6 shadow-lg",
+        "example": "<div className=\"bg-surface...\"><h2>Title</h2><p>Description</p><Button>Action</Button></div>"
+      },
+      "interactiveDemo": {
+        "use": "AllStates story only",
+        "pattern": "Real Dialog with DialogTrigger (user clicks to open)",
+        "example": "<Dialog><DialogTrigger asChild><Button>Open</Button></DialogTrigger><DialogContent>...</DialogContent></Dialog>"
+      },
+      "forbidden": {
+        "defaultOpen": "Never use defaultOpen alone - breaks Storybook rendering",
+        "modalFalse": "modal={false} causes context errors"
+      }
+    },
+    "dataSlotPattern": {
+      "_note": "Compound components use data-slot, not data-testid",
+      "whenToUse": {
+        "dataSlot": "Compound components (Dialog, Select, Sheet) - fixed internal structure",
+        "dataTestid": "ATOM, MOLECULE, PAGE - consumer or auto-generated"
+      },
+      "components": {
+        "Dialog": ["dialog", "dialog-trigger", "dialog-content", "dialog-header", "dialog-footer", "dialog-title", "dialog-description", "dialog-close", "dialog-overlay"],
+        "Select": ["select-trigger", "select-content", "select-item", "select-separator"],
+        "Sheet": ["sheet-trigger", "sheet-content", "sheet-header", "sheet-title"]
+      },
+      "testing": "container.querySelector('[data-slot=\"dialog-content\"]')"
+    },
+    "allStatesStory": {
+      "required": true,
+      "sections": ["Variants", "Sizes", "States", "Focus (use autoFocus)"],
+      "headerClass": "text-sm font-semibold text-muted mb-4"
+    }
   },
   "commands": {
     "typecheck": "npm run typecheck",

@@ -1,0 +1,8 @@
+{
+  "name": "design-system-generator",
+  "version": "1.0.0",
+  "description": "Generate production-ready design systems with token-constrained component building",
+  "author": {
+    "name": "Local Development"
+  }
+}

@@ -266,3 +266,126 @@ Always use consistent styling for AllStates sections:
 ```tsx
 <h4 className="text-sm font-semibold text-muted mb-4">Section Title</h4>
 ```
+
+---
+
+## Modal/Overlay Components in Stories (CRITICAL)
+
+**Problem:** Modals use portals and fixed positioning - they don't render inline in Storybook canvas.
+
+### Solution: Static Previews
+
+For Default/WithForm stories, use plain HTML with dialog styling:
+
+```tsx
+// ❌ WRONG - Won't display properly
+export const Default: Story = {
+  render: () => (
+    <Dialog defaultOpen>
+      <DialogContent>...</DialogContent>
+    </Dialog>
+  ),
+}
+
+// ✅ CORRECT - Static preview with dialog styling
+export const Default: Story = {
+  render: () => (
+    <div className="bg-surface text-primary font-sans w-full max-w-lg rounded-lg border border-default p-6 shadow-lg">
+      <div className="flex flex-col gap-2 text-left">
+        <h2 className="text-base font-semibold">Dialog Title</h2>
+        <p className="text-sm text-muted">Description text here.</p>
+      </div>
+      <div className="flex justify-end gap-2 mt-4">
+        <Button variant="outline">Cancel</Button>
+        <Button>Confirm</Button>
+      </div>
+    </div>
+  ),
+}
+```
+
+### Interactive Examples in AllStates
+
+Use real Dialog components for interactive demos (user clicks to open):
+
+```tsx
+export const AllStates: Story = {
+  render: () => (
+    <div className="space-y-8">
+      {/* Static anatomy diagram */}
+      <div className="rounded-lg border border-default bg-surface p-6 shadow-lg max-w-lg">
+        {/* ... static structure ... */}
+      </div>
+
+      {/* Interactive examples - user clicks to open */}
+      <div className="flex gap-4">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Open Dialog</Button>
+          </DialogTrigger>
+          <DialogContent>...</DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  ),
+}
+```
+
+### Key Points
+
+| Approach | Use For |
+|----------|---------|
+| Static HTML with dialog classes | Default, WithForm (always visible) |
+| Real Dialog with trigger | AllStates interactive demos |
+| Never use `defaultOpen` alone | Breaks Storybook rendering |
+
+---
+
+## data-slot vs data-testid
+
+### When to Use Each
+
+| Attribute | Component Type | Who Sets It |
+|-----------|---------------|-------------|
+| `data-testid` | ATOM, MOLECULE, PAGE | Consumer or auto-generated |
+| `data-slot` | Compound components (Dialog, Select) | Component itself (fixed) |
+
+### data-slot Pattern (Compound Components)
+
+Compound components use `data-slot` because:
+- Structure is fixed (DialogHeader, DialogContent, etc.)
+- Consumer doesn't control internal structure
+- Enables targeting specific parts in tests
+
+```tsx
+// Component implementation
+function DialogContent({ children }) {
+  return (
+    <div data-slot="dialog-content">
+      {children}
+      <button data-slot="dialog-close">×</button>
+    </div>
+  )
+}
+
+// Testing
+container.querySelector('[data-slot="dialog-content"]')
+container.querySelector('[data-slot="dialog-close"]')
+```
+
+### Components Using data-slot
+
+- Dialog: `dialog`, `dialog-trigger`, `dialog-content`, `dialog-header`, `dialog-footer`, `dialog-title`, `dialog-description`, `dialog-close`, `dialog-overlay`
+- Select: `select-trigger`, `select-content`, `select-item`, `select-separator`
+- Sheet: `sheet-trigger`, `sheet-content`, `sheet-header`, `sheet-title`
+
+### data-testid Pattern (Regular Components)
+
+```tsx
+// ATOM - Consumer provides
+<Button data-testid="submit-btn">Submit</Button>
+
+// MOLECULE - Auto-generated from props
+<LeadCard lead={lead} />
+// → data-testid="lead-card-123"
+```

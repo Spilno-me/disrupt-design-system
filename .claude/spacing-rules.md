@@ -4,6 +4,44 @@
 
 ---
 
+## MANDATORY: Use Design Tokens (CRITICAL)
+
+**NEVER use hardcoded pixel values. ALWAYS use tokens from `designTokens.ts`.**
+
+```tsx
+// ❌ WRONG: Hardcoded values
+<div style={{ marginTop: '32px', marginBottom: '24px' }}>
+
+// ✅ CORRECT: Design tokens
+import { SPACING } from '../constants/designTokens';
+<div style={{ marginTop: SPACING.px.spacious, marginBottom: SPACING.px.comfortable }}>
+```
+
+### Token Reference for Inline Styles (`SPACING.px`)
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `SPACING.px.micro` | 4px | Icon-to-text, inline |
+| `SPACING.px.tight` | 8px | Label + input |
+| `SPACING.px.base` | 16px | Within component |
+| `SPACING.px.comfortable` | 24px | Between components |
+| `SPACING.px.spacious` | 32px | Between sections |
+| `SPACING.px.section` | 48px | Major page sections |
+| `SPACING.px.page` | 96px | Hero, footer |
+
+### Semantic Aliases
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `SPACING.px.sectionHeadingTop` | 32px | Gap after separator |
+| `SPACING.px.sectionHeadingBottom` | 24px | Gap to content |
+| `SPACING.px.cardGap` | 20px | Between cards |
+| `SPACING.px.cardGapCompact` | 16px | Compact grids |
+| `SPACING.px.cardPadding` | 24px | Internal card padding |
+| `SPACING.px.gridGap` | 16px | Standard grid gap |
+
+---
+
 ## Base Unit: 4px
 
 All spacing derives from 4px. Never use arbitrary values.
@@ -138,6 +176,10 @@ RULE: Related items = LESS space | Unrelated items = MORE space
 ## Anti-Patterns
 
 ```tsx
+// ❌ WRONG: Hardcoded pixel values (use tokens!)
+<div style={{ marginTop: '32px' }}>  // Use SPACING.px.spacious
+<div style={{ gap: '24px' }}>        // Use SPACING.px.comfortable
+
 // ❌ WRONG: Arbitrary values
 <div style={{ padding: '13px' }}>    // Not on scale
 <div className="gap-[22px]">         // Arbitrary
@@ -149,7 +191,9 @@ RULE: Related items = LESS space | Unrelated items = MORE space
   <Content />    // 16px - too little for content separation
 </div>
 
-// ✅ CORRECT: Hierarchical
+// ✅ CORRECT: Use tokens + hierarchical spacing
+import { SPACING } from '../constants/designTokens';
+<div style={{ marginTop: SPACING.px.spacious }}>  // Token-based
 <div>
   <Title className="mb-2" />     // 8px - tight
   <Subtitle className="mb-6" />  // 24px - comfortable
@@ -161,29 +205,36 @@ RULE: Related items = LESS space | Unrelated items = MORE space
 
 ## MDX Documentation Spacing
 
-For Storybook MDX files:
+For Storybook MDX files - **ALWAYS use `SPACING.px` tokens**:
 
 ```jsx
+import { SPACING } from './brand/BrandComponents';
+// or: import { SPACING } from '../constants/designTokens';
+
+// Section headings (after --- separator)
+<h2 style={{
+  marginTop: SPACING.px.sectionHeadingTop,    // 32px
+  marginBottom: SPACING.px.sectionHeadingBottom // 24px
+}}>
+
 // Hero to content
-marginBottom: '48px'    // 48px after hero sections
+marginBottom: SPACING.px.section     // 48px
 
-// Between major sections
-marginBottom: '48px'    // Use --- markdown separator
+// Between component showcases
+marginBottom: SPACING.px.spacious    // 32px
 
-// Within sections
-marginBottom: '32px'    // Between component showcases
-marginBottom: '24px'    // Between related content
-marginBottom: '16px'    // Between list items
+// Between related content
+marginBottom: SPACING.px.comfortable // 24px
 
 // Card grids
-gap: '20px'            // Standard card gap
-gap: '16px'            // Compact card gap
-gap: '24px'            // Spacious card gap
+gap: SPACING.px.cardGap              // 20px - standard
+gap: SPACING.px.cardGapCompact       // 16px - compact
+gap: SPACING.px.comfortable          // 24px - spacious
 
 // Internal card padding
-padding: '24px'        // Standard cards
-padding: '20px'        // Compact cards
-padding: '32px'        // Feature/hero cards
+padding: SPACING.px.cardPadding      // 24px - standard
+padding: SPACING.px.base             // 16px - compact
+padding: SPACING.px.spacious         // 32px - feature cards
 ```
 
 ---

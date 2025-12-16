@@ -30,7 +30,7 @@ This file tracks breaking changes that cannot be implemented in v2.x but are nee
 **Review Doc:** `.claude/reviews/severity-indicator-review.md`
 
 #### Problem
-Component violates 3-tier token architecture:
+Component violates 2-tier token architecture:
 - ❌ Imports PRIMITIVES directly (CORAL, ORANGE, SUNRISE, HARBOR, DEEP_CURRENT)
 - ❌ Uses hardcoded hex colors (#FFFFFF, #67E8F9, #A5F3FC, #06B6D4)
 - ❌ Should use ALIAS tokens instead
