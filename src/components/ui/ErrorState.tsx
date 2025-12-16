@@ -4,12 +4,59 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { Button } from './button'
 
-// =============================================================================
-// ERROR STATE VARIANTS
-// =============================================================================
+/**
+ * ErrorState - Visual feedback component for error conditions.
+ *
+ * @component ATOM
+ *
+ * @description
+ * Displays error states when content fails to load or operations fail.
+ * Supports different visual variants, predefined/custom icons, and
+ * retry functionality. Use as fallback UI for ErrorBoundary.
+ *
+ * @example
+ * ```tsx
+ * // Basic error state
+ * <ErrorState
+ *   title="Failed to load"
+ *   message="Please try again"
+ *   onRetry={() => refetch()}
+ * />
+ *
+ * // Network error
+ * <ErrorState
+ *   icon="network"
+ *   title="Connection Lost"
+ *   message="Check your internet connection"
+ *   onRetry={reconnect}
+ * />
+ *
+ * // Prominent error (critical)
+ * <ErrorState
+ *   variant="prominent"
+ *   title="Critical Error"
+ *   message="Contact support"
+ *   showRetry={false}
+ * />
+ *
+ * // With secondary action
+ * <ErrorState
+ *   title="Page Not Found"
+ *   showRetry={false}
+ *   secondaryAction={{ label: "Go Home", onClick: goHome }}
+ * />
+ * ```
+ *
+ * @testid
+ * - `data-slot="error-state"` - Root container (has role="alert")
+ *
+ * @accessibility
+ * - role="alert" for screen reader announcements
+ * - aria-live="polite" for dynamic updates
+ */
 
 const errorStateVariants = cva(
-  'flex flex-col items-center justify-center gap-4 text-center',
+  'flex flex-col items-center justify-center text-center',
   {
     variants: {
       variant: {
@@ -21,9 +68,10 @@ const errorStateVariants = cva(
         prominent: 'bg-error-light border border-error-muted rounded-lg p-8',
       },
       size: {
-        sm: 'gap-2 [&_svg]:size-8 [&_h3]:text-sm [&_p]:text-xs',
-        md: 'gap-3 [&_svg]:size-12 [&_h3]:text-base [&_p]:text-sm',
-        lg: 'gap-4 [&_svg]:size-16 [&_h3]:text-lg [&_p]:text-base',
+        // Spacing: base (16px) for sm, comfortable (24px) for md/lg
+        sm: 'gap-4 [&_h3]:text-sm [&_p]:text-xs',
+        md: 'gap-6 [&_h3]:text-base [&_p]:text-sm',
+        lg: 'gap-6 [&_h3]:text-lg [&_p]:text-base',
       },
     },
     defaultVariants: {
@@ -32,6 +80,13 @@ const errorStateVariants = cva(
     },
   }
 )
+
+// Icon size classes per ErrorState size
+const iconSizeClasses = {
+  sm: 'size-8',   // 32px
+  md: 'size-12',  // 48px
+  lg: 'size-16',  // 64px
+} as const
 
 // =============================================================================
 // ICON MAPPING
@@ -102,6 +157,7 @@ function ErrorState({
     >
       {/* Error Icon */}
       <div
+        data-slot="error-icon"
         className={cn(
           'shrink-0',
           variant === 'prominent'
@@ -111,7 +167,7 @@ function ErrorState({
               : 'text-error'
         )}
       >
-        {customIcon || <IconComponent className="shrink-0" />}
+        {customIcon || <IconComponent className={cn('shrink-0', iconSizeClasses[size || 'md'])} />}
       </div>
 
       {/* Error Content */}
@@ -173,5 +229,7 @@ function ErrorState({
     </div>
   )
 }
+
+ErrorState.displayName = 'ErrorState'
 
 export { ErrorState, errorStateVariants }

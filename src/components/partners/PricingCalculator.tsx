@@ -2,7 +2,13 @@ import * as React from 'react'
 import { useState, useMemo } from 'react'
 import { Calculator, Users, Building2, DollarSign, Percent, Info, FileText } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card'
+import {
+  AppCard,
+  AppCardContent,
+  AppCardHeader,
+  AppCardTitle,
+  AppCardDescription,
+} from '../ui/app-card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
@@ -202,32 +208,32 @@ export function PricingCalculator({
   }
 
   return (
-    <div className={cn('flex flex-col gap-6', className)}>
+    <div className={cn('flex flex-col gap-6', className)} data-slot="pricing-calculator">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <header className="flex items-center justify-between" data-slot="pricing-calculator-header">
         <div>
           <h1 className="text-2xl font-semibold text-primary flex items-center gap-2">
-            <Calculator className="w-6 h-6 text-accent" />
+            <Calculator className="h-6 w-6 text-primary" aria-hidden="true" />
             Pricing Calculator
           </h1>
-          <p className="text-muted mt-1">
+          <p className="text-sm text-muted mt-2">
             Calculate pricing for your potential tenants
           </p>
         </div>
-      </div>
+      </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Input Section */}
         <div className="lg:col-span-2 space-y-6">
           {/* Company Info */}
-          <Card className="bg-surface border-default">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-accent" />
+          <AppCard data-testid="company-info-card">
+            <AppCardHeader>
+              <AppCardTitle className="text-lg flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-primary" aria-hidden="true" />
                 Company Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+              </AppCardTitle>
+            </AppCardHeader>
+            <AppCardContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Company Size</Label>
@@ -265,7 +271,7 @@ export function PricingCalculator({
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
-                        <Info className="w-4 h-4 text-muted" />
+                        <Info className="h-4 w-4 text-muted" aria-hidden="true" />
                       </TooltipTrigger>
                       <TooltipContent>
                         Annual billing saves 20% compared to monthly
@@ -290,21 +296,21 @@ export function PricingCalculator({
                   </Button>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </AppCardContent>
+          </AppCard>
 
           {/* User Licenses */}
-          <Card className="bg-surface border-default">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Users className="w-5 h-5 text-accent" />
+          <AppCard data-testid="user-licenses-card">
+            <AppCardHeader>
+              <AppCardTitle className="text-lg flex items-center gap-2">
+                <Users className="h-5 w-5 text-primary" aria-hidden="true" />
                 User Licenses
-              </CardTitle>
-              <CardDescription>
+              </AppCardTitle>
+              <AppCardDescription>
                 Adjust user counts by type or use the total slider
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
+              </AppCardDescription>
+            </AppCardHeader>
+            <AppCardContent className="space-y-4">
               {/* Total Users Slider */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -380,20 +386,20 @@ export function PricingCalculator({
                   />
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </AppCardContent>
+          </AppCard>
         </div>
 
         {/* Pricing Summary */}
-        <div className="space-y-6">
-          <Card className="bg-surface border-default sticky top-6">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-accent" />
+        <aside className="space-y-6" data-slot="pricing-summary">
+          <AppCard className="sticky top-6" data-testid="pricing-summary-card">
+            <AppCardHeader>
+              <AppCardTitle className="text-lg flex items-center gap-2">
+                <DollarSign className="h-5 w-5 text-primary" aria-hidden="true" />
                 Pricing Summary
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+              </AppCardTitle>
+            </AppCardHeader>
+            <AppCardContent className="space-y-4">
               {/* Line Items */}
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -424,7 +430,7 @@ export function PricingCalculator({
                   <span className="text-primary">{formatCurrency(breakdown.subtotal)}</span>
                 </div>
                 {billingCycle === 'annual' && (
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-sm font-medium">
                     <span className="text-success">Annual Discount (20%)</span>
                     <span className="text-success">-{formatCurrency(breakdown.annualDiscount)}</span>
                   </div>
@@ -444,37 +450,39 @@ export function PricingCalculator({
               </div>
 
               {/* Partner Commission */}
-              <div className="bg-accent-bg rounded-lg p-4 mt-4">
+              <div className="bg-accent-bg rounded-md p-4 mt-4" data-slot="partner-commission">
                 <div className="flex items-center gap-2 mb-2">
-                  <Percent className="w-4 h-4 text-accent" />
+                  <Percent className="h-4 w-4 text-primary" aria-hidden="true" />
                   <span className="text-sm font-medium text-primary">Your Commission</span>
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-xl font-bold text-accent">
+                  <span className="text-xl font-bold text-primary">
                     {formatCurrency(breakdown.partnerCommission)}
                   </span>
-                  <span className="text-xs text-muted">({commissionPercentage}%)</span>
+                  <span className="text-xs text-secondary">({commissionPercentage}%)</span>
                 </div>
               </div>
 
               {/* Actions */}
-              <div className="space-y-2 pt-4">
+              <div className="flex flex-col gap-2 pt-4" data-slot="pricing-actions">
                 <Button variant="accent" className="w-full" onClick={handleGenerateQuote}>
-                  <FileText className="w-4 h-4 mr-2" />
+                  <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
                   Generate Quote
                 </Button>
                 <Button variant="secondary" className="w-full" onClick={handleCalculate}>
-                  <Calculator className="w-4 h-4 mr-2" />
+                  <Calculator className="mr-2 h-4 w-4" aria-hidden="true" />
                   Recalculate
                 </Button>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </AppCardContent>
+          </AppCard>
+        </aside>
       </div>
     </div>
   )
 }
+
+PricingCalculator.displayName = 'PricingCalculator'
 
 // =============================================================================
 // HELPERS

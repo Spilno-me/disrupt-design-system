@@ -321,4 +321,6 @@ export function DataTableActions<T = unknown>({
   return actionsContent
 }
 
+DataTableActions.displayName = "DataTableActions"
+
 export default DataTableActions

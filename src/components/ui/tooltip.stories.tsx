@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { Plus, Pencil, Trash2, Copy, Share, Download, Info, HelpCircle } from 'lucide-react'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip'
 import { Button } from './button'
 
@@ -14,7 +15,10 @@ const meta: Meta<typeof Tooltip> = {
 export default meta
 type Story = StoryObj<typeof Tooltip>
 
-// Basic tooltip
+/**
+ * Default tooltip appears on hover with instant display.
+ * Tooltips provide brief, contextual information.
+ */
 export const Default: Story = {
   render: () => (
     <Tooltip>
@@ -28,255 +32,236 @@ export const Default: Story = {
   ),
 }
 
-// Tooltip positions
-export const Positions: Story = {
+/**
+ * AllStates demonstrates all tooltip positions, configurations, and use cases.
+ *
+ * **Anatomy:**
+ * - TooltipProvider (optional) → shared config for delay
+ * - Tooltip (root) → TooltipTrigger + TooltipContent
+ *
+ * **Positions:** top (default), right, bottom, left
+ *
+ * **Focus behavior:**
+ * - Hover to show tooltip
+ * - Focus (keyboard) also shows tooltip
+ * - ESC to dismiss
+ */
+export const AllStates: Story = {
   render: () => (
-    <TooltipProvider>
-      <div className="flex gap-8">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="outline">Top</Button>
-          </TooltipTrigger>
-          <TooltipContent side="top">
-            <p>Tooltip on top</p>
-          </TooltipContent>
-        </Tooltip>
+    <div className="space-y-8">
+      {/* Anatomy Diagram */}
+      <div className="rounded-md border border-default bg-page p-4">
+        <h3 className="text-sm font-semibold mb-3">Tooltip Anatomy</h3>
+        <div className="flex items-start gap-8">
+          <div className="flex-1 rounded-md border border-dashed border-default p-3 text-xs">
+            <div className="text-muted mb-2">TooltipProvider (optional, for shared delay)</div>
+            <div className="ml-2 rounded bg-accent/10 px-2 py-1">
+              <div className="mb-1">Tooltip (root)</div>
+              <div className="ml-2 space-y-1 text-muted">
+                <div>├─ TooltipTrigger</div>
+                <div>└─ TooltipContent</div>
+                <div className="ml-4">└─ Arrow (auto)</div>
+              </div>
+            </div>
+          </div>
+          <div className="flex-1">
+            <div className="text-xs font-medium mb-2">data-slot attributes:</div>
+            <code className="text-xs text-muted block space-y-0.5">
+              <div>tooltip-provider</div>
+              <div>tooltip, tooltip-trigger</div>
+              <div>tooltip-content</div>
+            </code>
+          </div>
+        </div>
+      </div>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="outline">Right</Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            <p>Tooltip on right</p>
-          </TooltipContent>
-        </Tooltip>
+      {/* Position Variants */}
+      <div>
+        <h3 className="text-sm font-semibold mb-3">Position Variants</h3>
+        <div className="flex gap-8">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline">Top (default)</Button>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <p>Tooltip on top</p>
+            </TooltipContent>
+          </Tooltip>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="outline">Bottom</Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">
-            <p>Tooltip on bottom</p>
-          </TooltipContent>
-        </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline">Right</Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p>Tooltip on right</p>
+            </TooltipContent>
+          </Tooltip>
 
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline">Bottom</Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Tooltip on bottom</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline">Left</Button>
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              <p>Tooltip on left</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </div>
+
+      {/* Icon Buttons with Tooltips */}
+      <div>
+        <h3 className="text-sm font-semibold mb-3">Icon Buttons (common use case)</h3>
+        <div className="flex gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Plus className="size-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Add new item</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Pencil className="size-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Edit</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="destructive" size="icon">
+                <Trash2 className="size-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Delete</TooltipContent>
+          </Tooltip>
+        </div>
+      </div>
+
+      {/* Shared Provider with Delay */}
+      <div>
+        <h3 className="text-sm font-semibold mb-3">Shared Provider (toolbar pattern)</h3>
+        <p className="text-xs text-muted mb-3">Using TooltipProvider for shared 100ms delay</p>
+        <TooltipProvider delayDuration={100}>
+          <div className="flex gap-1 rounded-md border border-default p-1 w-fit">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="size-8">
+                  <Copy className="size-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Copy</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="size-8">
+                  <Share className="size-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Share</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="size-8">
+                  <Download className="size-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Download</TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+      </div>
+
+      {/* Disabled Element Pattern */}
+      <div>
+        <h3 className="text-sm font-semibold mb-3">On Disabled Element</h3>
+        <p className="text-xs text-muted mb-3">Wrap disabled element in span to enable tooltip</p>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="outline">Left</Button>
+            <span className="inline-block">
+              <Button variant="outline" disabled>
+                Disabled button
+              </Button>
+            </span>
           </TooltipTrigger>
-          <TooltipContent side="left">
-            <p>Tooltip on left</p>
+          <TooltipContent>
+            <p>This button is disabled because you don't have permission</p>
           </TooltipContent>
         </Tooltip>
       </div>
-    </TooltipProvider>
-  ),
-}
 
-// Tooltip with delay
-export const WithDelay: Story = {
-  render: () => (
-    <TooltipProvider delayDuration={700}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline">Delayed tooltip (700ms)</Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>This tooltip appears after a delay</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  ),
-}
-
-// Tooltip on icon button
-export const OnIconButton: Story = {
-  render: () => (
-    <div className="flex gap-4">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" size="icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 5v14" />
-              <path d="M5 12h14" />
-            </svg>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Add new item</p>
-        </TooltipContent>
-      </Tooltip>
-
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" size="icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-            </svg>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Edit</p>
-        </TooltipContent>
-      </Tooltip>
-
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="destructive" size="icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 6h18" />
-              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-            </svg>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Delete</p>
-        </TooltipContent>
-      </Tooltip>
+      {/* Keyboard Navigation */}
+      <div className="rounded-md border border-default bg-page p-4">
+        <h3 className="text-sm font-semibold mb-2">Interaction</h3>
+        <div className="grid grid-cols-2 gap-4 text-xs">
+          <div>
+            <span className="font-mono bg-accent/10 px-1 rounded">Hover</span>
+            <span className="text-muted ml-2">Show tooltip</span>
+          </div>
+          <div>
+            <span className="font-mono bg-accent/10 px-1 rounded">Focus</span>
+            <span className="text-muted ml-2">Show tooltip (keyboard)</span>
+          </div>
+          <div>
+            <span className="font-mono bg-accent/10 px-1 rounded">Escape</span>
+            <span className="text-muted ml-2">Dismiss tooltip</span>
+          </div>
+          <div>
+            <span className="font-mono bg-accent/10 px-1 rounded">Mouse leave</span>
+            <span className="text-muted ml-2">Hide tooltip</span>
+          </div>
+        </div>
+      </div>
     </div>
   ),
 }
 
-// Tooltip with rich content
+/**
+ * Rich content tooltips for more detailed information.
+ * Use sparingly - consider a popover for complex content.
+ */
 export const RichContent: Story = {
   render: () => (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button variant="outline">Hover for details</Button>
-      </TooltipTrigger>
-      <TooltipContent className="max-w-[200px]">
-        <p className="font-medium">Pro tip</p>
-        <p className="text-xs opacity-80">
-          You can use keyboard shortcuts to navigate faster. Press Ctrl+K to open the command palette.
-        </p>
-      </TooltipContent>
-    </Tooltip>
-  ),
-}
-
-// Tooltip on disabled element
-export const OnDisabledElement: Story = {
-  render: () => (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <span>
-          <Button variant="outline" disabled>
-            Disabled button
+    <div className="flex gap-4">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline" className="gap-2">
+            <Info className="size-4" />
+            Pro tip
           </Button>
-        </span>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>This button is disabled because you don't have permission</p>
-      </TooltipContent>
-    </Tooltip>
-  ),
-}
+        </TooltipTrigger>
+        <TooltipContent className="max-w-[200px]">
+          <p className="font-medium">Keyboard shortcuts</p>
+          <p className="text-xs opacity-80 mt-1">
+            Press Ctrl+K to open the command palette for quick navigation.
+          </p>
+        </TooltipContent>
+      </Tooltip>
 
-// Multiple tooltips with shared provider
-export const SharedProvider: Story = {
-  render: () => (
-    <TooltipProvider delayDuration={100}>
-      <div className="flex gap-2">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-              </svg>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Copy</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                <polyline points="16 6 12 2 8 6" />
-                <line x1="12" x2="12" y1="2" y2="15" />
-              </svg>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Share</TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" x2="12" y1="15" y2="3" />
-              </svg>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Download</TooltipContent>
-        </Tooltip>
-      </div>
-    </TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <HelpCircle className="size-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-[180px]">
+          <p>Need help? Check out our documentation or contact support.</p>
+        </TooltipContent>
+      </Tooltip>
+    </div>
   ),
 }

@@ -130,4 +130,6 @@ export function DataTableBadge<T extends string = string>({
   )
 }
 
+DataTableBadge.displayName = "DataTableBadge"
+
 export default DataTableBadge

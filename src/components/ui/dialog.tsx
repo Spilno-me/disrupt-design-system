@@ -4,28 +4,106 @@ import { XIcon } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+/**
+ * Dialog - Modal dialog component for focused user interactions.
+ *
+ * @component MOLECULE (compound component with multiple sub-components)
+ *
+ * @description
+ * A modal dialog overlays the page content, requiring user attention.
+ * Built on Radix UI Dialog for full accessibility (focus trap, ESC to close,
+ * proper ARIA attributes). Use for confirmations, forms, and important actions.
+ *
+ * @example
+ * ```tsx
+ * // Basic dialog
+ * <Dialog>
+ *   <DialogTrigger asChild>
+ *     <Button>Open Dialog</Button>
+ *   </DialogTrigger>
+ *   <DialogContent>
+ *     <DialogHeader>
+ *       <DialogTitle>Dialog Title</DialogTitle>
+ *       <DialogDescription>Description text here.</DialogDescription>
+ *     </DialogHeader>
+ *     <DialogFooter>
+ *       <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+ *       <Button>Confirm</Button>
+ *     </DialogFooter>
+ *   </DialogContent>
+ * </Dialog>
+ *
+ * // Controlled dialog
+ * const [open, setOpen] = useState(false);
+ * <Dialog open={open} onOpenChange={setOpen}>
+ *   <DialogContent>...</DialogContent>
+ * </Dialog>
+ * ```
+ *
+ * @testid
+ * Uses `data-slot` attributes for compound component testing:
+ * - `data-slot="dialog"` - Root container
+ * - `data-slot="dialog-trigger"` - Trigger element
+ * - `data-slot="dialog-content"` - Dialog content panel
+ * - `data-slot="dialog-header"` - Header section
+ * - `data-slot="dialog-footer"` - Footer section
+ * - `data-slot="dialog-title"` - Title text
+ * - `data-slot="dialog-description"` - Description text
+ * - `data-slot="dialog-close"` - Close button/element
+ * - `data-slot="dialog-overlay"` - Background overlay
+ *
+ * @example Testing
+ * ```tsx
+ * // Find dialog content
+ * screen.getByRole('dialog');
+ *
+ * // Find by data-slot
+ * container.querySelector('[data-slot="dialog-title"]');
+ *
+ * // Close dialog
+ * fireEvent.click(screen.getByRole('button', { name: /close/i }));
+ * ```
+ *
+ * @accessibility
+ * - Focus trapped within dialog when open
+ * - ESC key closes dialog
+ * - Focus returns to trigger on close
+ * - Proper ARIA attributes (role="dialog", aria-modal, aria-labelledby)
+ *
+ * @see DialogContent - Main content container
+ * @see DialogTrigger - Element that opens the dialog
+ * @see DialogClose - Element that closes the dialog
+ */
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
+Dialog.displayName = "Dialog"
 
+/** DialogTrigger - Element that opens the dialog when clicked. */
 function DialogTrigger({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
 }
+DialogTrigger.displayName = "DialogTrigger"
 
+/** DialogClose - Element that closes the dialog when clicked. */
 function DialogClose({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
+DialogClose.displayName = "DialogClose"
 
+/** DialogPortal - Renders dialog content in a portal outside the DOM hierarchy. */
 function DialogPortal({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 }
+DialogPortal.displayName = "DialogPortal"
 
+/** DialogOverlay - Semi-transparent backdrop behind the dialog. */
 function DialogOverlay({
   className,
   ...props
@@ -42,7 +120,15 @@ function DialogOverlay({
     />
   )
 }
+DialogOverlay.displayName = "DialogOverlay"
 
+/**
+ * DialogContent - Main content container for the dialog.
+ *
+ * @description
+ * Renders the dialog panel with overlay, animations, and close button.
+ * Centers in viewport with max-width constraint.
+ */
 function DialogContent({
   className,
   children,
@@ -75,7 +161,9 @@ function DialogContent({
     </DialogPortal>
   )
 }
+DialogContent.displayName = "DialogContent"
 
+/** DialogHeader - Container for title and description at the top of the dialog. */
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -85,7 +173,9 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
     />
   )
 }
+DialogHeader.displayName = "DialogHeader"
 
+/** DialogFooter - Container for action buttons at the bottom of the dialog. */
 function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -95,7 +185,9 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
     />
   )
 }
+DialogFooter.displayName = "DialogFooter"
 
+/** DialogTitle - Accessible title for the dialog (required for screen readers). */
 function DialogTitle({
   className,
   ...props
@@ -108,7 +200,9 @@ function DialogTitle({
     />
   )
 }
+DialogTitle.displayName = "DialogTitle"
 
+/** DialogDescription - Accessible description text below the title. */
 function DialogDescription({
   className,
   ...props
@@ -121,6 +215,7 @@ function DialogDescription({
     />
   )
 }
+DialogDescription.displayName = "DialogDescription"
 
 export {
   Dialog,

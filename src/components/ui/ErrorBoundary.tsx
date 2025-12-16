@@ -16,10 +16,51 @@ interface ErrorBoundaryState {
 }
 
 /**
- * Error boundary component to catch and handle React errors gracefully.
- * Prevents entire app from crashing when a component fails.
+ * ErrorBoundary - Catches and handles React errors gracefully.
+ *
+ * @component ATOM (class component for error catching)
+ *
+ * @description
+ * Error boundaries catch JavaScript errors anywhere in their child component tree,
+ * log those errors, and display a fallback UI instead of crashing the whole app.
+ * Must be a class component as React hooks don't support error boundaries.
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with fallback
+ * <ErrorBoundary fallback={<ErrorState title="Something went wrong" />}>
+ *   <MyComponent />
+ * </ErrorBoundary>
+ *
+ * // With error callback for logging
+ * <ErrorBoundary
+ *   componentName="Dashboard"
+ *   fallback={<ErrorState />}
+ *   onError={(error, info) => logToService(error, info)}
+ * >
+ *   <Dashboard />
+ * </ErrorBoundary>
+ *
+ * // Silent failure (no UI)
+ * <ErrorBoundary fallback={null}>
+ *   <OptionalWidget />
+ * </ErrorBoundary>
+ * ```
+ *
+ * @testid
+ * No data-slot (class component wraps children, no DOM element of its own).
+ * Test by throwing errors in child components.
+ *
+ * @accessibility
+ * - Use meaningful fallback UI for screen readers
+ * - Consider aria-live regions in fallback for error announcements
+ *
+ * @see CanvasErrorBoundary - Silent failure for visual components
+ * @see SectionErrorBoundary - Placeholder for section failures
+ * @see ErrorState - Recommended fallback component
  */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  static displayName = 'ErrorBoundary'
   constructor(props: ErrorBoundaryProps) {
     super(props)
     this.state = { hasError: false, error: null }
