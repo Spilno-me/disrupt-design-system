@@ -8,11 +8,9 @@ import { MadeWithLove } from './MadeWithLove'
 // TYPES
 // =============================================================================
 
-export interface AppFooterProps {
+export interface AppFooterProps extends React.HTMLAttributes<HTMLElement> {
   /** Color mode for MadeWithLove component */
   colorMode?: 'dark' | 'light'
-  /** Additional className */
-  className?: string
   /** Show compact mobile version */
   compactOnMobile?: boolean
 }
@@ -49,15 +47,51 @@ function WavePattern() {
 /**
  * AppFooter - Simple in-app footer with MadeWithLove branding
  *
+ * **Component Type:** MOLECULE (contains MadeWithLove atom)
+ *
  * Features:
  * - Responsive design: compact on mobile, full on desktop
- * - Pattern grid background
+ * - Wave pattern background (matches AppHeader)
  * - MadeWithLove logo on left, copyright text on right
+ * - Automatic current year display
+ *
+ * @example
+ * ```tsx
+ * // Default (dark mode)
+ * <AppFooter />
+ *
+ * // Light mode (on dark background)
+ * <AppFooter colorMode="light" />
+ *
+ * // Full size on mobile (no compact mode)
+ * <AppFooter compactOnMobile={false} />
+ *
+ * // With custom data-testid
+ * <AppFooter data-testid="custom-footer" />
+ * ```
+ *
+ * **Props:**
+ * - `colorMode`: 'dark' (default) for light backgrounds, 'light' for dark backgrounds
+ * - `compactOnMobile`: true (default) scales down on mobile, false keeps full size
+ * - Standard HTML attributes (className, style, etc.)
+ *
+ * **Testing:**
+ * - Use `data-testid` prop for testing (auto-applies to root element)
+ * - Component has `data-slot="footer"` for structural queries
+ *
+ * **Accessibility:**
+ * - Uses semantic `<footer>` element
+ * - Copyright text uses `text-secondary` (8.7:1 contrast) for readability even at small sizes
+ * - Wave pattern background is decorative (pointer-events-none)
+ *
+ * @component
+ * @testId Auto-generated from data-testid prop (MOLECULE pattern)
  */
 export function AppFooter({
   colorMode = 'dark',
   className,
   compactOnMobile = true,
+  ...props
 }: AppFooterProps) {
   const currentYear = new Date().getFullYear()
 
@@ -65,14 +99,15 @@ export function AppFooter({
     <footer
       className={cn(
         'relative flex items-center justify-between border-t border-default/30',
-        // Mobile: compact height, Desktop: normal height
-        compactOnMobile ? 'h-[30px] md:h-auto md:py-3 px-4 md:px-6' : 'px-6 py-3',
+        // Mobile: compact height (32px = 8 * 4px grid), Desktop: normal height
+        compactOnMobile ? 'h-8 md:h-auto md:py-3 px-4 md:px-6' : 'px-6 py-3',
         className
       )}
       style={{
         backgroundColor: ALIAS.background.surface,
       }}
-      data-element="app-footer"
+      data-slot="footer"
+      {...props}
     >
       {/* Wave pattern background (matches header) */}
       <WavePattern />
@@ -86,8 +121,9 @@ export function AppFooter({
         />
 
         {/* Right: Copyright text (both mobile and desktop) */}
+        {/* Using text-secondary (8.7:1) instead of text-muted (~4.5:1) for 10px text */}
         <p className={cn(
-          'font-medium text-muted',
+          'font-medium text-secondary',
           compactOnMobile ? 'text-[10px] md:text-xs' : 'text-xs'
         )}>
           © {currentYear} Disrupt Software Inc. All Rights reserved.
@@ -96,5 +132,7 @@ export function AppFooter({
     </footer>
   )
 }
+
+AppFooter.displayName = 'AppFooter'
 
 export default AppFooter

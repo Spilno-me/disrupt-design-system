@@ -16,11 +16,20 @@ const meta: Meta<typeof Tabs> = {
 A set of layered sections of content, known as tab panels, that display one panel of content at a time.
 Built on Radix UI Tabs primitive with DDS styling.
 
+**MOLECULE**: Compound component with multiple sub-components working together.
+
 Features:
 - Keyboard navigation (Arrow keys, Home/End)
 - Automatic/manual activation modes
-- Accessible by default
+- Horizontal and vertical orientations
+- Accessible by default (ARIA roles, keyboard support)
 - Styled with DDS design tokens
+
+**Sub-components:**
+- \`Tabs\` - Root container
+- \`TabsList\` - Container for tab triggers
+- \`TabsTrigger\` - Clickable button that activates a tab
+- \`TabsContent\` - Content panel associated with a tab trigger
         `,
       },
     },
@@ -35,6 +44,180 @@ type Story = StoryObj<typeof Tabs>
 // STORIES
 // =============================================================================
 
+/**
+ * Visual matrix showing all component states, orientations, and keyboard behavior.
+ * Use this as reference when implementing tabs in your application.
+ *
+ * Demonstrates:
+ * - Horizontal and vertical orientations
+ * - Active, inactive, and disabled states
+ * - Full-width vs auto-width layouts
+ * - Keyboard navigation patterns
+ */
+export const AllStates: Story = {
+  render: () => (
+    <div className="space-y-12 p-8 max-w-4xl">
+      {/* Component Anatomy */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-primary">Component Anatomy</h3>
+        <div className="p-4 border border-default rounded-lg bg-muted-bg/50">
+          <div className="space-y-2 text-sm text-secondary">
+            <p><span className="font-semibold text-primary">Tabs:</span> Root container (data-slot="tabs")</p>
+            <p><span className="font-semibold text-primary">TabsList:</span> Container for triggers (data-slot="tabs-list")</p>
+            <p><span className="font-semibold text-primary">TabsTrigger:</span> Clickable tab button (data-slot="tabs-trigger")</p>
+            <p><span className="font-semibold text-primary">TabsContent:</span> Content panel (data-slot="tabs-content")</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Horizontal Tabs - Default */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-primary">Horizontal Tabs (Default)</h3>
+        <Tabs defaultValue="account" className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="account" className="p-4">
+            <h4 className="text-base font-semibold text-primary mb-2">Account</h4>
+            <p className="text-secondary text-sm">
+              Make changes to your account here.
+            </p>
+          </TabsContent>
+          <TabsContent value="password" className="p-4">
+            <h4 className="text-base font-semibold text-primary mb-2">Password</h4>
+            <p className="text-secondary text-sm">
+              Change your password here.
+            </p>
+          </TabsContent>
+          <TabsContent value="settings" className="p-4">
+            <h4 className="text-base font-semibold text-primary mb-2">Settings</h4>
+            <p className="text-secondary text-sm">
+              Configure your settings here.
+            </p>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* Full Width Tabs */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-primary">Full Width Layout</h3>
+        <div className="w-[500px]">
+          <Tabs defaultValue="overview">
+            <TabsList className="w-full grid grid-cols-4">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="reports">Reports</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+            </TabsList>
+            <TabsContent value="overview" className="p-4">
+              <p className="text-secondary text-sm">Overview content panel.</p>
+            </TabsContent>
+            <TabsContent value="analytics" className="p-4">
+              <p className="text-secondary text-sm">Analytics content panel.</p>
+            </TabsContent>
+            <TabsContent value="reports" className="p-4">
+              <p className="text-secondary text-sm">Reports content panel.</p>
+            </TabsContent>
+            <TabsContent value="settings" className="p-4">
+              <p className="text-secondary text-sm">Settings content panel.</p>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+
+      {/* Disabled State */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-primary">With Disabled Tab</h3>
+        <Tabs defaultValue="account" className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value="billing" disabled>
+              Billing
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="account" className="p-4">
+            <p className="text-secondary text-sm">Account settings content.</p>
+          </TabsContent>
+          <TabsContent value="password" className="p-4">
+            <p className="text-secondary text-sm">Password settings content.</p>
+          </TabsContent>
+          <TabsContent value="billing" className="p-4">
+            <p className="text-secondary text-sm">Billing settings (disabled).</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* Vertical Orientation */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-primary">Vertical Orientation</h3>
+        <div className="flex gap-4 w-[500px]">
+          <Tabs defaultValue="general" orientation="vertical" className="flex gap-4">
+            <TabsList className="flex flex-col h-auto bg-transparent p-0 gap-1">
+              <TabsTrigger
+                value="general"
+                className="justify-start data-[state=active]:bg-accent-bg data-[state=active]:text-accent"
+              >
+                General
+              </TabsTrigger>
+              <TabsTrigger
+                value="security"
+                className="justify-start data-[state=active]:bg-accent-bg data-[state=active]:text-accent"
+              >
+                Security
+              </TabsTrigger>
+              <TabsTrigger
+                value="notifications"
+                className="justify-start data-[state=active]:bg-accent-bg data-[state=active]:text-accent"
+              >
+                Notifications
+              </TabsTrigger>
+            </TabsList>
+            <div className="flex-1 border-l border-default pl-4">
+              <TabsContent value="general" className="mt-0">
+                <h4 className="text-base font-semibold text-primary mb-2">General Settings</h4>
+                <p className="text-secondary text-sm">
+                  Configure your general application settings.
+                </p>
+              </TabsContent>
+              <TabsContent value="security" className="mt-0">
+                <h4 className="text-base font-semibold text-primary mb-2">Security</h4>
+                <p className="text-secondary text-sm">
+                  Manage your security settings.
+                </p>
+              </TabsContent>
+              <TabsContent value="notifications" className="mt-0">
+                <h4 className="text-base font-semibold text-primary mb-2">Notifications</h4>
+                <p className="text-secondary text-sm">
+                  Control which notifications you receive.
+                </p>
+              </TabsContent>
+            </div>
+          </Tabs>
+        </div>
+      </div>
+
+      {/* Keyboard Navigation Reference */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-primary">Keyboard Navigation</h3>
+        <ul className="text-sm text-secondary space-y-1">
+          <li><span className="font-semibold text-primary">Arrow Left/Right:</span> Navigate between horizontal tabs</li>
+          <li><span className="font-semibold text-primary">Arrow Up/Down:</span> Navigate between vertical tabs</li>
+          <li><span className="font-semibold text-primary">Home:</span> Jump to first tab</li>
+          <li><span className="font-semibold text-primary">End:</span> Jump to last tab</li>
+          <li><span className="font-semibold text-primary">Tab:</span> Move focus to content panel</li>
+        </ul>
+      </div>
+    </div>
+  ),
+}
+
+/**
+ * Basic horizontal tabs with three panels.
+ * Use for simple content organization.
+ */
 export const Default: Story = {
   render: () => (
     <Tabs defaultValue="account" className="w-[400px]">
@@ -65,144 +248,13 @@ export const Default: Story = {
   ),
 }
 
-export const FullWidth: Story = {
-  render: () => (
-    <div className="w-[500px]">
-      <Tabs defaultValue="overview">
-        <TabsList className="w-full grid grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-        </TabsList>
-        <TabsContent value="overview" className="p-4 border border-default rounded-lg mt-4">
-          <h3 className="text-lg font-semibold text-primary mb-2">Overview</h3>
-          <p className="text-secondary text-sm">
-            Get a high-level view of your dashboard metrics and key performance indicators.
-          </p>
-        </TabsContent>
-        <TabsContent value="analytics" className="p-4 border border-default rounded-lg mt-4">
-          <h3 className="text-lg font-semibold text-primary mb-2">Analytics</h3>
-          <p className="text-secondary text-sm">
-            Deep dive into your analytics data with detailed charts and graphs.
-          </p>
-        </TabsContent>
-        <TabsContent value="reports" className="p-4 border border-default rounded-lg mt-4">
-          <h3 className="text-lg font-semibold text-primary mb-2">Reports</h3>
-          <p className="text-secondary text-sm">
-            Generate and download reports for your business needs.
-          </p>
-        </TabsContent>
-        <TabsContent value="notifications" className="p-4 border border-default rounded-lg mt-4">
-          <h3 className="text-lg font-semibold text-primary mb-2">Notifications</h3>
-          <p className="text-secondary text-sm">
-            Manage your notification preferences and alert settings.
-          </p>
-        </TabsContent>
-      </Tabs>
-    </div>
-  ),
-}
-
-export const WithDisabledTab: Story = {
-  render: () => (
-    <Tabs defaultValue="account" className="w-[400px]">
-      <TabsList>
-        <TabsTrigger value="account">Account</TabsTrigger>
-        <TabsTrigger value="password">Password</TabsTrigger>
-        <TabsTrigger value="billing" disabled>
-          Billing
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent value="account" className="p-4">
-        <p className="text-secondary text-sm">Account settings content.</p>
-      </TabsContent>
-      <TabsContent value="password" className="p-4">
-        <p className="text-secondary text-sm">Password settings content.</p>
-      </TabsContent>
-      <TabsContent value="billing" className="p-4">
-        <p className="text-secondary text-sm">Billing settings content (disabled).</p>
-      </TabsContent>
-    </Tabs>
-  ),
-}
-
-export const WithCards: Story = {
-  render: () => (
-    <div className="w-[500px]">
-      <Tabs defaultValue="profile">
-        <TabsList>
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="team">Team</TabsTrigger>
-          <TabsTrigger value="plan">Plan</TabsTrigger>
-        </TabsList>
-        <TabsContent value="profile" className="mt-4">
-          <div className="p-4 bg-white border border-default rounded-lg shadow-sm">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 rounded-full bg-accent-strong text-white flex items-center justify-center font-semibold">
-                JD
-              </div>
-              <div>
-                <h3 className="font-semibold text-primary">John Doe</h3>
-                <p className="text-sm text-secondary">john@example.com</p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-secondary">Role</span>
-                <span className="text-primary font-medium">Administrator</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-secondary">Last Active</span>
-                <span className="text-primary font-medium">2 hours ago</span>
-              </div>
-            </div>
-          </div>
-        </TabsContent>
-        <TabsContent value="team" className="mt-4">
-          <div className="p-4 bg-white border border-default rounded-lg shadow-sm">
-            <h3 className="font-semibold text-primary mb-4">Team Members</h3>
-            <div className="space-y-3">
-              {['Alice Smith', 'Bob Johnson', 'Carol Williams'].map((name) => (
-                <div key={name} className="flex items-center gap-3 p-2 hover:bg-muted-bg rounded-md">
-                  <div className="w-8 h-8 rounded-full bg-muted-bg text-secondary flex items-center justify-center text-sm font-medium">
-                    {name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <span className="text-primary text-sm">{name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </TabsContent>
-        <TabsContent value="plan" className="mt-4">
-          <div className="p-4 bg-white border border-default rounded-lg shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-primary">Current Plan</h3>
-              <span className="px-2 py-1 bg-accent-bg text-accent text-xs font-semibold rounded">
-                Pro
-              </span>
-            </div>
-            <p className="text-secondary text-sm mb-4">
-              You're currently on the Pro plan with 100 users included.
-            </p>
-            <div className="flex gap-2">
-              <button className="px-4 py-2 bg-accent-strong text-white rounded-md text-sm font-medium hover:bg-accent-strong/90">
-                Upgrade
-              </button>
-              <button className="px-4 py-2 border border-default text-secondary rounded-md text-sm font-medium hover:bg-muted-bg">
-                Manage
-              </button>
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  ),
-}
-
+/**
+ * Vertical tabs layout for settings pages.
+ * Use when space allows for side-by-side navigation.
+ */
 export const Vertical: Story = {
   render: () => (
-    <div className="flex gap-4 w-[500px]">
+    <div className="flex gap-4 w-[600px]">
       <Tabs defaultValue="general" orientation="vertical" className="flex gap-4">
         <TabsList className="flex flex-col h-auto bg-transparent p-0 gap-1">
           <TabsTrigger
@@ -256,49 +308,6 @@ export const Vertical: Story = {
             </p>
           </TabsContent>
         </div>
-      </Tabs>
-    </div>
-  ),
-}
-
-export const InCard: Story = {
-  render: () => (
-    <div className="w-[500px] p-6 bg-white border border-default rounded-lg shadow-sm">
-      <h2 className="text-xl font-semibold text-primary mb-4">Tenant Request Details</h2>
-      <Tabs defaultValue="overview">
-        <TabsList className="w-full">
-          <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
-          <TabsTrigger value="company" className="flex-1">Company</TabsTrigger>
-          <TabsTrigger value="contact" className="flex-1">Contact</TabsTrigger>
-          <TabsTrigger value="billing" className="flex-1">Billing</TabsTrigger>
-        </TabsList>
-        <TabsContent value="overview" className="mt-4 space-y-4">
-          <div className="flex justify-between items-start">
-            <div>
-              <span className="text-sm font-medium text-primary">REQ-20251208-5313</span>
-              <span className="ml-2 px-2 py-0.5 bg-warning-light text-warning text-xs font-semibold rounded">
-                Pending Payment
-              </span>
-            </div>
-            <div className="text-right">
-              <p className="text-lg font-semibold text-primary">$221,000.04/year</p>
-              <p className="text-sm text-secondary">$18,416.67/month</p>
-            </div>
-          </div>
-          <div className="p-3 bg-accent-bg rounded-lg border border-accent/30">
-            <p className="text-sm font-medium text-primary">Partner & Commission</p>
-            <p className="text-sm text-secondary mt-1">Commission Eligible: <span className="text-success">Yes</span></p>
-          </div>
-        </TabsContent>
-        <TabsContent value="company" className="mt-4">
-          <p className="text-secondary text-sm">Company information tab content.</p>
-        </TabsContent>
-        <TabsContent value="contact" className="mt-4">
-          <p className="text-secondary text-sm">Contact information tab content.</p>
-        </TabsContent>
-        <TabsContent value="billing" className="mt-4">
-          <p className="text-secondary text-sm">Billing information tab content.</p>
-        </TabsContent>
       </Tabs>
     </div>
   ),

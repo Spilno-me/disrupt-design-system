@@ -1,5 +1,89 @@
 /**
  * AppSidebar - Collapsible navigation sidebar for DDS product apps.
+ *
+ * @component ORGANISM
+ * @category Navigation
+ *
+ * @description
+ * A sophisticated sidebar navigation component that features:
+ * - Auto-collapse on click outside
+ * - Hover-to-expand behavior (150ms delay)
+ * - Nested navigation groups with collapsible sections
+ * - Active state tracking with visual indicators
+ * - Badge support for notification counts
+ * - Optional help item at bottom
+ * - Smooth animations for expand/collapse
+ *
+ * @example
+ * // Basic usage
+ * import { AppSidebar } from '@adrozdenko/design-system';
+ * import { LayoutDashboard, Settings } from 'lucide-react';
+ *
+ * const navItems = [
+ *   { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard />, href: '/dashboard' },
+ *   { id: 'settings', label: 'Settings', icon: <Settings />, href: '/settings' },
+ * ];
+ *
+ * function App() {
+ *   const [collapsed, setCollapsed] = useState(true);
+ *   const [activeId, setActiveId] = useState('dashboard');
+ *
+ *   return (
+ *     <AppSidebar
+ *       product="flow"
+ *       items={navItems}
+ *       activeItemId={activeId}
+ *       collapsed={collapsed}
+ *       onCollapsedChange={setCollapsed}
+ *       onNavigate={(item) => setActiveId(item.id)}
+ *     />
+ *   );
+ * }
+ *
+ * @example
+ * // With nested groups
+ * const navItems = [
+ *   { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard />, href: '/' },
+ *   {
+ *     id: 'configuration',
+ *     label: 'Configuration',
+ *     icon: <Settings />,
+ *     children: [
+ *       { id: 'users', label: 'Users', icon: <Users />, href: '/config/users' },
+ *       { id: 'roles', label: 'Roles', icon: <ShieldCheck />, href: '/config/roles' },
+ *     ],
+ *   },
+ * ];
+ *
+ * @testing
+ * Use `data-slot` attributes for testing:
+ * - `[data-slot="app-sidebar"]` - Main sidebar container
+ * - `[data-slot="nav-items"]` - Navigation items container
+ * - `[data-slot="nav-item-button"]` - Individual nav item buttons
+ * - `[data-slot="nav-group"]` - Collapsible nav group container
+ * - `[data-slot="nav-group-trigger"]` - Nav group trigger button
+ * - `[data-slot="nav-group-content"]` - Nav group content (children)
+ * - `[data-slot="help-item"]` - Help button at bottom
+ * - `[data-slot="help-section"]` - Help section container
+ * - `[data-slot="separator"]` - Separator line above help
+ * - `[data-slot="border"]` - Right edge gradient border
+ *
+ * @accessibility
+ * - Uses semantic `<nav>` element with aria-label
+ * - Active nav items have `aria-current="page"`
+ * - Keyboard navigation support via focus-visible styles
+ * - Disabled items have proper disabled state and cursor
+ * - Focus ring with 2px accent color for visibility
+ *
+ * @design
+ * - Collapsed width: 63px
+ * - Expanded width: 255px
+ * - Transition duration: 250ms
+ * - Hover expand delay: 150ms
+ * - Background: semi-transparent with backdrop blur
+ * - Nav item height: 41px (consistent touch target)
+ * - Border radius: xs (4px) for nav items
+ * - Spacing: gap-1 (4px) between nav items, gap-2 (8px) for icon-to-text
  */
 
 import * as React from 'react'
@@ -20,7 +104,7 @@ import {
 // TYPES
 // =============================================================================
 
-export interface AppSidebarProps {
+export interface AppSidebarProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onNavigate' | 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'> {
   /** Which product app this sidebar is for */
   product: ProductType
   /** Navigation items to display */
@@ -33,8 +117,6 @@ export interface AppSidebarProps {
   onCollapsedChange?: (collapsed: boolean) => void
   /** Callback when a nav item is clicked */
   onNavigate?: (item: NavItem) => void
-  /** Additional className */
-  className?: string
   /** Show help item at bottom */
   showHelpItem?: boolean
   /** Callback when help item is clicked */
@@ -68,14 +150,15 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false }:
       onClick={onClick}
       disabled={item.disabled}
       className={cn(
-        'relative w-full h-[41px] min-h-[41px] flex items-center gap-[9px] px-[17px] rounded-xs',
+        'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
         isActive && 'bg-accent-bg',
         !isActive && !item.disabled && 'hover:bg-accent-bg',
         item.disabled && 'opacity-50 cursor-not-allowed',
-        isNested && !collapsed && 'pl-[37px]'
+        isNested && !collapsed && 'pl-9'
       )}
       aria-current={isActive ? 'page' : undefined}
+      data-slot="nav-item-button"
     >
       <NavIcon
         icon={item.icon}
@@ -98,6 +181,7 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false }:
     </button>
   )
 }
+NavItemButton.displayName = 'AppSidebar.NavItemButton'
 
 interface NavGroupProps {
   item: NavItem
@@ -126,11 +210,12 @@ function NavGroup({
     <CollapsiblePrimitive.Root
       open={!collapsed && isOpen}
       onOpenChange={() => !collapsed && toggleGroup(item.id)}
+      data-slot="nav-group"
     >
       <CollapsiblePrimitive.Trigger asChild>
         <button
           className={cn(
-            'relative w-full h-[41px] min-h-[41px] flex items-center gap-[9px] px-[17px] rounded-xs',
+            'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
             groupActive && 'bg-accent-bg',
             !groupActive && 'hover:bg-accent-bg'
@@ -138,6 +223,7 @@ function NavGroup({
           onClick={() => {
             if (collapsed) onNavigate(item)
           }}
+          data-slot="nav-group-trigger"
         >
           <NavIcon icon={displayIcon} isActive={groupActive} size="sm" showActiveBackground={collapsed} />
 
@@ -174,6 +260,7 @@ function NavGroup({
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: TRANSITION_DURATION, ease: 'easeInOut' }}
           className="overflow-hidden"
+          data-slot="nav-group-content"
         >
           <div className="flex flex-col gap-0.5 pt-1">
             {item.children?.map((child) => (
@@ -192,16 +279,18 @@ function NavGroup({
     </CollapsiblePrimitive.Root>
   )
 }
+NavGroup.displayName = 'AppSidebar.NavGroup'
 
 function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => void }) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        'relative w-full h-[41px] min-h-[41px] flex items-center gap-[9px] px-[17px] rounded-xs',
+        'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
         'hover:bg-accent-bg'
       )}
+      data-slot="help-item"
     >
       <NavIcon icon={<CircleHelp />} size="sm" showActiveBackground={collapsed} />
 
@@ -217,6 +306,7 @@ function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => 
     </button>
   )
 }
+HelpItem.displayName = 'AppSidebar.HelpItem'
 
 // =============================================================================
 // MAIN COMPONENT
@@ -232,6 +322,7 @@ export function AppSidebar({
   className,
   showHelpItem = true,
   onHelpClick,
+  ...props
 }: AppSidebarProps) {
   const sidebarRef = useRef<HTMLElement>(null)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -319,14 +410,16 @@ export function AppSidebar({
       transition={{ duration: TRANSITION_DURATION, ease: 'easeInOut' }}
       aria-label={`${product} navigation`}
       data-collapsed={collapsed}
+      data-slot="app-sidebar"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      {...props}
     >
       {/* Gradient border on right edge */}
-      <div className="absolute right-0 top-0 bottom-0 w-px pointer-events-none bg-gradient-to-b from-surface via-default to-surface" />
+      <div className="absolute right-0 top-0 bottom-0 w-px pointer-events-none bg-gradient-to-b from-surface via-default to-surface" data-slot="border" />
 
       {/* Navigation items */}
-      <div className="flex-1 flex flex-col gap-1 py-[11px] overflow-y-auto overflow-x-hidden">
+      <div className="flex-1 flex flex-col gap-1 py-3 overflow-y-auto overflow-x-hidden" data-slot="nav-items">
         {items.map((item) => {
           if (item.children && item.children.length > 0) {
             return (
@@ -356,14 +449,16 @@ export function AppSidebar({
 
       {/* Help item at bottom */}
       {showHelpItem && (
-        <div className="py-[11px]">
-          <div className="h-px mb-3 bg-gradient-to-r from-surface via-default to-surface" />
+        <div className="py-3" data-slot="help-section">
+          <div className="h-px mb-3 bg-gradient-to-r from-surface via-default to-surface" data-slot="separator" />
           <HelpItem collapsed={collapsed} onClick={onHelpClick} />
         </div>
       )}
     </motion.nav>
   )
 }
+
+AppSidebar.displayName = 'AppSidebar'
 
 export default AppSidebar
 export type { NavItem, ProductType }

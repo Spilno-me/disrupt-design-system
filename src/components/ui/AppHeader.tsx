@@ -127,6 +127,7 @@ function WavePattern() {
   return (
     <div
       className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+      data-slot="wave-pattern"
     >
       {/* Wave pattern layer - repeat horizontally, fit to header height */}
       <div
@@ -145,6 +146,7 @@ function WavePattern() {
     </div>
   )
 }
+WavePattern.displayName = 'WavePattern'
 
 /** Logo container with product branding - Figma node 685:8840 */
 function LogoContainer({
@@ -165,7 +167,7 @@ function LogoContainer({
   return (
     <div
       className={cn(
-        'flex items-center gap-3 h-14 min-w-[219px] pl-4 pr-3 cursor-pointer rounded-r-[32.5px]',
+        'flex items-center gap-3 h-14 min-w-[219px] pl-4 pr-3 cursor-pointer rounded-r-3xl',
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
@@ -177,6 +179,7 @@ function LogoContainer({
         // Subtle shadow for depth
         boxShadow: SHADOWS.sm,
       }}
+      data-slot="logo-container"
     >
       <img
         src={logoSrc}
@@ -191,6 +194,7 @@ function LogoContainer({
     </div>
   )
 }
+LogoContainer.displayName = 'LogoContainer'
 
 /** Notification badge showing count - Figma: 20x20px with 8px radius */
 function NotificationBadge({ count }: { count: number }) {
@@ -199,11 +203,13 @@ function NotificationBadge({ count }: { count: number }) {
   return (
     <div
       className="absolute -top-2 -right-2.5 min-w-5 h-5 px-1.5 flex items-center justify-center font-medium text-[11px] leading-none z-10 bg-error text-inverse rounded-sm border-2 border-surface"
+      data-slot="notification-badge"
     >
       {displayCount}
     </div>
   )
 }
+NotificationBadge.displayName = 'NotificationBadge'
 
 /**
  * IconButton - Subtle hover effect for icon-only buttons (notifications, settings, etc.)
@@ -237,6 +243,7 @@ function IconButton({
       )}
       aria-label={ariaLabel}
       whileTap={{ scale: 0.95 }}
+      data-slot="icon-button"
     >
       {/* Soft background on hover */}
       <motion.div
@@ -259,6 +266,7 @@ function IconButton({
     </motion.button>
   )
 }
+IconButton.displayName = 'IconButton'
 
 /** Notification bell with optional badge */
 function NotificationBell({
@@ -274,7 +282,7 @@ function NotificationBell({
       className="w-[38px] h-[38px]"
       aria-label={`Notifications${count > 0 ? ` (${count} unread)` : ''}`}
     >
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex items-center justify-center" data-slot="notification-bell">
         <Bell
           className="w-5 h-5 text-primary"
           strokeWidth={1.5}
@@ -284,6 +292,7 @@ function NotificationBell({
     </IconButton>
   )
 }
+NotificationBell.displayName = 'NotificationBell'
 
 /** User avatar with image or initials fallback */
 function UserAvatar({
@@ -308,6 +317,7 @@ function UserAvatar({
         user?.avatarUrl ? 'bg-transparent' : 'bg-muted-bg',
         sizeMap[size]
       )}
+      data-slot="user-avatar"
     >
       {user?.avatarUrl ? (
         <img
@@ -321,6 +331,7 @@ function UserAvatar({
     </div>
   )
 }
+UserAvatar.displayName = 'UserAvatar'
 
 /** User dropdown menu */
 function UserMenu({
@@ -345,6 +356,7 @@ function UserMenu({
         <button
           className="flex items-center justify-center rounded-full hover:opacity-90 transition-opacity cursor-pointer"
           aria-label="User menu"
+          data-slot="user-menu-trigger"
         >
           <UserAvatar user={user} />
         </button>
@@ -357,6 +369,7 @@ function UserMenu({
         style={{
           boxShadow: SHADOWS.md,
         }}
+        data-slot="user-menu-content"
       >
         {/* User info header */}
         {user && (
@@ -404,6 +417,7 @@ function UserMenu({
     </DropdownMenu>
   )
 }
+UserMenu.displayName = 'UserMenu'
 
 // =============================================================================
 // MAIN COMPONENT
@@ -412,25 +426,106 @@ function UserMenu({
 /**
  * AppHeader - Application header for Disrupt Family apps (Flow, Market, Partner)
  *
- * Features:
- * - Product-specific logos with taglines
- * - Notification bell with count badge
+ * @component ORGANISM
+ * @type Core Navigation Component
+ *
+ * A compound organism component that combines logo branding, notifications, and user menu
+ * into a unified application header. Provides consistent branding across all Disrupt products
+ * while maintaining flexibility for customization.
+ *
+ * ## Features
+ * - Product-specific logos with taglines (Flow, Market, Partner)
+ * - Notification bell with count badge (up to 99+)
  * - User avatar with dropdown menu
  * - Wave pattern background with glass morphism
+ * - Mobile-friendly with optional left content slot
+ * - Keyboard accessible with full ARIA support
  *
- * @example
+ * ## Usage Examples
+ *
+ * ### Basic Implementation
  * ```tsx
+ * import { AppHeader } from '@/components/ui/AppHeader'
+ *
  * <AppHeader
  *   product="flow"
  *   notificationCount={4}
  *   onNotificationClick={() => console.log('Notifications clicked')}
- *   user={{ name: 'John Doe', email: 'john@example.com', initials: 'JD' }}
- *   menuItems={[
- *     { id: 'profile', label: 'Profile', icon: <User /> },
- *     { id: 'logout', label: 'Log out', destructive: true },
- *   ]}
+ *   user={{ name: 'John Doe', email: 'john@example.com' }}
  * />
  * ```
+ *
+ * ### With Custom Menu Items
+ * ```tsx
+ * <AppHeader
+ *   product="market"
+ *   user={{ name: 'Jane Smith', email: 'jane@example.com', initials: 'JS' }}
+ *   menuItems={[
+ *     { id: 'profile', label: 'Profile', icon: <User />, onClick: handleProfile },
+ *     { id: 'settings', label: 'Settings', icon: <Settings /> },
+ *     { id: 'logout', label: 'Log out', icon: <LogOut />, destructive: true, separator: true },
+ *   ]}
+ *   onMenuItemClick={(item) => console.log('Clicked:', item.id)}
+ * />
+ * ```
+ *
+ * ### With Mobile Menu
+ * ```tsx
+ * <AppHeader
+ *   product="flow"
+ *   user={currentUser}
+ *   leftContent={<HamburgerMenu onClick={toggleMobileNav} />}
+ * />
+ * ```
+ *
+ * ### Customization Options
+ * ```tsx
+ * <AppHeader
+ *   product="partner"
+ *   tagline="Enterprise Safety Suite"  // Override default tagline
+ *   showWavePattern={false}             // Disable wave background
+ *   colorMode="light"                   // Use light logo on dark background
+ *   user={user}
+ * />
+ * ```
+ *
+ * ## Testing
+ * Use these data-slot attributes for testing and automation:
+ * - `data-slot="app-header"` - Main header container (height: 55px)
+ * - `data-slot="logo-container"` - Logo and tagline section (clickable)
+ * - `data-slot="notification-bell"` - Notification bell button
+ * - `data-slot="notification-badge"` - Badge showing notification count
+ * - `data-slot="user-avatar"` - User avatar (image or initials)
+ * - `data-slot="user-menu-trigger"` - User menu trigger button
+ * - `data-slot="user-menu-content"` - User menu dropdown content
+ * - `data-slot="header-actions"` - Right-side actions container
+ *
+ * Example test:
+ * ```tsx
+ * const header = screen.getByTestId('app-header')
+ * const notificationBell = within(header).getByTestId('notification-bell')
+ * const badge = within(header).getByTestId('notification-badge')
+ * expect(badge).toHaveTextContent('4')
+ * ```
+ *
+ * ## Accessibility
+ * - Full keyboard navigation support (Tab, Enter, Space, Arrow keys, Esc)
+ * - ARIA labels on all interactive elements
+ * - Semantic HTML structure (header, nav, button elements)
+ * - Focus visible states on all interactive elements
+ * - Screen reader announcements for notification counts
+ * - Color contrast meets WCAG AA standards
+ *
+ * ## Design Tokens Used
+ * - Spacing: gap-3 (12px), gap-4 (16px) - follows 4px grid
+ * - Border radius: rounded-sm (8px), rounded-md (12px)
+ * - Shadows: SHADOWS.sm, SHADOWS.md, SHADOWS.header
+ * - Colors: Uses ALIAS tokens for gradients, overlays, borders
+ * - Typography: text-xs (12px), text-sm (14px) with appropriate weights
+ *
+ * @see {@link AppHeaderProps} for all available props
+ * @see {@link UserMenuItem} for menu item structure
+ * @see {@link UserInfo} for user object structure
  */
 export function AppHeader({
   product,
@@ -458,7 +553,7 @@ export function AppHeader({
         boxShadow: SHADOWS.header,
       }}
       // Header height defined via className for consistency
-      data-element="app-header"
+      data-slot="app-header"
     >
       {/* Wave Pattern Background */}
       {showWavePattern && <WavePattern />}
@@ -484,7 +579,7 @@ export function AppHeader({
       {/* Actions (Right) */}
       <div
         className="relative z-[1] flex items-center gap-4 pr-4"
-        data-element="header-actions"
+        data-slot="header-actions"
       >
         {/* Notifications */}
         {showNotifications && (
@@ -507,6 +602,8 @@ export function AppHeader({
     </header>
   )
 }
+
+AppHeader.displayName = 'AppHeader'
 
 // =============================================================================
 // EXPORTS

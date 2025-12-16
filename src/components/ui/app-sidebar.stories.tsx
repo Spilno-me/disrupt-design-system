@@ -156,7 +156,7 @@ export const Default: Story = {
           <div className="flex-1 p-6">
             <div className="bg-surface rounded-lg p-4 shadow-sm border border-default">
               <p className="text-primary font-medium">Active: {activeId}</p>
-              <p className="text-muted text-sm mt-2">
+              <p className="text-secondary text-sm mt-2">
                 Hover over sidebar to expand. Click outside to collapse.
               </p>
             </div>
@@ -191,7 +191,7 @@ export const Partner: Story = {
           <div className="flex-1 p-6">
             <div className="bg-surface rounded-lg p-4 shadow-sm border border-default">
               <p className="text-primary font-medium">Active: {activeId}</p>
-              <p className="text-muted text-sm mt-2">
+              <p className="text-secondary text-sm mt-2">
                 Hover over sidebar to expand. Click outside to collapse.
               </p>
             </div>

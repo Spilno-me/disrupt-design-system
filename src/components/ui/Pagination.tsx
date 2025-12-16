@@ -23,7 +23,7 @@ import {
 // TYPES
 // =============================================================================
 
-export interface PaginationProps {
+export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Current page (1-indexed) */
   currentPage: number
   /** Total number of items */
@@ -46,8 +46,6 @@ export interface PaginationProps {
   maxPageButtons?: number
   /** Loading state */
   loading?: boolean
-  /** Additional className */
-  className?: string
   /** Compact mode */
   compact?: boolean
   /** Custom results text format */
@@ -59,7 +57,7 @@ export interface PaginationProps {
 // =============================================================================
 
 /**
- * Pagination - A comprehensive pagination component
+ * Pagination - A comprehensive pagination component (MOLECULE)
  *
  * Features:
  * - Page number buttons with smart ellipsis
@@ -68,6 +66,21 @@ export interface PaginationProps {
  * - Page size selector
  * - "Showing X-Y of Z results" text
  * - Keyboard accessible
+ *
+ * Testing:
+ * - Component type: MOLECULE
+ * - Use `data-slot="pagination"` to target the root container
+ * - Use `data-slot="pagination-button"` for page number buttons
+ * - Use `data-slot="pagination-prev"` for previous button
+ * - Use `data-slot="pagination-next"` for next button
+ *
+ * Accessibility:
+ * - ARIA labels on all navigation buttons (first, prev, next, last)
+ * - `aria-current="page"` on active page button
+ * - `aria-label="Pagination navigation"` on nav element
+ * - Keyboard navigation: Tab, Shift+Tab, Enter, Space
+ * - Disabled state properly communicated to screen readers
+ * - Ellipsis marked with `aria-hidden="true"` (decorative)
  *
  * @example
  * ```tsx
@@ -79,6 +92,19 @@ export interface PaginationProps {
  *   onPageSizeChange={setPageSize}
  *   showPageSizeSelector
  *   showResultsText
+ * />
+ * ```
+ *
+ * @example With custom results text
+ * ```tsx
+ * <Pagination
+ *   currentPage={1}
+ *   totalItems={100}
+ *   pageSize={10}
+ *   onPageChange={setPage}
+ *   resultsTextFormat={(start, end, total) =>
+ *     `Displaying leads ${start} to ${end} (${total} total)`
+ *   }
  * />
  * ```
  */
@@ -97,6 +123,7 @@ export function Pagination({
   className,
   compact: _compact = false,
   resultsTextFormat,
+  ...props
 }: PaginationProps) {
   // Calculate pagination values
   const totalPages = Math.ceil(totalItems / pageSize)
@@ -179,22 +206,24 @@ export function Pagination({
 
   return (
     <div
+      data-slot="pagination"
       className={cn(
         "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between",
         className
       )}
+      {...props}
     >
       {/* Results text and page size selector */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
         {showResultsText && (
-          <p className="text-base md:text-sm text-muted">
+          <p className="text-base md:text-sm text-primary">
             {resultsText}
           </p>
         )}
 
         {showPageSizeSelector && onPageSizeChange && (
           <div className="flex items-center gap-3">
-            <span className="text-base md:text-sm text-muted">Rows per page:</span>
+            <span className="text-base md:text-sm text-secondary">Rows per page:</span>
             <Select
               value={pageSize.toString()}
               onValueChange={(value) => onPageSizeChange(parseInt(value, 10))}
@@ -218,12 +247,13 @@ export function Pagination({
       {/* Page navigation */}
       {totalPages > 1 && (
         <nav
-          className="flex items-center gap-1 md:gap-1"
+          className="flex items-center gap-1"
           aria-label="Pagination navigation"
         >
           {/* First page button */}
           {showFirstLastButtons && (
             <Button
+              data-slot="pagination-first"
               variant="ghost"
               size="icon"
               onClick={goToFirstPage}
@@ -237,6 +267,7 @@ export function Pagination({
 
           {/* Previous page button */}
           <Button
+            data-slot="pagination-prev"
             variant="ghost"
             size="icon"
             onClick={goToPreviousPage}
@@ -254,7 +285,7 @@ export function Pagination({
                 return (
                   <span
                     key={page}
-                    className="flex h-11 w-11 md:h-9 md:w-9 items-center justify-center text-muted"
+                    className="flex h-11 w-11 md:h-9 md:w-9 items-center justify-center text-secondary"
                     aria-hidden="true"
                   >
                     <MoreHorizontal className="h-5 w-5 md:h-4 md:w-4" />
@@ -267,6 +298,7 @@ export function Pagination({
               return (
                 <Button
                   key={page}
+                  data-slot="pagination-button"
                   variant={isCurrentPage ? "accent" : "ghost"}
                   size="icon"
                   onClick={() => goToPage(page)}
@@ -286,6 +318,7 @@ export function Pagination({
 
           {/* Next page button */}
           <Button
+            data-slot="pagination-next"
             variant="ghost"
             size="icon"
             onClick={goToNextPage}
@@ -299,6 +332,7 @@ export function Pagination({
           {/* Last page button */}
           {showFirstLastButtons && (
             <Button
+              data-slot="pagination-last"
               variant="ghost"
               size="icon"
               onClick={goToLastPage}
@@ -314,5 +348,7 @@ export function Pagination({
     </div>
   )
 }
+
+Pagination.displayName = "Pagination"
 
 export default Pagination

@@ -59,11 +59,11 @@
 ### Category 2: Overlays & Feedback (8 components) - PRIORITY HIGH
 **Why:** Critical for user interactions
 
-1. ⬜ **Dialog** + sub-components (DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter) - TODO
-2. ⬜ **Sheet** + sub-components (SheetTrigger, SheetContent, SheetHeader, SheetTitle) - TODO
-3. ⬜ **Tooltip** + sub-components (TooltipProvider, TooltipTrigger, TooltipContent) - TODO
-4. ⬜ **ErrorBoundary** - TODO
-5. ⬜ **ErrorState** - TODO
+1. ✅ **Dialog** + sub-components (DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter) - STABILIZED
+2. ✅ **Sheet** + sub-components (SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescription, SheetClose) - STABILIZED
+3. ✅ **Tooltip** + sub-components (TooltipProvider, TooltipTrigger, TooltipContent) - STABILIZED
+4. ✅ **ErrorBoundary** + variants (CanvasErrorBoundary, SectionErrorBoundary) - STABILIZED
+5. ✅ **ErrorState** - STABILIZED
 
 ---
 
@@ -242,7 +242,7 @@
 
 ## 📊 Progress Tracking
 
-### ✅ Completed (10/46 core components)
+### ✅ Completed (15/46 core components)
 1. **Badge** - ATOM, variants reviewed (7→5 recommended for v3.0.0), stories simplified (8→4)
 2. **Skeleton** - ATOM, variant deprecated (3→1), stories simplified (6→7 with patterns), comprehensive usage docs
 3. **Input** - ATOM, stories simplified (7→3), AllStates story standardized
@@ -259,6 +259,31 @@
     - New "elevated" shadow: Natural light from above (combines 2 shadows)
     - All app code migrated (StatsCard, tenant-requests)
     - Clean separation: website vs app cards
+11. **Dialog** - MOLECULE (compound), stories simplified (5→3), comprehensive JSDoc with accessibility docs
+    - All sub-components documented (DialogTrigger, DialogContent, DialogHeader, etc.)
+    - AllStates story with anatomy diagram, interactive examples, focus behavior reference
+    - displayName added to all 10 sub-components
+    - data-slot attributes for testing (already present)
+12. **Sheet** - MOLECULE (compound), stories simplified (7→3), comprehensive JSDoc with accessibility docs
+    - All sub-components documented (SheetTrigger, SheetContent, SheetHeader, SheetFooter, etc.)
+    - AllStates story with anatomy diagram, all 4 positions (right/left/top/bottom), keyboard reference
+    - displayName added to all 9 sub-components
+    - Semantic tokens updated (bg-surface, text-primary, border-default, focus:ring-accent)
+    - Backdrop blur added to overlay (matches Dialog)
+13. **Tooltip** - MOLECULE (compound), stories simplified (7→3), comprehensive JSDoc with accessibility docs
+    - All sub-components documented (TooltipProvider, TooltipTrigger, TooltipContent)
+    - AllStates story with anatomy diagram, all 4 positions, toolbar pattern, disabled element pattern
+    - displayName added to all 4 sub-components
+    - Inline SVG icons replaced with Lucide React icons
+14. **ErrorBoundary** - ATOM (class component), comprehensive JSDoc with usage examples
+    - displayName added
+    - Includes CanvasErrorBoundary and SectionErrorBoundary variants
+    - Documentation links to ErrorState for fallback UI
+15. **ErrorState** - ATOM, stories simplified (18→3), comprehensive JSDoc
+    - displayName added
+    - Story path moved to Core/ErrorState
+    - AllStates story with variants, sizes, icons, action configurations
+    - Already had data-slot="error-state" and role="alert"
 
 ### 🔧 Utility Systems (Infrastructure - Not Core Components)
 - **Form** - Composition helpers (FormItem, FormLabel, FormControl, FormMessage, FormDescription)
@@ -268,15 +293,15 @@
 ### 🔄 In Progress (0/47)
 None
 
-### ⬜ To Do (36/46)
+### ⬜ To Do (35/46)
 
-**Priority HIGH (6):**
+**Priority HIGH (5):**
 - Button
-- Dialog, Sheet, Tooltip
+- Sheet, Tooltip
 - ErrorBoundary, ErrorState
 
-**Priority MEDIUM (10):**
-- Separator, Accordion
+**Priority MEDIUM (9):**
+- Accordion
 - Pagination, DataTable
 - Image components (3)
 - FeatureCard, CheckListItem, ScrollableTableWrapper

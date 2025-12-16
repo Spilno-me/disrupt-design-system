@@ -107,13 +107,18 @@ export interface DataTableProps<T> {
 /**
  * DataTable - A reusable, generic data table component
  *
+ * @component ORGANISM
+ * @category Data Display
+ *
  * Features:
  * - Sortable columns with visual indicators
  * - Row selection with checkboxes (select all, individual)
  * - Loading state with skeleton rows
- * - Empty state
+ * - Empty state support
  * - Sticky header support
+ * - Priority-based colored row borders
  * - Configurable column widths and alignment
+ * - Keyboard navigation support
  *
  * @example
  * ```tsx
@@ -128,6 +133,34 @@ export interface DataTableProps<T> {
  *   onSelectionChange={setSelectedIds}
  * />
  * ```
+ *
+ * @example With Priority Borders
+ * ```tsx
+ * <DataTable
+ *   data={incidents}
+ *   columns={columns}
+ *   getRowId={(row) => row.id}
+ *   getRowPriority={(row) => row.priority}
+ *   selectable
+ * />
+ * ```
+ *
+ * @testing
+ * Use data-slot attributes for testing:
+ * - `data-slot="data-table-wrapper"` - Table wrapper container
+ * - `data-slot="data-table"` - Table element
+ * - `data-slot="data-table-header"` - Table header
+ * - `data-slot="data-table-header-row"` - Header row
+ * - `data-slot="data-table-body"` - Table body
+ * - `data-slot="data-table-body-row"` - Body row (includes data-row-id and data-selected)
+ * - `data-slot="data-table-empty-state"` - Empty state container
+ *
+ * @accessibility
+ * - Sortable columns support keyboard navigation (Enter/Space)
+ * - Clickable rows support keyboard navigation (Enter/Space)
+ * - Checkboxes include aria-label for screen readers
+ * - Sort state communicated via aria-sort attribute
+ * - Select all checkbox shows indeterminate state when partially selected
  */
 // Priority border color mapping - using DDS ALIAS tokens
 const PRIORITY_BORDER_COLORS: Record<Exclude<RowPriority, null>, { color: string; style: 'solid' | 'dashed' }> = {
@@ -276,16 +309,17 @@ export function DataTable<T>({
   // Render loading skeleton
   if (loading) {
     return (
-      <div className={cn("overflow-hidden rounded-lg border border-default", wrapperClassName)}>
+      <div className={cn("overflow-hidden rounded-lg border border-default", wrapperClassName)} data-slot="data-table-wrapper">
         <div className="overflow-x-auto" style={{ maxHeight }}>
-          <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+          <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }} data-slot="data-table">
             <thead
               style={{
                 background: ALIAS.background.muted,
                 borderBottom: `1px solid ${ALIAS.border.default}`,
               }}
+              data-slot="data-table-header"
             >
-              <tr>
+              <tr data-slot="data-table-header-row">
                 {selectable && (
                   <th className={cn(headerPadding, "w-10")}>
                     <Skeleton className="h-4 w-4" rounded="sm" />
@@ -311,11 +345,12 @@ export function DataTable<T>({
                 ))}
               </tr>
             </thead>
-            <tbody className="bg-surface">
+            <tbody className="bg-surface" data-slot="data-table-body">
               {Array.from({ length: loadingRows }).map((_, index) => (
                 <tr
                   key={index}
                   className={cn(bordered && "border-t border-default")}
+                  data-slot="data-table-body-row"
                 >
                   {selectable && (
                     <td className={cn(cellPadding, "w-10")}>
@@ -343,17 +378,18 @@ export function DataTable<T>({
   // Render empty state
   if (data.length === 0) {
     return (
-      <div className={cn("overflow-hidden rounded-lg border border-default", wrapperClassName)}>
+      <div className={cn("overflow-hidden rounded-lg border border-default", wrapperClassName)} data-slot="data-table-wrapper">
         <div className="overflow-x-auto" style={{ maxHeight }}>
-          <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+          <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }} data-slot="data-table">
             <thead
               className={cn(stickyHeader && "sticky top-0 z-10")}
               style={{
                 background: ALIAS.background.muted,
                 borderBottom: `1px solid ${ALIAS.border.default}`,
               }}
+              data-slot="data-table-header"
             >
-              <tr className={headerRowClassName}>
+              <tr className={headerRowClassName} data-slot="data-table-header-row">
                 {selectable && (
                   <th className={cn(headerPadding, "w-10")}>
                     <Checkbox disabled />
@@ -381,7 +417,7 @@ export function DataTable<T>({
             </thead>
           </table>
         </div>
-        <div className="flex flex-col items-center justify-center py-12 bg-surface">
+        <div className="flex flex-col items-center justify-center py-12 bg-surface" data-slot="data-table-empty-state">
           {emptyState || (
             <>
               <div className="w-12 h-12 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
@@ -396,9 +432,9 @@ export function DataTable<T>({
   }
 
   return (
-    <div className={cn("overflow-hidden rounded-lg border border-default", wrapperClassName)}>
+    <div className={cn("overflow-hidden rounded-lg border border-default", wrapperClassName)} data-slot="data-table-wrapper">
       <div className="overflow-x-auto" style={{ maxHeight }}>
-        <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+        <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }} data-slot="data-table">
           <thead
             className={cn(
               stickyHeader && "sticky top-0 z-10"
@@ -407,8 +443,9 @@ export function DataTable<T>({
               background: ALIAS.background.muted,
               borderBottom: `1px solid ${ALIAS.border.default}`,
             }}
+            data-slot="data-table-header"
           >
-            <tr className={headerRowClassName}>
+            <tr className={headerRowClassName} data-slot="data-table-header-row">
               {selectable && (
                 <th className={cn(headerPadding, "w-10")}>
                   <Checkbox
@@ -462,7 +499,7 @@ export function DataTable<T>({
               ))}
             </tr>
           </thead>
-          <tbody className="bg-surface">
+          <tbody className="bg-surface" data-slot="data-table-body">
             {sortedData.map((row, index) => {
               const rowId = getRowId(row)
               const isSelected = selectedRows.has(rowId)
@@ -480,6 +517,9 @@ export function DataTable<T>({
                     onRowClick && "cursor-pointer",
                     bodyRowClassName
                   )}
+                  data-slot="data-table-body-row"
+                  data-row-id={rowId}
+                  data-selected={isSelected ? 'true' : undefined}
                   style={{
                     // Apply priority-colored bottom border (except for last row)
                     borderBottom: !isLastRow && priorityBorderConfig
@@ -550,5 +590,7 @@ export function DataTable<T>({
     </div>
   )
 }
+
+DataTable.displayName = "DataTable"
 
 export default DataTable

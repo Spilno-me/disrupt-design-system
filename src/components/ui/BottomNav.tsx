@@ -1,5 +1,39 @@
 /**
  * BottomNav - Mobile bottom navigation bar with "More" menu.
+ *
+ * **Component Type:** MOLECULE (composed of multiple atoms + Sheet/Button)
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with 3 visible items
+ * <BottomNav
+ *   items={navItems}
+ *   activeItemId="dashboard"
+ *   onNavigate={(item) => router.push(item.href)}
+ *   maxVisibleItems={3}
+ * />
+ *
+ * // With help menu and custom More label
+ * <BottomNav
+ *   items={navItems}
+ *   activeItemId="settings"
+ *   onNavigate={handleNavigate}
+ *   maxVisibleItems={4}
+ *   showHelpItem={true}
+ *   onHelpClick={openHelp}
+ *   moreLabel="Menu"
+ * />
+ * ```
+ *
+ * **Testing:**
+ * - Component accepts `data-testid` via props spread
+ * - Auto-generates data-slot="bottom-nav" for the nav element
+ * - Sub-components have data-slot="bottom-nav-tab", "bottom-nav-more", "bottom-nav-sheet"
+ *
+ * **Accessibility:**
+ * - nav has aria-label="Bottom navigation"
+ * - Active items have aria-current="page"
+ * - More button has aria-label="Open more navigation options"
  */
 
 'use client'
@@ -16,7 +50,7 @@ import { NavItem, NavIcon, NavBadge, isGroupActive } from './navigation'
 // TYPES
 // =============================================================================
 
-export interface BottomNavProps {
+export interface BottomNavProps extends React.HTMLAttributes<HTMLElement> {
   /** Navigation items - first N shown in bar, rest in More menu */
   items: NavItem[]
   /** Currently active item ID */
@@ -25,14 +59,16 @@ export interface BottomNavProps {
   onNavigate?: (item: NavItem) => void
   /** Maximum items to show in bottom bar (rest go to More menu) */
   maxVisibleItems?: number
-  /** Additional className */
-  className?: string
   /** Show help item in More menu */
   showHelpItem?: boolean
   /** Callback when help item is clicked */
   onHelpClick?: () => void
   /** Label for the More button */
   moreLabel?: string
+  /** Force visible on all screen sizes (for documentation/stories) */
+  forceVisible?: boolean
+  /** Use absolute positioning instead of fixed (for embedding in containers/stories) */
+  embedded?: boolean
 }
 
 // =============================================================================
@@ -58,6 +94,7 @@ function BottomNavTab({
 }) {
   return (
     <button
+      data-slot="bottom-nav-tab"
       onClick={onClick}
       disabled={item.disabled}
       className={cn(
@@ -99,6 +136,7 @@ function MoreTab({
 
   return (
     <button
+      data-slot="bottom-nav-more"
       onClick={onClick}
       className={cn(
         'flex flex-col items-center justify-center flex-1 h-full gap-1 px-2',
@@ -139,13 +177,13 @@ function SheetNavItem({
       onClick={onClick}
       disabled={item.disabled}
       className={cn(
-        'relative w-full flex items-center gap-4 px-5',
+        'relative w-full flex items-center gap-3 px-5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
         'active:bg-accent-bg transition-colors',
         isActive && 'bg-accent-bg',
         !isActive && !item.disabled && 'hover:bg-muted-bg',
         item.disabled && 'opacity-50 cursor-not-allowed',
-        isNested ? 'pl-[60px]' : 'pl-5'
+        isNested ? 'pl-14' : 'pl-5'
       )}
       style={{
         height: isNested ? NESTED_ITEM_HEIGHT : ITEM_HEIGHT,
@@ -191,7 +229,7 @@ function SheetNavGroup({
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
-          'relative w-full flex items-center gap-4 px-5',
+          'relative w-full flex items-center gap-3 px-5',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
           'active:bg-accent-bg transition-colors',
           groupActive && 'bg-accent-bg',
@@ -211,7 +249,7 @@ function SheetNavGroup({
         </span>
 
         <ChevronRight
-          className={cn('w-5 h-5 text-muted transition-transform duration-200', isExpanded && 'rotate-90')}
+          className={cn('w-5 h-5 text-secondary transition-transform duration-200', isExpanded && 'rotate-90')}
         />
       </button>
 
@@ -240,7 +278,7 @@ function SheetHelpItem({ onClick }: { onClick?: () => void }) {
     <button
       onClick={onClick}
       className={cn(
-        'relative w-full flex items-center gap-4 px-5',
+        'relative w-full flex items-center gap-3 px-5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
         'hover:bg-muted-bg active:bg-accent-bg transition-colors'
       )}
@@ -265,6 +303,9 @@ export function BottomNav({
   showHelpItem = true,
   onHelpClick,
   moreLabel = 'More',
+  forceVisible = false,
+  embedded = false,
+  ...props
 }: BottomNavProps) {
   const [moreSheetOpen, setMoreSheetOpen] = useState(false)
 
@@ -297,12 +338,16 @@ export function BottomNav({
   return (
     <>
       <nav
+        data-slot="bottom-nav"
         className={cn(
-          'fixed bottom-0 left-0 right-0 z-50 flex items-center bg-surface border-t border-default shadow-lg md:hidden',
+          'bottom-0 left-0 right-0 z-50 flex items-center bg-surface border-t border-default shadow-lg',
+          embedded ? 'absolute' : 'fixed',
+          !forceVisible && !embedded && 'md:hidden',
           className
         )}
         style={{ height: NAV_HEIGHT }}
         aria-label="Bottom navigation"
+        {...props}
       >
         {visibleItems.map((item) => (
           <BottomNavTab
@@ -377,10 +422,12 @@ export function BottomNav({
         </SheetContent>
       </Sheet>
 
-      <div className="h-16 md:hidden" aria-hidden="true" />
+      {!embedded && <div className={cn('h-16', !forceVisible && 'md:hidden')} aria-hidden="true" />}
     </>
   )
 }
+
+BottomNav.displayName = 'BottomNav'
 
 export default BottomNav
 export type { NavItem as BottomNavItem }
