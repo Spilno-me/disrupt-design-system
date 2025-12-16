@@ -25,6 +25,7 @@ import {
   ALIAS,
   SHADOWS,
   RADIUS,
+  SPACING,
 } from '../../constants/designTokens';
 
 <Meta title="Foundation/Design Tokens/Colors" />
@@ -33,52 +34,53 @@ import {
 <div style={{
   background: `linear-gradient(135deg, ${DEEP_CURRENT[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
   borderRadius: RADIUS.xl,
-  padding: '40px',
-  marginBottom: '48px',
+  padding: SPACING.px.section,
+  marginBottom: SPACING.px.section,
   position: 'relative',
   overflow: 'hidden',
 }}>
+  {/* Decorative background icon */}
   <div style={{
     position: 'absolute',
-    top: '-30px',
-    right: '-30px',
-    width: '150px',
-    height: '150px',
-    borderRadius: '50%',
-    background: PRIMITIVES.white,
+    right: '40px',
+    top: '50%',
+    transform: 'translateY(-50%)',
     opacity: 0.1,
-  }} />
+    pointerEvents: 'none',
+  }}>
+    <Palette size={180} color={PRIMITIVES.white} strokeWidth={1} />
+  </div>
 
   <div style={{ position: 'relative', zIndex: 1 }}>
     <div style={{
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '8px',
-      marginBottom: '12px',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
     }}>
       <Palette size={28} color={PRIMITIVES.white} />
     </div>
 
     <h1 style={{
-      margin: '0 0 12px 0',
+      margin: `0 0 ${SPACING.px.base} 0`,
       fontSize: '36px',
       fontWeight: 700,
       fontFamily: '"Pilat Extended", sans-serif',
       color: PRIMITIVES.white,
     }}>
-      Color System
+      <span>Color System</span>
     </h1>
 
     <p style={{
       margin: 0,
       fontSize: '16px',
       fontFamily: '"Fixel", sans-serif',
-      color: DEEP_CURRENT[100],
+      color: SLATE[300],
       lineHeight: 1.6,
       maxWidth: '500px',
     }}>
-      A two-tiered color architecture ensuring consistency and maintainability
-      across all Disrupt products.
+      <span>A two-tiered color architecture ensuring consistency and maintainability
+      across all Disrupt products.</span>
     </p>
   </div>
 </div>
@@ -91,7 +93,7 @@ import {
 
 ---
 
-## Tier 1: Brand Primitives
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Tier 1: Brand Primitives</h2>
 
 Raw color scales with brand naming. These are the **source of truth** for all color values.
 
@@ -187,7 +189,7 @@ Semantic colors for feedback and state communication.
     </div>
     <div style={{ padding: '16px' }}>
       <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
-        Coral (Error)
+        <span>Coral (Error)</span>
       </div>
       <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
         {CORAL[500]}
@@ -214,7 +216,7 @@ Semantic colors for feedback and state communication.
     </div>
     <div style={{ padding: '16px' }}>
       <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
-        Harbor (Success)
+        <span>Harbor (Success)</span>
       </div>
       <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
         {HARBOR[500]}
@@ -241,7 +243,7 @@ Semantic colors for feedback and state communication.
     </div>
     <div style={{ padding: '16px' }}>
       <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
-        Sunrise (Warning)
+        <span>Sunrise (Warning)</span>
       </div>
       <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
         {SUNRISE[500]}
@@ -268,7 +270,7 @@ Semantic colors for feedback and state communication.
     </div>
     <div style={{ padding: '16px' }}>
       <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
-        Wave (Info)
+        <span>Wave (Info)</span>
       </div>
       <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
         {WAVE[500]}
@@ -294,7 +296,7 @@ Semantic colors for feedback and state communication.
 
 ---
 
-## Tier 2: Alias Tokens (Semantic)
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Tier 2: Alias Tokens (Semantic)</h2>
 
 Semantic tokens that define **what the color means**. Use these in components.
 
@@ -342,7 +344,7 @@ Semantic tokens that define **what the color means**. Use these in components.
 
 ---
 
-## Usage Examples
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
 
 ### Tailwind Classes (Recommended)
 
@@ -388,7 +390,7 @@ const bgColor = isError
 
 ---
 
-## Guidelines
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Guidelines</h2>
 
 <div style={{
   display: 'grid',

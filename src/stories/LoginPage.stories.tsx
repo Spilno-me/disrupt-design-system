@@ -5,6 +5,7 @@ import { LoginPage } from "../components/auth/LoginPage"
 import { GridBlobBackground } from "../components/ui/GridBlobCanvas"
 import { ExecutingAnimation } from "../components/ui/ExecutingAnimation"
 import { SHADOWS } from "../constants/designTokens"
+import heroFrame from "../assets/optimized/auth/hero-frame-desktop.webp"
 
 // =============================================================================
 // DEMO WRAPPER COMPONENTS
@@ -150,6 +151,8 @@ export const SignInFlow: Story = {
   args: {
     product: "flow",
     loginPosition: "left",
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Flow platform interface",
     onLogin: async (values) => {
       console.log("Login attempt:", values)
       // Simulate API call
@@ -170,6 +173,8 @@ export const SignInMarket: Story = {
   args: {
     product: "market",
     loginPosition: "left",
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Market platform interface",
     onLogin: async (values) => {
       console.log("Login attempt:", values)
       await new Promise((resolve) => setTimeout(resolve, 1500))
@@ -186,6 +191,8 @@ export const SignInPartner: Story = {
   args: {
     product: "partner",
     loginPosition: "left",
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Partner platform interface",
     onLogin: async (values) => {
       console.log("Login attempt:", values)
       await new Promise((resolve) => setTimeout(resolve, 1500))
@@ -202,23 +209,8 @@ export const SignInRightPosition: Story = {
   args: {
     product: "flow",
     loginPosition: "right",
-    onLogin: async (values) => {
-      console.log("Login attempt:", values)
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-    },
-  },
-}
-
-export const SignInCustomBranding: Story = {
-  name: "Sign In - Custom Branding",
-  args: {
-    customLogo: "https://via.placeholder.com/200x50/08A4BD/FFFFFF?text=CustomLogo",
-    logoAlt: "Custom Company Logo",
-    companyName: "Acme Corporation",
-    heroImage:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80",
-    heroImageAlt: "Team working together",
-    loginPosition: "left",
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Flow platform interface",
     onLogin: async (values) => {
       console.log("Login attempt:", values)
       await new Promise((resolve) => setTimeout(resolve, 1500))
@@ -263,6 +255,8 @@ export const InteractiveSignIn: Story = {
   args: {
     product: "flow",
     loginPosition: "left",
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Flow platform interface",
   },
 }
 
@@ -393,6 +387,8 @@ export const CustomAnimation: Story = {
     product: "flow",
     loginPosition: "left",
     blobScale: 1.8,
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Flow platform interface",
     onLogin: async (values) => {
       console.log("Login attempt:", values)
       await new Promise((resolve) => setTimeout(resolve, 1500))
@@ -407,6 +403,8 @@ export const CustomLinks: Story = {
     loginPosition: "left",
     termsLink: "https://example.com/terms",
     privacyLink: "https://example.com/privacy",
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Flow platform interface",
     onLogin: async (values) => {
       console.log("Login attempt:", values)
       await new Promise((resolve) => setTimeout(resolve, 1500))
@@ -423,6 +421,8 @@ export const MobileView: Story = {
   args: {
     product: "flow",
     loginPosition: "left",
+    heroImage: heroFrame,
+    heroImageAlt: "Disrupt Flow platform interface",
     onLogin: async (values) => {
       console.log("Login attempt:", values)
       await new Promise((resolve) => setTimeout(resolve, 1500))

@@ -1,0 +1,380 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Network, MousePointer, ZoomIn, Move, Filter, FileCode, Layers } from 'lucide-react';
+import { DependencyGraph } from '../../components/visualization/DependencyGraph';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SPACING,
+} from '../../constants/designTokens';
+
+<Meta title="Foundation/Design Tokens/Dependency Graph" />
+
+{/* Hero Section */}
+<div style={{
+  background: `linear-gradient(135deg, ${ABYSS[700]} 0%, ${ABYSS[900]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: SPACING.px.section,
+  marginBottom: SPACING.px.section,
+  position: 'relative',
+  overflow: 'hidden',
+}}>
+  {/* Decorative elements */}
+  <div style={{
+    position: 'absolute',
+    top: '-30px',
+    right: '-30px',
+    width: '180px',
+    height: '180px',
+    borderRadius: '50%',
+    background: DEEP_CURRENT[500],
+    opacity: 0.08,
+  }} />
+  <div style={{
+    position: 'absolute',
+    bottom: '-40px',
+    left: '20%',
+    width: '120px',
+    height: '120px',
+    borderRadius: '50%',
+    background: DUSK_REEF[500],
+    opacity: 0.06,
+  }} />
+
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      background: 'rgba(255,255,255,0.1)',
+      padding: '6px 12px',
+      borderRadius: RADIUS.full,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Network size={14} color={DEEP_CURRENT[300]} />
+      <span style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: DEEP_CURRENT[300],
+        fontFamily: '"Fixel", sans-serif',
+        letterSpacing: '0.5px',
+      }}>
+        INTERACTIVE VISUALIZATION
+      </span>
+    </div>
+
+    <h1 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: '42px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+      lineHeight: 1.1,
+    }}>
+      <span>Dependency Graph</span>
+    </h1>
+
+    <p style={{
+      margin: 0,
+      fontSize: '18px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[200],
+      lineHeight: 1.6,
+      maxWidth: '600px',
+    }}>
+      <span>Explore the complete token architecture from raw hex values to components.
+      See how primitives (ABYSS, DEEP_CURRENT, etc.) flow through aliases to components—each node shows its actual color!</span>
+    </p>
+  </div>
+</div>
+
+{/* Dependency Graph Visualization - Token Architecture View */}
+<div style={{ marginBottom: SPACING.px.section }}>
+  <DependencyGraph height="700px" useTokenArchitecture={true} />
+</div>
+
+{/* Controls Guide */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { icon: MousePointer, title: 'Click', desc: 'Select nodes to see details' },
+    { icon: Move, title: 'Drag', desc: 'Pan the view or move nodes' },
+    { icon: ZoomIn, title: 'Scroll', desc: 'Zoom in and out' },
+    { icon: Filter, title: 'Filter', desc: 'Toggle node types visibility' },
+  ].map(({ icon: Icon, title, desc }) => (
+    <div
+      key={title}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.comfortable,
+        border: `1px solid ${ABYSS[100]}`,
+        textAlign: 'center',
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto 12px',
+      }}>
+        <Icon size={20} color={DEEP_CURRENT[500]} />
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        marginBottom: '4px',
+      }}>
+        <span>{title}</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        <span>{desc}</span>
+      </div>
+    </div>
+  ))}
+</div>
+
+{/* Understanding the Graph */}
+<div style={{
+  background: ABYSS[50],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <h2 style={{
+    margin: `0 0 ${SPACING.px.base} 0`,
+    fontSize: '20px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    Understanding the Graph
+  </h2>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: SPACING.px.base,
+  }}>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.sm,
+      padding: SPACING.px.base,
+      border: `1px solid ${DEEP_CURRENT[200]}`,
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '8px',
+      }}>
+        <Layers size={16} color={DEEP_CURRENT[500]} />
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 600,
+          color: DEEP_CURRENT[500],
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        }}>
+          Primitives (Hexagons + Squares)
+        </span>
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        lineHeight: 1.5,
+      }}>
+        <span>Hexagons are color scales (ABYSS, DEEP_CURRENT). Squares are individual shades—each shows its actual hex color!
+        Drag nodes to explore the hierarchy.</span>
+      </div>
+    </div>
+
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.sm,
+      padding: SPACING.px.base,
+      border: `1px solid ${DUSK_REEF[200]}`,
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '8px',
+      }}>
+        <FileCode size={16} color={DUSK_REEF[500]} />
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 600,
+          color: DUSK_REEF[500],
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        }}>
+          Aliases + Components
+        </span>
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        lineHeight: 1.5,
+      }}>
+        <span>Diamonds are semantic aliases (text.primary, background.surface).
+        Circles are components. Follow the connections to see how tokens flow to UI!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Node Types Legend */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${ABYSS[100]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h3 style={{
+    margin: `0 0 ${SPACING.px.base} 0`,
+    fontSize: '16px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    Node Types
+  </h3>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: SPACING.px.tight,
+  }}>
+    {[
+      { shape: 'hexagon', type: 'Color Scale', color: '#5E4F7E', desc: 'ABYSS, DEEP_CURRENT, etc.' },
+      { shape: 'square', type: 'Color Shade', color: '#08A4BD', desc: 'Actual hex values' },
+      { shape: 'diamond', type: 'Alias Category', color: '#5E4F7E', desc: 'text, background, border' },
+      { shape: 'diamond', type: 'Alias Token', color: '#08A4BD', desc: 'text.primary, etc.' },
+      { shape: 'circle', type: 'Component', color: '#08A4BD', desc: 'UI Components' },
+      { shape: 'square', type: 'Base Primitive', color: '#FFFFFF', desc: 'white, black, cream' },
+    ].map(({ shape, type, color, desc }) => (
+      <div
+        key={type}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          padding: '10px 14px',
+          background: ABYSS[50],
+          borderRadius: RADIUS.xs,
+        }}
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20">
+          {shape === 'circle' && <circle cx="10" cy="10" r="8" fill={color} />}
+          {shape === 'square' && <rect x="2" y="2" width="16" height="16" rx="2" fill={color} stroke={ABYSS[300]} strokeWidth="1" />}
+          {shape === 'diamond' && <polygon points="10,2 18,10 10,18 2,10" fill={color} />}
+          {shape === 'hexagon' && <polygon points="5,2 15,2 19,10 15,18 5,18 1,10" fill={color} />}
+        </svg>
+        <div>
+          <div style={{
+            fontSize: '13px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            <span>{type}</span>
+          </div>
+          <div style={{
+            fontSize: '11px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[400],
+          }}>
+            <span>{desc}</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Link Types */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${ABYSS[100]}`,
+}}>
+  <h3 style={{
+    margin: `0 0 ${SPACING.px.base} 0`,
+    fontSize: '16px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    Connection Types
+  </h3>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: SPACING.px.tight,
+  }}>
+    {[
+      { stroke: '#474F5F', dash: 'none', name: 'Contains', desc: 'Scale → Shade hierarchy' },
+      { stroke: '#08A4BD', dash: '6,3', name: 'References', desc: 'Alias → Primitive lookup' },
+      { stroke: '#5E4F7E', dash: '4,2', name: 'Uses Alias', desc: 'Component → Alias' },
+      { stroke: '#757B87', dash: 'none', name: 'Imports', desc: 'Component → Component' },
+    ].map(({ stroke, dash, name, desc }) => (
+      <div
+        key={name}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          padding: '12px 16px',
+          background: ABYSS[50],
+          borderRadius: RADIUS.xs,
+        }}
+      >
+        <svg width="40" height="12" viewBox="0 0 40 12">
+          <line x1="0" y1="6" x2="40" y2="6" stroke={stroke} strokeWidth="2" strokeDasharray={dash} />
+        </svg>
+        <div>
+          <div style={{
+            fontSize: '13px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            <span>{name}</span>
+          </div>
+          <div style={{
+            fontSize: '11px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[400],
+          }}>
+            <span>{desc}</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

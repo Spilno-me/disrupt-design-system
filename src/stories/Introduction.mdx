@@ -12,6 +12,13 @@ import {
   Users,
   Heart,
   ArrowRight,
+  Code2,
+  FileType,
+  Wind,
+  Play,
+  Accessibility,
+  Puzzle,
+  Grid3X3,
 } from 'lucide-react';
 import {
   HeroHeader,
@@ -21,6 +28,7 @@ import {
   TechStackItem,
   SectionHeader,
   InfoBox,
+  StoryLink,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
@@ -110,8 +118,8 @@ import {
     </div>
 
     <div style={{ display: 'flex', gap: '12px' }}>
-      <a
-        href="?path=/docs/foundation-design-tokens-overview--docs"
+      <StoryLink
+        to="/docs/foundation-design-tokens-overview--docs"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -129,9 +137,9 @@ import {
       >
         <span>Get Started</span>
         <ArrowRight size={16} />
-      </a>
-      <a
-        href="?path=/docs/components-button--docs"
+      </StoryLink>
+      <StoryLink
+        to="/docs/components-button--docs"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -148,14 +156,14 @@ import {
         }}
       >
         <span>Browse Components</span>
-      </a>
+      </StoryLink>
     </div>
   </div>
 </div>
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Products Using This System</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Products Using This System</h2>
 
 <div style={{
   display: 'grid',
@@ -191,7 +199,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>What's Inside</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>What's Inside</h2>
 
 <div style={{
   display: 'grid',
@@ -227,7 +235,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Technology Stack</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Technology Stack</h2>
 
 <div style={{
   display: 'grid',
@@ -236,36 +244,36 @@ import {
   marginBottom: '48px',
 }}>
   <TechStackItem
-    icon="⚛️"
+    icon={<Code2 size={20} />}
     name="React"
     version="19"
     description="Modern UI library with hooks and concurrent features"
   />
   <TechStackItem
-    icon="📘"
+    icon={<FileType size={20} />}
     name="TypeScript"
     version="5.x"
     description="Full type safety and developer tooling"
   />
   <TechStackItem
-    icon="🎨"
+    icon={<Wind size={20} />}
     name="Tailwind CSS"
     version="v4"
     description="Utility-first styling with custom tokens"
   />
   <TechStackItem
-    icon="⚡"
+    icon={<Zap size={20} />}
     name="Vite"
     version="7.x"
     description="Lightning-fast build tooling"
   />
   <TechStackItem
-    icon="🎬"
+    icon={<Play size={20} />}
     name="Framer Motion"
     description="Production-ready animations"
   />
   <TechStackItem
-    icon="♿"
+    icon={<Shield size={20} />}
     name="Radix UI"
     description="Accessible component primitives"
   />
@@ -273,7 +281,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Design Principles</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Design Principles</h2>
 
 <div style={{
   display: 'grid',
@@ -333,7 +341,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Quick Navigation</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Navigation</h2>
 
 <div style={{
   display: 'grid',
@@ -342,25 +350,25 @@ import {
   marginBottom: '48px',
 }}>
   <NavCard
-    icon="🎨"
+    icon={<Palette size={24} />}
     title="Design Tokens"
     description="Colors, Typography, Spacing, Shadows"
     href="?path=/docs/foundation-design-tokens-overview--docs"
   />
   <NavCard
-    icon="🧩"
+    icon={<Puzzle size={24} />}
     title="Components"
     description="Buttons, Cards, Inputs, Dialogs"
     href="?path=/docs/components-button--docs"
   />
   <NavCard
-    icon="✨"
+    icon={<Sparkles size={24} />}
     title="Visual Effects"
     description="Glassmorphism, Grids, Gradients"
     href="?path=/docs/effects-glassmorphism--docs"
   />
   <NavCard
-    icon="📐"
+    icon={<Grid3X3 size={24} />}
     title="Patterns"
     description="Hero Sections, Pricing, Features"
     href="?path=/docs/patterns-hero--docs"
@@ -369,7 +377,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Need Help?</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Need Help?</h2>
 
 <div style={{
   background: SLATE[50],

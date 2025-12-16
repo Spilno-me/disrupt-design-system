@@ -1,7 +1,7 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { ArrowRight, Palette, Info } from 'lucide-react';
+import { ArrowRight, Palette, Info, Link2, BookOpen, Sparkles, Layers } from 'lucide-react';
 import {
   ABYSS,
   DEEP_CURRENT,
@@ -11,7 +11,8 @@ import {
   RADIUS,
   SLATE,
 } from '../constants/designTokens';
-import { SPACING } from './brand/BrandComponents';
+import { SPACING, StoryLink } from './brand/BrandComponents';
+import { IconText, IconHeading2, IconHeading3 } from '../components/ui/IconText';
 
 <Meta title="Brand/Colors" />
 
@@ -59,8 +60,8 @@ import { SPACING } from './brand/BrandComponents';
     <span>We've upgraded our color documentation to a comprehensive, token-synced system. All colors now import directly from the single source of truth.</span>
   </div>
 
-  <a
-    href="?path=/docs/foundation-design-tokens-colors--docs"
+  <StoryLink
+    to="/docs/foundation-design-tokens-colors--docs"
     style={{
       display: 'inline-flex',
       alignItems: 'center',
@@ -79,7 +80,7 @@ import { SPACING } from './brand/BrandComponents';
   >
     <span>View New Color Documentation</span>
     <ArrowRight size={18} />
-  </a>
+  </StoryLink>
 </div>
 
 {/* Benefits */}
@@ -89,23 +90,14 @@ import { SPACING } from './brand/BrandComponents';
   padding: '32px',
   border: `1px solid ${SLATE[200]}`,
 }}>
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    marginBottom: '24px',
-  }}>
-    <Info size={20} color={DEEP_CURRENT[500]} />
-    <h2 style={{
-      margin: 0,
-      fontSize: '18px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-    }}>
-      Why We Moved
-    </h2>
-  </div>
+  <IconHeading2
+    icon={<Info />}
+    iconColor={DEEP_CURRENT[500]}
+    textColor={ABYSS[500]}
+    className="mb-6"
+  >
+    Why We Moved
+  </IconHeading2>
 
   <div style={{
     display: 'grid',
@@ -117,15 +109,15 @@ import { SPACING } from './brand/BrandComponents';
       borderRadius: RADIUS.sm,
       padding: '20px',
     }}>
-      <h3 style={{
-        margin: '0 0 8px 0',
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>🔗 Single Source of Truth</span>
-      </h3>
+      <IconHeading3
+        icon={<Link2 />}
+        iconColor={DEEP_CURRENT[600]}
+        textColor={ABYSS[500]}
+        size="sm"
+        className="mb-2"
+      >
+        Single Source of Truth
+      </IconHeading3>
       <div style={{
         margin: 0,
         fontSize: '13px',
@@ -142,15 +134,15 @@ import { SPACING } from './brand/BrandComponents';
       borderRadius: RADIUS.sm,
       padding: '20px',
     }}>
-      <h3 style={{
-        margin: '0 0 8px 0',
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>📚 Organized Structure</span>
-      </h3>
+      <IconHeading3
+        icon={<BookOpen />}
+        iconColor={DEEP_CURRENT[600]}
+        textColor={ABYSS[500]}
+        size="sm"
+        className="mb-2"
+      >
+        Organized Structure
+      </IconHeading3>
       <div style={{
         margin: 0,
         fontSize: '13px',
@@ -167,15 +159,15 @@ import { SPACING } from './brand/BrandComponents';
       borderRadius: RADIUS.sm,
       padding: '20px',
     }}>
-      <h3 style={{
-        margin: '0 0 8px 0',
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>✨ Better Experience</span>
-      </h3>
+      <IconHeading3
+        icon={<Sparkles />}
+        iconColor={DEEP_CURRENT[600]}
+        textColor={ABYSS[500]}
+        size="sm"
+        className="mb-2"
+      >
+        Better Experience
+      </IconHeading3>
       <div style={{
         margin: 0,
         fontSize: '13px',
@@ -191,7 +183,7 @@ import { SPACING } from './brand/BrandComponents';
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Quick Links</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Links</h2>
 
 Navigate directly to the new documentation sections:
 
@@ -201,8 +193,8 @@ Navigate directly to the new documentation sections:
   gap: '16px',
   marginTop: '24px',
 }}>
-  <a
-    href="?path=/docs/foundation-design-tokens-overview--docs"
+  <StoryLink
+    to="/docs/foundation-design-tokens-overview--docs"
     style={{
       display: 'flex',
       alignItems: 'center',
@@ -215,7 +207,17 @@ Navigate directly to the new documentation sections:
       transition: 'all 200ms ease-out',
     }}
   >
-    <span style={{ fontSize: '24px' }}>🎨</span>
+    <div style={{
+      width: '40px',
+      height: '40px',
+      borderRadius: RADIUS.sm,
+      background: DEEP_CURRENT[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Palette size={20} color={DEEP_CURRENT[600]} />
+    </div>
     <div>
       <div style={{
         fontSize: '14px',
@@ -233,10 +235,10 @@ Navigate directly to the new documentation sections:
         <span>Start here for the complete system</span>
       </div>
     </div>
-  </a>
+  </StoryLink>
 
-  <a
-    href="?path=/docs/foundation-design-tokens-colors--docs"
+  <StoryLink
+    to="/docs/foundation-design-tokens-colors--docs"
     style={{
       display: 'flex',
       alignItems: 'center',
@@ -249,7 +251,17 @@ Navigate directly to the new documentation sections:
       transition: 'all 200ms ease-out',
     }}
   >
-    <span style={{ fontSize: '24px' }}>🌈</span>
+    <div style={{
+      width: '40px',
+      height: '40px',
+      borderRadius: RADIUS.sm,
+      background: DUSK_REEF[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Layers size={20} color={DUSK_REEF[600]} />
+    </div>
     <div>
       <div style={{
         fontSize: '14px',
@@ -267,5 +279,5 @@ Navigate directly to the new documentation sections:
         <span>Complete color documentation</span>
       </div>
     </div>
-  </a>
+  </StoryLink>
 </div>

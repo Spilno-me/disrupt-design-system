@@ -10,7 +10,9 @@ import {
   SHADOWS,
   RADIUS,
   SLATE,
+  SPACING,
 } from '../constants/designTokens';
+import { StoryLink } from './brand/BrandComponents';
 
 <Meta title="Foundation/Design Tokens" />
 
@@ -57,7 +59,7 @@ import {
       fontFamily: '"Pilat Extended", sans-serif',
       color: PRIMITIVES.white,
     }}>
-      Design Tokens System
+      <span>Design Tokens System</span>
     </h1>
 
     <p style={{
@@ -70,12 +72,12 @@ import {
       marginLeft: 'auto',
       marginRight: 'auto',
     }}>
-      Explore our comprehensive design token documentation with visual showcases,
-      code examples, and interactive demos.
+      <span>Explore our comprehensive design token documentation with visual showcases,
+      code examples, and interactive demos.</span>
     </p>
 
-    <a
-      href="?path=/docs/foundation-design-tokens-overview--docs"
+    <StoryLink
+      to="/docs/foundation-design-tokens-overview--docs"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -94,7 +96,7 @@ import {
     >
       Explore Design Tokens
       <ArrowRight size={18} />
-    </a>
+    </StoryLink>
   </div>
 </div>
 
@@ -160,14 +162,14 @@ import {
             fontFamily: '"Fixel", sans-serif',
             color: ABYSS[500],
           }}>
-            {item.title}
+            <span>{item.title}</span>
           </div>
           <div style={{
             fontSize: '12px',
             fontFamily: '"Fixel", sans-serif',
             color: DUSK_REEF[500],
           }}>
-            {item.desc}
+            <span>{item.desc}</span>
           </div>
         </div>
       </a>
@@ -177,7 +179,7 @@ import {
 
 ---
 
-## Single Source of Truth
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Single Source of Truth</h2>
 
 All documentation is **automatically synced** with `designTokens.ts`. This ensures:
 

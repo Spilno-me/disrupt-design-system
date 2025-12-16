@@ -1,0 +1,290 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { GitBranch, MousePointer, ZoomIn, Maximize2 } from 'lucide-react';
+import { TokenTree3D } from '../../components/visualization/TokenTree3D';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SPACING,
+} from '../../constants/designTokens';
+
+<Meta title="Foundation/Design Tokens/Token Tree" />
+
+{/* Hero Section */}
+<div style={{
+  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[700]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: SPACING.px.section,
+  marginBottom: SPACING.px.section,
+  position: 'relative',
+  overflow: 'hidden',
+}}>
+  {/* Decorative elements */}
+  <div style={{
+    position: 'absolute',
+    top: '-50px',
+    right: '-50px',
+    width: '200px',
+    height: '200px',
+    borderRadius: '50%',
+    background: DEEP_CURRENT[500],
+    opacity: 0.1,
+  }} />
+
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      background: 'rgba(255,255,255,0.1)',
+      padding: '6px 12px',
+      borderRadius: RADIUS.full,
+      marginBottom: SPACING.px.base,
+    }}>
+      <GitBranch size={14} color={DEEP_CURRENT[300]} />
+      <span style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: DEEP_CURRENT[300],
+        fontFamily: '"Fixel", sans-serif',
+        letterSpacing: '0.5px',
+      }}>
+        INTERACTIVE VISUALIZATION
+      </span>
+    </div>
+
+    <h1 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: '42px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+      lineHeight: 1.1,
+    }}>
+      <span>Token Tree 3D</span>
+    </h1>
+
+    <p style={{
+      margin: 0,
+      fontSize: '18px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[200],
+      lineHeight: 1.6,
+      maxWidth: '600px',
+    }}>
+      <span>Explore the complete Disrupt Design System token hierarchy in an interactive 3D visualization.
+      Navigate through Primitives, Alias tokens, and all design foundations.</span>
+    </p>
+  </div>
+</div>
+
+{/* 3D Visualization */}
+<div style={{ marginBottom: SPACING.px.section }}>
+  <TokenTree3D height="650px" autoRotate={false} />
+</div>
+
+{/* Controls Guide */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { icon: MousePointer, title: 'Click', desc: 'Select nodes & expand branches' },
+    { icon: Maximize2, title: 'Drag', desc: 'Rotate the 3D view' },
+    { icon: ZoomIn, title: 'Scroll', desc: 'Zoom in and out' },
+    { icon: GitBranch, title: 'Explore', desc: 'Navigate the token hierarchy' },
+  ].map(({ icon: Icon, title, desc }) => (
+    <div
+      key={title}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.comfortable,
+        border: `1px solid ${ABYSS[100]}`,
+        textAlign: 'center',
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto 12px',
+      }}>
+        <Icon size={20} color={DEEP_CURRENT[500]} />
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        marginBottom: '4px',
+      }}>
+        <span>{title}</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        <span>{desc}</span>
+      </div>
+    </div>
+  ))}
+</div>
+
+{/* Architecture Explanation */}
+<div style={{
+  background: ABYSS[50],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <h2 style={{
+    margin: `0 0 ${SPACING.px.base} 0`,
+    fontSize: '20px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    Token Architecture
+  </h2>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: SPACING.px.base,
+  }}>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.sm,
+      padding: SPACING.px.base,
+      border: `1px solid ${DUSK_REEF[200]}`,
+    }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: DUSK_REEF[500],
+        marginBottom: '8px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
+      }}>
+        <span>Tier 1: Primitives</span>
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        lineHeight: 1.5,
+      }}>
+        <span>Raw color values organized into 9 brand scales (ABYSS, DEEP_CURRENT, etc.)
+        with 10 shades each. These are the source of truth.</span>
+      </div>
+    </div>
+
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.sm,
+      padding: SPACING.px.base,
+      border: `2px solid ${DEEP_CURRENT[500]}`,
+    }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: DEEP_CURRENT[500],
+        marginBottom: '8px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
+      }}>
+        <span>Tier 2: Alias (Semantic)</span>
+      </div>
+      <div style={{
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        lineHeight: 1.5,
+      }}>
+        <span>Semantic tokens that reference Tier 1. Organized by purpose: text, background,
+        border, icon, interactive, status, and more. Always use these in components.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Node Types Legend */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${ABYSS[100]}`,
+}}>
+  <h3 style={{
+    margin: `0 0 ${SPACING.px.base} 0`,
+    fontSize: '16px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    Node Types
+  </h3>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(5, 1fr)',
+    gap: SPACING.px.tight,
+  }}>
+    {[
+      { shape: 'Dodecahedron', type: 'Root', color: DEEP_CURRENT[500] },
+      { shape: 'Octahedron', type: 'Category', color: DUSK_REEF[500] },
+      { shape: 'Icosahedron', type: 'Scale', color: ABYSS[500] },
+      { shape: 'Sphere', type: 'Token', color: ABYSS[400] },
+      { shape: 'Cube', type: 'Color Value', color: '#08A4BD' },
+    ].map(({ shape, type, color }) => (
+      <div
+        key={type}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 12px',
+          background: ABYSS[50],
+          borderRadius: RADIUS.xs,
+        }}
+      >
+        <div style={{
+          width: '16px',
+          height: '16px',
+          borderRadius: type === 'Color Value' ? '2px' : '50%',
+          background: color,
+        }} />
+        <div>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            <span>{type}</span>
+          </div>
+          <div style={{
+            fontSize: '10px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[400],
+          }}>
+            <span>{shape}</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

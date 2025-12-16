@@ -19,6 +19,7 @@ import {
   RADIUS,
   ALIAS,
 } from '../../constants/designTokens';
+import { navigateToStory } from '../brand/BrandComponents';
 
 // =============================================================================
 // DESIGN TOKENS EXPORT (for MDX usage)
@@ -551,31 +552,38 @@ export const NavCard: React.FC<NavCardProps> = ({
   href,
   icon,
   color = DEEP_CURRENT[500],
-}) => (
-  <a
-    href={href}
-    style={{
-      display: 'block',
-      background: PRIMITIVES.white,
-      borderRadius: RADIUS.lg,
-      padding: '24px',
-      boxShadow: SHADOWS.md,
-      border: `1px solid ${SLATE[200]}`,
-      textDecoration: 'none',
-      transition: 'all 200ms ease',
-      cursor: 'pointer',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'translateY(-4px)';
-      e.currentTarget.style.boxShadow = SHADOWS.elevated;
-      e.currentTarget.style.borderColor = color;
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.boxShadow = SHADOWS.md;
-      e.currentTarget.style.borderColor = SLATE[200];
-    }}
-  >
+}) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigateToStory(href);
+  };
+
+  return (
+    <a
+      href={href}
+      onClick={handleClick}
+      style={{
+        display: 'block',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '24px',
+        boxShadow: SHADOWS.md,
+        border: `1px solid ${SLATE[200]}`,
+        textDecoration: 'none',
+        transition: 'all 200ms ease',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-4px)';
+        e.currentTarget.style.boxShadow = SHADOWS.elevated;
+        e.currentTarget.style.borderColor = color;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = SHADOWS.md;
+        e.currentTarget.style.borderColor = SLATE[200];
+      }}
+    >
     <div
       style={{
         width: '48px',
@@ -617,7 +625,8 @@ export const NavCard: React.FC<NavCardProps> = ({
       {description}
     </div>
   </a>
-);
+  );
+};
 
 // =============================================================================
 // RADIUS SHOWCASE

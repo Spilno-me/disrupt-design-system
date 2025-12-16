@@ -1,7 +1,25 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Download, Package, FileImage, Type, Palette, Layout } from 'lucide-react';
+import {
+  Download,
+  Package,
+  FileImage,
+  Type,
+  Palette,
+  Layout,
+  Square,
+  Smartphone,
+  Component,
+  BookText,
+  Image,
+  PenTool,
+  FileText,
+  Laptop,
+  FileCode,
+  Presentation,
+  ClipboardList,
+} from 'lucide-react';
 import {
   HeroHeader,
   DownloadCard,
@@ -34,7 +52,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Logo Packages</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Logo Packages</h2>
 
 <div style={{
   display: 'grid',
@@ -43,19 +61,19 @@ import {
   marginBottom: '48px',
 }}>
   <DownloadCard
-    icon="🎨"
+    icon={<Palette size={24} />}
     title="Primary Logos"
     description="Full logo suite including Disrupt, Flow, Market, and Partner logos in both dark and light variants."
     formats={['SVG', 'PNG', 'PDF']}
   />
   <DownloadCard
-    icon="⬛"
+    icon={<Square size={24} />}
     title="Monochrome Logos"
     description="Single-color logo variants for print, merchandise, and special applications."
     formats={['SVG', 'PNG']}
   />
   <DownloadCard
-    icon="📱"
+    icon={<Smartphone size={24} />}
     title="App Icons"
     description="Favicon sets, app icons, and social media profile images in all required sizes."
     formats={['ICO', 'PNG', 'SVG']}
@@ -64,7 +82,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Design Resources</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Design Resources</h2>
 
 <SectionHeader
   icon={<Layout size={20} />}
@@ -79,19 +97,19 @@ import {
   marginBottom: '48px',
 }}>
   <DownloadCard
-    icon="🎭"
+    icon={<Component size={24} />}
     title="Figma UI Kit"
     description="Complete component library, design tokens, and templates in Figma format."
     formats={['Figma']}
   />
   <DownloadCard
-    icon="📐"
+    icon={<BookText size={24} />}
     title="Brand Guidelines PDF"
     description="Comprehensive brand guidelines document with usage rules and examples."
     formats={['PDF']}
   />
   <DownloadCard
-    icon="🖼️"
+    icon={<Image size={24} />}
     title="Illustration Pack"
     description="Custom illustrations and graphics used across Disrupt products."
     formats={['SVG', 'PNG']}
@@ -100,7 +118,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Typography</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Typography</h2>
 
 <SectionHeader
   icon={<Type size={20} />}
@@ -115,13 +133,13 @@ import {
   marginBottom: '48px',
 }}>
   <DownloadCard
-    icon="✍️"
+    icon={<PenTool size={24} />}
     title="Pilat Extended"
     description="Display font for marketing and headlines. Includes Regular, Medium, Semibold, and Bold weights."
     formats={['WOFF2', 'OTF']}
   />
   <DownloadCard
-    icon="📝"
+    icon={<FileText size={24} />}
     title="Fixel"
     description="Application font for UI and body text. Includes Regular, Medium, Semibold, and Bold weights."
     formats={['WOFF2', 'OTF']}
@@ -130,7 +148,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Color Palettes</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Color Palettes</h2>
 
 <SectionHeader
   icon={<Palette size={20} />}
@@ -145,19 +163,19 @@ import {
   marginBottom: '48px',
 }}>
   <DownloadCard
-    icon="🎨"
+    icon={<Palette size={24} />}
     title="Adobe Swatch"
     description="Color palette for Adobe Creative Suite applications."
     formats={['ASE']}
   />
   <DownloadCard
-    icon="🍎"
+    icon={<Laptop size={24} />}
     title="Apple Color"
     description="macOS color palette for Sketch, Figma, and system apps."
     formats={['CLR']}
   />
   <DownloadCard
-    icon="📄"
+    icon={<FileCode size={24} />}
     title="CSS Variables"
     description="Ready-to-use CSS custom properties for web development."
     formats={['CSS']}
@@ -166,7 +184,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Presentation Templates</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Presentation Templates</h2>
 
 <SectionHeader
   icon={<FileImage size={20} />}
@@ -181,13 +199,13 @@ import {
   marginBottom: '48px',
 }}>
   <DownloadCard
-    icon="📊"
+    icon={<Presentation size={24} />}
     title="Pitch Deck"
     description="Investor presentation template with brand styling and placeholder content."
     formats={['PPTX', 'KEY', 'Figma']}
   />
   <DownloadCard
-    icon="📋"
+    icon={<ClipboardList size={24} />}
     title="Document Templates"
     description="Word and Google Docs templates for proposals, reports, and documentation."
     formats={['DOCX', 'GDOC']}
@@ -196,7 +214,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Social Media Kit</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Social Media Kit</h2>
 
 <div style={{
   background: PRIMITIVES.white,
@@ -218,9 +236,8 @@ import {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      fontSize: '24px',
     }}>
-      📱
+      <Smartphone size={24} color={DEEP_CURRENT[600]} />
     </div>
     <div>
       <h3 style={{

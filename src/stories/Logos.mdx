@@ -1,7 +1,7 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Image } from 'lucide-react';
+import { Image, Moon, Sun, Maximize2 } from 'lucide-react';
 import { LogoGallery } from './LogoGallery';
 import {
   HeroHeader,
@@ -33,7 +33,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Logo Gallery</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Logo Gallery</h2>
 
 Download logos for Disrupt and all product brands. Each logo is available in dark and light variants.
 
@@ -41,7 +41,7 @@ Download logos for Disrupt and all product brands. Each logo is available in dar
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Usage Guidelines</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Guidelines</h2>
 
 <div style={{
   display: 'grid',
@@ -56,10 +56,16 @@ Download logos for Disrupt and all product brands. Each logo is available in dar
     border: `1px solid ${SLATE[200]}`,
   }}>
     <div style={{
-      fontSize: '24px',
+      width: '40px',
+      height: '40px',
+      borderRadius: RADIUS.sm,
+      background: ABYSS[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       marginBottom: '12px',
     }}>
-      🌙
+      <Moon size={20} color={ABYSS[500]} />
     </div>
     <h4 style={{
       margin: '0 0 8px 0',
@@ -88,10 +94,16 @@ Download logos for Disrupt and all product brands. Each logo is available in dar
     border: `1px solid ${SLATE[200]}`,
   }}>
     <div style={{
-      fontSize: '24px',
+      width: '40px',
+      height: '40px',
+      borderRadius: RADIUS.sm,
+      background: DEEP_CURRENT[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       marginBottom: '12px',
     }}>
-      ☀️
+      <Sun size={20} color={DEEP_CURRENT[600]} />
     </div>
     <h4 style={{
       margin: '0 0 8px 0',
@@ -120,10 +132,16 @@ Download logos for Disrupt and all product brands. Each logo is available in dar
     border: `1px solid ${SLATE[200]}`,
   }}>
     <div style={{
-      fontSize: '24px',
+      width: '40px',
+      height: '40px',
+      borderRadius: RADIUS.sm,
+      background: DUSK_REEF[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       marginBottom: '12px',
     }}>
-      📐
+      <Maximize2 size={20} color={DUSK_REEF[600]} />
     </div>
     <h4 style={{
       margin: '0 0 8px 0',

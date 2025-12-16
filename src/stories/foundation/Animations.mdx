@@ -1,14 +1,12 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Sparkles, Zap, Clock, Play } from 'lucide-react';
+import { Sparkles, Clock } from 'lucide-react';
 import {
-  SectionHeader,
   InfoBox,
-  TokenTable,
   CodeBlock,
-  TOKENS,
 } from './DocComponents';
+import { Button } from '../../components/ui/button';
 import {
   ABYSS,
   DEEP_CURRENT,
@@ -17,6 +15,7 @@ import {
   SHADOWS,
   RADIUS,
   SLATE,
+  SPACING,
   TRANSITIONS,
 } from '../../constants/designTokens';
 
@@ -26,39 +25,55 @@ import {
 <div style={{
   background: `linear-gradient(135deg, ${DUSK_REEF[400]} 0%, ${DUSK_REEF[600]} 100%)`,
   borderRadius: RADIUS.xl,
-  padding: '40px',
-  marginBottom: '48px',
+  padding: SPACING.px.section,
+  marginBottom: SPACING.px.section,
+  position: 'relative',
+  overflow: 'hidden',
 }}>
+  {/* Decorative background icon */}
   <div style={{
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    marginBottom: '12px',
+    position: 'absolute',
+    right: '40px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    opacity: 0.1,
+    pointerEvents: 'none',
   }}>
-    <Sparkles size={28} color={PRIMITIVES.white} />
+    <Sparkles size={180} color={PRIMITIVES.white} strokeWidth={1} />
   </div>
 
-  <h1 style={{
-    margin: '0 0 12px 0',
-    fontSize: '36px',
-    fontWeight: 700,
-    fontFamily: '"Pilat Extended", sans-serif',
-    color: PRIMITIVES.white,
-  }}>
-    Animations & Transitions
-  </h1>
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Sparkles size={28} color={PRIMITIVES.white} />
+    </div>
 
-  <p style={{
-    margin: 0,
-    fontSize: '16px',
-    fontFamily: '"Fixel", sans-serif',
-    color: DUSK_REEF[100],
-    lineHeight: 1.6,
-    maxWidth: '500px',
-  }}>
-    Motion creates meaning. Consistent timing and easing functions make
-    interactions feel natural and responsive.
-  </p>
+    <h1 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: '36px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+    }}>
+      <span>Animations & Transitions</span>
+    </h1>
+
+    <p style={{
+      margin: 0,
+      fontSize: '16px',
+      fontFamily: '"Fixel", sans-serif',
+      color: SLATE[300],
+      lineHeight: 1.6,
+      maxWidth: '500px',
+    }}>
+      <span>Motion creates meaning. Consistent timing and easing functions make
+      interactions feel natural and responsive.</span>
+    </p>
+  </div>
 </div>
 
 <InfoBox variant="tip">
@@ -68,7 +83,7 @@ import {
 
 ---
 
-## Transition Durations
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Transition Durations</h2>
 
 <div style={{
   display: 'grid',
@@ -77,10 +92,10 @@ import {
   marginBottom: '48px',
 }}>
   {[
-    { name: 'Fast', value: '150ms', usage: 'Micro-interactions, hover states' },
-    { name: 'Normal', value: '200ms', usage: 'Standard transitions (DEFAULT)' },
-    { name: 'Smooth', value: '300ms', usage: 'Larger element transitions' },
-    { name: 'Slow', value: '500ms', usage: 'Page transitions, emphasis' },
+    { name: 'Fast', value: TRANSITIONS.duration.fast, usage: 'Micro-interactions, hover states' },
+    { name: 'Normal', value: TRANSITIONS.duration.normal, usage: 'Standard transitions (DEFAULT)' },
+    { name: 'Smooth', value: TRANSITIONS.duration.smooth, usage: 'Larger element transitions' },
+    { name: 'Slow', value: TRANSITIONS.duration.slow, usage: 'Page transitions, emphasis' },
   ].map((item) => (
     <div
       key={item.name}
@@ -115,14 +130,14 @@ import {
         color: DEEP_CURRENT[500],
         marginBottom: '8px',
       }}>
-        {item.value}
+        <span>{item.value}</span>
       </div>
       <div style={{
         fontSize: '12px',
         fontFamily: '"Fixel", sans-serif',
         color: DUSK_REEF[500],
       }}>
-        {item.usage}
+        <span>{item.usage}</span>
       </div>
     </div>
   ))}
@@ -130,11 +145,9 @@ import {
 
 ---
 
-## Interactive Demos
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Interactive Demos</h2>
 
-Hover over these elements to see transitions in action:
-
-### Button Hover Effects
+### Button Timing Comparison
 
 <div style={{
   display: 'flex',
@@ -142,185 +155,211 @@ Hover over these elements to see transitions in action:
   marginBottom: '48px',
   flexWrap: 'wrap',
 }}>
-  <button
-    style={{
-      padding: '12px 24px',
-      backgroundColor: DEEP_CURRENT[500],
-      color: PRIMITIVES.white,
-      border: 'none',
-      borderRadius: RADIUS.md,
-      cursor: 'pointer',
-      fontFamily: '"Fixel", sans-serif',
-      fontSize: '14px',
-      fontWeight: 500,
-      transition: 'all 150ms ease-out',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = DEEP_CURRENT[600]
-      e.currentTarget.style.transform = 'translateY(-2px)'
-      e.currentTarget.style.boxShadow = SHADOWS.md
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = DEEP_CURRENT[500]
-      e.currentTarget.style.transform = 'translateY(0)'
-      e.currentTarget.style.boxShadow = 'none'
-    }}
+  <Button
+    variant="accent"
+    noEffect
+    className="transition-all duration-150 ease-out hover:-translate-y-0.5 hover:shadow-md"
   >
     Fast (150ms)
-  </button>
+  </Button>
 
-  <button
-    style={{
-      padding: '12px 24px',
-      backgroundColor: DEEP_CURRENT[500],
-      color: PRIMITIVES.white,
-      border: 'none',
-      borderRadius: RADIUS.md,
-      cursor: 'pointer',
-      fontFamily: '"Fixel", sans-serif',
-      fontSize: '14px',
-      fontWeight: 500,
-      transition: 'all 200ms ease-out',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = DEEP_CURRENT[600]
-      e.currentTarget.style.transform = 'translateY(-2px)'
-      e.currentTarget.style.boxShadow = SHADOWS.md
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = DEEP_CURRENT[500]
-      e.currentTarget.style.transform = 'translateY(0)'
-      e.currentTarget.style.boxShadow = 'none'
-    }}
+  <Button
+    variant="accent"
+    noEffect
+    className="transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md"
   >
     Normal (200ms)
-  </button>
+  </Button>
 
-  <button
-    style={{
-      padding: '12px 24px',
-      backgroundColor: DEEP_CURRENT[500],
-      color: PRIMITIVES.white,
-      border: 'none',
-      borderRadius: RADIUS.md,
-      cursor: 'pointer',
-      fontFamily: '"Fixel", sans-serif',
-      fontSize: '14px',
-      fontWeight: 500,
-      transition: 'all 300ms ease-out',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = DEEP_CURRENT[600]
-      e.currentTarget.style.transform = 'translateY(-2px)'
-      e.currentTarget.style.boxShadow = SHADOWS.md
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = DEEP_CURRENT[500]
-      e.currentTarget.style.transform = 'translateY(0)'
-      e.currentTarget.style.boxShadow = 'none'
-    }}
+  <Button
+    variant="accent"
+    noEffect
+    className="transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md"
   >
     Smooth (300ms)
-  </button>
+  </Button>
 </div>
 
-### Card Elevation Change
+### Card Hover
 
 <div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
+  display: 'flex',
   gap: '24px',
   marginBottom: '48px',
 }}>
   <div
     style={{
+      width: '200px',
       background: PRIMITIVES.white,
       borderRadius: RADIUS.lg,
-      padding: '24px',
-      border: `1px solid ${SLATE[300]}`,
+      padding: '20px',
+      border: `1px solid ${SLATE[200]}`,
       boxShadow: SHADOWS.sm,
       cursor: 'pointer',
-      transition: 'all 200ms ease-out',
+      transition: `all ${TRANSITIONS.duration.normal} ${TRANSITIONS.timing.easeOut}`,
     }}
     onMouseEnter={(e) => {
-      e.currentTarget.style.borderColor = DEEP_CURRENT[500]
-      e.currentTarget.style.boxShadow = SHADOWS.md
-      e.currentTarget.style.transform = 'translateY(-2px)'
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.borderColor = SLATE[300]
-      e.currentTarget.style.boxShadow = SHADOWS.sm
-      e.currentTarget.style.transform = 'translateY(0)'
-    }}
-  >
-    <div style={{ fontWeight: 600, marginBottom: '8px', color: ABYSS[500], fontFamily: '"Fixel", sans-serif' }}>
-      Quick Transition
-    </div>
-    <div style={{ fontSize: '14px', color: DUSK_REEF[500], fontFamily: '"Fixel", sans-serif' }}>
-      200ms ease-out - Responsive and snappy
-    </div>
-  </div>
-
-  <div
-    style={{
-      background: PRIMITIVES.white,
-      borderRadius: RADIUS.lg,
-      padding: '24px',
-      border: `1px solid ${SLATE[300]}`,
-      boxShadow: SHADOWS.sm,
-      cursor: 'pointer',
-      transition: 'all 300ms ease-out',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.borderColor = DEEP_CURRENT[500]
-      e.currentTarget.style.boxShadow = SHADOWS.elevated
       e.currentTarget.style.transform = 'translateY(-4px)'
+      e.currentTarget.style.boxShadow = SHADOWS.lg
+      e.currentTarget.style.borderColor = DEEP_CURRENT[500]
     }}
     onMouseLeave={(e) => {
-      e.currentTarget.style.borderColor = SLATE[300]
-      e.currentTarget.style.boxShadow = SHADOWS.sm
       e.currentTarget.style.transform = 'translateY(0)'
+      e.currentTarget.style.boxShadow = SHADOWS.sm
+      e.currentTarget.style.borderColor = SLATE[200]
     }}
   >
     <div style={{ fontWeight: 600, marginBottom: '8px', color: ABYSS[500], fontFamily: '"Fixel", sans-serif' }}>
-      Smooth Transition
+      <span>Card Title</span>
     </div>
     <div style={{ fontSize: '14px', color: DUSK_REEF[500], fontFamily: '"Fixel", sans-serif' }}>
-      300ms ease-out - Polished and elegant
+      <span>Hover to see elevation change</span>
     </div>
   </div>
 </div>
 
+### Loading States
+
+<style>{`
+  @keyframes dds-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes dds-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+`}</style>
+
+<div style={{
+  display: 'flex',
+  gap: '32px',
+  marginBottom: '48px',
+  alignItems: 'center',
+}}>
+  <div style={{ textAlign: 'center' }}>
+    <div
+      style={{
+        width: '48px',
+        height: '48px',
+        border: `3px solid ${SLATE[200]}`,
+        borderTopColor: DEEP_CURRENT[500],
+        borderRadius: RADIUS.full,
+        animation: 'dds-spin 1s linear infinite',
+        marginBottom: '8px',
+      }}
+    />
+    <span style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>Spinner</span>
+  </div>
+
+  <div style={{ textAlign: 'center' }}>
+    <div
+      style={{
+        width: '200px',
+        height: '48px',
+        background: `linear-gradient(90deg, ${SLATE[200]} 25%, ${SLATE[100]} 50%, ${SLATE[200]} 75%)`,
+        backgroundSize: '200% 100%',
+        borderRadius: RADIUS.md,
+        animation: 'dds-shimmer 1.5s ease-in-out infinite',
+        marginBottom: '8px',
+      }}
+    />
+    <span style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>Skeleton</span>
+  </div>
+</div>
+
+### Easing Functions Visual
+
+<div
+  id="easing-demo-container"
+  style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+    marginBottom: '48px',
+  }}
+>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '16px',
+  }}>
+    <div style={{
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <span>Compare easing functions side by side</span>
+    </div>
+    <Button
+      variant="accent"
+      size="sm"
+      onClick={() => {
+        const bars = document.querySelectorAll('[data-easing-bar]');
+        bars.forEach(bar => { bar.style.width = '0%'; });
+        setTimeout(() => {
+          bars.forEach(bar => { bar.style.width = '100%'; });
+        }, 100);
+      }}
+    >
+      Play All
+    </Button>
+  </div>
+
+  {[
+    { name: 'ease', timing: TRANSITIONS.timing.ease, desc: 'General purpose' },
+    { name: 'ease-out', timing: TRANSITIONS.timing.easeOut, desc: 'Recommended for UI', highlight: true },
+    { name: 'ease-in', timing: TRANSITIONS.timing.easeIn, desc: 'Elements exiting' },
+    { name: 'ease-in-out', timing: TRANSITIONS.timing.easeInOut, desc: 'Looping animations' },
+    { name: 'linear', timing: 'linear', desc: 'Constant speed' },
+  ].map((item) => (
+    <div key={item.name} style={{ marginBottom: '12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
+        <code style={{
+          width: '100px',
+          fontSize: '12px',
+          fontFamily: 'ui-monospace, monospace',
+          color: item.highlight ? DEEP_CURRENT[600] : DUSK_REEF[500],
+          fontWeight: item.highlight ? 600 : 400,
+        }}>{item.name}</code>
+        <span style={{
+          fontSize: '11px',
+          color: item.highlight ? DEEP_CURRENT[600] : SLATE[500],
+          fontFamily: '"Fixel", sans-serif',
+          fontWeight: item.highlight ? 500 : 400,
+        }}>{item.desc}</span>
+      </div>
+      <div style={{
+        background: SLATE[100],
+        borderRadius: RADIUS.xs,
+        height: '28px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div
+          data-easing-bar
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: '0%',
+            background: item.highlight ? DEEP_CURRENT[500] : DUSK_REEF[400],
+            borderRadius: RADIUS.xs,
+            transition: `width 1000ms ${item.timing}`,
+          }}
+        />
+      </div>
+    </div>
+  ))}
+</div>
+
 ---
 
-## Timing Functions
-
-<TokenTable
-  tokens={[
-    { name: 'ease', value: 'ease', tailwind: 'ease', usage: 'General purpose' },
-    { name: 'ease-in', value: 'ease-in', tailwind: 'ease-in', usage: 'Elements entering (rare)' },
-    { name: 'ease-out', value: 'ease-out', tailwind: 'ease-out', usage: 'User-initiated (RECOMMENDED)' },
-    { name: 'ease-in-out', value: 'ease-in-out', tailwind: 'ease-in-out', usage: 'Looping animations' },
-  ]}
-/>
-
----
-
-## Common Patterns
-
-<TokenTable
-  tokens={[
-    { name: 'Color change', value: '200ms', tailwind: 'transition-colors duration-200', usage: 'Hover color changes' },
-    { name: 'Transform', value: '300ms', tailwind: 'transition-transform duration-300', usage: 'Position, scale changes' },
-    { name: 'Opacity', value: '200ms', tailwind: 'transition-opacity duration-200', usage: 'Fade in/out' },
-    { name: 'All', value: '200ms', tailwind: 'transition-all duration-200', usage: 'Multiple property changes' },
-    { name: 'Shadow', value: '200ms', tailwind: 'transition-shadow duration-200', usage: 'Elevation changes' },
-  ]}
-/>
-
----
-
-## Usage Examples
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
 
 <CodeBlock
   language="tsx"
@@ -372,7 +411,7 @@ Hover over these elements to see transitions in action:
 
 ---
 
-## TypeScript Usage
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>TypeScript Usage</h2>
 
 <CodeBlock
   language="typescript"

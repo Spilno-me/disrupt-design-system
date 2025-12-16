@@ -1,7 +1,7 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { FileText, Presentation, Mail, Layout } from 'lucide-react';
+import { FileText, Presentation, Mail, Layout, Palette, Download, BookOpen, Puzzle } from 'lucide-react';
 import {
   HeroHeader,
   ComingSoon,
@@ -34,7 +34,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>Coming Soon</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Coming Soon</h2>
 
 <ComingSoon
   title="Template Library"
@@ -52,7 +52,7 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.sectionHeadingTop, marginBottom: SPACING.sectionHeadingBottom }}>In the Meantime</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>In the Meantime</h2>
 
 <div style={{
   display: 'grid',
@@ -61,25 +61,25 @@ import {
   marginTop: '32px',
 }}>
   <NavCard
-    icon="🎨"
+    icon={<Palette size={24} />}
     title="Design Tokens"
     description="Use our design tokens to create consistent designs"
     href="?path=/docs/foundation-design-tokens-overview--docs"
   />
   <NavCard
-    icon="📥"
+    icon={<Download size={24} />}
     title="Asset Downloads"
     description="Download logos, fonts, and color palettes"
     href="?path=/docs/brand-downloads--docs"
   />
   <NavCard
-    icon="📖"
+    icon={<BookOpen size={24} />}
     title="Brand Guidelines"
     description="Learn the rules for using brand assets"
     href="?path=/docs/brand-guidelines--docs"
   />
   <NavCard
-    icon="🧩"
+    icon={<Puzzle size={24} />}
     title="Components"
     description="Browse our component library"
     href="?path=/docs/components-button--docs"

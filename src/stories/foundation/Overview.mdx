@@ -1,7 +1,7 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Palette, Type, Space, Layers, Circle, Sparkles, ArrowRight, BookOpen } from 'lucide-react';
+import { Palette, Type, Space, Layers, Circle, Sparkles, ArrowRight, BookOpen, GitBranch, Network } from 'lucide-react';
 import { NavCard, InfoBox, CodeBlock, TOKENS } from './DocComponents';
 import {
   ABYSS,
@@ -10,6 +10,8 @@ import {
   PRIMITIVES,
   SHADOWS,
   RADIUS,
+  SLATE,
+  SPACING,
 } from '../../constants/designTokens';
 
 <Meta title="Foundation/Design Tokens/Overview" />
@@ -18,42 +20,32 @@ import {
 <div style={{
   background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[700]} 100%)`,
   borderRadius: RADIUS.xl,
-  padding: '48px',
-  marginBottom: '48px',
+  padding: SPACING.px.section,
+  marginBottom: SPACING.px.section,
   position: 'relative',
   overflow: 'hidden',
 }}>
-  {/* Decorative circles */}
+  {/* Decorative background icon */}
   <div style={{
     position: 'absolute',
-    top: '-50px',
-    right: '-50px',
-    width: '200px',
-    height: '200px',
-    borderRadius: '50%',
-    background: DEEP_CURRENT[500],
+    right: '40px',
+    top: '50%',
+    transform: 'translateY(-50%)',
     opacity: 0.1,
-  }} />
-  <div style={{
-    position: 'absolute',
-    bottom: '-30px',
-    left: '30%',
-    width: '100px',
-    height: '100px',
-    borderRadius: '50%',
-    background: DUSK_REEF[500],
-    opacity: 0.1,
-  }} />
+    pointerEvents: 'none',
+  }}>
+    <BookOpen size={180} color={PRIMITIVES.white} strokeWidth={1} />
+  </div>
 
   <div style={{ position: 'relative', zIndex: 1 }}>
     <div style={{
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '8px',
+      gap: SPACING.px.tight,
       background: 'rgba(255,255,255,0.1)',
       padding: '6px 12px',
       borderRadius: RADIUS.full,
-      marginBottom: '16px',
+      marginBottom: SPACING.px.base,
     }}>
       <BookOpen size={14} color={DEEP_CURRENT[300]} />
       <span style={{
@@ -68,14 +60,14 @@ import {
     </div>
 
     <h1 style={{
-      margin: '0 0 16px 0',
+      margin: `0 0 ${SPACING.px.base} 0`,
       fontSize: '42px',
       fontWeight: 700,
       fontFamily: '"Pilat Extended", sans-serif',
       color: PRIMITIVES.white,
       lineHeight: 1.1,
     }}>
-      Design Tokens
+      <span>Design Tokens</span>
     </h1>
 
     <p style={{
@@ -86,20 +78,20 @@ import {
       lineHeight: 1.6,
       maxWidth: '600px',
     }}>
-      The foundational building blocks of the Disrupt Design System.
-      Tokens ensure consistency across all products while enabling scalable, maintainable design.
+      <span>The foundational building blocks of the Disrupt Design System.
+      Tokens ensure consistency across all products while enabling scalable, maintainable design.</span>
     </p>
   </div>
 </div>
 
 {/* Architecture Overview */}
-<div style={{ marginBottom: '48px' }}>
+<div style={{ marginBottom: SPACING.px.section }}>
   <h2 style={{
     fontSize: '24px',
     fontWeight: 700,
     fontFamily: '"Pilat Extended", sans-serif',
     color: ABYSS[500],
-    marginBottom: '24px',
+    marginBottom: SPACING.px.sectionHeadingBottom,
   }}>
     Token Architecture
   </h2>
@@ -146,7 +138,7 @@ import {
         color: DUSK_REEF[500],
         lineHeight: 1.5,
       }}>
-        Raw values. Color scales, spacing units, font sizes. The source of truth.
+        <span>Raw values. Color scales, spacing units, font sizes. The source of truth.</span>
       </p>
     </div>
 
@@ -201,7 +193,7 @@ import {
         color: DUSK_REEF[500],
         lineHeight: 1.5,
       }}>
-        What colors <strong>mean</strong>. Use these in components. Always.
+        <span>What colors <strong>mean</strong>. Use these in components. Always.</span>
       </p>
     </div>
   </div>
@@ -213,13 +205,13 @@ import {
 </div>
 
 {/* Quick Reference */}
-<div style={{ marginBottom: '48px' }}>
+<div style={{ marginBottom: SPACING.px.section }}>
   <h2 style={{
     fontSize: '24px',
     fontWeight: 700,
     fontFamily: '"Pilat Extended", sans-serif',
     color: ABYSS[500],
-    marginBottom: '24px',
+    marginBottom: SPACING.px.sectionHeadingBottom,
   }}>
     Quick Reference
   </h2>
@@ -245,13 +237,13 @@ import { ALIAS, SHADOWS, RADIUS } from '@adrozdenko/design-system'
 </div>
 
 {/* Navigation Grid */}
-<div style={{ marginBottom: '48px' }}>
+<div style={{ marginBottom: SPACING.px.section }}>
   <h2 style={{
     fontSize: '24px',
     fontWeight: 700,
     fontFamily: '"Pilat Extended", sans-serif',
     color: ABYSS[500],
-    marginBottom: '24px',
+    marginBottom: SPACING.px.sectionHeadingBottom,
   }}>
     Explore Tokens
   </h2>
@@ -308,6 +300,22 @@ import { ALIAS, SHADOWS, RADIUS } from '@adrozdenko/design-system'
       icon={<Sparkles size={24} />}
       color={DUSK_REEF[400]}
     />
+
+    <NavCard
+      title="Token Tree 3D"
+      description="Interactive 3D visualization of the complete token hierarchy."
+      href="?path=/docs/foundation-design-tokens-token-tree--docs"
+      icon={<GitBranch size={24} />}
+      color={ABYSS[500]}
+    />
+
+    <NavCard
+      title="Dependency Graph"
+      description="Interactive 2D graph showing component and token dependencies."
+      href="?path=/docs/foundation-design-tokens-dependency-graph--docs"
+      icon={<Network size={24} />}
+      color={DEEP_CURRENT[600]}
+    />
   </div>
 </div>
 
@@ -334,17 +342,16 @@ import { ALIAS, SHADOWS, RADIUS } from '@adrozdenko/design-system'
     color: DUSK_REEF[500],
     lineHeight: 1.5,
   }}>
-    All token values are defined in a single file. Changes here automatically update all documentation and components.
+    <span>All token values are defined in a single file. Changes here automatically update all documentation and components.</span>
   </p>
   <code style={{
     display: 'block',
     background: ABYSS[700],
-    color: DEEP_CURRENT[300],
     padding: '12px 16px',
     borderRadius: RADIUS.sm,
     fontSize: '13px',
     fontFamily: 'ui-monospace, monospace',
   }}>
-    src/constants/designTokens.ts
+    <span style={{ color: PRIMITIVES.white }}>src/constants/designTokens.ts</span>
   </code>
 </div>

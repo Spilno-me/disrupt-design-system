@@ -18,6 +18,7 @@ import {
   SHADOWS,
   RADIUS,
   SLATE,
+  SPACING,
   SUNRISE,
 } from '../../constants/designTokens';
 
@@ -27,19 +28,31 @@ import {
 <div style={{
   background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[800]} 100%)`,
   borderRadius: RADIUS.xl,
-  padding: '40px',
-  marginBottom: '48px',
+  padding: SPACING.px.spacious,
+  marginBottom: SPACING.px.section,
   position: 'relative',
   overflow: 'hidden',
 }}>
+  {/* Decorative background icon */}
+  <div style={{
+    position: 'absolute',
+    right: '40px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    opacity: 0.1,
+    pointerEvents: 'none',
+  }}>
+    <Layers size={180} color={PRIMITIVES.white} strokeWidth={1} />
+  </div>
+
   {/* Light source indicator */}
   <div style={{
     position: 'absolute',
-    top: '20px',
-    right: '40px',
+    top: SPACING.px.comfortable,
+    right: SPACING.px.spacious,
     width: '60px',
     height: '60px',
-    borderRadius: '50%',
+    borderRadius: RADIUS.full,
     background: `radial-gradient(circle, ${SUNRISE[300]} 0%, transparent 70%)`,
     opacity: 0.8,
   }} />
@@ -48,20 +61,20 @@ import {
     <div style={{
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '8px',
-      marginBottom: '12px',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
     }}>
       <Layers size={28} color={PRIMITIVES.white} />
     </div>
 
     <h1 style={{
-      margin: '0 0 12px 0',
+      margin: `0 0 ${SPACING.px.base} 0`,
       fontSize: '36px',
       fontWeight: 700,
       fontFamily: '"Pilat Extended", sans-serif',
       color: PRIMITIVES.white,
     }}>
-      Shadow System
+      <span>Shadow System</span>
     </h1>
 
     <p style={{
@@ -72,8 +85,8 @@ import {
       lineHeight: 1.6,
       maxWidth: '500px',
     }}>
-      Natural light physics for elevation and visual hierarchy.
-      Shadows communicate depth, importance, and interactivity.
+      <span>Natural light physics for elevation and visual hierarchy.
+      Shadows communicate depth, importance, and interactivity.</span>
     </p>
   </div>
 </div>
@@ -86,7 +99,7 @@ import {
 
 ---
 
-## The Physics of Shadows
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Physics of Shadows</h2>
 
 Shadows in the real world come from natural light above. Our system mimics this with two layers:
 
@@ -177,7 +190,7 @@ Shadows in the real world come from natural light above. Our system mimics this 
 
 ---
 
-## Shadow Scale
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Shadow Scale</h2>
 
 <div style={{
   display: 'grid',
@@ -224,7 +237,7 @@ Shadows in the real world come from natural light above. Our system mimics this 
 
 ---
 
-## Decision Tree
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Decision Tree</h2>
 
 <div style={{
   background: PRIMITIVES.white,
@@ -289,7 +302,7 @@ Shadows in the real world come from natural light above. Our system mimics this 
 
 ---
 
-## Token Reference
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Token Reference</h2>
 
 <TokenTable
   tokens={[
@@ -304,7 +317,7 @@ Shadows in the real world come from natural light above. Our system mimics this 
 
 ---
 
-## Usage Examples
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
 
 ### Tailwind Classes
 
@@ -349,7 +362,7 @@ const shadow = isHovered
 
 ---
 
-## CSS Anatomy
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>CSS Anatomy</h2>
 
 Understanding the shadow values for custom implementations:
 
@@ -372,7 +385,7 @@ box-shadow:
 
 ---
 
-## Special Purpose Shadows
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Special Purpose Shadows</h2>
 
 Beyond the standard elevation scale, these shadows serve specific component needs:
 
@@ -471,7 +484,7 @@ Beyond the standard elevation scale, these shadows serve specific component need
 
 ---
 
-## Quick Reference
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
 
 <div style={{
   background: `linear-gradient(135deg, ${DEEP_CURRENT[50]} 0%, ${DUSK_REEF[50]} 100%)`,

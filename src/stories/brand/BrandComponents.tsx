@@ -1,8 +1,72 @@
 /**
  * Brand Documentation Components
  * Shared components for the Brand section - all values imported from designTokens.ts
+ *
+ * DESIGN SYSTEM RULE: No emojis - always use Lucide icons for consistency
  */
 import React from 'react';
+import {
+  Info,
+  Lightbulb,
+  AlertTriangle,
+  Construction,
+} from 'lucide-react';
+
+// =============================================================================
+// STORYBOOK NAVIGATION HELPER
+// =============================================================================
+
+/**
+ * Navigate to a Storybook path (works in both iframe and standalone contexts)
+ * Handles the parent frame navigation that native <a> tags can't do properly
+ */
+export const navigateToStory = (path: string) => {
+  // Remove leading ?path= if present
+  const cleanPath = path.replace(/^\?path=/, '');
+
+  // Try to navigate the parent frame (Storybook manager)
+  try {
+    if (window.parent !== window) {
+      // We're in an iframe, update parent URL
+      window.parent.location.href = `${window.parent.location.origin}${window.parent.location.pathname}?path=${cleanPath}`;
+    } else {
+      // Standalone, just update current URL
+      window.location.href = `?path=${cleanPath}`;
+    }
+  } catch {
+    // Fallback for cross-origin restrictions
+    window.location.href = `?path=${cleanPath}`;
+  }
+};
+
+interface StoryLinkProps {
+  to: string; // Path like "/docs/foundation-design-tokens-overview--docs"
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+  className?: string;
+}
+
+/**
+ * StoryLink - A link component for navigating between Storybook pages
+ * Use this instead of native <a> tags for internal Storybook navigation
+ */
+export const StoryLink: React.FC<StoryLinkProps> = ({ to, children, style, className }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigateToStory(to);
+  };
+
+  return (
+    <a
+      href={`?path=${to}`}
+      onClick={handleClick}
+      style={{ cursor: 'pointer', ...style }}
+      className={className}
+    >
+      {children}
+    </a>
+  );
+};
 import {
   ABYSS,
   DEEP_CURRENT,
@@ -13,6 +77,7 @@ import {
   SHADOWS,
   RADIUS,
   ALIAS,
+  SPACING,
 } from '../../constants/designTokens';
 
 // Re-export tokens for MDX usage
@@ -39,42 +104,8 @@ export {
   SHADOWS,
   RADIUS,
   ALIAS,
+  SPACING,
 };
-
-/**
- * SPACING - Pixel-based spacing tokens for MDX inline styles
- * Based on 4px base unit scale from .claude/spacing-rules.md
- */
-export const SPACING = {
-  // Micro: 2-4px - Icon-to-text, inline elements
-  micro: '4px',
-
-  // Tight: 6-8px - Related items (label + input)
-  tight: '8px',
-
-  // Base: 12-16px - Items within a component
-  base: '16px',
-
-  // Comfortable: 20-24px - Between components
-  comfortable: '24px',
-
-  // Spacious: 32-40px - Between sections within a page
-  spacious: '32px',
-
-  // Section: 48-64px - Major page sections
-  section: '48px',
-
-  // Page: 80-96px - Hero to content, footer margins
-  page: '96px',
-
-  // Semantic aliases for documentation
-  sectionHeadingTop: '32px',    // Spacious - gap after separator
-  sectionHeadingBottom: '24px', // Comfortable - gap to content
-  cardGap: '20px',              // Comfortable - between cards
-  cardGapCompact: '16px',       // Base - compact card grids
-  cardPadding: '24px',          // Comfortable - internal card padding
-  gridGap: '16px',              // Base - standard grid gap
-} as const;
 
 interface HeroHeaderProps {
   icon: React.ReactNode;
@@ -177,21 +208,25 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ variant = 'info', children }) 
     info: {
       bg: DEEP_CURRENT[50],
       border: DEEP_CURRENT[200],
-      icon: 'ℹ️',
+      iconColor: DEEP_CURRENT[600],
+      Icon: Info,
     },
     tip: {
       bg: DUSK_REEF[50],
       border: DUSK_REEF[200],
-      icon: '💡',
+      iconColor: DUSK_REEF[600],
+      Icon: Lightbulb,
     },
     warning: {
       bg: CORAL[50],
       border: CORAL[200],
-      icon: '⚠️',
+      iconColor: CORAL[600],
+      Icon: AlertTriangle,
     },
   };
 
   const style = styles[variant];
+  const IconComponent = style.Icon;
 
   return (
     <div
@@ -199,14 +234,14 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ variant = 'info', children }) 
         background: style.bg,
         border: `1px solid ${style.border}`,
         borderRadius: RADIUS.md,
-        padding: '16px 20px',
-        marginBottom: '24px',
+        padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+        marginBottom: SPACING.px.comfortable,
         display: 'flex',
-        gap: '12px',
-        alignItems: 'flex-start',
+        gap: SPACING.px.tight,
+        alignItems: 'baseline',
       }}
     >
-      <span style={{ fontSize: '18px' }}>{style.icon}</span>
+      <IconComponent size={20} color={style.iconColor} style={{ flexShrink: 0, position: 'relative', top: '3px' }} />
       <div
         style={{
           fontSize: '14px',
@@ -287,8 +322,17 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
   );
 
   if (link) {
+    const handleClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      navigateToStory(link);
+    };
+
     return (
-      <a href={link} style={{ textDecoration: 'none', display: 'block' }}>
+      <a
+        href={link}
+        onClick={handleClick}
+        style={{ textDecoration: 'none', display: 'block' }}
+      >
         {content}
       </a>
     );
@@ -383,16 +427,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 };
 
 interface NavCardProps {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   description: string;
   href: string;
 }
 
 export const NavCard: React.FC<NavCardProps> = ({ icon, title, description, href }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigateToStory(href);
+  };
+
   return (
     <a
       href={href}
+      onClick={handleClick}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -404,9 +454,24 @@ export const NavCard: React.FC<NavCardProps> = ({ icon, title, description, href
         textDecoration: 'none',
         transition: 'all 200ms ease-out',
         boxShadow: SHADOWS.sm,
+        cursor: 'pointer',
       }}
     >
-      <span style={{ fontSize: '32px' }}>{icon}</span>
+      <div
+        style={{
+          width: '48px',
+          height: '48px',
+          borderRadius: RADIUS.md,
+          background: DEEP_CURRENT[50],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: DEEP_CURRENT[600],
+          flexShrink: 0,
+        }}
+      >
+        {icon}
+      </div>
       <div>
         <div
           style={{
@@ -537,7 +602,7 @@ export const GuidelineCard: React.FC<GuidelineCardProps> = ({
 };
 
 interface DownloadCardProps {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   description: string;
   formats: string[];
@@ -566,12 +631,12 @@ export const DownloadCard: React.FC<DownloadCardProps> = ({
           width: '56px',
           height: '56px',
           borderRadius: RADIUS.md,
-          background: SLATE[50],
+          background: DEEP_CURRENT[50],
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: '16px',
-          fontSize: '28px',
+          color: DEEP_CURRENT[600],
         }}
       >
         {icon}
@@ -704,7 +769,7 @@ interface TechStackItemProps {
   name: string;
   version?: string;
   description: string;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 export const TechStackItem: React.FC<TechStackItemProps> = ({
@@ -724,7 +789,21 @@ export const TechStackItem: React.FC<TechStackItemProps> = ({
         borderRadius: RADIUS.sm,
       }}
     >
-      <span style={{ fontSize: '24px' }}>{icon}</span>
+      <div
+        style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.sm,
+          background: PRIMITIVES.white,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: DEEP_CURRENT[600],
+          flexShrink: 0,
+        }}
+      >
+        {icon}
+      </div>
       <div style={{ flex: 1 }}>
         <div
           style={{
@@ -865,10 +944,9 @@ export const ComingSoon: React.FC<ComingSoonProps> = ({ title, items }) => {
           justifyContent: 'center',
           margin: '0 auto 24px',
           boxShadow: SHADOWS.sm,
-          fontSize: '28px',
         }}
       >
-        🚧
+        <Construction size={28} color={DUSK_REEF[500]} />
       </div>
       <h3
         style={{

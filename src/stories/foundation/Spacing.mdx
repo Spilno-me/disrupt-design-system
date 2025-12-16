@@ -17,6 +17,7 @@ import {
   SHADOWS,
   RADIUS,
   SLATE,
+  SPACING,
 } from '../../constants/designTokens';
 
 <Meta title="Foundation/Design Tokens/Spacing" />
@@ -25,39 +26,55 @@ import {
 <div style={{
   background: `linear-gradient(135deg, ${ABYSS[400]} 0%, ${ABYSS[600]} 100%)`,
   borderRadius: RADIUS.xl,
-  padding: '40px',
-  marginBottom: '48px',
+  padding: SPACING.px.section,
+  marginBottom: SPACING.px.section,
+  position: 'relative',
+  overflow: 'hidden',
 }}>
+  {/* Decorative background icon */}
   <div style={{
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    marginBottom: '12px',
+    position: 'absolute',
+    right: '40px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    opacity: 0.1,
+    pointerEvents: 'none',
   }}>
-    <Space size={28} color={PRIMITIVES.white} />
+    <Space size={180} color={PRIMITIVES.white} strokeWidth={1} />
   </div>
 
-  <h1 style={{
-    margin: '0 0 12px 0',
-    fontSize: '36px',
-    fontWeight: 700,
-    fontFamily: '"Pilat Extended", sans-serif',
-    color: PRIMITIVES.white,
-  }}>
-    Spacing System
-  </h1>
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Space size={28} color={PRIMITIVES.white} />
+    </div>
 
-  <p style={{
-    margin: 0,
-    fontSize: '16px',
-    fontFamily: '"Fixel", sans-serif',
-    color: SLATE[300],
-    lineHeight: 1.6,
-    maxWidth: '500px',
-  }}>
-    Two spacing systems for two contexts: generous spacing for marketing impact,
-    compact spacing for application efficiency.
-  </p>
+    <h1 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: '36px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+    }}>
+      <span>Spacing System</span>
+    </h1>
+
+    <p style={{
+      margin: 0,
+      fontSize: '16px',
+      fontFamily: '"Fixel", sans-serif',
+      color: SLATE[300],
+      lineHeight: 1.6,
+      maxWidth: '500px',
+    }}>
+      <span>Two spacing systems for two contexts: generous spacing for marketing impact,
+      compact spacing for application efficiency.</span>
+    </p>
+  </div>
 </div>
 
 <InfoBox variant="tip">
@@ -67,7 +84,7 @@ import {
 
 ---
 
-## Website Spacing
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Website Spacing</h2>
 
 For marketing sites, landing pages, and public-facing content. Larger spacing creates breathing room.
 
@@ -108,62 +125,9 @@ For marketing sites, landing pages, and public-facing content. Larger spacing cr
   />
 </div>
 
-### Website Section Example
-
-<div style={{
-  background: PRIMITIVES.cream,
-  borderRadius: RADIUS.lg,
-  padding: '64px 40px',
-  border: `1px solid ${SLATE[200]}`,
-  marginBottom: '48px',
-}}>
-  <div style={{ maxWidth: '600px' }}>
-    <h2 style={{
-      fontFamily: '"Pilat Extended", sans-serif',
-      fontSize: '32px',
-      fontWeight: 600,
-      color: ABYSS[500],
-      margin: '0 0 4px 0',
-    }}>
-      Section Heading
-    </h2>
-    <p style={{
-      fontFamily: '"Pilat Extended", sans-serif',
-      fontSize: '18px',
-      fontWeight: 500,
-      color: DUSK_REEF[500],
-      margin: '0 0 32px 0',
-    }}>
-      Section subheading with supporting information
-    </p>
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '16px',
-    }}>
-      <div style={{
-        background: PRIMITIVES.white,
-        padding: '16px',
-        borderRadius: RADIUS.sm,
-        boxShadow: SHADOWS.sm,
-      }}>
-        Content block 1
-      </div>
-      <div style={{
-        background: PRIMITIVES.white,
-        padding: '16px',
-        borderRadius: RADIUS.sm,
-        boxShadow: SHADOWS.sm,
-      }}>
-        Content block 2
-      </div>
-    </div>
-  </div>
-</div>
-
 ---
 
-## App Spacing
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>App Spacing</h2>
 
 For web applications (Flow, Market, Partner). Compact spacing optimizes for dense information.
 
@@ -277,7 +241,7 @@ For web applications (Flow, Market, Partner). Compact spacing optimizes for dens
 
 ---
 
-## Spacing Scale
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Spacing Scale</h2>
 
 <div style={{
   background: PRIMITIVES.white,
@@ -359,7 +323,7 @@ For web applications (Flow, Market, Partner). Compact spacing optimizes for dens
 
 ---
 
-## Usage Examples
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
 
 <CodeBlock
   language="tsx"

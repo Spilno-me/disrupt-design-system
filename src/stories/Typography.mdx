@@ -1,0 +1,789 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Type, Monitor, Smartphone } from 'lucide-react';
+import {
+  HeroHeader,
+  InfoBox,
+  SectionHeader,
+  StoryLink,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+} from './brand/BrandComponents';
+
+<Meta title="Brand/Typography" />
+
+{/* Hero Header */}
+<HeroHeader
+  icon={<Type size={28} color={PRIMITIVES.white} />}
+  title="Typography"
+  description="Two font families for two contexts: Pilat Extended for marketing impact, Fixel for application clarity."
+  gradient="purple"
+/>
+
+<InfoBox variant="tip">
+  <strong>Two fonts, two purposes.</strong> Pilat Extended creates bold marketing impact, while
+  Fixel provides clean readability for applications. Never mix them inappropriately.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Font Families</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '48px',
+}}>
+  {/* Display Font - Pilat Extended */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '32px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.md,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '12px',
+      marginBottom: '24px',
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: ABYSS[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+      }}>
+        <Monitor size={20} color={ABYSS[500]} />
+      </div>
+      <div style={{ paddingTop: '2px' }}>
+        <h3 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: 600,
+          fontFamily: '"Pilat Extended", sans-serif',
+          color: ABYSS[500],
+          lineHeight: 1.2,
+        }}>
+          <span>Pilat Extended</span>
+        </h3>
+        <code style={{
+          fontSize: '12px',
+          fontFamily: 'ui-monospace, monospace',
+          color: SLATE[500],
+          display: 'block',
+          marginTop: '4px',
+        }}>
+          font-display
+        </code>
+      </div>
+    </div>
+
+    <p style={{
+      margin: '0 0 24px 0',
+      fontSize: '14px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.6,
+    }}>
+      Bold, extended letterforms for marketing websites, landing pages, and hero sections.
+      Creates strong visual impact for headlines and brand statements.
+    </p>
+
+    <div style={{ color: ABYSS[500] }}>
+      <div style={{ fontSize: '48px', fontWeight: 700, lineHeight: 1.1, marginBottom: '8px', fontFamily: '"Pilat Extended", sans-serif' }}>
+        <span>Disrupt</span>
+      </div>
+      <div style={{ fontSize: '24px', fontWeight: 600, marginBottom: '8px', fontFamily: '"Pilat Extended", sans-serif' }}>
+        <span>Transform Your Business</span>
+      </div>
+      <div style={{ fontSize: '16px', fontWeight: 500, fontFamily: '"Pilat Extended", sans-serif' }}>
+        <span>The quick brown fox jumps over the lazy dog</span>
+      </div>
+    </div>
+
+    <div style={{
+      marginTop: '24px',
+      padding: '12px 16px',
+      background: ABYSS[50],
+      borderRadius: RADIUS.sm,
+    }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        marginBottom: '4px',
+      }}>
+        <span>Use for:</span>
+      </div>
+      <div style={{
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        Marketing websites, landing pages, hero headlines, brand statements, promotional materials
+      </div>
+    </div>
+  </div>
+
+  {/* App Font - Fixel */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '32px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.md,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '12px',
+      marginBottom: '24px',
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+      }}>
+        <Smartphone size={20} color={DEEP_CURRENT[500]} />
+      </div>
+      <div style={{ paddingTop: '2px' }}>
+        <h3 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+          lineHeight: 1.2,
+        }}>
+          <span>Fixel</span>
+        </h3>
+        <code style={{
+          fontSize: '12px',
+          fontFamily: 'ui-monospace, monospace',
+          color: SLATE[500],
+          display: 'block',
+          marginTop: '4px',
+        }}>
+          font-sans
+        </code>
+      </div>
+    </div>
+
+    <p style={{
+      margin: '0 0 24px 0',
+      fontSize: '14px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.6,
+    }}>
+      Clean, readable typeface for applications, dashboards, forms, and data tables.
+      Optimized for extended reading and UI clarity.
+    </p>
+
+    <div style={{
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <div style={{ fontSize: '24px', fontWeight: 600, marginBottom: '8px' }}>
+        <span>Dashboard Overview</span>
+      </div>
+      <div style={{ fontSize: '16px', fontWeight: 500, marginBottom: '8px' }}>
+        <span>Your environmental metrics at a glance</span>
+      </div>
+      <div style={{ fontSize: '14px', fontWeight: 400 }}>
+        <span>The quick brown fox jumps over the lazy dog</span>
+      </div>
+    </div>
+
+    <div style={{
+      marginTop: '24px',
+      padding: '12px 16px',
+      background: DEEP_CURRENT[50],
+      borderRadius: RADIUS.sm,
+    }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: DEEP_CURRENT[700],
+        marginBottom: '4px',
+      }}>
+        <span>Use for:</span>
+      </div>
+      <div style={{
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        Applications, dashboards, forms, data tables, documentation, body text, UI elements
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Typography Scales</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '48px',
+}}>
+  {/* Marketing Scale - Pilat Extended */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+      paddingBottom: '12px',
+      borderBottom: `1px solid ${SLATE[200]}`,
+    }}>
+      <Monitor size={18} color={ABYSS[500]} />
+      <h3 style={{
+        margin: 0,
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Pilat Extended", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>Marketing Scale</span>
+      </h3>
+      <code style={{
+        fontSize: '10px',
+        fontFamily: 'ui-monospace, monospace',
+        color: SLATE[500],
+        marginLeft: 'auto',
+      }}>
+        font-display
+      </code>
+    </div>
+
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div>
+        <code style={{
+          display: 'inline-block',
+          background: ABYSS[50],
+          padding: '2px 6px',
+          borderRadius: '4px',
+          fontSize: '10px',
+          fontFamily: 'ui-monospace, monospace',
+          color: ABYSS[500],
+          marginBottom: '4px',
+        }}>
+          text-4xl md:text-6xl font-display font-bold
+        </code>
+        <div style={{
+          fontSize: '32px',
+          fontWeight: 700,
+          color: ABYSS[500],
+          lineHeight: 1.1,
+          fontFamily: '"Pilat Extended", sans-serif',
+        }}>
+          <span>Hero Headline</span>
+        </div>
+        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+          Hero titles, main page headlines
+        </div>
+      </div>
+
+      <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
+        <code style={{
+          display: 'inline-block',
+          background: ABYSS[50],
+          padding: '2px 6px',
+          borderRadius: '4px',
+          fontSize: '10px',
+          fontFamily: 'ui-monospace, monospace',
+          color: ABYSS[500],
+          marginBottom: '4px',
+        }}>
+          text-2xl font-display font-semibold
+        </code>
+        <div style={{
+          fontSize: '24px',
+          fontWeight: 600,
+          color: ABYSS[500],
+          lineHeight: 1.2,
+          fontFamily: '"Pilat Extended", sans-serif',
+        }}>
+          <span>Section Heading</span>
+        </div>
+        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+          Page section headings, feature titles
+        </div>
+      </div>
+
+      <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
+        <code style={{
+          display: 'inline-block',
+          background: ABYSS[50],
+          padding: '2px 6px',
+          borderRadius: '4px',
+          fontSize: '10px',
+          fontFamily: 'ui-monospace, monospace',
+          color: ABYSS[500],
+          marginBottom: '4px',
+        }}>
+          text-lg font-display font-medium
+        </code>
+        <div style={{
+          fontSize: '18px',
+          fontWeight: 500,
+          color: DUSK_REEF[500],
+          lineHeight: 1.4,
+          fontFamily: '"Pilat Extended", sans-serif',
+        }}>
+          <span>Subheading Text</span>
+        </div>
+        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+          Section descriptions, subtitles
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Application Scale - Fixel */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+      paddingBottom: '12px',
+      borderBottom: `1px solid ${SLATE[200]}`,
+    }}>
+      <Smartphone size={18} color={DEEP_CURRENT[500]} />
+      <h3 style={{
+        margin: 0,
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>Application Scale</span>
+      </h3>
+      <code style={{
+        fontSize: '10px',
+        fontFamily: 'ui-monospace, monospace',
+        color: SLATE[500],
+        marginLeft: 'auto',
+      }}>
+        font-sans
+      </code>
+    </div>
+
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div>
+        <code style={{
+          display: 'inline-block',
+          background: DEEP_CURRENT[50],
+          padding: '2px 6px',
+          borderRadius: '4px',
+          fontSize: '10px',
+          fontFamily: 'ui-monospace, monospace',
+          color: DEEP_CURRENT[700],
+          marginBottom: '4px',
+        }}>
+          text-2xl font-semibold
+        </code>
+        <div style={{
+          fontSize: '24px',
+          fontWeight: 600,
+          color: ABYSS[500],
+          lineHeight: 1.2,
+          fontFamily: '"Fixel", sans-serif',
+        }}>
+          <span>Page Title</span>
+        </div>
+        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+          Page headings, main titles
+        </div>
+      </div>
+
+      <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
+        <code style={{
+          display: 'inline-block',
+          background: DEEP_CURRENT[50],
+          padding: '2px 6px',
+          borderRadius: '4px',
+          fontSize: '10px',
+          fontFamily: 'ui-monospace, monospace',
+          color: DEEP_CURRENT[700],
+          marginBottom: '4px',
+        }}>
+          text-lg font-semibold
+        </code>
+        <div style={{
+          fontSize: '18px',
+          fontWeight: 600,
+          color: ABYSS[500],
+          lineHeight: 1.3,
+          fontFamily: '"Fixel", sans-serif',
+        }}>
+          <span>Section Title</span>
+        </div>
+        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+          Section headings, card titles
+        </div>
+      </div>
+
+      <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
+        <code style={{
+          display: 'inline-block',
+          background: DEEP_CURRENT[50],
+          padding: '2px 6px',
+          borderRadius: '4px',
+          fontSize: '10px',
+          fontFamily: 'ui-monospace, monospace',
+          color: DEEP_CURRENT[700],
+          marginBottom: '4px',
+        }}>
+          text-sm / text-xs
+        </code>
+        <div style={{
+          fontSize: '14px',
+          fontWeight: 400,
+          color: ABYSS[500],
+          lineHeight: 1.5,
+          fontFamily: '"Fixel", sans-serif',
+        }}>
+          <span>Body text and captions</span>
+        </div>
+        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+          Content, labels, metadata
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<InfoBox variant="info">
+  <strong>Need more detail?</strong> For comprehensive typography guidelines including component patterns,
+  anti-patterns, and accessibility requirements, see the
+  <StoryLink to="/docs/foundation-design-tokens-typography--docs" style={{ marginLeft: '4px', color: DEEP_CURRENT[600] }}>App Typography</StoryLink> documentation.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Font Weights</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '48px',
+}}>
+  {/* Pilat Extended Weights */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{
+      margin: '0 0 16px 0',
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <span>Pilat Extended</span>
+    </h4>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '12px',
+    }}>
+      {[
+        { weight: 500, name: 'Medium' },
+        { weight: 600, name: 'Semibold' },
+        { weight: 700, name: 'Bold' },
+      ].map((item) => (
+        <div
+          key={item.weight}
+          style={{
+            background: SLATE[50],
+            borderRadius: RADIUS.sm,
+            padding: '12px',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{
+            fontSize: '24px',
+            fontWeight: item.weight,
+            color: ABYSS[500],
+            marginBottom: '4px',
+          }}>
+            <span style={{ fontFamily: '"Pilat Extended", sans-serif' }}>Aa</span>
+          </div>
+          <div style={{
+            fontSize: '11px',
+            fontFamily: '"Fixel", sans-serif',
+            color: SLATE[500],
+          }}>
+            {item.name} ({item.weight})
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Fixel Weights */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{
+      margin: '0 0 16px 0',
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      <span>Fixel</span>
+    </h4>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gap: '12px',
+    }}>
+      {[
+        { weight: 400, name: 'Normal' },
+        { weight: 500, name: 'Medium' },
+        { weight: 600, name: 'Semibold' },
+        { weight: 700, name: 'Bold' },
+      ].map((item) => (
+        <div
+          key={item.weight}
+          style={{
+            background: SLATE[50],
+            borderRadius: RADIUS.sm,
+            padding: '12px',
+            textAlign: 'center',
+          }}
+        >
+          <div style={{
+            fontFamily: '"Fixel", sans-serif',
+            fontSize: '24px',
+            fontWeight: item.weight,
+            color: ABYSS[500],
+            marginBottom: '4px',
+          }}>
+            <span>Aa</span>
+          </div>
+          <div style={{
+            fontSize: '11px',
+            fontFamily: '"Fixel", sans-serif',
+            color: SLATE[500],
+          }}>
+            {item.name} ({item.weight})
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Guidelines</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '48px',
+}}>
+  {/* Do's */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `2px solid #059669`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <span style={{ fontSize: '18px', color: '#059669' }}>✓</span>
+      <h4 style={{
+        margin: 0,
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>Do</span>
+      </h4>
+    </div>
+    <ul style={{
+      margin: 0,
+      padding: '0 0 0 20px',
+      fontSize: '14px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.8,
+    }}>
+      <li>Use Pilat Extended for marketing headlines</li>
+      <li>Use Fixel for all application UI text</li>
+      <li>Maintain consistent type scale within context</li>
+      <li>Use weight for emphasis, not size</li>
+      <li>Keep body text at 14px minimum for readability</li>
+      <li>Use max 3-4 font sizes per view</li>
+    </ul>
+  </div>
+
+  {/* Don'ts */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `2px solid ${DUSK_REEF[400]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <span style={{ fontSize: '18px', color: DUSK_REEF[500] }}>✗</span>
+      <h4 style={{
+        margin: 0,
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        <span>Don't</span>
+      </h4>
+    </div>
+    <ul style={{
+      margin: 0,
+      padding: '0 0 0 20px',
+      fontSize: '14px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[500],
+      lineHeight: 1.8,
+    }}>
+      <li>Use Pilat Extended in application interfaces</li>
+      <li>Mix font families within the same context</li>
+      <li>Use more than 4 font sizes in a single view</li>
+      <li>Make text larger just for emphasis</li>
+      <li>Use text smaller than 12px (accessibility)</li>
+      <li>Hardcode pixel values - use tokens</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Code Examples</h2>
+
+<div style={{
+  background: ABYSS[700],
+  borderRadius: RADIUS.md,
+  padding: '24px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    fontSize: '11px',
+    fontFamily: 'ui-monospace, monospace',
+    color: SLATE[400],
+    textTransform: 'uppercase',
+    marginBottom: '12px',
+  }}>
+    Marketing (Pilat Extended)
+  </div>
+  <pre style={{
+    margin: 0,
+    fontSize: '13px',
+    fontFamily: 'ui-monospace, monospace',
+    color: SLATE[300],
+    lineHeight: 1.6,
+    overflow: 'auto',
+  }}>
+{`<h1 className="text-4xl md:text-6xl font-display font-bold">
+  Transform Your Business
+</h1>
+
+<h2 className="text-2xl font-display font-semibold">
+  Section Heading
+</h2>`}
+  </pre>
+</div>
+
+<div style={{
+  background: ABYSS[700],
+  borderRadius: RADIUS.md,
+  padding: '24px',
+}}>
+  <div style={{
+    fontSize: '11px',
+    fontFamily: 'ui-monospace, monospace',
+    color: SLATE[400],
+    textTransform: 'uppercase',
+    marginBottom: '12px',
+  }}>
+    Application (Fixel)
+  </div>
+  <pre style={{
+    margin: 0,
+    fontSize: '13px',
+    fontFamily: 'ui-monospace, monospace',
+    color: SLATE[300],
+    lineHeight: 1.6,
+    overflow: 'auto',
+  }}>
+{`<h1 className="text-2xl font-semibold text-primary">
+  Dashboard
+</h1>
+
+<h2 className="text-lg font-semibold text-primary">
+  Section Title
+</h2>
+
+<p className="text-sm text-secondary">
+  Body text content
+</p>
+
+<span className="text-xs text-muted">
+  Caption or metadata
+</span>`}
+  </pre>
+</div>
