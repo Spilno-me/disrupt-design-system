@@ -76,7 +76,7 @@ const columns: ColumnDef<User>[] = [
 // =============================================================================
 
 const meta: Meta<typeof DataTable> = {
-  title: 'Core/DataTable',
+  title: 'Shared/Data/DataTable',
   component: DataTable,
   parameters: {
     layout: 'padded',

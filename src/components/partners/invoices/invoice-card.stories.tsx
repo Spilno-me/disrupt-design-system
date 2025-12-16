@@ -3,7 +3,7 @@ import { InvoiceCard } from './InvoiceCard'
 import type { Invoice, InvoiceAction as _InvoiceAction } from './types'
 
 const meta: Meta<typeof InvoiceCard> = {
-  title: 'Partner/Invoices/InvoiceCard',
+  title: 'Partner/Components/InvoiceCard',
   component: InvoiceCard,
   parameters: {
     layout: 'centered',

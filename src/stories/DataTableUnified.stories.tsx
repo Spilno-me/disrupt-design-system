@@ -99,7 +99,7 @@ const MOCK_PARTNERS: Partner[] = [
 // =============================================================================
 
 const meta: Meta<typeof DataTable<Partner>> = {
-  title: 'Data/DataTable/Unified System',
+  title: 'Shared/Data/DataTable Patterns',
   component: DataTable,
   parameters: {
     layout: 'padded',

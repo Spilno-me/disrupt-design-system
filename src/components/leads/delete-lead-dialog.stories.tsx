@@ -5,7 +5,7 @@ import { Lead } from './LeadCard'
 import { Button } from '../ui/button'
 
 const meta: Meta<typeof DeleteLeadDialog> = {
-  title: 'Partner/Leads/DeleteLeadDialog',
+  title: 'Partner/Dialogs/DeleteLeadDialog',
   component: DeleteLeadDialog,
   parameters: {
     layout: 'centered',

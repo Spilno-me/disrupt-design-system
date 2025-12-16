@@ -14,7 +14,7 @@ import { Button } from '../ui/button'
 // =============================================================================
 
 const meta: Meta<typeof Wizard> = {
-  title: 'Partner/Provisioning/Wizard',
+  title: 'Partner/Components/Wizard',
   component: Wizard,
   parameters: {
     layout: 'fullscreen',

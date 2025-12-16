@@ -7,7 +7,7 @@ import { Pagination } from './Pagination'
 // =============================================================================
 
 const meta: Meta<typeof Pagination> = {
-  title: 'Core/Pagination',
+  title: 'Shared/Data/Pagination',
   component: Pagination,
   parameters: {
     layout: 'padded',

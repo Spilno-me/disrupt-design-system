@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { PartnersPage, MOCK_PARTNERS, type Partner } from "./PartnersPage"
 
 const meta: Meta<typeof PartnersPage> = {
-  title: "Partner/Partners/PartnersPage",
+  title: "Partner/Components/PartnersPage",
   component: PartnersPage,
   parameters: {
     layout: "padded",

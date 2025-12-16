@@ -14,7 +14,7 @@ import {
 // =============================================================================
 
 const meta: Meta = {
-  title: 'Pages/Partner/PartnersManagement/Dialogs',
+  title: 'Partner/Dialogs/PartnerDialogs',
   parameters: {
     layout: 'centered',
     docs: {

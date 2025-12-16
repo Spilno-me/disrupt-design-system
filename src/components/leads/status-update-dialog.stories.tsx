@@ -5,7 +5,7 @@ import { Lead, LeadStatus } from './LeadCard'
 import { Button } from '../ui/button'
 
 const meta: Meta<typeof StatusUpdateDialog> = {
-  title: 'Partner/Leads/StatusUpdateDialog',
+  title: 'Partner/Dialogs/StatusUpdateDialog',
   component: StatusUpdateDialog,
   parameters: {
     layout: 'centered',

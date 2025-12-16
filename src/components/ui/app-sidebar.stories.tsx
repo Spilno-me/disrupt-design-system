@@ -117,7 +117,7 @@ const partnerNavItems: NavItem[] = [
 // =============================================================================
 
 const meta: Meta<typeof AppSidebar> = {
-  title: 'Shared/AppSidebar',
+  title: 'Shared/App Shell/AppSidebar',
   component: AppSidebar,
   parameters: {
     layout: 'fullscreen',

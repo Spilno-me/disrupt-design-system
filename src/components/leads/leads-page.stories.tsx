@@ -3,7 +3,7 @@ import { LeadsPage } from './LeadsPage'
 import { Lead } from './LeadCard'
 
 const meta: Meta<typeof LeadsPage> = {
-  title: 'Partner/Leads/LeadsPage',
+  title: 'Partner/Components/LeadsPage',
   component: LeadsPage,
   parameters: {
     layout: 'fullscreen',

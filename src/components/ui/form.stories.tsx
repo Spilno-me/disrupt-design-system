@@ -15,7 +15,7 @@ import { Checkbox } from './checkbox'
 import { Button } from './button'
 
 const meta: Meta = {
-  title: 'Utilities/Form',
+  title: 'Core/Form',
   parameters: {
     layout: 'centered',
     docs: {

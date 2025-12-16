@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { LeadCard, Lead } from './LeadCard'
 
 const meta: Meta<typeof LeadCard> = {
-  title: 'Partner/Leads/LeadCard',
+  title: 'Partner/Components/LeadCard',
   component: LeadCard,
   parameters: {
     layout: 'centered',

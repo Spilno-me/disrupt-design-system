@@ -6,7 +6,7 @@ import { Partner } from './CreateLeadDialog'
 import { Button } from '../ui/button'
 
 const meta: Meta<typeof AssignLeadDialog> = {
-  title: 'Partner/Leads/AssignLeadDialog',
+  title: 'Partner/Dialogs/AssignLeadDialog',
   component: AssignLeadDialog,
   parameters: {
     layout: 'centered',

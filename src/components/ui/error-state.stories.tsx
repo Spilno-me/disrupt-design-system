@@ -5,7 +5,7 @@ import { AppCard } from './app-card'
 import { Database, ServerCrash } from 'lucide-react'
 
 const meta: Meta<typeof ErrorState> = {
-  title: 'Core/ErrorState',
+  title: 'Shared/Feedback/ErrorState',
   component: ErrorState,
   parameters: {
     layout: 'centered',

@@ -6,7 +6,7 @@ import { Home, Users, FileText, Settings, BarChart, Bell, Package, Calendar } fr
 import type { NavItem } from './navigation/types'
 
 const meta: Meta<typeof BottomNav> = {
-  title: 'Core/BottomNav',
+  title: 'Shared/App Shell/BottomNav',
   component: BottomNav,
   parameters: {
     layout: 'fullscreen',

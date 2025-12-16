@@ -4,7 +4,7 @@ import { CreateLeadDialog, CreateLeadFormData, Partner } from './CreateLeadDialo
 import { Button } from '../ui/button'
 
 const meta: Meta<typeof CreateLeadDialog> = {
-  title: 'Partner/Leads/CreateLeadDialog',
+  title: 'Partner/Dialogs/CreateLeadDialog',
   component: CreateLeadDialog,
   parameters: {
     layout: 'centered',

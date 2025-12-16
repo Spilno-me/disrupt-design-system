@@ -13,7 +13,7 @@ import { ForgotPasswordDialog } from "../../components/auth/ForgotPasswordDialog
 // =============================================================================
 
 const meta: Meta = {
-  title: "Pages/Auth/AllFlows",
+  title: "Shared/Auth/AllFlows",
   parameters: {
     layout: "fullscreen",
   },

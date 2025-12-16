@@ -10,7 +10,7 @@ import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
 // =============================================================================
 
 const meta: Meta<typeof PartnerLoginAccountsPage> = {
-  title: "Partner/Accounts/LoginAccountsPage",
+  title: "Partner/Components/LoginAccountsPage",
   component: PartnerLoginAccountsPage,
   parameters: {
     layout: "padded",

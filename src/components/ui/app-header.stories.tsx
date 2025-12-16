@@ -3,7 +3,7 @@ import { AppHeader } from './AppHeader'
 import { User, Settings, LogOut } from 'lucide-react'
 
 const meta: Meta<typeof AppHeader> = {
-  title: 'Core/AppHeader',
+  title: 'Shared/App Shell/AppHeader',
   component: AppHeader,
   parameters: {
     layout: 'fullscreen',

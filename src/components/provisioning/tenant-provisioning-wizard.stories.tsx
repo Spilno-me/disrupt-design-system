@@ -9,7 +9,7 @@ import { Button } from '../ui/button'
 // =============================================================================
 
 const meta: Meta<typeof TenantProvisioningWizard> = {
-  title: 'Partner/Provisioning/TenantProvisioningWizard',
+  title: 'Partner/Components/TenantProvisioningWizard',
   component: TenantProvisioningWizard,
   parameters: {
     layout: 'fullscreen',

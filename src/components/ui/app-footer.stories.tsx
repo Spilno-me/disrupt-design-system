@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { AppFooter } from './AppFooter'
 
 const meta = {
-  title: 'Core/AppFooter',
+  title: 'Shared/App Shell/AppFooter',
   component: AppFooter,
   parameters: {
     layout: 'fullscreen',

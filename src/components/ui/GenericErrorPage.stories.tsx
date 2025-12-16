@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { GenericErrorPage } from './GenericErrorPage'
 
 const meta = {
-  title: 'UI/GenericErrorPage',
+  title: 'Shared/Feedback/GenericErrorPage',
   component: GenericErrorPage,
   parameters: {
     layout: 'fullscreen',

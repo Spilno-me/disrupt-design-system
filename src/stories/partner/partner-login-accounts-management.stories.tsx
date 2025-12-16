@@ -28,7 +28,7 @@ import {
 // =============================================================================
 
 const meta: Meta = {
-  title: 'Pages/Partner/PartnerLoginAccountsManagement',
+  title: 'Partner/Pages/LoginAccounts',
   parameters: {
     layout: 'fullscreen',
   },

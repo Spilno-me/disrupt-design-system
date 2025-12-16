@@ -37,7 +37,7 @@ import { Button } from '../components/ui/button'
 // =============================================================================
 
 const meta: Meta<typeof AppLayoutShell> = {
-  title: 'Layout/AppLayoutShell',
+  title: 'Shared/App Shell/AppLayoutShell',
   component: AppLayoutShell,
   parameters: {
     layout: 'fullscreen',

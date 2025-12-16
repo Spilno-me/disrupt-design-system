@@ -11,7 +11,7 @@ import type { Invoice } from '../../../components/partners/invoices/types'
 // =============================================================================
 
 const meta: Meta = {
-  title: 'Pages/Partner/InvoicesManagement/Dialogs',
+  title: 'Partner/Dialogs/InvoiceDialogs',
   parameters: {
     layout: 'centered',
     docs: {

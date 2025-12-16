@@ -4,7 +4,7 @@ import { IconText, IconHeading1, IconHeading2, IconHeading3, IconLabel } from '.
 import { DEEP_CURRENT, ABYSS, CORAL, HARBOR } from '../../constants/designTokens'
 
 const meta: Meta<typeof IconText> = {
-  title: 'Components/IconText',
+  title: 'Core/IconText',
   component: IconText,
   parameters: {
     layout: 'padded',

@@ -4,7 +4,7 @@ import { SearchFilter } from './SearchFilter/SearchFilter'
 import type { FilterState, FilterGroup } from './SearchFilter/types'
 
 const meta: Meta<typeof SearchFilter> = {
-  title: 'Shared/Components/SearchFilter',
+  title: 'Shared/Data/SearchFilter',
   component: SearchFilter,
   tags: ['autodocs'],
   parameters: {
