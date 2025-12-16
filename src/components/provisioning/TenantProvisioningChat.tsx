@@ -9,6 +9,8 @@ import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { cn } from "../../lib/utils"
 import { Button } from "../ui/button"
+import { Input } from "../ui/input"
+import { Label } from "../ui/label"
 import {
   Select,
   SelectContent,
@@ -33,7 +35,6 @@ import {
   RADIUS,
 } from "../../constants/designTokens"
 import {
-  Send,
   ArrowLeft,
   Building2,
   User,
@@ -44,7 +45,9 @@ import {
   Save,
   X,
   Edit3,
-  AlertCircle,
+  Lightbulb,
+  ChevronRight,
+  Sparkles,
 } from "lucide-react"
 
 // =============================================================================
@@ -210,49 +213,34 @@ export interface TenantFormData {
   billingCycle: string
 }
 
+// Re-export for backwards compatibility
+export type TenantChatFormData = TenantFormData
+
 export interface TenantProvisioningChatProps {
   onComplete: (tenantData: TenantFormData) => void
   onCancel?: () => void
-  onSaveProgress?: (data: Partial<TenantFormData>, step: string) => void
+  onSaveProgress?: (data: Partial<TenantFormData>, section: string) => void
   initialData?: Partial<TenantFormData>
   className?: string
 }
 
-type MessageRole = "assistant" | "user"
 type AgentState = "idle" | "thinking" | "planning" | "executing" | "complete"
+
+type SectionId = "company" | "contact" | "billing" | "subscription" | "review"
+
+interface FormSection {
+  id: SectionId
+  title: string
+  icon: React.ReactNode
+  fields: (keyof TenantFormData)[]
+  aiTip?: (data: Partial<TenantFormData>) => string | null
+}
 
 interface ChatMessage {
   id: string
-  role: MessageRole
+  type: "assistant" | "user-summary" | "ai-tip" | "form-card" | "review" | "success"
   content: string
-  timestamp: Date
-}
-
-type ChatStep =
-  | "companyName"
-  | "industry"
-  | "companySize"
-  | "contactEmail"
-  | "contactName"
-  | "contactPhone"
-  | "billingStreet"
-  | "billingCity"
-  | "billingState"
-  | "billingZip"
-  | "billingCountry"
-  | "pricingTier"
-  | "billingCycle"
-  | "review"
-  | "creating"
-  | "complete"
-
-interface StepConfig {
-  field: keyof TenantFormData | "review"
-  question: string | ((data: Partial<TenantFormData>) => string)
-  inputType: "text" | "email" | "tel" | "quickReply" | "select" | "review"
-  options?: string[]
-  placeholder?: string
-  label: string
+  sectionId?: SectionId
 }
 
 // =============================================================================
@@ -272,157 +260,569 @@ const COUNTRIES = [
   "France", "Japan", "Singapore", "Netherlands", "Switzerland"
 ]
 
-const STEPS: Record<ChatStep, StepConfig | null> = {
-  companyName: {
-    field: "companyName",
-    question: "Welcome! Let's set up a new tenant. What's the company name?",
-    inputType: "text",
-    placeholder: "Enter company name...",
-    label: "Company Name",
-  },
-  industry: {
-    field: "industry",
-    question: (data) => `Great! What industry is ${data.companyName || "the company"} in?`,
-    inputType: "quickReply",
-    options: ["Manufacturing", "Healthcare", "Construction", "Energy", "Transportation", "Other"],
-    label: "Industry",
-  },
-  companySize: {
-    field: "companySize",
-    question: "How many employees does the company have?",
-    inputType: "quickReply",
-    options: ["1-50", "51-200", "201-500", "501-1000", "1000+"],
-    label: "Company Size",
-  },
-  contactEmail: {
-    field: "contactEmail",
-    question: "What's the email address of the primary contact?",
-    inputType: "email",
-    placeholder: "contact@company.com",
-    label: "Contact Email",
-  },
-  contactName: {
-    field: "contactName",
-    question: "What's their full name?",
-    inputType: "text",
-    placeholder: "John Doe",
-    label: "Contact Name",
-  },
-  contactPhone: {
-    field: "contactPhone",
-    question: "And their phone number?",
-    inputType: "tel",
-    placeholder: "+1 555 123 4567",
-    label: "Contact Phone",
-  },
-  billingStreet: {
-    field: "billingStreet",
-    question: "Now let's set up billing. What's the street address?",
-    inputType: "text",
-    placeholder: "123 Main St, Suite 100",
-    label: "Street Address",
-  },
-  billingCity: {
-    field: "billingCity",
-    question: "What city?",
-    inputType: "text",
-    placeholder: "New York",
-    label: "City",
-  },
-  billingState: {
-    field: "billingState",
-    question: "Which US state?",
-    inputType: "select",
-    options: US_STATES,
-    label: "State",
-  },
-  billingZip: {
-    field: "billingZip",
-    question: (data) => data.billingCountry === "United States" ? "What's the ZIP code?" : "What's the postal code?",
-    inputType: "text",
-    placeholder: "10001",
-    label: "Postal/ZIP Code",
-  },
-  billingCountry: {
-    field: "billingCountry",
-    question: "Which country?",
-    inputType: "select",
-    options: COUNTRIES,
-    label: "Country",
-  },
-  pricingTier: {
-    field: "pricingTier",
-    question: "Configure the pricing package:",
-    inputType: "quickReply",
-    options: ["Starter", "Professional", "Enterprise"],
-    label: "Pricing Tier",
-  },
-  billingCycle: {
-    field: "billingCycle",
-    question: "How would they like to be billed?",
-    inputType: "quickReply",
-    options: ["Monthly", "Annually (Save 20%)"],
-    label: "Billing Cycle",
-  },
-  review: {
-    field: "review",
-    question: "Please review the tenant details before creating:",
-    inputType: "review",
-    label: "Review",
-  },
-  creating: null,
-  complete: null,
-}
+const INDUSTRIES = ["Manufacturing", "Healthcare", "Construction", "Energy", "Transportation", "Other"]
+const COMPANY_SIZES = ["1-50", "51-200", "201-500", "501-1000", "1000+"]
+const PRICING_TIERS = ["Starter", "Professional", "Enterprise"]
+const BILLING_CYCLES = ["Monthly", "Annually (Save 20%)"]
 
-const STEP_ORDER: ChatStep[] = [
-  "companyName", "industry", "companySize", "contactEmail",
-  "contactName", "contactPhone", "billingStreet", "billingCity",
-  "billingCountry", "billingState", "billingZip", "pricingTier",
-  "billingCycle", "review"
+const SECTIONS: FormSection[] = [
+  {
+    id: "company",
+    title: "Company Information",
+    icon: <Building2 className="w-4 h-4" />,
+    fields: ["companyName", "industry", "companySize"],
+    aiTip: (data) => {
+      if (data.industry === "Manufacturing") {
+        return "Manufacturing companies often benefit from our compliance modules. I'll make sure those are available in your setup."
+      }
+      if (data.industry === "Healthcare") {
+        return "Healthcare organizations have specific HIPAA compliance needs. Our Professional tier includes healthcare-specific features."
+      }
+      if (data.companySize === "1000+") {
+        return "Enterprise-scale companies often benefit from dedicated support. Consider our Enterprise tier for priority assistance."
+      }
+      return null
+    }
+  },
+  {
+    id: "contact",
+    title: "Primary Contact",
+    icon: <User className="w-4 h-4" />,
+    fields: ["contactName", "contactEmail", "contactPhone"],
+    aiTip: (data) => {
+      if (data.contactEmail && data.companyName) {
+        return `A welcome email will be sent to ${data.contactEmail} once the tenant is created.`
+      }
+      return null
+    }
+  },
+  {
+    id: "billing",
+    title: "Billing Address",
+    icon: <MapPin className="w-4 h-4" />,
+    fields: ["billingStreet", "billingCity", "billingCountry", "billingState", "billingZip"],
+  },
+  {
+    id: "subscription",
+    title: "Subscription",
+    icon: <CreditCard className="w-4 h-4" />,
+    fields: ["pricingTier", "billingCycle"],
+    aiTip: (data) => {
+      if (data.billingCycle === "Annually (Save 20%)") {
+        return "Great choice! Annual billing saves you 20% compared to monthly payments."
+      }
+      if (data.pricingTier === "Enterprise" && data.companySize && ["1-50", "51-200"].includes(data.companySize)) {
+        return "The Enterprise tier is typically for larger organizations. You might find the Professional tier more cost-effective for your team size."
+      }
+      return null
+    }
+  }
 ]
+
+const SECTION_MESSAGES: Record<SectionId, string> = {
+  company: "Let's start with your company details. Fill in what you know — I'll help with the rest.",
+  contact: "Now let's set up the primary contact for this tenant.",
+  billing: "Almost there! I need the billing address for invoices.",
+  subscription: "Finally, choose your pricing plan.",
+  review: "Here's a summary of the tenant you're about to create. Review and confirm when ready."
+}
 
 // =============================================================================
 // VALIDATION HELPERS
 // =============================================================================
 
-function _formatPhoneNumber(value: string): string {
-  // Allow + at the start and digits only
-  // Don't auto-format - let user enter their country code
-  return value
-}
-
 function validatePhone(phone: string): boolean {
-  // Must start with + followed by country code and number (minimum 10 digits total)
+  if (!phone) return true // Optional field
   const cleaned = phone.replace(/[\s()-]/g, "")
-  return /^\+\d{10,15}$/.test(cleaned)
+  return /^\+?\d{10,15}$/.test(cleaned)
 }
 
 function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function validateZip(zip: string): boolean {
-  return /^\d{5}(-\d{4})?$/.test(zip)
+function validateZip(zip: string, country: string): boolean {
+  if (country === "United States") {
+    return /^\d{5}(-\d{4})?$/.test(zip)
+  }
+  return zip.length > 0
 }
 
 // =============================================================================
-// PROGRESS BAR COMPONENT
+// SUB-COMPONENTS
 // =============================================================================
+
+interface ChatBubbleProps {
+  children: React.ReactNode
+  variant?: "assistant" | "tip" | "summary"
+}
+
+function ChatBubble({ children, variant = "assistant" }: ChatBubbleProps) {
+  const bgColor = variant === "tip" ? DEEP_CURRENT[50] : variant === "summary" ? CORAL[50] : WAVE[50]
+  const borderColor = variant === "tip" ? DEEP_CURRENT[200] : variant === "summary" ? CORAL[200] : "transparent"
+  const icon = variant === "tip" ? (
+    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: DEEP_CURRENT[100] }}>
+      <Lightbulb className="w-4 h-4" style={{ color: DEEP_CURRENT[600] }} />
+    </div>
+  ) : variant === "summary" ? (
+    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: CORAL[100] }}>
+      <User className="w-4 h-4" style={{ color: CORAL[600] }} />
+    </div>
+  ) : (
+    <div className="relative w-8 h-8">
+      <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: WAVE[50] }}>
+        <AgentLogo className="w-5 h-5" variant="light" />
+      </div>
+    </div>
+  )
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+      className="flex gap-3 max-w-[90%]"
+    >
+      <div className="flex-shrink-0">{icon}</div>
+      <div
+        className="px-4 py-3 text-sm leading-relaxed"
+        style={{
+          backgroundColor: bgColor,
+          border: borderColor !== "transparent" ? `1px solid ${borderColor}` : undefined,
+          borderRadius: `${RADIUS.md} ${RADIUS.md} ${RADIUS.md} ${RADIUS.xs}`,
+          color: ALIAS.text.primary,
+        }}
+      >
+        {children}
+      </div>
+    </motion.div>
+  )
+}
+
+interface FormCardProps {
+  section: FormSection
+  data: Partial<TenantFormData>
+  onChange: (field: keyof TenantFormData, value: string) => void
+  onSubmit: () => void
+  errors: Partial<Record<keyof TenantFormData, string>>
+}
+
+function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSubmit()
+  }
+
+  const renderField = (field: keyof TenantFormData) => {
+    const value = data[field] || ""
+    const error = errors[field]
+
+    // Skip state field for non-US countries
+    if (field === "billingState" && data.billingCountry !== "United States") {
+      return null
+    }
+
+    const fieldConfig: Record<keyof TenantFormData, { label: string; type: string; placeholder: string; options?: string[] }> = {
+      companyName: { label: "Company Name", type: "text", placeholder: "Acme Corporation" },
+      industry: { label: "Industry", type: "select", placeholder: "Select industry...", options: INDUSTRIES },
+      companySize: { label: "Company Size", type: "radio", placeholder: "", options: COMPANY_SIZES },
+      contactName: { label: "Full Name", type: "text", placeholder: "John Smith" },
+      contactEmail: { label: "Email Address", type: "email", placeholder: "john@company.com" },
+      contactPhone: { label: "Phone (optional)", type: "tel", placeholder: "+1 555 123 4567" },
+      billingStreet: { label: "Street Address", type: "text", placeholder: "123 Main St, Suite 100" },
+      billingCity: { label: "City", type: "text", placeholder: "New York" },
+      billingCountry: { label: "Country", type: "select", placeholder: "Select country...", options: COUNTRIES },
+      billingState: { label: "State", type: "select", placeholder: "Select state...", options: US_STATES },
+      billingZip: { label: data.billingCountry === "United States" ? "ZIP Code" : "Postal Code", type: "text", placeholder: "10001" },
+      pricingTier: { label: "Pricing Plan", type: "plan", placeholder: "", options: PRICING_TIERS },
+      billingCycle: { label: "Billing Cycle", type: "cycle", placeholder: "", options: BILLING_CYCLES },
+    }
+
+    const config = fieldConfig[field]
+
+    if (config.type === "select" && config.options) {
+      return (
+        <div key={field} className="space-y-1.5">
+          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <Select value={value} onValueChange={(v) => onChange(field, v)}>
+            <SelectTrigger className={cn("h-10", error && "border-error")}>
+              <SelectValue placeholder={config.placeholder} />
+            </SelectTrigger>
+            <SelectContent>
+              {config.options.map((opt) => (
+                <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+        </div>
+      )
+    }
+
+    if (config.type === "radio" && config.options) {
+      return (
+        <div key={field} className="space-y-2">
+          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <div className="flex flex-wrap gap-2">
+            {config.options.map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => onChange(field, opt)}
+                className={cn(
+                  "px-3 py-2 text-sm font-medium transition-all",
+                  value === opt
+                    ? "ring-2 ring-offset-1"
+                    : "hover:bg-surface-hover"
+                )}
+                style={{
+                  backgroundColor: value === opt ? DEEP_CURRENT[50] : ALIAS.background.surface,
+                  color: value === opt ? DEEP_CURRENT[700] : ALIAS.text.primary,
+                  border: `1px solid ${value === opt ? DEEP_CURRENT[300] : SLATE[200]}`,
+                  borderRadius: RADIUS.sm,
+                  boxShadow: value === opt ? `0 0 0 2px ${DEEP_CURRENT[500]}` : undefined,
+                }}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+        </div>
+      )
+    }
+
+    if (config.type === "plan" && config.options) {
+      const planDetails: Record<string, { price: string; desc: string }> = {
+        "Starter": { price: "$299/mo", desc: "Essential features for small teams" },
+        "Professional": { price: "$599/mo", desc: "Advanced tools for growing businesses" },
+        "Enterprise": { price: "$1,299/mo", desc: "Full platform with dedicated support" },
+      }
+      return (
+        <div key={field} className="space-y-2">
+          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <div className="grid gap-2">
+            {config.options.map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => onChange(field, opt)}
+                className={cn(
+                  "p-3 text-left transition-all flex items-center justify-between",
+                  value === opt && "ring-2 ring-offset-1"
+                )}
+                style={{
+                  backgroundColor: value === opt ? DEEP_CURRENT[50] : ALIAS.background.surface,
+                  border: `1px solid ${value === opt ? DEEP_CURRENT[300] : SLATE[200]}`,
+                  borderRadius: RADIUS.md,
+                  boxShadow: value === opt ? `0 0 0 2px ${DEEP_CURRENT[500]}` : undefined,
+                }}
+              >
+                <div>
+                  <div className="font-medium text-sm" style={{ color: ALIAS.text.primary }}>{opt}</div>
+                  <div className="text-xs" style={{ color: ALIAS.text.secondary }}>{planDetails[opt]?.desc}</div>
+                </div>
+                <div className="text-sm font-semibold" style={{ color: DEEP_CURRENT[600] }}>{planDetails[opt]?.price}</div>
+              </button>
+            ))}
+          </div>
+          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+        </div>
+      )
+    }
+
+    if (config.type === "cycle" && config.options) {
+      return (
+        <div key={field} className="space-y-2">
+          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <div className="flex gap-2">
+            {config.options.map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => onChange(field, opt)}
+                className={cn(
+                  "flex-1 px-4 py-3 text-sm font-medium transition-all",
+                  value === opt && "ring-2 ring-offset-1"
+                )}
+                style={{
+                  backgroundColor: value === opt ? DEEP_CURRENT[50] : ALIAS.background.surface,
+                  color: value === opt ? DEEP_CURRENT[700] : ALIAS.text.primary,
+                  border: `1px solid ${value === opt ? DEEP_CURRENT[300] : SLATE[200]}`,
+                  borderRadius: RADIUS.md,
+                  boxShadow: value === opt ? `0 0 0 2px ${DEEP_CURRENT[500]}` : undefined,
+                }}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+        </div>
+      )
+    }
+
+    return (
+      <div key={field} className="space-y-1.5">
+        <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+        <Input
+          type={config.type}
+          value={value}
+          onChange={(e) => onChange(field, e.target.value)}
+          placeholder={config.placeholder}
+          className={cn("h-10", error && "border-error")}
+        />
+        {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+      </div>
+    )
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="ml-11"
+    >
+      <form onSubmit={handleSubmit}>
+        <div
+          className="overflow-hidden"
+          style={{
+            backgroundColor: ALIAS.background.surface,
+            border: `1px solid ${SLATE[200]}`,
+            borderRadius: RADIUS.lg,
+            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+          }}
+        >
+          {/* Header */}
+          <div
+            className="px-4 py-3 flex items-center gap-2"
+            style={{ backgroundColor: DEEP_CURRENT[50], borderBottom: `1px solid ${SLATE[200]}` }}
+          >
+            <span style={{ color: DEEP_CURRENT[600] }}>{section.icon}</span>
+            <span className="text-sm font-semibold" style={{ color: DEEP_CURRENT[700] }}>
+              {section.title}
+            </span>
+          </div>
+
+          {/* Form Fields */}
+          <div className="p-4 space-y-4">
+            {section.fields.map(renderField)}
+          </div>
+
+          {/* Submit */}
+          <div className="px-4 pb-4">
+            <Button
+              type="submit"
+              className="w-full font-medium"
+              style={{
+                backgroundColor: DEEP_CURRENT[500],
+                color: ALIAS.background.surface,
+                borderRadius: RADIUS.md,
+              }}
+            >
+              Continue
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+        </div>
+      </form>
+    </motion.div>
+  )
+}
+
+interface ReviewScreenProps {
+  data: Partial<TenantFormData>
+  onEdit: (sectionId: SectionId) => void
+  onConfirm: () => void
+  isSubmitting: boolean
+}
+
+function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenProps) {
+  const reviewSections = [
+    {
+      id: "company" as SectionId,
+      title: "Company Information",
+      icon: <Building2 className="w-4 h-4" />,
+      items: [
+        { label: "Company Name", value: data.companyName },
+        { label: "Industry", value: data.industry },
+        { label: "Company Size", value: data.companySize },
+      ],
+    },
+    {
+      id: "contact" as SectionId,
+      title: "Primary Contact",
+      icon: <User className="w-4 h-4" />,
+      items: [
+        { label: "Name", value: data.contactName },
+        { label: "Email", value: data.contactEmail },
+        { label: "Phone", value: data.contactPhone || "—" },
+      ],
+    },
+    {
+      id: "billing" as SectionId,
+      title: "Billing Address",
+      icon: <MapPin className="w-4 h-4" />,
+      items: [
+        { label: "Street", value: data.billingStreet },
+        { label: "City", value: data.billingCity },
+        { label: "Country", value: data.billingCountry },
+        ...(data.billingCountry === "United States" ? [{ label: "State", value: data.billingState }] : []),
+        { label: data.billingCountry === "United States" ? "ZIP" : "Postal Code", value: data.billingZip },
+      ],
+    },
+    {
+      id: "subscription" as SectionId,
+      title: "Subscription",
+      icon: <CreditCard className="w-4 h-4" />,
+      items: [
+        { label: "Plan", value: data.pricingTier },
+        { label: "Billing Cycle", value: data.billingCycle },
+      ],
+    },
+  ]
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="ml-11"
+    >
+      <div
+        className="overflow-hidden"
+        style={{
+          backgroundColor: ALIAS.background.surface,
+          border: `1px solid ${SLATE[200]}`,
+          borderRadius: RADIUS.lg,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+        }}
+      >
+        {/* Header */}
+        <div
+          className="px-4 py-3 flex items-center gap-2"
+          style={{ backgroundColor: DEEP_CURRENT[50], borderBottom: `1px solid ${SLATE[200]}` }}
+        >
+          <Check className="w-4 h-4" style={{ color: DEEP_CURRENT[600] }} />
+          <span className="text-sm font-semibold" style={{ color: DEEP_CURRENT[700] }}>
+            Review Tenant Details
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className="p-4 space-y-4">
+          {reviewSections.map((section) => (
+            <div key={section.id} className="group">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span style={{ color: DEEP_CURRENT[500] }}>{section.icon}</span>
+                  <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: ALIAS.brand.primary }}>
+                    {section.title}
+                  </span>
+                </div>
+                <button
+                  onClick={() => onEdit(section.id)}
+                  className="opacity-0 group-hover:opacity-100 p-1.5 rounded transition-all hover:bg-surface-hover"
+                  style={{ color: DEEP_CURRENT[500] }}
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                </button>
+              </div>
+              <div className="space-y-1 ml-6">
+                {section.items.map((item) => (
+                  <div key={item.label} className="flex items-center gap-2">
+                    <span className="text-xs" style={{ color: ALIAS.text.secondary }}>{item.label}:</span>
+                    <span className="text-sm font-medium" style={{ color: ALIAS.text.primary }}>{item.value || "—"}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Actions */}
+        <div className="px-4 pb-4">
+          <Button
+            onClick={onConfirm}
+            disabled={isSubmitting}
+            className="w-full font-medium"
+            style={{
+              backgroundColor: DEEP_CURRENT[500],
+              color: ALIAS.background.surface,
+              borderRadius: RADIUS.md,
+            }}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Creating Tenant...
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4 mr-2" />
+                Create Tenant
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+interface SuccessCardProps {
+  data: TenantFormData
+}
+
+function SuccessCard({ data }: SuccessCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="ml-11"
+    >
+      <div
+        className="p-4 flex items-start gap-3"
+        style={{
+          backgroundColor: DEEP_CURRENT[50],
+          border: `1px solid ${DEEP_CURRENT[200]}`,
+          borderRadius: RADIUS.lg,
+        }}
+      >
+        <div
+          className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+          style={{ backgroundColor: DEEP_CURRENT[500] }}
+        >
+          <Check className="w-5 h-5 text-white" />
+        </div>
+        <div>
+          <h3 className="font-semibold" style={{ color: DEEP_CURRENT[700] }}>
+            Tenant Created Successfully!
+          </h3>
+          <p className="text-sm mt-1" style={{ color: ALIAS.text.primary }}>
+            <strong>{data.companyName}</strong> has been provisioned with the <strong>{data.pricingTier}</strong> plan.
+          </p>
+          <p className="text-xs mt-2" style={{ color: ALIAS.text.secondary }}>
+            A welcome email has been sent to {data.contactEmail}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 interface ProgressBarProps {
-  currentStep: number
-  totalSteps: number
-  stepLabel: string
+  currentSection: number
+  totalSections: number
 }
 
-function ProgressBar({ currentStep, totalSteps, stepLabel }: ProgressBarProps) {
-  const percentage = Math.round((currentStep / totalSteps) * 100)
+function ProgressBar({ currentSection, totalSections }: ProgressBarProps) {
+  const percentage = Math.round(((currentSection) / totalSections) * 100)
 
   return (
     <div className="px-4 py-2" style={{ backgroundColor: DEEP_CURRENT[50], borderBottom: `1px solid ${SLATE[200]}` }}>
       <div className="flex items-center justify-between mb-1.5">
         <span className="text-xs font-semibold" style={{ color: DEEP_CURRENT[700] }}>
-          Step {currentStep} of {totalSteps}: {stepLabel}
+          Section {currentSection} of {totalSections}
         </span>
         <span className="text-xs font-medium" style={{ color: DEEP_CURRENT[500] }}>
           {percentage}%
@@ -442,414 +842,6 @@ function ProgressBar({ currentStep, totalSteps, stepLabel }: ProgressBarProps) {
 }
 
 // =============================================================================
-// SUB-COMPONENTS
-// =============================================================================
-
-interface QuickReplyButtonsProps {
-  options: string[]
-  onSelect: (option: string) => void
-}
-
-function QuickReplyButtons({ options, onSelect }: QuickReplyButtonsProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-wrap gap-2 mt-2 ml-12"
-    >
-      {options.map((option, index) => (
-        <motion.button
-          key={option}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: index * 0.05 }}
-          whileHover={{ scale: 1.02, y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => onSelect(option)}
-          className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium transition-colors"
-          style={{
-            backgroundColor: ALIAS.background.surface,
-            color: DEEP_CURRENT[600],
-            border: `1px dashed ${DEEP_CURRENT[300]}`,
-            borderRadius: RADIUS.md,
-          }}
-        >
-          {option}
-        </motion.button>
-      ))}
-    </motion.div>
-  )
-}
-
-interface SelectOptionsProps {
-  options: string[]
-  onSelect: (option: string) => void
-  label: string
-}
-
-function SelectOptions({ options, onSelect, label }: SelectOptionsProps) {
-  const [selectedValue, setSelectedValue] = useState("")
-
-  const handleSelect = (value: string) => {
-    setSelectedValue(value)
-    onSelect(value)
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-2 ml-12"
-    >
-      <div
-        className="p-3 inline-block min-w-[200px]"
-        style={{
-          backgroundColor: ALIAS.background.surface,
-          border: `1px dashed ${DEEP_CURRENT[300]}`,
-          borderRadius: RADIUS.md,
-        }}
-      >
-        <Select value={selectedValue} onValueChange={handleSelect}>
-          <SelectTrigger className="text-sm">
-            <SelectValue placeholder={`Select ${label.toLowerCase()}...`} />
-          </SelectTrigger>
-          <SelectContent>
-            {options.map((option) => (
-              <SelectItem key={option} value={option}>{option}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </motion.div>
-  )
-}
-
-interface ChatBubbleProps {
-  message: ChatMessage
-  isLatest?: boolean
-}
-
-function ChatBubble({ message }: ChatBubbleProps) {
-  const isUser = message.role === "user"
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
-      className={cn("flex gap-2", isUser ? "ml-auto flex-row-reverse max-w-[80%]" : "mr-auto max-w-[85%]")}
-    >
-      {/* Avatar */}
-      <div className="relative flex-shrink-0 w-8 h-8">
-        <div
-          className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden"
-          style={{ backgroundColor: isUser ? CORAL[50] : WAVE[50] }}
-        >
-          {isUser ? (
-            <User className="w-4 h-4" style={{ color: CORAL[500] }} />
-          ) : (
-            <AgentLogo className="w-5 h-5" variant="light" />
-          )}
-        </div>
-        {!isUser && (
-          <motion.svg
-            className="absolute -inset-0.5 w-9 h-9"
-            viewBox="0 0 36 36"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          >
-            <circle cx="18" cy="18" r="17" fill="none" stroke={DEEP_CURRENT[200]} strokeWidth="1" strokeDasharray="2 2" />
-          </motion.svg>
-        )}
-      </div>
-
-      {/* Bubble */}
-      <div
-        className="px-3 py-2"
-        style={{
-          backgroundColor: isUser ? CORAL[50] : WAVE[50],
-          color: ALIAS.text.primary,
-          borderRadius: isUser ? `${RADIUS.md} ${RADIUS.md} ${RADIUS.xs} ${RADIUS.md}` : `${RADIUS.md} ${RADIUS.md} ${RADIUS.md} ${RADIUS.xs}`,
-        }}
-      >
-        <p className="text-sm leading-relaxed">{message.content}</p>
-      </div>
-    </motion.div>
-  )
-}
-
-interface ReviewScreenProps {
-  data: Partial<TenantFormData>
-  onEdit: (step: ChatStep) => void
-  onConfirm: () => void
-  isSubmitting: boolean
-}
-
-function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenProps) {
-  const sections = [
-    {
-      title: "Company Information",
-      icon: <Building2 className="w-4 h-4" />,
-      items: [
-        { label: "Company Name", value: data.companyName, step: "companyName" as ChatStep },
-        { label: "Industry", value: data.industry, step: "industry" as ChatStep },
-        { label: "Company Size", value: data.companySize, step: "companySize" as ChatStep },
-      ],
-    },
-    {
-      title: "Contact Details",
-      icon: <User className="w-4 h-4" />,
-      items: [
-        { label: "Name", value: data.contactName, step: "contactName" as ChatStep },
-        { label: "Email", value: data.contactEmail, step: "contactEmail" as ChatStep },
-        { label: "Phone", value: data.contactPhone, step: "contactPhone" as ChatStep },
-      ],
-    },
-    {
-      title: "Billing Address",
-      icon: <MapPin className="w-4 h-4" />,
-      items: [
-        { label: "Street", value: data.billingStreet, step: "billingStreet" as ChatStep },
-        { label: "City", value: data.billingCity, step: "billingCity" as ChatStep },
-        { label: "Country", value: data.billingCountry, step: "billingCountry" as ChatStep },
-        // Only show State for US addresses
-        ...(data.billingCountry === "United States" ? [{ label: "State", value: data.billingState, step: "billingState" as ChatStep }] : []),
-        { label: data.billingCountry === "United States" ? "ZIP" : "Postal Code", value: data.billingZip, step: "billingZip" as ChatStep },
-      ],
-    },
-    {
-      title: "Subscription",
-      icon: <CreditCard className="w-4 h-4" />,
-      items: [
-        { label: "Plan", value: data.pricingTier, step: "pricingTier" as ChatStep },
-        { label: "Billing Cycle", value: data.billingCycle, step: "billingCycle" as ChatStep },
-      ],
-    },
-  ]
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-2 ml-12"
-    >
-      <div
-        className="overflow-hidden"
-        style={{
-          backgroundColor: ALIAS.background.surface,
-          border: `1px dashed ${SLATE[300]}`,
-          borderRadius: RADIUS.md,
-        }}
-      >
-        {/* Header */}
-        <div
-          className="px-4 py-3 flex items-center gap-2"
-          style={{ backgroundColor: DEEP_CURRENT[50], borderBottom: `1px dashed ${SLATE[300]}` }}
-        >
-          <Check className="w-4 h-4" style={{ color: DEEP_CURRENT[500] }} />
-          <span className="text-sm font-semibold" style={{ color: DEEP_CURRENT[700] }}>
-            Review Tenant Details
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="p-4 space-y-4">
-          {sections.map((section) => (
-            <div key={section.title}>
-              <div className="flex items-center gap-2 mb-2">
-                <span style={{ color: DEEP_CURRENT[500] }}>{section.icon}</span>
-                <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: ALIAS.brand.primary }}>
-                  {section.title}
-                </span>
-              </div>
-              <div className="space-y-1.5 ml-6">
-                {section.items.map((item) => (
-                  <div key={item.label} className="flex items-center justify-between group">
-                    <div className="flex-1 min-w-0">
-                      <span className="text-xs" style={{ color: ALIAS.text.secondary }}>{item.label}: </span>
-                      <span className="text-sm font-medium" style={{ color: ALIAS.text.primary }}>{item.value || "—"}</span>
-                    </div>
-                    <button
-                      onClick={() => onEdit(item.step)}
-                      className="opacity-0 group-hover:opacity-100 p-1 rounded transition-opacity"
-                      style={{ color: DEEP_CURRENT[500] }}
-                    >
-                      <Edit3 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Actions */}
-        <div className="px-4 pb-4 pt-2">
-          <Button
-            onClick={onConfirm}
-            disabled={isSubmitting}
-            className="w-full font-medium"
-            style={{
-              backgroundColor: DEEP_CURRENT[500],
-              color: ALIAS.background.surface,
-              borderRadius: RADIUS.md,
-            }}
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Creating Tenant...
-              </>
-            ) : (
-              <>
-                <Check className="w-4 h-4 mr-2" />
-                Create Tenant
-              </>
-            )}
-          </Button>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-interface TenantSummaryCardProps {
-  data: TenantFormData
-}
-
-function TenantSummaryCard({ data }: TenantSummaryCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="mt-2 ml-12"
-    >
-      <div
-        className="p-4 flex items-start gap-3"
-        style={{
-          backgroundColor: DEEP_CURRENT[50],
-          border: `1px solid ${DEEP_CURRENT[200]}`,
-          borderRadius: RADIUS.md,
-        }}
-      >
-        <div
-          className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: DEEP_CURRENT[500] }}
-        >
-          <Check className="w-4 h-4 text-white" />
-        </div>
-        <div>
-          <h3 className="font-semibold text-sm" style={{ color: DEEP_CURRENT[700] }}>
-            Tenant Created Successfully!
-          </h3>
-          <p className="text-sm mt-1" style={{ color: ALIAS.text.primary }}>
-            <strong>{data.companyName}</strong> has been provisioned with the <strong>{data.pricingTier}</strong> plan.
-          </p>
-          <p className="text-xs mt-2" style={{ color: ALIAS.text.secondary }}>
-            A welcome email has been sent to {data.contactEmail}
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-interface ThinkingIndicatorProps {
-  state: AgentState
-}
-
-function ThinkingIndicator({ state }: ThinkingIndicatorProps) {
-  if (state !== "thinking" && state !== "planning" && state !== "executing") return null
-
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2">
-      <div className="relative w-8 h-8">
-        <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: WAVE[50] }}>
-          <AgentLogo className="w-5 h-5" state={state} variant="light" />
-        </div>
-        <motion.svg className="absolute -inset-0.5 w-9 h-9" viewBox="0 0 36 36" animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
-          <circle cx="18" cy="18" r="17" fill="none" stroke={DEEP_CURRENT[400]} strokeWidth="1" strokeDasharray="3 2" />
-        </motion.svg>
-      </div>
-      <span className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>
-        {state === "thinking" && "Analyzing..."}
-        {state === "planning" && "Planning..."}
-        {state === "executing" && "Processing..."}
-      </span>
-    </motion.div>
-  )
-}
-
-interface ConfirmationCardProps {
-  value: string
-  label: string
-  onConfirm: () => void
-  onEdit: () => void
-}
-
-function ConfirmationCard({ value, label, onConfirm, onEdit }: ConfirmationCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-2 ml-12 max-w-sm"
-    >
-      <div
-        className="overflow-hidden"
-        style={{
-          backgroundColor: DEEP_CURRENT[50],
-          border: `1px solid ${DEEP_CURRENT[200]}`,
-          borderRadius: RADIUS.md,
-        }}
-      >
-        {/* Header */}
-        <div
-          className="px-3 py-2 flex items-center gap-2"
-          style={{ backgroundColor: DEEP_CURRENT[100], borderBottom: `1px solid ${DEEP_CURRENT[200]}` }}
-        >
-          <AlertCircle className="w-3.5 h-3.5" style={{ color: DEEP_CURRENT[600] }} />
-          <span className="text-xs font-medium" style={{ color: DEEP_CURRENT[700] }}>
-            Confirm your answer
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="p-3">
-          <div className="mb-2.5">
-            <span className="text-xs" style={{ color: ALIAS.brand.primary }}>{label}</span>
-            <p className="text-sm font-medium mt-0.5" style={{ color: ALIAS.text.primary }}>{value}</p>
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onEdit}
-              className="flex-1 h-8 text-xs"
-              noEffect
-            >
-              <Edit3 className="w-3 h-3 mr-1" />
-              Edit
-            </Button>
-            <Button
-              variant="accent"
-              size="sm"
-              onClick={onConfirm}
-              className="flex-1 h-8 text-xs"
-              noEffect
-            >
-              <Check className="w-3 h-3 mr-1" />
-              Confirm
-            </Button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-// =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
@@ -860,132 +852,205 @@ export function TenantProvisioningChat({
   initialData,
   className,
 }: TenantProvisioningChatProps) {
-  const [currentStep, setCurrentStep] = useState<ChatStep>("companyName")
+  const [currentSectionIndex, setCurrentSectionIndex] = useState(0)
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [inputValue, setInputValue] = useState("")
   const [formData, setFormData] = useState<Partial<TenantFormData>>(initialData || {})
+  const [errors, setErrors] = useState<Partial<Record<keyof TenantFormData, string>>>({})
   const [agentState, setAgentState] = useState<AgentState>("idle")
   const [showExitDialog, setShowExitDialog] = useState(false)
-  const [inputError, setInputError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [pendingValue, setPendingValue] = useState<string | null>(null)
+  const [isComplete, setIsComplete] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const lastAddedStepRef = useRef<ChatStep | null>(null)
-  const formDataRef = useRef<Partial<TenantFormData>>({})
+  const initializedRef = useRef(false)
 
-  const currentStepIndex = STEP_ORDER.indexOf(currentStep)
-  const totalSteps = STEP_ORDER.length
-  const stepConfig = STEPS[currentStep]
+  const currentSection = SECTIONS[currentSectionIndex]
+  const isReviewStep = currentSectionIndex >= SECTIONS.length
 
-  useEffect(() => { formDataRef.current = formData }, [formData])
-
-  // Add assistant message for current step
+  // Initialize with welcome message
   useEffect(() => {
-    if (lastAddedStepRef.current === currentStep) return
-    const config = STEPS[currentStep]
-    if (config) {
-      const simulateReasoning = async () => {
-        if (currentStep !== "companyName") {
-          setAgentState("thinking")
-          await new Promise((r) => setTimeout(r, 400))
-          setAgentState("planning")
-          await new Promise((r) => setTimeout(r, 300))
-          setAgentState("executing")
-          await new Promise((r) => setTimeout(r, 200))
-        }
-        const question = typeof config.question === "function" ? config.question(formDataRef.current) : config.question
-        setMessages((prev) => [...prev, { id: `assistant-${Date.now()}`, role: "assistant", content: question, timestamp: new Date() }])
-        lastAddedStepRef.current = currentStep
-        setAgentState("idle")
-      }
-      simulateReasoning()
-    }
-  }, [currentStep])
+    if (initializedRef.current) return
+    initializedRef.current = true
 
+    const initChat = async () => {
+      setAgentState("thinking")
+      await new Promise((r) => setTimeout(r, 300))
+
+      setMessages([
+        {
+          id: "welcome",
+          type: "assistant",
+          content: "Welcome! I'll help you set up a new tenant. This will only take a few minutes — just 4 quick sections.",
+        },
+        {
+          id: "section-0",
+          type: "assistant",
+          content: SECTION_MESSAGES.company,
+          sectionId: "company",
+        },
+      ])
+      setAgentState("idle")
+    }
+
+    initChat()
+  }, [])
+
+  // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages, agentState])
+  }, [messages, currentSectionIndex])
 
-  useEffect(() => {
-    if (stepConfig?.inputType === "text" || stepConfig?.inputType === "email" || stepConfig?.inputType === "tel") {
-      setTimeout(() => inputRef.current?.focus(), 100)
-    }
-  }, [currentStep, stepConfig?.inputType])
+  const validateSection = (section: FormSection): boolean => {
+    const newErrors: Partial<Record<keyof TenantFormData, string>> = {}
+    let isValid = true
 
-  const addUserMessage = (content: string) => {
-    setMessages((prev) => [...prev, { id: `user-${Date.now()}`, role: "user", content, timestamp: new Date() }])
-  }
-
-  const goToNextStep = () => {
-    const idx = STEP_ORDER.indexOf(currentStep)
-    if (idx < STEP_ORDER.length - 1) {
-      let nextStep = STEP_ORDER[idx + 1]
-      // Skip state step if country is not United States
-      if (nextStep === "billingState" && formDataRef.current.billingCountry !== "United States") {
-        nextStep = STEP_ORDER[idx + 2] // Skip to billingZip
+    for (const field of section.fields) {
+      // Skip state for non-US
+      if (field === "billingState" && formData.billingCountry !== "United States") {
+        continue
       }
-      setCurrentStep(nextStep)
+
+      const value = formData[field] || ""
+
+      // Required field check (phone is optional)
+      if (field !== "contactPhone" && !value.trim()) {
+        newErrors[field] = "This field is required"
+        isValid = false
+        continue
+      }
+
+      // Specific validations
+      if (field === "contactEmail" && !validateEmail(value)) {
+        newErrors[field] = "Please enter a valid email address"
+        isValid = false
+      }
+      if (field === "contactPhone" && value && !validatePhone(value)) {
+        newErrors[field] = "Please enter a valid phone number"
+        isValid = false
+      }
+      if (field === "billingZip" && !validateZip(value, formData.billingCountry || "")) {
+        newErrors[field] = formData.billingCountry === "United States"
+          ? "Please enter a valid ZIP code (e.g., 12345)"
+          : "Please enter a valid postal code"
+        isValid = false
+      }
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
+  const handleFieldChange = (field: keyof TenantFormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }))
     }
   }
 
-  const goToStep = (step: ChatStep) => {
-    lastAddedStepRef.current = null
-    setCurrentStep(step)
+  const handleSectionSubmit = async () => {
+    if (!validateSection(currentSection)) return
+
+    // Add user summary message
+    const summaryParts = currentSection.fields
+      .filter((f) => f !== "billingState" || formData.billingCountry === "United States")
+      .map((f) => formData[f])
+      .filter(Boolean)
+
+    const newMessages: ChatMessage[] = [
+      {
+        id: `summary-${currentSection.id}`,
+        type: "user-summary",
+        content: summaryParts.join(" • "),
+        sectionId: currentSection.id,
+      },
+    ]
+
+    // Check for AI tip
+    if (currentSection.aiTip) {
+      const tip = currentSection.aiTip(formData)
+      if (tip) {
+        newMessages.push({
+          id: `tip-${currentSection.id}`,
+          type: "ai-tip",
+          content: tip,
+        })
+      }
+    }
+
+    setMessages((prev) => [...prev, ...newMessages])
+
+    // Move to next section
+    await new Promise((r) => setTimeout(r, 200))
+    setAgentState("thinking")
+    await new Promise((r) => setTimeout(r, 400))
+
+    const nextIndex = currentSectionIndex + 1
+    if (nextIndex < SECTIONS.length) {
+      const nextSection = SECTIONS[nextIndex]
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `section-${nextIndex}`,
+          type: "assistant",
+          content: SECTION_MESSAGES[nextSection.id],
+          sectionId: nextSection.id,
+        },
+      ])
+      setCurrentSectionIndex(nextIndex)
+    } else {
+      // Show review
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: "review-intro",
+          type: "assistant",
+          content: SECTION_MESSAGES.review,
+          sectionId: "review",
+        },
+      ])
+      setCurrentSectionIndex(nextIndex)
+    }
+
+    setAgentState("idle")
+    onSaveProgress?.(formData, currentSection.id)
+  }
+
+  const handleEditSection = (sectionId: SectionId) => {
+    const index = SECTIONS.findIndex((s) => s.id === sectionId)
+    if (index >= 0) {
+      setCurrentSectionIndex(index)
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `edit-${sectionId}-${Date.now()}`,
+          type: "assistant",
+          content: `Let's update the ${SECTIONS[index].title.toLowerCase()}.`,
+          sectionId,
+        },
+      ])
+    }
   }
 
   const handleCreateTenant = async () => {
     setIsSubmitting(true)
     setAgentState("executing")
     await new Promise((r) => setTimeout(r, 1500))
+
     const completeData = formData as TenantFormData
-    setMessages((prev) => [...prev, { id: `assistant-success-${Date.now()}`, role: "assistant", content: `Tenant '${completeData.companyName}' has been created successfully!`, timestamp: new Date() }])
-    setCurrentStep("complete")
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: "success",
+        type: "success",
+        content: `Tenant "${completeData.companyName}" has been created successfully!`,
+      },
+    ])
+
+    setIsComplete(true)
     setAgentState("complete")
     setIsSubmitting(false)
     setTimeout(() => setAgentState("idle"), 2000)
     onComplete(completeData)
-  }
-
-  const validateInput = (value: string): string | null => {
-    if (!value.trim()) return "This field is required"
-    if (stepConfig?.inputType === "email" && !validateEmail(value)) {
-      return "Please enter a valid email address (e.g., name@company.com)"
-    }
-    if (stepConfig?.inputType === "tel" && !validatePhone(value)) {
-      return "Please enter a valid phone number with country code (e.g., +1 555 123 4567)"
-    }
-    if (currentStep === "billingZip") {
-      // Only validate US ZIP format for United States
-      if (formDataRef.current.billingCountry === "United States" && !validateZip(value)) {
-        return "Please enter a valid ZIP code (e.g., 12345 or 12345-6789)"
-      }
-      // For other countries, just require some postal code
-      if (!value.trim()) {
-        return "Please enter a postal/ZIP code"
-      }
-    }
-    return null
-  }
-
-  const handleTextSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const error = validateInput(inputValue)
-    if (error) {
-      setInputError(error)
-      return
-    }
-    if (!stepConfig) return
-    // Set pending value for confirmation instead of immediately proceeding
-    setPendingValue(inputValue)
-    setInputValue("")
-    setInputError(null)
-  }
-
-  const handleQuickReplySelect = (option: string) => {
-    if (!stepConfig) return
-    // Set pending value for confirmation instead of immediately proceeding
-    setPendingValue(option)
   }
 
   const handleBack = () => {
@@ -996,35 +1061,17 @@ export function TenantProvisioningChat({
     }
   }
 
-  const handleConfirmValue = () => {
-    if (!stepConfig || !pendingValue) return
-    addUserMessage(pendingValue)
-    setFormData((prev) => ({ ...prev, [stepConfig.field]: pendingValue }))
-    setPendingValue(null)
-    goToNextStep()
-  }
-
-  const handleEditValue = () => {
-    // Clear pending value and let user re-enter
-    if (!pendingValue) return
-    // For text/email/tel inputs, put the value back in the input field for editing
-    if (stepConfig?.inputType === "text" || stepConfig?.inputType === "email" || stepConfig?.inputType === "tel") {
-      setInputValue(pendingValue)
-    }
-    setPendingValue(null)
-  }
-
   const handleSaveAndExit = () => {
-    onSaveProgress?.(formData, currentStep)
+    onSaveProgress?.(formData, currentSection?.id || "company")
     setShowExitDialog(false)
     onCancel?.()
   }
 
   const getStatusText = () => {
     switch (agentState) {
-      case "thinking": return "Analyzing..."
+      case "thinking": return "Processing..."
       case "planning": return "Planning..."
-      case "executing": return "Processing..."
+      case "executing": return "Creating tenant..."
       case "complete": return "Complete!"
       default: return "Ready to help"
     }
@@ -1040,7 +1087,7 @@ export function TenantProvisioningChat({
         <div className="flex items-center justify-between px-4 py-3" style={{ backgroundColor: ALIAS.background.surface, borderBottom: `1px solid ${SLATE[200]}` }}>
           <div className="flex items-center gap-3">
             {onCancel && (
-              <button onClick={handleBack} className="p-1.5 rounded-lg transition-colors hover:bg-surface-hover" title="Exit (progress will be saved)">
+              <button onClick={handleBack} className="p-1.5 rounded-lg transition-colors hover:bg-surface-hover" title="Exit">
                 <ArrowLeft className="w-4 h-4" style={{ color: SLATE[500] }} />
               </button>
             )}
@@ -1062,7 +1109,7 @@ export function TenantProvisioningChat({
               <p className="text-xs" style={{ color: DEEP_CURRENT[500] }}>{getStatusText()}</p>
             </div>
           </div>
-          {onSaveProgress && currentStepIndex > 0 && currentStep !== "complete" && (
+          {onSaveProgress && currentSectionIndex > 0 && !isComplete && (
             <button
               onClick={() => setShowExitDialog(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors hover:bg-surface-hover"
@@ -1075,128 +1122,80 @@ export function TenantProvisioningChat({
         </div>
 
         {/* Progress Bar */}
-        {currentStepIndex >= 0 && currentStepIndex < totalSteps && (
+        {!isComplete && (
           <ProgressBar
-            currentStep={currentStepIndex + 1}
-            totalSteps={totalSteps}
-            stepLabel={stepConfig?.label || ""}
+            currentSection={Math.min(currentSectionIndex + 1, SECTIONS.length + 1)}
+            totalSections={SECTIONS.length + 1}
           />
         )}
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           <AnimatePresence mode="popLayout">
-            {messages.map((message, idx) => (
-              <ChatBubble key={message.id} message={message} isLatest={idx === messages.length - 1} />
-            ))}
+            {messages.map((msg) => {
+              if (msg.type === "assistant") {
+                return (
+                  <ChatBubble key={msg.id} variant="assistant">
+                    {msg.content}
+                  </ChatBubble>
+                )
+              }
+              if (msg.type === "ai-tip") {
+                return (
+                  <ChatBubble key={msg.id} variant="tip">
+                    {msg.content}
+                  </ChatBubble>
+                )
+              }
+              if (msg.type === "user-summary") {
+                return (
+                  <ChatBubble key={msg.id} variant="summary">
+                    {msg.content}
+                  </ChatBubble>
+                )
+              }
+              if (msg.type === "success") {
+                return <SuccessCard key={msg.id} data={formData as TenantFormData} />
+              }
+              return null
+            })}
           </AnimatePresence>
 
-          <ThinkingIndicator state={agentState} />
-
-          {/* Confirmation Card for pending values */}
-          {pendingValue && stepConfig && (
-            <ConfirmationCard
-              value={pendingValue}
-              label={stepConfig.label}
-              onConfirm={handleConfirmValue}
-              onEdit={handleEditValue}
+          {/* Active Form Card */}
+          {!isComplete && !isReviewStep && currentSection && agentState === "idle" && (
+            <FormCard
+              section={currentSection}
+              data={formData}
+              onChange={handleFieldChange}
+              onSubmit={handleSectionSubmit}
+              errors={errors}
             />
           )}
 
-          {/* Only show quick replies if no pending value */}
-          {stepConfig?.inputType === "quickReply" && stepConfig.options && agentState === "idle" && !pendingValue && (
-            <QuickReplyButtons options={stepConfig.options} onSelect={handleQuickReplySelect} />
+          {/* Review Screen */}
+          {!isComplete && isReviewStep && agentState === "idle" && (
+            <ReviewScreen
+              data={formData}
+              onEdit={handleEditSection}
+              onConfirm={handleCreateTenant}
+              isSubmitting={isSubmitting}
+            />
           )}
 
-          {/* Select options (for state/country dropdowns) */}
-          {stepConfig?.inputType === "select" && stepConfig.options && agentState === "idle" && !pendingValue && (
-            <SelectOptions options={stepConfig.options} onSelect={handleQuickReplySelect} label={stepConfig.label} />
-          )}
-
-          {stepConfig?.inputType === "review" && agentState === "idle" && (
-            <ReviewScreen data={formData} onEdit={goToStep} onConfirm={handleCreateTenant} isSubmitting={isSubmitting} />
-          )}
-
-          {currentStep === "complete" && formData.companyName && (
-            <TenantSummaryCard data={formData as TenantFormData} />
+          {/* Thinking Indicator */}
+          {(agentState === "thinking" || agentState === "planning" || agentState === "executing") && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 ml-11">
+              <div className="relative w-6 h-6">
+                <AgentLogo className="w-6 h-6" state={agentState} variant="light" />
+              </div>
+              <span className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>
+                {agentState === "executing" ? "Creating tenant..." : "Processing..."}
+              </span>
+            </motion.div>
           )}
 
           <div ref={messagesEndRef} />
         </div>
-
-        {/* Input Area - hide when there's a pending value awaiting confirmation */}
-        {(stepConfig?.inputType === "text" || stepConfig?.inputType === "email" || stepConfig?.inputType === "tel") && agentState === "idle" && !pendingValue && (
-          <div className="p-3" style={{ backgroundColor: ALIAS.background.surface, borderTop: `1px solid ${SLATE[200]}` }}>
-            <form onSubmit={handleTextSubmit} className="space-y-2" noValidate>
-              <div className="flex gap-2">
-                <div className="flex-1 relative">
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => {
-                      let val = e.target.value
-                      // For phone: allow +, digits, spaces, parentheses, dashes
-                      if (stepConfig.inputType === "tel") {
-                        val = val.replace(/[^\d\s()+-]/g, "").slice(0, 20)
-                      }
-                      setInputValue(val)
-                      setInputError(null)
-                    }}
-                    placeholder={stepConfig.placeholder || "Type your response..."}
-                    className={cn(
-                      "w-full px-4 py-2.5 text-sm focus:outline-none transition-colors",
-                      inputError && "border-error"
-                    )}
-                    style={{
-                      backgroundColor: ALIAS.background.surface,
-                      border: `1px solid ${inputError ? CORAL[500] : SLATE[300]}`,
-                      borderRadius: RADIUS.md,
-                      color: ALIAS.text.primary,
-                    }}
-                  />
-                  {inputError && (
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      <AlertCircle className="w-4 h-4" style={{ color: CORAL[500] }} />
-                    </div>
-                  )}
-                </div>
-                <motion.button
-                  type="submit"
-                  disabled={!inputValue.trim()}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
-                  style={{
-                    backgroundColor: inputValue.trim() ? DEEP_CURRENT[500] : SLATE[100],
-                    color: inputValue.trim() ? ALIAS.background.surface : SLATE[400],
-                  }}
-                >
-                  <Send className="w-4 h-4" />
-                </motion.button>
-              </div>
-              {/* Styled validation error message */}
-              <AnimatePresence>
-                {inputError && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                    className="flex items-center gap-2 px-3 py-2 rounded-md"
-                    style={{
-                      backgroundColor: CORAL[50],
-                      border: `1px solid ${CORAL[200]}`,
-                    }}
-                  >
-                    <AlertCircle className="w-4 h-4 flex-shrink-0" style={{ color: CORAL[500] }} />
-                    <p className="text-sm" style={{ color: CORAL[700] }}>{inputError}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </form>
-          </div>
-        )}
       </div>
 
       {/* Exit Confirmation Dialog */}
