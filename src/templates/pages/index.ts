@@ -10,3 +10,10 @@ export type {
 
 export { PlaceholderPage } from './PlaceholderPage'
 export type { PlaceholderPageProps } from './PlaceholderPage'
+
+export { PartnerPortalPage } from './PartnerPortalPage'
+export type {
+  PartnerPortalPageProps,
+  PartnerPortalStats,
+  DashboardConfig,
+} from './PartnerPortalPage'

@@ -59,6 +59,8 @@ export { HeroParticles } from './components/ui/HeroParticles'
 export { MouseParticleRenderer } from './components/ui/MouseParticleRenderer'
 export { BlurImage } from './components/ui/BlurImage'
 export { CheckListItem } from './components/ui/CheckListItem'
+export { IconText, IconHeading1, IconHeading2, IconHeading3, IconLabel } from './components/ui/IconText'
+export type { IconTextProps } from './components/ui/IconText'
 export { OptimizedImage } from './components/ui/OptimizedImage'
 export { ResponsiveImage } from './components/ui/ResponsiveImage'
 export { ResponsivePicture } from './components/ui/ResponsivePicture'
@@ -125,6 +127,8 @@ export {
   SheetDescription,
 } from './components/ui/sheet'
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs'
+export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/ui/tabs'
 export { Label } from './components/ui/label'
 export { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from './components/ui/form'
 export { AnimatedLogo } from './components/ui/AnimatedLogo'
@@ -368,6 +372,12 @@ export type { MouseParticle } from './hooks/useMouseParticles'
 export { useHeroTitleRotation } from './hooks/useHeroTitleRotation'
 export { useHeaderContrast, useContrastColor } from './hooks/useHeaderContrast'
 
+// Export visualization components
+export { TokenTree3D, transformTokensToTree } from './components/visualization/TokenTree3D'
+export type { TreeNode, TreeNodeType, TreeConfig, TokenTree3DProps } from './components/visualization/TokenTree3D'
+export { DependencyGraph } from './components/visualization/DependencyGraph'
+export type { GraphNode, GraphLink, DependencyData, GraphFilters, DependencyGraphProps } from './components/visualization/DependencyGraph'
+
 // Export assets
 export { optimizedImages } from './assets/optimized'
 export { aboutImages } from './assets/optimized/about'
@@ -386,13 +396,16 @@ export type {
 } from './templates/layout/AppLayoutShell'
 
 // Page templates (pure UI components)
-export { DashboardPage, PlaceholderPage } from './templates/pages'
+export { DashboardPage, PlaceholderPage, PartnerPortalPage } from './templates/pages'
 export type {
   DashboardPageProps,
   KPICardData,
   ActivityItemData,
   QuickActionData,
   PlaceholderPageProps,
+  PartnerPortalPageProps,
+  PartnerPortalStats,
+  DashboardConfig,
 } from './templates/pages'
 
 // Pre-built navigation configs
