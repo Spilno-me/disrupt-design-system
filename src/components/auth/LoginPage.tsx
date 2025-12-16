@@ -4,6 +4,7 @@ import * as React from "react"
 import { useState } from "react"
 import { cn } from "../../lib/utils"
 import { GridBlobBackground } from "../ui/GridBlobCanvas"
+import { HeroParticles } from "../ui/HeroParticles"
 import { LoginForm, type LoginFormValues } from "./LoginForm"
 import { ForgotPasswordForm } from "./ForgotPasswordForm"
 import {
@@ -13,7 +14,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../ui/dialog"
-import { SHADOWS } from "../../constants/designTokens"
 import { LOGOS } from "../../assets/logos"
 import { ExecutingAnimation } from "../ui/ExecutingAnimation"
 
@@ -264,8 +264,7 @@ export function LoginPage({
           <div className="relative z-10 w-full max-w-md">
         {/* Main card */}
         <div
-          className="rounded-xl border border-dashed border-default bg-surface p-5 sm:p-6 lg:p-8"
-          style={{ boxShadow: SHADOWS.ambient }}
+          className="rounded-xl border border-default bg-surface p-5 sm:p-6 lg:p-8 shadow-ambient"
         >
           {/* Product Logo */}
           {pageState === "login" && (
@@ -327,59 +326,64 @@ export function LoginPage({
           data-testid="hero-section"
           data-position={loginPosition}
         >
-          {/* Hero image background */}
+          {/* Hero image background - full vibrancy */}
           <div className="absolute inset-0">
             <img
               src={heroImage || "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80"}
               alt={heroImageAlt}
-              className="w-full h-full object-cover opacity-40"
+              className="w-full h-full object-cover"
             />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-surface/80 via-surface/70 to-transparent" />
+            {/* Subtle vignette for depth - edges only */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
+            {/* Floating particles overlay */}
+            <HeroParticles />
           </div>
 
-          {/* Hero content */}
+          {/* Hero content with frosted glass effect */}
           <div className="relative z-10 flex items-center justify-center w-full p-12">
-            <div className="max-w-lg mx-auto space-y-8">
-              {/* Main headline */}
-              <div className="text-center space-y-4">
-                <h2 className="text-4xl font-bold text-primary">
-                  Welcome to {product ? PRODUCT_CONFIGS[product].name : "Disrupt"}
-                </h2>
-                <p className="text-lg text-muted">
-                  {product === "partner"
-                    ? "Manage your partnerships, track commissions, and grow your business with our comprehensive partner platform."
-                    : product === "market"
-                    ? "Discover and manage EHS solutions in our comprehensive marketplace platform."
-                    : "Streamline your EHS workflows with intelligent automation and compliance tools."
-                  }
-                </p>
-              </div>
+            <div className="max-w-md mx-auto w-full">
+              {/* Frosted glass card - matches login card sizing */}
+              <div className="backdrop-blur-md bg-surface/70 rounded-xl p-5 sm:p-6 lg:p-8 shadow-ambient border border-white/10">
+                {/* Main headline */}
+                <div className="text-center space-y-4">
+                  <h2 className="text-4xl font-bold text-primary">
+                    Welcome to {product ? PRODUCT_CONFIGS[product].name : "Disrupt"}
+                  </h2>
+                  <p className="text-lg text-secondary">
+                    {product === "partner"
+                      ? "Manage your partnerships, track commissions, and grow your business with our comprehensive partner platform."
+                      : product === "market"
+                      ? "Discover and manage EHS solutions in our comprehensive marketplace platform."
+                      : "Streamline your EHS workflows with intelligent automation and compliance tools."
+                    }
+                  </p>
+                </div>
 
-              {/* Stats grid */}
-              <div className="grid grid-cols-3 gap-6 mt-12">
-                <div className="text-center space-y-2">
-                  <div className="text-4xl font-bold text-primary">
-                    {product === "partner" ? "10K+" : "50K+"}
+                {/* Stats grid */}
+                <div className="grid grid-cols-3 gap-6 mt-8 pt-6 border-t border-default/50">
+                  <div className="text-center space-y-1">
+                    <div className="text-3xl font-bold text-primary">
+                      {product === "partner" ? "10K+" : "50K+"}
+                    </div>
+                    <div className="text-xs text-muted">
+                      {product === "partner" ? "Active Partners" : "Active Users"}
+                    </div>
                   </div>
-                  <div className="text-sm text-secondary">
-                    {product === "partner" ? "Active Partners" : "Active Users"}
+                  <div className="text-center space-y-1">
+                    <div className="text-3xl font-bold text-primary">
+                      {product === "partner" ? "$50M+" : "99.9%"}
+                    </div>
+                    <div className="text-xs text-muted">
+                      {product === "partner" ? "Commissions Paid" : "Uptime"}
+                    </div>
                   </div>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="text-4xl font-bold text-primary">
-                    {product === "partner" ? "$50M+" : "99.9%"}
-                  </div>
-                  <div className="text-sm text-secondary">
-                    {product === "partner" ? "Commissions Paid" : "Uptime"}
-                  </div>
-                </div>
-                <div className="text-center space-y-2">
-                  <div className="text-4xl font-bold text-primary">
-                    {product === "partner" ? "99.9%" : "24/7"}
-                  </div>
-                  <div className="text-sm text-secondary">
-                    {product === "partner" ? "Uptime" : "Support"}
+                  <div className="text-center space-y-1">
+                    <div className="text-3xl font-bold text-primary">
+                      {product === "partner" ? "99.9%" : "24/7"}
+                    </div>
+                    <div className="text-xs text-muted">
+                      {product === "partner" ? "Uptime" : "Support"}
+                    </div>
                   </div>
                 </div>
               </div>
