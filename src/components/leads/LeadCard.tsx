@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { MoreVertical, Mail, Phone, Building2, Calendar, Globe, DollarSign, Eye, Edit, Trash2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { SHADOWS, RADIUS } from '../../constants/designTokens'
 import { Button } from '../ui/button'
 import { SeverityIndicator, SeverityLevel } from '../ui/SeverityIndicator'
 import {
@@ -108,14 +107,10 @@ export function LeadCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-3 p-4 bg-surface border border-default rounded-lg',
+        'flex flex-col gap-3 p-4 bg-surface border border-default rounded-lg shadow-sm',
         'cursor-pointer hover:border-accent hover:shadow-md transition-all',
         className
       )}
-      style={{
-        boxShadow: SHADOWS.sm,
-        borderRadius: RADIUS.lg,
-      }}
       onClick={handleClick}
       role="button"
       tabIndex={0}

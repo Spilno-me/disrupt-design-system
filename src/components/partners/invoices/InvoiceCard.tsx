@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { MoreVertical, Copy, Eye, Download, Pencil, Send, Trash2, FileText } from 'lucide-react'
 import { cn } from '../../../lib/utils'
-import { SHADOWS, RADIUS } from '../../../constants/designTokens'
 import { Button } from '../../ui/button'
 import {
   DropdownMenu,
@@ -57,15 +56,11 @@ export function InvoiceCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-3 p-4 bg-surface rounded-lg',
+        'flex flex-col gap-3 p-4 rounded-lg shadow-sm',
         'cursor-pointer hover:border-accent hover:shadow-md transition-all',
-        isDraft ? 'border-2 border-dashed border-default' : 'border border-default',
+        isDraft ? 'border-2 border-default bg-muted-bg/50' : 'border border-default bg-surface',
         className
       )}
-      style={{
-        boxShadow: SHADOWS.sm,
-        borderRadius: RADIUS.lg,
-      }}
       onClick={handleClick}
       role="button"
       tabIndex={0}
