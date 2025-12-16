@@ -1,0 +1,93 @@
+/**
+ * PricingCalculator Design Tokens
+ *
+ * Standalone CSS variables extracted from DDS v2.3.1
+ * Import this file in your app entry point
+ */
+
+:root {
+  /* ===========================================
+   * FONTS
+   * =========================================== */
+  --font-sans: "Fixel", "system-ui", "sans-serif";
+
+  /* ===========================================
+   * SEMANTIC TEXT COLORS
+   * =========================================== */
+  --color-primary: #2D3142;      /* Main text */
+  --color-secondary: #5E4F7E;    /* Secondary/muted text */
+  --color-muted: #5E4F7E;        /* Alias for secondary */
+  --color-accent: #08A4BD;       /* Teal accent */
+  --color-success: #22C55E;      /* Success/positive */
+  --color-error: #F70D1A;        /* Error/destructive */
+
+  /* ===========================================
+   * BACKGROUND COLORS
+   * =========================================== */
+  --color-surface: #FFFFFF;      /* Cards, panels */
+  --color-page: #FBFBF3;         /* Page background (cream) */
+  --color-accent-bg: #E6F7FA;    /* Light teal highlight */
+  --color-accent-strong: #08A4BD; /* Strong teal (buttons) */
+  --color-muted-bg: #EFEDF3;     /* Muted backgrounds */
+
+  /* ===========================================
+   * BORDER COLORS
+   * =========================================== */
+  --color-default: #CBD5E1;      /* Default borders */
+  --color-subtle: #D1D3D7;       /* Subtle borders */
+  --color-strong: #757B87;       /* Strong borders */
+  --color-focus: #08A4BD;        /* Focus rings */
+
+  /* ===========================================
+   * SHADOWS
+   * =========================================== */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* ===========================================
+   * SPACING (4px base)
+   * =========================================== */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+
+  /* ===========================================
+   * BORDER RADIUS
+   * =========================================== */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+/* ===========================================
+ * TAILWIND-LIKE UTILITY CLASSES
+ * =========================================== */
+
+/* Text Colors */
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.text-muted { color: var(--color-muted); }
+.text-accent { color: var(--color-accent); }
+.text-success { color: var(--color-success); }
+
+/* Background Colors */
+.bg-surface { background-color: var(--color-surface); }
+.bg-page { background-color: var(--color-page); }
+.bg-accent-bg { background-color: var(--color-accent-bg); }
+.bg-accent-strong { background-color: var(--color-accent-strong); }
+
+/* Border Colors */
+.border-default { border-color: var(--color-default); }
+.border-subtle { border-color: var(--color-subtle); }
+.border-strong { border-color: var(--color-strong); }
+
+/* Focus Ring */
+.focus-visible\:ring-accent:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(8, 164, 189, 0.3);
+}

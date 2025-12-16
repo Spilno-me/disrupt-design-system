@@ -1,0 +1,1343 @@
+{
+  "nodes": [
+    {
+      "id": "component:Accordion",
+      "name": "Accordion",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/Accordion.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:AnimatedCheck",
+      "name": "AnimatedCheck",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/AnimatedCheck.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:AnimatedLogo",
+      "name": "AnimatedLogo",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/AnimatedLogo.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:AppFooter",
+      "name": "AppFooter",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/AppFooter.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:AppHeader",
+      "name": "AppHeader",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/AppHeader.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:AppSidebar",
+      "name": "AppSidebar",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/AppSidebar.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:BlurImage",
+      "name": "BlurImage",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/BlurImage.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:BottomNav",
+      "name": "BottomNav",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/BottomNav.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:CheckListItem",
+      "name": "CheckListItem",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/CheckListItem.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:DataTable",
+      "name": "DataTable",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/DataTable.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:ElectricInput",
+      "name": "ElectricInput",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ElectricInput.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:ElectricLucideIcon",
+      "name": "ElectricLucideIcon",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ElectricLucideIcon.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:ErrorBoundary",
+      "name": "ErrorBoundary",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ErrorBoundary.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:ErrorState",
+      "name": "ErrorState",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ErrorState.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:ExecutingAnimation",
+      "name": "ExecutingAnimation",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ExecutingAnimation.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:FeatureCard",
+      "name": "FeatureCard",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/FeatureCard.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:FeatureItem",
+      "name": "FeatureItem",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/FeatureItem.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:GenericErrorPage",
+      "name": "GenericErrorPage",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/GenericErrorPage.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:GlassEffect",
+      "name": "GlassEffect",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/GlassEffect.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:GridBlobCanvas",
+      "name": "GridBlobCanvas",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/GridBlobCanvas.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:Header",
+      "name": "Header",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/Header.tsx",
+      "metadata": {
+        "dependencyCount": 3
+      }
+    },
+    {
+      "id": "component:HeroParticles",
+      "name": "HeroParticles",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/HeroParticles.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:IconText",
+      "name": "IconText",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/IconText.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:LinkedInButton",
+      "name": "LinkedInButton",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/LinkedInButton.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:MadeWithLove",
+      "name": "MadeWithLove",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/MadeWithLove.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:MapWithMarkers",
+      "name": "MapWithMarkers",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/MapWithMarkers.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:MobileMenu",
+      "name": "MobileMenu",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/MobileMenu.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:MobileNav",
+      "name": "MobileNav",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/MobileNav.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:MouseParticleRenderer",
+      "name": "MouseParticleRenderer",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/MouseParticleRenderer.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:NotificationsPanel",
+      "name": "NotificationsPanel",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/NotificationsPanel.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:OptimizedImage",
+      "name": "OptimizedImage",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/OptimizedImage.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:Pagination",
+      "name": "Pagination",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/Pagination.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:ParallaxImage",
+      "name": "ParallaxImage",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ParallaxImage.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:QuickFilter",
+      "name": "QuickFilter",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/QuickFilter.tsx",
+      "metadata": {
+        "dependencyCount": 3
+      }
+    },
+    {
+      "id": "component:ResponsiveImage",
+      "name": "ResponsiveImage",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ResponsiveImage.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:ResponsivePicture",
+      "name": "ResponsivePicture",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ResponsivePicture.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:ScrollToTopButton",
+      "name": "ScrollToTopButton",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ScrollToTopButton.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:ScrollableTableWrapper",
+      "name": "ScrollableTableWrapper",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/ScrollableTableWrapper.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:SectionLayout",
+      "name": "SectionLayout",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/SectionLayout.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:SeverityIndicator",
+      "name": "SeverityIndicator",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/SeverityIndicator.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:Skeleton",
+      "name": "Skeleton",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/Skeleton.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:Slider",
+      "name": "Slider",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/Slider.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:app-card",
+      "name": "app-card",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/app-card.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:badge",
+      "name": "badge",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/badge.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:button",
+      "name": "button",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/button.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:card",
+      "name": "card",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/card.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:checkbox",
+      "name": "checkbox",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/checkbox.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:CursorAnimationController",
+      "name": "CursorAnimationController",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/CursorAnimationController.ts",
+      "metadata": {
+        "dependencyCount": 6
+      }
+    },
+    {
+      "id": "component:CursorPixels",
+      "name": "CursorPixels",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/CursorPixels.tsx",
+      "metadata": {
+        "dependencyCount": 2
+      }
+    },
+    {
+      "id": "component:CursorStateMachine",
+      "name": "CursorStateMachine",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/CursorStateMachine.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:DisruptAnimationOrchestrator",
+      "name": "DisruptAnimationOrchestrator",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/DisruptAnimationOrchestrator.ts",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:ExcitedAnimationHandler",
+      "name": "ExcitedAnimationHandler",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/ExcitedAnimationHandler.ts",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:IdleAnimationHandler",
+      "name": "IdleAnimationHandler",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/IdleAnimationHandler.ts",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:PixelAnimator",
+      "name": "PixelAnimator",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/PixelAnimator.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:RepelAnimationHandler",
+      "name": "RepelAnimationHandler",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/RepelAnimationHandler.ts",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:animation-config",
+      "name": "animation-config",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/animation-config.ts",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:animation-utils",
+      "name": "animation-utils",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/animation-utils.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:cursor-pixels",
+      "name": "cursor-pixels",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/cursor-pixels/index.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:dialog",
+      "name": "dialog",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/dialog.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:dropdown-menu",
+      "name": "dropdown-menu",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/dropdown-menu.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:form",
+      "name": "form",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/form.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:input",
+      "name": "input",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/input.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:label",
+      "name": "label",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/label.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:NavBadge",
+      "name": "NavBadge",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/navigation/NavBadge.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:NavIcon",
+      "name": "NavIcon",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/navigation/NavIcon.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:navigation",
+      "name": "navigation",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/navigation/index.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:types",
+      "name": "types",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/navigation/types.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:utils",
+      "name": "utils",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/navigation/utils.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:pricing-connector",
+      "name": "pricing-connector",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/pricing-connector.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:select",
+      "name": "select",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/select.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:separator",
+      "name": "separator",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/separator.tsx",
+      "metadata": {
+        "dependencyCount": 1
+      }
+    },
+    {
+      "id": "component:sheet",
+      "name": "sheet",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/sheet.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:DataTableActions",
+      "name": "DataTableActions",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/table/DataTableActions.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:DataTableBadge",
+      "name": "DataTableBadge",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/table/DataTableBadge.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:DataTableMobileCard",
+      "name": "DataTableMobileCard",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/table/DataTableMobileCard.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:EmailLink",
+      "name": "EmailLink",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/table/EmailLink.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:ScoreBadge",
+      "name": "ScoreBadge",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/table/ScoreBadge.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:StatusBadge",
+      "name": "StatusBadge",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/table/StatusBadge.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:table",
+      "name": "table",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/table/index.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:tabs",
+      "name": "tabs",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/tabs.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:textarea",
+      "name": "textarea",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/textarea.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:tooltip",
+      "name": "tooltip",
+      "type": "component",
+      "group": "ui",
+      "filePath": "src/components/ui/tooltip.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:NodeDetailPanel",
+      "name": "NodeDetailPanel",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/TokenTree3D/NodeDetailPanel.tsx",
+      "metadata": {
+        "dependencyCount": 4
+      }
+    },
+    {
+      "id": "component:TokenTree3D",
+      "name": "TokenTree3D",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/TokenTree3D/TokenTree3D.tsx",
+      "metadata": {
+        "dependencyCount": 6
+      }
+    },
+    {
+      "id": "component:TreeConnection",
+      "name": "TreeConnection",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/TokenTree3D/TreeConnection.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:TreeNode",
+      "name": "TreeNode",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/TokenTree3D/TreeNode.tsx",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:useTreeLayout",
+      "name": "useTreeLayout",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/TokenTree3D/hooks/useTreeLayout.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:colorUtils",
+      "name": "colorUtils",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/TokenTree3D/utils/colorUtils.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:tokenTransformer",
+      "name": "tokenTransformer",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/TokenTree3D/utils/tokenTransformer.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "component:visualization",
+      "name": "visualization",
+      "type": "component",
+      "group": "visualization",
+      "filePath": "src/components/visualization/index.ts",
+      "metadata": {
+        "dependencyCount": 0
+      }
+    },
+    {
+      "id": "token:COLORS",
+      "name": "COLORS",
+      "type": "token-other",
+      "group": "other"
+    },
+    {
+      "id": "token:ALIAS",
+      "name": "ALIAS",
+      "type": "token-alias",
+      "group": "alias"
+    },
+    {
+      "id": "token:SHADOWS",
+      "name": "SHADOWS",
+      "type": "token-other",
+      "group": "other"
+    },
+    {
+      "id": "token:Z_INDEX",
+      "name": "Z_INDEX",
+      "type": "token-other",
+      "group": "other"
+    },
+    {
+      "id": "token:GLASS_GRADIENTS",
+      "name": "GLASS_GRADIENTS",
+      "type": "token-other",
+      "group": "other"
+    },
+    {
+      "id": "token:LAYOUT",
+      "name": "LAYOUT",
+      "type": "token-other",
+      "group": "other"
+    },
+    {
+      "id": "token:RADIUS",
+      "name": "RADIUS",
+      "type": "token-other",
+      "group": "other"
+    },
+    {
+      "id": "token:SPACING",
+      "name": "SPACING",
+      "type": "token-other",
+      "group": "other"
+    },
+    {
+      "id": "token:ABYSS",
+      "name": "ABYSS",
+      "type": "token-scale",
+      "group": "primitives"
+    },
+    {
+      "id": "token:DEEP_CURRENT",
+      "name": "DEEP_CURRENT",
+      "type": "token-scale",
+      "group": "primitives"
+    },
+    {
+      "id": "token:DUSK_REEF",
+      "name": "DUSK_REEF",
+      "type": "token-scale",
+      "group": "primitives"
+    }
+  ],
+  "links": [
+    {
+      "source": "component:Accordion",
+      "target": "token:COLORS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:Accordion",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:AnimatedCheck",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:AnimatedLogo",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:AppFooter",
+      "target": "component:MadeWithLove",
+      "type": "imports"
+    },
+    {
+      "source": "component:AppFooter",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:AppHeader",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:AppHeader",
+      "target": "token:SHADOWS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:BottomNav",
+      "target": "component:NavIcon",
+      "type": "imports"
+    },
+    {
+      "source": "component:BottomNav",
+      "target": "component:NavBadge",
+      "type": "imports"
+    },
+    {
+      "source": "component:CheckListItem",
+      "target": "component:AnimatedCheck",
+      "type": "imports"
+    },
+    {
+      "source": "component:DataTable",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:ElectricInput",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:ElectricInput",
+      "target": "token:Z_INDEX",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:ElectricLucideIcon",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:ExecutingAnimation",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:FeatureCard",
+      "target": "component:ElectricLucideIcon",
+      "type": "imports"
+    },
+    {
+      "source": "component:FeatureItem",
+      "target": "token:COLORS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:GlassEffect",
+      "target": "token:GLASS_GRADIENTS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:GlassEffect",
+      "target": "token:Z_INDEX",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:GridBlobCanvas",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:Header",
+      "target": "component:AnimatedLogo",
+      "type": "imports"
+    },
+    {
+      "source": "component:Header",
+      "target": "component:MobileMenu",
+      "type": "imports"
+    },
+    {
+      "source": "component:Header",
+      "target": "token:SHADOWS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:LinkedInButton",
+      "target": "token:COLORS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:LinkedInButton",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:MadeWithLove",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:MapWithMarkers",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:MobileMenu",
+      "target": "token:LAYOUT",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:MobileNav",
+      "target": "component:NavIcon",
+      "type": "imports"
+    },
+    {
+      "source": "component:MobileNav",
+      "target": "component:NavBadge",
+      "type": "imports"
+    },
+    {
+      "source": "component:OptimizedImage",
+      "target": "component:ResponsivePicture",
+      "type": "imports"
+    },
+    {
+      "source": "component:OptimizedImage",
+      "target": "token:SHADOWS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:ParallaxImage",
+      "target": "component:ResponsivePicture",
+      "type": "imports"
+    },
+    {
+      "source": "component:QuickFilter",
+      "target": "token:SHADOWS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:QuickFilter",
+      "target": "token:RADIUS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:QuickFilter",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:ResponsiveImage",
+      "target": "component:ParallaxImage",
+      "type": "imports"
+    },
+    {
+      "source": "component:SectionLayout",
+      "target": "component:ResponsiveImage",
+      "type": "imports"
+    },
+    {
+      "source": "component:SeverityIndicator",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:Slider",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:app-card",
+      "target": "token:SHADOWS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:app-card",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:button",
+      "target": "token:GLASS_GRADIENTS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:button",
+      "target": "token:Z_INDEX",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:card",
+      "target": "token:SHADOWS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:card",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:CursorAnimationController",
+      "target": "component:PixelAnimator",
+      "type": "imports"
+    },
+    {
+      "source": "component:CursorAnimationController",
+      "target": "component:CursorStateMachine",
+      "type": "imports"
+    },
+    {
+      "source": "component:CursorAnimationController",
+      "target": "component:IdleAnimationHandler",
+      "type": "imports"
+    },
+    {
+      "source": "component:CursorAnimationController",
+      "target": "component:ExcitedAnimationHandler",
+      "type": "imports"
+    },
+    {
+      "source": "component:CursorAnimationController",
+      "target": "component:RepelAnimationHandler",
+      "type": "imports"
+    },
+    {
+      "source": "component:CursorAnimationController",
+      "target": "component:DisruptAnimationOrchestrator",
+      "type": "imports"
+    },
+    {
+      "source": "component:CursorPixels",
+      "target": "component:CursorAnimationController",
+      "type": "imports"
+    },
+    {
+      "source": "component:CursorPixels",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:DisruptAnimationOrchestrator",
+      "target": "component:PixelAnimator",
+      "type": "imports"
+    },
+    {
+      "source": "component:ExcitedAnimationHandler",
+      "target": "component:PixelAnimator",
+      "type": "imports"
+    },
+    {
+      "source": "component:IdleAnimationHandler",
+      "target": "component:PixelAnimator",
+      "type": "imports"
+    },
+    {
+      "source": "component:RepelAnimationHandler",
+      "target": "component:PixelAnimator",
+      "type": "imports"
+    },
+    {
+      "source": "component:animation-config",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:NavIcon",
+      "target": "component:NavBadge",
+      "type": "imports"
+    },
+    {
+      "source": "component:pricing-connector",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:separator",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:NodeDetailPanel",
+      "target": "token:RADIUS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:NodeDetailPanel",
+      "target": "token:SPACING",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:NodeDetailPanel",
+      "target": "token:SHADOWS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:NodeDetailPanel",
+      "target": "token:ALIAS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:TokenTree3D",
+      "target": "component:TreeNode",
+      "type": "imports"
+    },
+    {
+      "source": "component:TokenTree3D",
+      "target": "component:TreeConnection",
+      "type": "imports"
+    },
+    {
+      "source": "component:TokenTree3D",
+      "target": "component:NodeDetailPanel",
+      "type": "imports"
+    },
+    {
+      "source": "component:TokenTree3D",
+      "target": "token:ABYSS",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:TokenTree3D",
+      "target": "token:DEEP_CURRENT",
+      "type": "uses-token"
+    },
+    {
+      "source": "component:TokenTree3D",
+      "target": "token:DUSK_REEF",
+      "type": "uses-token"
+    }
+  ],
+  "metadata": {
+    "extractedAt": "2025-12-15T22:48:04.975Z",
+    "componentCount": 90,
+    "tokenCount": 11,
+    "linkCount": 73
+  }
+}
