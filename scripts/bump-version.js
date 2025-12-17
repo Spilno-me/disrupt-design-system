@@ -191,11 +191,17 @@ console.log(`📋 Version bumped: ${currentVersion} → ${newVersion}`);
 console.log(`   Files updated: ${updates.length}`);
 console.log('─'.repeat(50));
 
-console.log('\n💡 Next steps:');
-console.log('   1. Update CHANGELOG.md with release notes');
-console.log('   2. git add -A');
-console.log(`   3. git commit -m "chore: bump version to ${newVersion}"`);
-console.log('');
+// Agent instruction block - this prompts Claude to update the changelog
+console.log('\n<agent-task>');
+console.log('UPDATE_CHANGELOG');
+console.log(`VERSION=${newVersion}`);
+console.log(`PREVIOUS_VERSION=${currentVersion}`);
+console.log(`DATE=${new Date().toISOString().split('T')[0]}`);
+console.log('</agent-task>');
 
-// Output new version for scripting
-console.log(`NEW_VERSION=${newVersion}`);
+console.log('\n📝 AGENT: Please update CHANGELOG.md now:');
+console.log(`   1. Add a new ## [${newVersion}] - ${new Date().toISOString().split('T')[0]} section`);
+console.log('   2. Move relevant items from [Unreleased] or add new entries');
+console.log('   3. Categorize changes: Added, Changed, Fixed, Removed');
+console.log('   4. Then stage all files and commit');
+console.log('');
