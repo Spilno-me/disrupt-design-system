@@ -1,6 +1,6 @@
 # PricingCalculator Component Delivery
 
-**Version:** Standalone (extracted from DDS v2.3.1)
+**Version:** Standalone (extracted from DDS v2.4.0)
 **Date:** 2025-12-16
 **Status:** Reference implementation for re-implementation
 

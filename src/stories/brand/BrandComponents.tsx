@@ -255,7 +255,7 @@ interface BrandHeroProps {
  * <BrandHero
  *   variant="intro"
  *   title="Disrupt Design System"
- *   version="v2.3"
+ *   version="v2.4"
  *   description="A unified design language and component library."
  *   actions={<>...buttons...</>}
  * />

@@ -41,7 +41,7 @@
 4. ✅ **Enhance Badge** (Add success, warning, info variants)
 5. ✅ **Build & Test** (Ensure TypeScript compilation)
 6. ⬜ **Create Storybook Documentation** (Show all patterns)
-7. ⬜ **Publish DDS v2.3.0** (New components available)
+7. ✅ **Publish DDS v2.4.0** (New components available)
 
 **Deliverables:**
 - New DDS components exported and ready
@@ -636,7 +636,7 @@ const hierarchyActions: ActionItem[] = [
 - [x] Create DataTableMobileCard
 - [x] Enhance Badge component
 - [x] Build and test DDS
-- [ ] Publish DDS v2.3.0
+- [x] Publish DDS v2.4.0
 
 ### Week 2: Easy Wins
 **Monday-Tuesday:**
@@ -720,13 +720,13 @@ const hierarchyActions: ActionItem[] = [
 ## 🎯 Final Recommendation
 
 ### Immediate Actions:
-1. **Publish DDS v2.3.0** with unified components
+1. **Publish DDS v2.4.0** with unified components
 2. **Migrate PartnerUsersPage first** (prove the pattern works)
 3. **Refactor TenantRequestsPage** (quick win)
 4. **Plan LeadsDashboard carefully** (high value, high risk)
 
 ### Dependencies:
-- DDS v2.3.0 must be published before migrations
+- DDS v2.4.0 must be published before migrations
 - Testing environment for Partner Central
 - QA signoff for LeadsDashboard changes
 
@@ -739,4 +739,4 @@ const hierarchyActions: ActionItem[] = [
 
 **Migration Plan Complete** ✅
 
-Next Step: Review this plan, then publish DDS v2.3.0 and begin Phase 2 migrations.
+Next Step: Review this plan, then publish DDS v2.4.0 and begin Phase 2 migrations.

@@ -7,12 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### To Be Added in v2.4.0
+### Planned
 - NotificationsPanel component export
 - QuickFilter component export
 - DropdownMenu component export (full Radix wrapper)
 - Tabs component export (Radix wrapper)
 - Base Wizard components exports (Wizard, WizardStepper, WizardStep, WizardNavigation, useWizard)
+
+---
+
+## [2.4.0] - 2025-12-17
 
 ### Improved
 - **Design Tokens - Shadows**: Enhanced Storybook documentation with natural light physics system

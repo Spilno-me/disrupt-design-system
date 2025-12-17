@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "Machine-readable changelog for AI agents",
-  "currentVersion": "2.3.1",
+  "currentVersion": "2.4.0",
   "lastUpdated": "2025-12-15",
 
   "versions": {

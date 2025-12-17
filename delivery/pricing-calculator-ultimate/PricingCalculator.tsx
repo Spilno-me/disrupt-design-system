@@ -1,70 +1,42 @@
 /**
- * PricingCalculator - Standalone Reference Implementation
+ * PricingCalculator - Interactive pricing calculator for partner portal
  *
- * EXTRACTED FROM: DDS v2.4.0
- * DATE: 2025-12-16
+ * Standalone package extracted from DDS v2.4.0
+ * Date: 2025-12-16
  *
- * HOW TO USE:
- * 1. Install dependencies (see dependencies.md)
- * 2. Import tokens.css in your app entry
- * 3. Replace imports below with your UI library equivalents
+ * @description
+ * Allows partners to calculate pricing for potential tenants based on
+ * company size, user counts, and selected tier.
  */
 
 import * as React from 'react'
 import { useState, useMemo } from 'react'
-
-// Icons - Install: npm install lucide-react
 import { Calculator, Users, Building2, DollarSign, Percent, Info, FileText } from 'lucide-react'
-
-// =============================================================================
-// UI COMPONENTS - Replace these imports with your UI library
-// =============================================================================
-//
-// Option A: shadcn/ui (recommended)
-//   npx shadcn@latest add button input label select slider tooltip card
-//
-// Option B: Use the simple implementations below (scroll to SIMPLE_COMPONENTS section)
-//
-// Option C: Your existing component library
-// =============================================================================
-
-// TODO: Replace with your imports
-import { cn } from '../../lib/utils'  // See cn() helper below
+import { cn } from './lib/utils'
 import {
-  AppCard,           // Use: Card or simple <div> with shadow
-  AppCardContent,    // Use: CardContent or <div className="px-6">
-  AppCardHeader,     // Use: CardHeader or <div className="px-6 pb-4">
-  AppCardTitle,      // Use: CardTitle or <h3>
-  AppCardDescription,// Use: CardDescription or <p className="text-muted">
-} from '../ui/app-card'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { Label } from '../ui/label'
-import { Slider } from '../ui/Slider'
+  AppCard,
+  AppCardContent,
+  AppCardHeader,
+  AppCardTitle,
+  AppCardDescription,
+} from './ui/app-card'
+import { Button } from './ui/button'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
+import { Slider } from './ui/slider'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select'
+} from './ui/select'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip'
-
-// =============================================================================
-// CN HELPER - Copy this to your utils file
-// =============================================================================
-// import { clsx, type ClassValue } from 'clsx'
-// import { twMerge } from 'tailwind-merge'
-//
-// export function cn(...inputs: ClassValue[]) {
-//   return twMerge(clsx(inputs))
-// }
-// =============================================================================
+} from './ui/tooltip'
 
 // =============================================================================
 // TYPES
@@ -132,12 +104,6 @@ const ANNUAL_DISCOUNT = 0.2 // 20% discount for annual billing
 // PRICING CALCULATOR COMPONENT
 // =============================================================================
 
-/**
- * PricingCalculator - Interactive pricing calculator for partner portal
- *
- * Allows partners to calculate pricing for potential tenants based on
- * company size, user counts, and selected tier.
- */
 export function PricingCalculator({
   commissionPercentage = 15,
   onCalculate,

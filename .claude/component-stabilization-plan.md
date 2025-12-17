@@ -9,7 +9,7 @@
 ## 🎯 Situation Overview
 
 ### Current State
-- **Design system version:** 2.3.1 (pre-release, in active development)
+- **Design system version:** 2.4.0 (pre-release, in active development)
 - **Production status:** Components already used in app shown to investors
 - **Quality level:** Built quickly for testing, not production-ready
 - **Risk:** Changes could break the live app
