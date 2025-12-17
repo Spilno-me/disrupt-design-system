@@ -18,148 +18,78 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.4.0] - 2025-12-17
 
-### Improved
-- **Design Tokens - Shadows**: Enhanced Storybook documentation with natural light physics system
-  - Added comprehensive "Natural Light Physics" explanation (umbra/penumbra concepts)
-  - Added `elevated` shadow level to elevation scale (for premium/featured content)
-  - Added shadow anatomy visualization showing CSS breakdown
-  - Added use case mapping for each shadow level (sm→tags, md→cards, elevated→KPIs, lg→modals, xl→critical)
-  - Added "Elevated: Premium Emphasis" featured section
-  - Added `buttonDefault` to special shadows display
-  - Added Quick Reference footer for easy lookup
+### Added
 
-- **Badge**: Enhanced code quality and documentation (backwards compatible)
-  - Fixed text color consistency (`text-white` → `text-inverse`)
-  - Added JSDoc comments for better DX
-  - Added React display name for debugging
-  - Cleaned up redundant size styles in base className
-  - Expanded Storybook documentation (added success/warning/info variants, size variants, icon examples)
-  - ATOM: Accepts data-testid via props for Playwright testing
+- **BrandHero component** - Unified hero component for documentation pages with particle animations, decorative background icons, and Pilat Extended font support
+- **IconText component** - Combined icon + text molecule for consistent layouts
+- **Core Components Overview page** - Documentation page listing all 19 core components organized by category (Form Controls, Display, Overlays, Layout)
+- **Standalone PricingCalculator delivery package** - Production-ready component package in `delivery/` folder with data assets
+- **HeroParticles component** - Dynamic particle animation for hero sections
+- **GenericErrorPage component** - Full-page error display using DDS tokens
+- **Provisioning dialogs** - ApproveRequestDialog, RejectRequestDialog, DeleteRequestDialog for tenant management
+- **Partner Portal pages** - SettingsPage, HelpPage, and PricingCalculator integrated into partner portal
+- **DataTableStatusDot component** - Minimal dot + label pattern for status columns
+- **DataTableSeverity component** - Squircle icon + label pattern for priority/severity columns
+- **AllStates visual matrix stories** - Comprehensive state visualization for Badge, Input, Checkbox, Select, Textarea, and Skeleton
+- **Automated token generation** - Single source of truth with `npm run generate-tokens` script
+- **Color matrix and contrast matrix** - WCAG compliance reference files
+- **Foundation documentation** - Colors, Typography, Spacing, Shadows documentation pages
+- **Delivery package guide** - Documentation for standalone component packaging
 
-- **SeverityIndicator**: Enhanced code quality and documentation (backwards compatible)
-  - Extended props to accept all HTMLDivElement attributes (enables data-testid)
-  - Added React display name for debugging
-  - Removed hardcoded font family (now inherits from parent)
-  - Updated JSDoc with ATOM testId pattern (consumer provides context)
-  - Known Issue: Uses PRIMITIVES tokens directly (documented for v3.0.0 refactor)
-
-- **Skeleton**: Enhanced code quality and documentation (backwards compatible)
-  - Extended all three components (Skeleton, SkeletonImage, SkeletonText) to accept HTMLDivElement attributes
-  - Added React display names for all three components
-  - Updated JSDoc with ATOM testId pattern for all three components
-  - Replaced hardcoded inline styles with Tailwind classes in Storybook stories
-  - Simplified Storybook stories (removed redundant animation variant stories)
-
-- **Input**: Enhanced code quality and documentation (backwards compatible)
-  - Exported InputProps interface for better TypeScript DX
-  - Added React display name for debugging
-  - Added comprehensive JSDoc with ATOM testId pattern and usage examples
-  - Enhanced Storybook with AllTypes story (text, email, password, number, date, file)
-  - Added ErrorState story demonstrating aria-invalid
-  - Already excellent: No variants (opinionated), perfect design token usage, mobile-first responsive
-
-- **Label**: Enhanced code quality and documentation (backwards compatible)
-  - Exported LabelProps interface for better TypeScript DX
-  - Added React display name for debugging
-  - Added comprehensive JSDoc with ATOM testId pattern and usage examples
-  - Already excellent: Uses Radix UI primitive (accessibility), no variants, peer/group disabled states
-
-- **Checkbox**: Enhanced code quality and documentation (backwards compatible)
-  - Exported CheckboxProps interface for better TypeScript DX
-  - Added React display name for debugging
-  - Added comprehensive JSDoc with ATOM testId pattern and usage examples
-  - Already excellent: Uses Radix UI primitive (accessibility), no variants, proper states
-
-- **Select**: Enhanced code quality and documentation (backwards compatible)
-  - Exported TypeScript interfaces for all 9 sub-components (SelectProps, SelectTriggerProps, SelectContentProps, SelectItemProps, etc.)
-  - Added React display names for all 9 sub-components
-  - Added comprehensive JSDoc with ATOM testId pattern and usage examples
-  - Documented all sub-components: Trigger, Content, Item, Value, Group, Label, Separator, ScrollButtons
-  - Already excellent: Uses Radix UI primitive (full accessibility), size variants (sm, default)
-
-- **Textarea**: Enhanced code quality and documentation (backwards compatible)
-  - Exported TextareaProps interface for better TypeScript DX
-  - Added React display name for debugging
-  - Added comprehensive JSDoc with ATOM testId pattern and usage examples
-  - Already excellent: No variants (opinionated), auto-sizing, mobile-friendly, perfect design token usage
+**Components (continued from previous work):**
+- **AppCard** - Application card for in-app use with variants (default, elevated, flat) and shadow levels
+- **Shadow System Redesign** - 2-layer umbra/penumbra approach with natural light physics
+- **Testing Guidelines** - 3-tier testId strategy (Atoms/Molecules/Pages)
 
 ### Changed
-- **Card**: FROZEN for website-only use (pricing cards) (backwards compatible)
-  - Variants reduced: `pricing`, `pricingHighlight` only (removed `default`, `product`)
-  - CardAction removed (moved to AppCard)
-  - Clear JSDoc documentation: ⚠️ FROZEN - Website production use only
-  - Storybook updated: Only pricing variants shown
-  - Fixed FeatureListItem check icon contrast: non-highlighted items now use `text-muted` instead of `text-accent`
-  - All app code migrated to AppCard (StatsCard, tenant-requests stories)
-  - Breaking changes deferred to v3.0.0
 
-### Added
-- **AppCard**: New application card component for in-app use (MOLECULE)
-  - Variants: `default`, `elevated` (gradient bg matching AppHeader), `flat` (semantic, app-focused)
-  - Elevated variant uses ALIAS.gradient.subtle: `linear-gradient(0deg, teal → cream)` matching AppHeader
-  - Shadow levels: `none`, `sm`, `md` (default), `lg`, `xl`, `elevated` (natural light from above)
-  - Default shadow: `md` for consistent depth across all cards
-  - Elevated shadow combines 2 shadows for realistic depth: direct shadow (2px-8px) + ambient occlusion (8px-16px)
-  - Sub-components: AppCardHeader, AppCardTitle, AppCardDescription, AppCardContent, AppCardFooter, AppCardAction
-  - Complete Storybook documentation with 8 stories including:
-    - AllStates story (comprehensive visual matrix)
-    - UsageGuidelines story (icon contrast best practices: use 20%+ opacity for icon backgrounds)
-    - Fixed elevated variant in AllStates to use `shadow="elevated"` for consistency
-  - Fixed icon contrast: Dashboard cards now use dark, saturated colors (`text-error`, `text-success`) instead of light teal to ensure visibility on light gradient backgrounds
-  - Full TypeScript support with exported interfaces
-  - Replaces Card for all app contexts (Partners, Leads, Dashboard, etc.)
-  - See: `src/components/ui/app-card.tsx`, `src/components/ui/app-card.stories.tsx`
+- **TenantProvisioningChat redesigned** - Section-based forms with AI tips replacing step-by-step chat
+- **LoginPage enhanced** - Particle effects, frosted glass backdrop-blur, increased hero vibrancy
+- **Storybook navigation reorganized** - Cleaner hierarchy (Partner/Components, Shared/App Shell)
+- **Brand MDX files** - Numeric prefixes (01-08) for consistent ordering
+- **Focus ring color** - Changed from blue (#2563EB) to teal (#08A4BD)
+- **Checkbox visibility** - Darker teal brand colors for better contrast
+- **Select menu styling** - Teal hover backgrounds, semibold selected items
+- **Shadow and radius** - Migrated from inline styles to Tailwind classes
+- **Card** - FROZEN for website-only use (pricing cards only)
 
-- **Shadow System Redesign**: Complete overhaul based on natural light physics (SYSTEM-WIDE)
-  - All shadows now use 2-layer approach: Umbra (core shadow) + Penumbra (soft shadow)
-  - Natural opacity progression: Darker close (12-14%) → Lighter far (8-10%)
-  - Blur increases with distance: Umbra (sharp) → Penumbra (soft)
-  - Negative spread on all layers for organic, natural feel
-  - Y-offset only (light from above)
-  - New shadow scale: `sm < md < elevated < lg < xl`
-  - **sm:** Subtle (1px/3px umbra, 1px/2px penumbra) - resting on surface
-  - **md:** Standard (2px/8px umbra, 4px/12px penumbra) - DEFAULT for cards
-  - **elevated:** Premium (3px/12px umbra, 10px/28px penumbra) - featured content, 14%/10% opacity
-  - **lg:** Prominent (4px/16px umbra, 8px/24px penumbra) - modals, dialogs
-  - **xl:** Maximum (8px/24px umbra, 12px/32px penumbra) - critical overlays
-  - Comprehensive documentation: `.claude/shadows.md`
-  - Physics principles: Umbra/Penumbra/Ambient Occlusion explained
-  - Usage guidelines per component type
-  - Available in all components that accept shadow prop
+### Fixed
 
-- **Testing Guidelines**: Implemented 3-tier testId strategy (Atoms/Molecules/Pages)
-  - ATOMS: Accept data-testid via props (no defaults, consumer provides context)
-  - MOLECULES: Auto-generate default testId from props with optional override
-  - PAGES: Hardcoded data-testid on major sections
-  - QA Documentation: `TESTING.md` - Complete guide with naming propagation, examples, and Playwright patterns
-  - Agent Documentation: `.claude/testing-quick-ref.md` with decision tree and implementation patterns
-  - Agent enforcement: Updated hookify rules and agent-context.json
-  - Naming propagation: Page-level naming flows down to all nested components (critical for consistency)
+- **MDX paragraph wrapping bug** - Resolved colorPrimary override from automatic `<p>` tag wrapping
+- **Pilat Extended font loading** - Configured proper font loading in Storybook preview
+- **Code element contrast** - Use `bg-muted-bg` (light) instead of `bg-muted` (dark) for readability
+- **Dialog, Sheet, Tooltip accessibility** - Improved ARIA compliance
+- **Accordion contrast** - Changed text-secondary to text-primary
+- **Pagination contrast** - Changed text-muted to text-secondary
+- **SeverityIndicator token compliance** - Migrated from PRIMITIVES to ALIAS tokens
+- **ESLint warnings** - Resolved all lint warnings across codebase
 
-- **Storybook Composition Rules**: Documentation for story file best practices
-  - Stories should ONLY compose exported atoms/components
-  - NO custom component functions inside story files
-  - Reusable patterns must be extracted as proper components first
-  - Prevents hidden complexity and ensures discoverability
-  - See: `.claude/storybook-composition-rules.md`
+### Improved
 
-- **Variant Reduction Strategy**: Opinionated design system philosophy
-  - Minimal variants for design consistency
-  - Decision framework: Functional vs aesthetic variants
-  - Target limits: animations (1), state variants (4-5), sizes (2-3)
-  - Documentation: `.claude/variant-reduction-strategy.md`
-  - Philosophy: Strong design vision over unlimited flexibility
+- **Component stabilization** - Stabilized 15+ core components: Input, Textarea, Select, Checkbox, Slider, Label, Separator, Tabs, Accordion, AppHeader, AppSidebar, AppFooter, BottomNav, DataTable, Pagination
+- **JSDoc documentation** - All stabilized components have @component type, @testing data-slot, @accessibility notes
+- **Focus ring visibility** - Increased opacity (ring-accent/50), width (ring-4), added !border-accent
+- **Badge** - Enhanced with text-inverse, JSDoc, display name, testId support
+- **Skeleton** - Extended props, display names, Tailwind migration
+- **Input/Label/Checkbox/Select/Textarea** - Exported TypeScript interfaces, comprehensive JSDoc
+
+### Documentation
+
+- **DESIGN-SYSTEM.md** - Comprehensive design system reference
+- **Spacing rules** - Hierarchical spacing system (4px base, 5 levels)
+- **Storybook rules** - MDX bugs, composition rules, modal patterns
+- **Error handling rule** - Fix errors, never revert commits
+- **Co-authored-by rule** - Never include in commits
 
 ### Deprecated
-- **Skeleton**: `variant` prop deprecated (will be removed in v3.0.0)
-  - Reason: Purely aesthetic animations create UI inconsistency
-  - Impact: All variants now render as 'shimmer' for consistency
-  - Migration: Remove `variant` prop from Skeleton usages
-  - Backwards Compatible: Prop still accepted but ignored in v2.x
 
-### Under Consideration
-- Partner Network components (PartnerNetworkPage, related dialogs)
-- Invoice advanced components (InvoicePDFDialog, InvoicePreviewSheet, InvoicesDataTable)
+- **Skeleton `variant` prop** - Will be removed in v3.0.0 (all variants render as 'shimmer')
+
+### Removed
+
+- **Deprecated stories** - Standalone page stories consolidated into PartnerPortal
+- **Redundant auth form stories** - Covered by AuthPages.stories
+- **Obsolete directories** - findings/, reviews/
 
 ---
 
