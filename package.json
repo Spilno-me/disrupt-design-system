@@ -42,7 +42,11 @@
     "sync-components": "node scripts/sync-component-status.js",
     "sync-docs": "node scripts/sync-docs.js",
     "extract-deps": "node scripts/extract-dependencies.js",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "version": "node scripts/bump-version.js",
+    "version:patch": "node scripts/bump-version.js patch",
+    "version:minor": "node scripts/bump-version.js minor",
+    "version:major": "node scripts/bump-version.js major"
   },
   "simple-git-hooks": {
     "pre-commit": "node scripts/update-claude-docs.js && npx lint-staged"

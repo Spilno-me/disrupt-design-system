@@ -2,14 +2,17 @@
 
 /**
  * Version Bump Script
- * Updates version across all files in the DDS project
+ * Automatically updates version across all files in the DDS project
  *
  * Usage:
- *   node scripts/bump-version.js <version>
- *   node scripts/bump-version.js 2.5.0
+ *   npm run version:patch     # 2.5.0 → 2.5.1
+ *   npm run version:minor     # 2.5.0 → 2.6.0
+ *   npm run version:major     # 2.5.0 → 3.0.0
+ *   npm run version 2.5.1     # Set specific version
  *
  * Files updated:
  *   - package.json
+ *   - package-lock.json (via npm install)
  *   - .claude/agent-context.json
  *   - .claude/changelog.json
  *   - .claude/tokens-reference.json
@@ -20,26 +23,73 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execFileSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 
-const newVersion = process.argv[2];
-
-if (!newVersion) {
-  console.error('❌ Usage: node scripts/bump-version.js <version>');
-  console.error('   Example: node scripts/bump-version.js 2.5.0');
-  process.exit(1);
+// Get current version from package.json
+function getCurrentVersion() {
+  const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf-8'));
+  return pkg.version;
 }
 
-// Validate version format
-if (!/^\d+\.\d+\.\d+$/.test(newVersion)) {
-  console.error('❌ Invalid version format. Use semantic versioning: X.Y.Z');
-  process.exit(1);
+// Parse version string to components
+function parseVersion(version) {
+  const [major, minor, patch] = version.split('.').map(Number);
+  return { major, minor, patch };
 }
 
-console.log(`\n🚀 Bumping version to ${newVersion}\n`);
+// Increment version based on type
+function incrementVersion(currentVersion, type) {
+  const { major, minor, patch } = parseVersion(currentVersion);
+
+  switch (type) {
+    case 'major':
+      return `${major + 1}.0.0`;
+    case 'minor':
+      return `${major}.${minor + 1}.0`;
+    case 'patch':
+      return `${major}.${minor}.${patch + 1}`;
+    default:
+      throw new Error(`Invalid version type: ${type}`);
+  }
+}
+
+// Determine new version from arguments
+function getNewVersion() {
+  const arg = process.argv[2];
+
+  if (!arg) {
+    console.error('❌ Usage:');
+    console.error('   npm run version:patch     # Increment patch (2.5.0 → 2.5.1)');
+    console.error('   npm run version:minor     # Increment minor (2.5.0 → 2.6.0)');
+    console.error('   npm run version:major     # Increment major (2.5.0 → 3.0.0)');
+    console.error('   npm run version 2.5.1     # Set specific version');
+    process.exit(1);
+  }
+
+  const currentVersion = getCurrentVersion();
+
+  // Check if it's a version type or specific version
+  if (['patch', 'minor', 'major'].includes(arg)) {
+    return incrementVersion(currentVersion, arg);
+  }
+
+  // Validate specific version format
+  if (!/^\d+\.\d+\.\d+$/.test(arg)) {
+    console.error('❌ Invalid version format. Use semantic versioning: X.Y.Z');
+    process.exit(1);
+  }
+
+  return arg;
+}
+
+const currentVersion = getCurrentVersion();
+const newVersion = getNewVersion();
+
+console.log(`\n🚀 Bumping version: ${currentVersion} → ${newVersion}\n`);
 
 // Track updates
 const updates = [];
@@ -53,10 +103,9 @@ function updateJsonFile(relativePath, updateFn) {
   }
 
   const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  const oldVersion = content.version || content.currentVersion || 'unknown';
   updateFn(content);
   fs.writeFileSync(filePath, JSON.stringify(content, null, 2) + '\n');
-  updates.push({ file: relativePath, from: oldVersion, to: newVersion });
+  updates.push(relativePath);
   console.log(`✅ ${relativePath}`);
 }
 
@@ -80,7 +129,7 @@ function updateTextFile(relativePath, patterns) {
 
   if (updated) {
     fs.writeFileSync(filePath, content);
-    updates.push({ file: relativePath, to: newVersion });
+    updates.push(relativePath);
     console.log(`✅ ${relativePath}`);
   } else {
     console.log(`⚠️  ${relativePath} (no matches found)`);
@@ -126,12 +175,27 @@ updateTextFile('src/stories/01-Introduction.mdx', [
   },
 ]);
 
+// 7. Update package-lock.json using execFileSync (safe, no shell injection)
+console.log('\n📦 Updating package-lock.json...');
+try {
+  execFileSync('npm', ['install', '--package-lock-only'], { cwd: ROOT, stdio: 'pipe' });
+  updates.push('package-lock.json');
+  console.log('✅ package-lock.json');
+} catch (error) {
+  console.log('⚠️  package-lock.json (failed to update)');
+}
+
 // Summary
-console.log('\n📋 Summary:');
+console.log('\n' + '─'.repeat(50));
+console.log(`📋 Version bumped: ${currentVersion} → ${newVersion}`);
 console.log(`   Files updated: ${updates.length}`);
-console.log(`   New version: ${newVersion}`);
-console.log('\n💡 Don\'t forget to:');
+console.log('─'.repeat(50));
+
+console.log('\n💡 Next steps:');
 console.log('   1. Update CHANGELOG.md with release notes');
-console.log('   2. Run: npm install (to update package-lock.json)');
-console.log('   3. Commit changes');
+console.log('   2. git add -A');
+console.log(`   3. git commit -m "chore: bump version to ${newVersion}"`);
 console.log('');
+
+// Output new version for scripting
+console.log(`NEW_VERSION=${newVersion}`);
