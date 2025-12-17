@@ -1,0 +1,27 @@
+<style>
+  /* Preload Pilat Extended fonts for Storybook preview */
+  @font-face {
+    font-family: 'Pilat Extended';
+    src: url('/fonts/PilatExtended-Regular.woff2') format('woff2'),
+         url('/fonts/PilatExtended-Regular.woff') format('woff');
+    font-weight: 400;
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Pilat Extended';
+    src: url('/fonts/PilatExtended-Bold.woff2') format('woff2'),
+         url('/fonts/PilatExtended-Bold.woff') format('woff');
+    font-weight: 700;
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Force Pilat Extended on brand hero titles */
+  .dds-brand-hero-title {
+    font-family: 'Pilat Extended', sans-serif !important;
+  }
+</style>

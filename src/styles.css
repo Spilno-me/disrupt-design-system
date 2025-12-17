@@ -35,6 +35,9 @@
   .hover\:bg-muted-bg\/80:hover { background-color: color-mix(in srgb, var(--color-muted-bg) 80%, transparent); }
   .hover\:bg-accent-strong\/90:hover { background-color: color-mix(in srgb, var(--color-accent-strong) 90%, transparent); }
   .hover\:bg-error\/90:hover { background-color: color-mix(in srgb, var(--color-error) 90%, transparent); }
+  .bg-error-strong { background-color: var(--color-error-strong); }
+  .hover\:bg-error-strong\/90:hover { background-color: color-mix(in srgb, var(--color-error-strong) 90%, transparent); }
+  .text-warning-dark { color: var(--color-warning-dark); }
 
   /* Focus ring variants */
   .focus-visible\:ring-accent\/30:focus-visible {
@@ -87,6 +90,32 @@ a[aria-hidden="true"],
 .sbdocs-content a[style*="color"] p,
 .sbdocs-content span[style*="color"] p {
   color: inherit !important;
+}
+
+/* DDS Hero Title - ensures Pilat Extended even in Storybook docs */
+.dds-hero-title {
+  font-size: 42px;
+  font-weight: 700;
+  font-family: "Pilat Extended", sans-serif !important;
+  line-height: 1.2;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+/* BrandHero title - forces Pilat Extended in Storybook MDX */
+/* Using multiple selectors for maximum specificity */
+.dds-brand-hero-title,
+h1.dds-brand-hero-title,
+.sbdocs .dds-brand-hero-title,
+.sbdocs-content .dds-brand-hero-title,
+.docs-story .dds-brand-hero-title,
+[class*="css-"] .dds-brand-hero-title {
+  font-family: "Pilat Extended", sans-serif !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
 }
 
 /* Storybook docs - ensure full width for color palettes and grids */
@@ -238,6 +267,8 @@ a[aria-hidden="true"],
   --color-error-light: #FEF2F2;
   /* Usage: bg-error-muted */
   --color-error-muted: #FEE2E2;
+  /* Usage: bg-error-strong (darker red for buttons, better contrast) */
+  --color-error-strong: #DC2626;
   /* Usage: bg-success, text-success, border-success */
   --color-success: #22C55E;
   /* Usage: bg-success-light */
@@ -250,6 +281,8 @@ a[aria-hidden="true"],
   --color-warning-light: #FFFBEB;
   /* Usage: bg-warning-muted */
   --color-warning-muted: #FEF3C7;
+  /* Usage: text-warning-dark (darker amber for text on light warning backgrounds) */
+  --color-warning-dark: #92400E;
   /* Usage: bg-info, text-info, border-info */
   --color-info: #3B82F6;
   /* Usage: bg-info-light */
