@@ -1,0 +1,622 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Component,
+  FormInput,
+  SquareStack,
+  Layers,
+  MousePointerClick,
+  Type,
+  ToggleLeft,
+  SlidersHorizontal,
+  Tags,
+  MessageSquare,
+  PanelRightOpen,
+  Info,
+  LayoutGrid,
+  Minus,
+  PanelTop,
+  ListTree,
+  CreditCard,
+  AppWindow,
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  Box,
+} from 'lucide-react';
+import {
+  HeroHeader,
+  FeatureCard,
+  NavCard,
+  InfoBox,
+  StoryLink,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+} from '../brand/BrandComponents';
+import { HeroParticles } from '../brand/HeroParticles';
+
+<Meta title="Core Components/Overview" />
+
+<style>
+{`
+  .component-grid-card {
+    transition: all 200ms ease-out !important;
+  }
+  .component-grid-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    border-color: ${DEEP_CURRENT[300]} !important;
+  }
+  .category-pill {
+    transition: all 150ms ease-out !important;
+  }
+  .category-pill:hover {
+    background: ${DEEP_CURRENT[100]} !important;
+  }
+`}
+</style>
+
+{/* Hero Header */}
+<div style={{
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[600]} 0%, ${ABYSS[700]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '48px',
+  marginBottom: '48px',
+  position: 'relative',
+  overflow: 'hidden',
+}}>
+  {/* Animated particles */}
+  <HeroParticles gradient="teal" particleCount={25} />
+
+  {/* Decorative elements */}
+  <div style={{
+    position: 'absolute',
+    top: '-20%',
+    right: '-5%',
+    width: '350px',
+    height: '350px',
+    background: `radial-gradient(circle, ${DEEP_CURRENT[400]}30 0%, transparent 70%)`,
+    borderRadius: '50%',
+    zIndex: 0,
+  }} />
+  <div style={{
+    position: 'absolute',
+    bottom: '-25%',
+    left: '15%',
+    width: '250px',
+    height: '250px',
+    background: `radial-gradient(circle, ${DUSK_REEF[500]}20 0%, transparent 70%)`,
+    borderRadius: '50%',
+    zIndex: 0,
+  }} />
+
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      marginBottom: '16px',
+    }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: RADIUS.md,
+        background: 'rgba(255,255,255,0.15)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Component size={28} color={PRIMITIVES.white} />
+      </div>
+      <span style={{
+        background: 'rgba(255,255,255,0.15)',
+        padding: '4px 12px',
+        borderRadius: RADIUS.sm,
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        fontWeight: 500,
+        color: DEEP_CURRENT[200],
+      }}>
+        19 Components
+      </span>
+    </div>
+
+    <h1 style={{
+      margin: '0 0 12px 0',
+      fontSize: '36px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      lineHeight: 1.2,
+      color: PRIMITIVES.white,
+    }}>
+      <span>Core Components</span>
+    </h1>
+
+    <div style={{
+      margin: '0 0 32px 0',
+      fontSize: '16px',
+      fontFamily: '"Fixel", sans-serif',
+      lineHeight: 1.6,
+      maxWidth: '550px',
+      color: SLATE[200],
+    }}>
+      <span>Production-ready UI components built with React, TypeScript, and Radix UI primitives. Fully accessible, customizable, and designed for consistency across all Disrupt products.</span>
+    </div>
+
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <StoryLink
+        to="/docs/core-button--docs"
+        className="dds-btn-primary"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: PRIMITIVES.white,
+          color: ABYSS[500],
+          padding: '12px 24px',
+          borderRadius: RADIUS.md,
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          textDecoration: 'none',
+        }}
+      >
+        <span>Start with Button</span>
+        <ArrowRight size={16} />
+      </StoryLink>
+      <StoryLink
+        to="/docs/foundation-design-tokens-overview--docs"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: 'rgba(255,255,255,0.1)',
+          color: PRIMITIVES.white,
+          padding: '12px 24px',
+          borderRadius: RADIUS.md,
+          fontSize: '14px',
+          fontWeight: 500,
+          fontFamily: '"Fixel", sans-serif',
+          textDecoration: 'none',
+          border: '1px solid rgba(255,255,255,0.2)',
+        }}
+      >
+        <span>View Design Tokens</span>
+      </StoryLink>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Component Categories</h2>
+
+<div style={{
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap',
+  marginBottom: '32px',
+}}>
+  {[
+    { label: 'Form Controls', count: 8, color: DEEP_CURRENT[500] },
+    { label: 'Display', count: 5, color: DUSK_REEF[500] },
+    { label: 'Overlays', count: 3, color: ABYSS[500] },
+    { label: 'Layout', count: 3, color: DEEP_CURRENT[600] },
+  ].map((cat) => (
+    <div
+      key={cat.label}
+      className="category-pill"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        background: SLATE[50],
+        padding: '8px 16px',
+        borderRadius: RADIUS.sm,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        background: cat.color,
+      }} />
+      <span style={{
+        fontSize: '13px',
+        fontWeight: 500,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        {cat.label}
+      </span>
+      <span style={{
+        fontSize: '11px',
+        fontFamily: '"Fixel", sans-serif',
+        color: SLATE[500],
+        background: SLATE[100],
+        padding: '2px 6px',
+        borderRadius: RADIUS.xs,
+      }}>
+        {cat.count}
+      </span>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+  <FormInput size={24} color={DEEP_CURRENT[500]} />
+  <span>Form Controls</span>
+</h2>
+<p style={{ margin: '0 0 24px 0', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+  Interactive elements for capturing user input with built-in validation and accessibility.
+</p>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {[
+    { icon: <MousePointerClick size={20} />, name: 'Button', desc: 'Actions and submissions', path: '/docs/core-button--docs', status: 'stable' },
+    { icon: <Type size={20} />, name: 'Input', desc: 'Text entry fields', path: '/docs/core-input--docs', status: 'stable' },
+    { icon: <MessageSquare size={20} />, name: 'Textarea', desc: 'Multi-line text input', path: '/docs/core-textarea--docs', status: 'stable' },
+    { icon: <SquareStack size={20} />, name: 'Select', desc: 'Dropdown selection', path: '/docs/core-select--docs', status: 'stable' },
+    { icon: <ToggleLeft size={20} />, name: 'Checkbox', desc: 'Boolean toggles', path: '/docs/core-checkbox--docs', status: 'stable' },
+    { icon: <SlidersHorizontal size={20} />, name: 'Slider', desc: 'Range selection', path: '/docs/core-slider--docs', status: 'stable' },
+    { icon: <Tags size={20} />, name: 'Label', desc: 'Input labels', path: '/docs/core-label--docs', status: 'stable' },
+    { icon: <Layers size={20} />, name: 'Form', desc: 'Form composition', path: '/docs/core-form--docs', status: 'stable' },
+  ].map((comp) => (
+    <StoryLink
+      key={comp.name}
+      to={comp.path}
+      className="component-grid-card"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+        textDecoration: 'none',
+        boxShadow: SHADOWS.sm,
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: DEEP_CURRENT[600],
+        marginBottom: '12px',
+      }}>
+        {comp.icon}
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '4px',
+      }}>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          {comp.name}
+        </span>
+        {comp.status === 'stable' && (
+          <CheckCircle2 size={14} color={DEEP_CURRENT[500]} />
+        )}
+      </div>
+      <span style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        {comp.desc}
+      </span>
+    </StoryLink>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+  <Sparkles size={24} color={DUSK_REEF[500]} />
+  <span>Display</span>
+</h2>
+<p style={{ margin: '0 0 24px 0', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+  Visual elements for presenting information and content.
+</p>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(5, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {[
+    { icon: <Tags size={20} />, name: 'Badge', desc: 'Status indicators', path: '/docs/core-badge--docs', status: 'stable' },
+    { icon: <Type size={20} />, name: 'IconText', desc: 'Icon + text pairing', path: '/docs/core-icontext--docs', status: 'stable' },
+    { icon: <Box size={20} />, name: 'Skeleton', desc: 'Loading placeholders', path: '/docs/core-skeleton--docs', status: 'stable' },
+    { icon: <CreditCard size={20} />, name: 'Card', desc: 'Website cards', path: '/docs/core-card-website-only---docs', status: 'stable' },
+    { icon: <AppWindow size={20} />, name: 'AppCard', desc: 'Application cards', path: '/docs/core-appcard--docs', status: 'stable' },
+  ].map((comp) => (
+    <StoryLink
+      key={comp.name}
+      to={comp.path}
+      className="component-grid-card"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+        textDecoration: 'none',
+        boxShadow: SHADOWS.sm,
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: DUSK_REEF[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: DUSK_REEF[600],
+        marginBottom: '12px',
+      }}>
+        {comp.icon}
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '4px',
+      }}>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          {comp.name}
+        </span>
+        {comp.status === 'stable' && (
+          <CheckCircle2 size={14} color={DEEP_CURRENT[500]} />
+        )}
+      </div>
+      <span style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        {comp.desc}
+      </span>
+    </StoryLink>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+  <LayoutGrid size={24} color={ABYSS[500]} />
+  <span>Overlays</span>
+</h2>
+<p style={{ margin: '0 0 24px 0', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+  Modal and floating UI elements for contextual interactions.
+</p>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {[
+    { icon: <Layers size={20} />, name: 'Dialog', desc: 'Modal dialogs', path: '/docs/core-dialog--docs', status: 'stable' },
+    { icon: <PanelRightOpen size={20} />, name: 'Sheet', desc: 'Side panels', path: '/docs/core-sheet--docs', status: 'stable' },
+    { icon: <Info size={20} />, name: 'Tooltip', desc: 'Contextual hints', path: '/docs/core-tooltip--docs', status: 'stable' },
+  ].map((comp) => (
+    <StoryLink
+      key={comp.name}
+      to={comp.path}
+      className="component-grid-card"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+        textDecoration: 'none',
+        boxShadow: SHADOWS.sm,
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: ABYSS[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: ABYSS[500],
+        marginBottom: '12px',
+      }}>
+        {comp.icon}
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '4px',
+      }}>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          {comp.name}
+        </span>
+        {comp.status === 'stable' && (
+          <CheckCircle2 size={14} color={DEEP_CURRENT[500]} />
+        )}
+      </div>
+      <span style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        {comp.desc}
+      </span>
+    </StoryLink>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+  <PanelTop size={24} color={DEEP_CURRENT[600]} />
+  <span>Layout</span>
+</h2>
+<p style={{ margin: '0 0 24px 0', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+  Structural components for organizing content and navigation.
+</p>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {[
+    { icon: <Minus size={20} />, name: 'Separator', desc: 'Visual dividers', path: '/docs/core-separator--docs', status: 'stable' },
+    { icon: <PanelTop size={20} />, name: 'Tabs', desc: 'Tabbed navigation', path: '/docs/core-tabs--docs', status: 'stable' },
+    { icon: <ListTree size={20} />, name: 'Accordion', desc: 'Expandable sections', path: '/docs/core-accordion--docs', status: 'stable' },
+  ].map((comp) => (
+    <StoryLink
+      key={comp.name}
+      to={comp.path}
+      className="component-grid-card"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+        textDecoration: 'none',
+        boxShadow: SHADOWS.sm,
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: DEEP_CURRENT[600],
+        marginBottom: '12px',
+      }}>
+        {comp.icon}
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '4px',
+      }}>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          {comp.name}
+        </span>
+        {comp.status === 'stable' && (
+          <CheckCircle2 size={14} color={DEEP_CURRENT[500]} />
+        )}
+      </div>
+      <span style={{
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+      }}>
+        {comp.desc}
+      </span>
+    </StoryLink>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Component Principles</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '20px',
+  marginBottom: '48px',
+}}>
+  <FeatureCard
+    icon={<CheckCircle2 size={24} color={DEEP_CURRENT[500]} />}
+    title="Accessibility First"
+    description="Built on Radix UI primitives with full ARIA support, keyboard navigation, and screen reader compatibility."
+  />
+  <FeatureCard
+    icon={<Layers size={24} color={DEEP_CURRENT[500]} />}
+    title="Composable"
+    description="Components can be combined and nested to create complex UIs while maintaining consistent behavior."
+  />
+  <FeatureCard
+    icon={<Sparkles size={24} color={DEEP_CURRENT[500]} />}
+    title="Token-Driven"
+    description="All styling uses design tokens for colors, spacing, and typography ensuring visual consistency."
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Links</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  <NavCard
+    icon={<Component size={24} />}
+    title="Foundation Tokens"
+    description="Colors, typography, spacing, and more"
+    href="?path=/docs/foundation-design-tokens-overview--docs"
+  />
+  <NavCard
+    icon={<Layers size={24} />}
+    title="Application Shell"
+    description="Headers, sidebars, and navigation"
+    href="?path=/story/application-shell-app-layout--docs"
+  />
+</div>
