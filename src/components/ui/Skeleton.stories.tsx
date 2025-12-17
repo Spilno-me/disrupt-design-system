@@ -8,7 +8,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: `
+        component: `**Type:** ATOM
+
 Skeleton loading placeholder component for maintaining layout while content loads.
 
 ## When to Use Skeleton

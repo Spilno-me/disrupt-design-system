@@ -1,0 +1,973 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Layers,
+  Component,
+  FolderTree,
+  GitBranch,
+  ArrowRight,
+  ArrowDown,
+  Box,
+  Boxes,
+  LayoutTemplate,
+  FileText,
+  CheckCircle,
+  XCircle,
+  Workflow,
+  Building2,
+  Package,
+  Puzzle,
+  Binary,
+  Users,
+  ShoppingCart,
+  Handshake,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  StoryLink,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+  SIZES,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/Architecture" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Component Architecture"
+  description="How the Disrupt Design System is organized using domain-driven navigation combined with atomic design classification."
+  gradient="teal"
+  decorativeIcon={<Layers size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Two systems, one goal.</strong> We use domain-driven navigation for intuitive browsing
+  and atomic design labels for understanding component complexity.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Dual System</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="Navigation vs Documentation"
+  description="Different systems serve different purposes."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Domain-Driven Navigation Card */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{ marginBottom: SPACING.px.base }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: SPACING.px.tight,
+        marginBottom: SPACING.px.micro,
+      }}>
+        <div style={{
+          width: SPACING.px.comfortable,
+          height: SPACING.px.comfortable,
+          borderRadius: RADIUS.xs,
+          background: DEEP_CURRENT[50],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: DEEP_CURRENT[500],
+          flexShrink: 0,
+        }}>
+          <FolderTree size={14} />
+        </div>
+        <h3 style={{
+          margin: 0,
+          fontSize: TYPOGRAPHY.fontSize.base[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+        }}>
+          Domain-Driven Navigation
+        </h3>
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: SLATE[500],
+        marginLeft: `calc(${SPACING.px.comfortable} + ${SPACING.px.tight})`,
+      }}>
+        Sidebar Organization
+      </div>
+    </div>
+    <p style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: DUSK_REEF[500],
+      lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+    }}>
+      How you <strong style={{ color: DEEP_CURRENT[600] }}>find</strong> components in the sidebar. Organized by scope and ownership.
+    </p>
+    {/* Code block */}
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      lineHeight: TYPOGRAPHY.lineHeight.loose,
+    }}>
+      <div style={{ marginBottom: SPACING.px.tight }}>
+        <span style={{ color: DEEP_CURRENT[600] }}>Core/</span>
+        <span style={{ color: ABYSS[500] }}>Button</span>
+      </div>
+      <div style={{ marginBottom: SPACING.px.tight }}>
+        <span style={{ color: DEEP_CURRENT[600] }}>Shared/App Shell/</span>
+        <span style={{ color: ABYSS[500] }}>AppHeader</span>
+      </div>
+      <div>
+        <span style={{ color: DEEP_CURRENT[600] }}>Products/Components/</span>
+        <span style={{ color: ABYSS[500] }}>LeadCard</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Atomic Design Labels Card */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{ marginBottom: SPACING.px.base }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: SPACING.px.tight,
+        marginBottom: SPACING.px.micro,
+      }}>
+        <div style={{
+          width: SPACING.px.comfortable,
+          height: SPACING.px.comfortable,
+          borderRadius: RADIUS.xs,
+          background: DUSK_REEF[50],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: DUSK_REEF[500],
+          flexShrink: 0,
+        }}>
+          <Layers size={14} />
+        </div>
+        <h3 style={{
+          margin: 0,
+          fontSize: TYPOGRAPHY.fontSize.base[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+        }}>
+          Atomic Design Labels
+        </h3>
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: SLATE[500],
+        marginLeft: `calc(${SPACING.px.comfortable} + ${SPACING.px.tight})`,
+      }}>
+        Story Documentation
+      </div>
+    </div>
+    <p style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: DUSK_REEF[500],
+      lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+    }}>
+      How you <strong style={{ color: DUSK_REEF[600] }}>understand</strong> component complexity. Shown in story documentation.
+    </p>
+    {/* Labels showcase */}
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: SPACING.px.tight,
+    }}>
+      {[
+        { type: 'ATOM', color: DEEP_CURRENT[600], bg: DEEP_CURRENT[50] },
+        { type: 'ORGANISM', color: DUSK_REEF[600], bg: DUSK_REEF[50] },
+        { type: 'PAGE', color: ABYSS[500], bg: ABYSS[50] },
+      ].map((item) => (
+        <div key={item.type} style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+          <span style={{
+            fontFamily: TYPOGRAPHY.fontFamily.mono,
+            fontSize: TYPOGRAPHY.fontSize.xs[0],
+            color: SLATE[600],
+          }}>
+            **Type:**
+          </span>
+          <span style={{
+            background: item.bg,
+            color: item.color,
+            padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+            borderRadius: RADIUS.sm,
+            fontSize: TYPOGRAPHY.fontSize.xs[0],
+            fontWeight: TYPOGRAPHY.fontWeight.bold,
+            fontFamily: TYPOGRAPHY.fontFamily.sans,
+            letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+          }}>
+            {item.type}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Atomic Design Levels</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Five Levels of Composition"
+  description="From simple elements to complete pages."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(5, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    {
+      level: 'ATOM',
+      icon: <Binary size={24} />,
+      color: DEEP_CURRENT[500],
+      bg: DEEP_CURRENT[50],
+      desc: 'Single element',
+      examples: 'Button, Input, Badge',
+    },
+    {
+      level: 'MOLECULE',
+      icon: <Puzzle size={24} />,
+      color: DEEP_CURRENT[600],
+      bg: DEEP_CURRENT[100],
+      desc: 'Atom group',
+      examples: 'Tabs, Dialog, Select',
+    },
+    {
+      level: 'ORGANISM',
+      icon: <Component size={24} />,
+      color: DUSK_REEF[500],
+      bg: DUSK_REEF[50],
+      desc: 'UI section',
+      examples: 'AppHeader, DataTable',
+    },
+    {
+      level: 'TEMPLATE',
+      icon: <LayoutTemplate size={24} />,
+      color: DUSK_REEF[600],
+      bg: DUSK_REEF[100],
+      desc: 'Page layout',
+      examples: 'AppLayoutShell',
+    },
+    {
+      level: 'PAGE',
+      icon: <FileText size={24} />,
+      color: ABYSS[500],
+      bg: ABYSS[50],
+      desc: 'Real content',
+      examples: 'LeadsPage, Dashboard',
+    },
+  ].map((item) => (
+    <div
+      key={item.level}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.cardGap,
+        textAlign: 'center',
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        width: SIZES.iconLg,
+        height: SIZES.iconLg,
+        borderRadius: RADIUS.full,
+        background: item.bg,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: `0 auto ${SPACING.px.compact}`,
+        color: item.color,
+      }}>
+        {item.icon}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: item.color,
+        marginBottom: SPACING.px.micro,
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+      }}>
+        {item.level}
+      </div>
+      <div style={{
+        fontSize: '13px',
+        fontWeight: TYPOGRAPHY.fontWeight.medium,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: ABYSS[500],
+        marginBottom: SPACING.px.tight,
+      }}>
+        {item.desc}
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: SLATE[500],
+        lineHeight: TYPOGRAPHY.lineHeight.snug,
+      }}>
+        {item.examples}
+      </div>
+    </div>
+  ))}
+</div>
+
+{/* Flow diagram */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{
+    margin: `0 0 ${SPACING.px.comfortable} 0`,
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    color: ABYSS[500],
+    textAlign: 'center',
+  }}>
+    Composition Flow: Components Build on Each Other
+  </h4>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: SPACING.px.base,
+    flexWrap: 'wrap',
+  }}>
+    {[
+      { label: 'ATOM', color: DEEP_CURRENT[500], example: 'Button' },
+      { label: 'MOLECULE', color: DEEP_CURRENT[600], example: 'Dialog' },
+      { label: 'ORGANISM', color: DUSK_REEF[500], example: 'Header' },
+      { label: 'TEMPLATE', color: DUSK_REEF[600], example: 'PageLayout' },
+      { label: 'PAGE', color: ABYSS[500], example: 'Dashboard' },
+    ].map((item, idx) => (
+      <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.base }}>
+        <div style={{
+          background: item.color,
+          color: PRIMITIVES.white,
+          padding: `${SPACING.px.tight} ${SPACING.px.base}`,
+          borderRadius: RADIUS.sm,
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          textAlign: 'center',
+        }}>
+          <div>{item.label}</div>
+          <div style={{ fontSize: '10px', opacity: 0.8, marginTop: '2px' }}>{item.example}</div>
+        </div>
+        {idx < 4 && <ArrowRight size={20} color={SLATE[400]} />}
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Domain Organization</h2>
+
+<SectionHeader
+  icon={<FolderTree size={20} />}
+  title="Folder Structure"
+  description="Organized by scope: Foundation → Core → Shared → Products."
+/>
+
+{/* Folder Structure - Visual Tree */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.spacious,
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+    {/* Foundation */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.compact, padding: `${SPACING.px.tight} ${SPACING.px.compact}`, borderRadius: RADIUS.sm, background: DEEP_CURRENT[50] }}>
+      <FolderTree size={16} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: TYPOGRAPHY.fontWeight.semibold, fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: DEEP_CURRENT[600] }}>Foundation/</span>
+      <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: SLATE[500] }}>Design tokens, colors, typography</span>
+    </div>
+
+    {/* Core */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.compact, padding: `${SPACING.px.tight} ${SPACING.px.compact}`, borderRadius: RADIUS.sm, background: DEEP_CURRENT[50] }}>
+      <FolderTree size={16} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: TYPOGRAPHY.fontWeight.semibold, fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: DEEP_CURRENT[600] }}>Core/</span>
+      <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: SLATE[500] }}>UI primitives (atoms + molecules)</span>
+    </div>
+
+    {/* Shared */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.compact, padding: `${SPACING.px.tight} ${SPACING.px.compact}`, borderRadius: RADIUS.sm, background: DUSK_REEF[50] }}>
+      <FolderTree size={16} color={DUSK_REEF[600]} />
+      <span style={{ fontWeight: TYPOGRAPHY.fontWeight.semibold, fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: DUSK_REEF[600] }}>Shared/</span>
+      <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: SLATE[500] }}>Cross-product components</span>
+    </div>
+
+    {/* Shared children */}
+    <div style={{ marginLeft: '28px', borderLeft: `2px solid ${DUSK_REEF[200]}`, paddingLeft: SPACING.px.base, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+      {[
+        { name: 'App Shell/', desc: 'Header, Sidebar, Footer' },
+        { name: 'Data/', desc: 'DataTable, Pagination, SearchFilter' },
+        { name: 'Feedback/', desc: 'ErrorState, ErrorPage' },
+      ].map((item, idx) => (
+        <div key={item.name} style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.compact, padding: `6px ${SPACING.px.compact}`, borderRadius: RADIUS.sm }}>
+          <div style={{ width: SIZES.decorativeLine, height: SIZES.decorativeLineHeight, background: DUSK_REEF[200], marginLeft: `-${SPACING.px.base}` }} />
+          <span style={{ fontWeight: TYPOGRAPHY.fontWeight.medium, fontSize: '13px', fontFamily: TYPOGRAPHY.fontFamily.sans, color: DUSK_REEF[600] }}>{item.name}</span>
+          <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: SLATE[400] }}>{item.desc}</span>
+        </div>
+      ))}
+    </div>
+
+    {/* Products */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.compact, padding: `${SPACING.px.tight} ${SPACING.px.compact}`, borderRadius: RADIUS.sm, background: ABYSS[50], marginTop: '2px' }}>
+      <FolderTree size={16} color={ABYSS[500]} />
+      <span style={{ fontWeight: TYPOGRAPHY.fontWeight.semibold, fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: ABYSS[500] }}>Products/</span>
+      <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: SLATE[500] }}>Product-specific components</span>
+    </div>
+
+    {/* Products children */}
+    <div style={{ marginLeft: '28px', borderLeft: `2px solid ${ABYSS[200]}`, paddingLeft: SPACING.px.base, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+      {[
+        { name: 'Components/', desc: 'EntityCard, MetricsCard' },
+        { name: 'Dialogs/', desc: 'CreateDialog, EditDialog' },
+        { name: 'Pages/', desc: 'Dashboard, ListPage' },
+      ].map((item, idx) => (
+        <div key={item.name} style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.compact, padding: `6px ${SPACING.px.compact}`, borderRadius: RADIUS.sm }}>
+          <div style={{ width: SIZES.decorativeLine, height: SIZES.decorativeLineHeight, background: ABYSS[200], marginLeft: `-${SPACING.px.base}` }} />
+          <span style={{ fontWeight: TYPOGRAPHY.fontWeight.medium, fontSize: '13px', fontFamily: TYPOGRAPHY.fontFamily.sans, color: ABYSS[500] }}>{item.name}</span>
+          <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: SLATE[400] }}>{item.desc}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+{/* Domain cards */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    {
+      name: 'Core',
+      icon: <Box size={20} />,
+      color: DEEP_CURRENT[500],
+      desc: 'UI primitives everyone uses',
+      components: 'Button, Input, Dialog, Tabs',
+    },
+    {
+      name: 'Shared',
+      icon: <Boxes size={20} />,
+      color: DUSK_REEF[500],
+      desc: 'Cross-product components',
+      components: 'Header, DataTable, SearchFilter',
+    },
+    {
+      name: 'Products',
+      icon: <Package size={20} />,
+      color: ABYSS[500],
+      desc: 'Product-specific components',
+      components: 'EntityCard, Dashboard, Pages',
+    },
+  ].map((item) => (
+    <div
+      key={item.name}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.cardGap,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        width: SIZES.iconMd,
+        height: SIZES.iconMd,
+        borderRadius: RADIUS.sm,
+        background: `${item.color}15`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.compact,
+        color: item.color,
+      }}>
+        {item.icon}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: item.color,
+        marginBottom: SPACING.px.micro,
+      }}>
+        {item.name}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: DUSK_REEF[500],
+        marginBottom: SPACING.px.tight,
+      }}>
+        {item.desc}
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: SLATE[500],
+      }}>
+        {item.components}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Classification Guide</h2>
+
+<SectionHeader
+  icon={<Workflow size={20} />}
+  title="Decision Tree"
+  description="How to classify a component."
+/>
+
+{/* Domain Decision Tree */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.comfortable,
+}}>
+  <h4 style={{
+    margin: `0 0 ${SPACING.px.comfortable} 0`,
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    color: ABYSS[500],
+    display: 'flex',
+    alignItems: 'center',
+    gap: SPACING.px.tight,
+  }}>
+    <FolderTree size={18} color={DEEP_CURRENT[500]} />
+    Where does it go? (Domain)
+  </h4>
+
+  <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.px.base }}>
+    {[
+      { question: 'Is it a UI primitive (button, input, badge)?', answer: 'Core/', color: DEEP_CURRENT[500], bg: DEEP_CURRENT[50] },
+      { question: 'Is it used by multiple products?', answer: 'Shared/', color: DUSK_REEF[500], bg: DUSK_REEF[50] },
+      { question: 'Is it only for one specific product?', answer: 'Products/[Name]/', color: ABYSS[500], bg: ABYSS[50] },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'stretch',
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+        boxShadow: SHADOWS.sm,
+      }}>
+        {/* Question */}
+        <div style={{
+          flex: 1,
+          background: SLATE[50],
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: SPACING.px.base,
+        }}>
+          <div style={{
+            width: SPACING.px.comfortable,
+            height: SPACING.px.comfortable,
+            borderRadius: RADIUS.full,
+            background: DUSK_REEF[100],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: DUSK_REEF[600] }}>?</span>
+          </div>
+          <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: ABYSS[500] }}>
+            {item.question}
+          </span>
+        </div>
+        {/* Arrow */}
+        <div style={{
+          width: SPACING.px.section,
+          background: `linear-gradient(90deg, ${SLATE[50]} 0%, ${item.bg} 100%)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <ArrowRight size={20} color={item.color} />
+        </div>
+        {/* Answer */}
+        <div style={{
+          minWidth: SIZES.answerBoxWide,
+          background: item.bg,
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <span style={{
+            fontSize: TYPOGRAPHY.fontSize.sm[0],
+            fontWeight: TYPOGRAPHY.fontWeight.semibold,
+            fontFamily: TYPOGRAPHY.fontFamily.mono,
+            color: item.color,
+          }}>
+            {item.answer}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Atomic Decision Tree */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{
+    margin: `0 0 ${SPACING.px.comfortable} 0`,
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    color: ABYSS[500],
+    display: 'flex',
+    alignItems: 'center',
+    gap: SPACING.px.tight,
+  }}>
+    <Layers size={18} color={DUSK_REEF[500]} />
+    What level is it? (Atomic)
+  </h4>
+
+  <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.px.base }}>
+    {[
+      { question: 'Single element, no composition?', answer: 'ATOM', color: DEEP_CURRENT[500], bg: DEEP_CURRENT[50] },
+      { question: 'Compound with fixed sub-parts?', answer: 'MOLECULE', color: DEEP_CURRENT[600], bg: DEEP_CURRENT[100] },
+      { question: 'Complex section with business logic?', answer: 'ORGANISM', color: DUSK_REEF[500], bg: DUSK_REEF[50] },
+      { question: 'Page layout structure (no content)?', answer: 'TEMPLATE', color: DUSK_REEF[600], bg: DUSK_REEF[100] },
+      { question: 'Template filled with real data?', answer: 'PAGE', color: ABYSS[500], bg: ABYSS[50] },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'stretch',
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+        boxShadow: SHADOWS.sm,
+      }}>
+        {/* Question */}
+        <div style={{
+          flex: 1,
+          background: SLATE[50],
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: SPACING.px.base,
+        }}>
+          <div style={{
+            width: SPACING.px.comfortable,
+            height: SPACING.px.comfortable,
+            borderRadius: RADIUS.full,
+            background: DUSK_REEF[100],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: DUSK_REEF[600] }}>?</span>
+          </div>
+          <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: ABYSS[500] }}>
+            {item.question}
+          </span>
+        </div>
+        {/* Arrow */}
+        <div style={{
+          width: SPACING.px.section,
+          background: `linear-gradient(90deg, ${SLATE[50]} 0%, ${item.bg} 100%)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <ArrowRight size={20} color={item.color} />
+        </div>
+        {/* Answer */}
+        <div style={{
+          minWidth: SIZES.answerBoxNarrow,
+          background: item.bg,
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <span style={{
+            fontSize: TYPOGRAPHY.fontSize.xs[0],
+            fontWeight: TYPOGRAPHY.fontWeight.bold,
+            fontFamily: TYPOGRAPHY.fontFamily.sans,
+            color: item.color,
+            letterSpacing: '0.5px',
+          }}>
+            {item.answer}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Story Documentation Pattern</h2>
+
+<SectionHeader
+  icon={<FileText size={20} />}
+  title="How to Label Stories"
+  description="Every story should include both domain navigation and atomic type."
+/>
+
+<div style={{
+  background: ABYSS[600],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  overflow: 'auto',
+}}>
+  <pre style={{
+    margin: 0,
+    fontFamily: TYPOGRAPHY.fontFamily.mono,
+    fontSize: '13px',
+    lineHeight: 1.8,
+    color: SLATE[200],
+  }}>
+{`const meta: Meta<typeof ComponentName> = {
+  title: 'Shared/App Shell/Header',  // Domain navigation
+  component: ComponentName,
+  parameters: {
+    docs: {
+      description: {
+        component: \`**Type:** ORGANISM  // Atomic label
+
+Description of the component here...\`,
+      },
+    },
+  },
+}`}
+  </pre>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Component Examples</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { name: 'Button', domain: 'Core/', type: 'ATOM', desc: 'Single interactive element' },
+    { name: 'Input', domain: 'Core/', type: 'ATOM', desc: 'Single form element' },
+    { name: 'Badge', domain: 'Core/', type: 'ATOM', desc: 'Single status indicator' },
+    { name: 'Dialog', domain: 'Core/', type: 'MOLECULE', desc: 'Trigger + Content + Close' },
+    { name: 'Tabs', domain: 'Core/', type: 'MOLECULE', desc: 'TabsList + TabsTrigger + TabsContent' },
+    { name: 'Select', domain: 'Core/', type: 'MOLECULE', desc: 'Trigger + Content + Items' },
+    { name: 'Header', domain: 'Shared/App Shell/', type: 'ORGANISM', desc: 'Logo + Nav + User menu' },
+    { name: 'DataTable', domain: 'Shared/Data/', type: 'ORGANISM', desc: 'Complex data display' },
+    { name: 'PageLayout', domain: 'Shared/App Shell/', type: 'TEMPLATE', desc: 'Page structure' },
+    { name: 'EntityCard', domain: 'Products/Components/', type: 'ORGANISM', desc: 'Business data card' },
+    { name: 'CreateDialog', domain: 'Products/Dialogs/', type: 'ORGANISM', desc: 'Form + validation' },
+    { name: 'DashboardPage', domain: 'Products/Pages/', type: 'PAGE', desc: 'Complete page' },
+  ].map((item) => (
+    <div
+      key={item.name}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.base,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: SPACING.px.tight,
+      }}>
+        <span style={{
+          fontSize: TYPOGRAPHY.fontSize.sm[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+        }}>
+          {item.name}
+        </span>
+        <span style={{
+          background: item.type === 'ATOM' ? DEEP_CURRENT[50] :
+                     item.type === 'MOLECULE' ? DEEP_CURRENT[100] :
+                     item.type === 'ORGANISM' ? DUSK_REEF[50] :
+                     item.type === 'TEMPLATE' ? DUSK_REEF[100] : ABYSS[50],
+          color: item.type === 'ATOM' ? DEEP_CURRENT[600] :
+                 item.type === 'MOLECULE' ? DEEP_CURRENT[700] :
+                 item.type === 'ORGANISM' ? DUSK_REEF[600] :
+                 item.type === 'TEMPLATE' ? DUSK_REEF[700] : ABYSS[500],
+          padding: `2px ${SPACING.px.tight}`,
+          borderRadius: RADIUS.xs,
+          fontSize: '10px',
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+        }}>
+          {item.type}
+        </span>
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+        marginBottom: SPACING.px.micro,
+      }}>
+        {item.domain}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: DUSK_REEF[500],
+      }}>
+        {item.desc}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Core Principles</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Composition flows DOWN">
+    Higher levels use lower levels. Pages use templates, templates use organisms, organisms use molecules, molecules use atoms.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Upward dependencies">
+    Never import from higher levels. Core should never import from Shared. Shared should never import from Products.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Respect domain boundaries">
+    Product-specific components stay in Products/. If something needs to be shared, promote it to Shared/ with proper abstraction.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Mix domains">
+    Don't put product-specific components in Core. Don't put product dialogs in Shared unless they're truly generic.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Label every story">
+    Include **Type:** label in every story description. Makes it easy to understand component complexity at a glance.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Skip documentation">
+    Don't create stories without proper domain navigation title and atomic type label. Future developers need this context.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Atomic Type</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Definition</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Domain Location</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Examples</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { type: 'ATOM', def: 'Single UI element', loc: 'Core/', ex: 'Button, Input, Badge' },
+        { type: 'MOLECULE', def: 'Simple group of atoms', loc: 'Core/', ex: 'Dialog, Tabs, Select' },
+        { type: 'ORGANISM', def: 'Complex UI section', loc: 'Shared/, Products/', ex: 'Header, DataTable, EntityCard' },
+        { type: 'TEMPLATE', def: 'Page layout structure', loc: 'Shared/App Shell/', ex: 'PageLayout' },
+        { type: 'PAGE', def: 'Template + real data', loc: 'Products/Pages/', ex: 'Dashboard, ListPage' },
+      ].map((row, idx) => (
+        <tr key={row.type} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontWeight: TYPOGRAPHY.fontWeight.semibold, color: DEEP_CURRENT[600] }}>{row.type}</td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, color: ABYSS[500] }}>{row.def}</td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: DUSK_REEF[500] }}>{row.loc}</td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, color: SLATE[600] }}>{row.ex}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

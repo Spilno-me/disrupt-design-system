@@ -19,7 +19,8 @@ const meta: Meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: `
+        component: `**Type:** ORGANISM
+
 # Partner Dialogs
 
 This showcase demonstrates all the dialog components used in the Partners Management system.

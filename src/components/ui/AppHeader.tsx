@@ -98,12 +98,12 @@ const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   flow: {
     logoLight: LOGOS.flow.light,
     logoDark: LOGOS.flow.dark,
-    tagline: 'Smart EHS Automation',
+    tagline: '',
   },
   market: {
     logoLight: LOGOS.market.light,
     logoDark: LOGOS.market.dark,
-    tagline: 'EHS Marketplace',
+    tagline: '',
   },
   partner: {
     logoLight: LOGOS.partner.light,
@@ -187,7 +187,7 @@ function LogoContainer({
         className="h-[32px] w-auto object-contain"
       />
       <span
-        className="text-xs font-medium whitespace-nowrap text-primary"
+        className="text-xs font-medium whitespace-nowrap text-accent"
       >
         {displayTagline}
       </span>
@@ -546,11 +546,13 @@ export function AppHeader({
   return (
     <header
       className={cn(
-        'relative z-20 flex items-center justify-between w-full h-[55px]',
+        'relative z-20 flex items-center justify-between w-full h-[55px] overflow-hidden',
         className
       )}
       style={{
         boxShadow: SHADOWS.header,
+        // Clip shadow above, allow shadow below and sides
+        clipPath: 'inset(0px -100px -100px -100px)',
       }}
       // Header height defined via className for consistency
       data-slot="app-header"

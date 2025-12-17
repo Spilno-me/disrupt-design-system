@@ -1,53 +1,127 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "Complete design token reference for AI agents. Visual examples are in DesignTokens.mdx for humans.",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "lastUpdated": "2025-12-15",
-
   "spacing": {
     "website": {
       "_usage": "Marketing sites, landing pages - larger spacing for content-focused layouts",
-      "sectionPaddingY": { "class": "py-16 lg:py-24", "values": "64px / 96px" },
-      "sectionPaddingX": { "class": "px-6 lg:px-10", "values": "24px / 40px" },
-      "headingGap": { "class": "mb-1", "values": "4px" },
-      "subheadingGap": { "class": "mb-8", "values": "32px" },
-      "listItemGap": { "class": "gap-4", "values": "16px" },
-      "sectionContentGap": { "class": "gap-12 lg:gap-16", "values": "48px / 64px" },
+      "sectionPaddingY": {
+        "class": "py-16 lg:py-24",
+        "values": "64px / 96px"
+      },
+      "sectionPaddingX": {
+        "class": "px-6 lg:px-10",
+        "values": "24px / 40px"
+      },
+      "headingGap": {
+        "class": "mb-1",
+        "values": "4px"
+      },
+      "subheadingGap": {
+        "class": "mb-8",
+        "values": "32px"
+      },
+      "listItemGap": {
+        "class": "gap-4",
+        "values": "16px"
+      },
+      "sectionContentGap": {
+        "class": "gap-12 lg:gap-16",
+        "values": "48px / 64px"
+      },
       "containerMaxWidth": "1440px"
     },
     "app": {
       "_usage": "Web applications - compact spacing for productivity workflows",
-      "pageContainer": { "class": "p-6", "values": "24px all sides" },
-      "cardPadding": { "class": "p-4 or p-6", "values": "16px compact / 24px default" },
-      "cardHeader": { "class": "px-6 gap-1.5", "values": "24px horizontal, 6px gap" },
-      "cardContent": { "class": "px-6", "values": "24px horizontal" },
-      "formGap": { "class": "gap-2", "values": "8px between fields" },
-      "sectionGap": { "class": "gap-6", "values": "24px between sections" },
+      "pageContainer": {
+        "class": "p-6",
+        "values": "24px all sides"
+      },
+      "cardPadding": {
+        "class": "p-4 or p-6",
+        "values": "16px compact / 24px default"
+      },
+      "cardHeader": {
+        "class": "px-6 gap-1.5",
+        "values": "24px horizontal, 6px gap"
+      },
+      "cardContent": {
+        "class": "px-6",
+        "values": "24px horizontal"
+      },
+      "formGap": {
+        "class": "gap-2",
+        "values": "8px between fields"
+      },
+      "sectionGap": {
+        "class": "gap-6",
+        "values": "24px between sections"
+      },
       "tableRowHeight": "44px minimum (touch-friendly)"
     },
     "scale": {
-      "0": "0px", "0.5": "2px", "1": "4px", "1.5": "6px", "2": "8px",
-      "2.5": "10px", "3": "12px", "3.5": "14px", "4": "16px", "5": "20px",
-      "6": "24px", "7": "28px", "8": "32px", "9": "36px", "10": "40px",
-      "11": "44px", "12": "48px", "14": "56px", "16": "64px", "20": "80px",
-      "24": "96px", "32": "128px", "40": "160px", "48": "192px", "64": "256px"
+      "0": "0px",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "7": "28px",
+      "8": "32px",
+      "9": "36px",
+      "10": "40px",
+      "11": "44px",
+      "12": "48px",
+      "14": "56px",
+      "16": "64px",
+      "20": "80px",
+      "24": "96px",
+      "32": "128px",
+      "40": "160px",
+      "48": "192px",
+      "64": "256px",
+      "0.5": "2px",
+      "1.5": "6px",
+      "2.5": "10px",
+      "3.5": "14px"
     }
   },
-
   "radius": {
     "_rule": "Larger radius = More prominent/interactive",
     "scale": {
       "none": "0px",
-      "xs": { "value": "4px", "use": "Badges, tags, small buttons" },
-      "sm": { "value": "8px", "use": "Input fields, cards, standard elements (DEFAULT)" },
-      "md": { "value": "12px", "use": "Buttons, dialogs, prominent cards" },
-      "lg": { "value": "16px", "use": "Large cards, feature sections" },
-      "xl": { "value": "20px", "use": "Hero elements, featured content" },
-      "2xl": { "value": "24px", "use": "Large containers" },
-      "full": { "value": "9999px", "use": "Pills, circular elements, avatars" }
+      "xs": {
+        "value": "4px",
+        "use": "Badges, tags, small buttons"
+      },
+      "sm": {
+        "value": "8px",
+        "use": "Input fields, cards, standard elements (DEFAULT)"
+      },
+      "md": {
+        "value": "12px",
+        "use": "Buttons, dialogs, prominent cards"
+      },
+      "lg": {
+        "value": "16px",
+        "use": "Large cards, feature sections"
+      },
+      "xl": {
+        "value": "20px",
+        "use": "Hero elements, featured content"
+      },
+      "2xl": {
+        "value": "24px",
+        "use": "Large containers"
+      },
+      "full": {
+        "value": "9999px",
+        "use": "Pills, circular elements, avatars"
+      }
     }
   },
-
   "borderWidth": {
     "0": "0px",
     "1": "1px (default for inputs, cards)",
@@ -55,12 +129,14 @@
     "4": "4px (strong emphasis)",
     "8": "8px (decorative)"
   },
-
   "shadows": {
     "_rule": "Elevation = Importance + Interactivity. Closer to user = more important.",
     "_physics": "Natural light from above: umbra (sharp, close) + penumbra (soft, far)",
     "scale": {
-      "none": { "value": "none", "use": "Flat elements, text links" },
+      "none": {
+        "value": "none",
+        "use": "Flat elements, text links"
+      },
       "sm": {
         "value": "0 1px 3px 0 rgba(0,0,0,0.12), 0 1px 2px -1px rgba(0,0,0,0.08)",
         "use": "Data display",
@@ -101,7 +177,6 @@
       "Data display + Secondary? → sm"
     ]
   },
-
   "typography": {
     "fonts": {
       "display": {
@@ -122,34 +197,103 @@
     },
     "website": {
       "_font": "Pilat Extended (font-display)",
-      "heroH1": { "class": "text-4xl md:text-6xl lg:text-7xl font-display font-bold", "use": "Hero headlines" },
-      "heroH2": { "class": "text-3xl md:text-4xl lg:text-5xl font-display font-bold", "use": "Large section headings" },
-      "sectionHeading": { "class": "text-2xl lg:text-[32px] font-display font-semibold", "use": "Standard section headings" },
-      "sectionSubheading": { "class": "text-base lg:text-lg font-display font-medium", "use": "Section descriptions" },
-      "cardHeading": { "class": "text-xl lg:text-2xl font-display font-semibold", "use": "Feature cards" }
+      "heroH1": {
+        "class": "text-4xl md:text-6xl lg:text-7xl font-display font-bold",
+        "use": "Hero headlines"
+      },
+      "heroH2": {
+        "class": "text-3xl md:text-4xl lg:text-5xl font-display font-bold",
+        "use": "Large section headings"
+      },
+      "sectionHeading": {
+        "class": "text-2xl lg:text-[32px] font-display font-semibold",
+        "use": "Standard section headings"
+      },
+      "sectionSubheading": {
+        "class": "text-base lg:text-lg font-display font-medium",
+        "use": "Section descriptions"
+      },
+      "cardHeading": {
+        "class": "text-xl lg:text-2xl font-display font-semibold",
+        "use": "Feature cards"
+      }
     },
     "app": {
       "_font": "Fixel (font-sans)",
-      "pageTitle": { "class": "text-2xl font-sans font-semibold", "use": "Page headings" },
-      "sectionTitle": { "class": "text-lg font-sans font-semibold", "use": "Section headings" },
-      "cardTitle": { "class": "text-base font-sans font-semibold", "use": "Card titles" },
-      "body": { "class": "text-sm font-sans", "use": "Body text, descriptions" },
-      "label": { "class": "text-sm font-sans font-medium", "use": "Form labels" },
-      "caption": { "class": "text-xs font-sans text-muted", "use": "Help text, metadata" },
-      "tableHeader": { "class": "text-xs font-sans font-medium uppercase tracking-wide", "use": "Table headers" }
+      "pageTitle": {
+        "class": "text-2xl font-sans font-semibold",
+        "use": "Page headings"
+      },
+      "sectionTitle": {
+        "class": "text-lg font-sans font-semibold",
+        "use": "Section headings"
+      },
+      "cardTitle": {
+        "class": "text-base font-sans font-semibold",
+        "use": "Card titles"
+      },
+      "body": {
+        "class": "text-sm font-sans",
+        "use": "Body text, descriptions"
+      },
+      "label": {
+        "class": "text-sm font-sans font-medium",
+        "use": "Form labels"
+      },
+      "caption": {
+        "class": "text-xs font-sans text-muted",
+        "use": "Help text, metadata"
+      },
+      "tableHeader": {
+        "class": "text-xs font-sans font-medium uppercase tracking-wide",
+        "use": "Table headers"
+      }
     },
     "sizes": {
-      "xs": { "size": "12px", "lineHeight": "16px" },
-      "sm": { "size": "14px", "lineHeight": "20px" },
-      "base": { "size": "16px", "lineHeight": "24px" },
-      "lg": { "size": "18px", "lineHeight": "28px" },
-      "xl": { "size": "20px", "lineHeight": "28px" },
-      "2xl": { "size": "24px", "lineHeight": "32px" },
-      "3xl": { "size": "30px", "lineHeight": "36px" },
-      "4xl": { "size": "36px", "lineHeight": "40px" },
-      "5xl": { "size": "48px", "lineHeight": "1" },
-      "6xl": { "size": "60px", "lineHeight": "1" },
-      "7xl": { "size": "72px", "lineHeight": "1" }
+      "xs": {
+        "size": "12px",
+        "lineHeight": "16px"
+      },
+      "sm": {
+        "size": "14px",
+        "lineHeight": "20px"
+      },
+      "base": {
+        "size": "16px",
+        "lineHeight": "24px"
+      },
+      "lg": {
+        "size": "18px",
+        "lineHeight": "28px"
+      },
+      "xl": {
+        "size": "20px",
+        "lineHeight": "28px"
+      },
+      "2xl": {
+        "size": "24px",
+        "lineHeight": "32px"
+      },
+      "3xl": {
+        "size": "30px",
+        "lineHeight": "36px"
+      },
+      "4xl": {
+        "size": "36px",
+        "lineHeight": "40px"
+      },
+      "5xl": {
+        "size": "48px",
+        "lineHeight": "1"
+      },
+      "6xl": {
+        "size": "60px",
+        "lineHeight": "1"
+      },
+      "7xl": {
+        "size": "72px",
+        "lineHeight": "1"
+      }
     },
     "weights": {
       "normal": "400",
@@ -158,64 +302,180 @@
       "bold": "700"
     }
   },
-
   "colors": {
     "_rule": "Use semantic classes, not raw hex values",
     "primitives": {
       "_note": "Raw color scales - use ALIAS tokens instead",
-      "abyss": { "50": "#E8E9EB", "500": "#2D3142", "700": "#1D1F2A" },
-      "deepCurrent": { "50": "#E6F7FA", "500": "#08A4BD", "700": "#056271" },
-      "duskReef": { "50": "#EFEDF3", "500": "#5E4F7E" },
-      "coral": { "50": "#FEF2F2", "500": "#F70D1A" },
-      "harbor": { "50": "#F0FDF4", "500": "#22C55E" },
-      "wave": { "50": "#EFF6FF", "500": "#3B82F6" },
-      "sunrise": { "50": "#FFFBEB", "500": "#EAB308" },
-      "slate": { "300": "#CBD5E1" },
+      "abyss": {
+        "50": "#E8E9EB",
+        "500": "#2D3142",
+        "700": "#1D1F2A"
+      },
+      "deepCurrent": {
+        "50": "#E6F7FA",
+        "500": "#08A4BD",
+        "700": "#056271"
+      },
+      "duskReef": {
+        "50": "#EFEDF3",
+        "500": "#5E4F7E"
+      },
+      "coral": {
+        "50": "#FEF2F2",
+        "500": "#F70D1A"
+      },
+      "harbor": {
+        "50": "#F0FDF4",
+        "500": "#22C55E"
+      },
+      "wave": {
+        "50": "#EFF6FF",
+        "500": "#3B82F6"
+      },
+      "sunrise": {
+        "50": "#FFFBEB",
+        "500": "#EAB308"
+      },
+      "slate": {
+        "300": "#CBD5E1"
+      },
       "cream": "#FBFBF3",
       "white": "#FFFFFF"
     },
     "semantic": {
       "text": {
-        "primary": { "class": "text-primary", "use": "Main text" },
-        "secondary": { "class": "text-secondary", "use": "Supporting text" },
-        "muted": { "class": "text-muted", "use": "Subtle text" },
-        "emphasis": { "class": "text-emphasis", "use": "Emphasized labels" },
-        "inverse": { "class": "text-inverse", "use": "Text on dark backgrounds" },
-        "disabled": { "class": "text-disabled", "use": "Disabled state" },
-        "link": { "class": "text-link hover:text-link-hover", "use": "Links" },
-        "error": { "class": "text-error", "use": "Error messages" },
-        "success": { "class": "text-success", "use": "Success messages" },
-        "warning": { "class": "text-warning", "use": "Warning messages" }
+        "primary": {
+          "class": "text-primary",
+          "use": "Main text"
+        },
+        "secondary": {
+          "class": "text-secondary",
+          "use": "Supporting text"
+        },
+        "muted": {
+          "class": "text-muted",
+          "use": "Subtle text"
+        },
+        "emphasis": {
+          "class": "text-emphasis",
+          "use": "Emphasized labels"
+        },
+        "inverse": {
+          "class": "text-inverse",
+          "use": "Text on dark backgrounds"
+        },
+        "disabled": {
+          "class": "text-disabled",
+          "use": "Disabled state"
+        },
+        "link": {
+          "class": "text-link hover:text-link-hover",
+          "use": "Links"
+        },
+        "error": {
+          "class": "text-error",
+          "use": "Error messages"
+        },
+        "success": {
+          "class": "text-success",
+          "use": "Success messages"
+        },
+        "warning": {
+          "class": "text-warning",
+          "use": "Warning messages"
+        }
       },
       "background": {
-        "page": { "class": "bg-page bg-cream", "use": "Page background" },
-        "surface": { "class": "bg-surface", "use": "Cards, panels" },
-        "muted": { "class": "bg-muted-bg", "use": "Subtle backgrounds" },
-        "accent": { "class": "bg-accent-bg", "use": "Accent highlights" },
-        "accentStrong": { "class": "bg-accent-strong", "use": "Primary accent" },
-        "inverse": { "class": "bg-inverse-bg", "use": "Dark backgrounds" },
-        "error": { "class": "bg-error-light", "use": "Error background" },
-        "success": { "class": "bg-success-light", "use": "Success background" },
-        "warning": { "class": "bg-warning-light", "use": "Warning background" }
+        "page": {
+          "class": "bg-page bg-cream",
+          "use": "Page background"
+        },
+        "surface": {
+          "class": "bg-surface",
+          "use": "Cards, panels"
+        },
+        "muted": {
+          "class": "bg-muted-bg",
+          "use": "Subtle backgrounds"
+        },
+        "accent": {
+          "class": "bg-accent-bg",
+          "use": "Accent highlights"
+        },
+        "accentStrong": {
+          "class": "bg-accent-strong",
+          "use": "Primary accent"
+        },
+        "inverse": {
+          "class": "bg-inverse-bg",
+          "use": "Dark backgrounds"
+        },
+        "error": {
+          "class": "bg-error-light",
+          "use": "Error background"
+        },
+        "success": {
+          "class": "bg-success-light",
+          "use": "Success background"
+        },
+        "warning": {
+          "class": "bg-warning-light",
+          "use": "Warning background"
+        }
       },
       "border": {
-        "default": { "class": "border-default", "use": "Standard borders" },
-        "subtle": { "class": "border-subtle", "use": "Subtle borders" },
-        "strong": { "class": "border-strong", "use": "Emphasized borders" },
-        "focus": { "class": "border-focus ring-focus", "use": "Focus rings (teal)" },
-        "accent": { "class": "border-accent", "use": "Accent borders" },
-        "error": { "class": "border-error", "use": "Error state" },
-        "success": { "class": "border-success", "use": "Success state" }
+        "default": {
+          "class": "border-default",
+          "use": "Standard borders"
+        },
+        "subtle": {
+          "class": "border-subtle",
+          "use": "Subtle borders"
+        },
+        "strong": {
+          "class": "border-strong",
+          "use": "Emphasized borders"
+        },
+        "focus": {
+          "class": "border-focus ring-focus",
+          "use": "Focus rings (teal)"
+        },
+        "accent": {
+          "class": "border-accent",
+          "use": "Accent borders"
+        },
+        "error": {
+          "class": "border-error",
+          "use": "Error state"
+        },
+        "success": {
+          "class": "border-success",
+          "use": "Success state"
+        }
       }
     },
     "brand": {
-      "dark": { "class": "bg-dark text-dark", "hex": "#2D3142", "name": "Abyss" },
-      "teal": { "class": "bg-teal text-teal bg-accent-strong", "hex": "#08A4BD", "name": "Deep Current" },
-      "cream": { "class": "bg-cream", "hex": "#FBFBF3" },
-      "purple": { "class": "text-muted bg-muted-bg", "hex": "#5E4F7E", "name": "Dusk Reef" }
+      "dark": {
+        "class": "bg-dark text-dark",
+        "hex": "#2D3142",
+        "name": "Abyss"
+      },
+      "teal": {
+        "class": "bg-teal text-teal bg-accent-strong",
+        "hex": "#08A4BD",
+        "name": "Deep Current"
+      },
+      "cream": {
+        "class": "bg-cream",
+        "hex": "#FBFBF3"
+      },
+      "purple": {
+        "class": "text-muted bg-muted-bg",
+        "hex": "#5E4F7E",
+        "name": "Dusk Reef"
+      }
     }
   },
-
   "transitions": {
     "durations": {
       "fast": "150ms",
@@ -237,15 +497,28 @@
       "all": "transition-all duration-200"
     }
   },
-
   "breakpoints": {
-    "sm": { "value": "640px", "use": "Small tablets, large phones" },
-    "md": { "value": "768px", "use": "Tablets" },
-    "lg": { "value": "1024px", "use": "Small desktops, landscape tablets" },
-    "xl": { "value": "1280px", "use": "Standard desktops" },
-    "2xl": { "value": "1536px", "use": "Large desktops" }
+    "sm": {
+      "value": "640px",
+      "use": "Small tablets, large phones"
+    },
+    "md": {
+      "value": "768px",
+      "use": "Tablets"
+    },
+    "lg": {
+      "value": "1024px",
+      "use": "Small desktops, landscape tablets"
+    },
+    "xl": {
+      "value": "1280px",
+      "use": "Standard desktops"
+    },
+    "2xl": {
+      "value": "1536px",
+      "use": "Large desktops"
+    }
   },
-
   "zIndex": {
     "background": "0",
     "content": "1",
@@ -256,7 +529,6 @@
     "tooltip": "150",
     "notification": "200"
   },
-
   "quickReference": {
     "_note": "Most common patterns for quick lookup",
     "card": "bg-surface border border-default rounded-sm shadow-md p-6",

@@ -14,6 +14,13 @@ const meta: Meta<typeof Card> = {
   component: Card,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** MOLECULE
+
+Container component with header, content, and footer sections. Includes CardHeader, CardTitle, CardDescription, CardContent, and CardFooter sub-components. Primarily used for website pricing cards.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

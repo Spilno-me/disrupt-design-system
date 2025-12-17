@@ -14,6 +14,13 @@ const meta = {
   component: Select,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** MOLECULE
+
+Dropdown selection component built on Radix UI Select. Includes SelectTrigger, SelectContent, SelectItem, SelectGroup, and SelectLabel sub-components.`,
+      },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Select>;

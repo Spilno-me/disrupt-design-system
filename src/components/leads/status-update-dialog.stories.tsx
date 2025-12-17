@@ -9,6 +9,13 @@ const meta: Meta<typeof StatusUpdateDialog> = {
   component: StatusUpdateDialog,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Dialog for updating lead status with status selection dropdown. Partner-specific component.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

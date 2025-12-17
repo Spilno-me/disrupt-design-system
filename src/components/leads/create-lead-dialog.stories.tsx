@@ -8,6 +8,13 @@ const meta: Meta<typeof CreateLeadDialog> = {
   component: CreateLeadDialog,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Form dialog for creating new leads with validation and partner assignment. Partner-specific component.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

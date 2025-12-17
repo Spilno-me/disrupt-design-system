@@ -8,6 +8,13 @@ const meta: Meta<typeof Label> = {
   component: Label,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ATOM
+
+Accessible label for form controls. Associates with inputs via \`htmlFor\` attribute.`,
+      },
+    },
   },
   tags: ['autodocs'],
 }

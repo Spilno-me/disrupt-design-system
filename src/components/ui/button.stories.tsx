@@ -6,6 +6,13 @@ const meta: Meta<typeof Button> = {
   component: Button,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ATOM
+
+The primary interactive element for user actions. Supports multiple variants, sizes, and states.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

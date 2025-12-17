@@ -19,6 +19,13 @@ const meta: Meta<typeof Sheet> = {
   component: Sheet,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** MOLECULE
+
+Slide-out panel for secondary content or actions. Built on Radix UI Dialog with SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription, and SheetClose sub-components.`,
+      },
+    },
   },
   tags: ['autodocs'],
 }

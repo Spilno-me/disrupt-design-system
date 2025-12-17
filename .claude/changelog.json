@@ -1,42 +1,111 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "Machine-readable changelog for AI agents",
-  "currentVersion": "2.4.0",
+  "currentVersion": "2.5.0",
   "lastUpdated": "2025-12-15",
-
   "versions": {
     "unreleased": {
       "status": "in-progress",
       "targetVersion": "2.4.0",
       "added": [
-        { "component": "NotificationsPanel", "type": "export", "priority": "high" },
-        { "component": "QuickFilter", "type": "export", "priority": "high" },
-        { "component": "DropdownMenu", "type": "export", "priority": "high" },
-        { "component": "Tabs", "type": "export", "priority": "high" },
-        { "component": "Wizard", "type": "export", "priority": "medium", "subs": ["WizardStepper", "WizardStep", "WizardNavigation", "useWizard"] }
+        {
+          "component": "NotificationsPanel",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "QuickFilter",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "DropdownMenu",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "Tabs",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "Wizard",
+          "type": "export",
+          "priority": "medium",
+          "subs": [
+            "WizardStepper",
+            "WizardStep",
+            "WizardNavigation",
+            "useWizard"
+          ]
+        }
       ],
       "improved": [
-        { "component": "Shadows", "change": "Natural light physics system with elevated level" },
-        { "component": "Badge", "change": "text-inverse, JSDoc, display name, testId ready" },
-        { "component": "SeverityIndicator", "change": "Extended props, display name, ATOM testId" },
-        { "component": "Skeleton", "change": "Extended props, display names, Tailwind classes" },
-        { "component": "Input", "change": "Exported InputProps, display name, AllTypes story" },
-        { "component": "Label", "change": "Exported LabelProps, display name, JSDoc" },
-        { "component": "Checkbox", "change": "Exported CheckboxProps, display name, JSDoc" },
-        { "component": "Select", "change": "Exported all 9 sub-component interfaces" },
-        { "component": "Textarea", "change": "Exported TextareaProps, display name, JSDoc" }
+        {
+          "component": "Shadows",
+          "change": "Natural light physics system with elevated level"
+        },
+        {
+          "component": "Badge",
+          "change": "text-inverse, JSDoc, display name, testId ready"
+        },
+        {
+          "component": "SeverityIndicator",
+          "change": "Extended props, display name, ATOM testId"
+        },
+        {
+          "component": "Skeleton",
+          "change": "Extended props, display names, Tailwind classes"
+        },
+        {
+          "component": "Input",
+          "change": "Exported InputProps, display name, AllTypes story"
+        },
+        {
+          "component": "Label",
+          "change": "Exported LabelProps, display name, JSDoc"
+        },
+        {
+          "component": "Checkbox",
+          "change": "Exported CheckboxProps, display name, JSDoc"
+        },
+        {
+          "component": "Select",
+          "change": "Exported all 9 sub-component interfaces"
+        },
+        {
+          "component": "Textarea",
+          "change": "Exported TextareaProps, display name, JSDoc"
+        }
       ],
       "changed": [
-        { "component": "Card", "change": "FROZEN for website pricing only", "breaking": false }
+        {
+          "component": "Card",
+          "change": "FROZEN for website pricing only",
+          "breaking": false
+        }
       ],
       "newComponents": [
-        { "component": "AppCard", "type": "MOLECULE", "variants": ["default", "elevated", "flat"], "replaces": "Card (in-app)" }
+        {
+          "component": "AppCard",
+          "type": "MOLECULE",
+          "variants": [
+            "default",
+            "elevated",
+            "flat"
+          ],
+          "replaces": "Card (in-app)"
+        }
       ],
       "deprecated": [
-        { "component": "Skeleton", "prop": "variant", "removeIn": "3.0.0", "reason": "Aesthetic animations create UI inconsistency" }
+        {
+          "component": "Skeleton",
+          "prop": "variant",
+          "removeIn": "3.0.0",
+          "reason": "Aesthetic animations create UI inconsistency"
+        }
       ]
     },
-
     "2.3.1": {
       "date": "2025-12-12",
       "fixed": [
@@ -49,7 +118,6 @@
         "Improved type safety across components"
       ]
     },
-
     "2.3.0": {
       "date": "2024-XX-XX",
       "added": [
@@ -60,39 +128,98 @@
       ]
     }
   },
-
   "breakingChangesDeferred": {
     "targetVersion": "3.0.0",
     "changes": [
-      { "component": "Button", "change": "Brand color redesign (FROZEN dependency)" },
-      { "component": "SeverityIndicator", "change": "Refactor to use ALIAS tokens instead of PRIMITIVES" },
-      { "component": "Skeleton", "change": "Remove deprecated variant prop" },
-      { "component": "Card", "change": "Remove non-pricing variants completely" }
+      {
+        "component": "Button",
+        "change": "Brand color redesign (FROZEN dependency)"
+      },
+      {
+        "component": "SeverityIndicator",
+        "change": "Refactor to use ALIAS tokens instead of PRIMITIVES"
+      },
+      {
+        "component": "Skeleton",
+        "change": "Remove deprecated variant prop"
+      },
+      {
+        "component": "Card",
+        "change": "Remove non-pricing variants completely"
+      }
     ]
   },
-
   "stabilization": {
     "completed": [
-      { "component": "Badge", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Input", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Label", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Checkbox", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Select", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Textarea", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Skeleton", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Slider", "version": "2.3.1", "type": "ATOM" },
-      { "component": "Separator", "version": "2.3.1", "type": "ATOM" },
-      { "component": "AppCard", "version": "2.3.1", "type": "MOLECULE" }
+      {
+        "component": "Badge",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Input",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Label",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Checkbox",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Select",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Textarea",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Skeleton",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Slider",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Separator",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "AppCard",
+        "version": "2.3.1",
+        "type": "MOLECULE"
+      }
     ],
     "frozen": [
-      { "component": "Card", "reason": "Website pricing cards only" },
-      { "component": "Button", "reason": "Website dependency, brand color redesign needed" }
+      {
+        "component": "Card",
+        "reason": "Website pricing cards only"
+      },
+      {
+        "component": "Button",
+        "reason": "Website dependency, brand color redesign needed"
+      }
     ],
     "pending": [
-      "Dialog", "Sheet", "Tooltip", "DataTable", "ErrorState"
+      "Dialog",
+      "Sheet",
+      "Tooltip",
+      "DataTable",
+      "ErrorState"
     ]
   },
-
   "queries": {
     "_note": "Example queries agents can run against this data",
     "whatChangedIn": "versions[version].added + versions[version].changed + versions[version].fixed",

@@ -8,8 +8,9 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'A minimal, clean full-page error display for critical application errors, maintenance pages, or catastrophic failures. Features a bold red title, readable gray message, and a prominent action button.',
+        component: `**Type:** PAGE
+
+A minimal, clean full-page error display for critical application errors, maintenance pages, or catastrophic failures. Features a bold red title, readable gray message, and a prominent action button.`,
       },
     },
   },

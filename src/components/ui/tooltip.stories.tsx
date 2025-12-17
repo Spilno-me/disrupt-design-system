@@ -8,6 +8,13 @@ const meta: Meta<typeof Tooltip> = {
   component: Tooltip,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** MOLECULE
+
+Contextual information popup that appears on hover. Built on Radix UI Tooltip with TooltipProvider, TooltipTrigger, and TooltipContent sub-components.`,
+      },
+    },
   },
   tags: ['autodocs'],
 }

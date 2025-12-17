@@ -20,7 +20,8 @@ const meta: Meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: `
+        component: `**Type:** MOLECULE (Utility System)
+
 # Form - Utility System
 
 **Classification:** Utility System / Infrastructure (NOT a Core Component)

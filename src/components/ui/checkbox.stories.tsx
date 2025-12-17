@@ -8,7 +8,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: `
+        component: `**Type:** ATOM
+
 Checkbox component for selections and toggles. Built on Radix UI Checkbox primitive.
 
 ## Styling

@@ -23,6 +23,13 @@ const meta: Meta<typeof Dialog> = {
   component: Dialog,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** MOLECULE
+
+Modal dialog for focused user interactions. Built on Radix UI Dialog with DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, and DialogClose sub-components.`,
+      },
+    },
   },
   tags: ['autodocs'],
 }

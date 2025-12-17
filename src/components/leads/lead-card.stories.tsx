@@ -6,6 +6,13 @@ const meta: Meta<typeof LeadCard> = {
   component: LeadCard,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Business card displaying lead information with status, priority, and actions. Partner-specific component.`,
+      },
+    },
   },
   tags: ['autodocs'],
   decorators: [

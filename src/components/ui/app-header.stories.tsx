@@ -12,12 +12,12 @@ const meta: Meta<typeof AppHeader> = {
         component: `
 # AppHeader
 
-**Type:** MOLECULE (compound component with multiple sub-components)
+**Type:** ORGANISM (complex UI section with multiple sub-components)
 
 Application header component for the Disrupt Family apps (Flow, Market, Partner).
 
 ## Features
-- **Product-specific branding**: Automatically displays the correct logo and tagline based on the \`product\` prop
+- **Product-specific branding**: Automatically displays the correct logo based on the \`product\` prop. Set \`tagline\` prop to display text next to logo (e.g., "Environmental Compliance" for Flow)
 - **Notification bell**: Shows notification count with a badge
 - **User menu**: Avatar with dropdown menu for user actions
 - **Wave pattern background**: Decorative wave pattern with glass morphism effect
@@ -39,6 +39,7 @@ import { AppHeader } from '@/components/ui/AppHeader'
 // Basic usage
 <AppHeader
   product="flow"
+  tagline="Environmental Compliance"
   notificationCount={4}
   user={{ name: 'John Doe', email: 'john@example.com' }}
   onNotificationClick={() => console.log('Notifications')}
@@ -47,6 +48,7 @@ import { AppHeader } from '@/components/ui/AppHeader'
 // With custom menu items
 <AppHeader
   product="market"
+  tagline="Modules & Add-ons"
   user={{ name: 'Jane Smith', email: 'jane@example.com' }}
   menuItems={[
     { id: 'profile', label: 'Profile', icon: <User /> },
@@ -114,6 +116,7 @@ export const Default: Story = {
   name: 'Default (Flow)',
   args: {
     product: 'flow',
+    tagline: 'Environmental Compliance',
     notificationCount: 4,
     user: sampleUser,
     menuItems: sampleMenuItems,
@@ -131,6 +134,7 @@ export const WithAvatar: Story = {
   name: 'With User Avatar',
   args: {
     product: 'flow',
+    tagline: 'Environmental Compliance',
     notificationCount: 3,
     user: sampleUserWithAvatar,
     menuItems: sampleMenuItems,
@@ -148,6 +152,7 @@ export const Interactive: Story = {
   name: 'Interactive',
   args: {
     product: 'flow',
+    tagline: 'Environmental Compliance',
     notificationCount: 7,
     user: sampleUserWithAvatar,
     menuItems: sampleMenuItems,
@@ -184,20 +189,20 @@ export const Interactive: Story = {
 // =============================================================================
 
 export const AllStates: Story = {
-  name: '🎨 All States',
+  name: 'All States',
   render: () => (
     <div className="space-y-12 pb-8">
       {/* Anatomy Diagram */}
-      <div className="px-6 py-4 bg-slate-50 rounded-lg">
+      <div className="px-6 py-4 bg-muted-bg rounded-lg">
         <h3 className="text-lg font-semibold mb-4 text-primary">Component Anatomy</h3>
         <div className="space-y-2 text-sm">
-          <p><code className="px-2 py-1 bg-white rounded">data-slot="app-header"</code> - Main header container</p>
-          <p><code className="px-2 py-1 bg-white rounded">data-slot="logo-container"</code> - Logo and tagline section</p>
-          <p><code className="px-2 py-1 bg-white rounded">data-slot="notification-bell"</code> - Notification bell button</p>
-          <p><code className="px-2 py-1 bg-white rounded">data-slot="notification-badge"</code> - Badge showing count</p>
-          <p><code className="px-2 py-1 bg-white rounded">data-slot="user-avatar"</code> - User avatar</p>
-          <p><code className="px-2 py-1 bg-white rounded">data-slot="user-menu-trigger"</code> - User menu trigger button</p>
-          <p><code className="px-2 py-1 bg-white rounded">data-slot="user-menu-content"</code> - User menu dropdown</p>
+          <p><code className="px-2 py-1 bg-surface rounded">data-slot="app-header"</code> - Main header container</p>
+          <p><code className="px-2 py-1 bg-surface rounded">data-slot="logo-container"</code> - Logo and tagline section</p>
+          <p><code className="px-2 py-1 bg-surface rounded">data-slot="notification-bell"</code> - Notification bell button</p>
+          <p><code className="px-2 py-1 bg-surface rounded">data-slot="notification-badge"</code> - Badge showing count</p>
+          <p><code className="px-2 py-1 bg-surface rounded">data-slot="user-avatar"</code> - User avatar</p>
+          <p><code className="px-2 py-1 bg-surface rounded">data-slot="user-menu-trigger"</code> - User menu trigger button</p>
+          <p><code className="px-2 py-1 bg-surface rounded">data-slot="user-menu-content"</code> - User menu dropdown</p>
         </div>
       </div>
 
@@ -209,6 +214,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Flow EHS</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               notificationCount={4}
               user={sampleUser}
               disablePortal
@@ -218,6 +224,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Market</p>
             <AppHeader
               product="market"
+              tagline="Modules & Add-ons"
               notificationCount={12}
               user={sampleUserWithAvatar}
               disablePortal
@@ -227,6 +234,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Partner Portal</p>
             <AppHeader
               product="partner"
+              tagline="Management Portal"
               notificationCount={0}
               user={sampleUser}
               disablePortal
@@ -243,6 +251,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">With Notifications (4)</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               notificationCount={4}
               user={sampleUser}
               disablePortal
@@ -252,6 +261,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Many Notifications (99+)</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               notificationCount={150}
               user={sampleUser}
               disablePortal
@@ -261,6 +271,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">No Notifications</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               notificationCount={0}
               user={sampleUser}
               disablePortal
@@ -270,6 +281,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Notifications Hidden</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               showNotifications={false}
               user={sampleUser}
               disablePortal
@@ -286,6 +298,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">With Avatar Image</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               notificationCount={3}
               user={sampleUserWithAvatar}
               disablePortal
@@ -295,6 +308,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">With Initials</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               notificationCount={2}
               user={sampleUser}
               disablePortal
@@ -304,6 +318,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">No User (Logged Out)</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               notificationCount={0}
               disablePortal
             />
@@ -316,7 +331,7 @@ export const AllStates: Story = {
         <h3 className="text-lg font-semibold mb-4 px-4 text-primary">Customization</h3>
         <div className="space-y-4">
           <div>
-            <p className="text-xs font-medium text-secondary px-4 py-2">Custom Tagline</p>
+            <p className="text-xs font-medium text-secondary px-4 py-2">Custom Tagline Override</p>
             <AppHeader
               product="flow"
               tagline="Enterprise Safety Suite"
@@ -329,6 +344,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Without Wave Pattern</p>
             <AppHeader
               product="flow"
+              tagline="Environmental Compliance"
               showWavePattern={false}
               notificationCount={2}
               user={sampleUser}
@@ -339,13 +355,13 @@ export const AllStates: Story = {
       </div>
 
       {/* Focus States Note */}
-      <div className="px-6 py-4 bg-blue-50 rounded-lg">
+      <div className="px-6 py-4 bg-accent-subtle rounded-lg">
         <h3 className="text-sm font-semibold mb-2 text-primary">Keyboard Navigation</h3>
         <ul className="text-sm space-y-1 text-secondary">
-          <li><kbd className="px-2 py-1 bg-white rounded border">Tab</kbd> - Navigate between logo, notification bell, and user menu</li>
-          <li><kbd className="px-2 py-1 bg-white rounded border">Enter</kbd> or <kbd className="px-2 py-1 bg-white rounded border">Space</kbd> - Activate focused element</li>
-          <li><kbd className="px-2 py-1 bg-white rounded border">↓</kbd> - Open user menu when trigger is focused</li>
-          <li><kbd className="px-2 py-1 bg-white rounded border">Esc</kbd> - Close user menu</li>
+          <li><kbd className="px-2 py-1 bg-surface rounded border border-default">Tab</kbd> - Navigate between logo, notification bell, and user menu</li>
+          <li><kbd className="px-2 py-1 bg-surface rounded border border-default">Enter</kbd> or <kbd className="px-2 py-1 bg-surface rounded border border-default">Space</kbd> - Activate focused element</li>
+          <li><kbd className="px-2 py-1 bg-surface rounded border border-default">↓</kbd> - Open user menu when trigger is focused</li>
+          <li><kbd className="px-2 py-1 bg-surface rounded border border-default">Esc</kbd> - Close user menu</li>
         </ul>
       </div>
     </div>

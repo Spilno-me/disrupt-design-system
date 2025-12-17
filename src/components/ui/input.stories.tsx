@@ -7,6 +7,13 @@ const meta = {
   component: Input,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ATOM
+
+Text input field for user data entry. Supports placeholder, disabled, and error states.`,
+      },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Input>

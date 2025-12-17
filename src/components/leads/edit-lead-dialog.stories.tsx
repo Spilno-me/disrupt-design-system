@@ -10,6 +10,13 @@ const meta: Meta<typeof EditLeadDialog> = {
   component: EditLeadDialog,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Form dialog for editing existing lead information with pre-filled data. Partner-specific component.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

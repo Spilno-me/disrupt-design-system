@@ -6,6 +6,13 @@ const meta: Meta<typeof StatsCard> = {
   component: StatsCard,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+KPI display card with value, trend indicator, and optional description. Partner-specific component.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

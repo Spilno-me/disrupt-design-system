@@ -8,7 +8,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: `
+        component: `**Type:** ATOM
+
 Separator component for visual division of content.
 
 ## Two Separator Types

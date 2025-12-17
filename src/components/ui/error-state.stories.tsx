@@ -9,6 +9,13 @@ const meta: Meta<typeof ErrorState> = {
   component: ErrorState,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** MOLECULE
+
+Inline error feedback component with icon, title, message, and optional retry action. Used within cards and content areas.`,
+      },
+    },
   },
   tags: ['autodocs'],
   decorators: [

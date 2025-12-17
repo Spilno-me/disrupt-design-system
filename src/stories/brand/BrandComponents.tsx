@@ -79,6 +79,8 @@ import {
   RADIUS,
   ALIAS,
   SPACING,
+  TYPOGRAPHY,
+  SIZES,
 } from '../../constants/designTokens';
 
 // Re-export tokens for MDX usage
@@ -92,6 +94,7 @@ export const TOKENS = {
   shadows: SHADOWS,
   radius: RADIUS,
   alias: ALIAS,
+  sizes: SIZES,
 };
 
 // Also export individual tokens for direct import
@@ -106,6 +109,8 @@ export {
   RADIUS,
   ALIAS,
   SPACING,
+  TYPOGRAPHY,
+  SIZES,
 };
 
 interface HeroHeaderProps {

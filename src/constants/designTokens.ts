@@ -163,6 +163,7 @@ export const ALIAS = {
     emphasis: ABYSS[400], // Emphasized labels - lighter than primary but still dark
     disabled: DUSK_REEF[300],
     inverse: PRIMITIVES.white,
+    accent: DEEP_CURRENT[700], // Teal accent text - 6.42:1 contrast on white (WCAG AA)
     link: DEEP_CURRENT[500],
     linkHover: DEEP_CURRENT[600],
     error: CORAL[500],
@@ -277,8 +278,10 @@ export const ALIAS = {
   // --- SHADOWS ---
   shadow: {
     sm: '0px 1px 2px -1px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.1)',
-    header: '0px 2px 4px 5px rgba(0, 0, 0, 0.15)',
-    footer: '0px -1px 3px rgba(0, 0, 0, 0.08)',
+    // Header: Umbra (12% sharp) + Penumbra (8% soft) - downward elevation
+    header: '0 1px 4px 0 rgba(0, 0, 0, 0.12), 0 3px 8px -1px rgba(0, 0, 0, 0.08)',
+    // Footer: Umbra (12% sharp) + Penumbra (8% soft) - upward elevation
+    footer: '0 -1px 4px 0 rgba(0, 0, 0, 0.12), 0 -3px 8px -1px rgba(0, 0, 0, 0.08)',
   },
 
   // --- GRID/CANVAS ---
@@ -551,7 +554,9 @@ export const SPACING = {
   px: {
     micro: '4px',        // Icon-to-text, inline elements
     tight: '8px',        // Related items (label + input)
+    compact: '12px',     // Compact spacing (between tight and base)
     base: '16px',        // Items within a component
+    cardGap: '20px',     // Between cards
     comfortable: '24px', // Between components in a section
     spacious: '32px',    // Between sections within a page
     section: '48px',     // Major page sections
@@ -560,7 +565,6 @@ export const SPACING = {
     // Semantic aliases for documentation
     sectionHeadingTop: '32px',    // Gap after separator (spacious)
     sectionHeadingBottom: '24px', // Gap to content (comfortable)
-    cardGap: '20px',              // Between cards
     cardGapCompact: '16px',       // Compact card grids
     cardPadding: '24px',          // Internal card padding
     gridGap: '16px',              // Standard grid gap
@@ -579,6 +583,23 @@ export const SIZES = {
   inputHeight: '40px',
   buttonHeight: '40px',
   textareaMinHeight: '120px',
+  // Icon containers
+  iconXs: '24px',
+  iconSm: '36px',
+  iconMd: '40px',
+  iconLg: '48px',
+  iconXl: '56px',
+  iconXxl: '64px',
+  // Decision tree minWidth
+  answerBoxWide: '160px',
+  answerBoxNarrow: '140px',
+  // Decorative elements
+  decorativeDot: '8px',
+  decorativeLine: '12px',
+  decorativeLineHeight: '2px',
+  // Card logo constraints
+  logoMaxHeight: '48px',
+  logoMaxWidth: '160px',
 } as const
 
 // =============================================================================

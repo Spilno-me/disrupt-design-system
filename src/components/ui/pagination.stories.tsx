@@ -13,8 +13,9 @@ const meta: Meta<typeof Pagination> = {
     layout: 'padded',
     docs: {
       description: {
-        component: `
-A comprehensive pagination component (MOLECULE) with smart ellipsis, page size selector, and keyboard accessibility.
+        component: `**Type:** ORGANISM
+
+A comprehensive pagination component with smart ellipsis, page size selector, and keyboard accessibility.
 
 ## Features
 - Page number buttons with smart ellipsis
@@ -26,7 +27,6 @@ A comprehensive pagination component (MOLECULE) with smart ellipsis, page size s
 - Loading state support
 
 ## Testing
-- Component type: **MOLECULE**
 - Use \`data-slot="pagination"\` to target the root container
 - Use \`data-slot="pagination-button"\` for page number buttons
 - Use \`data-slot="pagination-prev"\` and \`data-slot="pagination-next"\` for navigation buttons

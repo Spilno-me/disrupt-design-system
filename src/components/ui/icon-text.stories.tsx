@@ -8,6 +8,13 @@ const meta: Meta<typeof IconText> = {
   component: IconText,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: `**Type:** MOLECULE
+
+Icon and text combination with consistent spacing and alignment. Includes IconHeading1, IconHeading2, IconHeading3, and IconLabel variants.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

@@ -121,6 +121,13 @@ const meta: Meta<typeof AppSidebar> = {
   component: AppSidebar,
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Collapsible navigation sidebar with nested menu support, badges, and responsive behavior. Part of the shared App Shell system.`,
+      },
+    },
   },
   tags: ['autodocs'],
 }

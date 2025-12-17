@@ -194,6 +194,65 @@ DDS is a **Product Design System** - a single source of truth that includes:
 
 ---
 
+## Atomic Design Classification
+
+We use **domain-driven navigation** (Core, Shared, Partner) combined with **atomic design labels** in documentation.
+
+### Navigation vs Documentation
+
+| Aspect | System | Example |
+|--------|--------|---------|
+| **Sidebar navigation** | Domain-driven | `Core/Button`, `Shared/App Shell/AppHeader` |
+| **Story docs label** | Atomic design | `Type: ATOM`, `Type: ORGANISM` |
+
+### Atomic Levels
+
+| Level | Definition | Domain Location | Examples |
+|-------|------------|-----------------|----------|
+| **ATOM** | Single UI element, no dependencies | Core/ | Button, Input, Badge, Label, Checkbox |
+| **MOLECULE** | Simple group of atoms | Core/ | Form field (label + input), IconText |
+| **ORGANISM** | Complex section with molecules + atoms | Shared/, Product/ | AppHeader, DataTable, Sidebar, Cards |
+| **TEMPLATE** | Page layout structure | Shared/App Shell/ | AppLayoutShell, PageLayout |
+| **PAGE** | Template + real data | Product/Pages/, Product/Complete App | LeadsPage, PartnerPortalPage |
+
+### Story Documentation Pattern
+
+```tsx
+const meta: Meta<typeof ComponentName> = {
+  title: 'Core/ComponentName',  // Domain-driven navigation
+  component: ComponentName,
+  parameters: {
+    docs: {
+      description: {
+        component: `
+# ComponentName
+
+**Type:** ATOM | MOLECULE | ORGANISM | TEMPLATE | PAGE
+
+Description here...
+        `,
+      },
+    },
+  },
+}
+```
+
+### Classification Guide
+
+**Core/ components:**
+- Single element, no children → ATOM (Button, Badge, Input)
+- Compound with fixed parts → MOLECULE (Tabs, Accordion, Select)
+
+**Shared/ components:**
+- Layout shells → TEMPLATE (AppLayoutShell)
+- Complex UI sections → ORGANISM (AppHeader, AppSidebar, DataTable)
+
+**Product/ components:**
+- Business cards/panels → ORGANISM (LeadCard, StatsCard)
+- Full pages → PAGE (LeadsPage, Dashboard)
+
+---
+
 ## Version History
 
 | Date | Change |

@@ -43,7 +43,8 @@ const meta: Meta<typeof AppLayoutShell> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: `
+        component: `**Type:** TEMPLATE
+
 # AppLayoutShell - Shared Product Layout
 
 The AppLayoutShell is the foundation for all DDS product apps. It provides:

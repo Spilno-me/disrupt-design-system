@@ -4,7 +4,7 @@
   "description": "SINGLE SOURCE OF TRUTH for AI agents. Read this ONE file for complete context.",
   "meta": {
     "project": "Disrupt Design System (DDS)",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "designPhilosophy": "OPINIONATED - Strong design vision, minimal variants",
     "engineeringPhilosophy": "Wu Wei (無為) - See criticalRules.philosophy",
     "lastUpdated": "2025-12-15"
@@ -255,7 +255,12 @@
     },
     "forbidden": {
       "_CRITICAL": "ONLY Fixel is allowed in app UI",
-      "fonts": ["font-mono", "font-serif", "font-display (in app)", "any Google Font"],
+      "fonts": [
+        "font-mono",
+        "font-serif",
+        "font-display (in app)",
+        "any Google Font"
+      ],
       "reason": "Consistent brand identity - Fixel for all UI"
     }
   },
@@ -544,15 +549,40 @@
         "dataTestid": "ATOM, MOLECULE, PAGE - consumer or auto-generated"
       },
       "components": {
-        "Dialog": ["dialog", "dialog-trigger", "dialog-content", "dialog-header", "dialog-footer", "dialog-title", "dialog-description", "dialog-close", "dialog-overlay"],
-        "Select": ["select-trigger", "select-content", "select-item", "select-separator"],
-        "Sheet": ["sheet-trigger", "sheet-content", "sheet-header", "sheet-title"]
+        "Dialog": [
+          "dialog",
+          "dialog-trigger",
+          "dialog-content",
+          "dialog-header",
+          "dialog-footer",
+          "dialog-title",
+          "dialog-description",
+          "dialog-close",
+          "dialog-overlay"
+        ],
+        "Select": [
+          "select-trigger",
+          "select-content",
+          "select-item",
+          "select-separator"
+        ],
+        "Sheet": [
+          "sheet-trigger",
+          "sheet-content",
+          "sheet-header",
+          "sheet-title"
+        ]
       },
       "testing": "container.querySelector('[data-slot=\"dialog-content\"]')"
     },
     "allStatesStory": {
       "required": true,
-      "sections": ["Variants", "Sizes", "States", "Focus (use autoFocus)"],
+      "sections": [
+        "Variants",
+        "Sizes",
+        "States",
+        "Focus (use autoFocus)"
+      ],
       "headerClass": "text-sm font-semibold text-muted mb-4"
     }
   },
@@ -575,7 +605,6 @@
     "testingPatterns": ".claude/testing-quick-ref.md",
     "changelog": ".claude/changelog.json"
   },
-
   "humanOnly": {
     "_note": "These files are for humans in Storybook, not for agents",
     "visualTokenDocs": "src/stories/DesignTokens.mdx"

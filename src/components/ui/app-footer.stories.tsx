@@ -6,6 +6,13 @@ const meta = {
   component: AppFooter,
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Application footer with copyright, version info, and optional links. Part of the shared App Shell system.`,
+      },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof AppFooter>

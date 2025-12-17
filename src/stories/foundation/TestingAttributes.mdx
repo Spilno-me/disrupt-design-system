@@ -1,0 +1,866 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  FlaskConical,
+  Layers,
+  Box,
+  Boxes,
+  FileText,
+  ArrowRight,
+  CheckCircle,
+  XCircle,
+  Workflow,
+  Code,
+  Target,
+  Hash,
+  Fingerprint,
+  MousePointerClick,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  GuidelineCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+  SIZES,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/Testing Attributes" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Testing Attributes"
+  description="How we implement data-testid attributes across components for reliable test automation and E2E testing."
+  gradient="purple"
+  decorativeIcon={<FlaskConical size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Testability by design.</strong> Our data-testid strategy varies by component type (Atom, Molecule, Page) to balance flexibility with consistency.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Strategy Overview</h2>
+
+<SectionHeader
+  icon={<Target size={20} />}
+  title="Different Strategies for Different Layers"
+  description="Components at different atomic levels have different testId responsibilities."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    {
+      level: 'ATOM',
+      icon: <Box size={24} />,
+      color: DEEP_CURRENT[500],
+      bg: DEEP_CURRENT[50],
+      strategy: 'Accept via props',
+      desc: 'Consumer provides context',
+      example: 'Button, Input, Badge',
+      detail: 'No default testId — spreads ...props',
+    },
+    {
+      level: 'MOLECULE',
+      icon: <Boxes size={24} />,
+      color: DUSK_REEF[500],
+      bg: DUSK_REEF[50],
+      strategy: 'Auto-generate',
+      desc: 'Based on entity ID',
+      example: 'LeadCard, StatsCard',
+      detail: 'Pattern: {type}-{id}',
+    },
+    {
+      level: 'PAGE',
+      icon: <FileText size={24} />,
+      color: ABYSS[500],
+      bg: ABYSS[50],
+      strategy: 'Named regions',
+      desc: 'Hardcoded sections',
+      example: 'Dashboard, Settings',
+      detail: 'Pattern: {page}-{section}',
+    },
+  ].map((item) => (
+    <div
+      key={item.level}
+      style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: SPACING.px.comfortable,
+        border: `1px solid ${SLATE[200]}`,
+        boxShadow: SHADOWS.sm,
+      }}
+    >
+      <div style={{
+        width: SIZES.iconLg,
+        height: SIZES.iconLg,
+        borderRadius: RADIUS.md,
+        background: item.bg,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.base,
+        color: item.color,
+      }}>
+        {item.icon}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: item.color,
+        letterSpacing: '0.5px',
+        marginBottom: SPACING.px.micro,
+      }}>
+        {item.level}
+      </div>
+      <h3 style={{
+        margin: `0 0 ${SPACING.px.micro} 0`,
+        fontSize: TYPOGRAPHY.fontSize.base[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: ABYSS[500],
+      }}>
+        {item.strategy}
+      </h3>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: DUSK_REEF[500],
+        marginBottom: SPACING.px.tight,
+      }}>
+        {item.desc}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+        marginBottom: SPACING.px.tight,
+      }}>
+        {item.example}
+      </div>
+      <div style={{
+        background: item.bg,
+        padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+        borderRadius: RADIUS.xs,
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: item.color,
+      }}>
+        {item.detail}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Decision Tree</h2>
+
+<SectionHeader
+  icon={<Workflow size={20} />}
+  title="Which Strategy to Use?"
+  description="Follow this flow to determine the correct testId approach."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.px.base }}>
+    {[
+      { question: 'Is it a UI primitive (button, input, badge)?', answer: 'ATOM → Accept via props', color: DEEP_CURRENT[500], bg: DEEP_CURRENT[50] },
+      { question: 'Is it composed of multiple atoms with entity data?', answer: 'MOLECULE → Auto-generate', color: DUSK_REEF[500], bg: DUSK_REEF[50] },
+      { question: 'Is it a page or template with sections?', answer: 'PAGE → Hardcode regions', color: ABYSS[500], bg: ABYSS[50] },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'stretch',
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+        boxShadow: SHADOWS.sm,
+      }}>
+        <div style={{
+          flex: 1,
+          background: SLATE[50],
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: SPACING.px.base,
+        }}>
+          <div style={{
+            width: SPACING.px.comfortable,
+            height: SPACING.px.comfortable,
+            borderRadius: '50%',
+            background: DUSK_REEF[100],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: DUSK_REEF[600] }}>?</span>
+          </div>
+          <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: ABYSS[500] }}>
+            {item.question}
+          </span>
+        </div>
+        <div style={{
+          width: SPACING.px.section,
+          background: `linear-gradient(90deg, ${SLATE[50]} 0%, ${item.bg} 100%)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <ArrowRight size={20} color={item.color} />
+        </div>
+        <div style={{
+          minWidth: '200px',
+          background: item.bg,
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <span style={{
+            fontSize: TYPOGRAPHY.fontSize.sm[0],
+            fontWeight: TYPOGRAPHY.fontWeight.semibold,
+            fontFamily: TYPOGRAPHY.fontFamily.mono,
+            color: item.color,
+          }}>
+            {item.answer}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Naming Convention</h2>
+
+<SectionHeader
+  icon={<Hash size={20} />}
+  title="TestId Naming Pattern"
+  description="Consistent naming makes selectors predictable and maintainable."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: ABYSS[500],
+    }}>
+      Pattern Format
+    </h4>
+    <div style={{
+      background: ABYSS[600],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: '13px',
+      color: SLATE[200],
+      lineHeight: 1.8,
+    }}>
+      <span style={{ color: DEEP_CURRENT[300] }}>{'{context}'}</span>-<span style={{ color: DUSK_REEF[300] }}>{'{component}'}</span>-<span style={{ color: CORAL[300] }}>{'{identifier}'}</span>
+    </div>
+    <div style={{
+      marginTop: SPACING.px.base,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: DUSK_REEF[500],
+    }}>
+      Always use <strong>kebab-case</strong> for all segments
+    </div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: ABYSS[500],
+    }}>
+      Examples
+    </h4>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: SPACING.px.tight,
+    }}>
+      {[
+        { id: 'lead-card-123', desc: 'Entity card with ID' },
+        { id: 'login-submit-button', desc: 'Action button' },
+        { id: 'dashboard-stats-section', desc: 'Page section' },
+        { id: 'user-profile-avatar', desc: 'Specific element' },
+      ].map((item) => (
+        <div key={item.id} style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: SPACING.px.tight,
+        }}>
+          <code style={{
+            background: SLATE[100],
+            padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+            borderRadius: RADIUS.xs,
+            fontSize: TYPOGRAPHY.fontSize.xs[0],
+            fontFamily: TYPOGRAPHY.fontFamily.mono,
+            color: ABYSS[500],
+          }}>
+            {item.id}
+          </code>
+          <span style={{
+            fontSize: TYPOGRAPHY.fontSize.xs[0],
+            fontFamily: TYPOGRAPHY.fontFamily.sans,
+            color: SLATE[500],
+          }}>
+            {item.desc}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Implementation Patterns</h2>
+
+<SectionHeader
+  icon={<Code size={20} />}
+  title="Code Examples by Layer"
+  description="Copy-paste patterns for each component type."
+/>
+
+{/* ATOM Pattern */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: SPACING.px.comfortable,
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: SPACING.px.tight,
+    marginBottom: SPACING.px.base,
+  }}>
+    <div style={{
+      background: DEEP_CURRENT[50],
+      padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+      borderRadius: RADIUS.xs,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      fontWeight: TYPOGRAPHY.fontWeight.bold,
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: DEEP_CURRENT[600],
+      letterSpacing: '0.5px',
+    }}>
+      ATOM
+    </div>
+    <span style={{
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: ABYSS[500],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    }}>
+      Accept via props (Button, Input, Badge)
+    </span>
+  </div>
+  <div style={{
+    background: ABYSS[600],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    overflow: 'auto',
+  }}>
+    <pre style={{
+      margin: 0,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: '12px',
+      lineHeight: 1.7,
+      color: SLATE[200],
+    }}>
+{`/**
+ * Button - Primary action trigger
+ *
+ * @component ATOM
+ * @testId Consumer provides via data-testid prop
+ * @example <Button data-testid="login-submit">Submit</Button>
+ */
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'ghost'
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = 'primary', ...props }, ref) => (
+    <button ref={ref} className={cn(variants[variant], className)} {...props} />
+  )
+)
+Button.displayName = 'Button'`}
+    </pre>
+  </div>
+  <div style={{
+    marginTop: SPACING.px.base,
+    padding: SPACING.px.tight,
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.sm,
+    fontSize: TYPOGRAPHY.fontSize.xs[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    color: DEEP_CURRENT[700],
+  }}>
+    <strong>Key:</strong> Extend <code style={{ background: PRIMITIVES.white, padding: '1px 4px', borderRadius: RADIUS.xs }}>React.HTMLAttributes</code> and spread <code style={{ background: PRIMITIVES.white, padding: '1px 4px', borderRadius: RADIUS.xs }}>...props</code> to accept data-testid
+  </div>
+</div>
+
+{/* MOLECULE Pattern */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${DUSK_REEF[200]}`,
+  marginBottom: SPACING.px.comfortable,
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: SPACING.px.tight,
+    marginBottom: SPACING.px.base,
+  }}>
+    <div style={{
+      background: DUSK_REEF[50],
+      padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+      borderRadius: RADIUS.xs,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      fontWeight: TYPOGRAPHY.fontWeight.bold,
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: DUSK_REEF[600],
+      letterSpacing: '0.5px',
+    }}>
+      MOLECULE
+    </div>
+    <span style={{
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: ABYSS[500],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    }}>
+      Auto-generate from entity (LeadCard, StatsCard)
+    </span>
+  </div>
+  <div style={{
+    background: ABYSS[600],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    overflow: 'auto',
+  }}>
+    <pre style={{
+      margin: 0,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: '12px',
+      lineHeight: 1.7,
+      color: SLATE[200],
+    }}>
+{`/**
+ * LeadCard - Displays lead information with actions
+ *
+ * @component MOLECULE
+ * @testId Auto-generated: lead-card-{id}, lead-status-{id}, lead-edit-{id}
+ * @example <LeadCard lead={lead} />
+ */
+interface LeadCardProps {
+  lead: Lead
+  testId?: string  // Optional override
+}
+
+function LeadCard({ lead, testId }: LeadCardProps) {
+  const baseTestId = testId || \`lead-card-\${lead.id}\`
+  return (
+    <div data-testid={baseTestId}>
+      <Badge data-testid={\`lead-status-\${lead.id}\`}>
+        {lead.status}
+      </Badge>
+      <Button data-testid={\`lead-edit-\${lead.id}\`}>
+        Edit
+      </Button>
+    </div>
+  )
+}`}
+    </pre>
+  </div>
+  <div style={{
+    marginTop: SPACING.px.base,
+    padding: SPACING.px.tight,
+    background: DUSK_REEF[50],
+    borderRadius: RADIUS.sm,
+    fontSize: TYPOGRAPHY.fontSize.xs[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    color: DUSK_REEF[700],
+  }}>
+    <strong>Key:</strong> Auto-generate from entity ID with optional <code style={{ background: PRIMITIVES.white, padding: '1px 4px', borderRadius: RADIUS.xs }}>testId</code> override prop
+  </div>
+</div>
+
+{/* PAGE Pattern */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${ABYSS[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: SPACING.px.tight,
+    marginBottom: SPACING.px.base,
+  }}>
+    <div style={{
+      background: ABYSS[50],
+      padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+      borderRadius: RADIUS.xs,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      fontWeight: TYPOGRAPHY.fontWeight.bold,
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: ABYSS[500],
+      letterSpacing: '0.5px',
+    }}>
+      PAGE
+    </div>
+    <span style={{
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: ABYSS[500],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    }}>
+      Hardcode named regions (Dashboard, Settings)
+    </span>
+  </div>
+  <div style={{
+    background: ABYSS[600],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    overflow: 'auto',
+  }}>
+    <pre style={{
+      margin: 0,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: '12px',
+      lineHeight: 1.7,
+      color: SLATE[200],
+    }}>
+{`/**
+ * DashboardPage - Main dashboard layout
+ *
+ * @component PAGE
+ * @testId Named regions: dashboard-page, dashboard-header,
+ *         dashboard-stats, dashboard-table
+ */
+function DashboardPage() {
+  return (
+    <main data-testid="dashboard-page">
+      <header data-testid="dashboard-header">
+        <h1>Dashboard</h1>
+      </header>
+      <section data-testid="dashboard-stats">
+        <StatsCard stat={totalLeads} />
+      </section>
+      <section data-testid="dashboard-table">
+        <DataTable data={leads} />
+      </section>
+    </main>
+  )
+}`}
+    </pre>
+  </div>
+  <div style={{
+    marginTop: SPACING.px.base,
+    padding: SPACING.px.tight,
+    background: ABYSS[50],
+    borderRadius: RADIUS.sm,
+    fontSize: TYPOGRAPHY.fontSize.xs[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    color: ABYSS[600],
+  }}>
+    <strong>Key:</strong> Hardcode semantic testIds on major page sections for reliable E2E selectors
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Testing Selectors</h2>
+
+<SectionHeader
+  icon={<MousePointerClick size={20} />}
+  title="How to Query Elements in Tests"
+  description="Best practices for selecting elements in your test files."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Use semantic selectors">
+    <code style={{ display: 'block', marginTop: '8px', fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '12px' }}>
+      getByTestId('lead-card-123')<br/>
+      getByRole('button', {'{ name: /submit/i }'})<br/>
+      getByLabelText('Email address')
+    </code>
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Avoid implementation details">
+    <code style={{ display: 'block', marginTop: '8px', fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '12px' }}>
+      getByClassName('lead-card')<br/>
+      querySelector('.btn-primary')<br/>
+      querySelector('[class*="Card"]')
+    </code>
+  </GuidelineCard>
+</div>
+
+{/* Priority Order */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{
+    margin: `0 0 ${SPACING.px.base} 0`,
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontWeight: TYPOGRAPHY.fontWeight.semibold,
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    color: ABYSS[500],
+  }}>
+    Query Priority (Testing Library)
+  </h4>
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: SPACING.px.tight,
+  }}>
+    {[
+      { priority: 1, selector: 'getByRole', desc: 'Accessible role (button, heading, etc.)', color: DEEP_CURRENT[500] },
+      { priority: 2, selector: 'getByLabelText', desc: 'Form field labels', color: DEEP_CURRENT[400] },
+      { priority: 3, selector: 'getByPlaceholderText', desc: 'Input placeholders', color: DUSK_REEF[500] },
+      { priority: 4, selector: 'getByText', desc: 'Visible text content', color: DUSK_REEF[400] },
+      { priority: 5, selector: 'getByTestId', desc: 'Explicit data-testid (last resort)', color: ABYSS[400] },
+    ].map((item) => (
+      <div key={item.priority} style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: SPACING.px.base,
+        padding: SPACING.px.tight,
+        background: SLATE[50],
+        borderRadius: RADIUS.sm,
+      }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: '50%',
+          background: item.color,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontWeight: TYPOGRAPHY.fontWeight.bold,
+          flexShrink: 0,
+        }}>
+          {item.priority}
+        </div>
+        <code style={{
+          fontFamily: TYPOGRAPHY.fontFamily.mono,
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          color: ABYSS[500],
+          minWidth: '160px',
+        }}>
+          {item.selector}
+        </code>
+        <span style={{
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: SLATE[600],
+        }}>
+          {item.desc}
+        </span>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>JSDoc Documentation</h2>
+
+<SectionHeader
+  icon={<FileText size={20} />}
+  title="Always Document testId Strategy"
+  description="Include component type and testId examples in JSDoc comments."
+/>
+
+<div style={{
+  background: ABYSS[600],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  overflow: 'auto',
+}}>
+  <pre style={{
+    margin: 0,
+    fontFamily: TYPOGRAPHY.fontFamily.mono,
+    fontSize: '12px',
+    lineHeight: 1.8,
+    color: SLATE[200],
+  }}>
+{`/**
+ * ComponentName - Brief description
+ *
+ * @component ATOM | MOLECULE | PAGE
+ * @testId How testId is handled for this component type
+ * @example Usage example with testId
+ */
+
+// ATOM example:
+// @component ATOM
+// @testId Consumer provides via data-testid prop
+// @example <Button data-testid="login-submit">Submit</Button>
+
+// MOLECULE example:
+// @component MOLECULE
+// @testId Auto-generated: entity-card-{id}, entity-status-{id}
+// @example <EntityCard entity={entity} />
+
+// PAGE example:
+// @component PAGE
+// @testId Named regions: page-name-section, page-name-header
+// @example <DashboardPage />`}
+  </pre>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Core Principles</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Match testId to component layer">
+    Atoms accept, Molecules auto-generate, Pages hardcode. This provides flexibility where needed and consistency where it matters.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Hardcode testIds in atoms">
+    Atoms like Button don't know their context. Let consumers provide meaningful testIds like "login-submit" vs "profile-save".
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Use entity IDs for molecules">
+    When a component displays entity data (lead, user, order), include the entity ID in auto-generated testIds for unique selection.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Use indices for testIds">
+    Never use array indices like "item-0", "item-1". These break when order changes. Use stable entity identifiers instead.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Keep testIds stable across refactors">
+    testIds are a contract with tests. Changing them breaks tests. Only change when the semantic meaning changes.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Add testIds to every element">
+    Only add testIds to elements that need to be selected in tests. Over-testId'ing creates maintenance burden and brittle tests.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Layer</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Strategy</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Implementation</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { layer: 'ATOM', strategy: 'Accept via props', impl: 'Spread ...props', ex: '<Button data-testid="x">' },
+        { layer: 'MOLECULE', strategy: 'Auto-generate', impl: 'Optional testId prop', ex: 'lead-card-{id}' },
+        { layer: 'PAGE', strategy: 'Hardcode regions', impl: 'Named sections', ex: 'dashboard-stats' },
+      ].map((row, idx) => (
+        <tr key={row.layer} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{
+            padding: '12px 16px',
+            fontWeight: TYPOGRAPHY.fontWeight.semibold,
+            color: row.layer === 'ATOM' ? DEEP_CURRENT[600] : row.layer === 'MOLECULE' ? DUSK_REEF[600] : ABYSS[500]
+          }}>
+            {row.layer}
+          </td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.strategy}</td>
+          <td style={{ padding: '12px 16px', fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: TYPOGRAPHY.fontSize.xs[0], color: DUSK_REEF[500] }}>{row.impl}</td>
+          <td style={{ padding: '12px 16px', fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[600] }}>{row.ex}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<InfoBox variant="info">
+  <strong>Related Documentation:</strong> See <a href="?path=/docs/foundation-architecture--docs" style={{ color: DEEP_CURRENT[600] }}>Architecture</a> for component classification and the atomic design system that determines testId strategy.
+</InfoBox>

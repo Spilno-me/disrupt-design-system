@@ -9,7 +9,8 @@ const meta: Meta<typeof LeadsPage> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: `
+        component: `**Type:** PAGE
+
 LeadsPage - Full page layout for managing leads
 
 Features:

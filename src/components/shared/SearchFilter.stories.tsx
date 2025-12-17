@@ -11,7 +11,8 @@ const meta: Meta<typeof SearchFilter> = {
     layout: 'padded',
     docs: {
       description: {
-        component: `
+        component: `**Type:** MOLECULE
+
 A universal search input with optional filter functionality.
 
 ## Features

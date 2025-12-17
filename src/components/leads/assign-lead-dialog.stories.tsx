@@ -10,6 +10,13 @@ const meta: Meta<typeof AssignLeadDialog> = {
   component: AssignLeadDialog,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Dialog for assigning leads to partners with partner selection. Partner-specific component.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

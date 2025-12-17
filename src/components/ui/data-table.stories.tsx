@@ -82,7 +82,8 @@ const meta: Meta<typeof DataTable> = {
     layout: 'padded',
     docs: {
       description: {
-        component: `
+        component: `**Type:** ORGANISM
+
 A generic, reusable data table component with sortable columns, row selection, loading states, and priority borders.
 
 **Features:**

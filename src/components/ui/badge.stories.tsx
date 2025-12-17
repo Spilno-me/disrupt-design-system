@@ -6,6 +6,13 @@ const meta = {
   component: Badge,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ATOM
+
+Small status indicator or label. Supports multiple variants (success, warning, destructive) and shapes (default, pill).`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

@@ -28,7 +28,7 @@
   .bg-muted-bg { background-color: var(--color-muted-bg); }
   .bg-accent-strong { background-color: var(--color-accent-strong); }
   .text-inverse { color: var(--color-inverse); }
-  .text-accent { color: var(--color-accent); }
+  .text-accent { color: var(--color-text-accent); }
 
   /* Hover variants with opacity */
   .hover\:bg-inverse-bg\/90:hover { background-color: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent); }
@@ -223,6 +223,8 @@ h1.dds-brand-hero-title,
   --color-link: #08A4BD;
   /* Usage: text-link-hover */
   --color-link-hover: #068397;
+  /* Usage: text-accent (accent text with WCAG AA contrast) */
+  --color-text-accent: #056271;
 
   /* --- BACKGROUND COLORS --- */
   /* Usage: bg-surface (cards, panels) */
@@ -392,6 +394,7 @@ h1.dds-brand-hero-title,
   --alias-text-tertiary: var(--brand-dusk-reef-400);
   --alias-text-disabled: var(--brand-dusk-reef-300);
   --alias-text-inverse: var(--brand-white);
+  --alias-text-accent: var(--brand-deep-current-700);
   --alias-text-link: var(--brand-deep-current-500);
   --alias-text-link-hover: var(--brand-deep-current-600);
   --alias-text-error: var(--brand-tide-alert);

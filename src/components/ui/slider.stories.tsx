@@ -9,7 +9,9 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'A customizable range slider built on Radix UI primitives. Uses teal brand colors for visual consistency. Supports labels, units, step increments, and disabled states.',
+        component: `**Type:** ATOM
+
+A customizable range slider built on Radix UI primitives. Uses teal brand colors for visual consistency. Supports labels, units, step increments, and disabled states.`,
       },
     },
   },

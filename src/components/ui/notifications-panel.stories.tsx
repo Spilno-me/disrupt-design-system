@@ -15,7 +15,8 @@ const meta: Meta<typeof NotificationsPanel> = {
     layout: 'centered',
     docs: {
       description: {
-        component: `
+        component: `**Type:** ORGANISM
+
 # Notifications Panel
 
 A slide-out panel for displaying user notifications. Features:

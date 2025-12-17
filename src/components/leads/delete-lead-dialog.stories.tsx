@@ -9,6 +9,13 @@ const meta: Meta<typeof DeleteLeadDialog> = {
   component: DeleteLeadDialog,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Confirmation dialog for lead deletion with warning message. Partner-specific component.`,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {

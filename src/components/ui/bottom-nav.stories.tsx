@@ -13,6 +13,13 @@ const meta: Meta<typeof BottomNav> = {
     viewport: {
       defaultViewport: 'mobile1',
     },
+    docs: {
+      description: {
+        component: `**Type:** ORGANISM
+
+Mobile bottom navigation bar with icon-based navigation items. Part of the shared App Shell system for mobile viewports.`,
+      },
+    },
   },
   tags: ['autodocs'],
 }

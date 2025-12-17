@@ -1,7 +1,7 @@
 # Disrupt Design System - Testing Guide (QA)
 
 **Last Updated:** 2025-12-13
-**Version:** 2.4.0
+**Version:** 2.5.0
 **For:** QA Team & Test Automation Agents
 
 ---

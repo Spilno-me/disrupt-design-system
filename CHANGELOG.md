@@ -16,6 +16,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.5.0] - 2025-12-17
+
+### Added
+
+- **Testing Attributes documentation** - New Foundation page documenting data-testid strategy by component layer (Atom/Molecule/Page) with visual decision tree, code examples, and naming conventions
+- **IconSearch fuzzy search** - Enhanced icon browser with semantic tags (120+ icons with 5-8 tags each), typo tolerance using Levenshtein distance, and ranked search results
+- **SVG download functionality** - Each icon in the Iconography page now has a download button to get the SVG file
+- **Version bump script** - `scripts/bump-version.js` for updating version across all documentation files
+
+### Changed
+
+- **IconSearch semantic matching** - Searching "stop" now finds X, XCircle, Ban, Pause, Square, UserX, HandStop, CircleStop
+- **Icon catalog expanded** - Added Ban, CircleSlash, OctagonX, HandStop, CircleStop icons to catalog
+
+---
+
 ## [2.4.0] - 2025-12-17
 
 ### Added

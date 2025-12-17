@@ -6,6 +6,13 @@ const meta = {
   component: Textarea,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: `**Type:** ATOM
+
+Multi-line text input for longer user content. Supports placeholder, disabled, and error states.`,
+      },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Textarea>;
