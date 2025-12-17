@@ -4,6 +4,35 @@
 
 ---
 
+## CRITICAL: bg-muted vs bg-muted-bg Token Confusion
+
+**`bg-muted` is DARK, `bg-muted-bg` is LIGHT.**
+
+### The Problem
+```
+bg-muted    → DUSK_REEF[400] (#7F6F9F) → DARK purple
+bg-muted-bg → DUSK_REEF[50]  (#EFEDF3) → LIGHT purple
+```
+
+Using `bg-muted` with `text-secondary` (DUSK_REEF[500]) creates **dark-on-dark** with ~1.5:1 contrast.
+
+### The Fix
+```jsx
+// ❌ WRONG - dark on dark
+<code className="bg-muted text-secondary">code</code>
+
+// ✅ CORRECT - light background, dark text
+<code className="bg-muted-bg text-secondary">code</code>
+```
+
+### Token Semantic Difference
+| Token | Hex | Use |
+|-------|-----|-----|
+| `bg-muted` | `#7F6F9F` | Muted foreground elements (icons, disabled text) |
+| `bg-muted-bg` | `#EFEDF3` | Muted background surfaces (code blocks, chips) |
+
+---
+
 ## CRITICAL: MDX Paragraph Wrapping Bug
 
 **This cost hours of debugging. NEVER FORGET.**
