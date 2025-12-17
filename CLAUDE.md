@@ -204,6 +204,18 @@ Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
 
 ---
 
+## Git Commits (CRITICAL)
+
+**NEVER add Co-Authored-By lines to commits.**
+
+```
+❌ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
+❌ Co-Authored-By: Claude <noreply@anthropic.com>
+✅ Clean commit message without attribution lines
+```
+
+---
+
 ## Quick Commands
 
 ```bash
