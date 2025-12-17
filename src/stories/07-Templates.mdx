@@ -3,7 +3,7 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { FileText, Presentation, Mail, Layout, Palette, Download, BookOpen, Puzzle } from 'lucide-react';
 import {
-  HeroHeader,
+  BrandHero,
   ComingSoon,
   InfoBox,
   NavCard,
@@ -20,11 +20,11 @@ import {
 <Meta title="Brand/Templates" />
 
 {/* Hero Header */}
-<HeroHeader
-  icon={<FileText size={28} color={PRIMITIVES.white} />}
+<BrandHero
   title="Templates"
   description="Pre-designed templates to maintain brand consistency across all communications."
   gradient="purple"
+  decorativeIcon={<FileText size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="info">

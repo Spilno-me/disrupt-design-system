@@ -3,7 +3,7 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Type, Monitor, Smartphone } from 'lucide-react';
 import {
-  HeroHeader,
+  BrandHero,
   InfoBox,
   SectionHeader,
   StoryLink,
@@ -20,11 +20,11 @@ import {
 <Meta title="Brand/Typography" />
 
 {/* Hero Header */}
-<HeroHeader
-  icon={<Type size={28} color={PRIMITIVES.white} />}
+<BrandHero
   title="Typography"
   description="Two font families for two contexts: Pilat Extended for marketing impact, Fixel for application clarity."
   gradient="purple"
+  decorativeIcon={<Type size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="tip">
@@ -79,15 +79,14 @@ import {
         }}>
           <span>Pilat Extended</span>
         </h3>
-        <code style={{
+        <div style={{
           fontSize: '12px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"Fixel", sans-serif',
           color: SLATE[500],
-          display: 'block',
           marginTop: '4px',
         }}>
-          font-display
-        </code>
+          Display font
+        </div>
       </div>
     </div>
 
@@ -176,15 +175,14 @@ import {
         }}>
           <span>Fixel</span>
         </h3>
-        <code style={{
+        <div style={{
           fontSize: '12px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"Fixel", sans-serif',
           color: SLATE[500],
-          display: 'block',
           marginTop: '4px',
         }}>
-          font-sans
-        </code>
+          Application font
+        </div>
       </div>
     </div>
 
@@ -275,94 +273,53 @@ import {
       }}>
         <span>Marketing Scale</span>
       </h3>
-      <code style={{
-        fontSize: '10px',
-        fontFamily: 'ui-monospace, monospace',
-        color: SLATE[500],
-        marginLeft: 'auto',
-      }}>
-        font-display
-      </code>
     </div>
 
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div>
-        <code style={{
-          display: 'inline-block',
-          background: ABYSS[50],
-          padding: '2px 6px',
-          borderRadius: '4px',
-          fontSize: '10px',
-          fontFamily: 'ui-monospace, monospace',
-          color: ABYSS[500],
-          marginBottom: '4px',
-        }}>
-          text-4xl md:text-6xl font-display font-bold
-        </code>
         <div style={{
           fontSize: '32px',
           fontWeight: 700,
           color: ABYSS[500],
           lineHeight: 1.1,
           fontFamily: '"Pilat Extended", sans-serif',
+          marginBottom: '4px',
         }}>
           <span>Hero Headline</span>
         </div>
-        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        <div style={{ fontSize: '11px', color: SLATE[500], fontFamily: '"Fixel", sans-serif' }}>
           Hero titles, main page headlines
         </div>
       </div>
 
       <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
-        <code style={{
-          display: 'inline-block',
-          background: ABYSS[50],
-          padding: '2px 6px',
-          borderRadius: '4px',
-          fontSize: '10px',
-          fontFamily: 'ui-monospace, monospace',
-          color: ABYSS[500],
-          marginBottom: '4px',
-        }}>
-          text-2xl font-display font-semibold
-        </code>
         <div style={{
           fontSize: '24px',
           fontWeight: 600,
           color: ABYSS[500],
           lineHeight: 1.2,
           fontFamily: '"Pilat Extended", sans-serif',
+          marginBottom: '4px',
         }}>
           <span>Section Heading</span>
         </div>
-        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        <div style={{ fontSize: '11px', color: SLATE[500], fontFamily: '"Fixel", sans-serif' }}>
           Page section headings, feature titles
         </div>
       </div>
 
       <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
-        <code style={{
-          display: 'inline-block',
-          background: ABYSS[50],
-          padding: '2px 6px',
-          borderRadius: '4px',
-          fontSize: '10px',
-          fontFamily: 'ui-monospace, monospace',
-          color: ABYSS[500],
-          marginBottom: '4px',
-        }}>
-          text-lg font-display font-medium
-        </code>
         <div style={{
           fontSize: '18px',
           fontWeight: 500,
           color: DUSK_REEF[500],
           lineHeight: 1.4,
           fontFamily: '"Pilat Extended", sans-serif',
+          marginBottom: '4px',
         }}>
           <span>Subheading Text</span>
         </div>
-        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        <div style={{ fontSize: '11px', color: SLATE[500], fontFamily: '"Fixel", sans-serif' }}>
           Section descriptions, subtitles
         </div>
       </div>
@@ -394,94 +351,53 @@ import {
       }}>
         <span>Application Scale</span>
       </h3>
-      <code style={{
-        fontSize: '10px',
-        fontFamily: 'ui-monospace, monospace',
-        color: SLATE[500],
-        marginLeft: 'auto',
-      }}>
-        font-sans
-      </code>
     </div>
 
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div>
-        <code style={{
-          display: 'inline-block',
-          background: DEEP_CURRENT[50],
-          padding: '2px 6px',
-          borderRadius: '4px',
-          fontSize: '10px',
-          fontFamily: 'ui-monospace, monospace',
-          color: DEEP_CURRENT[700],
-          marginBottom: '4px',
-        }}>
-          text-2xl font-semibold
-        </code>
         <div style={{
           fontSize: '24px',
           fontWeight: 600,
           color: ABYSS[500],
           lineHeight: 1.2,
           fontFamily: '"Fixel", sans-serif',
+          marginBottom: '4px',
         }}>
           <span>Page Title</span>
         </div>
-        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        <div style={{ fontSize: '11px', color: SLATE[500], fontFamily: '"Fixel", sans-serif' }}>
           Page headings, main titles
         </div>
       </div>
 
       <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
-        <code style={{
-          display: 'inline-block',
-          background: DEEP_CURRENT[50],
-          padding: '2px 6px',
-          borderRadius: '4px',
-          fontSize: '10px',
-          fontFamily: 'ui-monospace, monospace',
-          color: DEEP_CURRENT[700],
-          marginBottom: '4px',
-        }}>
-          text-lg font-semibold
-        </code>
         <div style={{
           fontSize: '18px',
           fontWeight: 600,
           color: ABYSS[500],
           lineHeight: 1.3,
           fontFamily: '"Fixel", sans-serif',
+          marginBottom: '4px',
         }}>
           <span>Section Title</span>
         </div>
-        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        <div style={{ fontSize: '11px', color: SLATE[500], fontFamily: '"Fixel", sans-serif' }}>
           Section headings, card titles
         </div>
       </div>
 
       <div style={{ borderTop: `1px solid ${SLATE[100]}`, paddingTop: '16px' }}>
-        <code style={{
-          display: 'inline-block',
-          background: DEEP_CURRENT[50],
-          padding: '2px 6px',
-          borderRadius: '4px',
-          fontSize: '10px',
-          fontFamily: 'ui-monospace, monospace',
-          color: DEEP_CURRENT[700],
-          marginBottom: '4px',
-        }}>
-          text-sm / text-xs
-        </code>
         <div style={{
           fontSize: '14px',
           fontWeight: 400,
           color: ABYSS[500],
           lineHeight: 1.5,
           fontFamily: '"Fixel", sans-serif',
+          marginBottom: '4px',
         }}>
           <span>Body text and captions</span>
         </div>
-        <div style={{ fontSize: '11px', color: SLATE[500], marginTop: '4px', fontFamily: '"Fixel", sans-serif' }}>
+        <div style={{ fontSize: '11px', color: SLATE[500], fontFamily: '"Fixel", sans-serif' }}>
           Content, labels, metadata
         </div>
       </div>
@@ -706,84 +622,7 @@ import {
       <li>Use more than 4 font sizes in a single view</li>
       <li>Make text larger just for emphasis</li>
       <li>Use text smaller than 12px (accessibility)</li>
-      <li>Hardcode pixel values - use tokens</li>
     </ul>
   </div>
 </div>
 
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Code Examples</h2>
-
-<div style={{
-  background: ABYSS[700],
-  borderRadius: RADIUS.md,
-  padding: '24px',
-  marginBottom: '24px',
-}}>
-  <div style={{
-    fontSize: '11px',
-    fontFamily: 'ui-monospace, monospace',
-    color: SLATE[400],
-    textTransform: 'uppercase',
-    marginBottom: '12px',
-  }}>
-    Marketing (Pilat Extended)
-  </div>
-  <pre style={{
-    margin: 0,
-    fontSize: '13px',
-    fontFamily: 'ui-monospace, monospace',
-    color: SLATE[300],
-    lineHeight: 1.6,
-    overflow: 'auto',
-  }}>
-{`<h1 className="text-4xl md:text-6xl font-display font-bold">
-  Transform Your Business
-</h1>
-
-<h2 className="text-2xl font-display font-semibold">
-  Section Heading
-</h2>`}
-  </pre>
-</div>
-
-<div style={{
-  background: ABYSS[700],
-  borderRadius: RADIUS.md,
-  padding: '24px',
-}}>
-  <div style={{
-    fontSize: '11px',
-    fontFamily: 'ui-monospace, monospace',
-    color: SLATE[400],
-    textTransform: 'uppercase',
-    marginBottom: '12px',
-  }}>
-    Application (Fixel)
-  </div>
-  <pre style={{
-    margin: 0,
-    fontSize: '13px',
-    fontFamily: 'ui-monospace, monospace',
-    color: SLATE[300],
-    lineHeight: 1.6,
-    overflow: 'auto',
-  }}>
-{`<h1 className="text-2xl font-semibold text-primary">
-  Dashboard
-</h1>
-
-<h2 className="text-lg font-semibold text-primary">
-  Section Title
-</h2>
-
-<p className="text-sm text-secondary">
-  Body text content
-</p>
-
-<span className="text-xs text-muted">
-  Caption or metadata
-</span>`}
-  </pre>
-</div>

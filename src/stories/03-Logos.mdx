@@ -4,7 +4,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 import { Image, Moon, Sun, Maximize2 } from 'lucide-react';
 import { LogoGallery } from './LogoGallery';
 import {
-  HeroHeader,
+  BrandHero,
   InfoBox,
   ABYSS,
   DEEP_CURRENT,
@@ -19,11 +19,11 @@ import {
 <Meta title="Brand/Logos" />
 
 {/* Hero Header */}
-<HeroHeader
-  icon={<Image size={28} color={PRIMITIVES.white} />}
+<BrandHero
   title="Brand Logos"
   description="Download official Disrupt brand logos in various formats. Select the variant and format you need."
   gradient="teal"
+  decorativeIcon={<Image size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="tip">

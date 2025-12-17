@@ -19,9 +19,10 @@ import {
   Accessibility,
   Puzzle,
   Grid3X3,
+  Github,
 } from 'lucide-react';
 import {
-  HeroHeader,
+  BrandHero,
   ProductCard,
   FeatureCard,
   NavCard,
@@ -41,90 +42,43 @@ import {
 
 <Meta title="Brand/Introduction" />
 
+<style>
+{`
+  .dds-btn-primary {
+    transition: all 200ms ease-out !important;
+  }
+  .dds-btn-primary:hover {
+    background: #079AAF !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(8, 164, 189, 0.3) !important;
+  }
+  .dds-btn-secondary {
+    transition: all 200ms ease-out !important;
+  }
+  .dds-btn-secondary:hover {
+    background: rgba(255,255,255,0.18) !important;
+    border-color: rgba(255,255,255,0.35) !important;
+    transform: translateY(-1px);
+  }
+`}
+</style>
+
 {/* Hero Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[800]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: '48px',
-  marginBottom: '48px',
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative elements */}
-  <div style={{
-    position: 'absolute',
-    top: '-20%',
-    right: '-5%',
-    width: '400px',
-    height: '400px',
-    background: `radial-gradient(circle, ${DEEP_CURRENT[500]}25 0%, transparent 70%)`,
-    borderRadius: '50%',
-  }} />
-  <div style={{
-    position: 'absolute',
-    bottom: '-30%',
-    left: '10%',
-    width: '300px',
-    height: '300px',
-    background: `radial-gradient(circle, ${DUSK_REEF[500]}20 0%, transparent 70%)`,
-    borderRadius: '50%',
-  }} />
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '12px',
-      background: 'rgba(255,255,255,0.1)',
-      padding: '8px 16px',
-      borderRadius: RADIUS.full,
-      marginBottom: '24px',
-    }}>
-      <Sparkles size={16} color={DEEP_CURRENT[300]} />
-      <span style={{
-        fontSize: '13px',
-        fontFamily: '"Fixel", sans-serif',
-        color: DEEP_CURRENT[300],
-        fontWeight: 500,
-      }}>
-        Design System v2.3
-      </span>
-    </div>
-
-    <div
-      style={{
-        margin: '0 0 16px 0',
-        fontSize: '48px',
-        fontWeight: 700,
-        fontFamily: '"Pilat Extended", sans-serif',
-        lineHeight: 1.1,
-        color: PRIMITIVES.white,
-      }}
-    >
-      <span>Disrupt</span><br /><span>Design System</span>
-    </div>
-
-    <div
-      style={{
-        margin: '0 0 32px 0',
-        fontSize: '18px',
-        fontFamily: '"Fixel", sans-serif',
-        lineHeight: 1.6,
-        maxWidth: '500px',
-        color: PRIMITIVES.white,
-      }}
-    >
-      <span>A unified design language and component library powering all Disrupt products. Built for consistency, accessibility, and developer experience.</span>
-    </div>
-
-    <div style={{ display: 'flex', gap: '12px' }}>
+<BrandHero
+  variant="intro"
+  title="Disrupt Design System"
+  version="v2.3"
+  description="A unified design language and component library powering all Disrupt products. Built for consistency, accessibility, and developer experience."
+  actions={
+    <>
       <StoryLink
         to="/docs/foundation-design-tokens-overview--docs"
+        className="dds-btn-primary"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
           gap: '8px',
-          background: DEEP_CURRENT[600],
+          background: DEEP_CURRENT[500],
           color: PRIMITIVES.white,
           padding: '12px 24px',
           borderRadius: RADIUS.md,
@@ -132,14 +86,14 @@ import {
           fontWeight: 600,
           fontFamily: '"Fixel", sans-serif',
           textDecoration: 'none',
-          transition: 'all 200ms ease-out',
         }}
       >
         <span>Get Started</span>
         <ArrowRight size={16} />
       </StoryLink>
       <StoryLink
-        to="/docs/components-button--docs"
+        to="/docs/core-components-overview--docs"
+        className="dds-btn-secondary"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -157,9 +111,32 @@ import {
       >
         <span>Browse Components</span>
       </StoryLink>
-    </div>
-  </div>
-</div>
+      <a
+        href="https://github.com/Spilno-me/disrupt-design-system"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="dds-btn-secondary"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: 'rgba(255,255,255,0.1)',
+          color: PRIMITIVES.white,
+          padding: '12px 24px',
+          borderRadius: RADIUS.md,
+          fontSize: '14px',
+          fontWeight: 500,
+          fontFamily: '"Fixel", sans-serif',
+          textDecoration: 'none',
+          border: '1px solid rgba(255,255,255,0.2)',
+        }}
+      >
+        <Github size={16} />
+        <span>GitHub</span>
+      </a>
+    </>
+  }
+/>
 
 ---
 
@@ -186,7 +163,7 @@ import {
   <ProductCard
     name="Disrupt Market"
     logo="/logos/market-logo-full-dark.svg"
-    description="Carbon credits marketplace"
+    description="Marketplace for modules and add-ons for Flow"
     color={DUSK_REEF[500]}
   />
   <ProductCard
@@ -408,25 +385,28 @@ import {
     </span>
   </div>
   <a
-    href="https://github.com/Spilno-me/disrupt-website"
+    href="https://github.com/Spilno-me/disrupt-design-system"
     target="_blank"
     rel="noopener noreferrer"
+    className="dds-btn-ghost"
     style={{
       display: 'inline-flex',
       alignItems: 'center',
       gap: '8px',
-      background: ABYSS[500],
+      background: DEEP_CURRENT[500],
       color: PRIMITIVES.white,
-      padding: '10px 20px',
-      borderRadius: RADIUS.sm,
-      fontSize: '13px',
-      fontWeight: 500,
+      padding: '12px 20px',
+      borderRadius: RADIUS.md,
+      fontSize: '14px',
+      fontWeight: 600,
       fontFamily: '"Fixel", sans-serif',
       textDecoration: 'none',
+      boxShadow: SHADOWS.sm,
     }}
   >
-    View on GitHub
-    <ArrowRight size={14} />
+    <Github size={16} />
+    <span>View on GitHub</span>
+    <ArrowRight size={16} />
   </a>
 </div>
 

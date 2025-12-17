@@ -1,0 +1,548 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Palette, Waves, Eye, Target, Anchor, Zap, Shell, Sun } from 'lucide-react';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  WAVE,
+  SUNRISE,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+} from '../constants/designTokens';
+import { SPACING, StoryLink, BrandHero } from './brand/BrandComponents';
+import { IconHeading2, IconHeading3 } from '../components/ui/IconText';
+
+<Meta title="Brand/Colors" />
+
+{/* Page Header */}
+<BrandHero
+  title="Brand Colors"
+  description="The Disrupt color palette embodies depth, innovation, and trust. Each color carries meaning and purpose in our visual language."
+  gradient="primary"
+  decorativeIcon={<Palette size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Primary Colors</h2>
+
+The foundation of the Disrupt visual identity.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '48px',
+}}>
+  {/* Abyss */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.md,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: ABYSS[500],
+      padding: '40px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '16px',
+    }}>
+      <Target size={40} color={PRIMITIVES.white} />
+      <div style={{
+        fontSize: '24px',
+        fontWeight: 700,
+        fontFamily: '"Pilat Extended", sans-serif',
+        color: PRIMITIVES.white,
+      }}>
+        <span>Abyss</span>
+      </div>
+    </div>
+    <div style={{ padding: '24px' }}>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        color: ABYSS[500],
+        marginBottom: '8px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Primary Dark</span>
+      </div>
+      <div style={{
+        fontSize: '13px',
+        color: DUSK_REEF[500],
+        lineHeight: 1.6,
+        fontFamily: '"Fixel", sans-serif',
+        marginBottom: '16px',
+      }}>
+        <span>The anchor of our brand. Represents depth, sophistication, and authority. Used for primary text and key UI elements.</span>
+      </div>
+      <div style={{
+        display: 'flex',
+        gap: '4px',
+      }}>
+        {[50, 100, 200, 300, 400, 500, 600, 700].map(shade => (
+          <div
+            key={shade}
+            style={{
+              flex: 1,
+              height: '32px',
+              background: ABYSS[shade],
+              borderRadius: shade === 50 ? '4px 0 0 4px' : shade === 700 ? '0 4px 4px 0' : 0,
+            }}
+            title={`ABYSS[${shade}]: ${ABYSS[shade]}`}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* Deep Current */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.md,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: DEEP_CURRENT[500],
+      padding: '40px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '16px',
+    }}>
+      <Zap size={40} color={PRIMITIVES.white} />
+      <div style={{
+        fontSize: '24px',
+        fontWeight: 700,
+        fontFamily: '"Pilat Extended", sans-serif',
+        color: PRIMITIVES.white,
+      }}>
+        <span>Deep Current</span>
+      </div>
+    </div>
+    <div style={{ padding: '24px' }}>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        color: ABYSS[500],
+        marginBottom: '8px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Primary Accent</span>
+      </div>
+      <div style={{
+        fontSize: '13px',
+        color: DUSK_REEF[500],
+        lineHeight: 1.6,
+        fontFamily: '"Fixel", sans-serif',
+        marginBottom: '16px',
+      }}>
+        <span>Our signature teal. Signals innovation, technology, and forward momentum. The go-to color for CTAs and interactive elements.</span>
+      </div>
+      <div style={{
+        display: 'flex',
+        gap: '4px',
+      }}>
+        {[50, 100, 200, 300, 400, 500, 600, 700].map(shade => (
+          <div
+            key={shade}
+            style={{
+              flex: 1,
+              height: '32px',
+              background: DEEP_CURRENT[shade],
+              borderRadius: shade === 50 ? '4px 0 0 4px' : shade === 700 ? '0 4px 4px 0' : 0,
+            }}
+            title={`DEEP_CURRENT[${shade}]: ${DEEP_CURRENT[shade]}`}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Secondary Color</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  overflow: 'hidden',
+  boxShadow: SHADOWS.md,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+  }}>
+    <div style={{
+      background: DUSK_REEF[500],
+      padding: '40px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '16px',
+    }}>
+      <Eye size={40} color={PRIMITIVES.white} />
+      <div style={{
+        fontSize: '24px',
+        fontWeight: 700,
+        fontFamily: '"Pilat Extended", sans-serif',
+        color: PRIMITIVES.white,
+      }}>
+        <span>Dusk Reef</span>
+      </div>
+    </div>
+    <div style={{ padding: '32px' }}>
+      <div style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        color: ABYSS[500],
+        marginBottom: '8px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Secondary Purple</span>
+      </div>
+      <div style={{
+        fontSize: '13px',
+        color: DUSK_REEF[500],
+        lineHeight: 1.6,
+        fontFamily: '"Fixel", sans-serif',
+        marginBottom: '20px',
+      }}>
+        <span>A sophisticated purple that provides visual hierarchy. Used for muted text, subtle backgrounds, and secondary information. Creates depth without competing with primary colors.</span>
+      </div>
+      <div style={{
+        display: 'flex',
+        gap: '4px',
+      }}>
+        {[50, 100, 200, 300, 400, 500, 600, 700].map(shade => (
+          <div
+            key={shade}
+            style={{
+              flex: 1,
+              height: '32px',
+              background: DUSK_REEF[shade],
+              borderRadius: shade === 50 ? '4px 0 0 4px' : shade === 700 ? '0 4px 4px 0' : 0,
+            }}
+            title={`DUSK_REEF[${shade}]: ${DUSK_REEF[shade]}`}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Status Colors</h2>
+
+Semantic colors that communicate state and feedback.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  {/* Error - Coral */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: CORAL[500],
+      padding: '24px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
+    }}>
+      <Shell size={28} color={PRIMITIVES.white} />
+      <div style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: PRIMITIVES.white,
+      }}>
+        <span>Coral</span>
+      </div>
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: CORAL[600],
+        marginBottom: '4px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Error / Danger</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Alerts, errors, destructive actions</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Success - Harbor */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: HARBOR[500],
+      padding: '24px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
+    }}>
+      <Anchor size={28} color={PRIMITIVES.white} />
+      <div style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: PRIMITIVES.white,
+      }}>
+        <span>Harbor</span>
+      </div>
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: HARBOR[600],
+        marginBottom: '4px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Success</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Confirmations, completions, positive states</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Warning - Sunrise */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: SUNRISE[500],
+      padding: '24px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
+    }}>
+      <Sun size={28} color={PRIMITIVES.white} />
+      <div style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: PRIMITIVES.white,
+      }}>
+        <span>Sunrise</span>
+      </div>
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: SUNRISE[600],
+        marginBottom: '4px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Warning</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Cautions, pending states, attention</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Info - Wave */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    boxShadow: SHADOWS.sm,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      background: WAVE[500],
+      padding: '24px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
+    }}>
+      <Waves size={28} color={PRIMITIVES.white} />
+      <div style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: PRIMITIVES.white,
+      }}>
+        <span>Wave</span>
+      </div>
+    </div>
+    <div style={{ padding: '16px' }}>
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: WAVE[600],
+        marginBottom: '4px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Information</span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        color: DUSK_REEF[500],
+        lineHeight: 1.5,
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <span>Tips, highlights, informational alerts</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Brand Guidelines</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h4 style={{
+      margin: '0 0 16px 0',
+      fontSize: '16px',
+      fontWeight: 600,
+      color: HARBOR[700],
+      fontFamily: '"Fixel", sans-serif',
+    }}>
+      <span>Do</span>
+    </h4>
+    <ul style={{
+      margin: 0,
+      paddingLeft: '20px',
+      fontSize: '14px',
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      lineHeight: 2,
+    }}>
+      <li><span>Use Abyss for primary text and headings</span></li>
+      <li><span>Use Deep Current for CTAs and interactive elements</span></li>
+      <li><span>Use Dusk Reef for secondary/muted text</span></li>
+      <li><span>Maintain sufficient contrast (4.5:1 for text)</span></li>
+      <li><span>Use status colors consistently for their meaning</span></li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <h4 style={{
+      margin: '0 0 16px 0',
+      fontSize: '16px',
+      fontWeight: 600,
+      color: CORAL[700],
+      fontFamily: '"Fixel", sans-serif',
+    }}>
+      <span>Don't</span>
+    </h4>
+    <ul style={{
+      margin: 0,
+      paddingLeft: '20px',
+      fontSize: '14px',
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      lineHeight: 2,
+    }}>
+      <li><span>Use colors from the same family on each other</span></li>
+      <li><span>Hardcode hex values - use design tokens</span></li>
+      <li><span>Mix status colors inappropriately (green for errors)</span></li>
+      <li><span>Use light shades on light backgrounds</span></li>
+      <li><span>Create new colors outside the system</span></li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Technical Reference</h2>
+
+For implementation details, token values, and code examples:
+
+<StoryLink
+  to="/docs/foundation-design-tokens-colors--docs"
+  style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '12px',
+    background: DEEP_CURRENT[500],
+    color: PRIMITIVES.white,
+    padding: '16px 24px',
+    borderRadius: RADIUS.md,
+    fontSize: '14px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    textDecoration: 'none',
+    transition: 'all 200ms ease-out',
+    boxShadow: SHADOWS.md,
+  }}
+>
+  <Palette size={20} />
+  <span>View Color Tokens Documentation</span>
+</StoryLink>

@@ -74,7 +74,7 @@ import {
   Paperclip,
 } from 'lucide-react';
 import {
-  HeroHeader,
+  BrandHero,
   IconShowcase,
   InfoBox,
   SectionHeader,
@@ -87,15 +87,16 @@ import {
   SLATE,
   SPACING,
 } from './brand/BrandComponents';
+import { IconSearch } from './brand/IconSearch';
 
 <Meta title="Brand/Iconography" />
 
 {/* Hero Header */}
-<HeroHeader
-  icon={<Smile size={28} color={PRIMITIVES.white} />}
+<BrandHero
   title="Iconography"
   description="Lucide icons power our interface. Consistent sizing, stroke width, and color usage create visual harmony."
   gradient="teal"
+  decorativeIcon={<Smile size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="info">
@@ -105,9 +106,25 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Icon Library</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Icon Search</h2>
 
-Our design system uses [Lucide Icons](https://lucide.dev) - a beautiful, consistent icon set that's open source and actively maintained.
+Search and browse available icons. Click any icon to copy its import statement.
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <IconSearch />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+Common icons organized by category for quick access.
 
 ### Navigation & Actions
 
@@ -356,42 +373,9 @@ Our design system uses [Lucide Icons](https://lucide.dev) - a beautiful, consist
 
 ---
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
-
-<div style={{
-  background: SLATE[900],
-  borderRadius: RADIUS.lg,
-  padding: '24px',
-  marginBottom: '24px',
-  overflow: 'auto',
-}}>
-  <pre style={{
-    margin: 0,
-    fontSize: '13px',
-    fontFamily: 'ui-monospace, monospace',
-    color: SLATE[100],
-    lineHeight: 1.6,
-  }}>
-{`import { Search, Bell, Settings } from 'lucide-react';
-
-// Basic usage
-<Search size={20} />
-
-// With color
-<Bell size={24} color="#08A4BD" />
-
-// In a button
-<button className="flex items-center gap-2">
-  <Settings size={16} />
-  Settings
-</button>
-
-// Animated (with Tailwind)
-<Loader className="animate-spin" size={20} />`}
-  </pre>
-</div>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Icon Guidelines</h2>
 
 <InfoBox variant="tip">
-  <strong>Pro tip:</strong> Use <code>strokeWidth</code> prop to adjust icon weight.
-  Default is 2, use 1.5 for lighter or 2.5 for bolder icons.
+  <strong>Pro tip:</strong> Adjust stroke weight for different visual emphasis.
+  Default stroke is standard, use lighter strokes for subtle icons or heavier strokes for bolder emphasis.
 </InfoBox>

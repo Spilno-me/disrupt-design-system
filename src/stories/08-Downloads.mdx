@@ -21,7 +21,7 @@ import {
   ClipboardList,
 } from 'lucide-react';
 import {
-  HeroHeader,
+  BrandHero,
   DownloadCard,
   InfoBox,
   SectionHeader,
@@ -38,11 +38,11 @@ import {
 <Meta title="Brand/Downloads" />
 
 {/* Hero Header */}
-<HeroHeader
-  icon={<Download size={28} color={PRIMITIVES.white} />}
+<BrandHero
   title="Asset Downloads"
   description="Download official brand assets, logos, and design resources for your projects."
   gradient="primary"
+  decorativeIcon={<Download size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="info">

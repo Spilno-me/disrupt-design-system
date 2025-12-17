@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Construction,
 } from 'lucide-react';
+import { HeroParticles } from './HeroParticles';
 
 // =============================================================================
 // STORYBOOK NAVIGATION HELPER
@@ -144,6 +145,9 @@ export const HeroHeader: React.FC<HeroHeaderProps> = ({
         overflow: 'hidden',
       }}
     >
+      {/* Animated particles */}
+      <HeroParticles gradient={gradient} particleCount={25} />
+
       {/* Decorative glow */}
       <div
         style={{
@@ -154,6 +158,7 @@ export const HeroHeader: React.FC<HeroHeaderProps> = ({
           height: '300px',
           background: `radial-gradient(circle, ${DEEP_CURRENT[500]}30 0%, transparent 70%)`,
           borderRadius: '50%',
+          zIndex: 0,
         }}
       />
 
@@ -193,6 +198,225 @@ export const HeroHeader: React.FC<HeroHeaderProps> = ({
         >
           {description}
         </p>
+      </div>
+    </div>
+  );
+};
+
+// =============================================================================
+// BRAND HERO - Enhanced hero component for brand documentation pages
+// =============================================================================
+
+interface BrandHeroProps {
+  /** Page title */
+  title: string;
+  /** Page description */
+  description: string;
+  /** Gradient theme */
+  gradient?: 'primary' | 'teal' | 'purple';
+  /** Optional large decorative icon displayed as watermark on the right */
+  decorativeIcon?: React.ReactNode;
+  /** Number of animated particles (default: 25 for page, 30 for intro) */
+  particleCount?: number;
+  /** Hero variant: 'page' for standard pages, 'intro' for Introduction page */
+  variant?: 'page' | 'intro';
+  /** Version badge (only shown in 'intro' variant) */
+  version?: string;
+  /** Action buttons or other content (only shown in 'intro' variant) */
+  actions?: React.ReactNode;
+  /** Custom title font size in pixels (default: 48 for intro, 40 for page) */
+  titleSize?: number;
+  /** Custom description font size in pixels (default: 18 for intro, 16 for page) */
+  descriptionSize?: number;
+}
+
+/**
+ * BrandHero - Unified hero component for all brand documentation pages
+ *
+ * Features:
+ * - Animated floating particles
+ * - Gradient background with glow effects
+ * - Optional large decorative watermark icon
+ * - Consistent typography and spacing
+ * - Two variants: 'page' (standard) and 'intro' (Introduction page)
+ *
+ * @example
+ * // Standard page hero (like Colors, Typography)
+ * <BrandHero
+ *   icon={<Palette size={28} color={PRIMITIVES.white} />}
+ *   title="Brand Colors"
+ *   description="The Disrupt color palette embodies depth."
+ *   gradient="primary"
+ *   decorativeIcon={<Palette size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+ * />
+ *
+ * @example
+ * // Introduction page hero
+ * <BrandHero
+ *   variant="intro"
+ *   title="Disrupt Design System"
+ *   version="v2.3"
+ *   description="A unified design language and component library."
+ *   actions={<>...buttons...</>}
+ * />
+ */
+export const BrandHero: React.FC<BrandHeroProps> = ({
+  title,
+  description,
+  gradient = 'primary',
+  decorativeIcon,
+  particleCount,
+  variant = 'page',
+  version,
+  actions,
+  titleSize,
+  descriptionSize,
+}) => {
+  const isIntro = variant === 'intro';
+
+  // Typography sizes (Pilat Extended for titles)
+  const defaultTitleSize = isIntro ? 48 : 40;
+  const defaultDescriptionSize = isIntro ? 18 : 16;
+  const finalTitleSize = titleSize ?? defaultTitleSize;
+  const finalDescriptionSize = descriptionSize ?? defaultDescriptionSize;
+
+  const gradients = {
+    primary: isIntro
+      ? `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[800]} 100%)`
+      : `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DEEP_CURRENT[600]} 100%)`,
+    teal: `linear-gradient(135deg, ${DEEP_CURRENT[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
+    purple: `linear-gradient(135deg, ${DUSK_REEF[500]} 0%, ${DUSK_REEF[700]} 100%)`,
+  };
+
+  const subtitleColors = {
+    primary: isIntro ? PRIMITIVES.white : SLATE[300],
+    teal: SLATE[200],
+    purple: SLATE[200],
+  };
+
+  const defaultParticleCount = isIntro ? 30 : 25;
+
+  return (
+    <div
+      style={{
+        background: gradients[gradient],
+        borderRadius: RADIUS.xl,
+        padding: '48px',
+        marginBottom: isIntro ? '48px' : '32px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Animated particles */}
+      <HeroParticles gradient={gradient} particleCount={particleCount ?? defaultParticleCount} />
+
+      {/* Decorative watermark icon (optional, for page variant) */}
+      {decorativeIcon && !isIntro && (
+        <div
+          style={{
+            position: 'absolute',
+            right: '40px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            opacity: 0.1,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
+          {decorativeIcon}
+        </div>
+      )}
+
+      {/* Decorative glow - top right */}
+      <div
+        style={{
+          position: 'absolute',
+          top: isIntro ? '-20%' : '-30%',
+          right: isIntro ? '-5%' : '-10%',
+          width: isIntro ? '400px' : '300px',
+          height: isIntro ? '400px' : '300px',
+          background: `radial-gradient(circle, ${DEEP_CURRENT[500]}${isIntro ? '25' : '30'} 0%, transparent 70%)`,
+          borderRadius: '50%',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Additional decorative glow - bottom left (intro variant only) */}
+      {isIntro && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '-30%',
+            left: '10%',
+            width: '300px',
+            height: '300px',
+            background: `radial-gradient(circle, ${DUSK_REEF[500]}20 0%, transparent 70%)`,
+            borderRadius: '50%',
+            zIndex: 0,
+          }}
+        />
+      )}
+
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* Title with optional version badge */}
+        <div
+          className="sb-unstyled"
+          style={{
+            marginBottom: isIntro ? '24px' : '16px',
+          }}
+        >
+          <h1
+            className="dds-brand-hero-title sb-unstyled"
+            style={{
+              fontSize: `${finalTitleSize}px`,
+              display: 'inline',
+            }}
+          >
+            {title}
+          </h1>
+          {version && (
+            <span
+              className="sb-unstyled"
+              style={{
+                background: 'rgba(255,255,255,0.15)',
+                padding: '6px 12px',
+                borderRadius: RADIUS.sm,
+                fontSize: '14px',
+                fontFamily: '"Fixel", sans-serif',
+                fontWeight: 500,
+                color: DEEP_CURRENT[300],
+                lineHeight: 1,
+                whiteSpace: 'nowrap',
+                marginLeft: '16px',
+                position: 'relative',
+                top: '-8px',
+              }}
+            >
+              {version}
+            </span>
+          )}
+        </div>
+
+        {/* Description */}
+        <div
+          style={{
+            margin: isIntro ? '0 0 32px 0' : 0,
+            fontSize: `${finalDescriptionSize}px`,
+            fontFamily: '"Fixel", sans-serif',
+            color: subtitleColors[gradient],
+            lineHeight: 1.6,
+            maxWidth: '500px',
+          }}
+        >
+          <span>{description}</span>
+        </div>
+
+        {/* Action buttons (intro variant only) */}
+        {isIntro && actions && (
+          <div style={{ display: 'flex', gap: '12px' }}>
+            {actions}
+          </div>
+        )}
       </div>
     </div>
   );
