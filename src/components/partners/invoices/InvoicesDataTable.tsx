@@ -1,21 +1,10 @@
 import * as React from 'react'
 import { Copy, Eye, Download, Pencil, Send } from 'lucide-react'
-import { DataTable, ColumnDef, SortDirection, RowPriority } from '../../ui/DataTable'
+import { DataTable, ColumnDef, SortDirection } from '../../ui/DataTable'
 import type { Invoice, InvoiceAction } from './types'
 import { formatCurrency, formatDate, getPaymentTermsLabel } from './types'
-import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem } from '../../ui/table'
+import { DataTableStatusDot, DataTableActions, INVOICE_DOT_STATUS_MAP, type ActionItem } from '../../ui/table'
 
-// =============================================================================
-// STATUS MAPPING - Using DDS Unified System
-// =============================================================================
-
-const INVOICE_STATUS_MAP: StatusMapping<'draft' | 'sent' | 'paid' | 'overdue' | 'partially_paid'> = {
-  draft: { variant: 'secondary', label: 'Draft' },
-  sent: { variant: 'info', label: 'Sent' },
-  paid: { variant: 'success', label: 'Paid' },
-  overdue: { variant: 'destructive', label: 'Overdue' },
-  partially_paid: { variant: 'warning', label: 'Partially Paid' },
-}
 
 // =============================================================================
 // TYPES
@@ -121,7 +110,7 @@ export function InvoicesDataTable({
     {
       id: "status",
       header: "Status",
-      accessor: (invoice) => <DataTableBadge status={invoice.status} mapping={INVOICE_STATUS_MAP} />,
+      accessor: (invoice) => <DataTableStatusDot status={invoice.status} mapping={INVOICE_DOT_STATUS_MAP} />,
       sortable: true,
       sortValue: (invoice) => invoice.status,
       minWidth: "140px",
@@ -205,24 +194,6 @@ export function InvoicesDataTable({
   ]
   /* eslint-enable no-restricted-syntax */
 
-  // Map invoice status to row priority for colored borders
-  const getRowPriority = (invoice: Invoice): RowPriority => {
-    switch (invoice.status) {
-      case 'draft':
-        return 'draft'
-      case 'overdue':
-        return 'critical'
-      case 'partially_paid':
-        return 'medium'
-      case 'sent':
-        return 'low'
-      case 'paid':
-        return 'none'
-      default:
-        return null
-    }
-  }
-
   return (
     <DataTable
       data={invoices}
@@ -238,7 +209,6 @@ export function InvoicesDataTable({
       loading={loading}
       hoverable
       bordered
-      getRowPriority={getRowPriority}
       className={className}
       emptyState={
         <div className="flex flex-col items-center justify-center py-12">

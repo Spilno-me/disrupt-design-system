@@ -84,8 +84,8 @@ export function DeletePartnerDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Partner details */}
-        <div className="rounded-lg border border-default bg-muted-bg/50 p-4 space-y-2">
+        {/* Partner details - use rounded-md (12px) for nested corners hierarchy */}
+        <div className="rounded-md border border-default bg-muted-bg/50 p-4 space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted">Partner ID</span>
             <span className="font-mono text-primary">{partner.partnerId}</span>
@@ -104,7 +104,7 @@ export function DeletePartnerDialog({
           </div>
         </div>
 
-        <DialogFooter className="gap-2 sm:gap-0">
+        <DialogFooter>
           <Button
             type="button"
             variant="outline"

@@ -9,9 +9,8 @@ import {
   Building2,
 } from "lucide-react"
 import { DataTable, ColumnDef, SortDirection, RowPriority } from "../ui/DataTable"
-import { SeverityIndicator, SeverityLevel } from "../ui/SeverityIndicator"
-import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem, EmailLink, ScoreBadge } from "../ui/table"
-import type { Lead, LeadAction, LeadPriority, LeadSource, LeadStatus } from "./LeadCard"
+import { DataTableStatusDot, DataTableActions, DataTableSeverity, LEAD_DOT_STATUS_MAP, LEAD_PRIORITY_SEVERITY_MAP, type ActionItem, EmailLink, ScoreBadge } from "../ui/table"
+import type { Lead, LeadAction, LeadPriority, LeadSource } from "./LeadCard"
 
 // =============================================================================
 // TYPES
@@ -42,17 +41,6 @@ export interface LeadsDataTableProps {
   className?: string
 }
 
-// =============================================================================
-// STATUS MAPPING - Using DDS Unified System
-// =============================================================================
-
-const LEAD_STATUS_MAP: StatusMapping<LeadStatus> = {
-  new: { variant: 'info', label: 'New' },
-  contacted: { variant: 'warning', label: 'Contacted' },
-  qualified: { variant: 'info', label: 'Qualified' },
-  converted: { variant: 'success', label: 'Converted' },
-  lost: { variant: 'secondary', label: 'Lost' },
-}
 
 // =============================================================================
 // HELPER COMPONENTS
@@ -104,15 +92,6 @@ function CompanyCell({ company }: { company: string }) {
   )
 }
 
-/** Map LeadPriority to SeverityLevel */
-function mapPriorityToSeverity(priority: LeadPriority): SeverityLevel {
-  const mapping: Record<LeadPriority, SeverityLevel> = {
-    high: 'high',
-    medium: 'medium',
-    low: 'low',
-  }
-  return mapping[priority]
-}
 
 /** Map LeadPriority to RowPriority for table border colors */
 function mapLeadPriorityToRowPriority(priority: LeadPriority): RowPriority {
@@ -256,15 +235,15 @@ export function LeadsDataTable({
         id: "priority",
         header: "Priority",
         accessor: (row) => (
-          <SeverityIndicator level={mapPriorityToSeverity(row.priority)} size="sm" />
+          <DataTableSeverity value={row.priority} mapping={LEAD_PRIORITY_SEVERITY_MAP} size="sm" />
         ),
         sortable: true,
         sortValue: (row) => {
           const order = { high: 3, medium: 2, low: 1 }
           return order[row.priority]
         },
-        minWidth: "60px",
-        align: "center",
+        align: "left",
+        minWidth: "100px",
       },
       {
         id: "score",
@@ -278,7 +257,7 @@ export function LeadsDataTable({
       {
         id: "status",
         header: "Status",
-        accessor: (row) => <DataTableBadge status={row.status} mapping={LEAD_STATUS_MAP} />,
+        accessor: (row) => <DataTableStatusDot status={row.status} mapping={LEAD_DOT_STATUS_MAP} />,
         sortable: true,
         sortValue: (row) => row.status,
         minWidth: "100px",

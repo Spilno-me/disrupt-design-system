@@ -17,7 +17,7 @@ import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
 import type { FilterGroup, FilterState } from "../shared/SearchFilter/types"
 import { EditPartnerDialog, PartnerFormData } from "./EditPartnerDialog"
 import { DeletePartnerDialog } from "./DeletePartnerDialog"
-import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem } from "../ui/table"
+import { DataTableStatusDot, DataTableActions, PARTNER_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
 
 // =============================================================================
 // FILTER CONFIGURATION
@@ -44,15 +44,6 @@ const PARTNER_FILTER_GROUPS: FilterGroup[] = [
   },
 ]
 
-// =============================================================================
-// STATUS MAPPING - Using DDS Unified System
-// =============================================================================
-
-const PARTNER_STATUS_MAP: StatusMapping<PartnerStatus> = {
-  active: { variant: 'success', label: 'Active' },
-  inactive: { variant: 'secondary', label: 'Inactive' },
-  pending: { variant: 'warning', label: 'Pending' },
-}
 
 // =============================================================================
 // TYPES
@@ -468,7 +459,7 @@ export function PartnersPage({
       header: "Status",
       sortable: true,
       sortValue: (row) => row.status,
-      accessor: (row) => <DataTableBadge status={row.status} mapping={PARTNER_STATUS_MAP} />,
+      accessor: (row) => <DataTableStatusDot status={row.status} mapping={PARTNER_DOT_STATUS_MAP} />,
     },
     {
       id: "created",

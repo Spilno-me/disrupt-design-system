@@ -27,9 +27,9 @@ const buttonVariants = cva(
         // Primary - Dark background (brand primary)
         default:
           "bg-inverse-bg text-inverse shadow-sm hover:bg-inverse-bg/90",
-        // Destructive - Error/danger state
+        // Destructive - Error/danger state (uses stronger red for better contrast)
         destructive:
-          "bg-error text-inverse shadow-sm hover:bg-error/90 focus-visible:ring-error/30",
+          "bg-error-strong text-inverse shadow-sm hover:bg-error-strong/90 focus-visible:ring-error/30",
         // Outline - Bordered variant
         outline:
           "border border-default bg-surface text-primary shadow-sm hover:bg-page",

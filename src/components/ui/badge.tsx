@@ -18,15 +18,16 @@ const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:bg-accent-foreground",
         success:
-          "border-transparent bg-success text-inverse [a&]:hover:bg-success/90",
+          "border-transparent bg-success text-primary [a&]:hover:bg-success/90",
         warning:
-          "border-transparent bg-warning text-inverse [a&]:hover:bg-warning/90",
+          "border-transparent bg-warning text-primary [a&]:hover:bg-warning/90",
         info:
-          "border-transparent bg-info text-inverse [a&]:hover:bg-info/90",
+          "border-transparent bg-info text-primary [a&]:hover:bg-info/90",
       },
       shape: {
         default: "rounded-sm",
         pill: "rounded-full px-3 py-1",
+        notification: "rounded-sm min-w-5 h-5 px-1.5",
       },
       size: {
         sm: "px-2 py-0.5 text-xs",

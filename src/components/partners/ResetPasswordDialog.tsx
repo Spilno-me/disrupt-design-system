@@ -182,7 +182,7 @@ export function ResetPasswordDialog({
           </p>
         </div>
 
-        <DialogFooter className="gap-2 sm:gap-0 pt-4">
+        <DialogFooter className="pt-4">
           <Button
             type="button"
             variant="outline"

@@ -521,12 +521,14 @@ export function DataTable<T>({
                   data-row-id={rowId}
                   data-selected={isSelected ? 'true' : undefined}
                   style={{
-                    // Apply priority-colored bottom border (except for last row)
-                    borderBottom: !isLastRow && priorityBorderConfig
-                      ? `1px ${priorityBorderConfig.style} ${priorityBorderConfig.color}`
-                      : bordered && !isLastRow
-                        ? `1px solid ${ALIAS.border.default}`
-                        : undefined,
+                    // Apply priority-colored left border using box-shadow (works reliably on <tr>)
+                    boxShadow: priorityBorderConfig
+                      ? `inset 6px 0 0 0 ${priorityBorderConfig.color}`
+                      : undefined,
+                    // Apply bottom border (except for last row)
+                    borderBottom: bordered && !isLastRow
+                      ? `1px solid ${ALIAS.border.default}`
+                      : undefined,
                   }}
                   onClick={() => onRowClick?.(row)}
                   role={onRowClick ? "button" : undefined}
@@ -542,13 +544,6 @@ export function DataTable<T>({
                     <td
                       className={cn(cellPadding, "w-10")}
                       onClick={(e) => e.stopPropagation()}
-                      style={
-                        priorityBorderConfig
-                          ? {
-                              borderLeft: `6px ${priorityBorderConfig.style} ${priorityBorderConfig.color}`,
-                            }
-                          : undefined
-                      }
                     >
                       <Checkbox
                         checked={isSelected}
@@ -557,7 +552,7 @@ export function DataTable<T>({
                       />
                     </td>
                   )}
-                  {columns.map((column, colIndex) => (
+                  {columns.map((column) => (
                     <td
                       key={column.id}
                       className={cn(
@@ -570,12 +565,6 @@ export function DataTable<T>({
                         width: column.width,
                         minWidth: column.minWidth,
                         maxWidth: column.maxWidth,
-                        // Apply priority border to first cell if no selectable column
-                        ...(colIndex === 0 && !selectable && priorityBorderConfig
-                          ? {
-                              borderLeft: `6px ${priorityBorderConfig.style} ${priorityBorderConfig.color}`,
-                            }
-                          : {}),
                       }}
                     >
                       {column.accessor(row)}

@@ -97,7 +97,7 @@ export function NotificationsPanel({
     <Button variant="ghost" size="icon" className="relative">
       <Bell className="w-5 h-5" />
       {unreadCount > 0 && (
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-error text-inverse text-xs font-medium rounded-full flex items-center justify-center">
+        <span className="absolute -top-1 -right-1 w-5 h-5 bg-error text-inverse text-xs font-medium rounded-sm flex items-center justify-center">
           {unreadCount > 9 ? '9+' : unreadCount}
         </span>
       )}
@@ -114,7 +114,7 @@ export function NotificationsPanel({
               <Bell className="w-5 h-5" />
               Notifications
               {unreadCount > 0 && (
-                <span className="px-2 py-0.5 bg-error text-inverse text-xs font-medium rounded-full">
+                <span className="px-2 py-0.5 bg-error text-inverse text-xs font-medium rounded-sm">
                   {unreadCount}
                 </span>
               )}
@@ -284,7 +284,7 @@ export function NotificationBell({ count, onClick, className }: NotificationBell
     >
       <Bell className="w-5 h-5 text-primary" />
       {count > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-error text-inverse text-xs font-medium rounded-full flex items-center justify-center">
+        <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-error text-inverse text-xs font-medium rounded-sm flex items-center justify-center">
           {count > 9 ? '9+' : count}
         </span>
       )}

@@ -70,8 +70,8 @@ export function DeleteNetworkPartnerDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Partner details */}
-        <div className="rounded-lg border border-default bg-muted-bg/50 p-4 space-y-2">
+        {/* Partner details - use rounded-md (12px) for nested corners hierarchy */}
+        <div className="rounded-md border border-default bg-muted-bg/50 p-4 space-y-2">
           <div className="flex items-center gap-3 mb-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-info-light">
               <Building2 className="h-4 w-4 text-info" />
@@ -98,14 +98,14 @@ export function DeleteNetworkPartnerDialog({
           )}
         </div>
 
-        {/* Warning for master partners with sub-partners */}
+        {/* Warning for master partners with sub-partners - use rounded-sm (8px) for nested hierarchy */}
         {hasSubPartners && (
-          <div className="rounded-lg border border-warning bg-warning-light p-3">
+          <div className="rounded-sm border border-warning bg-warning-light p-3">
             <div className="flex items-start gap-2">
-              <AlertTriangle className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
+              <AlertTriangle className="h-4 w-4 text-warning-dark mt-0.5 flex-shrink-0" />
               <div className="text-sm">
-                <p className="font-medium text-warning">Warning</p>
-                <p className="text-muted mt-1">
+                <p className="font-medium text-warning-dark">Warning</p>
+                <p className="text-primary mt-1">
                   This partner has {partner.subPartners?.length} sub-partner
                   {partner.subPartners && partner.subPartners.length > 1 ? "s" : ""}.
                   Deleting this partner will also remove all sub-partners.
@@ -115,7 +115,7 @@ export function DeleteNetworkPartnerDialog({
           </div>
         )}
 
-        <DialogFooter className="gap-2 sm:gap-0">
+        <DialogFooter>
           <Button
             type="button"
             variant="outline"

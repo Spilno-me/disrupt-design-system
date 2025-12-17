@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useState, useMemo, useCallback } from 'react'
-import { Plus } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 import { StatsCard } from '../../leads/StatsCard'
 import { InvoiceCard } from './InvoiceCard'
@@ -11,7 +10,6 @@ import { EditInvoiceDialog, EditInvoiceFormData } from './EditInvoiceDialog'
 import { SearchFilter } from '../../shared/SearchFilter/SearchFilter'
 import type { FilterGroup, FilterState } from '../../shared/SearchFilter/types'
 import { Pagination } from '../../ui/Pagination'
-import { Button } from '../../ui/button'
 import { SortDirection } from '../../ui/DataTable'
 import { GridBlobBackground } from '../../ui/GridBlobCanvas'
 import type { Invoice, InvoiceAction } from './types'
@@ -63,8 +61,6 @@ export interface InvoicesPageProps {
   onInvoiceClick?: (invoice: Invoice) => void
   /** Callback when invoice action is clicked */
   onInvoiceAction?: (invoice: Invoice, action: InvoiceAction) => void
-  /** Callback when a new invoice is created */
-  onCreateInvoice?: () => void
   /** Callback when an invoice is updated */
   onUpdateInvoice?: (invoice: Invoice, data: EditInvoiceFormData) => void | Promise<void>
   /** Page title */
@@ -99,7 +95,6 @@ export function InvoicesPage({
   stats,
   onInvoiceClick,
   onInvoiceAction,
-  onCreateInvoice,
   onUpdateInvoice,
   title = 'Invoices',
   defaultPageSize = 10,
@@ -301,19 +296,11 @@ export function InvoicesPage({
           <h1 className="text-2xl font-semibold text-primary">
             {title} ({sortedInvoices.length})
           </h1>
-          <div className="flex items-center gap-3">
-            {selectedInvoices.size > 0 && (
-              <span className="text-sm text-muted">
-                {selectedInvoices.size} invoice{selectedInvoices.size > 1 ? 's' : ''} selected
-              </span>
-            )}
-            {onCreateInvoice && (
-              <Button variant="accent" onClick={onCreateInvoice}>
-                <Plus className="w-4 h-4 mr-2" />
-                Create Invoice
-              </Button>
-            )}
-          </div>
+          {selectedInvoices.size > 0 && (
+            <span className="text-sm text-muted">
+              {selectedInvoices.size} invoice{selectedInvoices.size > 1 ? 's' : ''} selected
+            </span>
+          )}
         </div>
 
         {/* Stats Cards Row */}

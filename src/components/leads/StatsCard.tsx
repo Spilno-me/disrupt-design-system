@@ -56,7 +56,7 @@ export function StatsCard({
     <AppCard
       variant="default"
       shadow="md"
-      className={cn('gap-2', className)}
+      className={cn('gap-1 px-5 py-4', className)}
     >
       {/* Header row with title and trend */}
       <div className="flex items-center justify-between gap-2">
@@ -67,13 +67,13 @@ export function StatsCard({
       </div>
 
       {/* Main value */}
-      <div className="text-3xl font-semibold text-primary">
+      <div className="text-2xl font-semibold text-primary">
         {value}
       </div>
 
       {/* Optional description */}
       {description && (
-        <p className="text-sm text-muted">{description}</p>
+        <p className="text-xs text-muted">{description}</p>
       )}
     </AppCard>
   )

@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, forwardRef, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { useIsMobile } from '../../hooks/useIsMobile'
-import { Building2, Factory, Zap, Pill, Truck } from 'lucide-react'
+import { Building2, Factory, Zap, Pill, Truck, type LucideIcon } from 'lucide-react'
 import { SectionContainer } from '../ui/SectionLayout'
 import { ALIAS } from '../../constants/designTokens'
 
@@ -82,7 +82,7 @@ interface ResponsiveImages {
 interface Industry {
   id: string
   name: string
-  icon: React.ElementType
+  icon: LucideIcon
   description: string
   images: ResponsiveImages
 }

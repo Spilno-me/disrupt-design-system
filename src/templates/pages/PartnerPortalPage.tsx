@@ -25,13 +25,11 @@ import {
   FileText,
   Building2,
   Settings,
-  ClipboardList,
 } from 'lucide-react'
 import { AppLayoutShell, AppNavItem } from '../layout/AppLayoutShell'
 import { DashboardPage, KPICardData, ActivityItemData, QuickActionData } from './DashboardPage'
 import { partnerNavItems, addBadges } from '../navigation/configs'
 import { UserInfo, UserMenuItem } from '../../components/ui/AppHeader'
-import { Card, CardContent } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 
 // Import page components
@@ -61,6 +59,10 @@ import {
 } from '../../components/partners/SettingsPage'
 import { HelpPage, HelpArticle } from '../../components/partners/HelpPage'
 import { PricingCalculator, PricingInput, PricingBreakdown } from '../../components/partners/PricingCalculator'
+import { StatsCard } from '../../components/leads/StatsCard'
+import { DataTable, ColumnDef } from '../../components/ui/DataTable'
+import { Badge } from '../../components/ui/badge'
+import { DataTableStatusDot, TENANT_REQUEST_DOT_STATUS_MAP } from '../../components/ui/table'
 
 // =============================================================================
 // TYPES
@@ -89,6 +91,32 @@ export interface DashboardConfig {
   activity?: ActivityItemData[]
   quickActions?: QuickActionData[]
 }
+
+/** Tenant request status */
+export type TenantRequestStatus = 'pending_review' | 'approved' | 'rejected' | 'pending_payment' | 'provisioning' | 'completed'
+
+/** Tenant request data */
+export interface TenantRequest {
+  id: string
+  requestNumber: string
+  companyName: string
+  contactName: string
+  contactEmail: string
+  pricingTier: 'starter' | 'professional' | 'enterprise'
+  estimatedValue: number
+  status: TenantRequestStatus
+  submittedAt: string
+}
+
+/** Mock tenant requests for prototype */
+export const MOCK_TENANT_REQUESTS: TenantRequest[] = [
+  { id: '1', requestNumber: 'TR-2025-0042', companyName: 'Apex Manufacturing Co.', contactName: 'Sarah Mitchell', contactEmail: 'sarah@apexmfg.com', pricingTier: 'enterprise', estimatedValue: 156000, status: 'pending_review', submittedAt: '2025-12-14' },
+  { id: '2', requestNumber: 'TR-2025-0041', companyName: 'GreenTech Solutions', contactName: 'Michael Chen', contactEmail: 'm.chen@greentech.io', pricingTier: 'professional', estimatedValue: 48000, status: 'approved', submittedAt: '2025-12-12' },
+  { id: '3', requestNumber: 'TR-2025-0040', companyName: 'Coastal Energy Partners', contactName: 'Jennifer Walsh', contactEmail: 'jwalsh@coastalenergy.com', pricingTier: 'enterprise', estimatedValue: 98000, status: 'pending_payment', submittedAt: '2025-12-10' },
+  { id: '4', requestNumber: 'TR-2025-0039', companyName: 'Summit Logistics', contactName: 'David Park', contactEmail: 'd.park@summitlogistics.com', pricingTier: 'enterprise', estimatedValue: 245000, status: 'provisioning', submittedAt: '2025-12-08' },
+  { id: '5', requestNumber: 'TR-2025-0038', companyName: 'Urban Development Corp', contactName: 'Amanda Foster', contactEmail: 'a.foster@urbandev.com', pricingTier: 'professional', estimatedValue: 3600, status: 'rejected', submittedAt: '2025-12-05' },
+  { id: '6', requestNumber: 'TR-2025-0037', companyName: 'Pacific Waste Management', contactName: 'Robert Kim', contactEmail: 'r.kim@pacificwaste.com', pricingTier: 'professional', estimatedValue: 62000, status: 'completed', submittedAt: '2025-12-01' },
+]
 
 /** Props for PartnerPortalPage */
 export interface PartnerPortalPageProps {
@@ -139,7 +167,6 @@ export interface PartnerPortalPageProps {
   // === Invoice callbacks ===
   onInvoiceClick?: (invoice: Invoice) => void
   onInvoiceAction?: (invoice: Invoice, action: InvoiceAction) => void
-  onCreateInvoice?: () => void
   onUpdateInvoice?: (invoice: Invoice) => void
 
   // === Provisioning callbacks ===
@@ -212,9 +239,11 @@ function TenantProvisioningContent({
 
   if (!selectedMethod) {
     return (
-      <div className="p-6">
+      <div className="p-6 h-full flex flex-col">
         <h1 className="text-2xl font-semibold text-primary mb-6">Tenant Provisioning</h1>
-        <ProvisioningMethodSelector onSelectMethod={setSelectedMethod} />
+        <div className="flex-1 flex items-center justify-center">
+          <ProvisioningMethodSelector onSelectMethod={setSelectedMethod} className="min-h-0" />
+        </div>
       </div>
     )
   }
@@ -244,22 +273,106 @@ function TenantProvisioningContent({
   )
 }
 
-/** Tenant Requests Page (placeholder) */
+
+/** Tenant Requests Content - Uses existing StatsCard and DataTable */
 function TenantRequestsContent() {
+  const requests = MOCK_TENANT_REQUESTS
+
+  // Stats from mock data
+  const stats = {
+    total: requests.length,
+    pendingReview: requests.filter(r => r.status === 'pending_review').length,
+    approved: requests.filter(r => r.status === 'approved').length,
+    inProgress: requests.filter(r => r.status === 'pending_payment' || r.status === 'provisioning').length,
+  }
+
+  // Column definitions for DataTable
+  const columns: ColumnDef<TenantRequest>[] = [
+    {
+      id: 'requestNumber',
+      header: 'Request #',
+      accessor: (row) => <span className="font-mono text-sm">{row.requestNumber}</span>,
+    },
+    {
+      id: 'companyName',
+      header: 'Company',
+      accessor: (row) => (
+        <div>
+          <div className="font-medium text-primary">{row.companyName}</div>
+          <div className="text-sm text-muted">{row.contactName}</div>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      id: 'pricingTier',
+      header: 'Tier',
+      accessor: (row) => (
+        <Badge variant={row.pricingTier === 'enterprise' ? 'default' : 'secondary'}>
+          {row.pricingTier.charAt(0).toUpperCase() + row.pricingTier.slice(1)}
+        </Badge>
+      ),
+    },
+    {
+      id: 'estimatedValue',
+      header: 'Value',
+      accessor: (row) => (
+        <span className="font-medium">
+          ${row.estimatedValue.toLocaleString()}
+        </span>
+      ),
+      align: 'right',
+      sortable: true,
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessor: (row) => (
+        <DataTableStatusDot status={row.status} mapping={TENANT_REQUEST_DOT_STATUS_MAP} />
+      ),
+      align: 'left',
+    },
+    {
+      id: 'submittedAt',
+      header: 'Submitted',
+      accessor: (row) => row.submittedAt,
+      sortable: true,
+    },
+  ]
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold text-primary mb-6">Tenant Requests</h1>
-      <Card className="bg-surface border-default">
-        <CardContent className="p-8 text-center">
-          <ClipboardList className="w-12 h-12 text-secondary mx-auto mb-4" />
-          <h2 className="text-lg font-semibold text-primary mb-2">Pending Requests</h2>
-          <p className="text-secondary mb-4">Tenant requests will appear here</p>
-        </CardContent>
-      </Card>
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-semibold text-primary">Tenant Requests</h1>
+        <p className="text-secondary mt-1">Review and manage tenant provisioning requests</p>
+      </div>
+
+      {/* Stats Row - Using existing StatsCard */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatsCard title="Total Requests" value={stats.total} />
+        <StatsCard title="Pending Review" value={stats.pendingReview} trend={`${stats.pendingReview}`} trendDirection="neutral" />
+        <StatsCard title="Approved" value={stats.approved} trend="+2" trendDirection="up" />
+        <StatsCard title="In Progress" value={stats.inProgress} />
+      </div>
+
+      {/* Data Table - Using existing DataTable */}
+      <div className="bg-surface rounded-lg border border-default overflow-hidden">
+        <DataTable
+          data={requests}
+          columns={columns}
+          getRowId={(row) => row.id}
+          onRowClick={(row) => console.log('Request clicked:', row)}
+          emptyState={
+            <div className="text-center py-12">
+              <p className="text-muted">No tenant requests found</p>
+            </div>
+          }
+        />
+      </div>
     </div>
   )
 }
-
 
 // =============================================================================
 // MAIN COMPONENT
@@ -310,7 +423,6 @@ export function PartnerPortalPage({
   // Invoice callbacks
   onInvoiceClick,
   onInvoiceAction,
-  onCreateInvoice,
   onUpdateInvoice,
 
   // Provisioning callbacks
@@ -459,7 +571,6 @@ export function PartnerPortalPage({
             stats={stats?.invoices}
             onInvoiceClick={onInvoiceClick}
             onInvoiceAction={onInvoiceAction}
-            onCreateInvoice={onCreateInvoice}
             onUpdateInvoice={onUpdateInvoice}
           />
         )
@@ -557,7 +668,7 @@ export function PartnerPortalPage({
       product="partner"
       navItems={navItemsWithBadges}
       initialPage={initialPage}
-      currentPageId={currentPageId}
+      currentPageId={activePage}
       onPageChange={handlePageChange}
       user={user}
       userMenuItems={userMenuItems}

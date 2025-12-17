@@ -10,7 +10,6 @@ const config: StorybookConfig = {
   addons: [
     "@chromatic-com/storybook",
     "@storybook/addon-a11y",
-    "@storybook/addon-onboarding",
     "@storybook/addon-docs",
     "@storybook/addon-vitest",
     "@storybook/addon-themes"
@@ -18,6 +17,10 @@ const config: StorybookConfig = {
   framework: {
     name: "@storybook/react-vite",
     options: {}
+  },
+  core: {
+    disableTelemetry: true,
+    disableWhatsNewNotifications: true,
   },
   docs: {
     autodocs: 'tag'

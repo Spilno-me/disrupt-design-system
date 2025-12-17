@@ -53,7 +53,7 @@ export function NavBadge({ badge, size = 'md', position = 'absolute' }: NavBadge
     return (
       <span
         className={cn(
-          'flex items-center justify-center font-bold rounded-full bg-error text-inverse',
+          'flex items-center justify-center font-bold rounded-sm bg-error text-inverse',
           config.count,
           isAbsolute && 'absolute',
           isAbsolute && config.countPosition

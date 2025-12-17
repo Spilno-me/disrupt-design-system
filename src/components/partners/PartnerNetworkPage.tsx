@@ -2,26 +2,86 @@
 
 import * as React from "react"
 import { useState, useMemo, useCallback } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import {
   Plus,
-  Search,
-  Filter,
   ChevronDown,
   ChevronRight,
-  Eye,
+  ChevronsDownUp,
+  ChevronsUpDown,
   UserPlus,
   MoreHorizontal,
   Pencil,
   Trash2,
   FileText,
   TrendingUp,
-  
-  
   Building2,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
+
+// =============================================================================
+// ANIMATION VARIANTS
+// =============================================================================
+
+// Easing curves as tuples for TypeScript compatibility
+const easeOut = [0.4, 0, 0.2, 1] as const
+const easeIn = [0.4, 0, 1, 1] as const
+
+const slideDownVariants = {
+  hidden: {
+    opacity: 0,
+    height: 0,
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  visible: {
+    opacity: 1,
+    height: "auto",
+    marginTop: 12,
+    marginBottom: 0,
+    transition: {
+      height: { duration: 0.25, ease: easeOut },
+      opacity: { duration: 0.2, delay: 0.05 },
+      marginTop: { duration: 0.25, ease: easeOut },
+    },
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    transition: {
+      height: { duration: 0.2, ease: easeIn },
+      opacity: { duration: 0.15 },
+      marginTop: { duration: 0.2 },
+    },
+  },
+}
+
+const expandedContentVariants = {
+  hidden: {
+    opacity: 0,
+    height: 0,
+  },
+  visible: {
+    opacity: 1,
+    height: "auto",
+    transition: {
+      height: { duration: 0.3, ease: easeOut },
+      opacity: { duration: 0.25, delay: 0.05 },
+    },
+  },
+  exit: {
+    opacity: 0,
+    height: 0,
+    transition: {
+      height: { duration: 0.25, ease: easeIn },
+      opacity: { duration: 0.15 },
+    },
+  },
+}
 import { Button } from "../ui/button"
-import { Input } from "../ui/input"
+import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +89,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
+import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
+import type { FilterGroup, FilterState } from "../shared/SearchFilter/types"
+import { EditNetworkPartnerDialog, NetworkPartnerFormData } from "./EditNetworkPartnerDialog"
+import { DeleteNetworkPartnerDialog } from "./DeleteNetworkPartnerDialog"
+import { CreateSubPartnerDialog, SubPartnerFormData } from "./CreateSubPartnerDialog"
 
 // =============================================================================
 // TYPES
@@ -263,28 +328,34 @@ export const MOCK_NETWORK_PARTNERS: NetworkPartner[] = [
 // HELPER COMPONENTS
 // =============================================================================
 
-function StatusBadge({ status }: { status: NetworkPartnerStatus }) {
-  const config: Record<NetworkPartnerStatus, { label: string; className: string }> = {
-    active: { label: "active", className: "bg-success-light text-success" },
-    inactive: { label: "inactive", className: "bg-muted-bg text-primary" },
-    pending: { label: "pending", className: "bg-warning-light text-warning" },
+function StatusIndicator({ status }: { status: NetworkPartnerStatus }) {
+  const config: Record<NetworkPartnerStatus, { label: string; dotClass: string }> = {
+    active: { label: "Active", dotClass: "bg-success" },
+    inactive: { label: "Inactive", dotClass: "bg-muted" },
+    pending: { label: "Pending", dotClass: "bg-warning" },
   }
 
-  const { label, className } = config[status]
+  const { label, dotClass } = config[status]
 
   return (
-    <span
-      className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-        className
-      )}
-    >
-      {label}
-    </span>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span
+          className={cn(
+            "inline-block w-2.5 h-2.5 rounded-full cursor-help",
+            dotClass
+          )}
+          aria-label={label}
+        />
+      </TooltipTrigger>
+      <TooltipContent side="top" sideOffset={4}>
+        {label}
+      </TooltipContent>
+    </Tooltip>
   )
 }
 
-function MetricBadge({
+function MetricItem({
   label,
   value,
   variant = "default",
@@ -301,7 +372,7 @@ function MetricBadge({
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-0.5">
       <span className="text-xs text-muted">{label}</span>
       <span className={cn("text-sm font-semibold", colorClasses[variant])}>
         {value}
@@ -310,29 +381,94 @@ function MetricBadge({
   )
 }
 
-function PartnerMetricsRow({ metrics }: { metrics: NetworkPartnerMetrics }) {
+/**
+ * PartnerMetricsCard - Displays partner metrics in an indented card format
+ * This card appears as part of the expanded content, positioned before sub-partners
+ * following the Gestalt proximity principle for clear parent-child relationships
+ *
+ * Hybrid UX: Shows expanded by default, but can be collapsed independently
+ */
+function PartnerMetricsCard({
+  metrics,
+  depth = 0
+}: {
+  metrics: NetworkPartnerMetrics
+  depth?: number
+}) {
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const indentPadding = depth * 32
+
   return (
-    <div className="flex items-center gap-6 px-4 py-3 bg-muted-bg/50 border-t border-default">
-      <MetricBadge
-        label="Total Leads"
-        value={metrics.totalLeads}
-        variant="blue"
-      />
-      <MetricBadge
-        label="Conversion"
-        value={metrics.conversion !== null ? `${metrics.conversion}%` : "N/A"}
-        variant="green"
-      />
-      <MetricBadge
-        label="Commission"
-        value={metrics.commission !== null ? `$${metrics.commission.toLocaleString()}` : "N/A"}
-        variant="purple"
-      />
-      <MetricBadge
-        label="Total Revenue"
-        value={`$${metrics.totalRevenue.toLocaleString()}`}
-        variant="default"
-      />
+    <div
+      className="px-4 py-2 border-b border-default"
+      style={{ paddingLeft: `${16 + indentPadding + 32}px` }} // Extra 32px for card indent
+    >
+      <div className={cn(
+        "rounded-md border border-default bg-muted-bg/30 transition-all",
+        isCollapsed ? "p-2" : "p-4"
+      )}>
+        {/* Header with toggle */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="flex items-center justify-between w-full group"
+        >
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-muted" />
+            <span className="text-xs font-medium text-muted uppercase tracking-wide">
+              Performance Metrics
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            {isCollapsed && (
+              <span className="text-xs text-muted">
+                {metrics.totalLeads} leads · {metrics.conversion !== null ? `${metrics.conversion}%` : 'N/A'} · ${metrics.totalRevenue.toLocaleString()}
+              </span>
+            )}
+            {isCollapsed ? (
+              <ChevronRight className="h-4 w-4 text-muted group-hover:text-primary transition-colors" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-muted group-hover:text-primary transition-colors" />
+            )}
+          </div>
+        </button>
+
+        {/* Collapsible content with slide animation */}
+        <AnimatePresence initial={false}>
+          {!isCollapsed && (
+            <motion.div
+              key="metrics-content"
+              variants={slideDownVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="overflow-hidden"
+            >
+              <div className="grid grid-cols-4 gap-6 pt-3 border-t border-default">
+                <MetricItem
+                  label="Total Leads"
+                  value={metrics.totalLeads}
+                  variant="blue"
+                />
+                <MetricItem
+                  label="Conversion"
+                  value={metrics.conversion !== null ? `${metrics.conversion}%` : "N/A"}
+                  variant="green"
+                />
+                <MetricItem
+                  label="Commission"
+                  value={metrics.commission !== null ? `$${metrics.commission.toLocaleString()}` : "N/A"}
+                  variant="purple"
+                />
+                <MetricItem
+                  label="Total Revenue"
+                  value={`$${metrics.totalRevenue.toLocaleString()}`}
+                  variant="default"
+                />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }
@@ -346,7 +482,6 @@ interface PartnerRowProps {
   depth?: number
   isExpanded?: boolean
   onToggleExpand?: () => void
-  onView?: (partner: NetworkPartner) => void
   onEdit?: (partner: NetworkPartner) => void
   onAddSubPartner?: (partner: NetworkPartner) => void
   onDelete?: (partner: NetworkPartner) => void
@@ -357,14 +492,14 @@ function PartnerRow({
   depth = 0,
   isExpanded = false,
   onToggleExpand,
-  onView,
   onEdit,
   onAddSubPartner,
   onDelete,
 }: PartnerRowProps) {
-  const [showMetrics, setShowMetrics] = useState(false)
   const hasSubPartners = partner.subPartners && partner.subPartners.length > 0
   const indentPadding = depth * 32
+  // Master partners can be expanded to show metrics, even without sub-partners
+  const canExpand = partner.isMasterPartner
 
   return (
     <div className="group">
@@ -379,7 +514,7 @@ function PartnerRow({
       >
         {/* Expand/collapse button or spacer */}
         <div className="w-6 flex-shrink-0">
-          {hasSubPartners ? (
+          {canExpand ? (
             <button
               onClick={onToggleExpand}
               className="p-1 rounded hover:bg-accent-bg transition-colors"
@@ -408,8 +543,13 @@ function PartnerRow({
               {partner.companyName}
             </span>
             {partner.isMasterPartner && (
-              <span className="text-xs text-accent bg-accent-bg px-1.5 py-0.5 rounded">
+              <span className="text-xs text-primary bg-accent-bg px-1.5 py-0.5 rounded font-medium">
                 Master
+              </span>
+            )}
+            {hasSubPartners && (
+              <span className="text-xs text-muted">
+                ({partner.subPartners?.length} sub-partner{partner.subPartners && partner.subPartners.length > 1 ? 's' : ''})
               </span>
             )}
           </div>
@@ -419,44 +559,20 @@ function PartnerRow({
         </div>
 
         {/* Status */}
-        <div className="flex-shrink-0">
-          <StatusBadge status={partner.status} />
+        <div className="w-12 flex-shrink-0 flex justify-center">
+          <StatusIndicator status={partner.status} />
         </div>
 
         {/* Monthly Revenue */}
-        <div className="w-28 flex-shrink-0 text-right">
+        <div className="w-36 flex-shrink-0 text-right">
           <span className="text-sm text-primary font-medium">
             ${partner.monthlyRevenue.toLocaleString()}
           </span>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-1 flex-shrink-0">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => {
-              setShowMetrics(!showMetrics)
-              onView?.(partner)
-            }}
-            aria-label="View details"
-          >
-            <Eye className="h-4 w-4 text-muted" />
-          </Button>
-
-          {partner.isMasterPartner && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => onAddSubPartner?.(partner)}
-              aria-label="Add sub-partner"
-            >
-              <UserPlus className="h-4 w-4 text-muted" />
-            </Button>
-          )}
-
+        {/* Actions - Fixed width for alignment */}
+        <div className="flex items-center justify-end gap-1 w-20 flex-shrink-0">
+          {/* More Actions Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -472,10 +588,6 @@ function PartnerRow({
               <DropdownMenuItem onClick={() => onEdit?.(partner)}>
                 <Pencil className="h-4 w-4 mr-2" />
                 Edit Partner
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowMetrics(!showMetrics)}>
-                <TrendingUp className="h-4 w-4 mr-2" />
-                {showMetrics ? "Hide Metrics" : "Show Metrics"}
               </DropdownMenuItem>
               {partner.isMasterPartner && (
                 <DropdownMenuItem onClick={() => onAddSubPartner?.(partner)}>
@@ -495,63 +607,99 @@ function PartnerRow({
           </DropdownMenu>
         </div>
       </div>
-
-      {/* Metrics row (collapsible) */}
-      {showMetrics && (
-        <div style={{ paddingLeft: `${indentPadding}px` }}>
-          <PartnerMetricsRow metrics={partner.metrics} />
-        </div>
-      )}
-
-      {/* Sub-partners (nested) */}
-      {isExpanded && partner.subPartners?.map((subPartner) => (
-        <PartnerRowWrapper
-          key={subPartner.id}
-          partner={subPartner}
-          depth={depth + 1}
-          onView={onView}
-          onEdit={onEdit}
-          onAddSubPartner={onAddSubPartner}
-          onDelete={onDelete}
-        />
-      ))}
     </div>
   )
 }
 
-// Wrapper to manage individual expand state
+// Wrapper to manage individual expand state (controlled)
 function PartnerRowWrapper({
   partner,
   depth = 0,
-  onView,
   onEdit,
   onAddSubPartner,
   onDelete,
-  defaultExpanded = false,
+  expandedIds,
+  onToggleExpand,
 }: {
   partner: NetworkPartner
   depth?: number
-  onView?: (partner: NetworkPartner) => void
   onEdit?: (partner: NetworkPartner) => void
   onAddSubPartner?: (partner: NetworkPartner) => void
   onDelete?: (partner: NetworkPartner) => void
-  defaultExpanded?: boolean
+  expandedIds: Set<string>
+  onToggleExpand: (id: string) => void
 }) {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+  const isExpanded = expandedIds.has(partner.id)
 
   return (
-    <PartnerRow
-      partner={partner}
-      depth={depth}
-      isExpanded={isExpanded}
-      onToggleExpand={() => setIsExpanded(!isExpanded)}
-      onView={onView}
-      onEdit={onEdit}
-      onAddSubPartner={onAddSubPartner}
-      onDelete={onDelete}
-    />
+    <>
+      <PartnerRow
+        partner={partner}
+        depth={depth}
+        isExpanded={isExpanded}
+        onToggleExpand={() => onToggleExpand(partner.id)}
+        onEdit={onEdit}
+        onAddSubPartner={onAddSubPartner}
+        onDelete={onDelete}
+      />
+
+      {/* Expanded content: Metrics card + Sub-partners with slide animation */}
+      <AnimatePresence initial={false}>
+        {isExpanded && partner.isMasterPartner && (
+          <motion.div
+            key={`expanded-${partner.id}`}
+            variants={expandedContentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="overflow-hidden"
+          >
+            {/* Metrics card - appears first in expanded content */}
+            <PartnerMetricsCard metrics={partner.metrics} depth={depth} />
+
+            {/* Sub-partners render below metrics */}
+            {partner.subPartners?.map((subPartner) => (
+              <PartnerRowWrapper
+                key={subPartner.id}
+                partner={subPartner}
+                depth={depth + 1}
+                expandedIds={expandedIds}
+                onToggleExpand={onToggleExpand}
+                onEdit={onEdit}
+                onAddSubPartner={onAddSubPartner}
+                onDelete={onDelete}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
+
+// =============================================================================
+// FILTER CONFIGURATION
+// =============================================================================
+
+const PARTNER_FILTER_GROUPS: FilterGroup[] = [
+  {
+    key: 'status',
+    label: 'Status',
+    options: [
+      { id: 'active', label: 'Active' },
+      { id: 'inactive', label: 'Inactive' },
+      { id: 'pending', label: 'Pending' },
+    ],
+  },
+  {
+    key: 'type',
+    label: 'Type',
+    options: [
+      { id: 'master', label: 'Master Partner' },
+      { id: 'sub', label: 'Sub-Partner' },
+    ],
+  },
+]
 
 // =============================================================================
 // MAIN COMPONENT
@@ -562,34 +710,112 @@ export function PartnerNetworkPage({
   loading = false,
   onAddPartner,
   onEditPartner,
-  onViewPartner,
+  onViewPartner: _onViewPartner,
   onAddSubPartner,
   onDeletePartner,
   className,
 }: PartnerNetworkPageProps) {
   const [searchQuery, setSearchQuery] = useState("")
+  const [statusFilters, setStatusFilters] = useState<FilterState>({ status: [], type: [] })
   const [allExpanded, setAllExpanded] = useState(false)
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
 
-  // Filter partners based on search
-  const filteredPartners = useMemo(() => {
-    if (!searchQuery) return partners
+  // Dialog states
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [subPartnerDialogOpen, setSubPartnerDialogOpen] = useState(false)
+  const [selectedPartner, setSelectedPartner] = useState<NetworkPartner | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Dialog handlers
+  const handleAddPartnerClick = useCallback(() => {
+    setSelectedPartner(null)
+    setCreateDialogOpen(true)
+    onAddPartner?.()
+  }, [onAddPartner])
+
+  const handleEditPartnerClick = useCallback((partner: NetworkPartner) => {
+    setSelectedPartner(partner)
+    setEditDialogOpen(true)
+    onEditPartner?.(partner)
+  }, [onEditPartner])
+
+  const handleDeletePartnerClick = useCallback((partner: NetworkPartner) => {
+    setSelectedPartner(partner)
+    setDeleteDialogOpen(true)
+  }, [])
+
+  const handleAddSubPartnerClick = useCallback((parent: NetworkPartner) => {
+    setSelectedPartner(parent)
+    setSubPartnerDialogOpen(true)
+    onAddSubPartner?.(parent)
+  }, [onAddSubPartner])
+
+  const handleCreateSubmit = useCallback(async (data: NetworkPartnerFormData) => {
+    setIsSubmitting(true)
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    console.log('Create partner:', data)
+    setIsSubmitting(false)
+    setCreateDialogOpen(false)
+  }, [])
+
+  const handleEditSubmit = useCallback(async (data: NetworkPartnerFormData, partner?: NetworkPartner) => {
+    setIsSubmitting(true)
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    console.log('Update partner:', partner?.id, data)
+    setIsSubmitting(false)
+    setEditDialogOpen(false)
+  }, [])
+
+  const handleDeleteConfirm = useCallback(async (partner: NetworkPartner) => {
+    setIsSubmitting(true)
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    console.log('Delete partner:', partner.id)
+    onDeletePartner?.(partner)
+    setIsSubmitting(false)
+    setDeleteDialogOpen(false)
+  }, [onDeletePartner])
+
+  const handleSubPartnerSubmit = useCallback(async (data: SubPartnerFormData, parent: NetworkPartner) => {
+    setIsSubmitting(true)
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    console.log('Create sub-partner under:', parent.id, data)
+    setIsSubmitting(false)
+    setSubPartnerDialogOpen(false)
+  }, [])
+
+  // Filter partners based on search and filters
+  const filteredPartners = useMemo(() => {
     const query = searchQuery.toLowerCase()
+    const hasStatusFilter = statusFilters.status && statusFilters.status.length > 0
+    const hasTypeFilter = statusFilters.type && statusFilters.type.length > 0
 
     const filterPartner = (partner: NetworkPartner): NetworkPartner | null => {
-      const matchesSearch =
+      // Search filter
+      const matchesSearch = !query ||
         partner.companyName.toLowerCase().includes(query) ||
         partner.contactName.toLowerCase().includes(query) ||
         partner.contactEmail.toLowerCase().includes(query)
+
+      // Status filter
+      const matchesStatus = !hasStatusFilter || statusFilters.status.includes(partner.status)
+
+      // Type filter
+      const partnerType = partner.isMasterPartner ? 'master' : 'sub'
+      const matchesType = !hasTypeFilter || statusFilters.type.includes(partnerType)
 
       // Check sub-partners
       const filteredSubPartners = partner.subPartners
         ?.map(filterPartner)
         .filter((p): p is NetworkPartner => p !== null)
 
-      // Include if partner matches or has matching sub-partners
-      if (matchesSearch || (filteredSubPartners && filteredSubPartners.length > 0)) {
+      // Include if partner matches all criteria or has matching sub-partners
+      if ((matchesSearch && matchesStatus && matchesType) || (filteredSubPartners && filteredSubPartners.length > 0)) {
         return {
           ...partner,
           subPartners: filteredSubPartners,
@@ -600,7 +826,7 @@ export function PartnerNetworkPage({
     }
 
     return partners.map(filterPartner).filter((p): p is NetworkPartner => p !== null)
-  }, [partners, searchQuery])
+  }, [partners, searchQuery, statusFilters])
 
   // Expand/Collapse all
   const handleExpandAll = useCallback(() => {
@@ -617,6 +843,20 @@ export function PartnerNetworkPage({
   const handleCollapseAll = useCallback(() => {
     setExpandedIds(new Set())
     setAllExpanded(false)
+  }, [])
+
+  // Toggle individual row expand/collapse
+  const handleToggleExpand = useCallback((id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        next.delete(id)
+        setAllExpanded(false)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
   }, [])
 
   // Count total partners including sub-partners
@@ -642,7 +882,7 @@ export function PartnerNetworkPage({
         </div>
         <Button
           variant="accent"
-          onClick={onAddPartner}
+          onClick={handleAddPartnerClick}
           className="self-start sm:self-auto"
         >
           <Plus className="h-4 w-4" />
@@ -650,58 +890,57 @@ export function PartnerNetworkPage({
         </Button>
       </div>
 
-      {/* Controls Bar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3 flex-1 max-w-md">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
-            <Input
-              placeholder="Search partners..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <Button variant="outline" size="icon" className="flex-shrink-0">
-            <Filter className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleExpandAll}
-            disabled={allExpanded}
-          >
-            Expand All
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleCollapseAll}
-            disabled={!allExpanded && expandedIds.size === 0}
-          >
-            Collapse All
-          </Button>
-        </div>
-      </div>
-
-      {/* Partners count */}
-      <div className="text-sm text-muted">
-        {totalPartnerCount} partner{totalPartnerCount !== 1 ? "s" : ""} in network
+      {/* Search Bar */}
+      <div>
+        <SearchFilter
+          placeholder="Search partners..."
+          value={searchQuery}
+          onChange={setSearchQuery}
+          filterGroups={PARTNER_FILTER_GROUPS}
+          filters={statusFilters}
+          onFiltersChange={setStatusFilters}
+        />
       </div>
 
       {/* Partner Table */}
       <div className="rounded-lg border border-default bg-surface overflow-hidden">
+        {/* Table Toolbar - Count + Expand/Collapse */}
+        <div className="flex items-center justify-between px-4 py-2 bg-muted-bg/30 border-b border-default">
+          <span className="text-sm text-muted font-medium">
+            {totalPartnerCount} partner{totalPartnerCount !== 1 ? "s" : ""} in network
+          </span>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleExpandAll}
+              disabled={allExpanded}
+              className="h-7 px-2 text-xs"
+            >
+              <ChevronsUpDown className="h-3.5 w-3.5" />
+              Expand
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCollapseAll}
+              disabled={!allExpanded && expandedIds.size === 0}
+              className="h-7 px-2 text-xs"
+            >
+              <ChevronsDownUp className="h-3.5 w-3.5" />
+              Collapse
+            </Button>
+          </div>
+        </div>
+
         {/* Table Header */}
         <div className="flex items-center gap-4 px-4 py-3 bg-muted-bg/50 border-b border-default text-sm font-medium text-muted">
           <div className="w-6 flex-shrink-0" /> {/* Expand button space */}
           <div className="w-9 flex-shrink-0" /> {/* Icon space */}
           <div className="flex-1">Partner</div>
-          <div className="w-20 flex-shrink-0">Status</div>
-          <div className="w-28 flex-shrink-0 text-right">Monthly Revenue</div>
-          <div className="w-28 flex-shrink-0 text-right">Actions</div>
+          <div className="w-12 flex-shrink-0 text-center">Status</div>
+          <div className="w-36 flex-shrink-0 text-right">Monthly Revenue</div>
+          <div className="w-20 flex-shrink-0 text-right">Actions</div>
         </div>
 
         {/* Loading state */}
@@ -729,7 +968,7 @@ export function PartnerNetworkPage({
                 : "Get started by adding your first partner to the network."}
             </p>
             {!searchQuery && (
-              <Button variant="accent" onClick={onAddPartner}>
+              <Button variant="accent" onClick={handleAddPartnerClick}>
                 <Plus className="h-4 w-4" />
                 Add Partner
               </Button>
@@ -739,21 +978,56 @@ export function PartnerNetworkPage({
 
         {/* Partner rows */}
         {!loading && filteredPartners.length > 0 && (
-          <div>
+          <div className="[&>.group:last-child>div:first-child]:border-b-0">
             {filteredPartners.map((partner) => (
               <PartnerRowWrapper
                 key={partner.id}
                 partner={partner}
-                defaultExpanded={allExpanded}
-                onView={onViewPartner}
-                onEdit={onEditPartner}
-                onAddSubPartner={onAddSubPartner}
-                onDelete={onDeletePartner}
+                expandedIds={expandedIds}
+                onToggleExpand={handleToggleExpand}
+                onEdit={handleEditPartnerClick}
+                onAddSubPartner={handleAddSubPartnerClick}
+                onDelete={handleDeletePartnerClick}
               />
             ))}
           </div>
         )}
       </div>
+
+      {/* Dialogs */}
+      <EditNetworkPartnerDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+        partner={null}
+        mode="create"
+        onSubmit={handleCreateSubmit}
+        isSubmitting={isSubmitting}
+      />
+
+      <EditNetworkPartnerDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        partner={selectedPartner}
+        mode="edit"
+        onSubmit={handleEditSubmit}
+        isSubmitting={isSubmitting}
+      />
+
+      <DeleteNetworkPartnerDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        partner={selectedPartner}
+        onConfirm={handleDeleteConfirm}
+        isDeleting={isSubmitting}
+      />
+
+      <CreateSubPartnerDialog
+        open={subPartnerDialogOpen}
+        onOpenChange={setSubPartnerDialogOpen}
+        parentPartner={selectedPartner}
+        onSubmit={handleSubPartnerSubmit}
+        isSubmitting={isSubmitting}
+      />
     </div>
   )
 }

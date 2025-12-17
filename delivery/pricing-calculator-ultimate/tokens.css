@@ -1,0 +1,194 @@
+/**
+ * Pricing Calculator Ultimate - Design Tokens
+ * Standalone CSS variables for the pricing calculator component
+ *
+ * Extracted from the Disrupt Design System
+ * Compatible with Tailwind CSS v4
+ */
+
+/* ============================================================ */
+/* TAILWIND V4 THEME - Maps colors to utility classes           */
+/* CRITICAL: Without this, bg-*, text-*, border-* won't work!   */
+/* ============================================================ */
+
+@theme {
+  /* Fonts */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* --- PRIMARY BRAND COLORS --- */
+  --color-dark: #2D3142;
+  --color-teal: #08A4BD;
+  --color-teal-light: #66CFE1;
+  --color-cream: #FBFBF3;
+
+  /* --- SEMANTIC TEXT COLORS --- */
+  --color-primary: #2D3142;
+  --color-secondary: #5E4F7E;
+  --color-tertiary: #7F6F9F;
+  --color-muted: #5E4F7E;
+  --color-emphasis: #474F5F;
+  --color-disabled: #9F93B7;
+  --color-inverse: #FFFFFF;
+  --color-link: #08A4BD;
+  --color-link-hover: #068397;
+
+  /* --- BACKGROUND COLORS --- */
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #E8E9EB;
+  --color-surface-active: #D1D3D7;
+  --color-page: #FBFBF3;
+  --color-elevated: #FFFFFF;
+  --color-muted-bg: #EFEDF3;
+  --color-inverse-bg: #2D3142;
+  --color-inverse-subtle: #1D1F2A;
+  --color-accent-bg: #E6F7FA;
+  --color-accent-strong: #08A4BD;
+
+  /* --- BORDER COLORS --- */
+  --color-default: #CBD5E1;
+  --color-slate: #CBD5E1;
+  --color-subtle: #D1D3D7;
+  --color-strong: #757B87;
+  --color-focus: #08A4BD;
+  --color-accent: #08A4BD;
+  --color-border: #CBD5E1;
+
+  /* --- STATUS COLORS --- */
+  --color-error: #F70D1A;
+  --color-error-light: #FEF2F2;
+  --color-error-muted: #FEE2E2;
+  --color-success: #22C55E;
+  --color-success-light: #F0FDF4;
+  --color-success-muted: #DCFCE7;
+  --color-warning: #EAB308;
+  --color-warning-light: #FFFBEB;
+  --color-warning-muted: #FEF3C7;
+  --color-info: #3B82F6;
+  --color-info-light: #EFF6FF;
+  --color-info-muted: #DBEAFE;
+
+  /* --- UTILITY COLORS --- */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  /* --- SHADCN/RADIX COMPATIBILITY --- */
+  --color-background: #FFFFFF;
+  --color-foreground: #2D3142;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #2D3142;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #2D3142;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary-foreground: #FFFFFF;
+  --color-muted-foreground: #5E4F7E;
+  --color-accent-foreground: #2D3142;
+  --color-destructive: #F70D1A;
+  --color-input: #CBD5E1;
+  --color-ring: #08A4BD;
+
+  /* --- BORDER RADIUS --- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* --- SHADOWS --- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================================ */
+/* ROOT CSS VARIABLES - For direct var() access                 */
+/* ============================================================ */
+
+:root {
+  --radius: 0.625rem;
+
+  /* Shadcn compatibility */
+  --background: #FFFFFF;
+  --foreground: #2D3142;
+  --card: #FFFFFF;
+  --card-foreground: #2D3142;
+  --popover: #FFFFFF;
+  --popover-foreground: #2D3142;
+  --primary: #2D3142;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EFEDF3;
+  --secondary-foreground: #2D3142;
+  --muted: #EFEDF3;
+  --muted-foreground: #5E4F7E;
+  --accent: #E6F7FA;
+  --accent-foreground: #2D3142;
+  --destructive: #F70D1A;
+  --border: #CBD5E1;
+  --input: #CBD5E1;
+  --ring: #08A4BD;
+
+  /* Input height */
+  --h-input: 2.5rem;
+}
+
+/* ============================================================ */
+/* SAFELIST UTILITIES - Required for dynamic CVA classes        */
+/* ============================================================ */
+
+@layer utilities {
+  /* Button variant backgrounds */
+  .bg-inverse-bg { background-color: #2D3142; }
+  .bg-muted-bg { background-color: #EFEDF3; }
+  .bg-accent-strong { background-color: #08A4BD; }
+  .text-inverse { color: #FFFFFF; }
+  .text-accent { color: #08A4BD; }
+
+  /* Hover variants with opacity */
+  .hover\:bg-inverse-bg\/90:hover { background-color: rgba(45, 49, 66, 0.9); }
+  .hover\:bg-muted-bg\/80:hover { background-color: rgba(239, 237, 243, 0.8); }
+  .hover\:bg-accent-strong\/90:hover { background-color: rgba(8, 164, 189, 0.9); }
+  .hover\:bg-error\/90:hover { background-color: rgba(247, 13, 26, 0.9); }
+
+  /* Focus ring variants */
+  .focus-visible\:ring-accent\/30:focus-visible {
+    --tw-ring-color: rgba(8, 164, 189, 0.3);
+    box-shadow: 0 0 0 3px var(--tw-ring-color);
+  }
+  .focus-visible\:ring-error\/30:focus-visible {
+    --tw-ring-color: rgba(247, 13, 26, 0.3);
+    box-shadow: 0 0 0 3px var(--tw-ring-color);
+  }
+}
+
+/* ============================================================ */
+/* BASE STYLES                                                  */
+/* ============================================================ */
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}
+
+/* Dark mode support (optional) */
+.dark {
+  --background: #2D3142;
+  --foreground: #FFFFFF;
+  --card: #1D1F2A;
+  --card-foreground: #FFFFFF;
+  --popover: #1D1F2A;
+  --popover-foreground: #FFFFFF;
+  --primary: #FFFFFF;
+  --primary-foreground: #2D3142;
+  --muted-foreground: #9F93B7;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+}

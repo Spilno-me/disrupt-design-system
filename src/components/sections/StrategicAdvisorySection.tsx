@@ -1,11 +1,11 @@
-import { Shield, BookOpen, BarChart3, Scale } from 'lucide-react'
+import { Shield, BookOpen, BarChart3, Scale, type LucideIcon } from 'lucide-react'
 
 // =============================================================================
 // TYPES
 // =============================================================================
 
 interface AdvisoryFeature {
-  icon: React.ElementType
+  icon: LucideIcon
   title: string
   description: string
 }

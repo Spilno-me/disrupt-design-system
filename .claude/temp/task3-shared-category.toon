@@ -1,0 +1,44 @@
+task: 3
+name: Create Shared/ category
+status: completed
+completed_at: 2025-12-16
+
+changes_made[12]{file,old_title,new_title}:
+  src/components/ui/app-header.stories.tsx,Core/AppHeader,Shared/App Shell/AppHeader
+  src/components/ui/app-footer.stories.tsx,Core/AppFooter,Shared/App Shell/AppFooter
+  src/components/ui/app-sidebar.stories.tsx,Shared/AppSidebar,Shared/App Shell/AppSidebar
+  src/components/ui/bottom-nav.stories.tsx,Core/BottomNav,Shared/App Shell/BottomNav
+  src/stories/app-layout-shell.stories.tsx,Layout/AppLayoutShell,Shared/App Shell/AppLayoutShell
+  src/components/ui/data-table.stories.tsx,Core/DataTable,Shared/Data/DataTable
+  src/components/ui/pagination.stories.tsx,Core/Pagination,Shared/Data/Pagination
+  src/components/shared/SearchFilter.stories.tsx,Shared/Components/SearchFilter,Shared/Data/SearchFilter
+  src/stories/DataTableUnified.stories.tsx,Data/DataTable/Unified System,Shared/Data/DataTable Patterns
+  src/components/ui/GenericErrorPage.stories.tsx,UI/GenericErrorPage,Shared/Feedback/GenericErrorPage
+  src/components/ui/error-state.stories.tsx,Core/ErrorState,Shared/Feedback/ErrorState
+
+new_structure:
+  Shared:
+    App Shell:
+      stories[5]:
+        - AppHeader
+        - AppFooter
+        - AppSidebar
+        - BottomNav
+        - AppLayoutShell
+    Data:
+      stories[4]:
+        - DataTable
+        - Pagination
+        - SearchFilter
+        - DataTable Patterns
+    Feedback:
+      stories[2]:
+        - ErrorState
+        - GenericErrorPage
+    Auth:
+      stories[5]:
+        - LoginPage
+        - ForgotPasswordDialog
+        - ForgotPasswordForm
+        - ResetPasswordForm
+        - SetInitialPasswordForm

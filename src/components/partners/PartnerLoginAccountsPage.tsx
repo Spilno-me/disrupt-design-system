@@ -19,7 +19,7 @@ import { Pagination } from "../ui/Pagination"
 import { ResetPasswordDialog } from "./ResetPasswordDialog"
 import { CreateLoginAccountDialog } from "./CreateLoginAccountDialog"
 import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
-import { DataTableBadge, DataTableActions, type StatusMapping, type ActionItem } from "../ui/table"
+import { DataTableStatusDot, DataTableActions, LOGIN_ACCOUNT_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
 
 // =============================================================================
 // TYPES
@@ -86,15 +86,6 @@ export const MOCK_LOGIN_ACCOUNTS: LoginAccount[] = [
   },
 ]
 
-// =============================================================================
-// STATUS MAPPING - Using DDS Unified System
-// =============================================================================
-
-const LOGIN_ACCOUNT_STATUS_MAP: StatusMapping<LoginAccountStatus> = {
-  active: { variant: 'success', label: 'Active' },
-  inactive: { variant: 'secondary', label: 'Inactive' },
-  pending: { variant: 'warning', label: 'Pending' },
-}
 
 // =============================================================================
 // HELPER COMPONENTS
@@ -302,7 +293,7 @@ export function PartnerLoginAccountsPage({
       header: "Status",
       sortable: true,
       sortValue: (row) => row.status,
-      accessor: (row) => <DataTableBadge status={row.status} mapping={LOGIN_ACCOUNT_STATUS_MAP} />,
+      accessor: (row) => <DataTableStatusDot status={row.status} mapping={LOGIN_ACCOUNT_DOT_STATUS_MAP} />,
     },
     {
       id: "created",

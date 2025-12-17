@@ -10,10 +10,20 @@
 # Create delivery package
 1. Extract component + dependencies to delivery/[package-name]/
 2. Create tokens.css with @theme block (CRITICAL)
-3. Add setup.sh script
-4. Test with fresh project simulation
-5. zip -r [package-name].zip [package-name] -x "*.DS_Store"
+3. Add setup.sh script (with pnpm/yarn/npm support)
+4. Run token audit: grep -rh "muted-foreground\|popover\|destructive" ui/
+5. Test with fresh project simulation (test ALL package managers)
+6. zip -r [package-name].zip [package-name] -x "*.DS_Store"
 ```
+
+## Decision Tree: What Does Your Component Need?
+
+| Component Uses | Required in Package |
+|----------------|---------------------|
+| Basic UI (Button, Input, Card) | Standard setup.sh |
+| framer-motion | `templates/` folder with React dedupe vite.config |
+| shadcn tokens | Token compatibility layer OR rewrite components |
+| Icons as props | Use `LucideIcon` type, not `React.ElementType` |
 
 ---
 
@@ -78,18 +88,40 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT="${1:-[default-project-name]}"
 
-echo "🚀 Creating $PROJECT..."
+# Detect package manager
+if command -v pnpm &> /dev/null; then
+    PKG_MANAGER="pnpm"
+    INSTALL_CMD="pnpm add"
+    DEV_INSTALL_CMD="pnpm add -D"
+elif command -v yarn &> /dev/null; then
+    PKG_MANAGER="yarn"
+    INSTALL_CMD="yarn add"
+    DEV_INSTALL_CMD="yarn add -D"
+else
+    PKG_MANAGER="npm"
+    INSTALL_CMD="npm install"
+    DEV_INSTALL_CMD="npm install --save-dev"
+fi
 
-# Create Vite project
-npm create vite@latest "$PROJECT" -- --template react-ts --yes 2>/dev/null || \
-npm create vite@latest "$PROJECT" -- --template react-ts
+echo "🚀 Creating $PROJECT with $PKG_MANAGER..."
 
-cd "$PROJECT"
+# Initialize project
+mkdir -p "$PROJECT" && cd "$PROJECT"
+$PKG_MANAGER init -y 2>/dev/null || npm init -y
+
+# CRITICAL: Configure pnpm BEFORE installing (pnpm v8+ blocks esbuild)
+if [ "$PKG_MANAGER" = "pnpm" ]; then
+    if command -v jq &> /dev/null; then
+        jq '.pnpm.onlyBuiltDependencies = ["esbuild"]' package.json > tmp.json && mv tmp.json package.json
+    else
+        # sed fallback
+        sed -i.bak 's/}$/,"pnpm":{"onlyBuiltDependencies":["esbuild"]}}/' package.json && rm -f package.json.bak
+    fi
+fi
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-npm install
-npm install tailwindcss @tailwindcss/vite \
+$INSTALL_CMD tailwindcss @tailwindcss/vite \
   [list all @radix-ui/* packages] \
   class-variance-authority clsx tailwind-merge lucide-react
 
@@ -287,6 +319,8 @@ echo "   cd $PROJECT && npm run dev"
 - [ ] `lib/utils.ts` with `cn()` function included
 - [ ] All UI component dependencies extracted
 - [ ] setup.sh is executable (`chmod +x`)
+- [ ] setup.sh handles pnpm `onlyBuiltDependencies` BEFORE install
+- [ ] setup.sh tested with npm, yarn, AND pnpm
 
 ### Consumer Simulation Test
 ```bash
@@ -302,9 +336,27 @@ cd [package-name]
 ./setup.sh
 
 # Start and verify
-cd [project-name]
-npm run dev
+npm run dev  # or pnpm/yarn run dev
 # Open browser - verify styling matches Storybook
+```
+
+### Multi-Package-Manager Test (IMPORTANT)
+```bash
+# Test with npm
+rm -rf /tmp/test-npm && mkdir /tmp/test-npm && cd /tmp/test-npm
+unzip /path/to/package.zip && cd [package-name]
+PATH="/usr/local/bin:$PATH" npm_config_user_agent="npm" ./setup.sh
+
+# Test with pnpm (most strict)
+rm -rf /tmp/test-pnpm && mkdir /tmp/test-pnpm && cd /tmp/test-pnpm
+unzip /path/to/package.zip && cd [package-name]
+./setup.sh
+pnpm run dev  # Verify no "esbuild binary not found" error
+
+# Test with yarn
+rm -rf /tmp/test-yarn && mkdir /tmp/test-yarn && cd /tmp/test-yarn
+unzip /path/to/package.zip && cd [package-name]
+PATH_WITHOUT_PNPM="..." ./setup.sh  # Ensure yarn is detected
 ```
 
 ### What to Check in Browser
@@ -328,6 +380,9 @@ npm run dev
 | **"Invalid hook call"** | Multiple React copies (framer-motion) | Add `resolve.dedupe` to vite.config |
 | **shadcn tokens missing** | Components use shadcn tokens | Add compatibility tokens or rewrite |
 | **Import path errors** | Wrong relative paths | Fix `../../lib` → `../lib` |
+| **pnpm "Ignored build scripts"** | pnpm blocks esbuild postinstall | Add `pnpm.onlyBuiltDependencies` BEFORE install |
+| **"esbuild binary not found"** | pnpm blocked esbuild download | See pnpm section below |
+| **Icon props typed as `never`** | `React.ElementType` loses Lucide types | Use `LucideIcon` from lucide-react |
 
 ---
 
@@ -363,6 +418,67 @@ export default defineConfig({
 ```
 
 **Always include a `/templates` folder with this pre-configured vite.config.ts!**
+
+---
+
+## CRITICAL: pnpm Build Script Permissions (NEW)
+
+**If consumer uses pnpm v8+, they WILL see this warning:**
+```
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│   Ignored build scripts: esbuild.                                            │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+**Then when starting dev server:**
+```
+Error: esbuild binary not found
+```
+
+**Cause:** pnpm v8+ blocks postinstall scripts by default for security. `esbuild` (Vite's bundler) needs to run a postinstall to download its platform-specific binary.
+
+**Problem:** `pnpm approve-builds` is **interactive** (requires manual selection), breaking automated setup scripts.
+
+**Solution:** Add `pnpm.onlyBuiltDependencies` to `package.json` **BEFORE** `pnpm install`:
+
+```json
+{
+  "name": "my-project",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  }
+}
+```
+
+**REQUIRED in setup.sh:**
+```bash
+# =============================================================================
+# Configure pnpm to allow esbuild builds (CRITICAL for pnpm users)
+# =============================================================================
+if [ "$PKG_MANAGER" = "pnpm" ]; then
+    echo "  Configuring pnpm build permissions..."
+    if command -v jq &> /dev/null; then
+        TEMP_FILE=$(mktemp)
+        jq '.pnpm.onlyBuiltDependencies = ["esbuild"]' package.json > "$TEMP_FILE" 2>/dev/null || \
+        jq '. + {"pnpm": {"onlyBuiltDependencies": ["esbuild"]}}' package.json > "$TEMP_FILE"
+        mv "$TEMP_FILE" package.json
+    else
+        # Fallback without jq
+        if ! grep -q '"pnpm"' package.json; then
+            sed -i.bak 's/}$/,\n  "pnpm": {\n    "onlyBuiltDependencies": ["esbuild"]\n  }\n}/' package.json
+            rm -f package.json.bak
+        fi
+    fi
+fi
+```
+
+**Key Points:**
+- This MUST happen BEFORE `pnpm install`
+- npm and yarn don't have this issue (only pnpm)
+- Always test setup scripts with pnpm specifically
+- The `jq` command is preferred but provide sed fallback
 
 ---
 
@@ -412,6 +528,41 @@ export default defineConfig({
 # Find non-DDS tokens in UI components
 grep -rh "muted-foreground\|popover\|destructive\|border-input\|ring-ring" ui/
 ```
+
+---
+
+## CRITICAL: Lucide Icon Typing (NEW)
+
+**Problem:** Using `React.ElementType` for Lucide icons causes TypeScript errors.
+
+**Symptom:**
+```
+Type 'string' is not assignable to type 'never'.
+  <Icon className="w-5 h-5" />
+        ~~~~~~~~~
+```
+
+**Cause:** `React.ElementType` is too generic and loses Lucide's prop types.
+
+**Solution:**
+```typescript
+// ❌ Wrong - loses prop types
+import { Shield } from 'lucide-react'
+interface Feature {
+  icon: React.ElementType  // className becomes 'never'
+}
+
+// ✅ Correct - preserves prop types
+import { Shield, type LucideIcon } from 'lucide-react'
+interface Feature {
+  icon: LucideIcon  // className, strokeWidth, size typed correctly
+}
+```
+
+**Key Points:**
+- Always use `LucideIcon` type for icon props in interfaces
+- Import as `type LucideIcon` to avoid runtime overhead
+- This affects any component that passes icons as props
 
 ---
 
@@ -497,5 +648,7 @@ grep -rh "muted-foreground\|popover\|destructive\|border-input\|ring-ring" ui/
 
 ---
 
-*Last updated: 2025-12-16*
+*Last updated: 2025-12-17*
 *Based on: PricingCalculator & TenantProvisioningChat delivery package learnings*
+*Added: pnpm v8+ onlyBuiltDependencies requirement for esbuild*
+*Added: LucideIcon typing for icon props*

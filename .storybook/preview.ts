@@ -4,6 +4,23 @@ import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from 'storybook/viewport'
 import { create } from 'storybook/theming'
 import '../src/styles.css'
 
+// Suppress Storybook internal deprecation warnings
+const originalWarn = console.warn
+console.warn = (...args: unknown[]) => {
+  const message = args[0]
+  if (typeof message === 'string') {
+    // Skip Storybook internal deprecation warnings
+    if (
+      message.includes('IconButton') ||
+      message.includes('ariaLabel') ||
+      message.includes('`active` prop on `Button`')
+    ) {
+      return
+    }
+  }
+  originalWarn.apply(console, args)
+}
+
 const docsTheme = create({
   base: 'light',
   fontBase: '"Fixel", "Segoe UI", "Helvetica Neue", Arial, sans-serif',

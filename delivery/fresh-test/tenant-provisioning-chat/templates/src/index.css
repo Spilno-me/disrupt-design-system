@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "../tenant-provisioning-chat/tokens.css";
+
+body {
+  margin: 0;
+  font-family: 'Fixel', ui-sans-serif, system-ui, sans-serif;
+}

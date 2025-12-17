@@ -1,0 +1,213 @@
+/**
+ * Design System Tokens for TenantProvisioningChat
+ *
+ * This file contains all design tokens required for the component.
+ * Uses Tailwind CSS v4 @theme block syntax.
+ *
+ * USAGE:
+ * Import this file in your main CSS file or tailwind.css:
+ * @import "./tenant-provisioning-chat/tokens.css";
+ */
+
+@theme {
+  /* ========================================
+   * PRIMITIVE COLOR PALETTES
+   * ======================================== */
+
+  /* DEEP_CURRENT - Primary brand blues */
+  --color-deep-current-50: #e6f4f9;
+  --color-deep-current-100: #b3dded;
+  --color-deep-current-200: #80c7e2;
+  --color-deep-current-300: #4db0d6;
+  --color-deep-current-400: #269ec9;
+  --color-deep-current-500: #0F6A8B;
+  --color-deep-current-600: #0d5f7d;
+  --color-deep-current-700: #0a4d66;
+  --color-deep-current-800: #073a4e;
+  --color-deep-current-900: #042836;
+
+  /* WAVE - Teal accent colors */
+  --color-wave-50: #e6f9f9;
+  --color-wave-100: #b3eded;
+  --color-wave-200: #80e2e2;
+  --color-wave-300: #4dd6d6;
+  --color-wave-400: #26c9c9;
+  --color-wave-500: #0D8B8B;
+  --color-wave-600: #0b7a7a;
+  --color-wave-700: #096363;
+  --color-wave-800: #074b4b;
+  --color-wave-900: #043434;
+
+  /* CORAL - Warning/accent colors */
+  --color-coral-50: #fef3f1;
+  --color-coral-100: #fcd9d3;
+  --color-coral-200: #f9beb5;
+  --color-coral-300: #f7a497;
+  --color-coral-400: #f48979;
+  --color-coral-500: #E57255;
+  --color-coral-600: #d4604a;
+  --color-coral-700: #b34e3d;
+  --color-coral-800: #8c3d30;
+  --color-coral-900: #662c23;
+
+  /* SLATE - Neutral grays */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+
+  /* ABYSS - Deep dark colors */
+  --color-abyss-400: #4a6f7c;
+  --color-abyss-500: #1A3A47;
+  --color-abyss-600: #162f3a;
+  --color-abyss-700: #11252d;
+  --color-abyss-800: #0d1a20;
+  --color-abyss-900: #080f14;
+
+  /* Pure colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* ========================================
+   * SEMANTIC/ALIAS TOKENS
+   * ======================================== */
+
+  /* Background colors */
+  --color-surface: var(--color-white);
+  --color-page: var(--color-slate-50);
+  --color-muted-bg: var(--color-slate-100);
+  --color-inverse-bg: var(--color-abyss-500);
+
+  /* Text colors */
+  --color-primary: var(--color-abyss-500);
+  --color-secondary: var(--color-slate-600);
+  --color-tertiary: var(--color-slate-400);
+  --color-muted: var(--color-slate-500);
+  --color-inverse: var(--color-white);
+  --color-disabled: var(--color-slate-400);
+
+  /* Accent colors */
+  --color-accent: var(--color-deep-current-500);
+  --color-accent-light: var(--color-deep-current-100);
+  --color-accent-strong: var(--color-deep-current-500);
+  --color-accent-dark: var(--color-deep-current-700);
+
+  /* State colors */
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: var(--color-coral-500);
+  --color-warning-light: var(--color-coral-100);
+  --color-error: #ef4444;
+  --color-error-light: #fee2e2;
+  --color-info: var(--color-deep-current-500);
+  --color-info-light: var(--color-deep-current-100);
+
+  /* Border colors */
+  --color-border-default: var(--color-slate-200);
+  --color-border-muted: var(--color-slate-100);
+  --color-border-strong: var(--color-slate-300);
+
+  /* Ring (focus) color */
+  --color-ring: var(--color-deep-current-500);
+
+  /* ========================================
+   * SHADCN COMPATIBILITY TOKENS
+   * ======================================== */
+
+  /* Input tokens */
+  --color-input: var(--color-slate-200);
+  --color-border: var(--color-slate-200);
+
+  /* Foreground variants */
+  --color-muted-foreground: var(--color-slate-500);
+  --color-popover-foreground: var(--color-abyss-500);
+
+  /* Popover background */
+  --color-popover: var(--color-white);
+
+  /* Destructive (maps to error) */
+  --color-destructive: var(--color-error);
+
+  /* ========================================
+   * TYPOGRAPHY
+   * ======================================== */
+
+  --font-family-sans: 'Fixel', ui-sans-serif, system-ui, sans-serif;
+
+  /* ========================================
+   * BORDER RADIUS
+   * ======================================== */
+
+  --radius-none: 0;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ========================================
+   * SHADOWS
+   * ======================================== */
+
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* ========================================
+   * SPACING (for reference)
+   * ======================================== */
+
+  /* Uses Tailwind's default spacing scale */
+  /* gap-1 = 4px, gap-2 = 8px, gap-3 = 12px, gap-4 = 16px, etc. */
+
+  /* ========================================
+   * SPACING / SIZING
+   * ======================================== */
+
+  /* Input height - used by h-input utility */
+  --spacing-input: 2.5rem; /* 40px - standard input height on desktop */
+}
+
+/* ========================================
+ * UTILITY CLASSES (if not using Tailwind)
+ * ======================================== */
+
+/* Background utilities */
+.bg-surface { background-color: var(--color-surface); }
+.bg-page { background-color: var(--color-page); }
+.bg-muted-bg { background-color: var(--color-muted-bg); }
+.bg-inverse-bg { background-color: var(--color-inverse-bg); }
+.bg-accent { background-color: var(--color-accent); }
+.bg-accent-light { background-color: var(--color-accent-light); }
+.bg-success { background-color: var(--color-success); }
+.bg-success-light { background-color: var(--color-success-light); }
+.bg-error { background-color: var(--color-error); }
+.bg-error-light { background-color: var(--color-error-light); }
+
+/* Text utilities */
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.text-tertiary { color: var(--color-tertiary); }
+.text-muted { color: var(--color-muted); }
+.text-inverse { color: var(--color-inverse); }
+.text-accent { color: var(--color-accent); }
+.text-success { color: var(--color-success); }
+.text-error { color: var(--color-error); }
+
+/* Border utilities */
+.border-default { border-color: var(--color-border-default); }
+.border-muted { border-color: var(--color-border-muted); }
+.border-strong { border-color: var(--color-border-strong); }
+.border-accent { border-color: var(--color-accent); }
+
+/* Ring utilities */
+.ring-ring { --tw-ring-color: var(--color-ring); }

@@ -21,6 +21,34 @@ export {
 } from './DataTableBadge'
 
 export {
+  DataTableStatusDot,
+  ACTIVE_DOT_STATUS_MAP,
+  PARTNER_DOT_STATUS_MAP,
+  WORKFLOW_DOT_STATUS_MAP,
+  REQUEST_DOT_STATUS_MAP,
+  LEAD_DOT_STATUS_MAP,
+  INVOICE_DOT_STATUS_MAP,
+  LOGIN_ACCOUNT_DOT_STATUS_MAP,
+  TENANT_REQUEST_DOT_STATUS_MAP,
+  type DataTableStatusDotProps,
+  type DotStatusMapping,
+  type DotStatusConfig,
+  type DotVariant,
+} from './DataTableStatusDot'
+
+export {
+  DataTableSeverity,
+  PRIORITY_SEVERITY_MAP,
+  LEAD_PRIORITY_SEVERITY_MAP,
+  LEAD_TEMPERATURE_SEVERITY_MAP,
+  INCIDENT_SEVERITY_MAP,
+  URGENCY_SEVERITY_MAP,
+  type DataTableSeverityProps,
+  type SeverityMapping,
+  type SeverityConfig,
+} from './DataTableSeverity'
+
+export {
   DataTableActions,
   type DataTableActionsProps,
   type ActionItem,

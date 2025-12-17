@@ -89,10 +89,11 @@ export function DataTableMobileCard<T = unknown>({
   return (
     <Card
       className={cn(
-        "p-4 space-y-3",
+        "p-4 space-y-3 border-solid border-default",
         onTap && "cursor-pointer active:bg-surface-active transition-colors",
         className
       )}
+      shadow="md"
       onClick={onTap}
     >
       {/* Header - Title, Subtitle, Status */}
@@ -158,7 +159,7 @@ export function DataTableMobileCard<T = unknown>({
               size="sm"
               showLabels
               provideTooltip={false}
-              maxVisible={2}
+              maxVisible={3}
             />
           ) : (
             <>{actions}</>

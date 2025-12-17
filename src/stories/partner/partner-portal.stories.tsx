@@ -324,7 +324,6 @@ export const Default: Story = {
         alert(`Invoice ${invoice.invoiceNumber} marked as sent`)
       }
     },
-    onCreateInvoice: () => alert('Create new invoice'),
     onProvisioningComplete: (data) => alert(`Tenant "${data.companyName}" configuration complete!`),
 
     // Settings callbacks
