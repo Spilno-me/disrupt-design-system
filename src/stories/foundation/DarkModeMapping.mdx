@@ -1,0 +1,991 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Moon,
+  Sun,
+  ArrowLeftRight,
+  Layers,
+  ArrowRight,
+  Check,
+  X,
+  Lightbulb,
+  Table,
+  GitBranch,
+  Palette,
+  Code,
+  Monitor,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  StoryLink,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+  SIZES,
+} from '../brand/BrandComponents';
+import { HARBOR, SUNRISE } from '../../constants/designTokens';
+
+<Meta title="Foundation/Dark Mode Mapping" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Dark Mode Mapping"
+  description="A systematic approach to creating Light/Dark theme mappings using scale inversion to preserve visual hierarchy."
+  gradient="primary"
+  decorativeIcon={<Moon size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Scale Inversion Principle:</strong> Light mode values map to their inverted position on the color scale.
+  For DDS's 50-900 scale: <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: RADIUS.xs }}>Dark = 950 - Light</code>
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Core Pattern</h2>
+
+<SectionHeader
+  icon={<ArrowLeftRight size={20} />}
+  title="Scale Inversion Formula"
+  description="Mirror the color scale to maintain relative contrast relationships."
+/>
+
+{/* Visual Scale Inversion Diagram */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: SPACING.px.spacious,
+    marginBottom: SPACING.px.comfortable,
+  }}>
+    {/* Light Mode Column */}
+    <div style={{ textAlign: 'center' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: SPACING.px.tight,
+        marginBottom: SPACING.px.base,
+        justifyContent: 'center',
+      }}>
+        <Sun size={20} color={SUNRISE[500]} />
+        <span style={{
+          fontSize: TYPOGRAPHY.fontSize.sm[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+        }}>Light Mode</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {['50', '100', '200', '300', '400', '500'].map((shade, idx) => {
+          const colors = [ABYSS[50], ABYSS[100], ABYSS[200], ABYSS[300], ABYSS[400], ABYSS[500]];
+          const isLight = idx < 3;
+          return (
+            <div key={shade} style={{
+              width: '80px',
+              padding: '8px 12px',
+              background: colors[idx],
+              borderRadius: RADIUS.sm,
+              fontSize: TYPOGRAPHY.fontSize.xs[0],
+              fontFamily: TYPOGRAPHY.fontFamily.mono,
+              color: isLight ? ABYSS[500] : PRIMITIVES.white,
+              textAlign: 'center',
+            }}>
+              {shade}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    {/* Arrows */}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '4px',
+      alignItems: 'center',
+    }}>
+      {['900', '800', '700', '600', '500', '400'].map((_, idx) => (
+        <div key={idx} style={{
+          padding: '8px 0',
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <ArrowLeftRight size={16} color={DEEP_CURRENT[500]} />
+        </div>
+      ))}
+    </div>
+
+    {/* Dark Mode Column */}
+    <div style={{ textAlign: 'center' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: SPACING.px.tight,
+        marginBottom: SPACING.px.base,
+        justifyContent: 'center',
+      }}>
+        <Moon size={20} color={DUSK_REEF[500]} />
+        <span style={{
+          fontSize: TYPOGRAPHY.fontSize.sm[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+        }}>Dark Mode</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {['900', '800', '700', '600', '500', '400'].map((shade, idx) => {
+          const colors = [ABYSS[900], ABYSS[800], ABYSS[700], ABYSS[600], ABYSS[500], ABYSS[400]];
+          return (
+            <div key={shade} style={{
+              width: '80px',
+              padding: '8px 12px',
+              background: colors[idx],
+              borderRadius: RADIUS.sm,
+              fontSize: TYPOGRAPHY.fontSize.xs[0],
+              fontFamily: TYPOGRAPHY.fontFamily.mono,
+              color: PRIMITIVES.white,
+              textAlign: 'center',
+            }}>
+              {shade}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+
+  {/* Formula */}
+  <div style={{
+    background: ABYSS[600],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    textAlign: 'center',
+  }}>
+    <code style={{
+      fontSize: TYPOGRAPHY.fontSize.base[0],
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      color: PRIMITIVES.white,
+    }}>
+      <span style={{ color: PRIMITIVES.white }}>Dark Value = 950 - Light Value</span>
+    </code>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Complete Scale Mapping</h2>
+
+<SectionHeader
+  icon={<Table size={20} />}
+  title="DDS Scale Reference"
+  description="All 10 positions on the 50-900 scale with their dark mode counterparts."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+  overflow: 'hidden',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Light Mode</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Sum</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'right', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Dark Mode</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Use Case</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { light: '50', dark: '900', use: 'Page background' },
+        { light: '100', dark: '800', use: 'Surface background' },
+        { light: '200', dark: '700', use: 'Elevated surface' },
+        { light: '300', dark: '600', use: 'Hover states' },
+        { light: '400', dark: '500', use: 'Active states' },
+        { light: '500', dark: '400', use: 'Primary elements' },
+        { light: '600', dark: '300', use: 'Emphasized elements' },
+        { light: '700', dark: '200', use: 'Strong emphasis' },
+        { light: '800', dark: '100', use: 'Maximum emphasis' },
+        { light: '900', dark: '50', use: 'Inverse text' },
+      ].map((row, idx) => (
+        <tr key={row.light} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+              <div style={{
+                width: '24px',
+                height: '24px',
+                borderRadius: RADIUS.xs,
+                background: ABYSS[row.light],
+                border: `1px solid ${SLATE[200]}`,
+              }} />
+              <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[500] }}>{row.light}</span>
+            </div>
+          </td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center' }}>
+            <span style={{
+              background: DEEP_CURRENT[50],
+              color: DEEP_CURRENT[600],
+              padding: `2px ${SPACING.px.tight}`,
+              borderRadius: RADIUS.xs,
+              fontSize: TYPOGRAPHY.fontSize.xs[0],
+              fontWeight: TYPOGRAPHY.fontWeight.semibold,
+              fontFamily: TYPOGRAPHY.fontFamily.mono,
+            }}>
+              950
+            </span>
+          </td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'right' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, justifyContent: 'flex-end' }}>
+              <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[500] }}>{row.dark}</span>
+              <div style={{
+                width: '24px',
+                height: '24px',
+                borderRadius: RADIUS.xs,
+                background: ABYSS[row.dark],
+                border: `1px solid ${SLATE[200]}`,
+              }} />
+            </div>
+          </td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, color: SLATE[600] }}>
+            {row.use}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Why Inversion Works</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Preserving Visual Hierarchy"
+  description="The relative contrast between elements stays consistent across themes."
+/>
+
+{/* Side-by-side comparison */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Light Theme Card */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Sun size={18} color={SUNRISE[500]} />
+      <span style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: ABYSS[500],
+      }}>Light Theme</span>
+    </div>
+
+    {/* Mock UI */}
+    <div style={{
+      background: ABYSS[50],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+    }}>
+      <div style={{
+        background: ABYSS[100],
+        borderRadius: RADIUS.sm,
+        padding: SPACING.px.compact,
+        marginBottom: SPACING.px.tight,
+      }}>
+        <div style={{
+          background: ABYSS[200],
+          borderRadius: RADIUS.xs,
+          padding: SPACING.px.tight,
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+          textAlign: 'center',
+        }}>
+          Card Content
+        </div>
+      </div>
+      <div style={{
+        fontSize: '10px',
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+        textAlign: 'center',
+      }}>
+        Bg: 50 → Surface: 100 → Card: 200
+      </div>
+    </div>
+  </div>
+
+  {/* Dark Theme Card */}
+  <div style={{
+    background: ABYSS[800],
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${ABYSS[600]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Moon size={18} color={SLATE[300]} />
+      <span style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: PRIMITIVES.white,
+      }}>Dark Theme</span>
+    </div>
+
+    {/* Mock UI */}
+    <div style={{
+      background: ABYSS[900],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+    }}>
+      <div style={{
+        background: ABYSS[800],
+        borderRadius: RADIUS.sm,
+        padding: SPACING.px.compact,
+        marginBottom: SPACING.px.tight,
+      }}>
+        <div style={{
+          background: ABYSS[700],
+          borderRadius: RADIUS.xs,
+          padding: SPACING.px.tight,
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: PRIMITIVES.white,
+          textAlign: 'center',
+        }}>
+          Card Content
+        </div>
+      </div>
+      <div style={{
+        fontSize: '10px',
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[400],
+        textAlign: 'center',
+      }}>
+        Bg: 900 → Surface: 800 → Card: 700
+      </div>
+    </div>
+  </div>
+</div>
+
+<InfoBox variant="info">
+  <strong>Key insight:</strong> The 1-step separation between layers is preserved.
+  Background → Surface is always 1 step. Surface → Card is always 1 step.
+  This maintains the same visual depth perception in both themes.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Two-Tier Architecture</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="Figma Variables Structure"
+  description="Separate Primitives (raw values) from Alias (semantic tokens with modes)."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Tier 1: Primitives */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <div style={{
+        width: SPACING.px.comfortable,
+        height: SPACING.px.comfortable,
+        borderRadius: RADIUS.xs,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: DEEP_CURRENT[500],
+      }}>
+        <Palette size={14} />
+      </div>
+      <div>
+        <h3 style={{
+          margin: 0,
+          fontSize: TYPOGRAPHY.fontSize.base[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+        }}>Tier 1: Primitives</h3>
+        <div style={{
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: SLATE[500],
+        }}>Raw hex values, no modes</div>
+      </div>
+    </div>
+
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      lineHeight: TYPOGRAPHY.lineHeight.loose,
+    }}>
+      <div style={{ color: DEEP_CURRENT[600], marginBottom: SPACING.px.micro }}>Collection: "Primitives"</div>
+      <div style={{ marginLeft: SPACING.px.base }}>
+        <div style={{ color: SLATE[600] }}>Color/Abyss/50 → <span style={{ color: ABYSS[500] }}>#E8E9EB</span></div>
+        <div style={{ color: SLATE[600] }}>Color/Abyss/500 → <span style={{ color: ABYSS[500] }}>#2D3142</span></div>
+        <div style={{ color: SLATE[600] }}>Color/Abyss/900 → <span style={{ color: ABYSS[500] }}>#0C0D12</span></div>
+      </div>
+    </div>
+  </div>
+
+  {/* Tier 2: Alias */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <div style={{
+        width: SPACING.px.comfortable,
+        height: SPACING.px.comfortable,
+        borderRadius: RADIUS.xs,
+        background: DUSK_REEF[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: DUSK_REEF[500],
+      }}>
+        <Layers size={14} />
+      </div>
+      <div>
+        <h3 style={{
+          margin: 0,
+          fontSize: TYPOGRAPHY.fontSize.base[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: ABYSS[500],
+        }}>Tier 2: Alias (Semantic)</h3>
+        <div style={{
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          color: SLATE[500],
+        }}>References Primitives, has Light/Dark modes</div>
+      </div>
+    </div>
+
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      lineHeight: TYPOGRAPHY.lineHeight.loose,
+    }}>
+      <div style={{ color: DUSK_REEF[600], marginBottom: SPACING.px.micro }}>Collection: "Colors" [Light | Dark]</div>
+      <div style={{ marginLeft: SPACING.px.base }}>
+        <div style={{ color: SLATE[600] }}>Background/Page</div>
+        <div style={{ marginLeft: SPACING.px.base, display: 'flex', gap: SPACING.px.tight }}>
+          <span style={{ color: DEEP_CURRENT[500] }}>Light:</span>
+          <span style={{ color: ABYSS[400] }}>Abyss/50</span>
+        </div>
+        <div style={{ marginLeft: SPACING.px.base, display: 'flex', gap: SPACING.px.tight }}>
+          <span style={{ color: DUSK_REEF[500] }}>Dark:</span>
+          <span style={{ color: ABYSS[400] }}>Abyss/900</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>DDS Semantic Token Mappings</h2>
+
+<SectionHeader
+  icon={<Code size={20} />}
+  title="Background Tokens"
+  description="How DDS background tokens map between Light and Dark modes."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.comfortable,
+  overflow: 'hidden',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Semantic Token</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+            <Sun size={14} color={SUNRISE[500]} />
+            Light Mode
+          </div>
+        </th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+            <Moon size={14} color={DUSK_REEF[500]} />
+            Dark Mode
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { token: 'background.page', light: 'PRIMITIVES.cream', dark: 'ABYSS[900]' },
+        { token: 'background.surface', light: 'PRIMITIVES.white', dark: 'ABYSS[800]' },
+        { token: 'background.surfaceHover', light: 'ABYSS[50]', dark: 'ABYSS[700]' },
+        { token: 'background.surfaceActive', light: 'ABYSS[100]', dark: 'ABYSS[600]' },
+        { token: 'background.elevated', light: 'PRIMITIVES.white', dark: 'ABYSS[700]' },
+        { token: 'background.muted', light: 'DUSK_REEF[50]', dark: 'DUSK_REEF[900]' },
+        { token: 'background.inverse', light: 'ABYSS[500]', dark: 'PRIMITIVES.white' },
+      ].map((row) => (
+        <tr key={row.token} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: DEEP_CURRENT[600] }}>{row.token}</td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[400] }}>{row.light}</td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[400] }}>{row.dark}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<SectionHeader
+  icon={<Code size={20} />}
+  title="Text Tokens"
+  description="Text colors invert to maintain readability on both backgrounds."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+  overflow: 'hidden',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Semantic Token</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+            <Sun size={14} color={SUNRISE[500]} />
+            Light Mode
+          </div>
+        </th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+            <Moon size={14} color={DUSK_REEF[500]} />
+            Dark Mode
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { token: 'text.primary', light: 'ABYSS[500]', dark: 'SLATE[100]' },
+        { token: 'text.secondary', light: 'DUSK_REEF[500]', dark: 'DUSK_REEF[300]' },
+        { token: 'text.tertiary', light: 'DUSK_REEF[400]', dark: 'DUSK_REEF[400]' },
+        { token: 'text.disabled', light: 'DUSK_REEF[300]', dark: 'DUSK_REEF[600]' },
+        { token: 'text.inverse', light: 'PRIMITIVES.white', dark: 'ABYSS[500]' },
+      ].map((row) => (
+        <tr key={row.token} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: DEEP_CURRENT[600] }}>{row.token}</td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[400] }}>{row.light}</td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[400] }}>{row.dark}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Status Color Exceptions</h2>
+
+<SectionHeader
+  icon={<Lightbulb size={20} />}
+  title="When Inversion Doesn't Apply"
+  description="Status colors shift 1 step lighter in dark mode for visibility."
+/>
+
+<InfoBox variant="warning">
+  <strong>Exception:</strong> Status colors (error, success, warning) do NOT fully invert.
+  Base colors shift 1 step lighter in dark mode to maintain visibility against dark backgrounds.
+</InfoBox>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { name: 'Error', light: 'CORAL[500]', dark: 'CORAL[400]', colorLight: CORAL[500], colorDark: CORAL[400] },
+    { name: 'Success', light: 'HARBOR[500]', dark: 'HARBOR[400]', colorLight: HARBOR[500], colorDark: HARBOR[400] },
+    { name: 'Warning', light: 'SUNRISE[500]', dark: 'SUNRISE[400]', colorLight: SUNRISE[500], colorDark: SUNRISE[400] },
+  ].map((status) => (
+    <div key={status.name} style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: ABYSS[500],
+        marginBottom: SPACING.px.tight,
+      }}>{status.name}</div>
+      <div style={{ display: 'flex', gap: SPACING.px.tight, marginBottom: SPACING.px.tight }}>
+        <div style={{
+          flex: 1,
+          padding: SPACING.px.tight,
+          background: status.colorLight,
+          borderRadius: RADIUS.sm,
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '10px', color: PRIMITIVES.white, marginBottom: '2px' }}>Light</div>
+          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.mono, color: PRIMITIVES.white }}>{status.light.split('[')[1].replace(']', '')}</div>
+        </div>
+        <div style={{
+          flex: 1,
+          padding: SPACING.px.tight,
+          background: status.colorDark,
+          borderRadius: RADIUS.sm,
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '10px', color: PRIMITIVES.white, marginBottom: '2px' }}>Dark</div>
+          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.mono, color: PRIMITIVES.white }}>{status.dark.split('[')[1].replace(']', '')}</div>
+        </div>
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: SLATE[500],
+        textAlign: 'center',
+      }}>
+        Shift: 500 → 400 (1 step lighter)
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Guidelines</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Use semantic tokens">
+    Always reference Alias tokens (Background/Page) not Primitives directly. Let the mode handle the value.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Hardcode hex values">
+    Never use raw hex values for themed elements. Use CSS custom properties or semantic token references.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Maintain contrast hierarchy">
+    Keep the same step separation between elements. If Surface is 1 step from Page in light, it should be 1 step in dark.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Use same-family colors together">
+    ABYSS text on ABYSS background creates poor contrast. Cross-reference with the color matrix.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Test in both modes">
+    Verify WCAG contrast ratios (4.5:1 for text, 3:1 for UI) in both Light and Dark modes.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Forget status color exceptions">
+    Status colors shift 1 step lighter in dark mode. Don't apply standard inversion to them.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Decision Tree</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.px.base }}>
+    {[
+      { question: 'Is it a BACKGROUND token?', answer: 'Invert: 50↔900, 100↔800, etc.', color: DEEP_CURRENT[500], bg: DEEP_CURRENT[50] },
+      { question: 'Is it TEXT on dark background?', answer: 'Use light values: SLATE[100-300]', color: DUSK_REEF[500], bg: DUSK_REEF[50] },
+      { question: 'Is it TEXT on light background?', answer: 'Use dark values: ABYSS[500]', color: ABYSS[500], bg: ABYSS[50] },
+      { question: 'Is it a STATUS color (error/success)?', answer: 'Shift 1 step lighter for dark', color: CORAL[500], bg: CORAL[50] },
+      { question: 'Is it a BORDER token?', answer: 'Standard inversion: 300↔600', color: SLATE[600], bg: SLATE[100] },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'stretch',
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+        boxShadow: SHADOWS.sm,
+      }}>
+        <div style={{
+          flex: 1,
+          background: SLATE[50],
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: SPACING.px.base,
+        }}>
+          <div style={{
+            width: SPACING.px.comfortable,
+            height: SPACING.px.comfortable,
+            borderRadius: RADIUS.full,
+            background: DUSK_REEF[100],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: DUSK_REEF[600] }}>?</span>
+          </div>
+          <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontFamily: TYPOGRAPHY.fontFamily.sans, color: ABYSS[500] }}>
+            {item.question}
+          </span>
+        </div>
+        <div style={{
+          width: SPACING.px.section,
+          background: `linear-gradient(90deg, ${SLATE[50]} 0%, ${item.bg} 100%)`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <ArrowRight size={20} color={item.color} />
+        </div>
+        <div style={{
+          minWidth: '220px',
+          background: item.bg,
+          padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <span style={{
+            fontSize: TYPOGRAPHY.fontSize.sm[0],
+            fontWeight: TYPOGRAPHY.fontWeight.medium,
+            fontFamily: TYPOGRAPHY.fontFamily.sans,
+            color: item.color,
+          }}>
+            {item.answer}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Related Documentation</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+}}>
+  <StoryLink to="/docs/foundation-design-tokens-colors--docs" style={{ textDecoration: 'none' }}>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.cardGap,
+      border: `1px solid ${SLATE[200]}`,
+      transition: 'border-color 0.2s',
+    }}>
+      <div style={{
+        width: SIZES.iconMd,
+        height: SIZES.iconMd,
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.compact,
+        color: DEEP_CURRENT[500],
+      }}>
+        <Palette size={20} />
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: ABYSS[500],
+        marginBottom: SPACING.px.micro,
+      }}>
+        Color System
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: SLATE[500],
+      }}>
+        Full color palette and tokens
+      </div>
+    </div>
+  </StoryLink>
+
+  <StoryLink to="/docs/foundation-architecture--docs" style={{ textDecoration: 'none' }}>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.cardGap,
+      border: `1px solid ${SLATE[200]}`,
+      transition: 'border-color 0.2s',
+    }}>
+      <div style={{
+        width: SIZES.iconMd,
+        height: SIZES.iconMd,
+        borderRadius: RADIUS.sm,
+        background: DUSK_REEF[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.compact,
+        color: DUSK_REEF[500],
+      }}>
+        <Layers size={20} />
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: ABYSS[500],
+        marginBottom: SPACING.px.micro,
+      }}>
+        Architecture
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: SLATE[500],
+      }}>
+        Token tier system overview
+      </div>
+    </div>
+  </StoryLink>
+
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.cardGap,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      width: SIZES.iconMd,
+      height: SIZES.iconMd,
+      borderRadius: RADIUS.sm,
+      background: ABYSS[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: SPACING.px.compact,
+      color: ABYSS[500],
+    }}>
+      <Monitor size={20} />
+    </div>
+    <div style={{
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: ABYSS[500],
+      marginBottom: SPACING.px.micro,
+    }}>
+      Agent Reference
+    </div>
+    <div style={{
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: SLATE[500],
+    }}>
+      <code style={{ background: SLATE[100], padding: '1px 4px', borderRadius: RADIUS.xs, fontSize: '11px' }}>.claude/dark-mode-mapping-rules.md</code>
+    </div>
+  </div>
+</div>
