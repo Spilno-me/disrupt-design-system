@@ -1016,14 +1016,12 @@ function QuickSelect({
               whileTap={{ scale: 0.99 }}
               onClick={() => handleSelect(option.value)}
               className={cn(
-                "flex items-center gap-3 transition-all text-left relative overflow-hidden",
+                "flex items-center gap-3 transition-all text-left relative overflow-hidden border border-dashed rounded-sm",
                 sizeClasses[size],
+                selected
+                  ? "bg-accent-bg border-accent"
+                  : "bg-surface border-default"
               )}
-              style={{
-                backgroundColor: selected ? DEEP_CURRENT[50] : PRIMITIVES.white,
-                border: `1px dashed ${selected ? DEEP_CURRENT[400] : SLATE[300]}`,
-                borderRadius: RADIUS.sm,
-              }}
             >
               {selected && (
                 <div
@@ -1139,12 +1137,12 @@ function LocationPicker({
         whileHover={{ scale: 1.01 }}
         whileTap={{ scale: 0.99 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center gap-3 px-4 py-3.5 transition-all text-left"
-        style={{
-          backgroundColor: value ? HARBOR[50] : PRIMITIVES.white,
-          border: `1px dashed ${value ? HARBOR[300] : SLATE[300]}`,
-          borderRadius: RADIUS.sm,
-        }}
+        className={cn(
+          "w-full flex items-center gap-3 px-4 py-3.5 transition-all text-left border border-dashed rounded-sm",
+          value
+            ? "bg-success-light border-success"
+            : "bg-surface border-default"
+        )}
       >
         <span
           className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -1183,32 +1181,17 @@ function LocationPicker({
             initial={{ opacity: 0, y: -10, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            className="absolute z-20 top-full left-0 right-0 mt-2 overflow-hidden"
-            style={{
-              backgroundColor: PRIMITIVES.white,
-              border: `1px dashed ${SLATE[300]}`,
-              borderRadius: RADIUS.md,
-            }}
+            className="absolute z-20 top-full left-0 right-0 mt-2 overflow-hidden bg-surface border border-dashed border-default rounded-md"
           >
             <div
-              className="p-3"
-              style={{
-                backgroundColor: PRIMITIVES.white,
-                borderBottom: `1px dashed ${SLATE[300]}`,
-              }}
+              className="p-3 bg-surface border-b border-dashed border-default"
             >
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search locations..."
-                className="w-full px-3 py-2.5 text-sm focus:outline-none"
-                style={{
-                  backgroundColor: PRIMITIVES.white,
-                  border: `1px dashed ${SLATE[300]}`,
-                  borderRadius: RADIUS.sm,
-                  color: ABYSS[700],
-                }}
+                className="w-full px-3 py-2.5 text-sm focus:outline-none bg-surface border border-dashed border-default rounded-sm text-primary"
                 autoFocus
               />
             </div>
@@ -1321,13 +1304,15 @@ function SeverityScale({
               whileHover={{ scale: 1.01, y: -1 }}
               whileTap={{ scale: 0.99 }}
               onClick={() => onChange(level)}
-              className="flex flex-col items-center gap-2 py-4 px-3 transition-all relative overflow-hidden"
-              style={{
-                backgroundColor: isSelected ? config.bgColor : PRIMITIVES.white,
-                border: `1px dashed ${isSelected ? config.bgColor : SLATE[300]}`,
-                borderRadius: RADIUS.sm,
-                color: isSelected ? "white" : config.color,
-              }}
+              className={cn(
+                "flex flex-col items-center gap-2 py-4 px-3 transition-all relative overflow-hidden border border-dashed rounded-sm",
+                !isSelected && "bg-surface border-default"
+              )}
+              style={isSelected ? {
+                backgroundColor: config.bgColor,
+                borderColor: config.bgColor,
+                color: "white",
+              } : { color: config.color }}
             >
               {isSelected && (
                 <div
@@ -1551,11 +1536,9 @@ function SummaryCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cn("rounded-2xl overflow-hidden", className)}
+      className={cn("rounded-2xl overflow-hidden bg-surface shadow-lg", className)}
       style={{
-        backgroundColor: PRIMITIVES.white,
         border: `2px solid ${config?.borderColor || SLATE[200]}`,
-        boxShadow: SHADOWS.lg,
       }}
     >
       <div
@@ -2796,7 +2779,7 @@ function EHSChat({
         <div className="flex items-center gap-1">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-2 rounded-lg transition-colors hover:bg-slate-50">
+              <button className="p-2 rounded-lg transition-colors hover:bg-surface-hover">
                 <Sparkles className="w-4 h-4" style={{ color: SLATE[400] }} />
               </button>
             </DropdownMenuTrigger>
@@ -2809,7 +2792,7 @@ function EHSChat({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-2 rounded-lg transition-colors hover:bg-slate-50">
+              <button className="p-2 rounded-lg transition-colors hover:bg-surface-hover">
                 <Settings className="w-4 h-4" style={{ color: SLATE[400] }} />
               </button>
             </DropdownMenuTrigger>
@@ -2821,7 +2804,7 @@ function EHSChat({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <button onClick={() => setIsFullscreen(!isFullscreen)} className="p-2 rounded-lg transition-colors hover:bg-slate-50">
+          <button onClick={() => setIsFullscreen(!isFullscreen)} className="p-2 rounded-lg transition-colors hover:bg-surface-hover">
             {isFullscreen ? <Minimize2 className="w-4 h-4" style={{ color: SLATE[400] }} /> : <Maximize2 className="w-4 h-4" style={{ color: SLATE[400] }} />}
           </button>
         </div>

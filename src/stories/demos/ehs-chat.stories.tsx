@@ -115,7 +115,7 @@ function SimulationDemo() {
 
       {/* Simulation Panel */}
       <div className="w-[300px] space-y-4">
-        <Card className="p-4 bg-white">
+        <Card className="p-4 bg-surface">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-dark">Simulation Panel</h3>
             <Button variant="ghost" size="sm" onClick={resetSimulation}>
@@ -149,7 +149,7 @@ function SimulationDemo() {
         </Card>
 
         {/* Submitted Reports */}
-        <Card className="p-4 bg-white">
+        <Card className="p-4 bg-surface">
           <h3 className="font-semibold text-dark mb-3 flex items-center gap-2">
             <FileText className="w-4 h-4" />
             Submitted Reports ({reports.length})
@@ -274,7 +274,7 @@ function AgentStatesShowcase() {
       </div>
 
       {/* State Selector */}
-      <Card className="p-6 bg-white flex-1">
+      <Card className="p-6 bg-surface flex-1">
         <h3 className="font-semibold text-dark mb-2">Agent Reasoning States</h3>
         <p className="text-sm text-muted mb-4">
           The animated logo communicates the agent's current processing state,
@@ -416,7 +416,7 @@ export const AnimatedLogo: Story = {
 
 function ArchitectureDiagram() {
   return (
-    <Card className="p-6 bg-white max-w-2xl">
+    <Card className="p-6 bg-surface max-w-2xl">
       <h3 className="font-semibold text-dark mb-4">Agentic UI Fusion Architecture</h3>
 
       <div className="space-y-4 font-mono text-xs">

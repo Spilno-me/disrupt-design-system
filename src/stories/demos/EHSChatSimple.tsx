@@ -12,14 +12,12 @@ import { Card } from "@/components/ui/card"
 import {
   WAVE,
   DUSK_REEF,
-  SLATE,
   PRIMITIVES,
   CORAL,
   SUNRISE,
   DEEP_CURRENT,
   ALIAS,
   RADIUS,
-  SHADOWS,
 } from "@/constants/designTokens"
 import {
   AlertTriangle,
@@ -173,13 +171,7 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => onQuickReply?.(option)}
-                className="text-xs"
-                style={{
-                  backgroundColor: PRIMITIVES.white,
-                  color: DEEP_CURRENT[600],
-                  border: `1px dashed ${DEEP_CURRENT[300]}`,
-                  borderRadius: RADIUS.sm,
-                }}
+                className="text-xs bg-surface text-accent-strong border border-dashed border-accent-subtle rounded-sm"
               >
                 {option.icon}
                 {option.label}
@@ -233,7 +225,7 @@ function SimpleForm({ step, data, onUpdate, onSubmit }: SimpleFormProps) {
       animate={{ opacity: 1, scale: 1 }}
       className="w-full"
     >
-      <Card className="p-4" style={{ backgroundColor: PRIMITIVES.white, border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.md, boxShadow: SHADOWS.sm }}>
+      <Card className="p-4 bg-surface border border-dashed border-default rounded-md shadow-sm">
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div
@@ -249,13 +241,12 @@ function SimpleForm({ step, data, onUpdate, onSubmit }: SimpleFormProps) {
                   <button
                     key={cat.value}
                     onClick={() => onUpdate({ category: cat.value as IncidentCategory })}
-                    className="flex items-center gap-2 p-3 transition-all text-sm"
-                    style={{
-                      border: `1px dashed ${data.category === cat.value ? DEEP_CURRENT[400] : SLATE[300]}`,
-                      borderRadius: RADIUS.sm,
-                      backgroundColor: data.category === cat.value ? WAVE[50] : PRIMITIVES.white,
-                      color: data.category === cat.value ? DEEP_CURRENT[600] : SLATE[600],
-                    }}
+                    className={cn(
+                      "flex items-center gap-2 p-3 transition-all text-sm border border-dashed rounded-sm",
+                      data.category === cat.value
+                        ? "border-accent bg-info-light text-accent-strong"
+                        : "border-default bg-surface text-secondary"
+                    )}
                   >
                     {cat.icon}
                     {cat.label}
@@ -279,13 +270,15 @@ function SimpleForm({ step, data, onUpdate, onSubmit }: SimpleFormProps) {
                   <button
                     key={sev.value}
                     onClick={() => onUpdate({ severity: sev.value as SeverityLevel })}
-                    className="flex items-center gap-2 p-2.5 text-sm transition-all"
-                    style={{
-                      backgroundColor: data.severity === sev.value ? sev.color : PRIMITIVES.white,
-                      color: data.severity === sev.value ? PRIMITIVES.white : SLATE[600],
-                      border: `1px dashed ${data.severity === sev.value ? sev.color : SLATE[300]}`,
-                      borderRadius: RADIUS.sm,
-                    }}
+                    className={cn(
+                      "flex items-center gap-2 p-2.5 text-sm transition-all border border-dashed rounded-sm",
+                      data.severity !== sev.value && "bg-surface text-secondary border-default"
+                    )}
+                    style={data.severity === sev.value ? {
+                      backgroundColor: sev.color,
+                      color: PRIMITIVES.white,
+                      borderColor: sev.color,
+                    } : undefined}
                   >
                     {sev.icon}
                     {sev.label}
@@ -296,7 +289,7 @@ function SimpleForm({ step, data, onUpdate, onSubmit }: SimpleFormProps) {
                 placeholder="Location (e.g., Building A, Floor 2)"
                 value={data.location || ""}
                 onChange={(e) => onUpdate({ location: e.target.value })}
-                style={{ border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.sm }}
+                className="border-dashed border-default rounded-sm"
               />
             </motion.div>
           )}
@@ -314,23 +307,17 @@ function SimpleForm({ step, data, onUpdate, onSubmit }: SimpleFormProps) {
                 placeholder="Brief title"
                 value={data.title || ""}
                 onChange={(e) => onUpdate({ title: e.target.value })}
-                style={{ border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.sm }}
+                className="border-dashed border-default rounded-sm"
               />
               <Textarea
                 placeholder="Describe what happened..."
                 value={data.description || ""}
                 onChange={(e) => onUpdate({ description: e.target.value })}
-                className="min-h-[80px]"
-                style={{ border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.sm }}
+                className="min-h-[80px] border-dashed border-default rounded-sm"
               />
               <Button
                 onClick={onSubmit}
-                className="w-full"
-                style={{
-                  backgroundColor: DEEP_CURRENT[500],
-                  border: `1px dashed ${DEEP_CURRENT[400]}`,
-                  borderRadius: RADIUS.sm,
-                }}
+                className="w-full bg-accent-strong border border-dashed border-accent rounded-sm"
               >
                 <CheckCircle2 className="w-4 h-4 mr-2" />
                 Submit Report
@@ -466,13 +453,11 @@ function EHSChatSimple({
 
   return (
     <div
-      className={cn("flex flex-col h-[500px] overflow-hidden", className)}
-      style={{ backgroundColor: PRIMITIVES.white, border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.md }}
+      className={cn("flex flex-col h-[500px] overflow-hidden bg-surface border border-dashed border-default rounded-md", className)}
     >
       {/* Header - Clean with dashed bottom border */}
       <div
-        className="flex items-center gap-3 px-4 py-3"
-        style={{ backgroundColor: PRIMITIVES.white, borderBottom: `1px dashed ${SLATE[300]}` }}
+        className="flex items-center gap-3 px-4 py-3 bg-surface border-b border-dashed border-default"
       >
         {/* Avatar with dashed ring */}
         <div className="relative w-9 h-9">
@@ -524,8 +509,7 @@ function EHSChatSimple({
 
       {/* Input */}
       <div
-        className="p-4"
-        style={{ backgroundColor: PRIMITIVES.white, borderTop: `1px dashed ${SLATE[300]}` }}
+        className="p-4 bg-surface border-t border-dashed border-default"
       >
         <div className="flex gap-2">
           <Input
@@ -533,23 +517,17 @@ function EHSChatSimple({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && inputValue.trim() && processInput(inputValue)}
-            className="flex-1"
-            style={{
-              border: `1px dashed ${SLATE[300]}`,
-              borderRadius: RADIUS.sm,
-              backgroundColor: PRIMITIVES.white,
-            }}
+            className="flex-1 border-dashed border-default rounded-sm bg-surface"
           />
           <Button
             onClick={() => inputValue.trim() && processInput(inputValue)}
             disabled={!inputValue.trim()}
-            style={{
-              backgroundColor: inputValue.trim() ? DEEP_CURRENT[500] : SLATE[200],
-              color: inputValue.trim() ? PRIMITIVES.white : SLATE[400],
-              border: `1px dashed ${inputValue.trim() ? DEEP_CURRENT[400] : SLATE[300]}`,
-              boxShadow: SHADOWS.sm,
-              borderRadius: RADIUS.sm,
-            }}
+            className={cn(
+              "border border-dashed rounded-sm shadow-sm",
+              inputValue.trim()
+                ? "bg-accent-strong text-inverse border-accent"
+                : "bg-surface-hover text-disabled border-default"
+            )}
           >
             <Send className="w-4 h-4" />
           </Button>
