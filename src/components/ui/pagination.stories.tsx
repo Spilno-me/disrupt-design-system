@@ -1,40 +1,39 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
+import {
+  ORGANISM_META,
+  organismDescription,
+} from '@/stories/_infrastructure'
 import { Pagination } from './Pagination'
 
 // =============================================================================
-// META
+// META CONFIGURATION
 // =============================================================================
 
 const meta: Meta<typeof Pagination> = {
   title: 'Shared/Data/Pagination',
   component: Pagination,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'padded',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
+        component: organismDescription(
+          `Comprehensive pagination component with smart ellipsis, page size selector, and keyboard accessibility.
 
-A comprehensive pagination component with smart ellipsis, page size selector, and keyboard accessibility.
-
-## Features
+**Features:**
 - Page number buttons with smart ellipsis
 - Previous/Next navigation
 - Optional First/Last page buttons
 - Page size selector
 - "Showing X-Y of Z results" text
-- Keyboard accessible (Tab, Enter, Space)
 - Loading state support
 
-## Testing
-- Use \`data-slot="pagination"\` to target the root container
-- Use \`data-slot="pagination-button"\` for page number buttons
-- Use \`data-slot="pagination-prev"\` and \`data-slot="pagination-next"\` for navigation buttons
-        `,
+**Testing:** Use data-slot="pagination", "pagination-button", "pagination-prev", "pagination-next"`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

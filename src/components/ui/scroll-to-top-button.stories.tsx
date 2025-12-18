@@ -1,13 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { ScrollToTopButton } from './ScrollToTopButton'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof ScrollToTopButton> = {
   title: 'Website/Components/ScrollToTopButton',
   component: ScrollToTopButton,
+  ...ATOM_META,
   parameters: {
+    ...ATOM_META.parameters,
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: atomDescription(
+          'Mobile-only floating action button that appears on scroll. Smoothly scrolls page to top when clicked.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     triggerSelector: {
       control: 'text',

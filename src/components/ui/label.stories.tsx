@@ -1,22 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { Label } from './label'
 import { Input } from './input'
 import { Checkbox } from './checkbox'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta<typeof Label> = {
   title: 'Core/Label',
   component: Label,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ATOM
-
-Accessible label for form controls. Associates with inputs via \`htmlFor\` attribute.`,
+        component: atomDescription(
+          'Accessible label for form controls. Associates with inputs via `htmlFor` attribute.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

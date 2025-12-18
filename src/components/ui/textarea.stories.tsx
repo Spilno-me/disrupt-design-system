@@ -1,24 +1,32 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Textarea } from './textarea';
+import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
+import { Textarea } from './textarea'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Textarea> = {
   title: 'Core/Textarea',
   component: Textarea,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ATOM
-
-Multi-line text input for longer user content. Supports placeholder, disabled, and error states.`,
+        component: atomDescription(
+          'Multi-line text input for longer user content. Supports placeholder, disabled, and error states.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
-} satisfies Meta<typeof Textarea>;
+}
 
-export default meta;
-type Story = StoryObj<typeof Textarea>;
+export default meta
+type Story = StoryObj<typeof Textarea>
 
 // Default Textarea (for Controls panel)
 export const Default: Story = {

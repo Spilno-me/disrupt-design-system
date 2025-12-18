@@ -1,14 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { ElectricLucideIcon, ElectricLucideIconDemo, IconName } from './ElectricLucideIcon'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof ElectricLucideIcon> = {
   title: 'Website/Components/ElectricLucideIcon',
   component: ElectricLucideIcon,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
+    docs: {
+      description: {
+        component: atomDescription(
+          'Animated Lucide icon with electric particle effect on hover. Used in feature cards with colored circle backgrounds.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     name: {
       control: 'select',

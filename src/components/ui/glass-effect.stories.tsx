@@ -1,23 +1,37 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { ElectricButtonWrapper, GlassInputWrapper } from './GlassEffect';
-import { Input } from './input';
-import { ALIAS } from '../../constants/designTokens';
+import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
+import { ElectricButtonWrapper, GlassInputWrapper } from './GlassEffect'
+import { Input } from './input'
+import { ALIAS } from '../../constants/designTokens'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta = {
   title: 'Website/Components/GlassEffects',
-  tags: ['autodocs'],
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: 'Animated glass border effects for buttons and inputs - signature Disrupt interactive elements.',
+        component: moleculeDescription(
+          'Animated glass border effects for buttons and inputs - signature Disrupt interactive elements.'
+        ),
       },
     },
   },
-} satisfies Meta;
+}
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Electric Button Wrapper - Default
 const ElectricButtonDefault = () => (

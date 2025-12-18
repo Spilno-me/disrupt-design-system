@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
+import {
   Dialog,
   DialogTrigger,
   DialogContent,
@@ -14,6 +18,10 @@ import { Input } from './input'
 import { Label } from './label'
 import { Separator } from './separator'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 // Note: DialogHeader, DialogTitle, etc. require Dialog context.
 // Default/WithForm use plain HTML to show static previews.
 // AllStates uses actual Dialog components for interactive demos.
@@ -21,17 +29,17 @@ import { Separator } from './separator'
 const meta: Meta<typeof Dialog> = {
   title: 'Core/Dialog',
   component: Dialog,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-Modal dialog for focused user interactions. Built on Radix UI Dialog with DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, and DialogClose sub-components.`,
+        component: moleculeDescription(
+          'Modal dialog for focused user interactions. Built on Radix UI Dialog with DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, and DialogClose sub-components.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

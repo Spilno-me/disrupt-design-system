@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { MobileMenu } from './MobileMenu'
 import { Button } from './button'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 // Shared decorator that simulates a header bar for proper menu positioning
 const withSimulatedHeader = (Story: React.ComponentType) => (
@@ -22,20 +30,21 @@ const withSimulatedHeader = (Story: React.ComponentType) => (
 const meta: Meta<typeof MobileMenu> = {
   title: 'Website/MobileMenu',
   component: MobileMenu,
-  tags: ['autodocs'],
+  ...MOLECULE_META,
   parameters: {
+    ...MOLECULE_META.parameters,
     layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
     docs: {
       description: {
-        component:
-          'A mobile navigation menu with animated hamburger icon. This component is viewport-dependent and only displays on mobile screens (< 768px). **View individual stories in Canvas mode** to see the full interactive experience.',
+        component: moleculeDescription(
+          'Mobile navigation menu with animated hamburger icon. Viewport-dependent, only displays on mobile screens (< 768px). View individual stories in Canvas mode for full interactive experience.'
+        ),
       },
     },
   },
-  // Apply the header decorator to all stories
   decorators: [withSimulatedHeader],
   argTypes: {
     children: {
@@ -80,6 +89,10 @@ const meta: Meta<typeof MobileMenu> = {
 
 export default meta
 type Story = StoryObj<typeof MobileMenu>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Sample navigation items
 const SampleNavItems = () => (

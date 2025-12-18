@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
+import {
   AppCard,
   AppCardHeader,
   AppCardTitle,
@@ -10,13 +14,24 @@ import {
 } from './app-card'
 import { Button } from './button'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta<typeof AppCard> = {
   title: 'Core/AppCard',
   component: AppCard,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
+    docs: {
+      description: {
+        component: moleculeDescription(
+          'Container component for in-app use with header, content, and footer sections. Features elevated, flat, and default variants with configurable shadow levels.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',

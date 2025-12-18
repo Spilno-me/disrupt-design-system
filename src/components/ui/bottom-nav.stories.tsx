@@ -1,31 +1,44 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ORGANISM_META,
+  organismDescription,
+} from '@/stories/_infrastructure'
 import { BottomNav } from './BottomNav'
 import { AppCard } from './app-card'
 import { Home, Users, FileText, Settings, BarChart, Bell, Package, Calendar } from 'lucide-react'
 import type { NavItem } from './navigation/types'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta<typeof BottomNav> = {
   title: 'Shared/App Shell/BottomNav',
   component: BottomNav,
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile1',
     },
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Mobile bottom navigation bar with icon-based navigation items. Part of the shared App Shell system for mobile viewports.`,
+        component: organismDescription(
+          'Mobile bottom navigation bar with icon-based navigation items. Part of the shared App Shell system for mobile viewports.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta
 type Story = StoryObj<typeof BottomNav>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Sample navigation items
 const basicNavItems: NavItem[] = [

@@ -1,26 +1,33 @@
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { ErrorState } from './ErrorState'
 import { AppCard } from './app-card'
 import { Database, ServerCrash } from 'lucide-react'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta<typeof ErrorState> = {
   title: 'Shared/Feedback/ErrorState',
   component: ErrorState,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-Inline error feedback component with icon, title, message, and optional retry action. Used within cards and content areas.`,
+        component: moleculeDescription(
+          'Inline error feedback component with icon, title, message, and optional retry action. Used within cards and content areas.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   decorators: [
     (Story) => (
-      // Card padding: 24px (SPACING.px.cardPadding)
       <AppCard className="w-full max-w-md p-6">
         <Story />
       </AppCard>
@@ -30,6 +37,10 @@ Inline error feedback component with icon, title, message, and optional retry ac
 
 export default meta
 type Story = StoryObj<typeof ErrorState>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 /**
  * Default error state with retry button.

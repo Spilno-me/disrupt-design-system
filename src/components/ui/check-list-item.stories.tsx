@@ -1,13 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { CheckListItem } from './CheckListItem'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof CheckListItem> = {
   title: 'Website/Components/CheckListItem',
   component: CheckListItem,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
+    docs: {
+      description: {
+        component: moleculeDescription(
+          'Feature list item with animated checkmark. Combines AnimatedCheck with label and description text for marketing content.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     label: {
       control: 'text',

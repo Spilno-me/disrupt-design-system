@@ -283,7 +283,7 @@ Everything else is manually maintained.
 | **Typography** | **`.claude/typography-rules.md`** |
 | **Icons (no emojis)** | **`.claude/iconography-rules.md`** |
 | Detailed tokens | `src/stories/DesignTokens.mdx` |
-| Writing stories | `.claude/storybook-rules.md` |
+| **Writing stories** | **`.claude/storybook-rules.md`** + **`src/stories/_infrastructure/`** |
 | Writing tests | `.claude/testing-quick-ref.md` |
 | Stabilization | `.claude/core-components-stabilization.md` |
 | **Delivery packages** | **`.claude/delivery-package-guide.md`** |

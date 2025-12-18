@@ -2,6 +2,7 @@ import type { Preview } from '@storybook/react-vite'
 import { withThemeByClassName } from '@storybook/addon-themes'
 import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from 'storybook/viewport'
 import { create } from 'storybook/theming'
+import { STORYBOOK_BACKGROUNDS } from '../src/stories/_infrastructure/backgrounds'
 import '../src/styles.css'
 
 // Suppress Storybook internal deprecation warnings
@@ -51,23 +52,7 @@ const preview: Preview = {
         ...INITIAL_VIEWPORTS,
       },
     },
-    backgrounds: {
-      default: 'white',
-      values: [
-        {
-          name: 'white',
-          value: '#FFFFFF',
-        },
-        {
-          name: 'cream',
-          value: '#FBFBF3',
-        },
-        {
-          name: 'dark',
-          value: '#2D3142',
-        },
-      ],
-    },
+    backgrounds: STORYBOOK_BACKGROUNDS,
     docs: {
       toc: true,
       theme: docsTheme,

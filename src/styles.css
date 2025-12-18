@@ -50,6 +50,17 @@
   }
 }
 
+/* =============================================================================
+ * STORYBOOK THEME-AWARE BACKGROUNDS
+ * Auto-switches background when dark mode is toggled.
+ * Uses --background token which auto-switches in .dark mode
+ * ============================================================================= */
+
+body {
+  background-color: var(--background);
+  transition: background-color 0.2s ease;
+}
+
 /* Storybook docs - hide anchor link icons on headings (including hover state) */
 .sbdocs-content .docblock-anchor,
 .sbdocs .docblock-anchor,
@@ -198,7 +209,7 @@ h1.dds-brand-hero-title,
   /* Usage: bg-dark, text-dark, border-dark */
   --color-dark: #2D3142;
   /* Usage: bg-teal, text-teal, border-teal */
-  --color-teal: #08A4BD;
+  --color-teal: #056271;  /* DEEP_CURRENT[700] */
   /* Usage: bg-teal-light, text-teal-light */
   --color-teal-light: #66CFE1;
   /* Usage: bg-cream, text-cream */
@@ -756,7 +767,7 @@ h1.dds-brand-hero-title,
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: var(--brand-tide-foam);  /* Warm cream instead of pure white */
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -798,11 +809,12 @@ h1.dds-brand-hero-title,
 
   /* --- BACKGROUND HIERARCHY (Scale Inversion) --- */
   /* Light 50 → Dark 900, Light 100 → Dark 800, etc. */
-  --background: var(--brand-abyss-900);           /* page background */
-  --card: var(--brand-abyss-800);                 /* surface/card */
-  --popover: var(--brand-abyss-800);              /* popover surface */
+  /* NOTE: Using abyss-800 for better shadow visibility (abyss-900 too dark) */
+  --background: var(--brand-abyss-800);           /* page background */
+  --card: var(--brand-abyss-700);                 /* surface/card - lighter than page */
+  --popover: var(--brand-abyss-700);              /* popover surface */
   --muted: var(--brand-dusk-reef-900);            /* muted background */
-  --accent: var(--brand-abyss-700);               /* elevated/hover surfaces */
+  --accent: var(--brand-abyss-600);               /* elevated/hover surfaces */
 
   /* --- TEXT HIERARCHY (Light values for dark backgrounds) --- */
   /* Primary text: slate-100 (NOT white - maintains warmth) */
@@ -815,13 +827,13 @@ h1.dds-brand-hero-title,
   /* --- PRIMARY/SECONDARY (Interactive elements) --- */
   --primary: var(--brand-slate-100);              /* primary interactive */
   --primary-foreground: var(--brand-abyss-500);   /* text.inverse */
-  --secondary: var(--brand-abyss-700);            /* secondary bg */
+  --secondary: var(--brand-abyss-600);            /* secondary bg */
   --secondary-foreground: var(--brand-slate-100); /* secondary text */
 
   /* --- BORDER HIERARCHY (Scale Inversion) --- */
   /* Light 300 → Dark 600 */
   --border: var(--brand-slate-600);               /* border.default */
-  --input: var(--brand-abyss-800);                /* input background */
+  --input: var(--brand-abyss-700);                /* input background */
 
   /* --- STATUS COLORS (1 step LIGHTER, not inverted) --- */
   --destructive: var(--brand-coral-400);          /* error - brighter for dark */
@@ -833,22 +845,22 @@ h1.dds-brand-hero-title,
   --chart-4: var(--brand-dusk-reef-400);          /* purple accent */
   --chart-5: var(--brand-coral-400);              /* error */
 
-  /* --- SIDEBAR (follows same pattern) --- */
-  --sidebar: var(--brand-abyss-800);              /* sidebar bg */
+  /* --- SIDEBAR (follows same pattern, shifted one step lighter) --- */
+  --sidebar: var(--brand-abyss-700);              /* sidebar bg */
   --sidebar-foreground: var(--brand-slate-100);   /* sidebar text */
   --sidebar-primary: var(--brand-deep-current-400); /* sidebar accent */
   --sidebar-primary-foreground: var(--brand-slate-100);
-  --sidebar-accent: var(--brand-abyss-700);       /* sidebar hover */
+  --sidebar-accent: var(--brand-abyss-600);       /* sidebar hover */
   --sidebar-accent-foreground: var(--brand-slate-100);
-  --sidebar-border: var(--brand-abyss-700);       /* sidebar borders */
+  --sidebar-border: var(--brand-abyss-600);       /* sidebar borders */
   --sidebar-ring: var(--brand-slate-500);         /* focus ring */
 
   /* --- SEMANTIC ALIAS OVERRIDES --- */
-  /* Background aliases */
-  --color-page: var(--brand-abyss-900);
-  --color-surface: var(--brand-abyss-800);
-  --color-surface-hover: var(--brand-abyss-700);
-  --color-elevated: var(--brand-abyss-700);
+  /* Background aliases (shifted up one step for shadow visibility) */
+  --color-page: var(--brand-abyss-800);
+  --color-surface: var(--brand-abyss-700);
+  --color-surface-hover: var(--brand-abyss-600);
+  --color-elevated: var(--brand-abyss-600);
   --color-muted-bg: var(--brand-dusk-reef-900);
   --color-inverse-bg: var(--brand-white);
   --color-accent-bg: var(--brand-deep-current-900);  /* Scale Inversion: Light 50 → Dark 900 */
@@ -863,8 +875,8 @@ h1.dds-brand-hero-title,
 
   /* Border aliases */
   --color-default: var(--brand-slate-600);
-  --color-subtle: var(--brand-abyss-800);
-  --color-strong: var(--brand-abyss-600);
+  --color-subtle: var(--brand-abyss-700);
+  --color-strong: var(--brand-abyss-500);
 
   /* Status aliases (1 step lighter) */
   --color-error: var(--brand-coral-400);
@@ -889,12 +901,12 @@ h1.dds-brand-hero-title,
   /* Grid background - lighter for visibility on dark backgrounds */
   --alias-grid-color: rgba(100, 120, 140, 0.3);
 
-  /* Gradient aliases */
-  --alias-gradient-subtle: linear-gradient(0deg, var(--brand-deep-current-900) 0%, var(--brand-abyss-800) 100%);
-  --alias-gradient-header: linear-gradient(180deg, var(--brand-abyss-800) 0%, var(--brand-abyss-900) 100%);
+  /* Gradient aliases (shifted one step lighter) */
+  --alias-gradient-subtle: linear-gradient(0deg, var(--brand-deep-current-800) 0%, var(--brand-abyss-700) 100%);
+  --alias-gradient-header: linear-gradient(180deg, var(--brand-abyss-700) 0%, var(--brand-abyss-800) 100%);
 
   /* Header overrides */
-  --header-bg: var(--brand-abyss-800);
+  --header-bg: var(--brand-abyss-700);
 }
 
 /* Brand colors */

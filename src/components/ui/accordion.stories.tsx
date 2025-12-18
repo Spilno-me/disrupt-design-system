@@ -1,33 +1,36 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { Accordion } from './Accordion'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Accordion> = {
   title: 'Core/Accordion',
   component: Accordion,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `An expandable/collapsible content component built on Radix UI Accordion.
-
-**Component Type:** MOLECULE
+        component: moleculeDescription(
+          `Expandable/collapsible content component built on Radix UI Accordion.
 
 **Features:**
 - Keyboard navigation (Arrow keys, Home, End)
 - ARIA attributes handled automatically
 - Single or multiple expansion modes
 - Animated open/close transitions
-- Accessible by default
 
-**Testing:**
-- \`data-slot="accordion"\` - Root container
-- \`data-slot="accordion-item"\` - Each accordion item
-- \`data-slot="accordion-trigger"\` - Clickable trigger button
-- \`data-slot="accordion-content"\` - Expandable content area`,
+**Testing:** Use data-slot="accordion", "accordion-item", "accordion-trigger", "accordion-content"`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div className="w-[600px] p-5">
@@ -35,10 +38,14 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Accordion>
+}
 
 export default meta
 type Story = StoryObj<typeof Accordion>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 const FAQ_ITEMS = [
   {

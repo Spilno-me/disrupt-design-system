@@ -1,20 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { FeatureItem } from './FeatureItem'
 import { COLORS } from '../../constants/designTokens'
 import { Shield, BookOpen, BarChart3, Scale, Zap, Users, Globe, Lock } from 'lucide-react'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof FeatureItem> = {
   title: 'Website/FeatureItem',
   component: FeatureItem,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: 'Horizontal feature display with icon, title, and description. Used in sections like Strategic Advisory to display individual features/capabilities.',
+        component: moleculeDescription(
+          'Horizontal feature display with icon, title, and description. Used in sections like Strategic Advisory to display individual features/capabilities.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     icon: {
       control: false,
@@ -37,10 +47,14 @@ const meta = {
       description: 'Icon background color',
     },
   },
-} satisfies Meta<typeof FeatureItem>
+}
 
 export default meta
 type Story = StoryObj<typeof FeatureItem>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Default - Compliance Advisor
 export const Default: Story = {

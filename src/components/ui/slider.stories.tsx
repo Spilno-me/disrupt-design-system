@@ -1,21 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState, useEffect, useRef } from 'react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { Slider } from './Slider'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Slider> = {
   title: 'Core/Slider',
   component: Slider,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ATOM
-
-A customizable range slider built on Radix UI primitives. Uses teal brand colors for visual consistency. Supports labels, units, step increments, and disabled states.`,
+        component: atomDescription(
+          'A customizable range slider built on Radix UI primitives. Uses teal brand colors for visual consistency. Supports labels, units, step increments, and disabled states.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     value: {
       control: { type: 'number' },
@@ -52,12 +60,12 @@ A customizable range slider built on Radix UI primitives. Uses teal brand colors
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '400px', padding: '20px' }}>
+      <div className={STORY_WIDTHS.molecule}>
         <Story />
       </div>
     ),
   ],
-} satisfies Meta<typeof Slider>
+}
 
 export default meta
 type Story = StoryObj<typeof Slider>

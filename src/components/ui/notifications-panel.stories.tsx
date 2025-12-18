@@ -1,35 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { Bell } from 'lucide-react'
+import {
+  ORGANISM_META,
+  organismDescription,
+} from '@/stories/_infrastructure'
 import { NotificationsPanel, Notification, NotificationBell } from './NotificationsPanel'
 import { Button } from './button'
 
 // =============================================================================
-// STORY CONFIGURATION
+// META CONFIGURATION
 // =============================================================================
 
 const meta: Meta<typeof NotificationsPanel> = {
   title: 'Partner/Components/NotificationsPanel',
   component: NotificationsPanel,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'centered',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
+        component: organismDescription(
+          `Slide-out panel for displaying user notifications.
 
-# Notifications Panel
-
-A slide-out panel for displaying user notifications. Features:
+**Features:**
 - Different notification types with appropriate icons
 - Read/unread status indicators
 - Mark individual or all as read
 - Delete individual or clear all
-- Empty state handling
-        `,
+- Empty state handling`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

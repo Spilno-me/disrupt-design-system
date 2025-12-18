@@ -1,13 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { BlurImage } from './BlurImage'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof BlurImage> = {
   title: 'Website/Components/BlurImage',
   component: BlurImage,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
+    docs: {
+      description: {
+        component: atomDescription(
+          'Progressive loading image with blur-up effect. Supports responsive breakpoints (mobile, tablet, desktop) with AVIF/WebP/fallback formats.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     alt: {
       control: 'text',

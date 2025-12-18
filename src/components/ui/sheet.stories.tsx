@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Camera, Image, FileText, Home, Package, Info, Phone, Settings, User, Mail } from 'lucide-react'
 import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
+import {
   Sheet,
   SheetTrigger,
   SheetContent,
@@ -14,24 +18,32 @@ import { Button } from './button'
 import { Input } from './input'
 import { Label } from './label'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta<typeof Sheet> = {
   title: 'Core/Sheet',
   component: Sheet,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-Slide-out panel for secondary content or actions. Built on Radix UI Dialog with SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription, and SheetClose sub-components.`,
+        component: moleculeDescription(
+          'Slide-out panel for secondary content or actions. Built on Radix UI Dialog with SheetTrigger, SheetContent, SheetHeader, SheetFooter, SheetTitle, SheetDescription, and SheetClose sub-components.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta
 type Story = StoryObj<typeof Sheet>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 /**
  * Default sheet slides in from the right side.

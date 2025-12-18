@@ -1,27 +1,42 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useRef, useState } from 'react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { HeroParticles } from './HeroParticles'
 import { MouseParticleRenderer } from './MouseParticleRenderer'
 import { BlurImage } from './BlurImage'
 import { useMouseParticles } from '../../hooks/useMouseParticles'
 import { optimizedImages } from '../../assets/optimized'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta<typeof HeroParticles> = {
   title: 'Website/Components/HeroParticles',
   component: HeroParticles,
+  ...MOLECULE_META,
   parameters: {
+    ...MOLECULE_META.parameters,
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Floating particle effects for hero sections with color-shifting animations and mouse interaction.',
+        component: moleculeDescription(
+          'Floating particle effects for hero sections with color-shifting animations and mouse interaction.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta
 type Story = StoryObj<typeof HeroParticles>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Default particles on dark background
 export const Default: Story = {

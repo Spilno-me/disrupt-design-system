@@ -1,34 +1,32 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Checkbox } from './checkbox';
+import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
+import { Checkbox } from './checkbox'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Checkbox> = {
   title: 'Core/Checkbox',
   component: Checkbox,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ATOM
-
-Checkbox component for selections and toggles. Built on Radix UI Checkbox primitive.
-
-## Styling
-- **Unchecked**: Dark teal border (DEEP_CURRENT[700] = #056271) for high visibility on light backgrounds
-- **Checked**: Teal background (DEEP_CURRENT[500] = #08A4BD) matching Button accent variant
-- **Focus**: Teal focus ring matching design token system
-- **Size**: 16px (size-4) for easy clicking
-
-## Visual Consistency
-Checkbox checked state matches Button accent variant for brand consistency across interactive elements.
-        `,
+        component: atomDescription(
+          'Checkbox component for selections and toggles. Built on Radix UI Checkbox primitive. Unchecked: Dark teal border (DEEP_CURRENT[700]) for high visibility. Checked: Teal background (DEEP_CURRENT[500]) matching Button accent variant.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
-} satisfies Meta<typeof Checkbox>;
+}
 
-export default meta;
-type Story = StoryObj<typeof Checkbox>;
+export default meta
+type Story = StoryObj<typeof Checkbox>
 
 // Default Checkbox (for Controls panel)
 export const Default: Story = {

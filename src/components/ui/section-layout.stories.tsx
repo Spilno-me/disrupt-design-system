@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import {
+  TEMPLATE_META,
+  templateDescription,
+} from '@/stories/_infrastructure'
+import {
   SectionWrapper,
   SectionContainer,
   TwoColumnLayout,
@@ -9,16 +13,32 @@ import {
   ContentSection,
 } from './SectionLayout'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta = {
   title: 'Website/Layout/SectionLayout',
+  ...TEMPLATE_META,
   parameters: {
+    ...TEMPLATE_META.parameters,
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: templateDescription(
+          'Layout primitives for website sections. Includes SectionWrapper, SectionContainer, TwoColumnLayout, SectionImage, SectionHeading, Column, and ContentSection components.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
 }
 
 export default meta
 type Story = StoryObj
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // SectionWrapper examples
 export const SectionWrapperDemo: Story = {

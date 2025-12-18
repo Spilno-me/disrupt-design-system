@@ -163,8 +163,7 @@ export const ALIAS = {
     emphasis: ABYSS[400], // Emphasized labels - lighter than primary but still dark
     disabled: DUSK_REEF[300],
     inverse: PRIMITIVES.white,
-    accent: DEEP_CURRENT[700], // Teal accent text - 7.02:1 contrast on white (WCAG AAA)
-    link: DEEP_CURRENT[700],   // WCAG: Changed from [500] - 7.02:1 contrast (AAA)
+    link: DEEP_CURRENT[500],
     linkHover: DEEP_CURRENT[600],
     error: CORAL[500],
     success: HARBOR[600],
@@ -184,8 +183,8 @@ export const ALIAS = {
     inverseSubtle: ABYSS[700],
     accent: DEEP_CURRENT[50],
     accentSubtle: DEEP_CURRENT[100],
-    accentStrong: DEEP_CURRENT[600], // WCAG: Changed from [500] - 4.47:1 for UI components
-    accentDark: DEEP_CURRENT[700],
+    accentStrong: DEEP_CURRENT[500],
+    accentDark: DEEP_CURRENT[600],
     error: CORAL[50],
     errorSubtle: CORAL[100],
     success: HARBOR[50],
@@ -207,8 +206,7 @@ export const ALIAS = {
     warning: SUNRISE[500],
     info: WAVE[500],
     disabled: ABYSS[200],
-    accent: DEEP_CURRENT[600],     // WCAG: Changed from [500] - 4.47:1 for UI components
-    accentDark: DEEP_CURRENT[700],
+    accent: DEEP_CURRENT[500],
     inverse: ABYSS[700],
   },
 
@@ -219,7 +217,7 @@ export const ALIAS = {
     tertiary: DUSK_REEF[400],
     disabled: DUSK_REEF[300],
     inverse: PRIMITIVES.white,
-    accent: DEEP_CURRENT[600],     // WCAG: Changed from [500] - 4.47:1 for icons
+    accent: DEEP_CURRENT[500],
     error: CORAL[500],
     success: HARBOR[500],
     warning: SUNRISE[500],
@@ -231,8 +229,8 @@ export const ALIAS = {
     primary: ABYSS[500],
     primaryHover: ABYSS[600],
     primaryActive: ABYSS[700],
-    accent: DEEP_CURRENT[600],      // WCAG: Changed from [500] - 4.47:1 for buttons
-    accentHover: DEEP_CURRENT[700], // WCAG: Changed from [600] - 7.02:1 for hover state
+    accent: DEEP_CURRENT[500],
+    accentHover: DEEP_CURRENT[600],
     accentActive: DEEP_CURRENT[700],
     danger: CORAL[500],
     dangerHover: CORAL[600],
@@ -278,10 +276,8 @@ export const ALIAS = {
   // --- SHADOWS ---
   shadow: {
     sm: '0px 1px 2px -1px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.1)',
-    // Header: Umbra (12% sharp) + Penumbra (8% soft) - downward elevation
-    header: '0 1px 4px 0 rgba(0, 0, 0, 0.12), 0 3px 8px -1px rgba(0, 0, 0, 0.08)',
-    // Footer: Umbra (12% sharp) + Penumbra (8% soft) - upward elevation
-    footer: '0 -1px 4px 0 rgba(0, 0, 0, 0.12), 0 -3px 8px -1px rgba(0, 0, 0, 0.08)',
+    header: '0px 2px 4px 5px rgba(0, 0, 0, 0.15)',
+    footer: '0px -1px 3px rgba(0, 0, 0, 0.08)',
   },
 
   // --- GRID/CANVAS ---
@@ -405,50 +401,16 @@ export const COLORS = {
 } as const
 
 // =============================================================================
-// SHADOWS - Natural Light Physics System
-// =============================================================================
-//
-// Real shadows are composed of 2-3 layers mimicking natural light:
-//
-// 1. UMBRA (Core Shadow) - Direct light blockage
-//    - Close to object, sharp edges, darker (12-15% opacity)
-//    - Small Y-offset, medium blur, negative spread
-//
-// 2. PENUMBRA (Soft Shadow) - Partial light blockage
-//    - Far from object, soft edges, lighter (6-8% opacity)
-//    - Large Y-offset, large blur, negative spread
-//
-// 3. AMBIENT OCCLUSION (Contact Shadow) - Surface contact
-//    - Very close, very dark (18-20% opacity), minimal blur
-//    - Only for grounded elements (sm level)
-//
-// Progression Rules:
-// - Opacity DECREASES with distance (umbra 12% → penumbra 8%)
-// - Blur INCREASES with distance (umbra 6px → penumbra 16px)
-// - Offset INCREASES with elevation (sm 1px → xl 12px)
-// - Negative spread contracts shadow for subtlety
-//
+// SHADOWS
 // =============================================================================
 
 export const SHADOWS = {
   none: 'none',
-
-  /** SM: Subtle elevation - cards resting on surface */
-  sm: '0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px -1px rgba(0, 0, 0, 0.08)',
-
-  /** MD: Standard elevation - most cards, buttons, dropdowns */
-  md: '0 2px 8px -1px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.08)',
-
-  /** LG: Prominent elevation - modals, dialogs, sheets */
-  lg: '0 4px 16px -2px rgba(0, 0, 0, 0.12), 0 8px 24px -4px rgba(0, 0, 0, 0.08)',
-
-  /** XL: Maximum elevation - full-screen overlays, critical notifications */
-  xl: '0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 12px 32px -6px rgba(0, 0, 0, 0.08)',
-
-  /** ELEVATED: Natural light from above - premium emphasized content */
-  elevated: '0 3px 12px -1px rgba(0, 0, 0, 0.14), 0 10px 28px -4px rgba(0, 0, 0, 0.10)',
-
-  /** Legacy/Special Purpose Shadows */
+  sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+  md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+  lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+  xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+  /** Ambient shadow: hard close shadow + soft spread for realistic depth */
   ambient: '0 2px 4px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08)',
   image: '0 6px 12px -2px rgba(0,0,0,0.3), 0 20px 50px -8px rgba(0,0,0,0.2)',
   header: ALIAS.shadow.header,
@@ -456,7 +418,7 @@ export const SHADOWS = {
   buttonDefault: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
 } as const
 
-export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'elevated'
+export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl'
 
 // =============================================================================
 // GRADIENTS
@@ -537,7 +499,6 @@ export const RADIUS = {
 // =============================================================================
 
 export const SPACING = {
-  // Tailwind classes for component usage
   sectionPaddingY: 'py-16 lg:py-24',
   sectionPaddingX: 'px-6 lg:px-10',
   containerMaxWidth: '1440px',
@@ -548,27 +509,6 @@ export const SPACING = {
   subheadingGap: 'mb-8',
   listItemGap: 'gap-4',
   sectionContentGap: 'gap-12 lg:gap-16',
-
-  // Pixel values for inline styles (MDX, dynamic styling)
-  // Based on 4px base unit: 4 → 8 → 12 → 16 → 20 → 24 → 32 → 40 → 48 → 64 → 80 → 96
-  px: {
-    micro: '4px',        // Icon-to-text, inline elements
-    tight: '8px',        // Related items (label + input)
-    compact: '12px',     // Compact spacing (between tight and base)
-    base: '16px',        // Items within a component
-    cardGap: '20px',     // Between cards
-    comfortable: '24px', // Between components in a section
-    spacious: '32px',    // Between sections within a page
-    section: '48px',     // Major page sections
-    page: '96px',        // Hero to content, footer margins
-
-    // Semantic aliases for documentation
-    sectionHeadingTop: '32px',    // Gap after separator (spacious)
-    sectionHeadingBottom: '24px', // Gap to content (comfortable)
-    cardGapCompact: '16px',       // Compact card grids
-    cardPadding: '24px',          // Internal card padding
-    gridGap: '16px',              // Standard grid gap
-  },
 } as const
 
 // =============================================================================
@@ -583,23 +523,6 @@ export const SIZES = {
   inputHeight: '40px',
   buttonHeight: '40px',
   textareaMinHeight: '120px',
-  // Icon containers
-  iconXs: '24px',
-  iconSm: '36px',
-  iconMd: '40px',
-  iconLg: '48px',
-  iconXl: '56px',
-  iconXxl: '64px',
-  // Decision tree minWidth
-  answerBoxWide: '160px',
-  answerBoxNarrow: '140px',
-  // Decorative elements
-  decorativeDot: '8px',
-  decorativeLine: '12px',
-  decorativeLineHeight: '2px',
-  // Card logo constraints
-  logoMaxHeight: '48px',
-  logoMaxWidth: '160px',
 } as const
 
 // =============================================================================

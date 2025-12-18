@@ -2,6 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
+import {
   Form,
   FormItem,
   FormLabel,
@@ -14,93 +18,23 @@ import { Input } from './input'
 import { Checkbox } from './checkbox'
 import { Button } from './button'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta = {
   title: 'Core/Form',
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE (Utility System)
-
-# Form - Utility System
-
-**Classification:** Utility System / Infrastructure (NOT a Core Component)
-
-## What is Form?
-
-Form is a composition helper system built on top of [react-hook-form](https://react-hook-form.com/). It provides context and utilities to connect core UI components (Input, Label, Checkbox, etc.) with form validation and state management.
-
-## Architecture
-
-### Core Components (Atoms):
-**📦 Form utilities wrap these core atoms (click to view):**
-
-- **[→ \`<Input />\`](?path=/docs/core-input--docs)** - Standalone text input primitive
-- **[→ \`<Label />\`](?path=/docs/core-label--docs)** - Standalone label primitive
-- **[→ \`<Checkbox />\`](?path=/docs/core-checkbox--docs)** - Standalone checkbox primitive
-- **[→ \`<Textarea />\`](?path=/docs/core-textarea--docs)** - Standalone textarea primitive
-- **[→ \`<Select />\`](?path=/docs/core-select--docs)** - Standalone select primitive
-
-### Form Utilities (Infrastructure):
-- \`<Form>\` - Context provider that wraps react-hook-form
-- \`<FormItem>\` - Layout wrapper (\`<div>\`) for form fields
-- \`<FormLabel>\` - Wraps \`<Label>\` + connects to form context
-- \`<FormControl>\` - Passes field props to Input/Checkbox/etc.
-- \`<FormMessage>\` - Displays validation errors
-- \`<FormDescription>\` - Helper text for fields
-- \`<FormField>\` - Connects individual fields to react-hook-form
-
-## Why is Form a Utility System?
-
-1. **Not a UI Primitive**: Form doesn't render any unique UI. It wraps existing atoms.
-2. **Infrastructure Role**: Provides context, validation, and state management.
-3. **Composition Helper**: Helps you BUILD form molecules (LoginForm, ContactForm) from atoms.
-4. **No testId Generation**: Form utilities don't auto-generate testIds like molecules do.
-
-## Form Layout Pattern
-
-**CRITICAL: Buttons in forms must ALWAYS be right-aligned:**
-
-\`\`\`tsx
-<form>
-  {/* Form fields... */}
-  <div className="flex justify-end">
-    <Button type="submit">Submit</Button>
-  </div>
-</form>
-\`\`\`
-
-This creates consistent UX across all forms in the application.
-
-## Component Hierarchy
-
-\`\`\`
-ATOMS (Core Components):
-  ├─ Input
-  ├─ Label
-  └─ Checkbox
-      ↓
-UTILITIES (Infrastructure):
-  └─ Form (wraps atoms with validation)
-      ↓
-MOLECULES (Business Components):
-  ├─ LoginForm
-  ├─ ContactForm
-  └─ LeadFilterForm
-\`\`\`
-
-## See Also
-**🔗 View AllStates stories for these atoms (click to view):**
-
-- **[→ \`Input\` AllStates Story](?path=/story/core-input--all-states)** - See all input states
-- **[→ \`Label\` Documentation](?path=/docs/core-label--docs)** - Label atom
-- **[→ \`Checkbox\` AllStates Story](?path=/story/core-checkbox--all-states)** - See all checkbox states
-- **[→ \`Button\` AllStates Story](?path=/story/core-button--all-states)** - See all button states for form submission
-        `,
+        component: moleculeDescription(
+          'Utility system wrapping react-hook-form. Provides Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription components for connecting Input/Checkbox/Select atoms with validation and state management.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

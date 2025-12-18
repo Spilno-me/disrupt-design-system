@@ -1,16 +1,24 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Skeleton, SkeletonImage, SkeletonText } from './Skeleton';
+import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
+import { Skeleton, SkeletonImage, SkeletonText } from './Skeleton'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Skeleton> = {
   title: 'Core/Skeleton',
   component: Skeleton,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ATOM
-
-Skeleton loading placeholder component for maintaining layout while content loads.
+        component: atomDescription(
+          `Skeleton loading placeholder component for maintaining layout while content loads.
 
 ## When to Use Skeleton
 
@@ -132,16 +140,15 @@ You can create custom skeleton layouts by combining the building blocks.
   </div>
   <Skeleton className="w-24 h-[24px]" />        {/* Amount */}
 </div>
-\`\`\`
-        `,
+\`\`\``
+        ),
       },
     },
   },
-  tags: ['autodocs'],
-} satisfies Meta<typeof Skeleton>;
+}
 
-export default meta;
-type Story = StoryObj<typeof Skeleton>;
+export default meta
+type Story = StoryObj<typeof Skeleton>
 
 // Default Skeleton (for Controls panel)
 export const Default: Story = {

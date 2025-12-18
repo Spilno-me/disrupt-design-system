@@ -418,3 +418,378 @@ container.querySelector('[data-slot="dialog-close"]')
 <LeadCard lead={lead} />
 // → data-testid="lead-card-123"
 ```
+
+---
+
+## STORY INFRASTRUCTURE (MANDATORY)
+
+**All new stories MUST use the story infrastructure.**
+
+Location: `src/stories/_infrastructure/`
+
+### Why Infrastructure?
+
+| Problem | Solution |
+|---------|----------|
+| Inconsistent backgrounds/widths | `STORY_WIDTHS`, `withStoryContainer()` |
+| Copy-paste decorators | Shared decorators imported once |
+| Different spacing patterns | `STORY_SPACING` constants |
+| Atomic level confusion | `createAtomMeta()`, `createMoleculeMeta()` factories |
+| Hallucinated variations | Templates enforce structure |
+
+### Quick Start
+
+```tsx
+import {
+  createAtomMeta,       // or createMoleculeMeta, createOrganismMeta
+  StorySection,
+  StoryFlex,
+  STORY_SPACING,
+} from '@/stories/_infrastructure'
+```
+
+---
+
+## Meta Presets (Use These)
+
+**IMPORTANT:** Storybook's CSF indexer requires static object literals.
+Use spread syntax, NOT factory functions.
+
+```tsx
+import type { Meta, StoryObj } from '@storybook/react'
+import { ATOM_META, atomDescription } from '@/stories/_infrastructure'
+
+// ATOM (Button, Input, Badge)
+const meta: Meta<typeof Button> = {
+  title: 'Core/Button',
+  component: Button,
+  ...ATOM_META,
+  parameters: {
+    ...ATOM_META.parameters,
+    docs: {
+      description: { component: atomDescription('Primary interactive element.') },
+    },
+  },
+  argTypes: { variant: { control: 'select', options: ['default', 'outline'] } },
+}
+
+// MOLECULE (Card, Dialog, Form)
+const meta: Meta<typeof Card> = {
+  title: 'Core/Card',
+  component: Card,
+  ...MOLECULE_META,
+  parameters: {
+    ...MOLECULE_META.parameters,
+    docs: {
+      description: { component: moleculeDescription('Container with sections.') },
+    },
+  },
+}
+
+// ORGANISM (AppHeader, DataTable)
+const meta: Meta<typeof AppHeader> = {
+  title: 'Shared/AppHeader',
+  component: AppHeader,
+  ...ORGANISM_META,
+  parameters: {
+    ...ORGANISM_META.parameters,
+    docs: {
+      description: { component: organismDescription('App header.') },
+    },
+  },
+  decorators: [withFullscreen('200px')],
+}
+```
+
+### What Presets Provide
+
+| Preset | Layout | Type Badge | Tags |
+|--------|--------|------------|------|
+| `ATOM_META` | centered | ATOM | autodocs |
+| `MOLECULE_META` | centered | MOLECULE | autodocs |
+| `ORGANISM_META` | fullscreen | ORGANISM | autodocs |
+| `TEMPLATE_META` | fullscreen | TEMPLATE | autodocs |
+| `PAGE_META` | fullscreen | PAGE | autodocs |
+
+---
+
+## Shared Decorators (Use These)
+
+```tsx
+import {
+  withStoryContainer,   // Standard padding + width
+  withDarkBackground,   // Dark context
+  withFullscreen,       // Layout components
+} from '@/stories/_infrastructure'
+
+// In meta config:
+decorators: [withStoryContainer('atom')]
+
+// Per-story:
+OnDarkBackground: {
+  decorators: [withDarkBackground()],
+}
+```
+
+### Width Constants
+
+```tsx
+STORY_WIDTHS = {
+  atom: 'max-w-md',      // 448px
+  molecule: 'max-w-xl',  // 576px
+  organism: 'max-w-4xl', // 896px
+  page: 'max-w-7xl',     // 1280px
+  full: 'w-full',
+}
+```
+
+---
+
+## Section Components (Use These)
+
+```tsx
+import { StorySection, StoryFlex, StoryGrid, StoryInfoBox } from '@/stories/_infrastructure'
+
+// AllStates structure:
+export const AllStates: Story = {
+  render: () => (
+    <div className={STORY_SPACING.sections}>
+      <StorySection title="Variants" description="All visual variants">
+        <StoryFlex>
+          <Button variant="default">Default</Button>
+          <Button variant="outline">Outline</Button>
+        </StoryFlex>
+      </StorySection>
+
+      <StorySection title="Sizes">
+        <StoryFlex align="center">
+          <Button size="sm">Small</Button>
+          <Button size="default">Default</Button>
+          <Button size="lg">Large</Button>
+        </StoryFlex>
+      </StorySection>
+
+      <StoryInfoBox>
+        <strong>Keyboard:</strong> Tab to navigate, Enter to activate.
+      </StoryInfoBox>
+    </div>
+  ),
+}
+```
+
+### Spacing Constants
+
+```tsx
+STORY_SPACING = {
+  variants: 'gap-4',        // Between items in grid/flex
+  sections: 'space-y-8',    // Between sections in AllStates
+  sectionContent: 'space-y-4', // Section title to content
+  container: 'p-6',         // Padding inside containers
+}
+```
+
+---
+
+## ATOM Story Template
+
+```tsx
+import type { Meta, StoryObj } from '@storybook/react'
+import { ATOM_META, atomDescription, StoryFlex } from '@/stories/_infrastructure'
+import { Button } from './button'
+
+const meta: Meta<typeof Button> = {
+  title: 'Core/Button',
+  component: Button,
+  ...ATOM_META,
+  parameters: {
+    ...ATOM_META.parameters,
+    docs: {
+      description: {
+        component: atomDescription('Primary interactive element for user actions.'),
+      },
+    },
+  },
+  argTypes: {
+    variant: { control: 'select', options: ['default', 'outline', 'ghost'] },
+    size: { control: 'select', options: ['sm', 'default', 'lg'] },
+    disabled: { control: 'boolean' },
+  },
+}
+
+export default meta
+type Story = StoryObj<typeof Button>
+
+export const Default: Story = {
+  args: { children: 'Button', variant: 'default', size: 'default' },
+}
+
+export const Variants: Story = {
+  render: () => (
+    <StoryFlex>
+      <Button variant="default">Default</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+    </StoryFlex>
+  ),
+}
+
+export const Sizes: Story = {
+  render: () => (
+    <StoryFlex align="center">
+      <Button size="sm">Small</Button>
+      <Button size="default">Default</Button>
+      <Button size="lg">Large</Button>
+    </StoryFlex>
+  ),
+}
+
+export const Disabled: Story = {
+  args: { children: 'Disabled', disabled: true },
+}
+```
+
+---
+
+## MOLECULE Story Template
+
+```tsx
+import type { StoryObj } from '@storybook/react'
+import { createMoleculeMeta, StorySection, STORY_SPACING } from '@/stories/_infrastructure'
+import { Card, CardHeader, CardTitle, CardContent } from './card'
+
+const meta = createMoleculeMeta({
+  title: 'Core/Card',
+  component: Card,
+  description: 'Container with header, content, and footer sections.',
+  argTypes: {
+    variant: { control: 'select', options: ['default', 'outlined'] },
+  },
+})
+
+export default meta
+type Story = StoryObj<typeof Card>
+
+export const Default: Story = {
+  render: () => (
+    <Card>
+      <CardHeader><CardTitle>Title</CardTitle></CardHeader>
+      <CardContent>Content goes here.</CardContent>
+    </Card>
+  ),
+}
+
+export const AllStates: Story = {
+  render: () => (
+    <div className={STORY_SPACING.sections}>
+      <StorySection title="Variants">
+        <div className="flex gap-6">
+          <Card variant="default"><CardContent>Default</CardContent></Card>
+          <Card variant="outlined"><CardContent>Outlined</CardContent></Card>
+        </div>
+      </StorySection>
+    </div>
+  ),
+}
+```
+
+---
+
+## ORGANISM Story Template
+
+```tsx
+import type { StoryObj } from '@storybook/react'
+import {
+  createOrganismMeta,
+  StorySection,
+  StoryAnatomy,
+  StoryInfoBox,
+  withFullscreen,
+  STORY_SPACING,
+} from '@/stories/_infrastructure'
+import { AppHeader } from './AppHeader'
+
+const meta = createOrganismMeta({
+  title: 'Shared/App Shell/AppHeader',
+  component: AppHeader,
+  description: 'Application header with logo, notifications, and user menu.',
+  decorators: [withFullscreen('200px')],
+})
+
+export default meta
+type Story = StoryObj<typeof AppHeader>
+
+const sampleUser = { name: 'Jane Doe', email: 'jane@example.com' }
+
+export const Default: Story = {
+  args: { product: 'flow', user: sampleUser, notificationCount: 4 },
+}
+
+export const AllStates: Story = {
+  render: () => (
+    <div className={STORY_SPACING.sections}>
+      <StoryAnatomy
+        slots={[
+          { name: 'app-header', description: 'Main container' },
+          { name: 'logo', description: 'Logo section' },
+          { name: 'user-menu', description: 'User dropdown' },
+        ]}
+      />
+
+      <StorySection title="Product Variants">
+        <div className="space-y-4">
+          <AppHeader product="flow" user={sampleUser} />
+          <AppHeader product="market" user={sampleUser} />
+        </div>
+      </StorySection>
+
+      <StoryInfoBox>
+        <strong>Keyboard:</strong> Tab to navigate, Esc to close menus.
+      </StoryInfoBox>
+    </div>
+  ),
+}
+```
+
+---
+
+## Forbidden Patterns
+
+```tsx
+// ❌ Inline decorators - use shared decorators
+decorators: [(Story) => <div className="w-[600px] p-5"><Story /></div>]
+
+// ❌ Hardcoded widths - use STORY_WIDTHS
+<div className="w-[500px]">
+
+// ❌ Inconsistent spacing - use STORY_SPACING
+<div className="space-y-12">  // Should be space-y-8
+
+// ❌ Custom section headers - use StorySection
+<h3 className="text-lg font-semibold mb-4">Title</h3>
+
+// ❌ Raw meta without presets - use spread + xxxDescription
+const meta: Meta<typeof Button> = {
+  title: 'Core/Button',
+  component: Button,
+  // Missing ...ATOM_META spread!
+}
+
+// ❌ Factory functions (breaks Storybook indexer)
+const meta = createAtomMeta({ ... })  // CSF requires static object literal
+```
+
+---
+
+## Migration Checklist
+
+When updating existing stories:
+
+- [ ] Import from `@/stories/_infrastructure`
+- [ ] Add `...ATOM_META` (or MOLECULE/ORGANISM) spread to meta
+- [ ] Add `xxxDescription()` helper for type badge in description
+- [ ] Replace inline decorators with `withStoryContainer()` etc.
+- [ ] Replace `<div className="flex gap-4">` with `<StoryFlex>`
+- [ ] Replace `<div className="space-y-8">` with `STORY_SPACING.sections`
+- [ ] Replace custom section headers with `<StorySection>`
+- [ ] Add `<StoryAnatomy>` for organisms with data-slots
+- [ ] Verify AllStates story uses infrastructure components

@@ -1,20 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  PAGE_META,
+  pageDescription,
+} from '@/stories/_infrastructure'
 import { GenericErrorPage } from './GenericErrorPage'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof GenericErrorPage> = {
   title: 'Shared/Feedback/GenericErrorPage',
   component: GenericErrorPage,
+  ...PAGE_META,
   parameters: {
+    ...PAGE_META.parameters,
     layout: 'fullscreen',
     docs: {
       description: {
-        component: `**Type:** PAGE
-
-A minimal, clean full-page error display for critical application errors, maintenance pages, or catastrophic failures. Features a bold red title, readable gray message, and a prominent action button.`,
+        component: pageDescription(
+          'Minimal, clean full-page error display for critical application errors, maintenance pages, or catastrophic failures. Features a bold red title, readable gray message, and prominent action button.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',
@@ -51,10 +60,14 @@ A minimal, clean full-page error display for critical application errors, mainte
       action: 'retry',
     },
   },
-} satisfies Meta<typeof GenericErrorPage>
+}
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 /**
  * Default error page - the standard "Something went wrong" message

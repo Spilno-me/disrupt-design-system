@@ -1,22 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { expect, within, userEvent } from 'storybook/test'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { Input } from './input'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Input> = {
   title: 'Core/Input',
   component: Input,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ATOM
-
-Text input field for user data entry. Supports placeholder, disabled, and error states.`,
+        component: atomDescription(
+          'Text input field for user data entry. Supports placeholder, disabled, and error states.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
-} satisfies Meta<typeof Input>
+}
 
 export default meta
 type Story = StoryObj<typeof Input>

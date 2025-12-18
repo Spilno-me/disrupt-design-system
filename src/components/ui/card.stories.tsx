@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Check } from 'lucide-react'
 import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
+import {
   Card,
   CardHeader,
   CardTitle,
@@ -9,20 +13,24 @@ import {
 } from './card'
 import { Button } from './button'
 
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
 const meta: Meta<typeof Card> = {
   title: 'Core/Card (Website Only)',
   component: Card,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-Container component with header, content, and footer sections. Includes CardHeader, CardTitle, CardDescription, CardContent, and CardFooter sub-components. Primarily used for website pricing cards.`,
+        component: moleculeDescription(
+          'Container component with header, content, and footer sections. Includes CardHeader, CardTitle, CardDescription, CardContent, and CardFooter sub-components. Primarily used for website pricing cards.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',

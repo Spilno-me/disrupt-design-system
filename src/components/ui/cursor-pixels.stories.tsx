@@ -1,39 +1,48 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { CursorPixels } from './cursor-pixels'
 import { Button } from './button'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof CursorPixels> = {
   title: 'Website/Components/CursorPixels',
   component: CursorPixels,
+  ...MOLECULE_META,
   parameters: {
+    ...MOLECULE_META.parameters,
     layout: 'fullscreen',
     docs: {
       description: {
-        component: `
-Custom animated cursor with trailing pixels - Disrupt signature interaction.
+        component: moleculeDescription(
+          `Custom animated cursor with trailing pixels - Disrupt signature interaction.
 
 **Features:**
-- Trailing pixel "wake" follows the cursor with physics-based motion
-- Idle floating animation when mouse stops moving
-- Repel/excited state when hovering buttons and links
+- Trailing pixel "wake" follows cursor with physics-based motion
+- Idle floating animation when mouse stops
+- Repel/excited state on hover of interactive elements
 - Disrupt explosion animation on click
 - Respects reduced motion preferences
-- Automatically hidden on touch devices and mobile
+- Hidden on touch devices and mobile
 
-**States:**
-1. **Following** - Pixels trail behind cursor
-2. **Idle** - Gentle floating animation after 600ms of no movement
-3. **Excited** - Pixels repel outward when hovering interactive elements
-4. **Disrupt** - Explosion animation on click
-        `,
+**States:** Following, Idle, Excited, Disrupt`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta
 type Story = StoryObj<typeof CursorPixels>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Default - Interactive Demo
 export const Default: Story = {

@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
+import {
+  ORGANISM_META,
+  organismDescription,
+} from '@/stories/_infrastructure'
 import { DataTable, ColumnDef, RowPriority } from './DataTable'
 import { StatusBadge, COMMON_STATUS_CONFIG, REQUEST_STATUS_CONFIG, EmailLink } from './table'
 
@@ -72,34 +76,32 @@ const columns: ColumnDef<User>[] = [
 ]
 
 // =============================================================================
-// META
+// META CONFIGURATION
 // =============================================================================
 
 const meta: Meta<typeof DataTable> = {
   title: 'Shared/Data/DataTable',
   component: DataTable,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'padded',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-A generic, reusable data table component with sortable columns, row selection, loading states, and priority borders.
+        component: organismDescription(
+          `Generic, reusable data table component with sortable columns, row selection, loading states, and priority borders.
 
 **Features:**
 - Sortable columns with visual indicators
-- Row selection with checkboxes (select all, individual)
-- Loading state with skeleton rows
-- Empty state support
+- Row selection with checkboxes
+- Loading/Empty state support
 - Sticky header
 - Priority-based colored row borders
 - Configurable column widths and alignment
-- Mobile-responsive with horizontal scrolling
-        `,
+- Mobile-responsive with horizontal scrolling`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

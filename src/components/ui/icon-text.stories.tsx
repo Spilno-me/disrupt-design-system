@@ -1,22 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Info, AlertCircle, CheckCircle, Settings, User, Mail, Bell, Palette } from 'lucide-react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { IconText, IconHeading1, IconHeading2, IconHeading3, IconLabel } from './IconText'
 import { DEEP_CURRENT, ABYSS, CORAL, HARBOR } from '../../constants/designTokens'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof IconText> = {
   title: 'Core/IconText',
   component: IconText,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'padded',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-Icon and text combination with consistent spacing and alignment. Includes IconHeading1, IconHeading2, IconHeading3, and IconLabel variants.`,
+        component: moleculeDescription(
+          'Icon and text combination with consistent spacing and alignment. Includes IconHeading1, IconHeading2, IconHeading3, and IconLabel variants.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',
@@ -35,6 +43,10 @@ Icon and text combination with consistent spacing and alignment. Includes IconHe
 
 export default meta
 type Story = StoryObj<typeof IconText>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 export const Default: Story = {
   args: {

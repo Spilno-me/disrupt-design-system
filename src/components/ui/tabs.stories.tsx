@@ -1,40 +1,35 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
 
 // =============================================================================
-// META
+// META CONFIGURATION
 // =============================================================================
 
 const meta: Meta<typeof Tabs> = {
   title: 'Core/Tabs',
   component: Tabs,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `
-A set of layered sections of content, known as tab panels, that display one panel of content at a time.
-Built on Radix UI Tabs primitive with DDS styling.
+        component: moleculeDescription(
+          `Tabbed content panels built on Radix UI Tabs primitive.
 
-**MOLECULE**: Compound component with multiple sub-components working together.
-
-Features:
+**Features:**
 - Keyboard navigation (Arrow keys, Home/End)
-- Automatic/manual activation modes
 - Horizontal and vertical orientations
-- Accessible by default (ARIA roles, keyboard support)
-- Styled with DDS design tokens
+- Accessible by default (ARIA roles)
 
-**Sub-components:**
-- \`Tabs\` - Root container
-- \`TabsList\` - Container for tab triggers
-- \`TabsTrigger\` - Clickable button that activates a tab
-- \`TabsContent\` - Content panel associated with a tab trigger
-        `,
+**Sub-components:** Tabs, TabsList, TabsTrigger, TabsContent`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

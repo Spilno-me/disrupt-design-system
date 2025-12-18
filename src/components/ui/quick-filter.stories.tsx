@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import {
+  ORGANISM_META,
+  organismDescription,
+} from '@/stories/_infrastructure'
+import {
   QuickFilter,
   QuickFilterItem,
   QuickFilterItemProps,
@@ -22,57 +26,16 @@ import {
   CheckCircle,
 } from 'lucide-react'
 
-/**
- * # Quick Filter Component
- *
- * A horizontal row of filter buttons used for quick status filtering in dashboards.
- * Based on the Flow EHS Figma design.
- *
- * ## Design Features
- * - White to light gray gradient background
- * - Colored gradient border (stronger at bottom) matching the variant
- * - Colored icon matching the variant color (uses Lucide icons)
- * - Badge with count positioned top-right of icon
- * - Label text below the icon
- *
- * ## Variants
- * - `default` (Gray) - Used for drafts
- * - `info` (Cyan/Teal) - Used for reported items
- * - `warning` (Orange) - Used for aging, reviews, DLB
- * - `primary` (Dark) - Used for in progress items
- *
- * ## Custom Filter Guidelines
- * When creating custom filters:
- * - **Label length**: Maximum 12 characters recommended
- * - **Icon**: Always provide a Lucide icon (size={24})
- * - Labels longer than 12 characters may cause layout issues
- *
- * ## Usage
- * ```tsx
- * import { FileText, Flag, Filter } from 'lucide-react'
- *
- * // Using preset filters
- * <QuickFilter>
- *   <DraftsFilter count={4} />
- *   <ReportedFilter count={10} />
- * </QuickFilter>
- *
- * // Custom filter (max 12 chars for label)
- * <QuickFilter>
- *   <QuickFilterItem
- *     variant="info"
- *     icon={<Filter size={24} />}
- *     count={5}
- *     label="My Filter"  // 9 chars - OK
- *   />
- * </QuickFilter>
- * ```
- */
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof QuickFilterItem> = {
   title: 'Flow/Components/QuickFilter',
   component: QuickFilterItem,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'centered',
+    ...ORGANISM_META.parameters,
     backgrounds: {
       default: 'dark',
       values: [
@@ -83,12 +46,16 @@ const meta = {
     },
     docs: {
       description: {
-        component:
-          'Quick Filter component for status-based filtering. Features colored Lucide icons, badge with count, and label with multiple color variants.',
+        component: organismDescription(
+          `Horizontal row of filter buttons for quick status filtering in dashboards.
+
+**Variants:** default (Gray), info (Cyan/Teal), warning (Orange), primary (Dark)
+
+**Guidelines:** Max 12 characters for labels. Always provide a Lucide icon.`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',
@@ -129,7 +96,7 @@ const meta = {
       description: 'Lucide icon element to display',
     },
   },
-} satisfies Meta<typeof QuickFilterItem>
+}
 
 export default meta
 type Story = StoryObj<typeof QuickFilterItem>

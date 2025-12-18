@@ -1,19 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { PricingConnector } from './pricing-connector'
 import { ArrowRight } from 'lucide-react'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof PricingConnector> = {
   title: 'Website/PricingConnector',
   component: PricingConnector,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: 'A connector element used between pricing components. Displays a red circle with a plus icon by default. Supports periodic spin animation.',
+        component: atomDescription(
+          'Connector element used between pricing components. Displays a red circle with a plus icon. Supports periodic spin animation.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     spinInterval: {
       control: { type: 'number', min: 500, max: 10000, step: 500 },
@@ -24,10 +34,14 @@ const meta = {
       description: 'Duration of spin animation in milliseconds',
     },
   },
-} satisfies Meta<typeof PricingConnector>
+}
 
 export default meta
 type Story = StoryObj<typeof PricingConnector>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Default (no spin)
 export const Default: Story = {}

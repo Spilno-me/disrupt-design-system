@@ -1,13 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { AnimatedLogo } from './AnimatedLogo'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof AnimatedLogo> = {
   title: 'Website/AnimatedLogo',
   component: AnimatedLogo,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
+    docs: {
+      description: {
+        component: atomDescription(
+          'EMEX logo with hover pixel explosion animation. Supports dark/light color modes for different backgrounds.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     colorMode: {
       control: 'select',

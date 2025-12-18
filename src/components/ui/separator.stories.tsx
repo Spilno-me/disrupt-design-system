@@ -1,62 +1,51 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Separator } from './separator';
+import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
+import { Separator } from './separator'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Separator> = {
   title: 'Core/Separator',
   component: Separator,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ATOM
+        component: atomDescription(
+          `Separator component for visual division of content.
 
-Separator component for visual division of content.
+**Two Separator Types:**
+1. **Solid Separator** - \`<Separator />\` for solid divider lines
+2. **Dashed Separator** - \`.separator-dashed\` CSS class for dashed dividers
 
-## Two Separator Types
-
-### 1. Solid Separator (Component)
-Use the \`<Separator />\` component for solid divider lines.
-
-- Horizontal (default) or vertical orientation
-- Teal brand color for consistency
-
-### 2. Dashed Separator (CSS Class)
-Use \`<div className="separator-dashed" />\` for dashed dividers.
-
-- Same teal brand color
-- 4px dash, 4px gap pattern
-- Used in website sections
-
-## Accessibility
-
-- **Decorative** (default): Not announced to screen readers
-- **Semantic**: Set \`decorative={false}\` for meaningful separators that should be announced
-        `,
+**Accessibility:**
+- Decorative (default): Not announced to screen readers
+- Semantic: Set \`decorative={false}\` for meaningful separators`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     orientation: {
       control: 'select',
       options: ['horizontal', 'vertical'],
       description: 'Separator orientation',
-      table: {
-        type: { summary: 'horizontal | vertical' },
-      },
     },
     decorative: {
       control: 'boolean',
       description: 'Whether separator is decorative or semantic for screen readers',
-      table: {
-        type: { summary: 'boolean' },
-      },
     },
   },
-} satisfies Meta<typeof Separator>;
+}
 
-export default meta;
-type Story = StoryObj<typeof Separator>;
+export default meta
+type Story = StoryObj<typeof Separator>
 
 // Default Separator (for Controls panel)
 export const Default: Story = {

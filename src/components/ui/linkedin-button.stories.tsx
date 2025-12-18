@@ -1,18 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { LinkedInButton } from './LinkedInButton'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof LinkedInButton> = {
   title: 'Website/LinkedInButton',
   component: LinkedInButton,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: 'An animated LinkedIn icon button with spinning dashed border. Features a spin animation on hover with inertia and color fill effect.',
+        component: atomDescription(
+          'Animated LinkedIn icon button with spinning dashed border. Features spin animation on hover with inertia and color fill effect.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     href: {
       control: 'text',
@@ -23,10 +33,14 @@ const meta = {
       description: 'Button size in pixels',
     },
   },
-} satisfies Meta<typeof LinkedInButton>
+}
 
 export default meta
 type Story = StoryObj<typeof LinkedInButton>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 // Default
 export const Default: Story = {

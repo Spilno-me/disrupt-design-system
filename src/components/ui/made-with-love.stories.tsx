@@ -1,13 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { MadeWithLove } from './MadeWithLove'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof MadeWithLove> = {
   title: 'Shared/Components/MadeWithLove',
   component: MadeWithLove,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
+    docs: {
+      description: {
+        component: atomDescription(
+          'Branded "Made with ❤️" footer attribution with light and dark color modes.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     colorMode: {
       control: 'radio',
@@ -23,6 +38,10 @@ const meta: Meta<typeof MadeWithLove> = {
 
 export default meta
 type Story = StoryObj<typeof MadeWithLove>
+
+// =============================================================================
+// STORIES
+// =============================================================================
 
 /**
  * Default variant for light backgrounds (footer on cream/white)

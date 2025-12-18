@@ -1,22 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Plus, Pencil, Trash2, Copy, Share, Download, Info, HelpCircle } from 'lucide-react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip'
 import { Button } from './button'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof Tooltip> = {
   title: 'Core/Tooltip',
   component: Tooltip,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-Contextual information popup that appears on hover. Built on Radix UI Tooltip with TooltipProvider, TooltipTrigger, and TooltipContent sub-components.`,
+        component: moleculeDescription(
+          'Contextual information popup that appears on hover. Built on Radix UI Tooltip with TooltipProvider, TooltipTrigger, and TooltipContent sub-components.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

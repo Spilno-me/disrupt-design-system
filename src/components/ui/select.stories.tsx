@@ -1,4 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react'
+import {
+  MOLECULE_META,
+  moleculeDescription,
+} from '@/stories/_infrastructure'
 import {
   Select,
   SelectContent,
@@ -7,26 +11,30 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from './select';
+} from './select'
 
-const meta = {
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
+
+const meta: Meta<typeof Select> = {
   title: 'Core/Select',
   component: Select,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-Dropdown selection component built on Radix UI Select. Includes SelectTrigger, SelectContent, SelectItem, SelectGroup, and SelectLabel sub-components.`,
+        component: moleculeDescription(
+          'Dropdown selection component built on Radix UI Select. Includes SelectTrigger, SelectContent, SelectItem, SelectGroup, and SelectLabel sub-components.'
+        ),
       },
     },
   },
-  tags: ['autodocs'],
-} satisfies Meta<typeof Select>;
+}
 
-export default meta;
-type Story = StoryObj<typeof Select>;
+export default meta
+type Story = StoryObj<typeof Select>
 
 // Default Select (for Controls panel)
 export const Default: Story = {

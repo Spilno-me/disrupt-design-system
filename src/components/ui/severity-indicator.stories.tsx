@@ -1,34 +1,37 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { SeverityIndicator, SeverityLevel } from './SeverityIndicator'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof SeverityIndicator> = {
   title: 'Flow/Components/SeverityIndicator',
   component: SeverityIndicator,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
     docs: {
       description: {
-        component: `
-Visual indicator for severity/priority levels. Displays a squircle-shaped badge with color-coded severity levels.
+        component: atomDescription(
+          `Visual indicator for severity/priority levels. Displays a squircle-shaped badge with color-coded severity.
 
-## Usage
-
-Used in leads management, incident tracking, task prioritization, and any context where priority/severity needs visual indication.
-
-## Severity Levels
-
-| Level | Color | Icon/Text | Use Case |
-|-------|-------|-----------|----------|
-| \`critical\` | Red | Flame icon | Urgent issues requiring immediate attention |
-| \`high\` | Orange | !!! | High priority items |
-| \`medium\` | Yellow | !! | Medium priority items |
-| \`low\` | Green | ! | Low priority items |
-| \`none\` | Cyan | -- | No priority assigned |
-        `,
+**Severity Levels:**
+| Level | Color | Icon | Use Case |
+|-------|-------|------|----------|
+| critical | Red | Flame | Urgent issues |
+| high | Orange | !!! | High priority |
+| medium | Yellow | !! | Medium priority |
+| low | Green | ! | Low priority |
+| none | Cyan | -- | No priority |`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     level: {
       control: 'select',

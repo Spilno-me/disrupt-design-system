@@ -1,13 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import {
+  ATOM_META,
+  atomDescription,
+} from '@/stories/_infrastructure'
 import { AnimatedCheck } from './AnimatedCheck'
+
+// =============================================================================
+// META CONFIGURATION
+// =============================================================================
 
 const meta: Meta<typeof AnimatedCheck> = {
   title: 'Website/Components/AnimatedCheck',
   component: AnimatedCheck,
+  ...ATOM_META,
   parameters: {
-    layout: 'centered',
+    ...ATOM_META.parameters,
+    docs: {
+      description: {
+        component: atomDescription(
+          'Animated checkmark icon with scroll-triggered or auto-animation support. Used in feature lists and success states.'
+        ),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     color: {
       control: 'color',
