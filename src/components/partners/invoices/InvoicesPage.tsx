@@ -285,7 +285,7 @@ export function InvoicesPage({
   }, [selectedInvoice, onUpdateInvoice])
 
   return (
-    <div className={cn('relative min-h-full bg-white', className)}>
+    <div className={cn('relative min-h-full bg-page', className)}>
       {/* Grid blob background */}
       <GridBlobBackground scale={2} />
 

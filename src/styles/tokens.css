@@ -5,7 +5,7 @@
  * Generated from: src/constants/designTokens.ts
  * To update: Edit designTokens.ts, then run: npm run generate-tokens
  *
- * Last generated: 2025-12-15T00:34:03.503Z
+ * Last generated: 2025-12-18T17:17:26.676Z
  */
 
 /* This file is intentionally minimal - full token definitions in styles.css */
@@ -16,5 +16,5 @@
 }
 
 .dark {
-  --ring: oklch(0.647 0.145 205.36);  /* Same in dark mode */
+  --ring: oklch(0.730 0.135 205.36);  /* 1 step lighter for dark mode visibility = #33BFD7 */
 }

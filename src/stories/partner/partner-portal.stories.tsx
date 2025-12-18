@@ -5,6 +5,10 @@ import type { Partner } from '../../components/partners/PartnersPage'
 import { MOCK_PARTNERS } from '../../components/partners/PartnersPage'
 import type { Invoice } from '../../components/partners/invoices/types'
 import { formatCurrency } from '../../components/partners/invoices/types'
+import {
+  PAGE_META,
+  pageDescription,
+} from '../_infrastructure'
 
 // =============================================================================
 // STORY CONFIGURATION
@@ -13,12 +17,13 @@ import { formatCurrency } from '../../components/partners/invoices/types'
 const meta: Meta<typeof PartnerPortalPage> = {
   title: 'Partner/Complete App',
   component: PartnerPortalPage,
+  ...PAGE_META,
   parameters: {
-    layout: 'fullscreen',
+    ...PAGE_META.parameters,
     docs: {
       description: {
-        component: `
-# Partner Portal - Complete Application Template
+        component: pageDescription(
+          `# Partner Portal - Complete Application Template
 
 This is a fully interactive Partner Portal built using the **AppLayoutShell** and **PartnerPortalPage** components.
 
@@ -29,26 +34,6 @@ The Partner Portal demonstrates the recommended 3-tier architecture:
 1. **Tier 1: Primitives** - Button, Card, DataTable, etc.
 2. **Tier 2: AppLayoutShell** - Handles layout, navigation, responsive behavior
 3. **Tier 3: PartnerPortalPage** - Pre-composed page template with all pages wired
-
-## Usage
-
-\`\`\`tsx
-import { PartnerPortalPage } from 'dds'
-
-function App() {
-  return (
-    <PartnerPortalPage
-      user={{ name: 'John Partner', email: 'john@partner.com' }}
-      leads={leadsData}
-      partners={partnersData}
-      invoices={invoicesData}
-      badges={{ leads: 6, invoices: 3 }}
-      onCreateLead={(data) => api.createLead(data)}
-      onPageChange={(pageId) => router.push(pageId)}
-    />
-  )
-}
-\`\`\`
 
 ## Available Pages
 
@@ -65,8 +50,8 @@ function App() {
 
 ## Interactive Navigation
 
-Click on sidebar items, bottom navigation (mobile), or use the user menu to navigate between pages. All pages are fully connected and interactive.
-        `,
+Click on sidebar items, bottom navigation (mobile), or use the user menu to navigate between pages. All pages are fully connected and interactive.`
+        ),
       },
     },
   },

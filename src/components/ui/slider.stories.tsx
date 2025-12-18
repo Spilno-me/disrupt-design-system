@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   ATOM_META,
   atomDescription,
+  STORY_WIDTHS,
 } from '@/stories/_infrastructure'
 import { Slider } from './Slider'
 

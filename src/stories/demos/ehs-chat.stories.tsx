@@ -9,16 +9,22 @@ import {
   FileText,
   RotateCcw,
 } from 'lucide-react'
+import {
+  ORGANISM_META,
+  organismDescription,
+} from '../_infrastructure'
 
 const meta: Meta<typeof EHSChat> = {
   title: 'Flow/Components/EHSChat',
   component: EHSChat,
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: 'centered',
     docs: {
       description: {
-        component: `
-# EHS Chat - Agentic UI Fusion
+        component: organismDescription(
+          `# EHS Chat - Agentic UI Fusion
 
 An AI-powered chat interface for Environmental Health & Safety (EHS) incident reporting.
 This component demonstrates the **Agentic UI Fusion** architecture where traditional UI
@@ -44,21 +50,11 @@ elements merge with autonomous agent intelligence.
 - **Dynamic Form Generation**: Forms appear contextually based on conversation flow
 - **Quick Reply Options**: Guided interaction through suggested responses
 - **Structured Intents**: User actions become typed, actionable intents
-- **Seamless UI Fusion**: Traditional forms embedded within conversational UI
-
-## Usage
-
-\`\`\`tsx
-<EHSChat
-  greeting="Hello! How can I help you today?"
-  onReportSubmit={(report) => console.log('Report submitted:', report)}
-/>
-\`\`\`
-        `,
+- **Seamless UI Fusion**: Traditional forms embedded within conversational UI`
+        ),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     greeting: {
       control: 'text',

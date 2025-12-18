@@ -207,6 +207,7 @@ export const ALIAS = {
     info: WAVE[500],
     disabled: ABYSS[200],
     accent: DEEP_CURRENT[500],
+    accentDark: DEEP_CURRENT[600],
     inverse: ABYSS[700],
   },
 
@@ -410,6 +411,8 @@ export const SHADOWS = {
   md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
   lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
   xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+  /** Elevated shadow: premium emphasis with richer opacity for featured elements */
+  elevated: '0 2px 8px -1px rgba(0, 0, 0, 0.14), 0 6px 20px -4px rgba(0, 0, 0, 0.10)',
   /** Ambient shadow: hard close shadow + soft spread for realistic depth */
   ambient: '0 2px 4px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08)',
   image: '0 6px 12px -2px rgba(0,0,0,0.3), 0 20px 50px -8px rgba(0,0,0,0.2)',
@@ -418,7 +421,7 @@ export const SHADOWS = {
   buttonDefault: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
 } as const
 
-export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl'
+export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'elevated'
 
 // =============================================================================
 // GRADIENTS
@@ -509,6 +512,16 @@ export const SPACING = {
   subheadingGap: 'mb-8',
   listItemGap: 'gap-4',
   sectionContentGap: 'gap-12 lg:gap-16',
+  /** Pixel values for inline styles (3D visualizations, overlays) */
+  px: {
+    micro: '4px',
+    tight: '8px',
+    base: '12px',
+    comfortable: '16px',
+    spacious: '24px',
+    cardPadding: '20px',
+    cardGap: '16px',
+  },
 } as const
 
 // =============================================================================

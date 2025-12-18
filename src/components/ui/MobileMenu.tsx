@@ -98,7 +98,7 @@ export function MobileMenu({
             initial={{ y: -300 }}
             animate={{ y: 0, transition: { type: "spring", stiffness: 400, damping: 25 } }}
             exit={{ y: -300, transition: { duration: 0.15, ease: "easeIn" } }}
-            className="fixed top-0 inset-x-0 bg-white shadow-lg z-[40] md:hidden"
+            className="fixed top-0 inset-x-0 bg-surface shadow-lg z-[40] md:hidden"
             style={disableHeaderPadding ? undefined : { paddingTop: `${LAYOUT.HEADER_HEIGHT_PX}px` }}
           >
             <div className="w-full px-4 py-4 space-y-4 max-w-none" onClick={handleItemClick}>

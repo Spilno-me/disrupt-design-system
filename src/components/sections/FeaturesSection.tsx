@@ -86,7 +86,7 @@ export function FeaturesSection({
   className,
 }: FeaturesSectionProps) {
   const bgClasses = {
-    white: 'bg-white',
+    white: 'bg-surface',
     cream: 'bg-page',
   }
 

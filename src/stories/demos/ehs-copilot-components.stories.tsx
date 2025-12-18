@@ -33,11 +33,36 @@ import {
   Calendar,
 } from "lucide-react"
 import { ALIAS, WAVE, SUNRISE, CORAL, HARBOR, ABYSS, DEEP_CURRENT } from "../../constants/designTokens"
+import {
+  ORGANISM_META,
+  organismDescription,
+} from "../_infrastructure"
 
 const meta: Meta = {
   title: "Flow/EHSCopilot/Components",
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: "padded",
+    docs: {
+      description: {
+        component: organismDescription(
+          `EHS Copilot component library for building incident reporting interfaces.
+
+## Components Included
+- **QuickSelect**: Multi-choice selection for incident types, body parts, etc.
+- **LocationPicker**: Hierarchical location selection with search
+- **SeverityScale**: Visual severity assessment from low to critical
+- **FileUpload**: Drag-and-drop file attachment with preview
+- **SummaryCard**: Review card with editable summary items
+- **DataTable**: Simple data table for incident lists
+- **ActionCard**: Actionable task cards with status
+- **IncidentListItem**: Compact incident list items
+- **InvitePeople**: Team member selection with suggestions
+- **CommentThread**: Threaded comments with internal notes`
+        ),
+      },
+    },
   },
 }
 
