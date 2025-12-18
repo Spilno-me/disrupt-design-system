@@ -220,8 +220,56 @@ Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
 
 ```bash
 npm run typecheck && npm run lint && npm run build
-npm run generate-tokens  # after token changes
+npm run generate-tokens   # generates focus ring only
+npm run validate:tokens   # check for drift between token files
 ```
+
+---
+
+## Token Architecture (3-File System)
+
+**DDS uses intentional manual sync between 3 token files.**
+
+| File | Format | Purpose | Consumers |
+|------|--------|---------|-----------|
+| `src/constants/designTokens.ts` | TypeScript | Source of truth, type safety | DDS components |
+| `src/styles.css` @theme | CSS | Tailwind v4 CSS-first config | Tailwind utilities |
+| `tailwind-preset.js` | JavaScript | NPM package preset | External apps |
+
+### Why 3 Files (Not a Bug)
+
+1. **Tailwind v4 promotes CSS-first** → `@theme` in CSS is the intended approach
+2. **TypeScript types** → Components need typed constants
+3. **Consumer preset** → NPM consumers need JS export (not all import CSS)
+
+### When to Update Each File
+
+| Change | Update These Files |
+|--------|-------------------|
+| Color value changes | All 3 files |
+| New color token | All 3 files |
+| Semantic alias | `designTokens.ts` + `styles.css` |
+| New Tailwind utility | `styles.css` + `tailwind-preset.js` |
+
+### Drift Detection
+
+```bash
+npm run validate:tokens   # Runs automatically in prebuild
+```
+
+Checks:
+- Palette values match between `designTokens.ts` and `tailwind-preset.js`
+- Radius values match
+- Key semantic tokens in `styles.css` match source values
+
+### What IS Generated
+
+Only the focus ring color (`--ring`) is generated from `designTokens.ts`:
+```bash
+npm run generate-tokens  # Creates src/styles/tokens.css
+```
+
+Everything else is manually maintained.
 
 ## Lazy Load (task-specific)
 
@@ -229,6 +277,7 @@ npm run generate-tokens  # after token changes
 |------|------|
 | **Color combinations** | **`.claude/color-matrix.json`** |
 | **Contrast ratios** | **`.claude/contrast-matrix.json`** |
+| **Dark mode mapping** | **`.claude/dark-mode-mapping-rules.md`** |
 | **Spacing/layout** | **`.claude/spacing-rules.md`** |
 | **Border radius** | **`.claude/rounded-corners-rules.md`** |
 | **Typography** | **`.claude/typography-rules.md`** |
