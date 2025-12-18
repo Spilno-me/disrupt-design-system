@@ -267,7 +267,7 @@ export function AppLayoutShell({
   return (
     <div
       className={cn(
-        'relative flex flex-col h-screen bg-white overflow-hidden',
+        'relative flex flex-col h-screen bg-background overflow-hidden',
         className
       )}
       data-product={product}

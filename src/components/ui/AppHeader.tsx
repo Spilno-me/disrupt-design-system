@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Bell, LogOut, Settings, User } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cn } from '../../lib/utils'
-import { ALIAS, SHADOWS } from '../../constants/designTokens'
+import { SHADOWS } from '../../constants/designTokens'
 import { LOGOS, PATTERNS } from '../../assets/logos'
 import {
   DropdownMenu,
@@ -76,8 +76,8 @@ export interface AppHeaderProps {
   onMenuItemClick?: (item: UserMenuItem) => void
   /** Custom tagline override (uses default per product if not provided) */
   tagline?: string
-  /** Color mode for logo: 'dark' on light backgrounds, 'light' on dark backgrounds */
-  colorMode?: 'dark' | 'light'
+  /** Color mode for logo: 'dark' on light backgrounds, 'light' on dark backgrounds, 'auto' detects from theme */
+  colorMode?: 'dark' | 'light' | 'auto'
   /** Callback when logo is clicked */
   onLogoClick?: () => void
   /** Additional className for styling */
@@ -152,30 +152,62 @@ WavePattern.displayName = 'WavePattern'
 function LogoContainer({
   product,
   tagline,
-  colorMode = 'dark',
+  colorMode,
   onClick,
 }: {
   product: ProductType
   tagline?: string
-  colorMode?: 'dark' | 'light'
+  colorMode?: 'dark' | 'light' | 'auto'
   onClick?: () => void
 }) {
+  // Auto-detect dark mode from document class
+  // Check both html and body for Storybook compatibility (Storybook applies to body)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    // Check initial state - look for dark class on both html and body
+    const checkDarkMode = () => {
+      const isDark = document.documentElement.classList.contains('dark') ||
+                     document.body.classList.contains('dark')
+      setIsDarkMode(isDark)
+    }
+    checkDarkMode()
+
+    // Watch for changes on both html and body
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   const config = PRODUCT_CONFIGS[product]
-  const logoSrc = colorMode === 'dark' ? config.logoDark : config.logoLight
+
+  // Determine logo: auto-detect if colorMode not specified or 'auto'
+  const effectiveColorMode = colorMode === 'auto' || !colorMode
+    ? (isDarkMode ? 'light' : 'dark')  // dark bg needs light logo
+    : colorMode
+
+  const logoSrc = effectiveColorMode === 'dark' ? config.logoDark : config.logoLight
   const displayTagline = tagline ?? config.tagline
 
   return (
     <div
       className={cn(
         'flex items-center gap-3 h-14 min-w-[219px] pl-4 pr-3 cursor-pointer rounded-r-3xl',
+        'border border-l-0 border-subtle/30',
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
       style={{
-        // Match search filter gradient for consistency
-        background: ALIAS.gradient.subtle,
-        border: `1px solid ${ALIAS.overlay.subtle}`,
-        borderLeft: 'none',
+        // Use CSS variable for gradient - responds to dark mode
+        background: 'var(--alias-gradient-subtle)',
         // Subtle shadow for depth
         boxShadow: SHADOWS.sm,
       }}
@@ -245,9 +277,12 @@ function IconButton({
       whileTap={{ scale: 0.95 }}
       data-slot="icon-button"
     >
-      {/* Soft background on hover */}
+      {/* Soft background on hover - uses CSS variables for dark mode support */}
       <motion.div
-        className="absolute inset-0 rounded-md"
+        className={cn(
+          "absolute inset-0 rounded-md",
+          variant === 'default' && "border border-subtle/30"
+        )}
         initial={{ opacity: 0 }}
         animate={{
           opacity: isHovered ? 1 : 0,
@@ -256,9 +291,8 @@ function IconButton({
         transition={{ duration: 0.2, ease: 'easeOut' }}
         style={{
           background: variant === 'default'
-            ? `linear-gradient(135deg, ${ALIAS.background.accent} 0%, ${ALIAS.overlay.white50} 100%)`
-            : ALIAS.overlay.white50,
-          border: variant === 'default' ? `1px solid ${ALIAS.border.subtle}` : 'none',
+            ? 'var(--alias-gradient-subtle)'
+            : 'var(--alias-overlay-light)',
         }}
       />
       {/* Content */}
@@ -536,7 +570,7 @@ export function AppHeader({
   menuItems = DEFAULT_MENU_ITEMS,
   onMenuItemClick,
   tagline,
-  colorMode = 'dark',
+  colorMode = 'auto',
   onLogoClick,
   className,
   showWavePattern = true,
@@ -546,7 +580,7 @@ export function AppHeader({
   return (
     <header
       className={cn(
-        'relative z-20 flex items-center justify-between w-full h-[55px] overflow-hidden',
+        'relative z-20 flex items-center justify-between w-full h-[55px] overflow-hidden bg-surface',
         className
       )}
       style={{

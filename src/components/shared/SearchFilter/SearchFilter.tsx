@@ -1,6 +1,5 @@
 import { useState, memo } from 'react'
 import { cn } from '../../../lib/utils'
-import { ALIAS } from '../../../constants/designTokens'
 
 // Sub-components
 import { SearchInput } from './SearchInput'
@@ -118,13 +117,13 @@ const SearchFilterInner = memo(function SearchFilterInner({
     <div
       className={cn(
         'relative flex items-center justify-between gap-3 p-3 rounded-md shadow-sm',
+        'border border-subtle/50',
         fullWidth && 'w-full',
         disabled && 'opacity-60',
         className
       )}
       style={{
-        background: ALIAS.gradient.subtle,
-        border: `1px solid ${ALIAS.overlay.subtle}`,
+        background: 'var(--alias-gradient-subtle)',
       }}
       aria-disabled={disabled}
     >

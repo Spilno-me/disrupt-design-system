@@ -1,6 +1,6 @@
 import * as React from 'react'
+import { useState, useEffect } from 'react'
 import { cn } from '../../lib/utils'
-import { ALIAS } from '../../constants/designTokens'
 import { PATTERNS } from '../../assets/logos'
 import { MadeWithLove } from './MadeWithLove'
 
@@ -9,8 +9,8 @@ import { MadeWithLove } from './MadeWithLove'
 // =============================================================================
 
 export interface AppFooterProps extends React.HTMLAttributes<HTMLElement> {
-  /** Color mode for MadeWithLove component */
-  colorMode?: 'dark' | 'light'
+  /** Color mode for MadeWithLove component: 'auto' (default) detects from theme */
+  colorMode?: 'dark' | 'light' | 'auto'
   /** Show compact mobile version */
   compactOnMobile?: boolean
 }
@@ -32,9 +32,9 @@ function WavePattern() {
           backgroundPosition: '0% 50%',
         }}
       />
-      {/* White overlay at 60% opacity - matches header */}
+      {/* Overlay at 60% opacity - matches header, uses surface color for dark mode support */}
       <div
-        className="absolute inset-0 bg-white/60"
+        className="absolute inset-0 bg-surface/60"
       />
     </div>
   )
@@ -88,24 +88,53 @@ function WavePattern() {
  * @testId Auto-generated from data-testid prop (MOLECULE pattern)
  */
 export function AppFooter({
-  colorMode = 'dark',
+  colorMode = 'auto',
   className,
   compactOnMobile = true,
   ...props
 }: AppFooterProps) {
   const currentYear = new Date().getFullYear()
 
+  // Auto-detect dark mode from document class
+  // Check both html and body for Storybook compatibility (Storybook applies to body)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      const isDark = document.documentElement.classList.contains('dark') ||
+                     document.body.classList.contains('dark')
+      setIsDarkMode(isDark)
+    }
+    checkDarkMode()
+
+    // Watch for changes on both html and body
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Determine effective color mode for MadeWithLove
+  // In dark theme, use 'light' (light text on dark bg), in light theme use 'dark' (dark text on light bg)
+  const effectiveColorMode = colorMode === 'auto'
+    ? (isDarkMode ? 'light' : 'dark')
+    : colorMode
+
   return (
     <footer
       className={cn(
-        'relative flex items-center justify-between border-t border-default/30',
+        'relative flex items-center justify-between border-t border-default/30 bg-surface',
         // Mobile: compact height (32px = 8 * 4px grid), Desktop: normal height
         compactOnMobile ? 'h-8 md:h-auto md:py-3 px-4 md:px-6' : 'px-6 py-3',
         className
       )}
-      style={{
-        backgroundColor: ALIAS.background.surface,
-      }}
       data-slot="footer"
       {...props}
     >
@@ -116,7 +145,7 @@ export function AppFooter({
       <div className="relative z-10 flex items-center justify-between w-full">
         {/* Left: MadeWithLove */}
         <MadeWithLove
-          colorMode={colorMode}
+          colorMode={effectiveColorMode}
           className={compactOnMobile ? 'scale-[0.5] origin-left md:scale-100' : ''}
         />
 
