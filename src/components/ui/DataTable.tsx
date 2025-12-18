@@ -11,7 +11,6 @@ import {
 import { cn } from "../../lib/utils"
 import { Checkbox } from "./checkbox"
 import { Skeleton } from "./Skeleton"
-import { ALIAS } from "../../constants/designTokens"
 
 // =============================================================================
 // TYPES
@@ -162,14 +161,14 @@ export interface DataTableProps<T> {
  * - Sort state communicated via aria-sort attribute
  * - Select all checkbox shows indeterminate state when partially selected
  */
-// Priority border color mapping - using DDS ALIAS tokens
+// Priority border color mapping - using CSS variables for dark mode support
 const PRIORITY_BORDER_COLORS: Record<Exclude<RowPriority, null>, { color: string; style: 'solid' | 'dashed' }> = {
-  critical: { color: ALIAS.interactive.danger, style: 'solid' },  // Red - error/danger color
-  high: { color: ALIAS.aging.primary, style: 'solid' },           // Orange - aging/urgent
-  medium: { color: ALIAS.status.warning, style: 'solid' },        // Yellow - warning
-  low: { color: ALIAS.status.success, style: 'solid' },           // Green - success
-  none: { color: ALIAS.brand.secondary, style: 'solid' },         // Teal - brand secondary
-  draft: { color: ALIAS.border.default, style: 'dashed' },        // Gray dashed - default border
+  critical: { color: 'var(--color-error)', style: 'solid' },      // Red - error/danger color
+  high: { color: 'var(--color-warning)', style: 'solid' },        // Orange - aging/urgent
+  medium: { color: 'var(--color-warning)', style: 'solid' },      // Yellow - warning
+  low: { color: 'var(--color-success)', style: 'solid' },         // Green - success
+  none: { color: 'var(--color-accent)', style: 'solid' },         // Teal - brand secondary
+  draft: { color: 'var(--border)', style: 'dashed' },             // Gray dashed - default border
 }
 
 export function DataTable<T>({
@@ -313,10 +312,7 @@ export function DataTable<T>({
         <div className="overflow-x-auto" style={{ maxHeight }}>
           <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }} data-slot="data-table">
             <thead
-              style={{
-                background: ALIAS.background.muted,
-                borderBottom: `1px solid ${ALIAS.border.default}`,
-              }}
+              className="bg-muted border-b border-default"
               data-slot="data-table-header"
             >
               <tr data-slot="data-table-header-row">
@@ -382,11 +378,7 @@ export function DataTable<T>({
         <div className="overflow-x-auto" style={{ maxHeight }}>
           <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }} data-slot="data-table">
             <thead
-              className={cn(stickyHeader && "sticky top-0 z-10")}
-              style={{
-                background: ALIAS.background.muted,
-                borderBottom: `1px solid ${ALIAS.border.default}`,
-              }}
+              className={cn("bg-muted border-b border-default", stickyHeader && "sticky top-0 z-10")}
               data-slot="data-table-header"
             >
               <tr className={headerRowClassName} data-slot="data-table-header-row">
@@ -437,12 +429,9 @@ export function DataTable<T>({
         <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0 }} data-slot="data-table">
           <thead
             className={cn(
+              "bg-muted border-b border-default",
               stickyHeader && "sticky top-0 z-10"
             )}
-            style={{
-              background: ALIAS.background.muted,
-              borderBottom: `1px solid ${ALIAS.border.default}`,
-            }}
             data-slot="data-table-header"
           >
             <tr className={headerRowClassName} data-slot="data-table-header-row">
@@ -525,9 +514,9 @@ export function DataTable<T>({
                     boxShadow: priorityBorderConfig
                       ? `inset 6px 0 0 0 ${priorityBorderConfig.color}`
                       : undefined,
-                    // Apply bottom border (except for last row)
+                    // Apply bottom border (except for last row) - uses CSS variable for dark mode
                     borderBottom: bordered && !isLastRow
-                      ? `1px solid ${ALIAS.border.default}`
+                      ? '1px solid var(--border)'
                       : undefined,
                   }}
                   onClick={() => onRowClick?.(row)}

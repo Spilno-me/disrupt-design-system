@@ -7,7 +7,7 @@ import { ALIAS } from '../../constants/designTokens'
 // =============================================================================
 
 const CONFIG = {
-  grid: { size: 20, color: ALIAS.grid.color },
+  grid: { size: 20, color: 'var(--alias-grid-color, rgba(180, 180, 180, 0.4))' },
   blob: {
     waypointInterval: 2000,
     transitionDuration: 1.8,

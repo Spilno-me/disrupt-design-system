@@ -1,7 +1,6 @@
 import * as React from "react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../lib/utils"
-import { ALIAS } from "../../constants/designTokens"
 
 // =============================================================================
 // TYPES
@@ -82,11 +81,10 @@ export function Slider({
         {/* Track background */}
         <div className="absolute inset-x-4 lg:inset-x-2.5 h-6 lg:h-4 rounded-full bg-surface-hover" />
 
-        {/* Track fill (Range) */}
+        {/* Track fill (Range) - uses CSS variable for dark mode */}
         <div
-          className="absolute left-4 lg:left-2.5 h-6 lg:h-4 rounded-l-full"
+          className="absolute left-4 lg:left-2.5 h-6 lg:h-4 rounded-l-full bg-accent-strong"
           style={{
-            backgroundColor: ALIAS.background.accentStrong,
             width: `calc(${((value - min) / (max - min)) * 100}% - ${((value - min) / (max - min)) * 16}px)`,
           }}
         />
@@ -106,15 +104,12 @@ export function Slider({
           </SliderPrimitive.Track>
           <SliderPrimitive.Thumb
             className={cn(
-              "block rounded-full shadow-md border-2",
+              "block rounded-full shadow-md border-2 border-accent-strong",
               "w-8 h-8 lg:w-5 lg:h-5",
               "cursor-grab active:cursor-grabbing",
               "focus:outline-none focus-visible:ring-4 focus-visible:ring-ring/40",
               "bg-surface"
             )}
-            style={{
-              borderColor: ALIAS.border.accentDark,
-            }}
             aria-label={label}
           />
         </SliderPrimitive.Root>

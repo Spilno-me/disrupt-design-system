@@ -146,7 +146,8 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
           className
         )}
         style={{
-          background: `linear-gradient(180deg, ${ALIAS.background.surface} 0%, ${ALIAS.background.surfaceHover} 100%)`,
+          // Uses CSS variables for dark mode support
+          background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-hover) 100%)',
           boxShadow: SHADOWS.sm,
           borderRadius: RADIUS.md,
         }}
@@ -157,7 +158,8 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
           className="absolute inset-0 pointer-events-none"
           style={{
             border: '2px solid transparent',
-            background: `linear-gradient(180deg, ${ALIAS.text.inverse}30 0%, ${colors.border} 60%, ${colors.border} 100%) border-box`,
+            // Uses rgba white for the fade effect - works on both light and dark backgrounds
+            background: `linear-gradient(180deg, rgba(255,255,255,0.2) 0%, ${colors.border} 60%, ${colors.border} 100%) border-box`,
             WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
@@ -182,8 +184,8 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
                 className="absolute min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold px-1"
                 style={{
                   backgroundColor: colors.badge,
-                  color: ALIAS.text.inverse,
-                  border: `2px solid ${ALIAS.background.surface}`,
+                  color: 'var(--foreground)',  // Uses CSS variable for dark mode
+                  border: '2px solid var(--color-surface)',  // Uses CSS variable for dark mode
                   borderRadius: RADIUS.full,
                   top: '-6px',
                   right: '-12px',

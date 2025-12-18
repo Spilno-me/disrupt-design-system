@@ -2,7 +2,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
-import { SHADOWS, type ShadowLevel, ALIAS } from "../../constants/designTokens"
+import { SHADOWS, type ShadowLevel } from "../../constants/designTokens"
 
 /**
  * AppCard - Application card component (MOLECULE)
@@ -66,8 +66,9 @@ const AppCard = React.forwardRef<HTMLDivElement, AppCardProps>(
     const combinedStyle: React.CSSProperties = {
       ...(shadow && shadow !== 'none' && { boxShadow: SHADOWS[shadow] }),
       // Apply gradient background for elevated variant (matches AppHeader subtle gradient)
+      // Uses CSS variable for dark mode support
       ...(variant === 'elevated' && {
-        background: ALIAS.gradient.subtle,
+        background: 'var(--alias-gradient-subtle)',
       }),
       ...style,
     }

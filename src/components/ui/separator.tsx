@@ -2,7 +2,6 @@ import * as React from "react"
 import * as SeparatorPrimitive from "@radix-ui/react-separator"
 
 import { cn } from "../../lib/utils"
-import { ALIAS } from "../../constants/designTokens"
 
 /**
  * Separator component for visual division of content. Built on Radix UI Separator primitive.
@@ -45,10 +44,9 @@ function Separator({
       decorative={decorative}
       orientation={orientation}
       className={cn(
-        "shrink-0 data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
+        "shrink-0 bg-accent data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px",
         className
       )}
-      style={{ backgroundColor: ALIAS.border.accent }}
       {...props}
     />
   )
