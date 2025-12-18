@@ -1045,15 +1045,13 @@ function QuickSelect({
               )}
               <div className="flex-1 min-w-0">
                 <div
-                  className="font-semibold"
-                  style={{ color: selected ? DEEP_CURRENT[700] : ABYSS[700] }}
+                  className={cn("font-semibold", selected ? "text-accent" : "text-foreground")}
                 >
                   {option.label}
                 </div>
                 {option.description && (
                   <div
-                    className="text-xs mt-0.5 truncate"
-                    style={{ color: selected ? DEEP_CURRENT[500] : ABYSS[400] }}
+                    className={cn("text-xs mt-0.5 truncate", selected ? "text-accent/80" : "text-muted-foreground")}
                   >
                     {option.description}
                   </div>
@@ -1162,7 +1160,7 @@ function LocationPicker({
               </div>
             </>
           ) : (
-            <span style={{ color: ABYSS[400] }}>{placeholder}</span>
+            <span className="text-muted-foreground">{placeholder}</span>
           )}
         </div>
         {value?.code && (
@@ -1221,37 +1219,35 @@ function LocationPicker({
                         }}
                       >
                         <span
-                          className="w-8 h-8 rounded-md flex items-center justify-center"
-                          style={{
-                            backgroundColor: isSelected ? HARBOR[100] : SLATE[100],
-                            color: isSelected ? HARBOR[600] : ABYSS[400],
-                          }}
+                          className={cn(
+                            "w-8 h-8 rounded-md flex items-center justify-center",
+                            isSelected ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
+                          )}
                         >
                           <MapPin className="w-4 h-4" />
                         </span>
                         <div className="flex-1 min-w-0">
-                          <div className="text-sm font-medium" style={{ color: isSelected ? HARBOR[700] : ABYSS[700] }}>
+                          <div className={cn("text-sm font-medium", isSelected ? "text-accent" : "text-foreground")}>
                             {loc.name}
                           </div>
                           {loc.zone && (
-                            <div className="text-xs" style={{ color: isSelected ? HARBOR[500] : ABYSS[400] }}>
+                            <div className={cn("text-xs", isSelected ? "text-accent/80" : "text-muted-foreground")}>
                               {loc.zone}
                             </div>
                           )}
                         </div>
                         {loc.code && (
                           <span
-                            className="text-xs font-mono px-1.5 py-0.5 rounded"
-                            style={{
-                              backgroundColor: isSelected ? HARBOR[100] : SLATE[100],
-                              color: isSelected ? HARBOR[700] : ABYSS[500],
-                            }}
+                            className={cn(
+                              "text-xs font-mono px-1.5 py-0.5 rounded",
+                              isSelected ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
+                            )}
                           >
                             {loc.code}
                           </span>
                         )}
                         {isSelected && (
-                          <Check className="w-4 h-4" style={{ color: HARBOR[600] }} />
+                          <Check className="w-4 h-4 text-accent" />
                         )}
                       </button>
                     )
@@ -1259,7 +1255,7 @@ function LocationPicker({
                 </div>
               ))}
               {filteredLocations.length === 0 && (
-                <div className="px-3 py-8 text-center text-sm" style={{ color: ABYSS[400] }}>
+                <div className="px-3 py-8 text-center text-sm text-muted-foreground">
                   No locations found
                 </div>
               )}
@@ -2780,7 +2776,7 @@ function EHSChat({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="p-2 rounded-lg transition-colors hover:bg-surface-hover">
-                <Sparkles className="w-4 h-4" style={{ color: SLATE[400] }} />
+                <Sparkles className="w-4 h-4 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
@@ -2793,7 +2789,7 @@ function EHSChat({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="p-2 rounded-lg transition-colors hover:bg-surface-hover">
-                <Settings className="w-4 h-4" style={{ color: SLATE[400] }} />
+                <Settings className="w-4 h-4 text-muted-foreground" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
@@ -2805,7 +2801,7 @@ function EHSChat({
           </DropdownMenu>
 
           <button onClick={() => setIsFullscreen(!isFullscreen)} className="p-2 rounded-lg transition-colors hover:bg-surface-hover">
-            {isFullscreen ? <Minimize2 className="w-4 h-4" style={{ color: SLATE[400] }} /> : <Maximize2 className="w-4 h-4" style={{ color: SLATE[400] }} />}
+            {isFullscreen ? <Minimize2 className="w-4 h-4 text-muted-foreground" /> : <Maximize2 className="w-4 h-4 text-muted-foreground" />}
           </button>
         </div>
       </div>

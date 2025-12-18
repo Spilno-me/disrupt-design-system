@@ -17,7 +17,6 @@ import {
   SUNRISE,
   DEEP_CURRENT,
   ALIAS,
-  RADIUS,
 } from "@/constants/designTokens"
 import {
   AlertTriangle,
@@ -120,13 +119,13 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
       {/* Avatar with dashed ring for agent */}
       <div className="relative flex-shrink-0 w-8 h-8">
         <div
-          className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden"
-          style={{
-            backgroundColor: isUser ? CORAL[50] : WAVE[50],
-          }}
+          className={cn(
+            "w-8 h-8 rounded-full flex items-center justify-center overflow-hidden",
+            isUser ? "bg-destructive/10" : "bg-accent/10"
+          )}
         >
           {isUser ? (
-            <User className="w-4 h-4" style={{ color: DUSK_REEF[500] }} />
+            <User className="w-4 h-4 text-foreground" />
           ) : (
             <AgentLogo className="w-6 h-6" />
           )}
@@ -150,12 +149,10 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
       <div className="flex flex-col gap-2">
         {/* Message bubble */}
         <div
-          className="px-4 py-3"
-          style={{
-            backgroundColor: isUser ? CORAL[50] : DUSK_REEF[50],
-            color: DUSK_REEF[500],
-            borderRadius: isUser ? `${RADIUS.md} ${RADIUS.md} ${RADIUS.xs} ${RADIUS.md}` : `${RADIUS.md} ${RADIUS.md} ${RADIUS.md} ${RADIUS.xs}`,
-          }}
+          className={cn(
+            "px-4 py-3 text-foreground",
+            isUser ? "bg-destructive/10 rounded-t-md rounded-bl-xs rounded-br-md" : "bg-accent/10 rounded-t-md rounded-bl-md rounded-br-xs"
+          )}
         >
           <p className="text-sm whitespace-pre-line">
             {message.content}
@@ -461,10 +458,7 @@ function EHSChatSimple({
       >
         {/* Avatar with dashed ring */}
         <div className="relative w-9 h-9">
-          <div
-            className="w-9 h-9 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: WAVE[50] }}
-          >
+          <div className="w-9 h-9 rounded-full flex items-center justify-center bg-accent/10">
             <AgentLogo className="w-7 h-7" />
           </div>
           <svg className="absolute -inset-1 w-[44px] h-[44px]" viewBox="0 0 44 44">
@@ -480,8 +474,8 @@ function EHSChatSimple({
           </svg>
         </div>
         <div>
-          <h3 className="font-semibold text-sm" style={{ color: ALIAS.text.primary }}>EHS Assistant</h3>
-          <p className="text-xs" style={{ color: DEEP_CURRENT[500] }}>Online</p>
+          <h3 className="font-semibold text-sm text-foreground">EHS Assistant</h3>
+          <p className="text-xs text-accent">Online</p>
         </div>
       </div>
 
@@ -499,8 +493,8 @@ function EHSChatSimple({
 
         {isThinking && (
           <div className="flex items-center gap-2 ml-11">
-            <Loader2 className="w-4 h-4 animate-spin" style={{ color: DEEP_CURRENT[500] }} />
-            <span className="text-sm" style={{ color: ALIAS.text.secondary }}>Thinking...</span>
+            <Loader2 className="w-4 h-4 animate-spin text-accent" />
+            <span className="text-sm text-muted-foreground">Thinking...</span>
           </div>
         )}
 
