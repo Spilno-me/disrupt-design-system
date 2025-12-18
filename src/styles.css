@@ -372,6 +372,66 @@ h1.dds-brand-hero-title,
   --brand-dusk-reef-800: #262033;
   --brand-dusk-reef-900: #13101A;
 
+  /* SLATE - Neutral Gray Scale (Tailwind-compatible) */
+  --brand-slate-50: #F8FAFC;
+  --brand-slate-100: #F1F5F9;
+  --brand-slate-200: #E2E8F0;
+  --brand-slate-300: #CBD5E1;
+  --brand-slate-400: #94A3B8;
+  --brand-slate-500: #64748B;
+  --brand-slate-600: #475569;
+  --brand-slate-700: #334155;
+  --brand-slate-800: #1E293B;
+  --brand-slate-900: #0F172A;
+
+  /* STATUS COLORS - Coral Scale (for semantic error states) */
+  --brand-coral-50: #FEF2F2;
+  --brand-coral-100: #FEE2E2;
+  --brand-coral-200: #FECACA;
+  --brand-coral-300: #FCA5A5;
+  --brand-coral-400: #F87171;
+  --brand-coral-500: #F70D1A;
+  --brand-coral-600: #DC2626;
+  --brand-coral-700: #B91C1C;
+  --brand-coral-800: #991B1B;
+  --brand-coral-900: #7F1D1D;
+
+  /* STATUS COLORS - Harbor Scale (for semantic success states) */
+  --brand-harbor-50: #F0FDF4;
+  --brand-harbor-100: #DCFCE7;
+  --brand-harbor-200: #BBF7D0;
+  --brand-harbor-300: #86EFAC;
+  --brand-harbor-400: #4ADE80;
+  --brand-harbor-500: #22C55E;
+  --brand-harbor-600: #16A34A;
+  --brand-harbor-700: #15803D;
+  --brand-harbor-800: #166534;
+  --brand-harbor-900: #14532D;
+
+  /* STATUS COLORS - Sunrise Scale (for semantic warning states) */
+  --brand-sunrise-50: #FFFBEB;
+  --brand-sunrise-100: #FEF3C7;
+  --brand-sunrise-200: #FDE68A;
+  --brand-sunrise-300: #FCD34D;
+  --brand-sunrise-400: #FBBF24;
+  --brand-sunrise-500: #EAB308;
+  --brand-sunrise-600: #CA8A04;
+  --brand-sunrise-700: #A16207;
+  --brand-sunrise-800: #854D0E;
+  --brand-sunrise-900: #713F12;
+
+  /* STATUS COLORS - Wave Scale (for semantic info states) */
+  --brand-wave-50: #EFF6FF;
+  --brand-wave-100: #DBEAFE;
+  --brand-wave-200: #BFDBFE;
+  --brand-wave-300: #93C5FD;
+  --brand-wave-400: #60A5FA;
+  --brand-wave-500: #3B82F6;
+  --brand-wave-600: #2563EB;
+  --brand-wave-700: #1D4ED8;
+  --brand-wave-800: #1E40AF;
+  --brand-wave-900: #1E3A8A;
+
   /* Other Brand Primitives */
   --brand-red-coral: #F70D1A;
   --brand-tide-foam: #FBFBF3;
@@ -443,6 +503,13 @@ h1.dds-brand-hero-title,
   --alias-overlay-light: rgba(251, 251, 243, 0.3);
   --alias-overlay-dark: rgba(0, 0, 0, 0.5);
   --alias-overlay-dark-strong: rgba(0, 0, 0, 0.8);
+
+  /* Grid Background */
+  --alias-grid-color: rgba(180, 180, 180, 0.4);
+
+  /* Gradients */
+  --alias-gradient-subtle: linear-gradient(0deg, var(--brand-deep-current-50) 0%, var(--brand-white) 100%);
+  --alias-gradient-header: linear-gradient(180deg, var(--brand-white) 0%, rgba(251, 251, 243, 0.9) 100%);
 
   /* ============================================================ */
   /* COMPONENT CSS VARIABLES                                      */
@@ -723,37 +790,111 @@ h1.dds-brand-hero-title,
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  /* --ring: Auto-generated from designTokens.ts via tokens.css */
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* ============================================================ */
+  /* DARK MODE TOKEN SYSTEM v2                                    */
+  /* Uses Scale Inversion: Dark = 950 - Light                     */
+  /* All values reference --brand-* primitives (2-tier arch)      */
+  /* ============================================================ */
+
+  /* --- BACKGROUND HIERARCHY (Scale Inversion) --- */
+  /* Light 50 → Dark 900, Light 100 → Dark 800, etc. */
+  --background: var(--brand-abyss-900);           /* page background */
+  --card: var(--brand-abyss-800);                 /* surface/card */
+  --popover: var(--brand-abyss-800);              /* popover surface */
+  --muted: var(--brand-dusk-reef-900);            /* muted background */
+  --accent: var(--brand-abyss-700);               /* elevated/hover surfaces */
+
+  /* --- TEXT HIERARCHY (Light values for dark backgrounds) --- */
+  /* Primary text: slate-100 (NOT white - maintains warmth) */
+  --foreground: var(--brand-slate-100);           /* text.primary */
+  --card-foreground: var(--brand-slate-100);      /* text on cards */
+  --popover-foreground: var(--brand-slate-100);   /* text on popovers */
+  --muted-foreground: var(--brand-dusk-reef-300); /* text.secondary */
+  --accent-foreground: var(--brand-slate-100);    /* text on accent bg */
+
+  /* --- PRIMARY/SECONDARY (Interactive elements) --- */
+  --primary: var(--brand-slate-100);              /* primary interactive */
+  --primary-foreground: var(--brand-abyss-500);   /* text.inverse */
+  --secondary: var(--brand-abyss-700);            /* secondary bg */
+  --secondary-foreground: var(--brand-slate-100); /* secondary text */
+
+  /* --- BORDER HIERARCHY (Scale Inversion) --- */
+  /* Light 300 → Dark 600 */
+  --border: var(--brand-slate-600);               /* border.default */
+  --input: var(--brand-abyss-800);                /* input background */
+
+  /* --- STATUS COLORS (1 step LIGHTER, not inverted) --- */
+  --destructive: var(--brand-coral-400);          /* error - brighter for dark */
+
+  /* --- CHART COLORS (kept for compatibility) --- */
+  --chart-1: var(--brand-wave-400);               /* info */
+  --chart-2: var(--brand-harbor-400);             /* success */
+  --chart-3: var(--brand-sunrise-400);            /* warning */
+  --chart-4: var(--brand-dusk-reef-400);          /* purple accent */
+  --chart-5: var(--brand-coral-400);              /* error */
+
+  /* --- SIDEBAR (follows same pattern) --- */
+  --sidebar: var(--brand-abyss-800);              /* sidebar bg */
+  --sidebar-foreground: var(--brand-slate-100);   /* sidebar text */
+  --sidebar-primary: var(--brand-deep-current-400); /* sidebar accent */
+  --sidebar-primary-foreground: var(--brand-slate-100);
+  --sidebar-accent: var(--brand-abyss-700);       /* sidebar hover */
+  --sidebar-accent-foreground: var(--brand-slate-100);
+  --sidebar-border: var(--brand-abyss-700);       /* sidebar borders */
+  --sidebar-ring: var(--brand-slate-500);         /* focus ring */
+
+  /* --- SEMANTIC ALIAS OVERRIDES --- */
+  /* Background aliases */
+  --color-page: var(--brand-abyss-900);
+  --color-surface: var(--brand-abyss-800);
+  --color-surface-hover: var(--brand-abyss-700);
+  --color-elevated: var(--brand-abyss-700);
+  --color-muted-bg: var(--brand-dusk-reef-900);
+  --color-inverse-bg: var(--brand-white);
+  --color-accent-bg: var(--brand-deep-current-900);  /* Scale Inversion: Light 50 → Dark 900 */
+
+  /* Text aliases */
+  --color-primary: var(--brand-slate-100);
+  --color-secondary: var(--brand-dusk-reef-300);
+  --color-tertiary: var(--brand-dusk-reef-400);
+  --color-disabled: var(--brand-dusk-reef-600);
+  --color-inverse: var(--brand-abyss-500);
+  --color-text-accent: var(--brand-deep-current-300);
+
+  /* Border aliases */
+  --color-default: var(--brand-slate-600);
+  --color-subtle: var(--brand-abyss-800);
+  --color-strong: var(--brand-abyss-600);
+
+  /* Status aliases (1 step lighter) */
+  --color-error: var(--brand-coral-400);
+  --color-success: var(--brand-harbor-400);
+  --color-warning: var(--brand-sunrise-400);
+  --color-info: var(--brand-wave-400);
+
+  /* Interactive aliases */
+  --color-link: var(--brand-deep-current-400);
+  --color-link-hover: var(--brand-deep-current-300);
+  --color-accent-strong: var(--brand-deep-current-400);
+
+  /* Focus ring aliases (1 step lighter for dark mode visibility) */
+  --alias-border-focus: var(--brand-deep-current-400);
+  --color-focus: var(--brand-deep-current-400);
+  --input-border-focus: var(--alias-border-focus);
+
+  /* Overlay aliases */
+  --alias-overlay-light: rgba(12, 13, 18, 0.6);  /* Dark overlay for dark mode */
+  --alias-bg-accent: var(--brand-deep-current-800);  /* Darker accent bg */
+
+  /* Grid background - lighter for visibility on dark backgrounds */
+  --alias-grid-color: rgba(100, 120, 140, 0.3);
+
+  /* Gradient aliases */
+  --alias-gradient-subtle: linear-gradient(0deg, var(--brand-deep-current-900) 0%, var(--brand-abyss-800) 100%);
+  --alias-gradient-header: linear-gradient(180deg, var(--brand-abyss-800) 0%, var(--brand-abyss-900) 100%);
+
+  /* Header overrides */
+  --header-bg: var(--brand-abyss-800);
 }
 
 /* Brand colors */

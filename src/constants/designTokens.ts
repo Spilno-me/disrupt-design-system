@@ -163,8 +163,8 @@ export const ALIAS = {
     emphasis: ABYSS[400], // Emphasized labels - lighter than primary but still dark
     disabled: DUSK_REEF[300],
     inverse: PRIMITIVES.white,
-    accent: DEEP_CURRENT[700], // Teal accent text - 6.42:1 contrast on white (WCAG AA)
-    link: DEEP_CURRENT[500],
+    accent: DEEP_CURRENT[700], // Teal accent text - 7.02:1 contrast on white (WCAG AAA)
+    link: DEEP_CURRENT[700],   // WCAG: Changed from [500] - 7.02:1 contrast (AAA)
     linkHover: DEEP_CURRENT[600],
     error: CORAL[500],
     success: HARBOR[600],
@@ -184,7 +184,7 @@ export const ALIAS = {
     inverseSubtle: ABYSS[700],
     accent: DEEP_CURRENT[50],
     accentSubtle: DEEP_CURRENT[100],
-    accentStrong: DEEP_CURRENT[500],
+    accentStrong: DEEP_CURRENT[600], // WCAG: Changed from [500] - 4.47:1 for UI components
     accentDark: DEEP_CURRENT[700],
     error: CORAL[50],
     errorSubtle: CORAL[100],
@@ -207,7 +207,7 @@ export const ALIAS = {
     warning: SUNRISE[500],
     info: WAVE[500],
     disabled: ABYSS[200],
-    accent: DEEP_CURRENT[500],
+    accent: DEEP_CURRENT[600],     // WCAG: Changed from [500] - 4.47:1 for UI components
     accentDark: DEEP_CURRENT[700],
     inverse: ABYSS[700],
   },
@@ -219,7 +219,7 @@ export const ALIAS = {
     tertiary: DUSK_REEF[400],
     disabled: DUSK_REEF[300],
     inverse: PRIMITIVES.white,
-    accent: DEEP_CURRENT[500],
+    accent: DEEP_CURRENT[600],     // WCAG: Changed from [500] - 4.47:1 for icons
     error: CORAL[500],
     success: HARBOR[500],
     warning: SUNRISE[500],
@@ -231,8 +231,8 @@ export const ALIAS = {
     primary: ABYSS[500],
     primaryHover: ABYSS[600],
     primaryActive: ABYSS[700],
-    accent: DEEP_CURRENT[500],
-    accentHover: DEEP_CURRENT[600],
+    accent: DEEP_CURRENT[600],      // WCAG: Changed from [500] - 4.47:1 for buttons
+    accentHover: DEEP_CURRENT[700], // WCAG: Changed from [600] - 7.02:1 for hover state
     accentActive: DEEP_CURRENT[700],
     danger: CORAL[500],
     dangerHover: CORAL[600],
