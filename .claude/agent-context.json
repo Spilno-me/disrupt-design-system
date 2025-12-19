@@ -496,7 +496,7 @@
       },
       "testIdProgress": {
         "ready": 10,
-        "todo": 7,
+        "todo": 6,
         "na": 2
       },
       "missingExports": {
@@ -598,6 +598,7 @@
     "syncAll": "npm run sync-components && npm run sync-docs && npm run validate-context"
   },
   "lazyLoad": {
+    "componentDev": ".claude/component-dev-rules.md",
     "colorMatrix": ".claude/color-matrix.json",
     "contrastMatrix": ".claude/contrast-matrix.json",
     "tokens": ".claude/tokens-reference.json",

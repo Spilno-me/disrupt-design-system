@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 /**
- * Validates agent-context.json against its schema
+ * DDS Agent Context Validator
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ * Validates .claude/agent-context.json - the single source of truth for DDS.
+ *
+ * DESIGN PRINCIPLE: Self-documenting validation
+ * - Valid values are read FROM the JSON (testIdLegend, statusLegend)
+ * - No hardcoded enums that drift from source
+ * - Cross-validates counts (testIdProgress vs actual)
  *
  * Usage: npm run validate-context
- *
- * This script performs basic validation without requiring ajv dependency.
- * For full JSON Schema validation, install ajv: npm i -D ajv
  */
 
 import { readFileSync, existsSync } from 'fs'
@@ -18,114 +23,188 @@ const ROOT = join(__dirname, '..')
 const CONTEXT_PATH = join(ROOT, '.claude', 'agent-context.json')
 const SCHEMA_PATH = join(ROOT, '.claude', 'agent-context.schema.json')
 const TAILWIND_PRESET_PATH = join(ROOT, 'tailwind-preset.js')
+const COMPONENTS_DIR = join(ROOT, 'src', 'components')
 
-// ANSI colors
-const RED = '\x1b[31m'
-const GREEN = '\x1b[32m'
-const YELLOW = '\x1b[33m'
-const RESET = '\x1b[0m'
+// ═══════════════════════════════════════════════════════════════════════════
+// ANSI Formatting
+// ═══════════════════════════════════════════════════════════════════════════
 
-function log(color, symbol, message) {
-  console.log(`${color}${symbol}${RESET} ${message}`)
+const COLORS = {
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  cyan: '\x1b[36m',
+  dim: '\x1b[2m',
+  reset: '\x1b[0m',
+  bold: '\x1b[1m',
 }
 
+const log = {
+  error: (msg) => console.log(`${COLORS.red}✗${COLORS.reset} ${msg}`),
+  success: (msg) => console.log(`${COLORS.green}✓${COLORS.reset} ${msg}`),
+  warn: (msg) => console.log(`${COLORS.yellow}⚠${COLORS.reset} ${msg}`),
+  info: (msg) => console.log(`${COLORS.cyan}→${COLORS.reset} ${msg}`),
+  dim: (msg) => console.log(`${COLORS.dim}${msg}${COLORS.reset}`),
+  section: (title) => console.log(`\n${COLORS.bold}${title}${COLORS.reset}`),
+}
+
+const LINE = '─'.repeat(60)
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Validation Functions
+// ═══════════════════════════════════════════════════════════════════════════
+
 /**
- * Extract valid Tailwind classes from tailwind-preset.js safelist
+ * Extract valid Tailwind classes from safelist
  */
 function extractValidTailwindClasses() {
-  if (!existsSync(TAILWIND_PRESET_PATH)) {
-    return null // Can't validate without preset
-  }
+  if (!existsSync(TAILWIND_PRESET_PATH)) return null
 
   const content = readFileSync(TAILWIND_PRESET_PATH, 'utf8')
-
-  // Extract SAFELIST array
   const safelistMatch = content.match(/const SAFELIST\s*=\s*\[([\s\S]*?)\]/m)
   if (!safelistMatch) return null
 
-  // Extract class names from the array
   const classes = new Set()
   const classMatches = safelistMatch[1].matchAll(/'([^']+)'/g)
   for (const match of classMatches) {
     classes.add(match[1])
   }
-
   return classes
 }
 
-function validateBasicStructure(context, schema) {
+/**
+ * Validate component registry
+ * Key insight: Read valid values FROM the JSON's legends, not hardcoded
+ */
+function validateComponents(context) {
   const errors = []
+  const warnings = []
+  const registry = context.components?.registry || {}
+  const uiComponents = registry.ui || {}
 
-  // Check required top-level properties
-  const required = schema.required || []
-  for (const prop of required) {
-    if (!(prop in context)) {
-      errors.push(`Missing required property: ${prop}`)
-    }
-  }
+  // SELF-DOCUMENTING: Extract valid values from the JSON's own legends
+  // Legends are at components.registry.statusLegend, not stabilization
+  const statusLegend = registry.statusLegend || {}
+  const testIdLegend = registry.testIdLegend || {}
 
-  // Validate version format
-  if (context.version && !/^\d+\.\d+\.\d+$/.test(context.version)) {
-    errors.push(`Invalid version format: ${context.version} (expected semver)`)
-  }
-
-  // Validate component statuses and testId
-  const validStatuses = ['STABILIZED', 'FROZEN', 'TODO', 'UTILITY', 'DOMAIN']
+  const validStatuses = Object.keys(statusLegend)
+  const validTestIds = Object.keys(testIdLegend)
   const validTypes = ['ATOM', 'MOLECULE', 'UTILITY']
-  const validTestId = ['ready', 'TODO', 'N/A']
-  const registry = context.components?.registry?.ui || {}
 
-  for (const [name, def] of Object.entries(registry)) {
-    if (def.status && !validStatuses.includes(def.status)) {
-      errors.push(`Invalid status "${def.status}" for component ${name}`)
+  // Track actual counts for cross-validation
+  const testIdCounts = { ready: 0, todo: 0, na: 0, 'data-slot': 0 }
+
+  for (const [name, def] of Object.entries(uiComponents)) {
+    // Status validation
+    if (def.status && validStatuses.length > 0 && !validStatuses.includes(def.status)) {
+      errors.push({
+        component: name,
+        field: 'status',
+        value: def.status,
+        expected: validStatuses,
+      })
     }
-    if (!def.path) {
-      errors.push(`Missing path for component ${name}`)
-    }
+
+    // Type validation
     if (!def.type) {
-      errors.push(`Missing type (ATOM/MOLECULE/UTILITY) for component ${name}`)
+      errors.push({ component: name, field: 'type', value: 'MISSING', expected: validTypes })
     } else if (!validTypes.includes(def.type)) {
-      errors.push(`Invalid type "${def.type}" for component ${name}`)
+      errors.push({ component: name, field: 'type', value: def.type, expected: validTypes })
     }
+
+    // Path validation
+    if (!def.path) {
+      errors.push({ component: name, field: 'path', value: 'MISSING', expected: ['relative path'] })
+    } else {
+      // Verify file exists
+      const fullPath = join(COMPONENTS_DIR, def.path)
+      if (!existsSync(fullPath)) {
+        warnings.push(`${name}: file not found at ${def.path}`)
+      }
+    }
+
+    // testId validation - use self-documented valid values
     if (!def.testId) {
-      errors.push(`Missing testId status for component ${name}`)
-    } else if (!validTestId.includes(def.testId)) {
-      errors.push(`Invalid testId "${def.testId}" for component ${name}`)
+      errors.push({ component: name, field: 'testId', value: 'MISSING', expected: validTestIds })
+    } else if (validTestIds.length > 0 && !validTestIds.includes(def.testId)) {
+      errors.push({ component: name, field: 'testId', value: def.testId, expected: validTestIds })
+    } else {
+      // Count for cross-validation
+      const key = def.testId === 'TODO' ? 'todo' : def.testId === 'N/A' ? 'na' : def.testId
+      if (key in testIdCounts) testIdCounts[key]++
     }
   }
 
-  // Validate color hex values and Tailwind classes
+  // Cross-validate testIdProgress counts
+  const declaredProgress = registry.testIdProgress || {}
+  const countMismatches = []
+
+  if (declaredProgress.ready !== undefined && declaredProgress.ready !== testIdCounts.ready) {
+    countMismatches.push(`testIdProgress.ready: declared ${declaredProgress.ready}, actual ${testIdCounts.ready}`)
+  }
+  if (declaredProgress.todo !== undefined && declaredProgress.todo !== testIdCounts.todo) {
+    countMismatches.push(`testIdProgress.todo: declared ${declaredProgress.todo}, actual ${testIdCounts.todo}`)
+  }
+  if (declaredProgress.na !== undefined && declaredProgress.na !== testIdCounts.na) {
+    countMismatches.push(`testIdProgress.na: declared ${declaredProgress.na}, actual ${testIdCounts.na}`)
+  }
+
+  return { errors, warnings, testIdCounts, countMismatches, validStatuses, validTestIds }
+}
+
+/**
+ * Validate color definitions
+ */
+function validateColors(context) {
+  const errors = []
+  const warnings = []
   const validTailwindClasses = extractValidTailwindClasses()
   const colorGroups = ['brand', 'semantic', 'surfaces', 'text', 'border']
-  const invalidClasses = []
 
   for (const group of colorGroups) {
     const colors = context.colors?.[group] || {}
     for (const [name, def] of Object.entries(colors)) {
+      // Hex format validation
       if (def.hex && !/^#[0-9A-Fa-f]{6}$/.test(def.hex)) {
-        errors.push(`Invalid hex color "${def.hex}" in colors.${group}.${name}`)
+        errors.push(`Invalid hex "${def.hex}" in colors.${group}.${name}`)
       }
 
-      // Validate Tailwind classes if we have the safelist
+      // Tailwind class validation (warnings only)
       if (validTailwindClasses && def.class) {
         const classes = def.class.split(' ')
         for (const cls of classes) {
           if (!validTailwindClasses.has(cls)) {
-            invalidClasses.push(`${cls} (in colors.${group}.${name})`)
+            warnings.push(`${cls} (in colors.${group}.${name})`)
           }
         }
       }
     }
   }
 
-  // Report invalid Tailwind classes as warnings (not errors)
-  if (invalidClasses.length > 0) {
-    console.log(`${YELLOW}⚠${RESET} Tailwind classes not in safelist (may still work):`)
-    invalidClasses.forEach(cls => console.log(`    ${cls}`))
-    console.log('')
+  return { errors, warnings }
+}
+
+/**
+ * Validate basic structure
+ */
+function validateStructure(context, schema) {
+  const errors = []
+
+  // Required properties
+  const required = schema.required || ['version', 'meta', 'criticalRules', 'colors', 'shadows', 'components']
+  for (const prop of required) {
+    if (!(prop in context)) {
+      errors.push(`Missing required property: ${prop}`)
+    }
   }
 
-  // Validate progress numbers
+  // Version format
+  if (context.version && !/^\d+\.\d+\.\d+$/.test(context.version)) {
+    errors.push(`Invalid version format: ${context.version} (expected semver X.Y.Z)`)
+  }
+
+  // Progress numbers
   const progress = context.components?.stabilization?.progress
   if (progress) {
     if (typeof progress.stabilized !== 'number' || progress.stabilized < 0) {
@@ -135,67 +214,106 @@ function validateBasicStructure(context, schema) {
       errors.push('Invalid progress.total value')
     }
     if (progress.stabilized > progress.total) {
-      errors.push('progress.stabilized cannot exceed progress.total')
+      errors.push(`progress.stabilized (${progress.stabilized}) exceeds progress.total (${progress.total})`)
     }
   }
 
   return errors
 }
 
-function main() {
-  console.log('\nValidating agent-context.json...\n')
+// ═══════════════════════════════════════════════════════════════════════════
+// Main Execution
+// ═══════════════════════════════════════════════════════════════════════════
 
-  // Check files exist
+function main() {
+  const startTime = Date.now()
+
+  console.log(`\n${COLORS.bold}DDS Agent Context Validator${COLORS.reset}`)
+  console.log(LINE)
+
+  // ─── File Checks ───────────────────────────────────────────────────────────
   if (!existsSync(CONTEXT_PATH)) {
-    log(RED, '✗', `Context file not found: ${CONTEXT_PATH}`)
+    log.error(`Context file not found: ${CONTEXT_PATH}`)
     process.exit(1)
   }
 
-  if (!existsSync(SCHEMA_PATH)) {
-    log(YELLOW, '⚠', `Schema file not found: ${SCHEMA_PATH}`)
-    log(YELLOW, '⚠', 'Running basic validation only...')
+  let schema = { required: [] }
+  if (existsSync(SCHEMA_PATH)) {
+    try {
+      schema = JSON.parse(readFileSync(SCHEMA_PATH, 'utf8'))
+    } catch (e) {
+      log.warn(`Schema parse error: ${e.message}`)
+    }
   }
 
-  // Parse JSON files
-  let context, schema
+  // ─── Parse Context ─────────────────────────────────────────────────────────
+  let context
   try {
     context = JSON.parse(readFileSync(CONTEXT_PATH, 'utf8'))
   } catch (e) {
-    log(RED, '✗', `Failed to parse context JSON: ${e.message}`)
+    log.error(`Failed to parse JSON: ${e.message}`)
     process.exit(1)
   }
 
-  try {
-    schema = JSON.parse(readFileSync(SCHEMA_PATH, 'utf8'))
-  } catch (e) {
-    log(YELLOW, '⚠', `Failed to parse schema JSON: ${e.message}`)
-    schema = { required: ['version', 'meta', 'criticalRules', 'colors', 'shadows', 'components'] }
+  // ─── Run Validations ───────────────────────────────────────────────────────
+  const structureErrors = validateStructure(context, schema)
+  const componentResult = validateComponents(context)
+  const colorResult = validateColors(context)
+
+  // ─── Report Warnings ───────────────────────────────────────────────────────
+  const allWarnings = [
+    ...componentResult.warnings,
+    ...colorResult.warnings,
+    ...componentResult.countMismatches,
+  ]
+
+  if (allWarnings.length > 0) {
+    log.section('Warnings')
+    allWarnings.forEach((w) => log.warn(w))
   }
 
-  // Run validation
-  const errors = validateBasicStructure(context, schema)
+  // ─── Report Errors ─────────────────────────────────────────────────────────
+  const allErrors = [
+    ...structureErrors,
+    ...colorResult.errors,
+    ...componentResult.errors.map((e) => {
+      const expected = Array.isArray(e.expected) ? e.expected.join(' | ') : e.expected
+      return `${e.component}.${e.field}: "${e.value}" (expected: ${expected})`
+    }),
+  ]
 
-  if (errors.length > 0) {
-    console.log('Validation errors:')
-    errors.forEach(err => log(RED, '  ✗', err))
+  if (allErrors.length > 0) {
+    log.section('Errors')
+    allErrors.forEach((e) => log.error(e))
     console.log('')
-    log(RED, '✗', `${errors.length} error(s) found`)
+    log.error(`${allErrors.length} error(s) found`)
+    console.log(LINE)
+    log.dim(`Completed in ${Date.now() - startTime}ms`)
+    console.log('')
     process.exit(1)
   }
 
-  // Summary
+  // ─── Success Summary ───────────────────────────────────────────────────────
+  log.section('Summary')
+
   const componentCount = Object.keys(context.components?.registry?.ui || {}).length
   const stabilized = context.components?.stabilization?.progress?.stabilized || 0
   const total = context.components?.stabilization?.progress?.total || 0
-  const testIdProgress = context.components?.registry?.testIdProgress || {}
+  const percentage = context.components?.stabilization?.progress?.percentage || '0%'
+  const { testIdCounts, validStatuses, validTestIds } = componentResult
 
-  log(GREEN, '✓', `Version: ${context.version}`)
-  log(GREEN, '✓', `Components: ${componentCount} registered`)
-  log(GREEN, '✓', `Stabilization: ${stabilized}/${total} (${context.components?.stabilization?.progress?.percentage || '0%'})`)
-  log(GREEN, '✓', `testId coverage: ${testIdProgress.ready || 0} ready, ${testIdProgress.todo || 0} TODO, ${testIdProgress.na || 0} N/A`)
-  log(GREEN, '✓', `Colors: ${Object.keys(context.colors || {}).length - 1} groups defined`)
-  console.log('')
-  log(GREEN, '✓', 'agent-context.json is valid!')
+  log.success(`Version: ${context.version}`)
+  log.success(`Components: ${componentCount} registered`)
+  log.success(`Stabilization: ${stabilized}/${total} (${percentage})`)
+  log.success(`testId: ${testIdCounts.ready} ready, ${testIdCounts['data-slot']} data-slot, ${testIdCounts.todo} TODO, ${testIdCounts.na} N/A`)
+  log.success(`Colors: ${Object.keys(context.colors || {}).length} groups defined`)
+
+  log.dim(`\nValid statuses: ${validStatuses.join(', ')}`)
+  log.dim(`Valid testIds: ${validTestIds.join(', ')}`)
+
+  console.log(LINE)
+  log.success('agent-context.json is valid!')
+  log.dim(`Completed in ${Date.now() - startTime}ms`)
   console.log('')
 }
 

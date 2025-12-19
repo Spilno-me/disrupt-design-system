@@ -38,6 +38,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
+    "health": "npm run typecheck && npm run lint && npm run validate:tokens && npm run validate-context",
     "update-docs": "node scripts/update-claude-docs.js",
     "validate-context": "node scripts/validate-agent-context.js",
     "sync-components": "node scripts/sync-component-status.js",
@@ -50,7 +51,7 @@
     "version:major": "node scripts/bump-version.js major"
   },
   "simple-git-hooks": {
-    "pre-commit": "node scripts/update-claude-docs.js && npx lint-staged"
+    "pre-commit": "npm run health && node scripts/update-claude-docs.js && npx lint-staged"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
