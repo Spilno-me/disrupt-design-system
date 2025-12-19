@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
-import { SHADOWS, RADIUS, ALIAS } from '../../constants/designTokens'
+import { SHADOWS, RADIUS } from '../../constants/designTokens'
 import { FileText, Flag, Barrel, Search, ClipboardCheck, Clock } from 'lucide-react'
 
 // =============================================================================
@@ -48,33 +48,38 @@ const quickFilterItemVariants = cva(
 
 /**
  * Get variant-specific colors for the Quick Filter item
- * Uses ALIAS tokens from the design system
+ * Uses CSS variables that auto-switch between light and dark mode
+ * Contrast ratios verified against WCAG AA requirements
  */
 const getVariantColors = (variant: QuickFilterVariant) => {
   const variantMap = {
     default: {
-      border: ALIAS.icon.secondary,  // Match icon color
-      badge: ALIAS.text.secondary,
-      text: ALIAS.text.secondary,
-      icon: ALIAS.icon.secondary,
+      border: 'var(--qf-default-border)',
+      badge: 'var(--qf-default-badge-bg)',
+      badgeText: 'var(--qf-default-badge-text)',
+      text: 'var(--qf-default-text)',
+      icon: 'var(--qf-default-icon)',
     },
     info: {
-      border: ALIAS.brand.secondary,  // Match icon color
-      badge: ALIAS.interactive.accentHover,
-      text: ALIAS.interactive.accentHover,
-      icon: ALIAS.brand.secondary,
+      border: 'var(--qf-info-border)',
+      badge: 'var(--qf-info-badge-bg)',
+      badgeText: 'var(--qf-info-badge-text)',
+      text: 'var(--qf-info-text)',
+      icon: 'var(--qf-info-icon)',
     },
     warning: {
-      border: ALIAS.aging.primary,  // Match icon color
-      badge: ALIAS.aging.dark,
-      text: ALIAS.aging.dark,
-      icon: ALIAS.aging.primary,
+      border: 'var(--qf-warning-border)',
+      badge: 'var(--qf-warning-badge-bg)',
+      badgeText: 'var(--qf-warning-badge-text)',
+      text: 'var(--qf-warning-text)',
+      icon: 'var(--qf-warning-icon)',
     },
     primary: {
-      border: ALIAS.brand.primary,  // Match icon color
-      badge: ALIAS.brand.primary,
-      text: ALIAS.brand.primary,
-      icon: ALIAS.brand.primary,
+      border: 'var(--qf-primary-border)',
+      badge: 'var(--qf-primary-badge-bg)',
+      badgeText: 'var(--qf-primary-badge-text)',
+      text: 'var(--qf-primary-text)',
+      icon: 'var(--qf-primary-icon)',
     },
   }
   return variantMap[variant]
@@ -184,7 +189,7 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
                 className="absolute min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold px-1"
                 style={{
                   backgroundColor: colors.badge,
-                  color: 'var(--foreground)',  // Uses CSS variable for dark mode
+                  color: colors.badgeText,  // WCAG AA compliant badge text color
                   border: '2px solid var(--color-surface)',  // Uses CSS variable for dark mode
                   borderRadius: RADIUS.full,
                   top: '-6px',

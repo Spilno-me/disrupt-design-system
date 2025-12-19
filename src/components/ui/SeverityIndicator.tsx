@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Flame } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { ALIAS } from '../../constants/designTokens'
 
 // =============================================================================
 // TYPES
@@ -22,6 +21,15 @@ export interface SeverityIndicatorProps extends React.HTMLAttributes<HTMLDivElem
 // CONFIGURATION
 // =============================================================================
 
+/**
+ * CSS Custom Property mappings for severity colors.
+ * Uses theme-aware tokens that automatically switch between light/dark mode.
+ *
+ * Dark mode behavior (per design system rules):
+ * - Fill colors: 1 step lighter (500→400) for visibility
+ * - Stroke colors: Scale inversion (50→900) for dark backgrounds
+ * - Text: Always white on filled badges for contrast
+ */
 interface SeverityConfig {
   fill: string
   stroke: string
@@ -31,44 +39,53 @@ interface SeverityConfig {
   label: string
 }
 
+/**
+ * Text color choices based on WCAG contrast requirements:
+ * - Dark fills (red): Use white text (4.79:1 contrast)
+ * - Bright fills (orange, yellow, green): Use dark text for readability
+ * - Teal fill: Use dark text (white only gets 3.57:1)
+ *
+ * WCAG AA requires 4.5:1 for normal text, 3:1 for UI components.
+ * These small badges with "!", "!!" text need readable contrast.
+ */
 const severityConfig: Record<SeverityLevel, SeverityConfig> = {
   critical: {
-    fill: ALIAS.status.error,
-    stroke: ALIAS.background.error,
+    fill: 'var(--color-error)',
+    stroke: 'var(--color-error-light)',
     text: '',
-    textColor: ALIAS.text.inverse,
+    textColor: 'var(--brand-white)',  // White on red: 4.79:1 ✓
     showFlame: true,
     label: 'Critical',
   },
   high: {
-    fill: ALIAS.feature.adapt,    // Orange/warning color
-    stroke: ALIAS.background.warning,
+    fill: 'var(--color-aging)',       // Orange for high priority
+    stroke: 'var(--color-aging-light)',
     text: '!!!',
-    textColor: ALIAS.text.inverse,
+    textColor: 'var(--brand-abyss-900)',  // Dark on orange for contrast
     showFlame: false,
     label: 'High',
   },
   medium: {
-    fill: ALIAS.status.warning,
-    stroke: ALIAS.background.warning,
+    fill: 'var(--color-warning)',
+    stroke: 'var(--color-warning-light)',
     text: '!!',
-    textColor: ALIAS.text.inverse,
+    textColor: 'var(--brand-abyss-900)',  // Dark on yellow for contrast
     showFlame: false,
     label: 'Medium',
   },
   low: {
-    fill: ALIAS.status.success,
-    stroke: ALIAS.background.success,
+    fill: 'var(--color-success)',
+    stroke: 'var(--color-success-light)',
     text: '!',
-    textColor: ALIAS.text.inverse,
+    textColor: 'var(--brand-abyss-900)',  // Dark on green for contrast
     showFlame: false,
     label: 'Low',
   },
   none: {
-    fill: ALIAS.interactive.accent,    // Teal/cyan
-    stroke: ALIAS.background.accent,
+    fill: 'var(--color-accent-strong)',
+    stroke: 'var(--color-accent-bg)',
     text: '--',
-    textColor: ALIAS.interactive.accent,
+    textColor: 'var(--brand-abyss-900)',  // Dark on teal for contrast
     showFlame: false,
     label: 'None',
   },
@@ -180,10 +197,10 @@ export function SeverityIndicator({
       />
       {config.showFlame ? (
         <Flame
-          className="relative z-10 drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]"
+          className="relative z-10"
           size={size === 'sm' ? 12 : 14}
-          color="white"
-          fill="white"
+          color={config.textColor}
+          fill={config.textColor}
           aria-hidden="true"
         />
       ) : (
@@ -192,7 +209,6 @@ export function SeverityIndicator({
           style={{
             color: config.textColor,
             fontSize,
-            textShadow: '0 1px 1px rgba(0,0,0,0.3)',
           }}
         >
           {config.text}

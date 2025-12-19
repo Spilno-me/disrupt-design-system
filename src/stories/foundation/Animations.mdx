@@ -3,11 +3,9 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Sparkles, Clock } from 'lucide-react';
 import {
+  BrandHero,
   InfoBox,
-  CodeBlock,
-} from './DocComponents';
-import { Button } from '../../components/ui/button';
-import {
+  SectionHeader,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
@@ -16,65 +14,21 @@ import {
   RADIUS,
   SLATE,
   SPACING,
-  TRANSITIONS,
-} from '../../constants/designTokens';
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+import { CodeBlock } from './DocComponents';
+import { Button } from '../../components/ui/button';
+import { TRANSITIONS } from '../../constants/designTokens';
 
 <Meta title="Foundation/Design Tokens/Animations" />
 
-{/* Page Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${DUSK_REEF[400]} 0%, ${DUSK_REEF[600]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: SPACING.px.section,
-  marginBottom: SPACING.px.section,
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative background icon */}
-  <div style={{
-    position: 'absolute',
-    right: '40px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    opacity: 0.1,
-    pointerEvents: 'none',
-  }}>
-    <Sparkles size={180} color={PRIMITIVES.white} strokeWidth={1} />
-  </div>
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: SPACING.px.tight,
-      marginBottom: SPACING.px.base,
-    }}>
-      <Sparkles size={28} color={PRIMITIVES.white} />
-    </div>
-
-    <h1 style={{
-      margin: `0 0 ${SPACING.px.base} 0`,
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      color: PRIMITIVES.white,
-    }}>
-      <span>Animations & Transitions</span>
-    </h1>
-
-    <p style={{
-      margin: 0,
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      color: SLATE[300],
-      lineHeight: 1.6,
-      maxWidth: '500px',
-    }}>
-      <span>Motion creates meaning. Consistent timing and easing functions make
-      interactions feel natural and responsive.</span>
-    </p>
-  </div>
-</div>
+{/* Hero Header */}
+<BrandHero
+  title="Animations & Transitions"
+  description="Motion creates meaning. Consistent timing and easing functions make interactions feel natural and responsive."
+  gradient="purple"
+  decorativeIcon={<Sparkles size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
 <InfoBox variant="tip">
   <strong>Rule:</strong> Use shorter durations for small elements (150-200ms),
@@ -100,7 +54,7 @@ import {
     <div
       key={item.name}
       style={{
-        background: PRIMITIVES.white,
+        background: PRIMITIVES.softLinen,
         borderRadius: RADIUS.lg,
         padding: '24px',
         border: `1px solid ${SLATE[200]}`,
@@ -190,7 +144,7 @@ import {
   <div
     style={{
       width: '200px',
-      background: PRIMITIVES.white,
+      background: PRIMITIVES.softLinen,
       borderRadius: RADIUS.lg,
       padding: '20px',
       border: `1px solid ${SLATE[200]}`,
@@ -273,7 +227,7 @@ import {
 <div
   id="easing-demo-container"
   style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.lg,
     padding: '24px',
     border: `1px solid ${SLATE[200]}`,
@@ -321,7 +275,7 @@ import {
         <code style={{
           width: '100px',
           fontSize: '12px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: item.highlight ? DEEP_CURRENT[600] : DUSK_REEF[500],
           fontWeight: item.highlight ? 600 : 400,
         }}>{item.name}</code>

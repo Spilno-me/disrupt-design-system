@@ -14,47 +14,40 @@ action: block
 
 **🚫 Raw Color Value in Story File Detected**
 
-Stories MUST use design system tokens to accurately reflect the actual component colors.
+Stories MUST use **semantic Tailwind classes** to model best practices for developers.
 
 **Why this is critical for stories:**
 - Stories demonstrate the design system to developers
-- Raw colors don't reflect actual token values
-- Updates to design tokens won't show in Storybook
-- Misleading color reference for implementers
+- Stories should model what component code looks like
+- Using primitives in stories teaches bad habits
+- Semantic classes ensure dark mode compatibility
 
 **Required approach for stories:**
 
 ```tsx
 // ❌ BAD - Raw hex colors
-const colors = {
-  primary: "#08A4BD",
-  secondary: "#2D3142"
-}
+<div style={{ color: "#08A4BD" }}>
 
-// ✅ GOOD - Design system tokens
-import { DEEP_CURRENT, ABYSS, CORAL, PRIMITIVES } from '@/constants/designTokens'
+// ❌ BAD - Primitive imports (except ColorPalette.stories.tsx)
+import { DEEP_CURRENT } from '@/constants/designTokens'
+<div style={{ color: DEEP_CURRENT[500] }}>
 
-const colors = {
-  primary: DEEP_CURRENT[500],
-  secondary: ABYSS[500]
-}
+// ✅ GOOD - Semantic Tailwind classes
+<div className="text-accent bg-surface border-default">
+<div className="text-error bg-error-light">
+<div className="text-success bg-success-light">
+<IconText iconClassName="text-accent" textClassName="text-primary">
 ```
 
-**Available token imports:**
-```tsx
-import {
-  DEEP_CURRENT,  // Teal scale
-  ABYSS,         // Dark navy scale
-  CORAL,         // Red scale
-  HARBOR,        // Green scale
-  WAVE,          // Blue scale
-  SUNRISE,       // Yellow scale
-  ORANGE,        // Orange scale
-  DUSK_REEF,     // Purple scale
-  SLATE,         // Gray scale
-  PRIMITIVES,    // white, black, cream, linkedIn
-  ALIAS          // Semantic tokens
-} from '@/constants/designTokens'
-```
+**Available semantic classes:**
 
-**Stories are documentation** - they must show the real design system!
+| Category | Classes |
+|----------|---------|
+| Text | `text-primary`, `text-secondary`, `text-muted`, `text-accent`, `text-error`, `text-success` |
+| Background | `bg-surface`, `bg-page`, `bg-muted-bg`, `bg-accent-strong`, `bg-error-light` |
+| Border | `border-default`, `border-accent`, `border-error` |
+| Status | `text-error`, `text-success`, `text-warning`, `text-info` |
+
+**ONE Exception:** `ColorPalette.stories.tsx` may import PRIMITIVES to **display** the palette values (documented in the file).
+
+**Stories are documentation** - they must model best practices!

@@ -1,36 +1,51 @@
 # Typography Rules - App UI Hierarchy
 
-**Agent-only. Apply to all app UI typography decisions. Apps use ONLY Fixel.**
+**Agent-only. Apply to all app UI typography decisions.**
 
 ---
 
-## ⛔ FONT RESTRICTION (CRITICAL)
+## Font System
 
-**ONLY Fixel font is allowed. Adding any other font is STRICTLY FORBIDDEN.**
+**Two fonts allowed: Fixel (UI) + JetBrains Mono (code/technical)**
+
+| Font | Tailwind | Use |
+|------|----------|-----|
+| **Fixel** | `font-sans` | All UI text - headings, body, labels |
+| **JetBrains Mono** | `font-mono` | Code snippets, token paths, technical IDs |
 
 ```tsx
-// ❌ FORBIDDEN - Other fonts
-<code className="font-mono">...</code>
-<span style={{ fontFamily: 'monospace' }}>...</span>
-<pre className="font-mono">...</pre>
-<span className="font-serif">...</span>
+// ✅ CORRECT - Fixel for UI
+<h1 className="text-2xl font-semibold">Dashboard</h1>
+<p className="text-sm">Description text</p>
 
-// ✅ ALLOWED - Fixel only
-<code className="text-sm">...</code>
-<span className="text-xs text-muted">...</span>
-<pre className="text-sm whitespace-pre">...</pre>
+// ✅ CORRECT - JetBrains Mono for code/technical
+<code className="font-mono text-sm">GRADIENTS.heroOverlay</code>
+<span className="font-mono text-xs">TXN-2024-00123</span>
+<pre className="font-mono text-sm">const x = 1;</pre>
 ```
 
-| Font | Status | Notes |
-|------|--------|-------|
-| **Fixel** | ✅ ALLOWED | Only permitted font |
-| `font-mono` | ⛔ FORBIDDEN | Use `text-sm` styling instead |
-| `font-serif` | ⛔ FORBIDDEN | Never use |
-| `font-display` | ⛔ FORBIDDEN | Website only, not app |
-| Any Google Font | ⛔ FORBIDDEN | Do not import |
-| System fonts | ⛔ FORBIDDEN | No fallbacks to other families |
+### `font-mono` Allowed ONLY For:
+| Use Case | Example |
+|----------|---------|
+| Code snippets | `const x = 1;` |
+| Token paths | `GRADIENTS.heroOverlay` |
+| Technical IDs | `TXN-2024-00123` |
+| API responses | `{ "status": "ok" }` |
+| Timestamps (tabular) | `14:32:05` |
 
-**Why?** Consistent brand identity. Fixel is our design system font for all UI.
+### ⛔ FORBIDDEN Fonts
+| Font | Status |
+|------|--------|
+| `font-serif` | ⛔ Never use |
+| `font-display` | ⛔ Website only, not app |
+| Any other font | ⛔ Do not import |
+
+```tsx
+// ❌ WRONG - font-mono for non-code content
+<h1 className="font-mono">Dashboard</h1>
+<label className="font-mono">Email</label>
+<p className="font-mono">Description text</p>
+```
 
 ---
 
@@ -82,7 +97,7 @@ Desktop body text: max-w-prose (65ch)
 
 ---
 
-## App Typography Scale (Fixel Only)
+## App Typography Scale
 
 | Role | Size | Weight | Tailwind | Use Case |
 |------|------|--------|----------|----------|
@@ -91,7 +106,9 @@ Desktop body text: max-w-prose (65ch)
 | **Card Title** | 16px | 600 | `text-base font-semibold` | Card headers, subsections |
 | **Body** | 14px | 400 | `text-sm` | Primary content, descriptions |
 | **Body Emphasis** | 14px | 500 | `text-sm font-medium` | Labels, important body text |
+| **Code** | 14px | 400 | `font-mono text-sm` | Code snippets, token paths |
 | **Caption** | 12px | 400 | `text-xs` | Metadata, help text, timestamps |
+| **Code Small** | 12px | 400 | `font-mono text-xs` | Inline code, technical IDs |
 | **Overline** | 11px | 500 | `text-[11px] font-medium uppercase tracking-wide` | Category labels, badges |
 
 ---
@@ -377,4 +394,7 @@ CAPTION:        text-xs text-muted
 TABLE HEADER:   text-xs font-medium text-muted uppercase tracking-wide
 BUTTON:         text-sm font-medium
 BADGE:          text-xs font-medium
+CODE BLOCK:     font-mono text-sm
+INLINE CODE:    font-mono text-xs
+TOKEN PATH:     font-mono text-xs text-muted
 ```

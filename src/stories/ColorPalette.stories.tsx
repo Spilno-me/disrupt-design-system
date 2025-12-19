@@ -1,5 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ColorPalette } from './ColorPalette';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  WAVE,
+  SUNRISE,
+  HARBOR,
+  SLATE,
+  PRIMITIVES,
+} from '@/constants/designTokens';
+
+/**
+ * Color Palette Stories
+ *
+ * NOTE: This documentation story intentionally imports PRIMITIVES (Tier 1)
+ * to display the raw color values. This is the ONE exception where primitives
+ * are used - to document the palette itself. Components should use ALIAS tokens.
+ */
 
 const meta = {
   title: 'Foundation/Colors',
@@ -15,16 +34,16 @@ type Story = StoryObj<typeof meta>;
 export const AbyssScale: Story = {
   args: {
     colors: [
-      { name: 'Abyss 50', hex: '#E8E9EB', usage: 'Lightest' },
-      { name: 'Abyss 100', hex: '#D1D3D7', usage: '' },
-      { name: 'Abyss 200', hex: '#A3A7AF', usage: '' },
-      { name: 'Abyss 300', hex: '#757B87', usage: '' },
-      { name: 'Abyss 400', hex: '#474F5F', usage: '' },
-      { name: 'Abyss 500', hex: '#2D3142', usage: 'Base' },
-      { name: 'Abyss 600', hex: '#252836', usage: '' },
-      { name: 'Abyss 700', hex: '#1D1F2A', usage: '' },
-      { name: 'Abyss 800', hex: '#14161E', usage: '' },
-      { name: 'Abyss 900', hex: '#0C0D12', usage: 'Darkest' },
+      { name: 'Abyss 50', hex: ABYSS[50], usage: 'Lightest' },
+      { name: 'Abyss 100', hex: ABYSS[100], usage: '' },
+      { name: 'Abyss 200', hex: ABYSS[200], usage: '' },
+      { name: 'Abyss 300', hex: ABYSS[300], usage: '' },
+      { name: 'Abyss 400', hex: ABYSS[400], usage: '' },
+      { name: 'Abyss 500', hex: ABYSS[500], usage: 'Base' },
+      { name: 'Abyss 600', hex: ABYSS[600], usage: '' },
+      { name: 'Abyss 700', hex: ABYSS[700], usage: '' },
+      { name: 'Abyss 800', hex: ABYSS[800], usage: '' },
+      { name: 'Abyss 900', hex: ABYSS[900], usage: 'Darkest' },
     ],
     variant: 'scale',
   },
@@ -33,16 +52,16 @@ export const AbyssScale: Story = {
 export const DeepCurrentScale: Story = {
   args: {
     colors: [
-      { name: 'Deep Current 50', hex: '#E6F7FA', usage: 'Lightest' },
-      { name: 'Deep Current 100', hex: '#CCEFF5', usage: '' },
-      { name: 'Deep Current 200', hex: '#99DFEB', usage: '' },
-      { name: 'Deep Current 300', hex: '#66CFE1', usage: '' },
-      { name: 'Deep Current 400', hex: '#33BFD7', usage: '' },
-      { name: 'Deep Current 500', hex: '#08A4BD', usage: 'Base' },
-      { name: 'Deep Current 600', hex: '#068397', usage: '' },
-      { name: 'Deep Current 700', hex: '#056271', usage: '' },
-      { name: 'Deep Current 800', hex: '#03424B', usage: '' },
-      { name: 'Deep Current 900', hex: '#022125', usage: 'Darkest' },
+      { name: 'Deep Current 50', hex: DEEP_CURRENT[50], usage: 'Lightest' },
+      { name: 'Deep Current 100', hex: DEEP_CURRENT[100], usage: '' },
+      { name: 'Deep Current 200', hex: DEEP_CURRENT[200], usage: '' },
+      { name: 'Deep Current 300', hex: DEEP_CURRENT[300], usage: '' },
+      { name: 'Deep Current 400', hex: DEEP_CURRENT[400], usage: '' },
+      { name: 'Deep Current 500', hex: DEEP_CURRENT[500], usage: 'Base' },
+      { name: 'Deep Current 600', hex: DEEP_CURRENT[600], usage: '' },
+      { name: 'Deep Current 700', hex: DEEP_CURRENT[700], usage: '' },
+      { name: 'Deep Current 800', hex: DEEP_CURRENT[800], usage: '' },
+      { name: 'Deep Current 900', hex: DEEP_CURRENT[900], usage: 'Darkest' },
     ],
     variant: 'scale',
   },
@@ -51,16 +70,16 @@ export const DeepCurrentScale: Story = {
 export const DuskReefScale: Story = {
   args: {
     colors: [
-      { name: 'Dusk Reef 50', hex: '#EFEDF3', usage: 'Lightest' },
-      { name: 'Dusk Reef 100', hex: '#DFDBE7', usage: '' },
-      { name: 'Dusk Reef 200', hex: '#BFB7CF', usage: '' },
-      { name: 'Dusk Reef 300', hex: '#9F93B7', usage: '' },
-      { name: 'Dusk Reef 400', hex: '#7F6F9F', usage: '' },
-      { name: 'Dusk Reef 500', hex: '#5E4F7E', usage: 'Base' },
-      { name: 'Dusk Reef 600', hex: '#4B3F65', usage: '' },
-      { name: 'Dusk Reef 700', hex: '#382F4C', usage: '' },
-      { name: 'Dusk Reef 800', hex: '#262033', usage: '' },
-      { name: 'Dusk Reef 900', hex: '#13101A', usage: 'Darkest' },
+      { name: 'Dusk Reef 50', hex: DUSK_REEF[50], usage: 'Lightest' },
+      { name: 'Dusk Reef 100', hex: DUSK_REEF[100], usage: '' },
+      { name: 'Dusk Reef 200', hex: DUSK_REEF[200], usage: '' },
+      { name: 'Dusk Reef 300', hex: DUSK_REEF[300], usage: '' },
+      { name: 'Dusk Reef 400', hex: DUSK_REEF[400], usage: '' },
+      { name: 'Dusk Reef 500', hex: DUSK_REEF[500], usage: 'Base' },
+      { name: 'Dusk Reef 600', hex: DUSK_REEF[600], usage: '' },
+      { name: 'Dusk Reef 700', hex: DUSK_REEF[700], usage: '' },
+      { name: 'Dusk Reef 800', hex: DUSK_REEF[800], usage: '' },
+      { name: 'Dusk Reef 900', hex: DUSK_REEF[900], usage: 'Darkest' },
     ],
     variant: 'scale',
   },
@@ -69,11 +88,11 @@ export const DuskReefScale: Story = {
 export const BrandPrimitives: Story = {
   args: {
     colors: [
-      { name: 'Red Coral', hex: '#F70D1A', usage: 'Brand red, CTAs' },
-      { name: 'Tide Foam', hex: '#FBFBF3', usage: 'Cream background' },
-      { name: 'Slate', hex: '#CBD5E1', usage: 'Borders' },
-      { name: 'White', hex: '#FFFFFF', usage: 'Surface' },
-      { name: 'Black', hex: '#000000', usage: 'Absolute dark' },
+      { name: 'Red Coral', hex: CORAL[500], usage: 'Brand red, CTAs' },
+      { name: 'Tide Foam', hex: PRIMITIVES.cream, usage: 'Cream background' },
+      { name: 'Slate', hex: SLATE[300], usage: 'Borders' },
+      { name: 'White', hex: PRIMITIVES.white, usage: 'Surface' },
+      { name: 'Black', hex: PRIMITIVES.black, usage: 'Absolute dark' },
     ],
     variant: 'neutral',
   },
@@ -82,10 +101,10 @@ export const BrandPrimitives: Story = {
 export const StatusColors: Story = {
   args: {
     colors: [
-      { name: 'Wave', hex: '#3B82F6', usage: 'Info blue' },
-      { name: 'Tide Alert', hex: '#F70D1A', usage: 'Error red' },
-      { name: 'Sunrise', hex: '#EAB308', usage: 'Warning yellow' },
-      { name: 'Harbor', hex: '#22C55E', usage: 'Success green' },
+      { name: 'Wave', hex: WAVE[500], usage: 'Info blue' },
+      { name: 'Tide Alert', hex: CORAL[500], usage: 'Error red' },
+      { name: 'Sunrise', hex: SUNRISE[500], usage: 'Warning yellow' },
+      { name: 'Harbor', hex: HARBOR[500], usage: 'Success green' },
     ],
     variant: 'semantic',
   },

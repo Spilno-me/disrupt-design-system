@@ -2,6 +2,11 @@
 import './styles.css'
 import './components/ui/HeroParticles.css'
 
+// Import JetBrains Mono font (monospace for code/technical content)
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
+import '@fontsource/jetbrains-mono/600.css'
+
 // Export all components
 export { Button, buttonVariants } from './components/ui/button'
 export { Badge, badgeVariants } from './components/ui/badge'
@@ -373,8 +378,6 @@ export { useHeroTitleRotation } from './hooks/useHeroTitleRotation'
 export { useHeaderContrast, useContrastColor } from './hooks/useHeaderContrast'
 
 // Export visualization components
-export { TokenTree3D, transformTokensToTree } from './components/visualization/TokenTree3D'
-export type { TreeNode, TreeNodeType, TreeConfig, TokenTree3DProps } from './components/visualization/TokenTree3D'
 export { DependencyGraph } from './components/visualization/DependencyGraph'
 export type { GraphNode, GraphLink, DependencyData, GraphFilters, DependencyGraphProps } from './components/visualization/DependencyGraph'
 

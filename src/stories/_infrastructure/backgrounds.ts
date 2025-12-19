@@ -2,35 +2,40 @@
  * Story Background Configuration
  *
  * Single source of truth for Storybook background colors.
- * Only 2 backgrounds: light and dark - auto-switches with theme toggle.
+ * Uses ALIAS (semantic) tokens - never primitives.
  *
  * To change backgrounds, edit the values HERE.
  */
 
-import { ABYSS, PRIMITIVES } from '@/constants/designTokens'
+import { ALIAS } from '@/constants/designTokens'
 
 // =============================================================================
-// BACKGROUND VALUES (from design tokens)
+// BACKGROUND VALUES (from semantic ALIAS tokens)
 // =============================================================================
 
 export const STORY_BACKGROUNDS = {
-  /** Light mode background - warm cream instead of pure white */
-  light: PRIMITIVES.cream,           // #FBFBF3 (tide-foam)
+  /** Light mode background - soft linen surface (default) */
+  light: ALIAS.background.surface,       // #EBF9FF (softLinen)
 
-  /** Dark mode background - softer dark for shadow visibility */
-  dark: ABYSS[800],                  // #14161E (one step lighter than 900)
+  /** Dark mode background - inverse subtle for shadow visibility */
+  dark: ALIAS.background.inverseSubtle,  // #1D1F2A (ABYSS[700])
 } as const
 
 // =============================================================================
-// STORYBOOK CONFIG - Backgrounds disabled, controlled by CSS
+// STORYBOOK CONFIG - Enable backgrounds with soft linen as default
 // =============================================================================
 
 /**
- * Disable Storybook's backgrounds addon - we control via CSS.
- * The background auto-switches when you toggle the theme.
+ * Storybook backgrounds addon configuration.
+ * Soft linen is the default background for consistent story presentation.
  */
 export const STORYBOOK_BACKGROUNDS = {
-  disable: true,
+  default: 'soft-linen',
+  values: [
+    { name: 'soft-linen', value: ALIAS.background.surface },
+    { name: 'white', value: ALIAS.text.inverse },
+    { name: 'dark', value: ALIAS.background.inverseSubtle },
+  ],
 } as const
 
 // =============================================================================

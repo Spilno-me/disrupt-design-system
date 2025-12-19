@@ -49,7 +49,7 @@ export const TOKENS = {
     teal: DEEP_CURRENT[500],
     purple: DUSK_REEF[500],
     cream: PRIMITIVES.cream,
-    white: PRIMITIVES.white,
+    white: PRIMITIVES.softLinen,
     border: SLATE[200],
     borderStrong: SLATE[300],
   },
@@ -66,7 +66,7 @@ const styles = {
     text: ABYSS[500],
     textMuted: DUSK_REEF[500],
     textSubtle: SLATE[500],
-    bg: PRIMITIVES.white,
+    bg: PRIMITIVES.softLinen,
     bgSubtle: SLATE[50],
     border: SLATE[200],
     borderStrong: SLATE[300],
@@ -224,7 +224,7 @@ export const ColorSwatch: React.FC<ColorSwatchProps> = ({
   return (
     <div
       style={{
-        background: PRIMITIVES.white,
+        background: PRIMITIVES.softLinen,
         borderRadius: RADIUS.md,
         overflow: 'hidden',
         boxShadow: SHADOWS.sm,
@@ -279,7 +279,7 @@ export const ColorSwatch: React.FC<ColorSwatchProps> = ({
         <div
           style={{
             fontSize: '11px',
-            fontFamily: 'ui-monospace, monospace',
+            fontFamily: '"JetBrains Mono", ui-monospace, monospace',
             color: styles.colors.textSubtle,
             marginBottom: usage ? '4px' : 0,
           }}
@@ -417,14 +417,14 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens }) => (
                   padding: '2px 6px',
                   borderRadius: '4px',
                   fontSize: '12px',
-                  fontFamily: 'ui-monospace, monospace',
+                  fontFamily: '"JetBrains Mono", ui-monospace, monospace',
                 }}
               >
                 {token.name}
               </code>
             </td>
             <td style={{ padding: '12px 16px' }}>
-              <code style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: styles.colors.textSubtle }}>
+              <code style={{ fontSize: '12px', fontFamily: '"JetBrains Mono", ui-monospace, monospace', color: styles.colors.textSubtle }}>
                 {token.value}
               </code>
             </td>
@@ -437,7 +437,7 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens }) => (
                     padding: '2px 6px',
                     borderRadius: '4px',
                     fontSize: '12px',
-                    fontFamily: 'ui-monospace, monospace',
+                    fontFamily: '"JetBrains Mono", ui-monospace, monospace',
                   }}
                 >
                   {token.tailwind}
@@ -475,7 +475,7 @@ export const ShadowCard: React.FC<ShadowCardProps> = ({
 }) => (
   <div
     style={{
-      background: PRIMITIVES.white,
+      background: PRIMITIVES.softLinen,
       borderRadius: RADIUS.lg,
       padding: '24px',
       boxShadow: value,
@@ -535,6 +535,162 @@ export const ShadowCard: React.FC<ShadowCardProps> = ({
 );
 
 // =============================================================================
+// HIGHLIGHT CARD
+// =============================================================================
+
+interface HighlightCardProps {
+  name: string;
+  value: string;
+  usage: string;
+  examples: string;
+}
+
+/**
+ * HighlightCard - Displays highlight tokens on a dark background
+ * where the inset white glow is visible.
+ */
+export const HighlightCard: React.FC<HighlightCardProps> = ({
+  name,
+  value,
+  usage,
+  examples,
+}) => (
+  <div
+    style={{
+      background: ABYSS[500],
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      boxShadow: value,
+      border: `1px solid ${ABYSS[400]}`,
+      position: 'relative',
+    }}
+  >
+    <div
+      style={{
+        fontSize: '18px',
+        fontWeight: 700,
+        color: PRIMITIVES.white,
+        fontFamily: styles.fontFamily,
+        marginBottom: '4px',
+      }}
+    >
+      {name}
+    </div>
+    <div
+      style={{
+        fontSize: '13px',
+        color: SLATE[300],
+        fontFamily: styles.fontFamily,
+        marginBottom: '12px',
+      }}
+    >
+      {usage}
+    </div>
+    <div
+      style={{
+        fontSize: '12px',
+        color: SLATE[400],
+        fontFamily: styles.fontFamily,
+      }}
+    >
+      <strong style={{ color: SLATE[300] }}>Examples:</strong> {examples}
+    </div>
+  </div>
+);
+
+// =============================================================================
+// DEPTH CARD (Combined Shadow + Highlight)
+// =============================================================================
+
+interface DepthCardProps {
+  name: string;
+  shadow: string;
+  highlight: string;
+  description: string;
+  isRecommended?: boolean;
+}
+
+/**
+ * DepthCard - Demonstrates realistic depth with BOTH shadow and highlight
+ * Shows how combining shadow below + highlight above creates natural lighting.
+ */
+export const DepthCard: React.FC<DepthCardProps> = ({
+  name,
+  shadow,
+  highlight,
+  description,
+  isRecommended,
+}) => (
+  <div
+    style={{
+      background: SLATE[100],
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      boxShadow: `${shadow}, ${highlight}`,
+      border: isRecommended ? `2px solid ${DEEP_CURRENT[500]}` : `1px solid ${SLATE[200]}`,
+      position: 'relative',
+    }}
+  >
+    {isRecommended && (
+      <div
+        style={{
+          position: 'absolute',
+          top: '-10px',
+          right: '16px',
+          background: DEEP_CURRENT[500],
+          color: PRIMITIVES.white,
+          padding: '4px 12px',
+          borderRadius: RADIUS.full,
+          fontSize: '11px',
+          fontWeight: 600,
+          fontFamily: styles.fontFamily,
+        }}
+      >
+        REALISTIC
+      </div>
+    )}
+    <div
+      style={{
+        fontSize: '18px',
+        fontWeight: 700,
+        color: isRecommended ? DEEP_CURRENT[500] : styles.colors.text,
+        fontFamily: styles.fontFamily,
+        marginBottom: '8px',
+      }}
+    >
+      {name}
+    </div>
+    <div
+      style={{
+        fontSize: '13px',
+        color: styles.colors.textMuted,
+        fontFamily: styles.fontFamily,
+        marginBottom: '16px',
+      }}
+    >
+      {description}
+    </div>
+    <div
+      style={{
+        display: 'flex',
+        gap: '16px',
+        fontSize: '11px',
+        fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      }}
+    >
+      <div style={{ color: ABYSS[400] }}>
+        <div style={{ color: styles.colors.textMuted, fontFamily: styles.fontFamily, marginBottom: '2px' }}>Shadow</div>
+        {shadow.split(',')[0]}...
+      </div>
+      <div style={{ color: ABYSS[400] }}>
+        <div style={{ color: styles.colors.textMuted, fontFamily: styles.fontFamily, marginBottom: '2px' }}>Highlight</div>
+        {highlight.split(',')[0]}...
+      </div>
+    </div>
+  </div>
+);
+
+// =============================================================================
 // NAVIGATION CARD
 // =============================================================================
 
@@ -564,7 +720,7 @@ export const NavCard: React.FC<NavCardProps> = ({
       onClick={handleClick}
       style={{
         display: 'block',
-        background: PRIMITIVES.white,
+        background: PRIMITIVES.softLinen,
         borderRadius: RADIUS.lg,
         padding: '24px',
         boxShadow: SHADOWS.md,
@@ -645,7 +801,7 @@ export const RadiusShowcase: React.FC<RadiusShowcaseProps> = ({
 }) => (
   <div
     style={{
-      background: PRIMITIVES.white,
+      background: PRIMITIVES.softLinen,
       borderRadius: RADIUS.md,
       padding: '16px',
       border: `1px solid ${SLATE[200]}`,
@@ -677,7 +833,7 @@ export const RadiusShowcase: React.FC<RadiusShowcaseProps> = ({
       <div
         style={{
           fontSize: '12px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: styles.colors.textSubtle,
         }}
       >
@@ -738,7 +894,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'tsx' }) 
         <span
           style={{
             fontSize: '11px',
-            fontFamily: 'ui-monospace, monospace',
+            fontFamily: '"JetBrains Mono", ui-monospace, monospace',
             color: SLATE[400],
             textTransform: 'uppercase',
           }}
@@ -780,13 +936,126 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'tsx' }) 
           padding: '16px',
           overflow: 'auto',
           fontSize: '13px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: SLATE[300],
           lineHeight: 1.6,
         }}
       >
         <code>{code}</code>
       </pre>
+    </div>
+  );
+};
+
+// =============================================================================
+// GRADIENT SWATCH
+// =============================================================================
+
+interface GradientSwatchProps {
+  name: string;
+  value: string;
+  tokenPath: string;
+  description?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export const GradientSwatch: React.FC<GradientSwatchProps> = ({
+  name,
+  value,
+  tokenPath,
+  description,
+  size = 'md',
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  const sizes = {
+    sm: { height: '60px', padding: '8px' },
+    md: { height: '80px', padding: '12px' },
+    lg: { height: '120px', padding: '16px' },
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(tokenPath);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <div
+      style={{
+        background: PRIMITIVES.softLinen,
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+        boxShadow: SHADOWS.sm,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div
+        onClick={handleCopy}
+        style={{
+          background: value,
+          height: sizes[size].height,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          position: 'relative',
+        }}
+        title={`Click to copy ${tokenPath}`}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: copied ? 'rgba(0,0,0,0.2)' : 'transparent',
+            transition: 'background 150ms ease',
+          }}
+        >
+          {copied ? (
+            <Check size={18} color={PRIMITIVES.white} />
+          ) : (
+            <Copy size={14} color={PRIMITIVES.white} style={{ opacity: 0.7 }} />
+          )}
+        </div>
+      </div>
+      <div style={{ padding: sizes[size].padding }}>
+        <div
+          style={{
+            fontSize: '13px',
+            fontWeight: 600,
+            color: styles.colors.text,
+            fontFamily: styles.fontFamily,
+            marginBottom: '2px',
+          }}
+        >
+          {name}
+        </div>
+        <div
+          style={{
+            fontSize: '11px',
+            fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+            color: styles.colors.textSubtle,
+            marginBottom: description ? '4px' : 0,
+            wordBreak: 'break-all',
+          }}
+        >
+          {tokenPath}
+        </div>
+        {description && (
+          <div
+            style={{
+              fontSize: '11px',
+              color: styles.colors.textMuted,
+              fontFamily: styles.fontFamily,
+            }}
+          >
+            {description}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -802,4 +1071,5 @@ export default {
   NavCard,
   RadiusShowcase,
   CodeBlock,
+  GradientSwatch,
 };

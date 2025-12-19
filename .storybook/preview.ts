@@ -5,6 +5,11 @@ import { create } from 'storybook/theming'
 import { STORYBOOK_BACKGROUNDS } from '../src/stories/_infrastructure/backgrounds'
 import '../src/styles.css'
 
+// Import JetBrains Mono font for code blocks
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
+import '@fontsource/jetbrains-mono/600.css'
+
 // Suppress Storybook internal deprecation warnings
 const originalWarn = console.warn
 console.warn = (...args: unknown[]) => {
@@ -25,7 +30,7 @@ console.warn = (...args: unknown[]) => {
 const docsTheme = create({
   base: 'light',
   fontBase: '"Fixel", "Segoe UI", "Helvetica Neue", Arial, sans-serif',
-  fontCode: '"Fira Code", "Monaco", "Consolas", monospace',
+  fontCode: '"JetBrains Mono", "Fira Code", "Monaco", "Consolas", monospace',
 })
 
 const preview: Preview = {

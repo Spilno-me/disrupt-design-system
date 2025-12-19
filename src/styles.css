@@ -29,6 +29,8 @@
   .bg-accent-strong { background-color: var(--color-accent-strong); }
   .text-inverse { color: var(--color-inverse); }
   .text-accent { color: var(--color-text-accent); }
+  /* Always white - for colored status backgrounds (error, success, warning, info) */
+  .text-on-status { color: #FFFFFF; }
 
   /* Hover variants with opacity */
   .hover\:bg-inverse-bg\/90:hover { background-color: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent); }
@@ -195,6 +197,7 @@ h1.dds-brand-hero-title,
   /* Fonts */
   --font-display: "Pilat Extended", "Arial", "sans-serif";
   --font-sans: "Fixel", "system-ui", "sans-serif";
+  --font-mono: "JetBrains Mono", "ui-monospace", "monospace";
 
   /* Custom animations */
   --animate-spin-slow: spin-slow 3s linear infinite;
@@ -239,7 +242,7 @@ h1.dds-brand-hero-title,
 
   /* --- BACKGROUND COLORS --- */
   /* Usage: bg-surface (cards, panels) */
-  --color-surface: #FFFFFF;
+  --color-surface: #EBF9FF;
   /* Usage: bg-surface-hover */
   --color-surface-hover: #E8E9EB;
   /* Usage: bg-surface-active */
@@ -247,7 +250,7 @@ h1.dds-brand-hero-title,
   /* Usage: bg-page (main page background) - same as cream */
   --color-page: #FBFBF3;
   /* Usage: bg-elevated (elevated surfaces) */
-  --color-elevated: #FFFFFF;
+  --color-elevated: #EBF9FF;
   /* Usage: bg-muted-bg (muted backgrounds) */
   --color-muted-bg: #EFEDF3;
   /* Usage: bg-inverse-bg (dark backgrounds) */
@@ -280,8 +283,8 @@ h1.dds-brand-hero-title,
   --color-error-light: #FEF2F2;
   /* Usage: bg-error-muted */
   --color-error-muted: #FEE2E2;
-  /* Usage: bg-error-strong (darker red for buttons, better contrast) */
-  --color-error-strong: #DC2626;
+  /* Usage: bg-error-strong (darker red for buttons, 6.2:1 contrast) */
+  --color-error-strong: #B91C1C;
   /* Usage: bg-success, text-success, border-success */
   --color-success: #22C55E;
   /* Usage: bg-success-light */
@@ -331,6 +334,106 @@ h1.dds-brand-hero-title,
   --color-aging-dark: #EA580C;
   /* Usage: bg-aging-light */
   --color-aging-light: #FFF7ED;
+
+  /* --- QUICKFILTER COMPONENT COLORS --- */
+  /* WCAG AA compliant colors for QuickFilter variants */
+  /* Default variant (gray/purple) - DUSK_REEF[500] = 7.12:1 on white */
+  --qf-default-text: #5E4F7E;
+  --qf-default-icon: #5E4F7E;
+  --qf-default-border: #5E4F7E;
+  --qf-default-badge-bg: #5E4F7E;
+  --qf-default-badge-text: #FFFFFF;
+  /* Info variant (teal) - DEEP_CURRENT[700] for text = 7.02:1, [600] for UI = 4.47:1 */
+  --qf-info-text: #056271;
+  --qf-info-icon: #068397;
+  --qf-info-border: #08A4BD;
+  --qf-info-badge-bg: #068397;
+  --qf-info-badge-text: #FFFFFF;
+  /* Warning variant (orange) - ORANGE[600] = 4.59:1 on white */
+  --qf-warning-text: #EA580C;
+  --qf-warning-icon: #F97316;
+  --qf-warning-border: #F97316;
+  --qf-warning-badge-bg: #EA580C;
+  --qf-warning-badge-text: #FFFFFF;
+  /* Primary variant (dark) - ABYSS[500] = 12.23:1 on white */
+  --qf-primary-text: #2D3142;
+  --qf-primary-icon: #2D3142;
+  --qf-primary-border: #2D3142;
+  --qf-primary-badge-bg: #2D3142;
+  --qf-primary-badge-text: #FFFFFF;
+
+  /* --- EHS CHAT COMPONENT COLORS --- */
+  /* Chat bubble backgrounds and text - Scale Inversion compliant */
+  /* User bubble: CORAL[50] bg, DUSK_REEF[500] text */
+  --ehs-user-bubble-bg: #FEF2F2;
+  --ehs-user-bubble-text: #5E4F7E;
+  /* Agent bubble: DUSK_REEF[50] bg, DUSK_REEF[500] text */
+  --ehs-agent-bubble-bg: #EFEDF3;
+  --ehs-agent-bubble-text: #5E4F7E;
+  /* Avatar backgrounds */
+  --ehs-user-avatar-bg: #FEF2F2;
+  --ehs-agent-avatar-bg: #EFF6FF;
+  /* Avatar icon colors */
+  --ehs-user-avatar-icon: #5E4F7E;
+  --ehs-agent-avatar-icon: #64748B;
+  /* Dashed ring for agent avatar */
+  --ehs-agent-ring: #99DFEB;
+  /* Quick reply buttons */
+  --ehs-quick-reply-bg: #FFFFFF;
+  --ehs-quick-reply-text: #068397;
+  --ehs-quick-reply-border: #66CFE1;
+  /* Step badge */
+  --ehs-step-badge-bg: #CCEFF5;
+  --ehs-step-badge-text: #056271;
+  /* Form labels */
+  --ehs-form-label: #14161E;
+  /* Timestamp */
+  --ehs-timestamp: #7F6F9F;
+  /* Container and structural elements */
+  --ehs-container-bg: #FFFFFF;
+  --ehs-container-border: #CBD5E1;
+  --ehs-header-bg: #FFFFFF;
+  --ehs-input-area-bg: #FFFFFF;
+  --ehs-input-bg: #FFFFFF;
+  --ehs-input-border: #CBD5E1;
+  --ehs-input-text: #14161E;
+  --ehs-input-placeholder: #64748B;
+  /* Action buttons */
+  --ehs-camera-btn-bg: #E8F6FA;
+  --ehs-camera-btn-border: #99DFEB;
+  --ehs-camera-btn-icon: #057A8D;
+  --ehs-mic-btn-bg: #EFEDF3;
+  --ehs-mic-btn-border: #BFB7CF;
+  --ehs-mic-btn-icon: #5E4F7E;
+  --ehs-send-btn-active-bg: #08A4BD;
+  --ehs-send-btn-active-icon: #FFFFFF;
+  --ehs-send-btn-inactive-bg: #F1F5F9;
+  --ehs-send-btn-inactive-icon: #94A3B8;
+  /* Header avatar ring */
+  --ehs-header-avatar-ring: #66CFE1;
+  --ehs-header-avatar-bg: #E8F6FA;
+  /* Status text */
+  --ehs-status-text: #08A4BD;
+  --ehs-title-text: #14161E;
+
+  /* --- ARCHITECTURE DIAGRAM COMPONENT COLORS --- */
+  /* Box backgrounds (light mode: cream-like) */
+  --arch-box-bg: #FAF8F5;
+  --arch-box-text: #2D3142;
+  /* Teal highlight box (Fusion Runtime) */
+  --arch-teal-bg: rgba(8, 164, 189, 0.1);
+  --arch-teal-border: #08A4BD;
+  --arch-teal-text: #068397;
+  /* Purple highlight box (Agent) */
+  --arch-purple-bg: rgba(94, 79, 126, 0.1);
+  --arch-purple-border: #5E4F7E;
+  --arch-purple-text: #5E4F7E;
+  /* Connector lines */
+  --arch-connector: #94A3B8;
+  /* Key principles section */
+  --arch-principles-bg: #FAF8F5;
+  --arch-principles-text: #2D3142;
+  --arch-principles-muted: #5E4F7E;
 
   /* --- UTILITY COLORS --- */
   /* Usage: bg-white, text-white */
@@ -443,11 +546,24 @@ h1.dds-brand-hero-title,
   --brand-wave-800: #1E40AF;
   --brand-wave-900: #1E3A8A;
 
+  /* AGING/URGENT - Orange Scale (for high priority indicators) */
+  --brand-orange-50: #FFF7ED;
+  --brand-orange-100: #FFEDD5;
+  --brand-orange-200: #FED7AA;
+  --brand-orange-300: #FDBA74;
+  --brand-orange-400: #FB923C;
+  --brand-orange-500: #F97316;
+  --brand-orange-600: #EA580C;
+  --brand-orange-700: #C2410C;
+  --brand-orange-800: #9A3412;
+  --brand-orange-900: #7C2D12;
+
   /* Other Brand Primitives */
   --brand-red-coral: #F70D1A;
   --brand-tide-foam: #FBFBF3;
   --brand-slate: #CBD5E1;
   --brand-white: #FFFFFF;
+  --brand-soft-linen: #EBF9FF;
   --brand-black: #000000;
   --brand-wave: #3B82F6;
   --brand-tide-alert: #F70D1A;
@@ -475,9 +591,9 @@ h1.dds-brand-hero-title,
 
   /* Background Colors */
   --alias-bg-page: var(--brand-tide-foam);
-  --alias-bg-surface: var(--brand-white);
+  --alias-bg-surface: var(--brand-soft-linen);
   --alias-bg-surface-hover: var(--brand-abyss-50);
-  --alias-bg-elevated: var(--brand-white);
+  --alias-bg-elevated: var(--brand-soft-linen);
   --alias-bg-muted: var(--brand-dusk-reef-50);
   --alias-bg-inverse: var(--brand-abyss-500);
   --alias-bg-inverse-subtle: var(--brand-abyss-700);
@@ -767,7 +883,7 @@ h1.dds-brand-hero-title,
 
 :root {
   --radius: 0.625rem;
-  --background: var(--brand-tide-foam);  /* Warm cream instead of pure white */
+  --background: var(--brand-soft-linen);  /* Soft linen - primary surface background */
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -878,11 +994,124 @@ h1.dds-brand-hero-title,
   --color-subtle: var(--brand-abyss-700);
   --color-strong: var(--brand-abyss-500);
 
-  /* Status aliases (1 step lighter) */
+  /* Status aliases (1 step lighter for fill colors) */
   --color-error: var(--brand-coral-400);
   --color-success: var(--brand-harbor-400);
   --color-warning: var(--brand-sunrise-400);
   --color-info: var(--brand-wave-400);
+
+  /* Status background aliases (scale inversion: 50→900) */
+  --color-error-light: var(--brand-coral-900);
+  --color-error-muted: var(--brand-coral-800);
+  --color-success-light: var(--brand-harbor-900);
+  --color-success-muted: var(--brand-harbor-800);
+  --color-warning-light: var(--brand-sunrise-900);
+  --color-warning-muted: var(--brand-sunrise-800);
+  --color-info-light: var(--brand-wave-900);
+  --color-info-muted: var(--brand-wave-800);
+
+  /* Aging/urgent aliases (1 step lighter for fill, scale inversion for bg) */
+  --color-aging: var(--brand-orange-400);
+  --color-aging-light: var(--brand-orange-900);
+
+  /* --- QUICKFILTER COMPONENT COLORS (Dark Mode) --- */
+  /* WCAG AA compliant colors for dark backgrounds (ABYSS[700]) */
+  /* Default variant - DUSK_REEF[300] = 5.72:1 on ABYSS[700] */
+  --qf-default-text: #9F93B7;
+  --qf-default-icon: #9F93B7;
+  --qf-default-border: #9F93B7;
+  --qf-default-badge-bg: #5E4F7E;
+  --qf-default-badge-text: #FFFFFF;
+  /* Info variant - DEEP_CURRENT[300] = 9.03:1 on ABYSS[700] */
+  --qf-info-text: #66CFE1;
+  --qf-info-icon: #66CFE1;
+  --qf-info-border: #66CFE1;
+  --qf-info-badge-bg: #08A4BD;
+  --qf-info-badge-text: #FFFFFF;
+  /* Warning variant - ORANGE[400] = ~7.5:1 on ABYSS[700] */
+  --qf-warning-text: #FB923C;
+  --qf-warning-icon: #FB923C;
+  --qf-warning-border: #FB923C;
+  --qf-warning-badge-bg: #F97316;
+  --qf-warning-badge-text: #0C0D12;
+  /* Primary variant - white = 16.38:1 on ABYSS[700] */
+  --qf-primary-text: #FFFFFF;
+  --qf-primary-icon: #FFFFFF;
+  --qf-primary-border: #94A3B8;
+  --qf-primary-badge-bg: #474F5F;
+  --qf-primary-badge-text: #FFFFFF;
+
+  /* --- EHS CHAT COMPONENT COLORS (Dark Mode - Scale Inversion) --- */
+  /* User bubble: CORAL[50→900], text DUSK_REEF[500→300] */
+  --ehs-user-bubble-bg: #7F1D1D;
+  --ehs-user-bubble-text: #9F93B7;
+  /* Agent bubble: DUSK_REEF[50→900], text DUSK_REEF[500→300] */
+  --ehs-agent-bubble-bg: #13101A;
+  --ehs-agent-bubble-text: #9F93B7;
+  /* Avatar backgrounds: Scale Inversion 50→900 */
+  --ehs-user-avatar-bg: #7F1D1D;
+  --ehs-agent-avatar-bg: #1E3A8A;
+  /* Avatar icon colors - lighter for dark backgrounds */
+  --ehs-user-avatar-icon: #BFB7CF;
+  --ehs-agent-avatar-icon: #CBD5E1;
+  /* Dashed ring: DEEP_CURRENT[200→700] */
+  --ehs-agent-ring: #056271;
+  /* Quick reply: Inverted bg, lighter text */
+  --ehs-quick-reply-bg: #252836;
+  --ehs-quick-reply-text: #66CFE1;
+  --ehs-quick-reply-border: #056271;
+  /* Step badge: DEEP_CURRENT[100→800], text[700→200] */
+  --ehs-step-badge-bg: #03424B;
+  --ehs-step-badge-text: #99DFEB;
+  /* Form labels: ABYSS[800]→SLATE[100] */
+  --ehs-form-label: #F1F5F9;
+  /* Timestamp: stays DUSK_REEF[400] per protocol */
+  --ehs-timestamp: #7F6F9F;
+  /* Container and structural elements - Scale Inversion */
+  --ehs-container-bg: #1D1F2A;
+  --ehs-container-border: #475569;
+  --ehs-header-bg: #1D1F2A;
+  --ehs-input-area-bg: #1D1F2A;
+  --ehs-input-bg: #252836;
+  --ehs-input-border: #475569;
+  --ehs-input-text: #F1F5F9;
+  --ehs-input-placeholder: #94A3B8;
+  /* Action buttons - Scale Inversion 50→800 */
+  --ehs-camera-btn-bg: #03424B;
+  --ehs-camera-btn-border: #056271;
+  --ehs-camera-btn-icon: #66CFE1;
+  --ehs-mic-btn-bg: #13101A;
+  --ehs-mic-btn-border: #5E4F7E;
+  --ehs-mic-btn-icon: #9F93B7;
+  --ehs-send-btn-active-bg: #08A4BD;
+  --ehs-send-btn-active-icon: #FFFFFF;
+  --ehs-send-btn-inactive-bg: #374151;
+  --ehs-send-btn-inactive-icon: #6B7280;
+  /* Header avatar ring - Scale Inversion 200→700 */
+  --ehs-header-avatar-ring: #056271;
+  --ehs-header-avatar-bg: #03424B;
+  /* Status text - Scale Inversion 500→300 */
+  --ehs-status-text: #66CFE1;
+  --ehs-title-text: #F1F5F9;
+
+  /* --- ARCHITECTURE DIAGRAM COMPONENT COLORS (Dark Mode - Scale Inversion) --- */
+  /* Box backgrounds: cream[50]→ABYSS[700], text: ABYSS[500]→SLATE[200] */
+  --arch-box-bg: #1D1F2A;
+  --arch-box-text: #E2E8F0;
+  /* Teal highlight box: lighter teal for dark bg */
+  --arch-teal-bg: rgba(102, 207, 225, 0.15);
+  --arch-teal-border: #66CFE1;
+  --arch-teal-text: #66CFE1;
+  /* Purple highlight box: lighter purple for dark bg */
+  --arch-purple-bg: rgba(159, 147, 183, 0.15);
+  --arch-purple-border: #9F93B7;
+  --arch-purple-text: #9F93B7;
+  /* Connector lines: SLATE[400→600] */
+  --arch-connector: #64748B;
+  /* Key principles section */
+  --arch-principles-bg: #1D1F2A;
+  --arch-principles-text: #E2E8F0;
+  --arch-principles-muted: #9F93B7;
 
   /* Interactive aliases */
   --color-link: var(--brand-deep-current-400);

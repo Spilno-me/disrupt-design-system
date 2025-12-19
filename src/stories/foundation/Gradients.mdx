@@ -1,0 +1,545 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Blend, Sparkles, Zap } from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+  GLASS_GRADIENTS,
+  ALIAS,
+} from '../brand/BrandComponents';
+import { CodeBlock } from './DocComponents';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { ElectricInputWrapper } from '../../components/ui/ElectricInput';
+
+<Meta title="Foundation/Design Tokens/Gradients" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Gradients"
+  description="Gradients used in actual DDS components. Each example shows the exact appearance as implemented in the design system."
+  gradient="primary"
+  decorativeIcon={<Blend size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Real Usage Only:</strong> This page documents gradients that are actually implemented in DDS components.
+  Each demo shows the exact gradient as it appears in production.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Button Glass Effect</h2>
+
+<SectionHeader
+  icon={<Sparkles size={20} />}
+  title="GLASS_GRADIENTS.teal + tealGlow"
+  description="Animated glass border effect on Button hover. Uses teal gradient with glow blur for premium feel."
+/>
+
+<div style={{
+  background: ABYSS[500],
+  borderRadius: RADIUS.lg,
+  padding: '48px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    display: 'flex',
+    gap: '16px',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginBottom: '32px',
+  }}>
+    <Button variant="default">Hover Me</Button>
+    <Button variant="accent">Accent Button</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="outline">Outline</Button>
+    <Button variant="destructive">Destructive</Button>
+  </div>
+
+  <div style={{
+    display: 'flex',
+    gap: '16px',
+    justifyContent: 'center',
+  }}>
+    <Button variant="default" effectActive>Always Active</Button>
+    <Button variant="accent" effectActive>Always Active</Button>
+  </div>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '13px',
+      fontWeight: 600,
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      marginBottom: '8px',
+    }}><span>Glass Border</span></div>
+    <code style={{
+      display: 'block',
+      fontSize: '11px',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      color: DEEP_CURRENT[600],
+      marginBottom: '8px',
+    }}>GLASS_GRADIENTS.teal</code>
+    <div style={{
+      fontSize: '12px',
+      color: DUSK_REEF[500],
+      fontFamily: '"Fixel", sans-serif',
+    }}><span>2px animated border with mask-composite for hollow effect</span></div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '13px',
+      fontWeight: 600,
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      marginBottom: '8px',
+    }}><span>Glow Effect</span></div>
+    <code style={{
+      display: 'block',
+      fontSize: '11px',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      color: DEEP_CURRENT[600],
+      marginBottom: '8px',
+    }}>GLASS_GRADIENTS.tealGlow</code>
+    <div style={{
+      fontSize: '12px',
+      color: DUSK_REEF[500],
+      fontFamily: '"Fixel", sans-serif',
+    }}><span>8px blur behind border for soft glow</span></div>
+  </div>
+</div>
+
+<CodeBlock
+  language="tsx"
+  code={`import { Button } from '@adrozdenko/design-system'
+
+// Default hover effect (automatic)
+<Button variant="default">Hover Me</Button>
+
+// Always-active glass effect
+<Button variant="accent" effectActive>Always Active</Button>
+
+// Disable effect
+<Button variant="default" noEffect>No Effect</Button>
+
+// Note: 'link' and 'ghost' variants skip the effect by default`}
+/>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Electric Input Effect</h2>
+
+<SectionHeader
+  icon={<Zap size={20} />}
+  title="ALIAS.electric.* tokens"
+  description="Animated cyan electric border on input focus. Creates an energetic, attention-grabbing effect."
+/>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: '48px',
+  marginBottom: '24px',
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <div style={{
+    maxWidth: '400px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  }}>
+    <div>
+      <label style={{
+        display: 'block',
+        fontSize: '14px',
+        fontWeight: 500,
+        color: ABYSS[500],
+        fontFamily: '"Fixel", sans-serif',
+        marginBottom: '8px',
+      }}><span>Click to focus and see the electric effect</span></label>
+      <ElectricInputWrapper>
+        <Input placeholder="Focus me to see the effect..." />
+      </ElectricInputWrapper>
+    </div>
+
+    <div>
+      <label style={{
+        display: 'block',
+        fontSize: '14px',
+        fontWeight: 500,
+        color: ABYSS[500],
+        fontFamily: '"Fixel", sans-serif',
+        marginBottom: '8px',
+      }}><span>Another input</span></label>
+      <ElectricInputWrapper>
+        <Input placeholder="Try this one too..." />
+      </ElectricInputWrapper>
+    </div>
+  </div>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '12px',
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { name: 'cyan', token: 'ALIAS.electric.cyan', color: ALIAS.electric.cyan },
+    { name: 'cyanBright', token: 'ALIAS.electric.cyanBright', color: ALIAS.electric.cyanBright },
+    { name: 'cyanGlow', token: 'ALIAS.electric.cyanGlow', color: ALIAS.electric.cyanGlow },
+    { name: 'cyanGlowSubtle', token: 'ALIAS.electric.cyanGlowSubtle', color: ALIAS.electric.cyanGlowSubtle },
+  ].map((item) => (
+    <div
+      key={item.name}
+      style={{
+        background: PRIMITIVES.softLinen,
+        borderRadius: RADIUS.md,
+        padding: '16px',
+        border: `1px solid ${SLATE[200]}`,
+        textAlign: 'center',
+      }}
+    >
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: RADIUS.sm,
+        background: item.color,
+        margin: '0 auto 12px',
+        boxShadow: SHADOWS.sm,
+      }} />
+      <div style={{
+        fontSize: '12px',
+        fontWeight: 600,
+        color: ABYSS[500],
+        fontFamily: '"Fixel", sans-serif',
+        marginBottom: '4px',
+      }}><span>{item.name}</span></div>
+      <code style={{
+        fontSize: '10px',
+        fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+        color: SLATE[500],
+        wordBreak: 'break-all',
+      }}>{item.token}</code>
+    </div>
+  ))}
+</div>
+
+<CodeBlock
+  language="tsx"
+  code={`import { ElectricInputWrapper, Input } from '@adrozdenko/design-system'
+
+// Wrap any input to add the electric focus effect
+<ElectricInputWrapper>
+  <Input placeholder="Focus me..." />
+</ElectricInputWrapper>
+
+// The gradient is built from ALIAS.electric.* tokens:
+// ALIAS.electric.cyan - Base cyan color
+// ALIAS.electric.cyanBright - Bright highlight
+// ALIAS.electric.cyanGlow - Glow effect
+// ALIAS.electric.cyanGlowSubtle - Subtle glow`}
+/>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Hero Overlay Pattern</h2>
+
+<SectionHeader
+  icon={<Blend size={20} />}
+  title="Hero Image Overlay"
+  description="Bottom-to-top dark gradient for text readability over hero images. Used in HeroSection, ProductHeroSection, and AboutHeroSection."
+/>
+
+<div style={{
+  borderRadius: RADIUS.lg,
+  overflow: 'hidden',
+  marginBottom: '24px',
+  position: 'relative',
+  height: '300px',
+  background: `url('https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1200&q=80') center/cover`,
+}}>
+  {/* Gradient overlay - exact same as HeroSection.tsx */}
+  <div style={{
+    position: 'absolute',
+    inset: 0,
+    background: 'linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.2) 50%, transparent 70%)',
+  }} />
+
+  {/* Demo content */}
+  <div style={{
+    position: 'absolute',
+    bottom: '32px',
+    left: '32px',
+    right: '32px',
+  }}>
+    <h3 style={{
+      margin: '0 0 8px 0',
+      fontSize: '28px',
+      fontWeight: 700,
+      fontFamily: '"Pilat Extended", sans-serif',
+      color: PRIMITIVES.white,
+    }}><span>Hero Title</span></h3>
+    <p style={{
+      margin: 0,
+      fontSize: '16px',
+      fontFamily: '"Fixel", sans-serif',
+      color: SLATE[200],
+    }}><span>Text is readable because of the gradient overlay</span></p>
+  </div>
+</div>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.md,
+  padding: '20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    fontSize: '13px',
+    fontWeight: 600,
+    color: ABYSS[500],
+    fontFamily: '"Fixel", sans-serif',
+    marginBottom: '12px',
+  }}><span>Gradient Breakdown</span></div>
+  <div style={{
+    display: 'flex',
+    gap: '8px',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  }}>
+    {[
+      { stop: '0%', opacity: '85%', desc: 'Bottom (darkest)' },
+      { stop: '30%', opacity: '50%', desc: 'Text zone' },
+      { stop: '50%', opacity: '20%', desc: 'Transition' },
+      { stop: '70%', opacity: '0%', desc: 'Transparent top' },
+    ].map((item, i) => (
+      <div
+        key={i}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          background: SLATE[50],
+          padding: '8px 12px',
+          borderRadius: RADIUS.sm,
+        }}
+      >
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: '4px',
+          background: `rgba(0,0,0,${parseInt(item.opacity)/100})`,
+          border: `1px solid ${SLATE[300]}`,
+        }} />
+        <div>
+          <div style={{
+            fontSize: '11px',
+            fontWeight: 600,
+            color: ABYSS[500],
+            fontFamily: '"Fixel", sans-serif',
+          }}><span>{item.stop}</span></div>
+          <div style={{
+            fontSize: '10px',
+            color: DUSK_REEF[500],
+            fontFamily: '"Fixel", sans-serif',
+          }}><span>{item.desc}</span></div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<CodeBlock
+  language="tsx"
+  code={`// From HeroSection.tsx - hardcoded pattern (not a token)
+const HERO_GRADIENT = 'linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.2) 50%, transparent 70%)'
+
+// Usage
+<div style={{ position: 'relative' }}>
+  <img src="hero.jpg" alt="Hero" />
+  <div style={{
+    position: 'absolute',
+    inset: 0,
+    background: HERO_GRADIENT
+  }} />
+  <h1>Hero Title</h1>
+</div>
+
+// AboutHeroSection uses a slightly stronger variant:
+// 'linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.2) 55%, transparent 75%)'`}
+/>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Glass Gradient Raw Values</h2>
+
+<div style={{
+  background: ABYSS[600],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '16px',
+  }}>
+    {[
+      { name: 'teal', gradient: GLASS_GRADIENTS.teal, desc: 'Button/input border' },
+      { name: 'tealGlow', gradient: GLASS_GRADIENTS.tealGlow, desc: 'Blur glow effect' },
+      { name: 'white', gradient: GLASS_GRADIENTS.white, desc: 'Light mode border' },
+      { name: 'whiteGlow', gradient: GLASS_GRADIENTS.whiteGlow, desc: 'Light mode glow' },
+    ].map((item) => (
+      <div
+        key={item.name}
+        style={{
+          background: ABYSS[500],
+          borderRadius: RADIUS.md,
+          padding: '16px',
+        }}
+      >
+        <div style={{
+          height: '60px',
+          borderRadius: RADIUS.sm,
+          background: item.gradient,
+          marginBottom: '12px',
+        }} />
+        <div style={{
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          marginBottom: '4px',
+        }}><span>{item.name}</span></div>
+        <code style={{
+          display: 'block',
+          fontSize: '11px',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+          color: SLATE[400],
+          marginBottom: '4px',
+        }}>GLASS_GRADIENTS.{item.name}</code>
+        <div style={{
+          fontSize: '12px',
+          color: SLATE[400],
+          fontFamily: '"Fixel", sans-serif',
+        }}><span>{item.desc}</span></div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="info">
+  <strong>Note:</strong> The white/whiteGlow variants are imported in GlassEffect.tsx but currently not actively used.
+  They're available for future light-mode glass effects.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+<div style={{
+  borderRadius: RADIUS.md,
+  border: `1px solid ${SLATE[200]}`,
+  overflow: 'hidden',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '14px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ background: SLATE[50] }}>
+        <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, color: ABYSS[500], borderBottom: `2px solid ${SLATE[200]}` }}>
+          <span>Component</span>
+        </th>
+        <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, color: ABYSS[500], borderBottom: `2px solid ${SLATE[200]}` }}>
+          <span>Gradient Token</span>
+        </th>
+        <th style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 600, color: ABYSS[500], borderBottom: `2px solid ${SLATE[200]}` }}>
+          <span>Effect</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[200]}` }}>
+        <td style={{ padding: '12px 16px' }}><span>Button</span></td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>
+            GLASS_GRADIENTS.teal
+          </code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}><span>Animated border on hover</span></td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[200]}` }}>
+        <td style={{ padding: '12px 16px' }}><span>Button</span></td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>
+            GLASS_GRADIENTS.tealGlow
+          </code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}><span>Blur glow behind border</span></td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[200]}` }}>
+        <td style={{ padding: '12px 16px' }}><span>ElectricInput</span></td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>
+            ALIAS.electric.*
+          </code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}><span>Animated cyan border on focus</span></td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[200]}` }}>
+        <td style={{ padding: '12px 16px' }}><span>GlassEffect</span></td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>
+            GLASS_GRADIENTS.*
+          </code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}><span>Wrapper for glass effects</span></td>
+      </tr>
+      <tr>
+        <td style={{ padding: '12px 16px' }}><span>HeroSection</span></td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>
+            Hardcoded pattern
+          </code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}><span>Bottom dark overlay for text</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

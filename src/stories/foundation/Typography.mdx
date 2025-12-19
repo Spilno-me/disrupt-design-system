@@ -1,89 +1,39 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Type } from 'lucide-react';
+import { Type, Braces } from 'lucide-react';
 import {
-  SectionHeader,
+  BrandHero,
   InfoBox,
-  TokenTable,
-  CodeBlock,
-  TOKENS,
-} from './DocComponents';
-import { StoryLink } from '../brand/BrandComponents';
-import {
+  SectionHeader,
+  StoryLink,
   ABYSS,
   CORAL,
   DEEP_CURRENT,
   DUSK_REEF,
-  HARBOR,
   PRIMITIVES,
   SHADOWS,
   RADIUS,
   SLATE,
   SPACING,
   TYPOGRAPHY,
-} from '../../constants/designTokens';
+} from '../brand/BrandComponents';
+import { HARBOR } from '../../constants/designTokens';
+import { TokenTable, CodeBlock } from './DocComponents';
 
 <Meta title="Foundation/Design Tokens/Typography" />
 
-{/* Page Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${DUSK_REEF[500]} 0%, ${DUSK_REEF[700]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: SPACING.px.section,
-  marginBottom: SPACING.px.section,
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative background icon */}
-  <div style={{
-    position: 'absolute',
-    right: '40px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    opacity: 0.1,
-    pointerEvents: 'none',
-  }}>
-    <Type size={180} color={PRIMITIVES.white} strokeWidth={1} />
-  </div>
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: SPACING.px.tight,
-      marginBottom: SPACING.px.base,
-    }}>
-      <Type size={28} color={PRIMITIVES.white} />
-    </div>
-
-    <h1 style={{
-      margin: `0 0 ${SPACING.px.base} 0`,
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Fixel", sans-serif',
-      color: PRIMITIVES.white,
-    }}>
-      <span>App Typography</span>
-    </h1>
-
-    <p style={{
-      margin: 0,
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      color: DUSK_REEF[100],
-      lineHeight: 1.6,
-      maxWidth: '500px',
-    }}>
-      <span>Fixel is the exclusive typeface for application interfaces.
-      Clean, readable, and optimized for dashboards, forms, and data tables.</span>
-    </p>
-  </div>
-</div>
+{/* Hero Header */}
+<BrandHero
+  title="App Typography"
+  description="Two typefaces for application interfaces: Fixel for all UI text, JetBrains Mono for code and technical content. Together they create clear visual hierarchy."
+  gradient="purple"
+  decorativeIcon={<Type size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
 <InfoBox variant="tip">
-  <strong>Mandatory:</strong> Always use Tailwind classes from the DDS preset for font sizes.
-  Never hardcode pixel values. Apps use <strong>Fixel only</strong> (font-sans).
+  <strong>Two fonts:</strong> <strong>Fixel</strong> (font-sans) for all UI text, <strong>JetBrains Mono</strong> (font-mono) for code and technical content only.
+  Always use Tailwind classes from the DDS preset. Never hardcode pixel values.
 </InfoBox>
 
 ---
@@ -98,7 +48,7 @@ import {
 }}>
   {/* Rule 1 */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.md,
     padding: '20px',
     border: `1px solid ${SLATE[200]}`,
@@ -147,7 +97,7 @@ import {
 
   {/* Rule 2 */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.md,
     padding: '20px',
     border: `1px solid ${SLATE[200]}`,
@@ -196,7 +146,7 @@ import {
 
   {/* Rule 3 */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.md,
     padding: '20px',
     border: `1px solid ${SLATE[200]}`,
@@ -245,7 +195,7 @@ import {
 
   {/* Rule 4 */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.md,
     padding: '20px',
     border: `1px solid ${SLATE[200]}`,
@@ -298,7 +248,7 @@ import {
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Fixel Typeface</h2>
 
 <div style={{
-  background: PRIMITIVES.white,
+  background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '32px',
   border: `1px solid ${SLATE[200]}`,
@@ -307,7 +257,7 @@ import {
 }}>
   <div style={{
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: '12px',
     marginBottom: '24px',
   }}>
@@ -319,22 +269,24 @@ import {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      flexShrink: 0,
     }}>
       <Type size={24} color={DEEP_CURRENT[500]} />
     </div>
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '4px' }}>
       <h3 style={{
         margin: 0,
         fontSize: '20px',
         fontWeight: 600,
         fontFamily: '"Fixel", sans-serif',
         color: ABYSS[500],
+        lineHeight: 1.2,
       }}>
         <span>Fixel</span>
       </h3>
       <code style={{
         fontSize: '12px',
-        fontFamily: 'ui-monospace, monospace',
+        fontFamily: '"JetBrains Mono", ui-monospace, monospace',
         color: SLATE[500],
       }}>
         font-sans (default)
@@ -394,7 +346,7 @@ import {
         </div>
         <code style={{
           fontSize: '11px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: SLATE[500],
         }}>
           {item.weight}
@@ -411,10 +363,271 @@ import {
 
 ---
 
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>JetBrains Mono</h2>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  boxShadow: SHADOWS.md,
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '12px',
+    marginBottom: '24px',
+  }}>
+    <div style={{
+      width: '48px',
+      height: '48px',
+      borderRadius: RADIUS.md,
+      background: DEEP_CURRENT[50],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0,
+    }}>
+      <Braces size={24} color={DEEP_CURRENT[500]} strokeWidth={2} />
+    </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '4px' }}>
+      <h3 style={{
+        margin: 0,
+        fontSize: '20px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+        lineHeight: 1.2,
+      }}>
+        <span>JetBrains Mono</span>
+      </h3>
+      <code style={{
+        fontSize: '12px',
+        fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+        color: SLATE[500],
+        lineHeight: 1.2,
+      }}>
+        font-mono (code only)
+      </code>
+    </div>
+  </div>
+
+  <p style={{
+    margin: '0 0 24px 0',
+    fontSize: '14px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    lineHeight: 1.6,
+    maxWidth: '600px',
+  }}>
+    A typeface designed for developers. Optimized for reading code with increased letter height,
+    distinctive symbols, and ligature support. Use exclusively for code and technical content.
+  </p>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '16px',
+    marginBottom: '24px',
+  }}>
+    {[
+      { weight: 400, name: 'Normal', class: 'font-normal' },
+      { weight: 500, name: 'Medium', class: 'font-medium' },
+      { weight: 600, name: 'Semibold', class: 'font-semibold' },
+    ].map((item) => (
+      <div
+        key={item.weight}
+        style={{
+          background: SLATE[50],
+          borderRadius: RADIUS.sm,
+          padding: '16px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+          fontSize: '28px',
+          fontWeight: item.weight,
+          color: ABYSS[500],
+          marginBottom: '8px',
+        }}>
+          <span>Aa</span>
+        </div>
+        <div style={{
+          fontSize: '13px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+          marginBottom: '2px',
+        }}>
+          <span>{item.name}</span>
+        </div>
+        <code style={{
+          fontSize: '11px',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+          color: SLATE[500],
+        }}>
+          {item.weight}
+        </code>
+      </div>
+    ))}
+  </div>
+
+  {/* Character showcase */}
+  <div style={{
+    background: SLATE[50],
+    borderRadius: RADIUS.sm,
+    padding: '20px',
+  }}>
+    <div style={{
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      fontSize: '14px',
+      color: ABYSS[500],
+      lineHeight: 1.8,
+    }}>
+      <div><span style={{ color: DEEP_CURRENT[500] }}>// Distinctive characters</span></div>
+      <div><span>0O 1lI {'{'} {'}'} [ ] ( ) {'=> !== <= >='}</span></div>
+      <div style={{ marginTop: '8px' }}><span style={{ color: DUSK_REEF[600] }}>const</span> <span style={{ color: CORAL[500] }}>example</span> = <span style={{ color: HARBOR[600] }}>'Hello, DDS!'</span>;</div>
+    </div>
+  </div>
+</div>
+
+{/* When to use font-mono */}
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <h4 style={{
+    margin: '0 0 16px 0',
+    fontSize: '16px',
+    fontWeight: 600,
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+  }}>
+    <span>When to use font-mono</span>
+  </h4>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '24px',
+  }}>
+    {/* DO use */}
+    <div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '12px',
+      }}>
+        <span style={{
+          fontSize: '16px',
+          fontWeight: 700,
+          color: HARBOR[600],
+        }}>✓</span>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: HARBOR[700],
+        }}>Use for:</span>
+      </div>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}>
+        {[
+          'Code snippets & syntax',
+          'API responses & JSON',
+          'Token paths (GRADIENTS.heroOverlay)',
+          'Technical IDs (TXN-2024-00123)',
+          'Timestamps & tabular numbers',
+          'Terminal commands',
+          'File paths & URLs',
+        ].map((item, i) => (
+          <div
+            key={i}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '13px',
+              fontFamily: '"Fixel", sans-serif',
+              color: DUSK_REEF[500],
+            }}
+          >
+            <span style={{ color: HARBOR[500] }}>→</span>
+            <span>{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* DON'T use */}
+    <div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '12px',
+      }}>
+        <span style={{
+          fontSize: '16px',
+          fontWeight: 700,
+          color: CORAL[500],
+        }}>✗</span>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: CORAL[600],
+        }}>Never use for:</span>
+      </div>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}>
+        {[
+          'Headings or titles',
+          'Body text or paragraphs',
+          'Form labels',
+          'Button text',
+          'Navigation items',
+          'Card content',
+          'User-facing messages',
+        ].map((item, i) => (
+          <div
+            key={i}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '13px',
+              fontFamily: '"Fixel", sans-serif',
+              color: DUSK_REEF[500],
+            }}
+          >
+            <span style={{ color: CORAL[400] }}>→</span>
+            <span>{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Type Scale</h2>
 
 <div style={{
-  background: PRIMITIVES.white,
+  background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '32px',
   border: `1px solid ${SLATE[200]}`,
@@ -458,7 +671,7 @@ import {
           padding: '4px 8px',
           borderRadius: '4px',
           fontSize: '11px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: DEEP_CURRENT[700],
           whiteSpace: 'nowrap',
         }}>
@@ -477,720 +690,5 @@ import {
   </div>
 </div>
 
----
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
 
-<CodeBlock
-  language="tsx"
-  code={`// Page title
-<h1 className="text-2xl font-semibold text-primary">
-  Dashboard
-</h1>
-
-// Section title
-<h2 className="text-lg font-semibold text-primary">
-  Recent Activity
-</h2>
-
-// Card with proper hierarchy
-<div className="bg-surface rounded-lg p-6">
-  <h3 className="text-base font-semibold text-primary mb-2">
-    Card Title
-  </h3>
-  <p className="text-sm text-secondary">
-    Description text goes here
-  </p>
-  <span className="text-xs text-muted">
-    Last updated 2 hours ago
-  </span>
-</div>
-
-// Form field
-<div className="space-y-1.5">
-  <label className="text-sm font-medium text-primary">
-    Email Address
-  </label>
-  <input className="text-sm" />
-  <p className="text-xs text-muted">
-    We'll never share your email
-  </p>
-</div>
-
-// Data table header
-<th className="text-xs font-medium text-muted uppercase tracking-wide">
-  Name
-</th>`}
-/>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Component Patterns</h2>
-
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  marginBottom: '48px',
-}}>
-  {/* Page Header Pattern */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      fontSize: '12px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: DEEP_CURRENT[500],
-      textTransform: 'uppercase',
-      letterSpacing: '0.05em',
-      marginBottom: '16px',
-    }}>
-      <span>Page Header</span>
-    </div>
-    <div style={{
-      background: SLATE[50],
-      borderRadius: RADIUS.md,
-      padding: '20px',
-    }}>
-      <h1 style={{
-        margin: 0,
-        fontSize: '24px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>Dashboard</span>
-      </h1>
-      <p style={{
-        margin: '4px 0 0 0',
-        fontSize: '14px',
-        fontFamily: '"Fixel", sans-serif',
-        color: DUSK_REEF[500],
-      }}>
-        Your environmental metrics at a glance
-      </p>
-    </div>
-    <code style={{
-      display: 'block',
-      marginTop: '12px',
-      fontSize: '11px',
-      fontFamily: 'ui-monospace, monospace',
-      color: SLATE[500],
-    }}>
-      text-2xl font-semibold + text-sm text-secondary
-    </code>
-  </div>
-
-  {/* Card Pattern */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      fontSize: '12px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: DEEP_CURRENT[500],
-      textTransform: 'uppercase',
-      letterSpacing: '0.05em',
-      marginBottom: '16px',
-    }}>
-      <span>Card</span>
-    </div>
-    <div style={{
-      background: PRIMITIVES.white,
-      borderRadius: RADIUS.sm,
-      padding: '16px',
-      boxShadow: SHADOWS.md,
-      border: `1px solid ${SLATE[200]}`,
-    }}>
-      <h3 style={{
-        margin: 0,
-        fontSize: '16px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>Card Title</span>
-      </h3>
-      <p style={{
-        margin: '8px 0 0 0',
-        fontSize: '14px',
-        fontFamily: '"Fixel", sans-serif',
-        color: DUSK_REEF[500],
-      }}>
-        Description or content goes here.
-      </p>
-      <span style={{
-        display: 'block',
-        marginTop: '12px',
-        fontSize: '12px',
-        fontFamily: '"Fixel", sans-serif',
-        color: SLATE[500],
-      }}>
-        Last updated 2 hours ago
-      </span>
-    </div>
-    <code style={{
-      display: 'block',
-      marginTop: '12px',
-      fontSize: '11px',
-      fontFamily: 'ui-monospace, monospace',
-      color: SLATE[500],
-    }}>
-      text-base font-semibold + text-sm + text-xs text-muted
-    </code>
-  </div>
-
-  {/* Form Field Pattern */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      fontSize: '12px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: DEEP_CURRENT[500],
-      textTransform: 'uppercase',
-      letterSpacing: '0.05em',
-      marginBottom: '16px',
-    }}>
-      <span>Form Field</span>
-    </div>
-    <div style={{
-      background: SLATE[50],
-      borderRadius: RADIUS.md,
-      padding: '20px',
-    }}>
-      <label style={{
-        display: 'block',
-        fontSize: '14px',
-        fontWeight: 500,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-        marginBottom: '6px',
-      }}>
-        Email Address
-      </label>
-      <input
-        type="text"
-        placeholder="you@example.com"
-        style={{
-          width: '100%',
-          padding: '8px 12px',
-          fontSize: '14px',
-          fontFamily: '"Fixel", sans-serif',
-          border: `1px solid ${SLATE[300]}`,
-          borderRadius: RADIUS.sm,
-          outline: 'none',
-        }}
-      />
-      <p style={{
-        margin: '6px 0 0 0',
-        fontSize: '12px',
-        fontFamily: '"Fixel", sans-serif',
-        color: SLATE[500],
-      }}>
-        We'll never share your email with anyone.
-      </p>
-    </div>
-    <code style={{
-      display: 'block',
-      marginTop: '12px',
-      fontSize: '11px',
-      fontFamily: 'ui-monospace, monospace',
-      color: SLATE[500],
-    }}>
-      text-sm font-medium + text-sm + text-xs text-muted
-    </code>
-  </div>
-
-  {/* Stat/Metric Pattern */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      fontSize: '12px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: DEEP_CURRENT[500],
-      textTransform: 'uppercase',
-      letterSpacing: '0.05em',
-      marginBottom: '16px',
-    }}>
-      <span>Stat/Metric</span>
-    </div>
-    <div style={{
-      background: SLATE[50],
-      borderRadius: RADIUS.md,
-      padding: '20px',
-    }}>
-      <span style={{
-        display: 'block',
-        fontSize: '12px',
-        fontWeight: 500,
-        fontFamily: '"Fixel", sans-serif',
-        color: SLATE[500],
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em',
-      }}>
-        Total Revenue
-      </span>
-      <p style={{
-        margin: '4px 0 0 0',
-        fontSize: '24px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>$45,231</span>
-      </p>
-      <span style={{
-        display: 'block',
-        marginTop: '4px',
-        fontSize: '12px',
-        fontFamily: '"Fixel", sans-serif',
-        color: '#059669',
-      }}>
-        +12.5% from last month
-      </span>
-    </div>
-    <code style={{
-      display: 'block',
-      marginTop: '12px',
-      fontSize: '11px',
-      fontFamily: 'ui-monospace, monospace',
-      color: SLATE[500],
-    }}>
-      text-xs font-medium uppercase + text-2xl font-semibold + text-xs text-success
-    </code>
-  </div>
-</div>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Anti-patterns</h2>
-
-<InfoBox variant="warning">
-  <strong>Common mistakes to avoid.</strong> These patterns hurt readability and visual hierarchy.
-</InfoBox>
-
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  marginBottom: '48px',
-}}>
-  {/* Anti-pattern 1 */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `2px solid ${CORAL[300]}`,
-  }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '16px',
-    }}>
-      <span style={{
-        fontSize: '18px',
-        fontWeight: 700,
-        color: CORAL[500],
-      }}>✗</span>
-      <span style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>Too many font sizes</span>
-    </div>
-    <div style={{
-      background: SLATE[50],
-      borderRadius: RADIUS.md,
-      padding: '16px',
-    }}>
-      <div style={{ fontSize: '28px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '4px' }}>
-        <span>Title 28px</span>
-      </div>
-      <div style={{ fontSize: '22px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '4px' }}>
-        <span>Subtitle 22px</span>
-      </div>
-      <div style={{ fontSize: '18px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '4px' }}>
-        <span>Section 18px</span>
-      </div>
-      <div style={{ fontSize: '15px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '4px' }}>
-        <span>Body 15px</span>
-      </div>
-      <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: SLATE[500], marginBottom: '4px' }}>
-        <span>Caption 13px</span>
-      </div>
-      <div style={{ fontSize: '11px', fontFamily: '"Fixel", sans-serif', color: SLATE[500] }}>
-        <span>Micro 11px</span>
-      </div>
-    </div>
-    <p style={{
-      margin: '12px 0 0 0',
-      fontSize: '13px',
-      fontFamily: '"Fixel", sans-serif',
-      color: CORAL[600],
-    }}>
-      6+ sizes creates visual chaos. Stick to 3-4.
-    </p>
-  </div>
-
-  {/* Correct pattern */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `2px solid ${HARBOR[400]}`,
-  }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '16px',
-    }}>
-      <span style={{
-        fontSize: '18px',
-        fontWeight: 700,
-        color: HARBOR[600],
-      }}>✓</span>
-      <span style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>Consistent scale (3-4 sizes)</span>
-    </div>
-    <div style={{
-      background: SLATE[50],
-      borderRadius: RADIUS.md,
-      padding: '16px',
-    }}>
-      <div style={{ fontSize: '24px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px' }}>
-        <span>Title 24px</span>
-      </div>
-      <div style={{ fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px' }}>
-        <span>Body text 14px with normal content</span>
-      </div>
-      <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: SLATE[500] }}>
-        <span>Caption 12px for metadata</span>
-      </div>
-    </div>
-    <p style={{
-      margin: '12px 0 0 0',
-      fontSize: '13px',
-      fontFamily: '"Fixel", sans-serif',
-      color: HARBOR[700],
-    }}>
-      Clear hierarchy with minimal sizes.
-    </p>
-  </div>
-
-  {/* Anti-pattern 2 */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `2px solid ${CORAL[300]}`,
-  }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '16px',
-    }}>
-      <span style={{
-        fontSize: '18px',
-        fontWeight: 700,
-        color: CORAL[500],
-      }}>✗</span>
-      <span style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>Using size for emphasis</span>
-    </div>
-    <div style={{
-      background: SLATE[50],
-      borderRadius: RADIUS.md,
-      padding: '16px',
-    }}>
-      <p style={{
-        margin: 0,
-        fontSize: '14px',
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>This is normal text and </span>
-        <span style={{ fontSize: '18px' }}>this is IMPORTANT</span>
-        <span> because I made it bigger.</span>
-      </p>
-    </div>
-    <p style={{
-      margin: '12px 0 0 0',
-      fontSize: '13px',
-      fontFamily: '"Fixel", sans-serif',
-      color: CORAL[600],
-    }}>
-      Changing size mid-sentence breaks flow.
-    </p>
-  </div>
-
-  {/* Correct pattern */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `2px solid ${HARBOR[400]}`,
-  }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '16px',
-    }}>
-      <span style={{
-        fontSize: '18px',
-        fontWeight: 700,
-        color: HARBOR[600],
-      }}>✓</span>
-      <span style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>Using weight for emphasis</span>
-    </div>
-    <div style={{
-      background: SLATE[50],
-      borderRadius: RADIUS.md,
-      padding: '16px',
-    }}>
-      <p style={{
-        margin: 0,
-        fontSize: '14px',
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>This is normal text and </span>
-        <span style={{ fontWeight: 600 }}>this is important</span>
-        <span> because I made it bolder.</span>
-      </p>
-    </div>
-    <p style={{
-      margin: '12px 0 0 0',
-      fontSize: '13px',
-      fontFamily: '"Fixel", sans-serif',
-      color: HARBOR[700],
-    }}>
-      Weight creates emphasis without breaking flow.
-    </p>
-  </div>
-</div>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Decision Tree</h2>
-
-<div style={{
-  background: PRIMITIVES.white,
-  borderRadius: RADIUS.lg,
-  padding: '32px',
-  border: `1px solid ${SLATE[200]}`,
-  marginBottom: '48px',
-}}>
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '32px',
-  }}>
-    {/* Left column - Questions */}
-    <div>
-      <h4 style={{
-        margin: '0 0 16px 0',
-        fontSize: '16px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: DEEP_CURRENT[600],
-      }}>
-        <span>Ask yourself:</span>
-      </h4>
-
-      {[
-        { q: 'What LEVEL of importance?', answers: ['Page → text-2xl font-semibold', 'Section → text-lg font-semibold', 'Component → text-base font-semibold', 'Supporting → text-sm', 'Metadata → text-xs text-muted'] },
-        { q: 'Does it need EMPHASIS?', answers: ['Heading/title → font-semibold', 'Label → font-medium', 'Body text → font-normal'] },
-        { q: 'What COLOR conveys meaning?', answers: ['Primary → text-primary', 'Secondary → text-secondary', 'Help/caption → text-muted', 'Status → text-error/success'] },
-      ].map((item, i) => (
-        <div key={i} style={{ marginBottom: '20px' }}>
-          <div style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            fontFamily: '"Fixel", sans-serif',
-            color: ABYSS[500],
-            marginBottom: '8px',
-          }}>
-            <span>{i + 1}. {item.q}</span>
-          </div>
-          <div style={{ paddingLeft: '16px' }}>
-            {item.answers.map((a, j) => (
-              <div
-                key={j}
-                style={{
-                  fontSize: '13px',
-                  fontFamily: '"Fixel", sans-serif',
-                  color: DUSK_REEF[500],
-                  marginBottom: '4px',
-                }}
-              >
-                <span>→ {a}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-
-    {/* Right column - Quick Reference */}
-    <div style={{
-      background: ABYSS[700],
-      borderRadius: RADIUS.md,
-      padding: '24px',
-    }}>
-      <h4 style={{
-        margin: '0 0 16px 0',
-        fontSize: '14px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: PRIMITIVES.white,
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em',
-      }}>
-        <span>Quick Reference</span>
-      </h4>
-      <div style={{
-        fontFamily: 'ui-monospace, monospace',
-        fontSize: '12px',
-        color: SLATE[300],
-        lineHeight: 1.8,
-      }}>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>PAGE TITLE:</span>    text-2xl font-semibold</div>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>SECTION:</span>       text-lg font-semibold</div>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>CARD TITLE:</span>    text-base font-semibold</div>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>BODY:</span>          text-sm</div>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>LABEL:</span>         text-sm font-medium</div>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>CAPTION:</span>       text-xs text-muted</div>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>TABLE HEADER:</span>  text-xs font-medium uppercase</div>
-        <div><span style={{ color: DEEP_CURRENT[300] }}>BUTTON:</span>        text-sm font-medium</div>
-      </div>
-    </div>
-  </div>
-</div>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Accessibility</h2>
-
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  marginBottom: '48px',
-}}>
-  {/* Size Requirements */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <h4 style={{
-      margin: '0 0 16px 0',
-      fontSize: '16px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-    }}>
-      <span>Size Requirements</span>
-    </h4>
-    <table style={{
-      width: '100%',
-      borderCollapse: 'collapse',
-      fontSize: '13px',
-      fontFamily: '"Fixel", sans-serif',
-    }}>
-      <tbody>
-        {[
-          { label: 'Minimum size', value: '12px (text-xs)', note: 'Never smaller' },
-          { label: 'Body text', value: '14px (text-sm)', note: 'Recommended minimum' },
-          { label: 'Touch target text', value: '14px+', note: 'For clickable elements' },
-          { label: 'Line length', value: '45-75 chars', note: 'Optimal readability' },
-        ].map((row, i) => (
-          <tr key={i} style={{ borderBottom: i < 3 ? `1px solid ${SLATE[100]}` : 'none' }}>
-            <td style={{ padding: '10px 0', fontWeight: 500, color: ABYSS[500] }}>{row.label}</td>
-            <td style={{ padding: '10px 8px', fontFamily: 'ui-monospace, monospace', color: DEEP_CURRENT[600] }}>{row.value}</td>
-            <td style={{ padding: '10px 0', color: SLATE[500] }}>{row.note}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-
-  {/* Contrast Requirements */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <h4 style={{
-      margin: '0 0 16px 0',
-      fontSize: '16px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-    }}>
-      <span>Contrast Requirements (WCAG AA)</span>
-    </h4>
-    <table style={{
-      width: '100%',
-      borderCollapse: 'collapse',
-      fontSize: '13px',
-      fontFamily: '"Fixel", sans-serif',
-    }}>
-      <tbody>
-        {[
-          { label: 'Normal text (<18px)', ratio: '4.5:1', status: 'Required' },
-          { label: 'Large text (18px+)', ratio: '3.0:1', status: 'Required' },
-          { label: 'Enhanced (AAA)', ratio: '7.0:1', status: 'Recommended' },
-        ].map((row, i) => (
-          <tr key={i} style={{ borderBottom: i < 2 ? `1px solid ${SLATE[100]}` : 'none' }}>
-            <td style={{ padding: '10px 0', fontWeight: 500, color: ABYSS[500] }}>{row.label}</td>
-            <td style={{ padding: '10px 8px', fontFamily: 'ui-monospace, monospace', color: DEEP_CURRENT[600] }}>{row.ratio}</td>
-            <td style={{ padding: '10px 0', color: SLATE[500] }}>{row.status}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<InfoBox variant="tip">
-  <strong>Pro tip:</strong> Use our semantic color tokens (text-primary, text-secondary, text-muted) which are pre-validated for WCAG AA contrast compliance.
-</InfoBox>

@@ -157,9 +157,9 @@ Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
 
 ## Typography Hierarchy (App UI)
 
-**Rule:** Apps use ONLY Fixel. Max 3-4 sizes per view. Weight for emphasis, not size.
+**Rule:** Fixel for UI, JetBrains Mono for code/technical content only.
 
-**⛔ FORBIDDEN:** `font-mono`, `font-serif`, `font-display`, any other font family.
+**⛔ FORBIDDEN:** `font-serif`, `font-display`, any other font family.
 
 | Role | Tailwind | Use |
 |------|----------|-----|
@@ -169,6 +169,16 @@ Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
 | Body | `text-sm` | Primary content |
 | Label | `text-sm font-medium` | Form labels |
 | Caption | `text-xs text-muted` | Metadata, help text |
+| Code | `font-mono text-sm` | Code snippets, token paths, IDs |
+
+**`font-mono` allowed ONLY for:**
+```
+- Code snippets, syntax, API responses
+- Token paths (GRADIENTS.heroOverlay)
+- Technical IDs (TXN-2024-00123)
+- Timestamps, tabular numbers
+- NEVER for headings, labels, or body text
+```
 
 **Golden rules:**
 ```
@@ -176,7 +186,7 @@ Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
 2. Max 3-4 font sizes per view
 3. Use weight (font-semibold) not size for emphasis
 4. 45-75 characters per line (max-w-prose)
-5. ONLY Fixel font - no mono, serif, or display fonts
+5. Fixel = UI text, JetBrains Mono = code only
 ```
 
 **Details:** `.claude/typography-rules.md`
@@ -201,6 +211,48 @@ Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
 | XL | 48px | Heroes, empty states |
 
 **Details:** `.claude/iconography-rules.md`
+
+---
+
+## CSS Styling (CRITICAL)
+
+**Rule:** Always use Tailwind classes. NEVER use `!important`.
+
+### Tailwind First
+```tsx
+// ❌ style={{ padding: '16px', backgroundColor: '#2D3142' }}
+// ✅ className="p-4 bg-abyss-500"
+
+// ❌ <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+// ✅ <div className="flex gap-2 items-center">
+```
+
+### No !important
+```css
+/* ❌ .button { color: white !important; } */
+/* ✅ .button { color: white; } */
+
+/* ❌ className="text-white !important" */
+/* ✅ Fix specificity at the source */
+```
+
+### When Styles Don't Apply
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Style ignored | Lower specificity | Increase selector specificity or use Tailwind variant |
+| Style overridden | Parent/global CSS | Check cascade, use `@layer` if needed |
+| Need `!important` | Specificity war | Refactor: remove competing styles at source |
+
+### Allowed Exceptions
+- **MDX documentation files**: Inline styles allowed for isolated examples
+- **Third-party overrides**: Only when no Tailwind alternative exists (document why)
+
+### Quick Reference
+| Instead of | Use |
+|------------|-----|
+| `style={{ margin: '8px' }}` | `className="m-2"` |
+| `style={{ color: ABYSS[500] }}` | `className="text-abyss-500"` |
+| `!important` | Fix the specificity conflict |
 
 ---
 

@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Dark mode token system** - Scale inversion architecture for automatic dark/light theming with CSS custom properties
+- **DarkModeMapping documentation** - Foundation page documenting token scale inversions and mapping rules
+- **Centralized story infrastructure** - Shared decorators, utilities, and theme support in `src/stories/_infrastructure/`
+- **Dark mode theme decorator** - Storybook decorator for testing components in both themes
+
+### Changed
+- **Stories migrated to centralized infrastructure** - All stories now use shared decorators and consistent patterns
+- **ALIAS tokens converted to CSS variables** - Enables runtime dark mode switching without rebuilds
+
+### Fixed
+- **Dark mode SVG colors in modals** - Dialog/Sheet icons now use CSS variables instead of hardcoded colors
+- **Logo auto-detection** - AppHeader/AppSidebar automatically switch between light and dark logos
+- **TypeScript errors** - Token system dark mode compliance fixes
+
 ### Planned
 - NotificationsPanel component export
 - QuickFilter component export

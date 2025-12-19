@@ -26,10 +26,10 @@ import {
   DUSK_REEF,
   SLATE,
   PRIMITIVES,
-  ALIAS,
   RADIUS,
   SHADOWS,
 } from "@/constants/designTokens"
+import { AgentLogo, type LogoState, type LogoVariant } from "@/components/shared/AgentLogo"
 import {
   AlertTriangle,
   Send,
@@ -67,659 +67,6 @@ import {
   Eye,
   Flame,
 } from "lucide-react"
-
-// =============================================================================
-// AGENT LOGO COMPONENT (Animated Copilot Logo)
-// =============================================================================
-
-// Position configurations for the 3 shapes
-// Position 1: Large (top-right), Position 2: Medium (bottom), Position 3: Small (left)
-const logoPositions = {
-  large: { x: 52, y: 0, width: 81, height: 81, rx: 11 },
-  medium: { x: 46, y: 127, width: 41, height: 41, rx: 4 },
-  small: { x: 0, y: 87, width: 23, height: 23, rx: 3 },
-}
-
-// Color configurations for dark and light backgrounds
-const logoColors = {
-  // For dark backgrounds (default)
-  dark: {
-    large: DEEP_CURRENT[500], // Deep Current - biggest
-    medium: PRIMITIVES.cream, // Tide Foam - medium
-    small: CORAL[500],        // Coral red - smallest
-  },
-  // For light backgrounds
-  light: {
-    large: DEEP_CURRENT[500], // Deep Current - biggest
-    medium: ABYSS[500],       // Abyss - medium
-    small: CORAL[500],        // Coral red - smallest
-  },
-}
-
-type LogoState = "idle" | "thinking" | "planning" | "executing" | "listening" | "complete"
-type LogoVariant = "dark" | "light"
-
-interface AgentLogoProps {
-  className?: string
-  state?: LogoState
-  /** Use "dark" for dark backgrounds (default), "light" for light backgrounds */
-  variant?: LogoVariant
-}
-
-function AgentLogo({ className, state = "idle", variant = "dark" }: AgentLogoProps) {
-  const colors = logoColors[variant]
-  // Animation configurations per state
-  const getAnimationConfig = () => {
-    switch (state) {
-      case "thinking":
-        // Fast pulsing - shapes breathe/pulse in place
-        return {
-          type: "pulse" as const,
-          duration: 1.2,
-        }
-      case "planning":
-        // Sequential rotation - shapes swap positions methodically
-        return {
-          type: "rotate" as const,
-          duration: 3.6,
-          pauseDuration: 0.8,
-        }
-      case "executing":
-        // Fast rotation - shapes move quickly between positions
-        return {
-          type: "rotate" as const,
-          duration: 1.8,
-          pauseDuration: 0.3,
-        }
-      case "listening":
-        // Gentle floating/bobbing
-        return {
-          type: "float" as const,
-          duration: 2,
-        }
-      case "complete":
-        // Quick settle into place with bounce
-        return {
-          type: "settle" as const,
-          duration: 0.6,
-        }
-      case "idle":
-      default:
-        // Slow, relaxed rotation with long pauses
-        return {
-          type: "rotate" as const,
-          duration: 5.4,
-          pauseDuration: 1.2,
-        }
-    }
-  }
-
-  const config = getAnimationConfig()
-
-  // Complete - snap back to logo with bounce
-  if (state === "complete") {
-    const centerX = 66.5
-    const centerY = 84
-
-    return (
-      <svg
-        viewBox="-15 -15 163 198"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-      >
-        {/* Large rectangle - snaps from center to position */}
-        <motion.rect
-          fill={colors.large}
-          initial={{
-            x: centerX - 20,
-            y: centerY - 20,
-            width: 40,
-            height: 40,
-            rx: 20,
-          }}
-          animate={{
-            x: logoPositions.large.x,
-            y: logoPositions.large.y,
-            width: logoPositions.large.width,
-            height: logoPositions.large.height,
-            rx: logoPositions.large.rx,
-          }}
-          transition={{
-            duration: 0.5,
-            ease: [0.34, 1.56, 0.64, 1], // bounce overshoot
-          }}
-        />
-        {/* Medium rectangle - snaps from center to position */}
-        <motion.rect
-          fill={colors.medium}
-          initial={{
-            x: centerX - 15,
-            y: centerY - 15,
-            width: 30,
-            height: 30,
-            rx: 15,
-          }}
-          animate={{
-            x: logoPositions.medium.x,
-            y: logoPositions.medium.y,
-            width: logoPositions.medium.width,
-            height: logoPositions.medium.height,
-            rx: logoPositions.medium.rx,
-          }}
-          transition={{
-            duration: 0.5,
-            delay: 0.1,
-            ease: [0.34, 1.56, 0.64, 1],
-          }}
-        />
-        {/* Small rectangle - snaps from center to position */}
-        <motion.rect
-          fill={colors.small}
-          initial={{
-            x: centerX - 10,
-            y: centerY - 10,
-            width: 20,
-            height: 20,
-            rx: 10,
-          }}
-          animate={{
-            x: logoPositions.small.x,
-            y: logoPositions.small.y,
-            width: logoPositions.small.width,
-            height: logoPositions.small.height,
-            rx: logoPositions.small.rx,
-          }}
-          transition={{
-            duration: 0.5,
-            delay: 0.2,
-            ease: [0.34, 1.56, 0.64, 1],
-          }}
-        />
-      </svg>
-    )
-  }
-
-  // Thinking - dots orbit around center like electrons
-  if (state === "thinking") {
-    const centerX = 66.5
-    const centerY = 84
-    const orbitRadius = 35
-    const dotSize = 18
-    const cycleDuration = 2.5
-
-    return (
-      <svg
-        viewBox="-15 -15 163 198"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-      >
-        {/* Dot 1 - orbits at normal speed */}
-        <motion.circle
-          fill={colors.large}
-          r={dotSize / 2}
-          animate={{
-            cx: [
-              centerX + orbitRadius,
-              centerX,
-              centerX - orbitRadius,
-              centerX,
-              centerX + orbitRadius,
-            ],
-            cy: [
-              centerY,
-              centerY - orbitRadius,
-              centerY,
-              centerY + orbitRadius,
-              centerY,
-            ],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        {/* Dot 2 - orbits offset by 120° */}
-        <motion.circle
-          fill={colors.medium}
-          r={dotSize / 2}
-          animate={{
-            cx: [
-              centerX - orbitRadius * 0.5,
-              centerX + orbitRadius * 0.866,
-              centerX - orbitRadius * 0.5,
-              centerX - orbitRadius * 0.866,
-              centerX - orbitRadius * 0.5,
-            ],
-            cy: [
-              centerY - orbitRadius * 0.866,
-              centerY + orbitRadius * 0.5,
-              centerY + orbitRadius * 0.866,
-              centerY - orbitRadius * 0.5,
-              centerY - orbitRadius * 0.866,
-            ],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        {/* Dot 3 - orbits offset by 240° */}
-        <motion.circle
-          fill={colors.small}
-          r={dotSize / 2}
-          animate={{
-            cx: [
-              centerX - orbitRadius * 0.5,
-              centerX - orbitRadius * 0.866,
-              centerX + orbitRadius * 0.5,
-              centerX + orbitRadius * 0.866,
-              centerX - orbitRadius * 0.5,
-            ],
-            cy: [
-              centerY + orbitRadius * 0.866,
-              centerY - orbitRadius * 0.5,
-              centerY - orbitRadius * 0.866,
-              centerY + orbitRadius * 0.5,
-              centerY + orbitRadius * 0.866,
-            ],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </svg>
-    )
-  }
-
-  // Listening - sound wave with 3 vertical bars
-  if (config.type === "float") {
-    const barWidth = 16
-    const barSpacing = 28
-    const centerX = 66.5
-    const centerY = 84
-    const barPositions = [
-      { x: centerX - barSpacing - barWidth / 2 },
-      { x: centerX - barWidth / 2 },
-      { x: centerX + barSpacing - barWidth / 2 },
-    ]
-    const minHeight = 20
-    const maxHeight = 70
-
-    return (
-      <svg
-        viewBox="-15 -15 163 198"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-      >
-        {/* Bar 1 - from large rect */}
-        <motion.rect
-          fill={colors.large}
-          initial={{
-            x: logoPositions.large.x,
-            y: logoPositions.large.y,
-            width: logoPositions.large.width,
-            height: logoPositions.large.height,
-            rx: logoPositions.large.rx,
-          }}
-          animate={{
-            x: barPositions[0].x,
-            y: [centerY - minHeight / 2, centerY - maxHeight / 2, centerY - minHeight / 2],
-            width: barWidth,
-            height: [minHeight, maxHeight, minHeight],
-            rx: barWidth / 2,
-          }}
-          transition={{
-            x: { duration: 0.4, ease: "easeOut" },
-            width: { duration: 0.4, ease: "easeOut" },
-            rx: { duration: 0.4, ease: "easeOut" },
-            y: { duration: 0.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 },
-            height: { duration: 0.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 },
-          }}
-        />
-        {/* Bar 2 - from medium rect (center, tallest) */}
-        <motion.rect
-          fill={colors.medium}
-          initial={{
-            x: logoPositions.medium.x,
-            y: logoPositions.medium.y,
-            width: logoPositions.medium.width,
-            height: logoPositions.medium.height,
-            rx: logoPositions.medium.rx,
-          }}
-          animate={{
-            x: barPositions[1].x,
-            y: [centerY - maxHeight / 2, centerY - minHeight / 2, centerY - maxHeight / 2],
-            width: barWidth,
-            height: [maxHeight, minHeight, maxHeight],
-            rx: barWidth / 2,
-          }}
-          transition={{
-            x: { duration: 0.4, ease: "easeOut" },
-            width: { duration: 0.4, ease: "easeOut" },
-            rx: { duration: 0.4, ease: "easeOut" },
-            y: { duration: 0.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 },
-            height: { duration: 0.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 },
-          }}
-        />
-        {/* Bar 3 - from small rect */}
-        <motion.rect
-          fill={colors.small}
-          initial={{
-            x: logoPositions.small.x,
-            y: logoPositions.small.y,
-            width: logoPositions.small.width,
-            height: logoPositions.small.height,
-            rx: logoPositions.small.rx,
-          }}
-          animate={{
-            x: barPositions[2].x,
-            y: [centerY - minHeight / 2, centerY - maxHeight / 2, centerY - minHeight / 2],
-            width: barWidth,
-            height: [minHeight, maxHeight, minHeight],
-            rx: barWidth / 2,
-          }}
-          transition={{
-            x: { duration: 0.4, ease: "easeOut" },
-            width: { duration: 0.4, ease: "easeOut" },
-            rx: { duration: 0.4, ease: "easeOut" },
-            y: { duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
-            height: { duration: 0.6, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
-          }}
-        />
-      </svg>
-    )
-  }
-
-  // Planning - dots on left that extend into horizontal lines like a todo list
-  if (state === "planning") {
-    const dotSize = 14
-    const lineHeight = 14
-    const leftX = 15
-    const lineMaxWidth = 100
-    const rowSpacing = 30
-    const centerY = 84
-    const rows = [
-      { y: centerY - rowSpacing },
-      { y: centerY },
-      { y: centerY + rowSpacing },
-    ]
-    const cycleDuration = 3
-
-    return (
-      <svg
-        viewBox="-15 -15 163 198"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-      >
-        {/* Row 1 - from large rect */}
-        <motion.rect
-          fill={colors.large}
-          initial={{
-            x: logoPositions.large.x,
-            y: logoPositions.large.y,
-            width: logoPositions.large.width,
-            height: logoPositions.large.height,
-            rx: logoPositions.large.rx,
-          }}
-          animate={{
-            x: leftX,
-            y: rows[0].y - lineHeight / 2,
-            width: [dotSize, lineMaxWidth, lineMaxWidth, dotSize],
-            height: lineHeight,
-            rx: lineHeight / 2,
-          }}
-          transition={{
-            x: { duration: 0.4, ease: "easeOut" },
-            y: { duration: 0.4, ease: "easeOut" },
-            height: { duration: 0.4, ease: "easeOut" },
-            rx: { duration: 0.4, ease: "easeOut" },
-            width: {
-              duration: cycleDuration,
-              repeat: Infinity,
-              ease: "easeInOut",
-              times: [0, 0.25, 0.75, 1],
-              delay: 0.4,
-            },
-          }}
-        />
-        {/* Row 2 - from medium rect */}
-        <motion.rect
-          fill={colors.medium}
-          initial={{
-            x: logoPositions.medium.x,
-            y: logoPositions.medium.y,
-            width: logoPositions.medium.width,
-            height: logoPositions.medium.height,
-            rx: logoPositions.medium.rx,
-          }}
-          animate={{
-            x: leftX,
-            y: rows[1].y - lineHeight / 2,
-            width: [dotSize, lineMaxWidth * 0.7, lineMaxWidth * 0.7, dotSize],
-            height: lineHeight,
-            rx: lineHeight / 2,
-          }}
-          transition={{
-            x: { duration: 0.4, ease: "easeOut" },
-            y: { duration: 0.4, ease: "easeOut" },
-            height: { duration: 0.4, ease: "easeOut" },
-            rx: { duration: 0.4, ease: "easeOut" },
-            width: {
-              duration: cycleDuration,
-              repeat: Infinity,
-              ease: "easeInOut",
-              times: [0, 0.25, 0.75, 1],
-              delay: 0.7,
-            },
-          }}
-        />
-        {/* Row 3 - from small rect */}
-        <motion.rect
-          fill={colors.small}
-          initial={{
-            x: logoPositions.small.x,
-            y: logoPositions.small.y,
-            width: logoPositions.small.width,
-            height: logoPositions.small.height,
-            rx: logoPositions.small.rx,
-          }}
-          animate={{
-            x: leftX,
-            y: rows[2].y - lineHeight / 2,
-            width: [dotSize, lineMaxWidth * 0.85, lineMaxWidth * 0.85, dotSize],
-            height: lineHeight,
-            rx: lineHeight / 2,
-          }}
-          transition={{
-            x: { duration: 0.4, ease: "easeOut" },
-            y: { duration: 0.4, ease: "easeOut" },
-            height: { duration: 0.4, ease: "easeOut" },
-            rx: { duration: 0.4, ease: "easeOut" },
-            width: {
-              duration: cycleDuration,
-              repeat: Infinity,
-              ease: "easeInOut",
-              times: [0, 0.25, 0.75, 1],
-              delay: 1.0,
-            },
-          }}
-        />
-      </svg>
-    )
-  }
-
-  // Executing - fast continuous orbit
-  if (state === "executing") {
-    const centerX = 66.5
-    const centerY = 84
-    const orbitRadius = 35
-    const dotSize = 18
-    const cycleDuration = 0.8  // Much faster than thinking
-
-    return (
-      <svg
-        viewBox="-15 -15 163 198"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-      >
-        {/* Dot 1 - orbits fast */}
-        <motion.circle
-          fill={colors.large}
-          r={dotSize / 2}
-          animate={{
-            cx: [
-              centerX + orbitRadius,
-              centerX,
-              centerX - orbitRadius,
-              centerX,
-              centerX + orbitRadius,
-            ],
-            cy: [
-              centerY,
-              centerY - orbitRadius,
-              centerY,
-              centerY + orbitRadius,
-              centerY,
-            ],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        {/* Dot 2 - offset by 120° */}
-        <motion.circle
-          fill={colors.medium}
-          r={dotSize / 2}
-          animate={{
-            cx: [
-              centerX - orbitRadius * 0.5,
-              centerX + orbitRadius * 0.866,
-              centerX - orbitRadius * 0.5,
-              centerX - orbitRadius * 0.866,
-              centerX - orbitRadius * 0.5,
-            ],
-            cy: [
-              centerY - orbitRadius * 0.866,
-              centerY + orbitRadius * 0.5,
-              centerY + orbitRadius * 0.866,
-              centerY - orbitRadius * 0.5,
-              centerY - orbitRadius * 0.866,
-            ],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        {/* Dot 3 - offset by 240° */}
-        <motion.circle
-          fill={colors.small}
-          r={dotSize / 2}
-          animate={{
-            cx: [
-              centerX - orbitRadius * 0.5,
-              centerX - orbitRadius * 0.866,
-              centerX + orbitRadius * 0.5,
-              centerX + orbitRadius * 0.866,
-              centerX - orbitRadius * 0.5,
-            ],
-            cy: [
-              centerY + orbitRadius * 0.866,
-              centerY - orbitRadius * 0.5,
-              centerY - orbitRadius * 0.866,
-              centerY + orbitRadius * 0.5,
-              centerY + orbitRadius * 0.866,
-            ],
-          }}
-          transition={{
-            duration: cycleDuration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </svg>
-    )
-  }
-
-  // Idle - gentle breathing, logo pulses softly
-  return (
-    <svg
-      viewBox="-15 -15 163 198"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      <motion.rect
-        x={logoPositions.large.x}
-        y={logoPositions.large.y}
-        width={logoPositions.large.width}
-        height={logoPositions.large.height}
-        rx={logoPositions.large.rx}
-        fill={colors.large}
-        animate={{
-          scale: [1, 1.03, 1],
-          opacity: [1, 0.85, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{ transformOrigin: "center", transformBox: "fill-box" }}
-      />
-      <motion.rect
-        x={logoPositions.medium.x}
-        y={logoPositions.medium.y}
-        width={logoPositions.medium.width}
-        height={logoPositions.medium.height}
-        rx={logoPositions.medium.rx}
-        fill={colors.medium}
-        animate={{
-          scale: [1, 1.05, 1],
-          opacity: [1, 0.8, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.3,
-        }}
-        style={{ transformOrigin: "center", transformBox: "fill-box" }}
-      />
-      <motion.rect
-        x={logoPositions.small.x}
-        y={logoPositions.small.y}
-        width={logoPositions.small.width}
-        height={logoPositions.small.height}
-        rx={logoPositions.small.rx}
-        fill={colors.small}
-        animate={{
-          scale: [1, 1.08, 1],
-          opacity: [1, 0.75, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.6,
-        }}
-        style={{ transformOrigin: "center", transformBox: "fill-box" }}
-      />
-    </svg>
-  )
-}
 
 // =============================================================================
 // TYPES - Agentic UI Fusion Architecture
@@ -1016,7 +363,7 @@ function QuickSelect({
               whileTap={{ scale: 0.99 }}
               onClick={() => handleSelect(option.value)}
               className={cn(
-                "flex items-center gap-3 transition-all text-left relative overflow-hidden border border-dashed rounded-sm",
+                "flex items-center gap-3 transition-all text-left relative overflow-hidden border rounded-sm",
                 sizeClasses[size],
                 selected
                   ? "bg-accent-bg border-accent"
@@ -1078,7 +425,7 @@ function QuickSelect({
           style={{
             color: DEEP_CURRENT[600],
             backgroundColor: DEEP_CURRENT[50],
-            border: `1px dashed ${DEEP_CURRENT[300]}`,
+            border: `1px solid ${DEEP_CURRENT[300]}`,
             borderRadius: RADIUS.sm,
           }}
           whileHover={{ backgroundColor: DEEP_CURRENT[100] }}
@@ -1136,7 +483,7 @@ function LocationPicker({
         whileTap={{ scale: 0.99 }}
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full flex items-center gap-3 px-4 py-3.5 transition-all text-left border border-dashed rounded-sm",
+          "w-full flex items-center gap-3 px-4 py-3.5 transition-all text-left border rounded-sm",
           value
             ? "bg-success-light border-success"
             : "bg-surface border-default"
@@ -1179,17 +526,17 @@ function LocationPicker({
             initial={{ opacity: 0, y: -10, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            className="absolute z-20 top-full left-0 right-0 mt-2 overflow-hidden bg-surface border border-dashed border-default rounded-md"
+            className="absolute z-20 top-full left-0 right-0 mt-2 overflow-hidden bg-surface border border-default rounded-md"
           >
             <div
-              className="p-3 bg-surface border-b border-dashed border-default"
+              className="p-3 bg-surface border-b border-default"
             >
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search locations..."
-                className="w-full px-3 py-2.5 text-sm focus:outline-none bg-surface border border-dashed border-default rounded-sm text-primary"
+                className="w-full px-3 py-2.5 text-sm focus:outline-none bg-surface border border-default rounded-sm text-primary"
                 autoFocus
               />
             </div>
@@ -1301,7 +648,7 @@ function SeverityScale({
               whileTap={{ scale: 0.99 }}
               onClick={() => onChange(level)}
               className={cn(
-                "flex flex-col items-center gap-2 py-4 px-3 transition-all relative overflow-hidden border border-dashed rounded-sm",
+                "flex flex-col items-center gap-2 py-4 px-3 transition-all relative overflow-hidden border rounded-sm",
                 !isSelected && "bg-surface border-default"
               )}
               style={isSelected ? {
@@ -1344,7 +691,7 @@ function SeverityScale({
           style={{
             backgroundColor: severityConfig[value].lightBg,
             color: severityConfig[value].color,
-            border: `1px dashed ${severityConfig[value].borderColor}`,
+            border: `1px solid ${severityConfig[value].borderColor}`,
             borderRadius: RADIUS.sm,
           }}
         >
@@ -2012,7 +1359,7 @@ function InvitePeople({
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
           onClick={() => setIsExpanded(true)}
-          className="flex items-center gap-3 w-full px-4 py-4 border-2 border-dashed rounded-xl transition-all"
+          className="flex items-center gap-3 w-full px-4 py-4 border-2 rounded-xl transition-all"
           style={{ borderColor: DEEP_CURRENT[300], backgroundColor: DEEP_CURRENT[50] }}
         >
           <span
@@ -2258,18 +1605,18 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden"
           style={{
-            backgroundColor: isUser ? CORAL[50] : WAVE[50],
+            backgroundColor: isUser ? 'var(--ehs-user-avatar-bg)' : 'var(--ehs-agent-avatar-bg)',
           }}
         >
           {isUser ? (
-            <User className="w-5 h-5" style={{ color: DUSK_REEF[500] }} />
+            <User className="w-5 h-5" style={{ color: 'var(--ehs-user-avatar-icon)' }} />
           ) : isAgent ? (
             <AgentLogo className="w-7 h-7" variant="light" />
           ) : (
-            <Shield className="w-5 h-5" style={{ color: SLATE[500] }} />
+            <Shield className="w-5 h-5" style={{ color: 'var(--ehs-agent-avatar-icon)' }} />
           )}
         </div>
-        {/* Dashed ring for agent avatar */}
+        {/* Dashed ring for agent avatar - uses CSS variable for dark mode */}
         {isAgent && (
           <svg className="absolute -inset-1 w-12 h-12" viewBox="0 0 48 48">
             <circle
@@ -2277,7 +1624,7 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
               cy="24"
               r="22"
               fill="none"
-              stroke={DEEP_CURRENT[200]}
+              stroke="var(--ehs-agent-ring)"
               strokeWidth="1"
               strokeDasharray="3 2"
             />
@@ -2289,8 +1636,8 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
         <div
           className="px-4 py-3"
           style={{
-            backgroundColor: isUser ? CORAL[50] : DUSK_REEF[50],
-            color: DUSK_REEF[500],
+            backgroundColor: isUser ? 'var(--ehs-user-bubble-bg)' : 'var(--ehs-agent-bubble-bg)',
+            color: isUser ? 'var(--ehs-user-bubble-text)' : 'var(--ehs-agent-bubble-text)',
             borderRadius: isUser ? `${RADIUS.md} ${RADIUS.md} ${RADIUS.xs} ${RADIUS.md}` : `${RADIUS.md} ${RADIUS.md} ${RADIUS.md} ${RADIUS.xs}`,
           }}
         >
@@ -2307,9 +1654,9 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
                 onClick={() => onQuickReply?.(option)}
                 className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold"
                 style={{
-                  backgroundColor: PRIMITIVES.white,
-                  color: DEEP_CURRENT[600],
-                  border: `1px dashed ${DEEP_CURRENT[300]}`,
+                  backgroundColor: 'var(--ehs-quick-reply-bg)',
+                  color: 'var(--ehs-quick-reply-text)',
+                  border: '1px solid var(--ehs-quick-reply-border)',
                   borderRadius: RADIUS.sm,
                 }}
               >
@@ -2320,7 +1667,7 @@ function ChatBubble({ message, onQuickReply }: ChatBubbleProps) {
           </div>
         )}
 
-        <span className="text-xs" style={{ color: ALIAS.text.tertiary }}>
+        <span className="text-xs" style={{ color: 'var(--ehs-timestamp)' }}>
           {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </span>
       </div>
@@ -2359,7 +1706,7 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
         className="p-5"
         style={{
           backgroundColor: PRIMITIVES.white,
-          border: `1px dashed ${SLATE[300]}`,
+          border: `1px solid ${SLATE[300]}`,
           borderRadius: RADIUS.md,
         }}
       >
@@ -2367,10 +1714,10 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
           {step === 1 && (
             <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
-                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: DEEP_CURRENT[100], color: DEEP_CURRENT[700] }}>
+                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: 'var(--ehs-step-badge-bg)', color: 'var(--ehs-step-badge-text)' }}>
                   Step 1 of 4
                 </span>
-                <span className="text-sm font-bold" style={{ color: ABYSS[800] }}>Incident Type</span>
+                <span className="text-sm font-bold" style={{ color: 'var(--ehs-form-label)' }}>Incident Type</span>
               </div>
               <QuickSelect
                 options={categoryOptions}
@@ -2384,10 +1731,10 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
           {step === 2 && (
             <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-5">
               <div className="flex items-center gap-2 mb-4">
-                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: DEEP_CURRENT[100], color: DEEP_CURRENT[700] }}>
+                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: 'var(--ehs-step-badge-bg)', color: 'var(--ehs-step-badge-text)' }}>
                   Step 2 of 4
                 </span>
-                <span className="text-sm font-bold" style={{ color: ABYSS[800] }}>Severity & Location</span>
+                <span className="text-sm font-bold" style={{ color: 'var(--ehs-form-label)' }}>Severity & Location</span>
               </div>
               <div className="space-y-5">
                 <div>
@@ -2416,10 +1763,10 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
           {step === 3 && (
             <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
-                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: DEEP_CURRENT[100], color: DEEP_CURRENT[700] }}>
+                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: 'var(--ehs-step-badge-bg)', color: 'var(--ehs-step-badge-text)' }}>
                   Step 3 of 4
                 </span>
-                <span className="text-sm font-bold" style={{ color: ABYSS[800] }}>Description</span>
+                <span className="text-sm font-bold" style={{ color: 'var(--ehs-form-label)' }}>Description</span>
               </div>
               <div className="space-y-4">
                 <div>
@@ -2428,7 +1775,7 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
                     placeholder="Short description of incident"
                     value={data.title || ""}
                     onChange={(e) => onUpdate({ title: e.target.value })}
-                    style={{ border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.sm }}
+                    style={{ border: `1px solid ${SLATE[300]}`, borderRadius: RADIUS.sm }}
                   />
                 </div>
                 <div>
@@ -2438,7 +1785,7 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
                     value={data.description || ""}
                     onChange={(e) => onUpdate({ description: e.target.value })}
                     className="min-h-[100px]"
-                    style={{ border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.sm }}
+                    style={{ border: `1px solid ${SLATE[300]}`, borderRadius: RADIUS.sm }}
                   />
                 </div>
               </div>
@@ -2448,17 +1795,17 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
           {step === 4 && (
             <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-4">
               <div className="flex items-center gap-2 mb-4">
-                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: DEEP_CURRENT[100], color: DEEP_CURRENT[700] }}>
+                <span className="px-2.5 py-1 rounded-lg text-xs font-bold" style={{ backgroundColor: 'var(--ehs-step-badge-bg)', color: 'var(--ehs-step-badge-text)' }}>
                   Step 4 of 4
                 </span>
-                <span className="text-sm font-bold" style={{ color: ABYSS[800] }}>Additional Details</span>
+                <span className="text-sm font-bold" style={{ color: 'var(--ehs-form-label)' }}>Additional Details</span>
               </div>
               <div className="space-y-4">
                 <div
                   className="flex items-center gap-3 p-3"
                   style={{
                     backgroundColor: data.injuryInvolved ? CORAL[50] : PRIMITIVES.white,
-                    border: `1px dashed ${data.injuryInvolved ? CORAL[300] : SLATE[300]}`,
+                    border: `1px solid ${data.injuryInvolved ? CORAL[300] : SLATE[300]}`,
                     borderRadius: RADIUS.sm,
                   }}
                 >
@@ -2478,7 +1825,7 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
                     className="flex items-center gap-3 p-3 ml-4"
                     style={{
                       backgroundColor: data.medicalAttention ? SUNRISE[50] : PRIMITIVES.white,
-                      border: `1px dashed ${data.medicalAttention ? SUNRISE[300] : SLATE[300]}`,
+                      border: `1px solid ${data.medicalAttention ? SUNRISE[300] : SLATE[300]}`,
                       borderRadius: RADIUS.sm,
                     }}
                   >
@@ -2498,7 +1845,7 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
                     placeholder="What actions were taken immediately after the incident?"
                     value={data.immediateActions || ""}
                     onChange={(e) => onUpdate({ immediateActions: e.target.value })}
-                    style={{ border: `1px dashed ${SLATE[300]}`, borderRadius: RADIUS.sm }}
+                    style={{ border: `1px solid ${SLATE[300]}`, borderRadius: RADIUS.sm }}
                   />
                 </div>
                 <Button
@@ -2507,7 +1854,7 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
                   style={{
                     backgroundColor: DEEP_CURRENT[500],
                     color: PRIMITIVES.white,
-                    border: `1px dashed ${DEEP_CURRENT[400]}`,
+                    border: `1px solid ${DEEP_CURRENT[400]}`,
                     borderRadius: RADIUS.sm,
                   }}
                 >
@@ -2727,41 +2074,41 @@ function EHSChat({
         className
       )}
       style={{
-        backgroundColor: PRIMITIVES.white,
-        border: `1px dashed ${SLATE[300]}`,
+        backgroundColor: 'var(--ehs-container-bg)',
+        border: '1px solid var(--ehs-container-border)',
         borderRadius: RADIUS.md,
       }}
     >
-      {/* Header - Clean light style with dashed bottom border */}
+      {/* Header */}
       <div
         className="flex items-center justify-between px-4 py-3"
-        style={{ backgroundColor: PRIMITIVES.white, borderBottom: `1px dashed ${SLATE[300]}` }}
+        style={{ backgroundColor: 'var(--ehs-header-bg)', borderBottom: '1px solid var(--ehs-container-border)' }}
       >
         <div className="flex items-center gap-3">
           {/* Avatar with dashed ring */}
           <div className="relative w-11 h-11">
             <div
               className="w-11 h-11 rounded-full flex items-center justify-center overflow-hidden"
-              style={{ backgroundColor: WAVE[50] }}
+              style={{ backgroundColor: 'var(--ehs-header-avatar-bg)' }}
             >
               <AgentLogo className="w-8 h-8" state={agentState as LogoState} variant="light" />
             </div>
             {/* Dashed ring around avatar */}
             <svg className="absolute -inset-1 w-[52px] h-[52px]" viewBox="0 0 52 52">
               <circle
-                cx="26"
+                cx="24"
                 cy="26"
                 r="24"
                 fill="none"
-                stroke={DEEP_CURRENT[300]}
+                stroke="var(--ehs-header-avatar-ring)"
                 strokeWidth="1"
                 strokeDasharray="4 3"
               />
             </svg>
           </div>
           <div>
-            <h3 className="font-semibold text-sm" style={{ color: ALIAS.text.primary }}>EHS Assistant</h3>
-            <p className="text-xs" style={{ color: DEEP_CURRENT[500] }}>
+            <h3 className="font-semibold text-sm" style={{ color: 'var(--ehs-title-text)' }}>EHS Assistant</h3>
+            <p className="text-xs" style={{ color: 'var(--ehs-status-text)' }}>
               {agentState === "idle" && "Ready to help"}
               {agentState === "thinking" && "Analyzing..."}
               {agentState === "planning" && "Planning..."}
@@ -2823,7 +2170,7 @@ function EHSChat({
             <div className="relative w-10 h-10">
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: WAVE[50] }}
+                style={{ backgroundColor: 'var(--ehs-header-avatar-bg)' }}
               >
                 <AgentLogo className="w-7 h-7" state={agentState} variant="light" />
               </div>
@@ -2839,13 +2186,13 @@ function EHSChat({
                   cy="24"
                   r="22"
                   fill="none"
-                  stroke={DEEP_CURRENT[400]}
+                  stroke="var(--ehs-header-avatar-ring)"
                   strokeWidth="1.5"
                   strokeDasharray="4 3"
                 />
               </motion.svg>
             </div>
-            <span className="text-sm font-medium" style={{ color: ALIAS.text.secondary }}>
+            <span className="text-sm font-medium" style={{ color: 'var(--ehs-status-text)' }}>
               {agentState === "thinking" && "Analyzing..."}
               {agentState === "planning" && "Planning response..."}
               {agentState === "executing" && "Processing..."}
@@ -2857,17 +2204,17 @@ function EHSChat({
       </div>
 
       {/* Input Area */}
-      <div className="p-4" style={{ backgroundColor: PRIMITIVES.white, borderTop: `1px dashed ${SLATE[300]}` }}>
+      <div className="p-4" style={{ backgroundColor: 'var(--ehs-input-area-bg)', borderTop: '1px solid var(--ehs-container-border)' }}>
         <div className="flex items-center gap-2">
           <button
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:opacity-80"
-            style={{ backgroundColor: WAVE[50], color: WAVE[600], border: `1px dashed ${WAVE[200]}` }}
+            style={{ backgroundColor: 'var(--ehs-camera-btn-bg)', color: 'var(--ehs-camera-btn-icon)', border: '1px solid var(--ehs-camera-btn-border)' }}
           >
             <Camera className="w-5 h-5" />
           </button>
           <button
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:opacity-80"
-            style={{ backgroundColor: DUSK_REEF[50], color: DUSK_REEF[500], border: `1px dashed ${DUSK_REEF[200]}` }}
+            style={{ backgroundColor: 'var(--ehs-mic-btn-bg)', color: 'var(--ehs-mic-btn-icon)', border: '1px solid var(--ehs-mic-btn-border)' }}
           >
             <Mic className="w-5 h-5" />
           </button>
@@ -2878,10 +2225,10 @@ function EHSChat({
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             className="flex-1 px-4 py-2.5 text-sm focus:outline-none"
             style={{
-              backgroundColor: PRIMITIVES.white,
-              border: `1px dashed ${SLATE[300]}`,
+              backgroundColor: 'var(--ehs-input-bg)',
+              border: '1px solid var(--ehs-input-border)',
               borderRadius: RADIUS.sm,
-              color: ALIAS.text.primary,
+              color: 'var(--ehs-input-text)',
             }}
           />
           <button
@@ -2889,8 +2236,8 @@ function EHSChat({
             disabled={!inputValue.trim()}
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all"
             style={{
-              backgroundColor: inputValue.trim() ? DEEP_CURRENT[500] : SLATE[100],
-              color: inputValue.trim() ? PRIMITIVES.white : SLATE[400],
+              backgroundColor: inputValue.trim() ? 'var(--ehs-send-btn-active-bg)' : 'var(--ehs-send-btn-inactive-bg)',
+              color: inputValue.trim() ? 'var(--ehs-send-btn-active-icon)' : 'var(--ehs-send-btn-inactive-icon)',
             }}
           >
             <Send className="w-5 h-5" />
@@ -2909,7 +2256,7 @@ export {
   // Main Chat Component
   EHSChat,
 
-  // Animated Logo Component
+  // Animated Logo Component (re-exported from shared)
   AgentLogo,
 
   // Agentic UI Components
@@ -2928,13 +2275,11 @@ export {
   severityConfig,
   incidentStatusConfig,
   roleConfig,
-  logoPositions,
-  logoColors,
 
   // Sample Data
   SAMPLE_LOCATIONS,
 
-  // Types
+  // Types (LogoState and LogoVariant re-exported from shared)
   type LogoState,
   type LogoVariant,
   type QuickSelectOption,

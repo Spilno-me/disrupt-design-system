@@ -1,16 +1,11 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Layers, Sun, ArrowDown, Lightbulb } from 'lucide-react';
+import { Layers, Sun, Moon } from 'lucide-react';
 import {
-  SectionHeader,
+  BrandHero,
   InfoBox,
-  ShadowCard,
-  TokenTable,
-  CodeBlock,
-  TOKENS,
-} from './DocComponents';
-import {
+  SectionHeader,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
@@ -19,562 +14,166 @@ import {
   RADIUS,
   SLATE,
   SPACING,
-  SUNRISE,
-} from '../../constants/designTokens';
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+import { CodeBlock } from './DocComponents';
 
-<Meta title="Foundation/Design Tokens/Shadows" />
+<Meta title="Foundation/Design Tokens/Shadows & Highlights" />
 
-{/* Page Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[800]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: SPACING.px.spacious,
-  marginBottom: SPACING.px.section,
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative background icon */}
-  <div style={{
-    position: 'absolute',
-    right: '40px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    opacity: 0.1,
-    pointerEvents: 'none',
-  }}>
-    <Layers size={180} color={PRIMITIVES.white} strokeWidth={1} />
-  </div>
+{/* Hero Header */}
+<BrandHero
+  title="Shadows & Highlights"
+  description="Light from above creates shadow below and highlight above. Both effects work together to create realistic depth."
+  gradient="primary"
+  decorativeIcon={<Layers size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
-  {/* Light source indicator */}
-  <div style={{
-    position: 'absolute',
-    top: SPACING.px.comfortable,
-    right: SPACING.px.spacious,
-    width: '60px',
-    height: '60px',
-    borderRadius: RADIUS.full,
-    background: `radial-gradient(circle, ${SUNRISE[300]} 0%, transparent 70%)`,
-    opacity: 0.8,
-  }} />
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: SPACING.px.tight,
-      marginBottom: SPACING.px.base,
-    }}>
-      <Layers size={28} color={PRIMITIVES.white} />
-    </div>
-
-    <h1 style={{
-      margin: `0 0 ${SPACING.px.base} 0`,
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      color: PRIMITIVES.white,
-    }}>
-      <span>Shadow System</span>
-    </h1>
-
-    <p style={{
-      margin: 0,
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      color: SLATE[300],
-      lineHeight: 1.6,
-      maxWidth: '500px',
-    }}>
-      <span>Natural light physics for elevation and visual hierarchy.
-      Shadows communicate depth, importance, and interactivity.</span>
-    </p>
-  </div>
-</div>
-
-{/* Core Principle */}
 <InfoBox variant="tip">
-  <strong>Rule:</strong> Elevation = Importance + Interactivity.
-  The closer something is to the user (higher elevation), the more important it is.
+  <strong>Physics:</strong> Shadow = blocked light (below). Highlight = reflected light (above). Both are needed for realistic depth.
 </InfoBox>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Physics of Shadows</h2>
-
-Shadows in the real world come from natural light above. Our system mimics this with two layers:
-
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  marginBottom: '48px',
-}}>
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      width: '40px',
-      height: '40px',
-      borderRadius: RADIUS.sm,
-      background: ABYSS[100],
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: '16px',
-    }}>
-      <span style={{ fontSize: '20px', fontWeight: 700, color: ABYSS[500] }}>1</span>
-    </div>
-    <h3 style={{
-      margin: '0 0 8px 0',
-      fontSize: '18px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-    }}>
-      Umbra (Core Shadow)
-    </h3>
-    <p style={{
-      margin: 0,
-      fontSize: '14px',
-      fontFamily: '"Fixel", sans-serif',
-      color: DUSK_REEF[500],
-      lineHeight: 1.6,
-    }}>
-      Direct light blockage. Close to the object, sharp edges, darker opacity (12-15%).
-      Small Y-offset, medium blur.
-    </p>
-  </div>
-
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      width: '40px',
-      height: '40px',
-      borderRadius: RADIUS.sm,
-      background: ABYSS[100],
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: '16px',
-    }}>
-      <span style={{ fontSize: '20px', fontWeight: 700, color: ABYSS[500] }}>2</span>
-    </div>
-    <h3 style={{
-      margin: '0 0 8px 0',
-      fontSize: '18px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-    }}>
-      Penumbra (Soft Shadow)
-    </h3>
-    <p style={{
-      margin: 0,
-      fontSize: '14px',
-      fontFamily: '"Fixel", sans-serif',
-      color: DUSK_REEF[500],
-      lineHeight: 1.6,
-    }}>
-      Partial light blockage. Far from object, soft edges, lighter opacity (6-8%).
-      Large Y-offset, large blur.
-    </p>
-  </div>
-</div>
 
 ---
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Shadow Scale</h2>
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '24px',
-  marginBottom: '48px',
-}}>
-  <ShadowCard
-    name="sm"
-    value={SHADOWS.sm}
-    usage="Data display, resting elements"
-    examples="Tags, badges, list items, stats"
-  />
-
-  <ShadowCard
-    name="md"
-    value={SHADOWS.md}
-    usage="Standard interactive elements"
-    examples="Cards, buttons, dropdowns"
-  />
-
-  <ShadowCard
-    name="elevated"
-    value={SHADOWS.elevated}
-    usage="Premium emphasis, featured content"
-    examples="KPI cards, featured content, CTAs"
-    isRecommended
-  />
-
-  <ShadowCard
-    name="lg"
-    value={SHADOWS.lg}
-    usage="Interactive overlays"
-    examples="Modals, sheets, drawers"
-  />
-
-  <ShadowCard
-    name="xl"
-    value={SHADOWS.xl}
-    usage="Critical attention required"
-    examples="System alerts, error dialogs"
-  />
-</div>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Decision Tree</h2>
-
-<div style={{
-  background: PRIMITIVES.white,
-  borderRadius: RADIUS.lg,
-  padding: '32px',
-  border: `1px solid ${SLATE[200]}`,
-  marginBottom: '48px',
-}}>
-  <h3 style={{
-    margin: '0 0 24px 0',
-    fontSize: '18px',
-    fontWeight: 600,
-    fontFamily: '"Fixel", sans-serif',
-    color: ABYSS[500],
-  }}>
-    Which shadow should I use?
-  </h3>
-
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-    {[
-      { q: 'Is it interactive + needs immediate attention?', a: 'xl (critical) or lg (overlay)' },
-      { q: 'Is it interactive + primary CTA or featured?', a: 'elevated (premium)' },
-      { q: 'Is it interactive + standard element?', a: 'md (default)' },
-      { q: 'Is it data display + important?', a: 'md' },
-      { q: 'Is it data display + secondary?', a: 'sm' },
-    ].map((item, i) => (
-      <div
-        key={i}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-          padding: '12px 16px',
-          background: i % 2 === 0 ? SLATE[50] : 'transparent',
-          borderRadius: RADIUS.sm,
-        }}
-      >
-        <div style={{
-          fontSize: '14px',
-          fontFamily: '"Fixel", sans-serif',
-          color: ABYSS[500],
-          flex: 1,
-        }}>
-          {item.q}
-        </div>
-        <ArrowDown size={16} color={SLATE[400]} style={{ transform: 'rotate(-90deg)' }} />
-        <code style={{
-          background: DEEP_CURRENT[50],
-          color: DEEP_CURRENT[700],
-          padding: '4px 12px',
-          borderRadius: RADIUS.sm,
-          fontSize: '13px',
-          fontFamily: 'ui-monospace, monospace',
-          fontWeight: 500,
-        }}>
-          {item.a}
-        </code>
-      </div>
-    ))}
-  </div>
-</div>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Token Reference</h2>
-
-<TokenTable
-  tokens={[
-    { name: 'SHADOWS.none', value: 'none', tailwind: 'shadow-none', usage: 'Flat elements, text links' },
-    { name: 'SHADOWS.sm', value: '0 1px 3px...', tailwind: 'shadow-sm', usage: 'Tags, badges, list items' },
-    { name: 'SHADOWS.md', value: '0 2px 8px...', tailwind: 'shadow-md', usage: 'Cards, buttons, dropdowns' },
-    { name: 'SHADOWS.elevated', value: '0 3px 12px...', tailwind: 'shadow-elevated', usage: 'KPIs, featured content' },
-    { name: 'SHADOWS.lg', value: '0 4px 16px...', tailwind: 'shadow-lg', usage: 'Modals, sheets, drawers' },
-    { name: 'SHADOWS.xl', value: '0 8px 24px...', tailwind: 'shadow-xl', usage: 'System alerts, error dialogs' },
-  ]}
+<SectionHeader
+  icon={<Sun size={20} />}
+  title="Light Surfaces"
+  description="On light backgrounds, shadows create depth. Use progressively larger shadows for higher elevation."
 />
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
-
-### Tailwind Classes
-
-<CodeBlock
-  language="tsx"
-  code={`// Standard card
-<div className="bg-surface shadow-md rounded-lg p-6">
-  Card content
-</div>
-
-// Featured card (elevated)
-<div className="bg-surface shadow-elevated rounded-lg p-6">
-  Featured KPI
-</div>
-
-// Modal overlay
-<div className="bg-surface shadow-lg rounded-lg p-8">
-  Dialog content
-</div>
-
-// Hover elevation change
-<div className="shadow-md hover:shadow-elevated transition-shadow">
-  Interactive card
-</div>`}
-/>
-
-### TypeScript Tokens
-
-<CodeBlock
-  language="typescript"
-  code={`import { SHADOWS } from '@adrozdenko/design-system'
-
-const cardStyle = {
-  boxShadow: SHADOWS.md,
-}
-
-// Dynamic shadow based on state
-const shadow = isHovered
-  ? SHADOWS.elevated
-  : SHADOWS.md`}
-/>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>CSS Anatomy</h2>
-
-Understanding the shadow values for custom implementations:
-
-<CodeBlock
-  language="css"
-  code={`/* Shadow md breakdown */
-box-shadow:
-  /* Umbra: close, sharp, darker */
-  0 2px 8px -1px rgba(0, 0, 0, 0.12),
-  /* Penumbra: far, soft, lighter */
-  0 4px 12px -2px rgba(0, 0, 0, 0.08);
-
-/* Progression rules:
-   - Opacity DECREASES with distance (umbra 12% → penumbra 8%)
-   - Blur INCREASES with distance (umbra 8px → penumbra 12px)
-   - Offset INCREASES with elevation (sm 1px → xl 12px)
-   - Negative spread contracts shadow for subtlety
-*/`}
-/>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Special Purpose Shadows</h2>
-
-Beyond the standard elevation scale, these shadows serve specific component needs:
 
 <div style={{
   display: 'grid',
-  gridTemplateColumns: '1fr',
-  gap: '16px',
-  marginBottom: '48px',
+  gridTemplateColumns: 'repeat(5, 1fr)',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.comfortable,
 }}>
   {[
-    {
-      name: 'buttonDefault',
-      value: SHADOWS.buttonDefault,
-      usage: 'Subtle depth for button default state',
-      description: 'Very light shadow (5% opacity) for minimal elevation on buttons at rest',
-    },
-    {
-      name: 'ambient',
-      value: SHADOWS.ambient,
-      usage: 'Legacy ambient shadow',
-      description: 'Soft ambient lighting effect, preserved for backwards compatibility',
-    },
-    {
-      name: 'image',
-      value: SHADOWS.image,
-      usage: 'Photo and media elevation',
-      description: 'Stronger shadow (30% + 20% opacity) for realistic image depth',
-    },
-    {
-      name: 'header',
-      value: SHADOWS.header,
-      usage: 'AppHeader component',
-      description: 'Dedicated shadow for app header, defined in ALIAS tokens',
-    },
-    {
-      name: 'footer',
-      value: SHADOWS.footer,
-      usage: 'AppFooter component',
-      description: 'Dedicated shadow for app footer, defined in ALIAS tokens',
-    },
-  ].map((shadow) => (
-    <div
-      key={shadow.name}
-      style={{
-        background: PRIMITIVES.white,
+    { name: 'sm', shadow: SHADOWS.sm, use: 'Tags, badges' },
+    { name: 'md', shadow: SHADOWS.md, use: 'Cards, buttons' },
+    { name: 'elevated', shadow: SHADOWS.elevated, use: 'Featured content' },
+    { name: 'lg', shadow: SHADOWS.lg, use: 'Modals, sheets' },
+    { name: 'xl', shadow: SHADOWS.xl, use: 'Critical alerts' },
+  ].map((item) => (
+    <div key={item.name} style={{
+      clipPath: `inset(0 -${SPACING.px.spacious} -${SPACING.px.spacious} -${SPACING.px.spacious})`,
+    }}>
+      <div style={{
+        background: PRIMITIVES.softLinen,
         borderRadius: RADIUS.lg,
-        padding: '24px',
+        padding: SPACING.px.base,
+        boxShadow: item.shadow,
         border: `1px solid ${SLATE[200]}`,
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
-        <div>
-          <code style={{
-            background: DEEP_CURRENT[50],
-            color: DEEP_CURRENT[700],
-            padding: '4px 12px',
-            borderRadius: RADIUS.sm,
-            fontSize: '14px',
-            fontFamily: 'ui-monospace, monospace',
-            fontWeight: 600,
-          }}>
-            SHADOWS.{shadow.name}
-          </code>
-          <p style={{
-            margin: '8px 0 0 0',
-            fontSize: '13px',
-            fontFamily: '"Fixel", sans-serif',
-            color: DUSK_REEF[500],
-            fontStyle: 'italic',
-          }}>
-            {shadow.usage}
-          </p>
-        </div>
-        <div
-          style={{
-            width: '80px',
-            height: '80px',
-            background: PRIMITIVES.white,
-            borderRadius: RADIUS.sm,
-            boxShadow: shadow.value,
-          }}
-        />
-      </div>
-      <p style={{
-        margin: 0,
-        fontSize: '14px',
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-        lineHeight: 1.6,
       }}>
-        {shadow.description}
-      </p>
+        <div style={{
+          fontSize: TYPOGRAPHY.fontSize.sm[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          color: ABYSS[500],
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+          marginBottom: SPACING.px.micro,
+        }}>{item.name}</div>
+        <div style={{
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          color: DUSK_REEF[500],
+          fontFamily: TYPOGRAPHY.fontFamily.sans,
+        }}>{item.use}</div>
+      </div>
     </div>
   ))}
 </div>
 
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
-
+{/* Light surface container */}
 <div style={{
-  background: `linear-gradient(135deg, ${DEEP_CURRENT[50]} 0%, ${DUSK_REEF[50]} 100%)`,
+  background: SLATE[100],
   borderRadius: RADIUS.lg,
-  padding: '32px',
-  border: `2px solid ${DEEP_CURRENT[100]}`,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  border: `1px solid ${SLATE[200]}`,
 }}>
+  {/* White card with shadow */}
   <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    marginBottom: '20px',
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    boxShadow: SHADOWS.md,
+    maxWidth: '320px',
   }}>
-    <Lightbulb size={24} color={DEEP_CURRENT[500]} />
-    <h3 style={{
-      margin: 0,
-      fontSize: '18px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
+    <div style={{
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
       color: ABYSS[500],
-    }}>
-      At a Glance
-    </h3>
-  </div>
-
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'auto 1fr auto',
-    gap: '8px 16px',
-    alignItems: 'center',
-  }}>
-    {[
-      { name: 'sm', use: 'Tags, badges, stats' },
-      { name: 'md', use: 'Cards (default), buttons, dropdowns' },
-      { name: 'elevated', use: 'KPI cards, featured content, CTAs' },
-      { name: 'lg', use: 'Modals, sheets, drawers' },
-      { name: 'xl', use: 'Critical alerts, error dialogs' },
-      { name: 'buttonDefault', use: 'Button default state' },
-    ].map((item, i) => (
-      <>
-        <code key={`${i}-name`} style={{
-          background: PRIMITIVES.white,
-          color: ABYSS[500],
-          padding: '6px 12px',
-          borderRadius: RADIUS.sm,
-          fontSize: '13px',
-          fontFamily: 'ui-monospace, monospace',
-          fontWeight: 600,
-        }}>
-          {item.name}
-        </code>
-        <span key={`${i}-arrow`} style={{ color: SLATE[400] }}>→</span>
-        <span key={`${i}-use`} style={{
-          fontSize: '14px',
-          fontFamily: '"Fixel", sans-serif',
-          color: ABYSS[500],
-        }}>
-          {item.use}
-        </span>
-      </>
-    ))}
-  </div>
-
-  <div style={{
-    marginTop: '24px',
-    paddingTop: '24px',
-    borderTop: `1px solid ${DEEP_CURRENT[100]}`,
-  }}>
-    <p style={{
-      margin: 0,
-      fontSize: '13px',
-      fontFamily: '"Fixel", sans-serif',
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      marginBottom: SPACING.px.micro,
+    }}>Card with shadow</div>
+    <div style={{
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
       color: DUSK_REEF[500],
-      lineHeight: 1.6,
-    }}>
-      <strong>Pro tip:</strong> When in doubt, use <code style={{
-        background: PRIMITIVES.white,
-        color: DEEP_CURRENT[600],
-        padding: '2px 6px',
-        borderRadius: RADIUS.sm,
-        fontSize: '12px',
-        fontFamily: 'ui-monospace, monospace',
-      }}>shadow="md"</code> for standard cards and interactive elements. Reserve <code style={{
-        background: PRIMITIVES.white,
-        color: DEEP_CURRENT[600],
-        padding: '2px 6px',
-        borderRadius: RADIUS.sm,
-        fontSize: '12px',
-        fontFamily: 'ui-monospace, monospace',
-      }}>shadow="elevated"</code> for content that truly deserves premium emphasis.
-    </p>
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+    }}>SHADOWS.md on SLATE[100] surface</div>
   </div>
 </div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Highlight</h2>
+
+<SectionHeader
+  icon={<Moon size={20} />}
+  title="Dark Surfaces"
+  description="On dark backgrounds, highlights create depth. Use a gradient that fades from 2 steps lighter at top."
+/>
+
+{/* Dark surface container: Surface = ABYSS[700] */}
+<div style={{
+  background: ABYSS[700],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  border: `1px solid ${ABYSS[600]}`,
+}}>
+  {/* Card on surface: Card = ABYSS[500] with highlight gradient */}
+  <div style={{
+    background: `linear-gradient(180deg, ${ABYSS[200]} 0%, ${ABYSS[500]} 5%, ${ABYSS[500]} 100%)`,
+    borderRadius: RADIUS.lg,
+    padding: 1,
+    maxWidth: '320px',
+  }}>
+    <div style={{
+      background: `linear-gradient(180deg, ${ABYSS[300]} 0%, ${ABYSS[500]} 12%)`,
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+    }}>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        color: PRIMITIVES.white,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        marginBottom: SPACING.px.micro,
+      }}>Card with highlight</div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        color: SLATE[400],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+      }}>Gradient: ABYSS[300] → ABYSS[500]</div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage</h2>
+
+<CodeBlock
+  language="tsx"
+  code={`import { SHADOWS, ABYSS } from '@adrozdenko/design-system'
+
+// Light surface - use shadow for depth
+const lightCard = {
+  boxShadow: SHADOWS.md,
+}
+
+// Dark surface - use gradient highlight (2 steps lighter at top)
+const darkCard = {
+  background: \`linear-gradient(180deg, \${ABYSS[300]} 0%, \${ABYSS[500]} 12%)\`,
+}`}
+/>

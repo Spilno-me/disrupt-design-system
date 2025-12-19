@@ -11,9 +11,19 @@ import { GLASS_GRADIENTS, Z_INDEX } from "../../constants/designTokens"
 // GLASS EFFECT CONFIGURATION
 // =============================================================================
 
-const GLASS_GRADIENT = GLASS_GRADIENTS.teal
-const GLASS_GLOW_GRADIENT = GLASS_GRADIENTS.tealGlow
 const ANIMATION_DURATION = 1.5
+
+// Variant-specific glass gradients
+const VARIANT_GRADIENTS = {
+  default: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+  destructive: { gradient: GLASS_GRADIENTS.red, glow: GLASS_GRADIENTS.redGlow },
+  outline: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+  secondary: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+  ghost: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+  link: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+  contact: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+  accent: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+} as const
 
 // =============================================================================
 // BUTTON VARIANTS
@@ -29,7 +39,7 @@ const buttonVariants = cva(
           "bg-inverse-bg text-inverse shadow-sm hover:bg-inverse-bg/90",
         // Destructive - Error/danger state (uses stronger red for better contrast)
         destructive:
-          "bg-error-strong text-inverse shadow-sm hover:bg-error-strong/90 focus-visible:ring-error/30",
+          "bg-error-strong text-on-status shadow-sm hover:bg-error-strong/90 focus-visible:ring-error/30",
         // Outline - Bordered variant
         outline:
           "border border-default bg-surface text-primary shadow-sm hover:bg-page",
@@ -134,6 +144,10 @@ function Button({
   // Check if button should be full width (explicit prop takes precedence)
   const isFullWidth = fullWidth || className?.includes('w-full')
 
+  // Get variant-specific gradients
+  const variantKey = variant || 'default'
+  const { gradient: glassGradient, glow: glassGlow } = VARIANT_GRADIENTS[variantKey]
+
   return (
     <div
       className={cn("relative", isFullWidth ? "flex" : "inline-flex")}
@@ -157,7 +171,7 @@ function Button({
             inset: '1px',
             borderRadius: innerRadius,
             border: '2px solid transparent',
-            background: `${GLASS_GRADIENT} border-box`,
+            background: `${glassGradient} border-box`,
             backgroundSize: '200% 100%',
             backgroundPosition,
             mask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
@@ -177,7 +191,7 @@ function Button({
           style={{
             inset: '2px',
             borderRadius: glowRadius,
-            background: GLASS_GLOW_GRADIENT,
+            background: glassGlow,
             backgroundSize: '200% 100%',
             backgroundPosition,
             filter: 'blur(8px)',

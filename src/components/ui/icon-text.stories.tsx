@@ -5,7 +5,6 @@ import {
   moleculeDescription,
 } from '@/stories/_infrastructure'
 import { IconText, IconHeading1, IconHeading2, IconHeading3, IconLabel } from './IconText'
-import { DEEP_CURRENT, ABYSS, CORAL, HARBOR } from '../../constants/designTokens'
 
 // =============================================================================
 // META CONFIGURATION
@@ -87,24 +86,24 @@ export const WithColors: Story = {
       <IconText
         icon={<Info />}
         size="lg"
-        iconColor={DEEP_CURRENT[500]}
-        textColor={ABYSS[500]}
+        iconClassName="text-accent"
+        textClassName="text-primary"
       >
         Info Message
       </IconText>
       <IconText
         icon={<AlertCircle />}
         size="lg"
-        iconColor={CORAL[500]}
-        textColor={CORAL[700]}
+        iconClassName="text-error"
+        textClassName="text-error"
       >
         Error Message
       </IconText>
       <IconText
         icon={<CheckCircle />}
         size="lg"
-        iconColor={HARBOR[500]}
-        textColor={HARBOR[700]}
+        iconClassName="text-success"
+        textClassName="text-success"
       >
         Success Message
       </IconText>
@@ -143,14 +142,14 @@ export const WithCustomGap: Story = {
 export const OpticalAdjustmentComparison: Story = {
   render: () => (
     <div className="flex flex-col gap-8">
-      <div className="p-4 bg-slate-100 rounded-lg">
-        <p className="text-sm text-slate-500 mb-4">With optical adjustment (default):</p>
+      <div className="p-4 bg-muted-bg rounded-lg">
+        <p className="text-sm text-muted mb-4">With optical adjustment (default):</p>
         <IconText icon={<Info />} size="lg" weight="semibold">
           Perfectly Aligned Text
         </IconText>
       </div>
-      <div className="p-4 bg-slate-100 rounded-lg">
-        <p className="text-sm text-slate-500 mb-4">Without optical adjustment:</p>
+      <div className="p-4 bg-muted-bg rounded-lg">
+        <p className="text-sm text-muted mb-4">Without optical adjustment:</p>
         <IconText icon={<Info />} size="lg" weight="semibold" disableOpticalAdjust>
           Text Sits Higher (Mathematical Center)
         </IconText>
@@ -161,19 +160,19 @@ export const OpticalAdjustmentComparison: Story = {
 
 export const InContext: Story = {
   render: () => (
-    <div className="bg-white rounded-lg border border-slate-200 p-6 max-w-md">
+    <div className="bg-white rounded-lg border border-default p-6 max-w-md">
       <IconText
         icon={<Info />}
         as="h2"
         size="lg"
         weight="semibold"
-        iconColor={DEEP_CURRENT[500]}
-        textColor={ABYSS[500]}
+        iconClassName="text-accent"
+        textClassName="text-primary"
         className="mb-4"
       >
         Why We Moved
       </IconText>
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-muted">
         We&apos;ve upgraded our color documentation to a comprehensive,
         token-synced system. All colors now import directly from the
         single source of truth.
@@ -185,13 +184,13 @@ export const InContext: Story = {
 export const NotificationList: Story = {
   render: () => (
     <div className="flex flex-col gap-3 max-w-sm">
-      <IconText icon={<Bell />} size="sm" iconColor={DEEP_CURRENT[500]}>
+      <IconText icon={<Bell />} size="sm" iconClassName="text-accent">
         New message from John
       </IconText>
-      <IconText icon={<CheckCircle />} size="sm" iconColor={HARBOR[500]}>
+      <IconText icon={<CheckCircle />} size="sm" iconClassName="text-success">
         Task completed successfully
       </IconText>
-      <IconText icon={<AlertCircle />} size="sm" iconColor={CORAL[500]}>
+      <IconText icon={<AlertCircle />} size="sm" iconClassName="text-error">
         Payment failed
       </IconText>
     </div>

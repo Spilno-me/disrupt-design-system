@@ -16,8 +16,8 @@ const theme = create({
 
   // UI
   appBg: '#FBFBF3', // Cream
-  appContentBg: '#FFFFFF',
-  appPreviewBg: '#FFFFFF',
+  appContentBg: '#FBFBF3', // Soft linen
+  appPreviewBg: '#FBFBF3', // Soft linen - story canvas background
   appBorderColor: '#E2E8F0',
   appBorderRadius: 4,
 
@@ -40,7 +40,7 @@ const theme = create({
 
   // Font
   fontBase: '"Fixel", "Segoe UI", "Helvetica Neue", Arial, sans-serif',
-  fontCode: '"Fira Code", "Monaco", "Consolas", monospace',
+  fontCode: '"JetBrains Mono", "Fira Code", "Monaco", "Consolas", monospace',
 })
 
 addons.setConfig({

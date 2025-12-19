@@ -2,8 +2,10 @@
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Palette, Type, Space, Layers, Circle, Sparkles, ArrowRight, BookOpen, GitBranch, Network } from 'lucide-react';
-import { NavCard, InfoBox, CodeBlock, TOKENS } from './DocComponents';
 import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
@@ -12,77 +14,19 @@ import {
   RADIUS,
   SLATE,
   SPACING,
-} from '../../constants/designTokens';
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+import { NavCard, CodeBlock, TOKENS } from './DocComponents';
 
 <Meta title="Foundation/Design Tokens/Overview" />
 
-{/* Hero Section */}
-<div style={{
-  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[700]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: SPACING.px.section,
-  marginBottom: SPACING.px.section,
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative background icon */}
-  <div style={{
-    position: 'absolute',
-    right: '40px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    opacity: 0.1,
-    pointerEvents: 'none',
-  }}>
-    <BookOpen size={180} color={PRIMITIVES.white} strokeWidth={1} />
-  </div>
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: SPACING.px.tight,
-      background: 'rgba(255,255,255,0.1)',
-      padding: '6px 12px',
-      borderRadius: RADIUS.full,
-      marginBottom: SPACING.px.base,
-    }}>
-      <BookOpen size={14} color={DEEP_CURRENT[300]} />
-      <span style={{
-        fontSize: '12px',
-        fontWeight: 600,
-        color: DEEP_CURRENT[300],
-        fontFamily: '"Fixel", sans-serif',
-        letterSpacing: '0.5px',
-      }}>
-        DESIGN SYSTEM FOUNDATION
-      </span>
-    </div>
-
-    <h1 style={{
-      margin: `0 0 ${SPACING.px.base} 0`,
-      fontSize: '42px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      color: PRIMITIVES.white,
-      lineHeight: 1.1,
-    }}>
-      <span>Design Tokens</span>
-    </h1>
-
-    <p style={{
-      margin: 0,
-      fontSize: '18px',
-      fontFamily: '"Fixel", sans-serif',
-      color: SLATE[300],
-      lineHeight: 1.6,
-      maxWidth: '600px',
-    }}>
-      <span>The foundational building blocks of the Disrupt Design System.
-      Tokens ensure consistency across all products while enabling scalable, maintainable design.</span>
-    </p>
-  </div>
-</div>
+{/* Hero Header */}
+<BrandHero
+  title="Design Tokens"
+  description="The foundational building blocks of the Disrupt Design System. Tokens ensure consistency across all products while enabling scalable, maintainable design."
+  gradient="primary"
+  decorativeIcon={<BookOpen size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
 {/* Architecture Overview */}
 <div style={{ marginBottom: SPACING.px.section }}>
@@ -96,105 +40,208 @@ import {
     Token Architecture
   </h2>
 
+  {/* Flow Container */}
   <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '16px',
+    background: `linear-gradient(135deg, ${SLATE[50]} 0%, ${DEEP_CURRENT[50]} 100%)`,
+    borderRadius: RADIUS.xl,
+    padding: '32px',
     marginBottom: '24px',
+    position: 'relative',
   }}>
-    {/* Tier 1 */}
-    <div style={{
-      background: PRIMITIVES.white,
-      borderRadius: RADIUS.lg,
-      padding: '24px',
-      border: `1px solid ${TOKENS.colors.border}`,
-      boxShadow: SHADOWS.sm,
-    }}>
-      <div style={{
-        width: '32px',
-        height: '32px',
-        borderRadius: RADIUS.sm,
-        background: DUSK_REEF[50],
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: '16px',
-      }}>
-        <span style={{ fontSize: '14px', fontWeight: 700, color: DUSK_REEF[500] }}>1</span>
-      </div>
-      <h3 style={{
-        margin: '0 0 8px 0',
-        fontSize: '16px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        Primitives
-      </h3>
-      <p style={{
-        margin: 0,
-        fontSize: '14px',
-        fontFamily: '"Fixel", sans-serif',
-        color: DUSK_REEF[500],
-        lineHeight: 1.5,
-      }}>
-        <span>Raw values. Color scales, spacing units, font sizes. The source of truth.</span>
-      </p>
-    </div>
-
-    {/* Arrow */}
+    {/* Flow Steps */}
     <div style={{
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: 'stretch',
+      gap: '0',
     }}>
+      {/* Step 1: Primitives */}
       <div style={{
-        background: DEEP_CURRENT[50],
-        borderRadius: RADIUS.full,
-        padding: '12px',
+        flex: 1,
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '24px',
+        boxShadow: SHADOWS.sm,
+        border: `1px solid ${SLATE[200]}`,
+        position: 'relative',
+        zIndex: 2,
       }}>
-        <ArrowRight size={24} color={DEEP_CURRENT[500]} />
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '12px',
+        }}>
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: RADIUS.full,
+            background: DUSK_REEF[100],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '13px',
+            fontWeight: 700,
+            color: DUSK_REEF[600],
+            fontFamily: '"Fixel", sans-serif',
+          }}>
+            <span>1</span>
+          </div>
+          <h3 style={{
+            margin: 0,
+            fontSize: '15px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            <span>Primitives</span>
+          </h3>
+        </div>
+        <p style={{
+          margin: 0,
+          fontSize: '13px',
+          fontFamily: '"Fixel", sans-serif',
+          color: DUSK_REEF[500],
+          lineHeight: 1.5,
+        }}>
+          <span>Raw values — color scales, spacing units, font sizes. The source of truth.</span>
+        </p>
+        <div style={{
+          marginTop: '12px',
+          display: 'flex',
+          gap: '6px',
+        }}>
+          <span style={{
+            background: ABYSS[500],
+            padding: '2px 8px',
+            borderRadius: RADIUS.full,
+            fontSize: '11px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: PRIMITIVES.white,
+          }}>ABYSS[500]</span>
+          <span style={{
+            background: DEEP_CURRENT[500],
+            padding: '2px 8px',
+            borderRadius: RADIUS.full,
+            fontSize: '11px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: PRIMITIVES.white,
+          }}>DEEP_CURRENT</span>
+        </div>
       </div>
-    </div>
 
-    {/* Tier 2 */}
-    <div style={{
-      background: PRIMITIVES.white,
-      borderRadius: RADIUS.lg,
-      padding: '24px',
-      border: `2px solid ${DEEP_CURRENT[500]}`,
-      boxShadow: SHADOWS.md,
-    }}>
+      {/* Arrow Connector */}
       <div style={{
-        width: '32px',
-        height: '32px',
-        borderRadius: RADIUS.sm,
-        background: DEEP_CURRENT[50],
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: '16px',
+        padding: '0 16px',
+        position: 'relative',
+        zIndex: 1,
       }}>
-        <span style={{ fontSize: '14px', fontWeight: 700, color: DEEP_CURRENT[500] }}>2</span>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.full,
+          background: PRIMITIVES.white,
+          boxShadow: SHADOWS.md,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <ArrowRight size={20} color={DEEP_CURRENT[500]} strokeWidth={2.5} />
+        </div>
       </div>
-      <h3 style={{
-        margin: '0 0 8px 0',
-        fontSize: '16px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
+
+      {/* Step 2: Alias */}
+      <div style={{
+        flex: 1,
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '24px',
+        boxShadow: SHADOWS.md,
+        border: `2px solid ${DEEP_CURRENT[500]}`,
+        position: 'relative',
+        zIndex: 2,
       }}>
-        Alias (Semantic)
-      </h3>
-      <p style={{
-        margin: 0,
-        fontSize: '14px',
-        fontFamily: '"Fixel", sans-serif',
-        color: DUSK_REEF[500],
-        lineHeight: 1.5,
-      }}>
-        <span>What colors <strong>mean</strong>. Use these in components. Always.</span>
-      </p>
+        <div style={{
+          position: 'absolute',
+          top: '-10px',
+          right: '16px',
+          background: DEEP_CURRENT[500],
+          color: PRIMITIVES.white,
+          padding: '3px 10px',
+          borderRadius: RADIUS.full,
+          fontSize: '10px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        }}>
+          <span>Use This</span>
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '12px',
+        }}>
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: RADIUS.full,
+            background: DEEP_CURRENT[500],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '13px',
+            fontWeight: 700,
+            color: PRIMITIVES.white,
+            fontFamily: '"Fixel", sans-serif',
+          }}>
+            <span>2</span>
+          </div>
+          <h3 style={{
+            margin: 0,
+            fontSize: '15px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            <span>Alias (Semantic)</span>
+          </h3>
+        </div>
+        <p style={{
+          margin: 0,
+          fontSize: '13px',
+          fontFamily: '"Fixel", sans-serif',
+          color: DUSK_REEF[500],
+          lineHeight: 1.5,
+        }}>
+          <span>What colors <strong>mean</strong>. Use these in components. Always.</span>
+        </p>
+        <div style={{
+          marginTop: '12px',
+          display: 'flex',
+          gap: '6px',
+        }}>
+          <span style={{
+            background: SLATE[100],
+            padding: '2px 8px',
+            borderRadius: RADIUS.full,
+            fontSize: '11px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: ABYSS[500],
+          }}>text-primary</span>
+          <span style={{
+            background: SLATE[100],
+            padding: '2px 8px',
+            borderRadius: RADIUS.full,
+            fontSize: '11px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: ABYSS[500],
+          }}>bg-surface</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -350,7 +397,7 @@ import { ALIAS, SHADOWS, RADIUS } from '@adrozdenko/design-system'
     padding: '12px 16px',
     borderRadius: RADIUS.sm,
     fontSize: '13px',
-    fontFamily: 'ui-monospace, monospace',
+    fontFamily: '"JetBrains Mono", ui-monospace, monospace',
   }}>
     <span style={{ color: PRIMITIVES.white }}>src/constants/designTokens.ts</span>
   </code>

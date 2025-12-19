@@ -1,16 +1,11 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Circle } from 'lucide-react';
+import { Circle, ArrowRight, Plus, Equal, Check } from 'lucide-react';
 import {
-  SectionHeader,
+  BrandHero,
   InfoBox,
-  RadiusShowcase,
-  TokenTable,
-  CodeBlock,
-  TOKENS,
-} from './DocComponents';
-import {
+  SectionHeader,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
@@ -19,64 +14,22 @@ import {
   RADIUS,
   SLATE,
   SPACING,
-} from '../../constants/designTokens';
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+import { RadiusShowcase, TokenTable, CodeBlock } from './DocComponents';
+import { Button } from '../../components/ui/button';
+import { Badge } from '../../components/ui/badge';
+import { AppCard, AppCardHeader, AppCardTitle, AppCardDescription, AppCardContent } from '../../components/ui/app-card';
 
 <Meta title="Foundation/Design Tokens/Radius" />
 
-{/* Page Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${DEEP_CURRENT[600]} 0%, ${DEEP_CURRENT[800]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: SPACING.px.section,
-  marginBottom: SPACING.px.section,
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative background icon */}
-  <div style={{
-    position: 'absolute',
-    right: '40px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    opacity: 0.1,
-    pointerEvents: 'none',
-  }}>
-    <Circle size={180} color={PRIMITIVES.white} strokeWidth={1} />
-  </div>
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: SPACING.px.tight,
-      marginBottom: SPACING.px.base,
-    }}>
-      <Circle size={28} color={PRIMITIVES.white} />
-    </div>
-
-    <h1 style={{
-      margin: `0 0 ${SPACING.px.base} 0`,
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      color: PRIMITIVES.white,
-    }}>
-      <span>Border Radius</span>
-    </h1>
-
-    <p style={{
-      margin: 0,
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      color: SLATE[300],
-      lineHeight: 1.6,
-      maxWidth: '500px',
-    }}>
-      <span>Consistent corner rounding creates visual harmony and signals interactivity.
-      Larger radius = more prominent or interactive.</span>
-    </p>
-  </div>
-</div>
+{/* Hero Header */}
+<BrandHero
+  title="Border Radius"
+  description="Consistent corner rounding creates visual harmony and signals interactivity. Larger radius = more prominent or interactive."
+  gradient="teal"
+  decorativeIcon={<Circle size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
 <InfoBox variant="tip">
   <strong>Rule:</strong> Larger radius indicates more prominence or interactivity.
@@ -107,7 +60,7 @@ import {
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Visual Comparison</h2>
 
 <div style={{
-  background: PRIMITIVES.white,
+  background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '32px',
   border: `1px solid ${SLATE[200]}`,
@@ -141,7 +94,7 @@ import {
         </div>
         <div style={{
           fontSize: '11px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: SLATE[500],
         }}>
           <span>{value}</span>
@@ -177,93 +130,74 @@ import {
   gap: '24px',
   marginBottom: '48px',
 }}>
-  {/* Card */}
+  {/* Card - Real AppCard component */}
   <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.sm,
-    padding: '20px',
-    boxShadow: SHADOWS.md,
-    border: `1px solid ${SLATE[200]}`,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
   }}>
+    <AppCard shadow="md" className="min-h-[100px]">
+      <AppCardHeader>
+        <AppCardTitle>Card Title</AppCardTitle>
+        <AppCardDescription>Sample content</AppCardDescription>
+      </AppCardHeader>
+    </AppCard>
     <div style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-      marginBottom: '8px',
-    }}>
-      <span>Card</span>
-    </div>
-    <div style={{
+      textAlign: 'center',
       fontSize: '12px',
-      fontFamily: 'ui-monospace, monospace',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
       color: SLATE[500],
     }}>
-      <span>rounded-sm (8px)</span>
+      <span>rounded-lg (16px)</span>
     </div>
   </div>
 
-  {/* Button */}
+  {/* Button - Real Button component */}
   <div style={{
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: '12px',
     background: SLATE[50],
-    borderRadius: RADIUS.sm,
-    padding: '20px',
+    borderRadius: RADIUS.lg,
+    padding: '24px',
   }}>
-    <button style={{
-      background: DEEP_CURRENT[600],  // [600] for 4.89:1 contrast (AA compliant)
-      color: PRIMITIVES.white,
-      border: 'none',
-      borderRadius: RADIUS.md,
-      padding: '10px 20px',
-      fontSize: '14px',
-      fontWeight: 500,
-      fontFamily: '"Fixel", sans-serif',
-      cursor: 'pointer',
-      marginBottom: '12px',
-    }}>
-      Button
-    </button>
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <Button variant="accent">Primary</Button>
+      <Button variant="outline">Outline</Button>
+    </div>
     <div style={{
       fontSize: '12px',
-      fontFamily: 'ui-monospace, monospace',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
       color: SLATE[500],
     }}>
       <span>rounded-md (12px)</span>
     </div>
   </div>
 
-  {/* Badge */}
+  {/* Badge - Real Badge component */}
   <div style={{
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: '12px',
     background: SLATE[50],
-    borderRadius: RADIUS.sm,
-    padding: '20px',
+    borderRadius: RADIUS.lg,
+    padding: '24px',
   }}>
-    <span style={{
-      background: DEEP_CURRENT[50],
-      color: DEEP_CURRENT[700],
-      borderRadius: RADIUS.xs,
-      padding: '4px 12px',
-      fontSize: '12px',
-      fontWeight: 500,
-      fontFamily: '"Fixel", sans-serif',
-      marginBottom: '12px',
-    }}>
-      Badge
-    </span>
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <Badge variant="info">Info</Badge>
+      <Badge variant="success">Success</Badge>
+      <Badge variant="warning">Warning</Badge>
+    </div>
     <div style={{
       fontSize: '12px',
-      fontFamily: 'ui-monospace, monospace',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
       color: SLATE[500],
     }}>
-      <span>rounded-xs (4px)</span>
+      <span>rounded-sm (8px)</span>
     </div>
   </div>
 </div>
@@ -276,171 +210,177 @@ import {
   <strong>Critical Rule:</strong> When nesting rounded elements, the outer radius must equal the inner radius plus the padding between them.
 </InfoBox>
 
+{/* Clean Formula Visualization */}
 <div style={{
-  background: SLATE[50],
-  borderRadius: RADIUS.lg,
-  padding: SPACING.px.cardPadding,
-  marginBottom: SPACING.px.section,
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[50]} 0%, ${DUSK_REEF[50]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '48px 32px',
+  marginBottom: '32px',
+  border: `1px solid ${SLATE[200]}`,
 }}>
-  <div style={{
-    fontSize: '18px',
-    fontWeight: 600,
-    fontFamily: '"Fixel", sans-serif',
-    color: ABYSS[500],
-    marginBottom: SPACING.px.base,
-    textAlign: 'center',
-  }}>
-    <span>Inner + Padding = Outer</span>
-  </div>
-
-  {/* Visual diagram */}
+  {/* Formula equation */}
   <div style={{
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: SPACING.px.comfortable,
+    gap: '24px',
+    marginBottom: '48px',
   }}>
+    {/* Inner */}
     <div style={{
-      position: 'relative',
-      background: DEEP_CURRENT[100],
-      borderRadius: RADIUS.xl,
-      padding: SPACING.px.tight,
-      border: `3px solid ${DEEP_CURRENT[400]}`,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
     }}>
-      {/* Outer label */}
       <div style={{
-        position: 'absolute',
-        top: '-28px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: DEEP_CURRENT[600],  // [600] for 4.89:1 contrast (AA compliant)
-        color: PRIMITIVES.white,
-        padding: '4px 12px',
-        borderRadius: RADIUS.xs,
-        fontSize: '12px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        whiteSpace: 'nowrap',
-      }}>
-        <span>Outer: xl (20px)</span>
-      </div>
-
-      <div style={{
+        width: '72px',
+        height: '72px',
         background: PRIMITIVES.white,
         borderRadius: RADIUS.md,
-        padding: '40px 80px',
         border: `3px solid ${DUSK_REEF[400]}`,
-        position: 'relative',
-      }}>
-        {/* Inner label */}
-        <div style={{
-          position: 'absolute',
-          bottom: '-28px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: DUSK_REEF[500],
-          color: PRIMITIVES.white,
-          padding: '4px 12px',
-          borderRadius: RADIUS.xs,
-          fontSize: '12px',
-          fontWeight: 600,
-          fontFamily: '"Fixel", sans-serif',
-          whiteSpace: 'nowrap',
-        }}>
-          <span>Inner: md (12px)</span>
-        </div>
+        boxShadow: SHADOWS.sm,
+      }} />
+      <span style={{ fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[600] }}>Inner</span>
+      <span style={{ fontSize: '12px', fontFamily: '"JetBrains Mono", monospace', color: DUSK_REEF[500] }}>12px</span>
+    </div>
 
-        <span style={{
-          fontSize: '14px',
-          fontFamily: '"Fixel", sans-serif',
-          color: ABYSS[500],
-        }}>Content</span>
-      </div>
+    <Plus size={24} style={{ color: SLATE[400], marginTop: '-40px' }} />
 
-      {/* Padding label */}
+    {/* Padding - just the number */}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
+    }}>
       <div style={{
-        position: 'absolute',
-        right: '-70px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        background: SLATE[600],  // [600] for 6.14:1 contrast (AA compliant)
-        color: PRIMITIVES.white,
-        padding: '4px 12px',
-        borderRadius: RADIUS.xs,
-        fontSize: '12px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        whiteSpace: 'nowrap',
+        width: '72px',
+        height: '72px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
-        <span>Padding: 8px</span>
+        <span style={{ fontSize: '32px', fontWeight: 600, fontFamily: '"JetBrains Mono", monospace', color: SLATE[500] }}>8</span>
       </div>
+      <span style={{ fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: SLATE[600] }}>Padding</span>
+      <span style={{ fontSize: '12px', fontFamily: '"JetBrains Mono", monospace', color: SLATE[500] }}>8px</span>
+    </div>
+
+    <Equal size={24} style={{ color: SLATE[400], marginTop: '-40px' }} />
+
+    {/* Outer - dashed border */}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
+    }}>
+      <div style={{
+        width: '72px',
+        height: '72px',
+        background: 'transparent',
+        borderRadius: RADIUS.xl,
+        border: `3px dashed ${DEEP_CURRENT[400]}`,
+      }} />
+      <span style={{ fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: DEEP_CURRENT[600] }}>Outer</span>
+      <span style={{ fontSize: '12px', fontFamily: '"JetBrains Mono", monospace', color: DEEP_CURRENT[500] }}>20px</span>
     </div>
   </div>
 
+  {/* Live demo with real nested elements */}
   <div style={{
-    textAlign: 'center',
-    fontSize: '14px',
-    fontFamily: 'ui-monospace, monospace',
-    color: ABYSS[500],
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '64px',
+    alignItems: 'flex-start',
   }}>
-    <span>12px (md) + 8px (padding) = 20px (xl)</span>
+    {/* Correct example */}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+      <div style={{
+        background: 'transparent',
+        borderRadius: RADIUS.xl,
+        padding: '8px',
+        border: `3px dashed ${DEEP_CURRENT[400]}`,
+      }}>
+        <div style={{
+          background: PRIMITIVES.white,
+          borderRadius: RADIUS.md,
+          padding: '20px 40px',
+          border: `3px solid ${DUSK_REEF[400]}`,
+          boxShadow: SHADOWS.sm,
+        }}>
+          <span style={{ fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>Nested Content</span>
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <Check size={16} style={{ color: '#22c55e' }} />
+        <span style={{ fontSize: '12px', fontWeight: 500, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>Correct: Harmonious curves</span>
+      </div>
+      <span style={{ fontSize: '11px', fontFamily: '"JetBrains Mono", monospace', color: SLATE[500] }}>md (12) + 8 = xl (20)</span>
+    </div>
+
+    {/* Incorrect example */}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+      <div style={{
+        background: 'transparent',
+        borderRadius: RADIUS.md,
+        padding: '8px',
+        border: `3px dashed ${SLATE[300]}`,
+      }}>
+        <div style={{
+          background: PRIMITIVES.white,
+          borderRadius: RADIUS.md,
+          padding: '20px 40px',
+          border: `3px solid ${SLATE[300]}`,
+          boxShadow: SHADOWS.sm,
+        }}>
+          <span style={{ fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: SLATE[400] }}>Nested Content</span>
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <span style={{ fontSize: '16px', color: '#ef4444' }}>✕</span>
+        <span style={{ fontSize: '12px', fontWeight: 500, fontFamily: '"Fixel", sans-serif', color: SLATE[500] }}>Wrong: Pinched corners</span>
+      </div>
+      <span style={{ fontSize: '11px', fontFamily: '"JetBrains Mono", monospace', color: SLATE[400] }}>Same radius = visual conflict</span>
+    </div>
   </div>
 </div>
 
-{/* Common pairings table */}
+{/* Compact pairings reference */}
 <div style={{
-  background: PRIMITIVES.white,
-  borderRadius: RADIUS.lg,
-  padding: SPACING.px.cardPadding,
-  border: `1px solid ${SLATE[200]}`,
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
   marginBottom: SPACING.px.section,
 }}>
-  <div style={{
-    fontSize: '16px',
-    fontWeight: 600,
-    fontFamily: '"Fixel", sans-serif',
-    color: ABYSS[500],
-    marginBottom: SPACING.px.base,
-  }}>
-    <span>Common Nested Pairings</span>
-  </div>
-
-  <table style={{
-    width: '100%',
-    borderCollapse: 'collapse',
-    fontSize: '13px',
-    fontFamily: '"Fixel", sans-serif',
-  }}>
-    <thead>
-      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
-        <th style={{ textAlign: 'left', padding: '12px 8px', color: ABYSS[500], fontWeight: 600 }}>Inner</th>
-        <th style={{ textAlign: 'left', padding: '12px 8px', color: ABYSS[500], fontWeight: 600 }}>Padding</th>
-        <th style={{ textAlign: 'left', padding: '12px 8px', color: ABYSS[500], fontWeight: 600 }}>Outer</th>
-        <th style={{ textAlign: 'left', padding: '12px 8px', color: ABYSS[500], fontWeight: 600 }}>Example Use</th>
-      </tr>
-    </thead>
-    <tbody>
-      {[
-        { inner: 'xs (4px)', padding: 'xs (4px)', outer: 'sm (8px)', example: 'Badge in chip' },
-        { inner: 'xs (4px)', padding: 'sm (8px)', outer: 'md (12px)', example: 'Chip in card' },
-        { inner: 'sm (8px)', padding: 'xs (4px)', outer: 'md (12px)', example: 'Button in container' },
-        { inner: 'sm (8px)', padding: 'sm (8px)', outer: 'lg (16px)', example: 'Input in form card' },
-        { inner: 'md (12px)', padding: 'sm (8px)', outer: 'xl (20px)', example: 'Card in section' },
-        { inner: 'md (12px)', padding: 'md (12px)', outer: '2xl (24px)', example: 'Dialog in overlay' },
-        { inner: 'lg (16px)', padding: 'sm (8px)', outer: '2xl (24px)', example: 'Large card in container' },
-      ].map((row, i) => (
-        <tr key={i} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
-          <td style={{ padding: '12px 8px', fontFamily: 'ui-monospace, monospace', color: DUSK_REEF[600] }}>{row.inner}</td>
-          <td style={{ padding: '12px 8px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>{row.padding}</td>
-          <td style={{ padding: '12px 8px', fontFamily: 'ui-monospace, monospace', color: DEEP_CURRENT[600] }}>{row.outer}</td>
-          <td style={{ padding: '12px 8px', color: ABYSS[400] }}>{row.example}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+  {[
+    { inner: 'xs', padding: '4', outer: 'sm' },
+    { inner: 'sm', padding: '4', outer: 'md' },
+    { inner: 'sm', padding: '8', outer: 'lg' },
+    { inner: 'md', padding: '8', outer: 'xl' },
+    { inner: 'md', padding: '12', outer: '2xl' },
+    { inner: 'lg', padding: '8', outer: '2xl' },
+  ].map((item, i) => (
+    <div key={i} style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.xs,
+      padding: '6px 12px',
+      border: `1px solid ${SLATE[200]}`,
+      fontSize: '12px',
+      fontFamily: '"JetBrains Mono", monospace',
+    }}>
+      <span style={{ color: DUSK_REEF[600] }}>{item.inner}</span>
+      <span style={{ color: SLATE[400] }}> + </span>
+      <span style={{ color: SLATE[500] }}>{item.padding}</span>
+      <span style={{ color: SLATE[400] }}> = </span>
+      <span style={{ color: DEEP_CURRENT[600] }}>{item.outer}</span>
+    </div>
+  ))}
 </div>
 
-<InfoBox variant="warning">
-  <strong>Anti-pattern:</strong> Using the same radius on nested elements makes inner corners look "pinched" and visually inconsistent.
+<InfoBox variant="tip">
+  <strong>Pro tip:</strong> When in doubt, add 8px to the inner radius to get the outer radius. This creates visually balanced nested corners in most cases.
 </InfoBox>
 
 ---

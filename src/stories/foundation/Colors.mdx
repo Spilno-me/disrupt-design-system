@@ -1,91 +1,46 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Palette, Droplet, AlertCircle, CheckCircle, Info, Sun } from 'lucide-react';
+import { Palette, AlertCircle, CheckCircle, Info, Sun } from 'lucide-react';
 import {
-  SectionHeader,
+  BrandHero,
   InfoBox,
-  ColorSwatch,
-  ColorScale,
-  TokenTable,
-  CodeBlock,
-  TOKENS,
-} from './DocComponents';
-import {
+  SectionHeader,
+  GuidelineCard,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
   CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+import {
+  ColorSwatch,
+  TokenTable,
+  CodeBlock,
+} from './DocComponents';
+import {
   WAVE,
   SUNRISE,
   HARBOR,
   ORANGE,
-  SLATE,
-  PRIMITIVES,
   ALIAS,
-  SHADOWS,
-  RADIUS,
-  SPACING,
 } from '../../constants/designTokens';
 
 <Meta title="Foundation/Design Tokens/Colors" />
 
-{/* Page Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${DEEP_CURRENT[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: SPACING.px.section,
-  marginBottom: SPACING.px.section,
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative background icon */}
-  <div style={{
-    position: 'absolute',
-    right: '40px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    opacity: 0.1,
-    pointerEvents: 'none',
-  }}>
-    <Palette size={180} color={PRIMITIVES.white} strokeWidth={1} />
-  </div>
+{/* Hero Header */}
+<BrandHero
+  title="Color System"
+  description="A two-tiered color architecture ensuring consistency and maintainability across all Disrupt products."
+  gradient="purple"
+  decorativeIcon={<Palette size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: SPACING.px.tight,
-      marginBottom: SPACING.px.base,
-    }}>
-      <Palette size={28} color={PRIMITIVES.white} />
-    </div>
-
-    <h1 style={{
-      margin: `0 0 ${SPACING.px.base} 0`,
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      color: PRIMITIVES.white,
-    }}>
-      <span>Color System</span>
-    </h1>
-
-    <p style={{
-      margin: 0,
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      color: SLATE[300],
-      lineHeight: 1.6,
-      maxWidth: '500px',
-    }}>
-      <span>A two-tiered color architecture ensuring consistency and maintainability
-      across all Disrupt products.</span>
-    </p>
-  </div>
-</div>
-
-{/* Architecture Reminder */}
 <InfoBox variant="tip">
   <strong>Two-Tier System:</strong> Primitives (raw values) → Alias (semantic meaning).
   Always use <strong>Alias tokens</strong> in components. Click any swatch to copy.
@@ -95,7 +50,11 @@ import {
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Tier 1: Brand Primitives</h2>
 
-Raw color scales with brand naming. These are the **source of truth** for all color values.
+<SectionHeader
+  icon={<Palette size={20} />}
+  title="Color Scales"
+  description="Raw color scales with brand naming. These are the source of truth for all color values."
+/>
 
 ### Abyss (Primary Dark)
 
@@ -104,8 +63,8 @@ The foundation of the Disrupt brand. Used for text, backgrounds, and UI elements
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))',
-  gap: '8px',
-  marginBottom: '32px',
+  gap: SPACING.px.tight,
+  marginBottom: SPACING.px.spacious,
 }}>
   {Object.entries(ABYSS).map(([shade, hex]) => (
     <ColorSwatch
@@ -125,8 +84,8 @@ The signature accent color. Represents innovation, trust, and the digital realm.
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))',
-  gap: '8px',
-  marginBottom: '32px',
+  gap: SPACING.px.tight,
+  marginBottom: SPACING.px.spacious,
 }}>
   {Object.entries(DEEP_CURRENT).map(([shade, hex]) => (
     <ColorSwatch
@@ -146,8 +105,8 @@ Secondary brand color for muted text, backgrounds, and subtle accents.
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))',
-  gap: '8px',
-  marginBottom: '32px',
+  gap: SPACING.px.tight,
+  marginBottom: SPACING.px.spacious,
 }}>
   {Object.entries(DUSK_REEF).map(([shade, hex]) => (
     <ColorSwatch
@@ -167,12 +126,12 @@ Semantic colors for feedback and state communication.
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(4, 1fr)',
-  gap: '16px',
-  marginBottom: '48px',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.section,
 }}>
   {/* Error */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
     boxShadow: SHADOWS.sm,
@@ -180,18 +139,28 @@ Semantic colors for feedback and state communication.
   }}>
     <div style={{
       background: CORAL[500],
-      padding: '20px',
+      padding: SPACING.px.comfortable,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     }}>
       <AlertCircle size={32} color={PRIMITIVES.white} />
     </div>
-    <div style={{ padding: '16px' }}>
-      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+    <div style={{ padding: SPACING.px.base }}>
+      <div style={{
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: ABYSS[500],
+        marginBottom: SPACING.px.micro,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+      }}>
         <span>Coral (Error)</span>
       </div>
-      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+      }}>
         {CORAL[500]}
       </div>
     </div>
@@ -199,7 +168,7 @@ Semantic colors for feedback and state communication.
 
   {/* Success */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
     boxShadow: SHADOWS.sm,
@@ -207,18 +176,28 @@ Semantic colors for feedback and state communication.
   }}>
     <div style={{
       background: HARBOR[500],
-      padding: '20px',
+      padding: SPACING.px.comfortable,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     }}>
       <CheckCircle size={32} color={PRIMITIVES.white} />
     </div>
-    <div style={{ padding: '16px' }}>
-      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+    <div style={{ padding: SPACING.px.base }}>
+      <div style={{
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: ABYSS[500],
+        marginBottom: SPACING.px.micro,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+      }}>
         <span>Harbor (Success)</span>
       </div>
-      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+      }}>
         {HARBOR[500]}
       </div>
     </div>
@@ -226,7 +205,7 @@ Semantic colors for feedback and state communication.
 
   {/* Warning */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
     boxShadow: SHADOWS.sm,
@@ -234,18 +213,28 @@ Semantic colors for feedback and state communication.
   }}>
     <div style={{
       background: SUNRISE[500],
-      padding: '20px',
+      padding: SPACING.px.comfortable,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     }}>
       <Sun size={32} color={PRIMITIVES.white} />
     </div>
-    <div style={{ padding: '16px' }}>
-      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+    <div style={{ padding: SPACING.px.base }}>
+      <div style={{
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: ABYSS[500],
+        marginBottom: SPACING.px.micro,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+      }}>
         <span>Sunrise (Warning)</span>
       </div>
-      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+      }}>
         {SUNRISE[500]}
       </div>
     </div>
@@ -253,7 +242,7 @@ Semantic colors for feedback and state communication.
 
   {/* Info */}
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.lg,
     overflow: 'hidden',
     boxShadow: SHADOWS.sm,
@@ -261,18 +250,28 @@ Semantic colors for feedback and state communication.
   }}>
     <div style={{
       background: WAVE[500],
-      padding: '20px',
+      padding: SPACING.px.comfortable,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     }}>
       <Info size={32} color={PRIMITIVES.white} />
     </div>
-    <div style={{ padding: '16px' }}>
-      <div style={{ fontWeight: 600, fontSize: '14px', color: ABYSS[500], marginBottom: '4px', fontFamily: '"Fixel", sans-serif' }}>
+    <div style={{ padding: SPACING.px.base }}>
+      <div style={{
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: ABYSS[500],
+        marginBottom: SPACING.px.micro,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+      }}>
         <span>Wave (Info)</span>
       </div>
-      <div style={{ fontSize: '12px', fontFamily: 'ui-monospace, monospace', color: SLATE[500] }}>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+      }}>
         {WAVE[500]}
       </div>
     </div>
@@ -284,8 +283,8 @@ Semantic colors for feedback and state communication.
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(5, 1fr)',
-  gap: '12px',
-  marginBottom: '48px',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
 }}>
   <ColorSwatch name="Cream" value={PRIMITIVES.cream} tokenPath="PRIMITIVES.cream" usage="Page background" />
   <ColorSwatch name="White" value={PRIMITIVES.white} tokenPath="PRIMITIVES.white" usage="Card surface" />
@@ -298,7 +297,11 @@ Semantic colors for feedback and state communication.
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Tier 2: Alias Tokens (Semantic)</h2>
 
-Semantic tokens that define **what the color means**. Use these in components.
+<SectionHeader
+  icon={<Palette size={20} />}
+  title="Semantic Tokens"
+  description="Semantic tokens that define what the color means. Use these in components."
+/>
 
 ### Text Colors
 
@@ -395,66 +398,22 @@ const bgColor = isError
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  marginBottom: '24px',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.section,
 }}>
-  <div style={{
-    background: HARBOR[50],
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${HARBOR[200]}`,
-  }}>
-    <h4 style={{
-      margin: '0 0 12px 0',
-      fontSize: '16px',
-      fontWeight: 600,
-      color: HARBOR[700],
-      fontFamily: '"Fixel", sans-serif',
-    }}>
-      Do's
-    </h4>
-    <ul style={{
-      margin: 0,
-      paddingLeft: '20px',
-      fontSize: '14px',
-      color: ABYSS[500],
-      fontFamily: '"Fixel", sans-serif',
-      lineHeight: 1.8,
-    }}>
-      <li>Use <strong>ALIAS tokens</strong> for all component styling</li>
-      <li>Use semantic names that describe intent</li>
-      <li>Use Tailwind classes for static styles</li>
-      <li>Use TypeScript tokens for dynamic values</li>
-    </ul>
-  </div>
+  <GuidelineCard type="do" title="Use ALIAS tokens for components">
+    Always use semantic tokens like `ALIAS.text.primary` instead of raw values. This ensures consistency and easy theming.
+  </GuidelineCard>
 
-  <div style={{
-    background: CORAL[50],
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${CORAL[200]}`,
-  }}>
-    <h4 style={{
-      margin: '0 0 12px 0',
-      fontSize: '16px',
-      fontWeight: 600,
-      color: CORAL[700],
-      fontFamily: '"Fixel", sans-serif',
-    }}>
-      Don'ts
-    </h4>
-    <ul style={{
-      margin: 0,
-      paddingLeft: '20px',
-      fontSize: '14px',
-      color: ABYSS[500],
-      fontFamily: '"Fixel", sans-serif',
-      lineHeight: 1.8,
-    }}>
-      <li>Don't hardcode hex values in components</li>
-      <li>Don't use Primitives directly when ALIAS exists</li>
-      <li>Don't create new colors outside the system</li>
-      <li>Don't use Tailwind's default colors (blue-500, etc.)</li>
-    </ul>
-  </div>
+  <GuidelineCard type="dont" title="Hardcode hex values">
+    Never use raw hex values like `#1D3461` in components. Use the token system for maintainability.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Use Tailwind classes for static styles">
+    For static color usage, prefer Tailwind classes like `text-primary` over inline styles.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Use default Tailwind colors">
+    Don't use Tailwind's default palette (blue-500, gray-200). Use DDS semantic tokens instead.
+  </GuidelineCard>
 </div>

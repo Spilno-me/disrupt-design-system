@@ -145,6 +145,7 @@ export const PRIMITIVES = {
   white: '#FFFFFF',
   black: '#000000',
   cream: '#FBFBF3',
+  softLinen: '#EBF9FF',
   linkedIn: '#0A66C2',
 } as const
 
@@ -174,10 +175,10 @@ export const ALIAS = {
   // --- BACKGROUND ---
   background: {
     page: PRIMITIVES.cream,
-    surface: PRIMITIVES.white,
+    surface: PRIMITIVES.softLinen,
     surfaceHover: ABYSS[50],
     surfaceActive: ABYSS[100],
-    elevated: PRIMITIVES.white,
+    elevated: PRIMITIVES.softLinen,
     muted: DUSK_REEF[50],
     inverse: ABYSS[500],
     inverseSubtle: ABYSS[700],
@@ -424,6 +425,23 @@ export const SHADOWS = {
 export type ShadowLevel = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'elevated'
 
 // =============================================================================
+// HIGHLIGHTS (Top-edge light reflections)
+// =============================================================================
+
+/**
+ * Highlights simulate light reflecting off the top edge of elevated surfaces.
+ * Where there's shadow (below), there's highlight (above) - basic physics.
+ */
+export const HIGHLIGHTS = {
+  /** No highlight effect */
+  none: 'none',
+  /** Top-edge light reflection for dark surfaces */
+  edge: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.16)',
+} as const
+
+export type HighlightLevel = keyof typeof HIGHLIGHTS
+
+// =============================================================================
 // GRADIENTS
 // =============================================================================
 
@@ -460,6 +478,26 @@ export const GLASS_GRADIENTS = {
     transparent 75%,
     rgba(61, 189, 212, 0.7) 90%,
     rgba(8, 164, 189, 0.9) 100%
+  )`,
+  red: `linear-gradient(
+    0deg,
+    ${CORAL[500]} 0%,
+    ${CORAL[400]} 8%,
+    ${CORAL[300]} 15%,
+    transparent 25%,
+    transparent 75%,
+    ${CORAL[300]} 85%,
+    ${CORAL[400]} 92%,
+    ${CORAL[500]} 100%
+  )`,
+  redGlow: `linear-gradient(
+    0deg,
+    rgba(247, 13, 26, 1) 0%,
+    rgba(252, 165, 165, 0.9) 10%,
+    transparent 25%,
+    transparent 75%,
+    rgba(252, 165, 165, 0.9) 90%,
+    rgba(247, 13, 26, 1) 100%
   )`,
   white: `linear-gradient(
     0deg,
@@ -546,7 +584,7 @@ export const TYPOGRAPHY = {
   fontFamily: {
     display: '"Pilat Extended", Arial, sans-serif',
     sans: '"Fixel", system-ui, sans-serif',
-    mono: 'ui-monospace, monospace',
+    mono: '"JetBrains Mono", ui-monospace, monospace',
   },
   fontSize: {
     xs: ['12px', { lineHeight: '16px' }],

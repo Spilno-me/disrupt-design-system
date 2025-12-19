@@ -140,6 +140,7 @@ const PRIMITIVES = {
   white: '#FFFFFF',
   black: '#000000',
   cream: '#FBFBF3',
+  softLinen: '#EBF9FF',
   linkedIn: '#0A66C2',
 }
 
@@ -231,7 +232,7 @@ const TYPOGRAPHY = {
   fontFamily: {
     display: ['"Pilat Extended"', 'Arial', 'sans-serif'],
     sans: ['"Fixel"', 'system-ui', 'sans-serif'],
-    mono: ['ui-monospace', 'monospace'],
+    mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
   },
   fontSize: {
     xs: ['12px', { lineHeight: '16px' }],

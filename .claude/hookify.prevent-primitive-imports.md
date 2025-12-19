@@ -14,7 +14,7 @@ conditions:
     pattern: designTokens.ts
   - field: file_path
     operator: not_contains
-    pattern: .stories.tsx
+    pattern: ColorPalette.stories.tsx
   - field: new_text
     operator: regex_match
     pattern: import\s+\{[^}]*(ABYSS|CORAL|SAGE|TEAL|DEEP_CURRENT|DUSK_REEF|WAVE|SUNRISE|ORANGE|HARBOR|SLATE|PRIMITIVES)[^}]*\}\s+from
@@ -23,38 +23,38 @@ action: block
 
 **🚫 PRIMITIVE Token Import Detected**
 
-You're importing PRIMITIVE tokens (ABYSS, CORAL, SAGE, TEAL, etc.) directly, which violates DDS architecture.
+You're importing PRIMITIVE tokens (ABYSS, CORAL, etc.) directly, which violates DDS architecture.
 
 **Blocked imports:**
 - `import { ABYSS } from '@/constants/designTokens'`
-- `import { CORAL, SAGE } from '@/constants/designTokens'`
-- `import { DEEP_CURRENT, DUSK_REEF } from '...'`
+- `import { CORAL, DEEP_CURRENT } from '@/constants/designTokens'`
 - `import { WAVE, SUNRISE, ORANGE, HARBOR } from '...'`
 - `import { PRIMITIVES } from '...'`
 
 **Why this is blocked:**
 - PRIMITIVES are Tier 1 tokens (raw values)
-- Direct usage bypasses the semantic token system (ALIAS)
-- Components should use semantic meaning, not raw colors
-- Makes future design changes harder
+- Direct usage bypasses the semantic token system
+- Components AND stories should use semantic Tailwind classes
+- Makes future design changes and dark mode harder
 
 **DDS 2-Tier Architecture:**
 ```
-PRIMITIVES → ALIAS → Components consume via Tailwind
-(Tier 1)     (Tier 2)
+PRIMITIVES → ALIAS → Tailwind classes → Components/Stories
+(Tier 1)     (Tier 2)   (semantic)
 ```
 
 **What to use instead:**
 
-**For static styling (preferred):**
+**For components AND stories (preferred):**
 ```tsx
 // ✅ Use Tailwind semantic classes
 <div className="bg-surface text-primary border-default">
 <div className="text-error bg-error-light">
 <div className="bg-accent-strong text-inverse">
+<IconText iconClassName="text-accent" textClassName="text-primary">
 ```
 
-**For dynamic styling only:**
+**For dynamic styling only (rare):**
 ```tsx
 // ✅ Import ALIAS, not primitives
 import { ALIAS } from '@/constants/designTokens'
@@ -73,11 +73,7 @@ import { ABYSS, CORAL } from '@/constants/designTokens'
 <div style={{ color: CORAL[500] }}>            // Wrong!
 ```
 
-**From CLAUDE.md:**
-> "Components should import ALIAS, not PRIMITIVES"
-> "PRIMITIVES are only used in tailwind-preset.js and designTokens.ts"
-
-**Exception:** This rule is disabled for:
-- `tailwind-preset.js` (needs primitives to build Tailwind config)
-- `designTokens.ts` (defines the tokens)
-- Story files (documentation purposes)
+**Exceptions (file must be in this list):**
+- `tailwind-preset.js` - builds Tailwind config
+- `designTokens.ts` - defines the tokens
+- `ColorPalette.stories.tsx` - displays the palette (documented exception)

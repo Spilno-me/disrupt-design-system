@@ -3,13 +3,9 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { Space, Monitor, Smartphone, LayoutGrid } from 'lucide-react';
 import {
-  SectionHeader,
+  BrandHero,
   InfoBox,
-  TokenTable,
-  CodeBlock,
-  TOKENS,
-} from './DocComponents';
-import {
+  SectionHeader,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
@@ -18,64 +14,19 @@ import {
   RADIUS,
   SLATE,
   SPACING,
-} from '../../constants/designTokens';
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+import { TokenTable, CodeBlock } from './DocComponents';
 
 <Meta title="Foundation/Design Tokens/Spacing" />
 
-{/* Page Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${ABYSS[400]} 0%, ${ABYSS[600]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: SPACING.px.section,
-  marginBottom: SPACING.px.section,
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative background icon */}
-  <div style={{
-    position: 'absolute',
-    right: '40px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    opacity: 0.1,
-    pointerEvents: 'none',
-  }}>
-    <Space size={180} color={PRIMITIVES.white} strokeWidth={1} />
-  </div>
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: SPACING.px.tight,
-      marginBottom: SPACING.px.base,
-    }}>
-      <Space size={28} color={PRIMITIVES.white} />
-    </div>
-
-    <h1 style={{
-      margin: `0 0 ${SPACING.px.base} 0`,
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      color: PRIMITIVES.white,
-    }}>
-      <span>Spacing System</span>
-    </h1>
-
-    <p style={{
-      margin: 0,
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      color: SLATE[300],
-      lineHeight: 1.6,
-      maxWidth: '500px',
-    }}>
-      <span>Two spacing systems for two contexts: generous spacing for marketing impact,
-      compact spacing for application efficiency.</span>
-    </p>
-  </div>
-</div>
+{/* Hero Header */}
+<BrandHero
+  title="Spacing System"
+  description="Two spacing systems for two contexts: generous spacing for marketing impact, compact spacing for application efficiency."
+  gradient="primary"
+  decorativeIcon={<Space size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
 <InfoBox variant="tip">
   <strong>Rule:</strong> Websites use larger spacing for content breathing room.
@@ -89,7 +40,7 @@ import {
 For marketing sites, landing pages, and public-facing content. Larger spacing creates breathing room.
 
 <div style={{
-  background: PRIMITIVES.white,
+  background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '24px',
   border: `1px solid ${SLATE[200]}`,
@@ -132,7 +83,7 @@ For marketing sites, landing pages, and public-facing content. Larger spacing cr
 For web applications (Flow, Market, Partner). Compact spacing optimizes for dense information.
 
 <div style={{
-  background: PRIMITIVES.white,
+  background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '24px',
   border: `1px solid ${SLATE[200]}`,
@@ -178,7 +129,7 @@ For web applications (Flow, Market, Partner). Compact spacing optimizes for dens
   marginBottom: '48px',
 }}>
   <div style={{
-    background: PRIMITIVES.white,
+    background: PRIMITIVES.softLinen,
     borderRadius: RADIUS.sm,
     boxShadow: SHADOWS.md,
     border: `1px solid ${SLATE[200]}`,
@@ -244,7 +195,7 @@ For web applications (Flow, Market, Partner). Compact spacing optimizes for dens
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Spacing Scale</h2>
 
 <div style={{
-  background: PRIMITIVES.white,
+  background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '24px',
   border: `1px solid ${SLATE[200]}`,
@@ -300,7 +251,7 @@ For web applications (Flow, Market, Partner). Compact spacing optimizes for dens
         />
         <div style={{
           fontSize: '13px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: SLATE[500],
           width: '50px',
         }}>
@@ -311,7 +262,7 @@ For web applications (Flow, Market, Partner). Compact spacing optimizes for dens
           padding: '2px 8px',
           borderRadius: '4px',
           fontSize: '12px',
-          fontFamily: 'ui-monospace, monospace',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: DEEP_CURRENT[700],
         }}>
           {item.tailwind}

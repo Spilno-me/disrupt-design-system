@@ -23,6 +23,7 @@ type Size = keyof typeof SIZE_CONFIG
 interface IconProps {
   size?: number
   style?: React.CSSProperties
+  className?: string
 }
 
 export interface IconTextProps {
@@ -40,10 +41,10 @@ export interface IconTextProps {
   className?: string
   /** Font weight */
   weight?: 'normal' | 'medium' | 'semibold' | 'bold'
-  /** Icon color (defaults to currentColor) */
-  iconColor?: string
-  /** Text color */
-  textColor?: string
+  /** Icon color class (e.g., 'text-accent', 'text-error') */
+  iconClassName?: string
+  /** Text color class (e.g., 'text-primary', 'text-secondary') */
+  textClassName?: string
   /** Disable optical adjustment (use mathematical center) */
   disableOpticalAdjust?: boolean
   /** Custom optical adjustment in pixels */
@@ -73,8 +74,8 @@ export function IconText({
   as: Component = 'div',
   className,
   weight = 'normal',
-  iconColor,
-  textColor,
+  iconClassName,
+  textClassName,
   disableOpticalAdjust = false,
   opticalAdjust: customOpticalAdjust,
   style,
@@ -90,14 +91,11 @@ export function IconText({
     bold: 'font-bold',
   }[weight]
 
-  // Clone icon with computed size
+  // Clone icon with computed size and optional className
   const iconElement = React.cloneElement(icon, {
     size: config.iconSize,
-    style: {
-      flexShrink: 0,
-      color: iconColor,
-      ...icon.props.style,
-    },
+    className: cn('shrink-0', iconClassName, icon.props.className),
+    style: icon.props.style,
   })
 
   return (
@@ -110,10 +108,10 @@ export function IconText({
     >
       {iconElement}
       <span
+        className={textClassName}
         style={{
           fontSize: `${config.fontSize}px`,
           lineHeight: `${config.lineHeight}px`,
-          color: textColor,
           transform: opticalAdjust ? `translateY(${opticalAdjust}px)` : undefined,
         }}
       >

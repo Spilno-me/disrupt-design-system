@@ -10,8 +10,10 @@ import {
   Lightbulb,
   AlertTriangle,
   Construction,
+  Download,
 } from 'lucide-react';
 import { HeroParticles } from './HeroParticles';
+import { Button } from '../../components/ui/button';
 
 // =============================================================================
 // STORYBOOK NAVIGATION HELPER
@@ -81,6 +83,8 @@ import {
   SPACING,
   TYPOGRAPHY,
   SIZES,
+  GRADIENTS,
+  GLASS_GRADIENTS,
 } from '../../constants/designTokens';
 
 // Re-export tokens for MDX usage
@@ -95,6 +99,8 @@ export const TOKENS = {
   radius: RADIUS,
   alias: ALIAS,
   sizes: SIZES,
+  gradients: GRADIENTS,
+  glassGradients: GLASS_GRADIENTS,
 };
 
 // Also export individual tokens for direct import
@@ -111,6 +117,8 @@ export {
   SPACING,
   TYPOGRAPHY,
   SIZES,
+  GRADIENTS,
+  GLASS_GRADIENTS,
 };
 
 interface HeroHeaderProps {
@@ -853,6 +861,9 @@ export const DownloadCard: React.FC<DownloadCardProps> = ({
         padding: '24px',
         border: `1px solid ${SLATE[200]}`,
         boxShadow: SHADOWS.sm,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
       }}
     >
       <div
@@ -888,6 +899,7 @@ export const DownloadCard: React.FC<DownloadCardProps> = ({
           fontFamily: '"Fixel", sans-serif',
           color: DUSK_REEF[500],
           lineHeight: 1.5,
+          flex: 1,
         }}
       >
         {description}
@@ -918,24 +930,15 @@ export const DownloadCard: React.FC<DownloadCardProps> = ({
           </span>
         ))}
       </div>
-      <button
+      <Button
         onClick={onDownload}
-        style={{
-          width: '100%',
-          padding: '10px 16px',
-          background: ABYSS[500],
-          color: PRIMITIVES.white,
-          border: 'none',
-          borderRadius: RADIUS.sm,
-          fontSize: '13px',
-          fontWeight: 500,
-          fontFamily: '"Fixel", sans-serif',
-          cursor: 'pointer',
-          transition: 'background 200ms ease-out',
-        }}
+        variant="default"
+        fullWidth
+        className="mt-auto bg-[#2D3142] text-white hover:bg-[#252836] w-full"
       >
-        Download
-      </button>
+        <Download size={16} />
+        <span>Download</span>
+      </Button>
     </div>
   );
 };
@@ -1055,7 +1058,7 @@ export const TechStackItem: React.FC<TechStackItemProps> = ({
             <span
               style={{
                 fontSize: '11px',
-                fontFamily: 'ui-monospace, monospace',
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
                 color: DEEP_CURRENT[600],
                 background: DEEP_CURRENT[50],
                 padding: '2px 6px',
