@@ -550,15 +550,24 @@ export const SPACING = {
   subheadingGap: 'mb-8',
   listItemGap: 'gap-4',
   sectionContentGap: 'gap-12 lg:gap-16',
-  /** Pixel values for inline styles (3D visualizations, overlays) */
+  /** Pixel values for inline styles (3D visualizations, overlays, MDX docs) */
   px: {
+    // Base scale (4px increments)
     micro: '4px',
     tight: '8px',
     base: '12px',
     comfortable: '16px',
     spacious: '24px',
+    section: '48px',
+    page: '96px',
+    // Semantic aliases for MDX documentation
+    sectionHeadingTop: '48px',
+    sectionHeadingBottom: '16px',
+    // Card system
     cardPadding: '20px',
     cardGap: '16px',
+    cardGapCompact: '12px',
+    gridGap: '16px',
   },
 } as const
 

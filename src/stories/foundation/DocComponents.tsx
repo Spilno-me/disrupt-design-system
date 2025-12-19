@@ -18,6 +18,7 @@ import {
   SHADOWS,
   RADIUS,
   ALIAS,
+  SPACING,
 } from '../../constants/designTokens';
 import { navigateToStory } from '../brand/BrandComponents';
 
@@ -87,6 +88,42 @@ const isLightColor = (hex: string): boolean => {
 };
 
 // =============================================================================
+// SECTION WRAPPER (Handles vertical rhythm for MDX pages)
+// =============================================================================
+
+interface SectionProps {
+  children: React.ReactNode;
+  /** Remove top margin for first section after hero */
+  first?: boolean;
+}
+
+/**
+ * Section - Wrapper component that handles vertical rhythm
+ *
+ * Usage in MDX:
+ * ```jsx
+ * <Section first>
+ *   <SectionHeader title="First Section" />
+ *   <Content />
+ * </Section>
+ *
+ * <Section>
+ *   <SectionHeader title="Second Section" />
+ *   <Content />
+ * </Section>
+ * ```
+ */
+export const Section: React.FC<SectionProps> = ({ children, first = false }) => (
+  <div
+    style={{
+      marginTop: first ? 0 : SPACING.px.sectionHeadingTop,
+    }}
+  >
+    {children}
+  </div>
+);
+
+// =============================================================================
 // SECTION HEADER
 // =============================================================================
 
@@ -101,8 +138,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   description,
   icon,
 }) => (
-  <div style={{ marginBottom: '32px' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+  <div style={{ marginBottom: SPACING.px.sectionHeadingBottom }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: description ? '8px' : '0' }}>
       {icon && (
         <div
           style={{
@@ -1060,8 +1097,501 @@ export const GradientSwatch: React.FC<GradientSwatchProps> = ({
   );
 };
 
+// =============================================================================
+// USAGE GUIDELINES (When to use X - Two column Do/Don't)
+// =============================================================================
+
+interface UsageGuidelinesProps {
+  /** Optional title like "When to use font-mono" */
+  title?: string;
+  /** Items for the green "Use for:" column */
+  useFor: string[];
+  /** Items for the red "Never use for:" column */
+  dontUseFor: string[];
+}
+
+/**
+ * UsageGuidelines - Two-column panel showing appropriate and inappropriate uses
+ *
+ * Usage:
+ * ```jsx
+ * <UsageGuidelines
+ *   title="When to use font-mono"
+ *   useFor={['Code snippets', 'Token paths', 'Technical IDs']}
+ *   dontUseFor={['Headings', 'Body text', 'Button labels']}
+ * />
+ * ```
+ */
+export const UsageGuidelines: React.FC<UsageGuidelinesProps> = ({
+  title,
+  useFor,
+  dontUseFor,
+}) => (
+  <div
+    style={{
+      background: PRIMITIVES.softLinen,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `1px solid ${SLATE[200]}`,
+    }}
+  >
+    {title && (
+      <h4
+        style={{
+          margin: '0 0 20px 0',
+          fontSize: '16px',
+          fontWeight: 600,
+          fontFamily: styles.fontFamily,
+          color: styles.colors.text,
+        }}
+      >
+        {title}
+      </h4>
+    )}
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: '24px',
+      }}
+    >
+      {/* Use for column */}
+      <div
+        style={{
+          background: HARBOR[50],
+          borderRadius: RADIUS.md,
+          padding: '20px',
+          border: `1px solid ${HARBOR[200]}`,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '16px',
+            paddingBottom: '12px',
+            borderBottom: `1px solid ${HARBOR[200]}`,
+          }}
+        >
+          <div
+            style={{
+              width: '24px',
+              height: '24px',
+              borderRadius: RADIUS.full,
+              background: HARBOR[500],
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '14px',
+              color: PRIMITIVES.white,
+            }}
+          >
+            ✓
+          </div>
+          <span
+            style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              fontFamily: styles.fontFamily,
+              color: HARBOR[700],
+            }}
+          >
+            Use for:
+          </span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {useFor.map((item, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontSize: '13px',
+                fontFamily: styles.fontFamily,
+                color: styles.colors.text,
+              }}
+            >
+              <span style={{ color: HARBOR[500], fontSize: '12px' }}>→</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Never use for column */}
+      <div
+        style={{
+          background: CORAL[50],
+          borderRadius: RADIUS.md,
+          padding: '20px',
+          border: `1px solid ${CORAL[200]}`,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginBottom: '16px',
+            paddingBottom: '12px',
+            borderBottom: `1px solid ${CORAL[200]}`,
+          }}
+        >
+          <div
+            style={{
+              width: '24px',
+              height: '24px',
+              borderRadius: RADIUS.full,
+              background: CORAL[500],
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '14px',
+              color: PRIMITIVES.white,
+            }}
+          >
+            ✗
+          </div>
+          <span
+            style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              fontFamily: styles.fontFamily,
+              color: CORAL[700],
+            }}
+          >
+            Never use for:
+          </span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {dontUseFor.map((item, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontSize: '13px',
+                fontFamily: styles.fontFamily,
+                color: styles.colors.text,
+              }}
+            >
+              <span style={{ color: CORAL[500], fontSize: '12px' }}>→</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// =============================================================================
+// DOS AND DONTS PANEL (Simple bullet list boxes)
+// =============================================================================
+
+interface DosDontsPanelProps {
+  /** Items for the green "Do" list */
+  dos: string[];
+  /** Items for the red "Don't" list */
+  donts: string[];
+}
+
+/**
+ * DosDontsPanel - Two-column panel with simple Do/Don't bullet lists
+ *
+ * Usage:
+ * ```jsx
+ * <DosDontsPanel
+ *   dos={['Use semantic tokens', 'Maintain contrast ratios']}
+ *   donts={['Hardcode hex values', 'Mix status colors']}
+ * />
+ * ```
+ */
+export const DosDontsPanel: React.FC<DosDontsPanelProps> = ({ dos, donts }) => (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '24px',
+    }}
+  >
+    {/* Do column */}
+    <div
+      style={{
+        background: HARBOR[50],
+        borderRadius: RADIUS.lg,
+        padding: '24px',
+        border: `1px solid ${HARBOR[200]}`,
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '16px',
+        }}
+      >
+        <div
+          style={{
+            width: '24px',
+            height: '24px',
+            borderRadius: RADIUS.full,
+            background: HARBOR[500],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '14px',
+            color: PRIMITIVES.white,
+          }}
+        >
+          ✓
+        </div>
+        <span
+          style={{
+            fontSize: '14px',
+            fontWeight: 600,
+            fontFamily: styles.fontFamily,
+            color: HARBOR[700],
+          }}
+        >
+          Do
+        </span>
+      </div>
+      <ul
+        style={{
+          margin: 0,
+          paddingLeft: '20px',
+          fontSize: '14px',
+          color: styles.colors.text,
+          fontFamily: styles.fontFamily,
+          lineHeight: 2,
+        }}
+      >
+        {dos.map((item, i) => (
+          <li key={i}>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Don't column */}
+    <div
+      style={{
+        background: CORAL[50],
+        borderRadius: RADIUS.lg,
+        padding: '24px',
+        border: `1px solid ${CORAL[200]}`,
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '16px',
+        }}
+      >
+        <div
+          style={{
+            width: '24px',
+            height: '24px',
+            borderRadius: RADIUS.full,
+            background: CORAL[500],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '14px',
+            color: PRIMITIVES.white,
+          }}
+        >
+          ✗
+        </div>
+        <span
+          style={{
+            fontSize: '14px',
+            fontWeight: 600,
+            fontFamily: styles.fontFamily,
+            color: CORAL[700],
+          }}
+        >
+          Don't
+        </span>
+      </div>
+      <ul
+        style={{
+          margin: 0,
+          paddingLeft: '20px',
+          fontSize: '14px',
+          color: styles.colors.text,
+          fontFamily: styles.fontFamily,
+          lineHeight: 2,
+        }}
+      >
+        {donts.map((item, i) => (
+          <li key={i}>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+);
+
+// =============================================================================
+// QUICK NAV (Navigation grid for sub-pages)
+// =============================================================================
+
+interface QuickNavItem {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  path: string;
+}
+
+interface QuickNavProps {
+  /** Title above the navigation grid */
+  title?: string;
+  /** Navigation items */
+  items: QuickNavItem[];
+  /** Number of columns (default: 3) */
+  columns?: number;
+}
+
+/**
+ * QuickNav - Navigation grid linking to documentation sub-pages
+ *
+ * Usage:
+ * ```jsx
+ * <QuickNav
+ *   title="Documentation Sections"
+ *   items={[
+ *     { icon: <Palette size={20} />, title: 'Colors', description: 'Full color system', path: 'colors' }
+ *   ]}
+ * />
+ * ```
+ */
+export const QuickNav: React.FC<QuickNavProps> = ({
+  title,
+  items,
+  columns = 3,
+}) => (
+  <div
+    style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '32px',
+      border: `1px solid ${SLATE[200]}`,
+    }}
+  >
+    {title && (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '24px',
+        }}
+      >
+        <h2
+          style={{
+            margin: 0,
+            fontSize: '18px',
+            fontWeight: 600,
+            fontFamily: styles.fontFamily,
+            color: styles.colors.text,
+          }}
+        >
+          {title}
+        </h2>
+      </div>
+    )}
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        gap: '16px',
+      }}
+    >
+      {items.map((item) => (
+        <a
+          key={item.path}
+          href={item.path}
+          onClick={(e) => {
+            e.preventDefault();
+            navigateToStory(item.path);
+          }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            background: SLATE[50],
+            borderRadius: RADIUS.sm,
+            padding: '16px',
+            textDecoration: 'none',
+            transition: 'all 200ms ease-out',
+            border: '1px solid transparent',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = PRIMITIVES.white;
+            e.currentTarget.style.borderColor = DEEP_CURRENT[200];
+            e.currentTarget.style.boxShadow = SHADOWS.sm;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = SLATE[50];
+            e.currentTarget.style.borderColor = 'transparent';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+        >
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: RADIUS.sm,
+              background: SLATE[100],
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: DEEP_CURRENT[500],
+              flexShrink: 0,
+            }}
+          >
+            {item.icon}
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: '14px',
+                fontWeight: 600,
+                fontFamily: styles.fontFamily,
+                color: styles.colors.text,
+              }}
+            >
+              <span>{item.title}</span>
+            </div>
+            <div
+              style={{
+                fontSize: '12px',
+                fontFamily: styles.fontFamily,
+                color: styles.colors.textMuted,
+              }}
+            >
+              <span>{item.description}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+);
+
 export default {
   TOKENS,
+  Section,
   SectionHeader,
   InfoBox,
   ColorSwatch,
@@ -1072,4 +1602,7 @@ export default {
   RadiusShowcase,
   CodeBlock,
   GradientSwatch,
+  UsageGuidelines,
+  DosDontsPanel,
+  QuickNav,
 };

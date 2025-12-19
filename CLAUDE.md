@@ -214,6 +214,44 @@ Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
 
 ---
 
+## MDX Documentation (No Separators)
+
+**Rule:** NEVER use `---` markdown separators. Use `Section` component for spacing.
+
+```mdx
+// ❌ WRONG - Creates ugly horizontal lines
+<BrandHero title="Page" />
+
+---
+
+<h2>Section</h2>
+
+// ✅ CORRECT - Section handles vertical rhythm
+import { Section, SectionHeader } from './foundation/DocComponents';
+
+<BrandHero title="Page" />
+
+<Section first>
+  <SectionHeader title="First Section" />
+  {/* content */}
+</Section>
+
+<Section>
+  <SectionHeader title="Second Section" />
+  {/* content */}
+</Section>
+```
+
+| Component | Spacing |
+|-----------|---------|
+| `<Section first>` | No top margin (after hero) |
+| `<Section>` | `48px` top margin |
+| `<SectionHeader>` | `16px` bottom margin |
+
+**Details:** `.claude/storybook-rules.md` § "MDX Page Structure"
+
+---
+
 ## CSS Styling (CRITICAL)
 
 **Rule:** Always use Tailwind classes. NEVER use `!important`.
@@ -334,6 +372,7 @@ Everything else is manually maintained.
 | **Border radius** | **`.claude/rounded-corners-rules.md`** |
 | **Typography** | **`.claude/typography-rules.md`** |
 | **Icons (no emojis)** | **`.claude/iconography-rules.md`** |
+| **MDX page structure** | **`.claude/storybook-rules.md`** § "MDX Page Structure" |
 | Detailed tokens | `src/stories/DesignTokens.mdx` |
 | **Writing stories** | **`.claude/storybook-rules.md`** + **`src/stories/_infrastructure/`** |
 | Writing tests | `.claude/testing-quick-ref.md` |

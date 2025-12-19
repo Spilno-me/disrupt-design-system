@@ -793,3 +793,121 @@ When updating existing stories:
 - [ ] Replace custom section headers with `<StorySection>`
 - [ ] Add `<StoryAnatomy>` for organisms with data-slots
 - [ ] Verify AllStates story uses infrastructure components
+
+---
+
+## CRITICAL: MDX Page Structure (No Separators)
+
+**NEVER use `---` markdown separators for spacing. Use `Section` component.**
+
+### The Problem
+
+```mdx
+{/* ❌ WRONG - Separators create ugly lines, inconsistent spacing */}
+<BrandHero title="Page" />
+
+---
+
+<h2>First Section</h2>
+content...
+
+---
+
+<h2>Second Section</h2>
+```
+
+### The Solution
+
+Use `Section` wrapper component with `SectionHeader`:
+
+```mdx
+{/* ✅ CORRECT - Section component handles vertical rhythm */}
+import { Section, SectionHeader } from './foundation/DocComponents';
+
+<BrandHero title="Page" />
+
+<Section first>
+  <SectionHeader title="First Section" description="Optional description" />
+  {/* Content here */}
+</Section>
+
+<Section>
+  <SectionHeader title="Second Section" icon={<Palette size={24} />} />
+  {/* Content here */}
+</Section>
+```
+
+### MDX Page Template
+
+Every documentation page should follow this structure:
+
+```mdx
+{/* 1. Imports */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { SomeIcon } from 'lucide-react';
+import { BrandHero, PRIMITIVES } from './brand/BrandComponents';
+import { Section, SectionHeader, CodeBlock } from './foundation/DocComponents';
+
+<Meta title="Category/Page Name" />
+
+{/* 2. Hero (always first) */}
+<BrandHero
+  title="Page Title"
+  description="Brief description of the page content."
+  gradient="primary"
+  decorativeIcon={<SomeIcon size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+{/* 3. Sections with proper spacing */}
+<Section first>
+  <SectionHeader title="First Section" />
+  {/* Content: grids, cards, code blocks, etc. */}
+</Section>
+
+<Section>
+  <SectionHeader title="Second Section" icon={<Icon size={24} />} />
+  {/* More content */}
+</Section>
+
+<Section>
+  <SectionHeader title="Third Section" description="With description" />
+  {/* More content */}
+</Section>
+```
+
+### Spacing Reference
+
+| Component | Built-in Spacing |
+|-----------|-----------------|
+| `<Section first>` | `marginTop: 0` (after hero) |
+| `<Section>` | `marginTop: 48px` (between sections) |
+| `<SectionHeader>` | `marginBottom: 16px` (to content) |
+
+### Content Grid Pattern
+
+For card grids within sections, use `SPACING.px.gridGap`:
+
+```jsx
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.gridGap,  // 16px
+}}>
+  <Card>...</Card>
+  <Card>...</Card>
+</div>
+```
+
+### When to Use Raw `<h2>`
+
+Only use raw `<h2>` with manual spacing if you need custom styling:
+
+```jsx
+{/* Only when SectionHeader doesn't fit your needs */}
+<h2 style={{
+  marginTop: SPACING.px.sectionHeadingTop,
+  marginBottom: SPACING.px.sectionHeadingBottom,
+}}>
+  Custom Title
+</h2>
+```

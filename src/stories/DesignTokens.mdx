@@ -1,188 +1,75 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { ArrowRight, BookOpen, Sparkles } from 'lucide-react';
+import { BookOpen, Sparkles, Palette, Type, Space, Layers, Circle } from 'lucide-react';
 import {
+  BrandHero,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
   PRIMITIVES,
-  SHADOWS,
   RADIUS,
   SLATE,
   SPACING,
-} from '../constants/designTokens';
-import { StoryLink } from './brand/BrandComponents';
+} from './brand/BrandComponents';
+import { QuickNav } from './foundation/DocComponents';
 
 <Meta title="Foundation/Design Tokens" />
 
-{/* Redirect Hero */}
-<div style={{
-  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${ABYSS[700]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: '48px',
-  marginBottom: '32px',
-  textAlign: 'center',
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Decorative glow */}
-  <div style={{
-    position: 'absolute',
-    top: '-50%',
-    right: '-20%',
-    width: '400px',
-    height: '400px',
-    background: `radial-gradient(circle, ${DEEP_CURRENT[500]}40 0%, transparent 70%)`,
-    borderRadius: '50%',
-  }} />
+{/* Hero Header */}
+<BrandHero
+  title="Design Tokens"
+  description="The foundational building blocks of the Disrupt Design System. Tokens ensure consistency across all products while enabling scalable, maintainable design."
+  gradient="primary"
+  decorativeIcon={<BookOpen size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      width: '64px',
-      height: '64px',
-      borderRadius: '50%',
-      background: `linear-gradient(135deg, ${DEEP_CURRENT[500]}, ${DUSK_REEF[500]})`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '0 auto 24px',
-      boxShadow: SHADOWS.lg,
-    }}>
-      <Sparkles size={28} color={PRIMITIVES.white} />
-    </div>
+<QuickNav
+  title="Documentation Sections"
+  columns={3}
+  items={[
+    { icon: <BookOpen size={20} />, title: 'Overview', description: 'Architecture & Quick Start', path: '?path=/docs/foundation-design-tokens-overview--docs' },
+    { icon: <Palette size={20} />, title: 'Colors', description: 'Full color system', path: '?path=/docs/foundation-design-tokens-colors--docs' },
+    { icon: <Type size={20} />, title: 'Typography', description: 'Fonts & text styles', path: '?path=/docs/foundation-design-tokens-typography--docs' },
+    { icon: <Space size={20} />, title: 'Spacing', description: 'Layout & whitespace', path: '?path=/docs/foundation-design-tokens-spacing--docs' },
+    { icon: <Layers size={20} />, title: 'Shadows', description: 'Elevation system', path: '?path=/docs/foundation-design-tokens-shadows--docs' },
+    { icon: <Circle size={20} />, title: 'Radius', description: 'Border radius scale', path: '?path=/docs/foundation-design-tokens-radius--docs' },
+    { icon: <Sparkles size={20} />, title: 'Animations', description: 'Motion & transitions', path: '?path=/docs/foundation-design-tokens-animations--docs' },
+  ]}
+/>
 
-    <h1 style={{
-      margin: '0 0 16px 0',
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      color: PRIMITIVES.white,
-    }}>
-      <span>Design Tokens System</span>
-    </h1>
+<div>
+  <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Single Source of Truth</h2>
 
-    <p style={{
-      margin: '0 0 32px 0',
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      color: SLATE[300],
-      lineHeight: 1.6,
-      maxWidth: '500px',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    }}>
-      <span>Explore our comprehensive design token documentation with visual showcases,
-      code examples, and interactive demos.</span>
-    </p>
-
-    <StoryLink
-      to="/docs/foundation-design-tokens-overview--docs"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '8px',
-        background: `linear-gradient(135deg, ${DEEP_CURRENT[500]}, ${DEEP_CURRENT[600]})`,
-        color: PRIMITIVES.white,
-        padding: '14px 28px',
-        borderRadius: RADIUS.md,
-        fontSize: '16px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        textDecoration: 'none',
-        transition: 'all 200ms ease-out',
-        boxShadow: SHADOWS.md,
-      }}
-    >
-      Explore Design Tokens
-      <ArrowRight size={18} />
-    </StoryLink>
-  </div>
-</div>
-
-{/* Quick Navigation */}
-<div style={{
-  background: PRIMITIVES.white,
-  borderRadius: RADIUS.lg,
-  padding: '32px',
-  border: `1px solid ${SLATE[200]}`,
-}}>
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    marginBottom: '24px',
+  <p style={{
+    margin: 0,
+    fontSize: '14px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    lineHeight: 1.6,
   }}>
-    <BookOpen size={20} color={DEEP_CURRENT[500]} />
-    <h2 style={{
-      margin: 0,
-      fontSize: '18px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
+    <span>All documentation is <strong>automatically synced</strong> with </span>
+    <code style={{
+      background: SLATE[100],
+      padding: '2px 6px',
+      borderRadius: RADIUS.xs,
+      fontSize: '13px',
+      fontFamily: '"JetBrains Mono", monospace',
       color: ABYSS[500],
-    }}>
-      Documentation Sections
-    </h2>
-  </div>
+    }}>designTokens.ts</code>
+    <span>. This ensures:</span>
+  </p>
 
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '16px',
+  <ul style={{
+    margin: '16px 0 0 0',
+    padding: '0 0 0 20px',
+    fontSize: '14px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    lineHeight: 1.8,
   }}>
-    {[
-      { icon: '🎨', title: 'Overview', desc: 'Architecture & Quick Start', path: 'overview' },
-      { icon: '🌈', title: 'Colors', desc: 'Full color system', path: 'colors' },
-      { icon: '📝', title: 'Typography', desc: 'Fonts & text styles', path: 'typography' },
-      { icon: '📏', title: 'Spacing', desc: 'Layout & whitespace', path: 'spacing' },
-      { icon: '🔲', title: 'Shadows', desc: 'Elevation system', path: 'shadows' },
-      { icon: '⭕', title: 'Radius', desc: 'Border radius scale', path: 'radius' },
-      { icon: '✨', title: 'Animations', desc: 'Motion & transitions', path: 'animations' },
-    ].map((item) => (
-      <a
-        key={item.path}
-        href={`?path=/docs/foundation-design-tokens-${item.path}--docs`}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          background: SLATE[50],
-          borderRadius: RADIUS.sm,
-          padding: '16px',
-          textDecoration: 'none',
-          transition: 'all 200ms ease-out',
-          border: `1px solid transparent`,
-        }}
-      >
-        <span style={{ fontSize: '24px' }}>{item.icon}</span>
-        <div>
-          <div style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            fontFamily: '"Fixel", sans-serif',
-            color: ABYSS[500],
-          }}>
-            <span>{item.title}</span>
-          </div>
-          <div style={{
-            fontSize: '12px',
-            fontFamily: '"Fixel", sans-serif',
-            color: DUSK_REEF[500],
-          }}>
-            <span>{item.desc}</span>
-          </div>
-        </div>
-      </a>
-    ))}
-  </div>
+    <li><strong style={{ color: ABYSS[500] }}>100% accuracy</strong> – Documentation always reflects the actual token values</li>
+    <li><strong style={{ color: ABYSS[500] }}>No drift</strong> – Changes to tokens automatically update documentation</li>
+    <li><strong style={{ color: ABYSS[500] }}>Developer confidence</strong> – Copy code examples knowing they're correct</li>
+  </ul>
 </div>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Single Source of Truth</h2>
-
-All documentation is **automatically synced** with `designTokens.ts`. This ensures:
-
-- **100% accuracy** - Documentation always reflects the actual token values
-- **No drift** - Changes to tokens automatically update documentation
-- **Developer confidence** - Copy code examples knowing they're correct

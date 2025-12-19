@@ -17,6 +17,7 @@ import {
 } from '../constants/designTokens';
 import { SPACING, StoryLink, BrandHero } from './brand/BrandComponents';
 import { IconHeading2, IconHeading3 } from '../components/ui/IconText';
+import { DosDontsPanel } from './foundation/DocComponents';
 
 <Meta title="Brand/Colors" />
 
@@ -451,73 +452,22 @@ Semantic colors that communicate state and feedback.
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Brand Guidelines</h2>
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-}}>
-  <div style={{
-    background: HARBOR[50],
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${HARBOR[200]}`,
-  }}>
-    <h4 style={{
-      margin: '0 0 16px 0',
-      fontSize: '16px',
-      fontWeight: 600,
-      color: HARBOR[700],
-      fontFamily: '"Fixel", sans-serif',
-    }}>
-      <span>Do</span>
-    </h4>
-    <ul style={{
-      margin: 0,
-      paddingLeft: '20px',
-      fontSize: '14px',
-      color: ABYSS[500],
-      fontFamily: '"Fixel", sans-serif',
-      lineHeight: 2,
-    }}>
-      <li><span>Use Abyss for primary text and headings</span></li>
-      <li><span>Use Deep Current for CTAs and interactive elements</span></li>
-      <li><span>Use Dusk Reef for secondary/muted text</span></li>
-      <li><span>Maintain sufficient contrast (4.5:1 for text)</span></li>
-      <li><span>Use status colors consistently for their meaning</span></li>
-    </ul>
-  </div>
-
-  <div style={{
-    background: CORAL[50],
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${CORAL[200]}`,
-  }}>
-    <h4 style={{
-      margin: '0 0 16px 0',
-      fontSize: '16px',
-      fontWeight: 600,
-      color: CORAL[700],
-      fontFamily: '"Fixel", sans-serif',
-    }}>
-      <span>Don't</span>
-    </h4>
-    <ul style={{
-      margin: 0,
-      paddingLeft: '20px',
-      fontSize: '14px',
-      color: ABYSS[500],
-      fontFamily: '"Fixel", sans-serif',
-      lineHeight: 2,
-    }}>
-      <li><span>Use colors from the same family on each other</span></li>
-      <li><span>Hardcode hex values - use design tokens</span></li>
-      <li><span>Mix status colors inappropriately (green for errors)</span></li>
-      <li><span>Use light shades on light backgrounds</span></li>
-      <li><span>Create new colors outside the system</span></li>
-    </ul>
-  </div>
-</div>
+<DosDontsPanel
+  dos={[
+    'Use Abyss for primary text and headings',
+    'Use Deep Current for CTAs and interactive elements',
+    'Use Dusk Reef for secondary/muted text',
+    'Maintain sufficient contrast (4.5:1 for text)',
+    'Use status colors consistently for their meaning',
+  ]}
+  donts={[
+    'Use colors from the same family on each other',
+    'Hardcode hex values - use design tokens',
+    'Mix status colors inappropriately (green for errors)',
+    'Use light shades on light backgrounds',
+    'Create new colors outside the system',
+  ]}
+/>
 
 ---
 

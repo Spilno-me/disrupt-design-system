@@ -16,6 +16,7 @@ import {
   SLATE,
   SPACING,
 } from './brand/BrandComponents';
+import { DosDontsPanel } from './foundation/DocComponents';
 
 <Meta title="Brand/Typography" />
 
@@ -538,91 +539,23 @@ import {
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Guidelines</h2>
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  marginBottom: '48px',
-}}>
-  {/* Do's */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `2px solid #059669`,
-  }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '16px',
-    }}>
-      <span style={{ fontSize: '18px', color: '#059669' }}>✓</span>
-      <h4 style={{
-        margin: 0,
-        fontSize: '16px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>Do</span>
-      </h4>
-    </div>
-    <ul style={{
-      margin: 0,
-      padding: '0 0 0 20px',
-      fontSize: '14px',
-      fontFamily: '"Fixel", sans-serif',
-      color: DUSK_REEF[500],
-      lineHeight: 1.8,
-    }}>
-      <li>Use Pilat Extended for marketing headlines</li>
-      <li>Use Fixel for all application UI text</li>
-      <li>Maintain consistent type scale within context</li>
-      <li>Use weight for emphasis, not size</li>
-      <li>Keep body text at 14px minimum for readability</li>
-      <li>Use max 3-4 font sizes per view</li>
-    </ul>
-  </div>
-
-  {/* Don'ts */}
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `2px solid ${DUSK_REEF[400]}`,
-  }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      marginBottom: '16px',
-    }}>
-      <span style={{ fontSize: '18px', color: DUSK_REEF[500] }}>✗</span>
-      <h4 style={{
-        margin: 0,
-        fontSize: '16px',
-        fontWeight: 600,
-        fontFamily: '"Fixel", sans-serif',
-        color: ABYSS[500],
-      }}>
-        <span>Don't</span>
-      </h4>
-    </div>
-    <ul style={{
-      margin: 0,
-      padding: '0 0 0 20px',
-      fontSize: '14px',
-      fontFamily: '"Fixel", sans-serif',
-      color: DUSK_REEF[500],
-      lineHeight: 1.8,
-    }}>
-      <li>Use Pilat Extended in application interfaces</li>
-      <li>Mix font families within the same context</li>
-      <li>Use more than 4 font sizes in a single view</li>
-      <li>Make text larger just for emphasis</li>
-      <li>Use text smaller than 12px (accessibility)</li>
-    </ul>
-  </div>
+<div style={{ marginBottom: '48px' }}>
+  <DosDontsPanel
+    dos={[
+      'Use Pilat Extended for marketing headlines',
+      'Use Fixel for all application UI text',
+      'Maintain consistent type scale within context',
+      'Use weight for emphasis, not size',
+      'Keep body text at 14px minimum for readability',
+      'Use max 3-4 font sizes per view',
+    ]}
+    donts={[
+      'Use Pilat Extended in application interfaces',
+      'Mix font families within the same context',
+      'Use more than 4 font sizes in a single view',
+      'Make text larger just for emphasis',
+      'Use text smaller than 12px (accessibility)',
+    ]}
+  />
 </div>
 

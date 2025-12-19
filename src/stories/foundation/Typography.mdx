@@ -19,7 +19,7 @@ import {
   TYPOGRAPHY,
 } from '../brand/BrandComponents';
 import { HARBOR } from '../../constants/designTokens';
-import { TokenTable, CodeBlock } from './DocComponents';
+import { TokenTable, CodeBlock, UsageGuidelines } from './DocComponents';
 
 <Meta title="Foundation/Design Tokens/Typography" />
 
@@ -35,8 +35,6 @@ import { TokenTable, CodeBlock } from './DocComponents';
   <strong>Two fonts:</strong> <strong>Fixel</strong> (font-sans) for all UI text, <strong>JetBrains Mono</strong> (font-mono) for code and technical content only.
   Always use Tailwind classes from the DDS preset. Never hardcode pixel values.
 </InfoBox>
-
----
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Golden Rules of Typography</h2>
 
@@ -243,16 +241,13 @@ import { TokenTable, CodeBlock } from './DocComponents';
   </div>
 </div>
 
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Fixel Typeface</h2>
-
 <div style={{
   background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '32px',
   border: `1px solid ${SLATE[200]}`,
   boxShadow: SHADOWS.md,
+  marginTop: SPACING.px.sectionHeadingTop,
   marginBottom: '48px',
 }}>
   <div style={{
@@ -320,34 +315,35 @@ import { TokenTable, CodeBlock } from './DocComponents';
       <div
         key={item.weight}
         style={{
-          background: SLATE[50],
-          borderRadius: RADIUS.sm,
-          padding: '16px',
+          background: PRIMITIVES.white,
+          borderRadius: RADIUS.md,
+          padding: '20px 16px',
           textAlign: 'center',
+          border: `1px solid ${SLATE[200]}`,
         }}
       >
         <div style={{
           fontFamily: '"Fixel", sans-serif',
-          fontSize: '28px',
+          fontSize: '32px',
           fontWeight: item.weight,
           color: ABYSS[500],
-          marginBottom: '8px',
+          marginBottom: '12px',
         }}>
           <span>Aa</span>
         </div>
         <div style={{
-          fontSize: '13px',
+          fontSize: '14px',
           fontWeight: 600,
           fontFamily: '"Fixel", sans-serif',
           color: ABYSS[500],
-          marginBottom: '2px',
+          marginBottom: '4px',
         }}>
           <span>{item.name}</span>
         </div>
         <code style={{
-          fontSize: '11px',
+          fontSize: '12px',
           fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-          color: SLATE[500],
+          color: DUSK_REEF[500],
         }}>
           {item.weight}
         </code>
@@ -361,16 +357,13 @@ import { TokenTable, CodeBlock } from './DocComponents';
   <StoryLink to="/docs/brand-typography--docs" style={{ marginLeft: '4px', color: DEEP_CURRENT[600] }}>Brand Typography</StoryLink> documentation.
 </InfoBox>
 
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>JetBrains Mono</h2>
-
 <div style={{
   background: PRIMITIVES.softLinen,
   borderRadius: RADIUS.lg,
   padding: '32px',
   border: `1px solid ${SLATE[200]}`,
   boxShadow: SHADOWS.md,
+  marginTop: SPACING.px.sectionHeadingTop,
   marginBottom: '48px',
 }}>
   <div style={{
@@ -439,34 +432,35 @@ import { TokenTable, CodeBlock } from './DocComponents';
       <div
         key={item.weight}
         style={{
-          background: SLATE[50],
-          borderRadius: RADIUS.sm,
-          padding: '16px',
+          background: PRIMITIVES.white,
+          borderRadius: RADIUS.md,
+          padding: '20px 16px',
           textAlign: 'center',
+          border: `1px solid ${SLATE[200]}`,
         }}
       >
         <div style={{
           fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-          fontSize: '28px',
+          fontSize: '32px',
           fontWeight: item.weight,
           color: ABYSS[500],
-          marginBottom: '8px',
+          marginBottom: '12px',
         }}>
           <span>Aa</span>
         </div>
         <div style={{
-          fontSize: '13px',
+          fontSize: '14px',
           fontWeight: 600,
           fontFamily: '"Fixel", sans-serif',
           color: ABYSS[500],
-          marginBottom: '2px',
+          marginBottom: '4px',
         }}>
           <span>{item.name}</span>
         </div>
         <code style={{
-          fontSize: '11px',
+          fontSize: '12px',
           fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-          color: SLATE[500],
+          color: DUSK_REEF[500],
         }}>
           {item.weight}
         </code>
@@ -476,9 +470,10 @@ import { TokenTable, CodeBlock } from './DocComponents';
 
   {/* Character showcase */}
   <div style={{
-    background: SLATE[50],
-    borderRadius: RADIUS.sm,
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
     padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
   }}>
     <div style={{
       fontFamily: '"JetBrains Mono", ui-monospace, monospace',
@@ -493,138 +488,31 @@ import { TokenTable, CodeBlock } from './DocComponents';
   </div>
 </div>
 
-{/* When to use font-mono */}
-<div style={{
-  background: PRIMITIVES.softLinen,
-  borderRadius: RADIUS.lg,
-  padding: '24px',
-  border: `1px solid ${SLATE[200]}`,
-  marginBottom: '48px',
-}}>
-  <h4 style={{
-    margin: '0 0 16px 0',
-    fontSize: '16px',
-    fontWeight: 600,
-    fontFamily: '"Fixel", sans-serif',
-    color: ABYSS[500],
-  }}>
-    <span>When to use font-mono</span>
-  </h4>
-
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '24px',
-  }}>
-    {/* DO use */}
-    <div>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        marginBottom: '12px',
-      }}>
-        <span style={{
-          fontSize: '16px',
-          fontWeight: 700,
-          color: HARBOR[600],
-        }}>✓</span>
-        <span style={{
-          fontSize: '14px',
-          fontWeight: 600,
-          fontFamily: '"Fixel", sans-serif',
-          color: HARBOR[700],
-        }}>Use for:</span>
-      </div>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-      }}>
-        {[
-          'Code snippets & syntax',
-          'API responses & JSON',
-          'Token paths (GRADIENTS.heroOverlay)',
-          'Technical IDs (TXN-2024-00123)',
-          'Timestamps & tabular numbers',
-          'Terminal commands',
-          'File paths & URLs',
-        ].map((item, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '13px',
-              fontFamily: '"Fixel", sans-serif',
-              color: DUSK_REEF[500],
-            }}
-          >
-            <span style={{ color: HARBOR[500] }}>→</span>
-            <span>{item}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* DON'T use */}
-    <div>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        marginBottom: '12px',
-      }}>
-        <span style={{
-          fontSize: '16px',
-          fontWeight: 700,
-          color: CORAL[500],
-        }}>✗</span>
-        <span style={{
-          fontSize: '14px',
-          fontWeight: 600,
-          fontFamily: '"Fixel", sans-serif',
-          color: CORAL[600],
-        }}>Never use for:</span>
-      </div>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-      }}>
-        {[
-          'Headings or titles',
-          'Body text or paragraphs',
-          'Form labels',
-          'Button text',
-          'Navigation items',
-          'Card content',
-          'User-facing messages',
-        ].map((item, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '13px',
-              fontFamily: '"Fixel", sans-serif',
-              color: DUSK_REEF[500],
-            }}
-          >
-            <span style={{ color: CORAL[400] }}>→</span>
-            <span>{item}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
+<div style={{ marginBottom: '48px' }}>
+  <UsageGuidelines
+    title="When to use font-mono"
+    useFor={[
+      'Code snippets & syntax',
+      'API responses & JSON',
+      'Token paths (GRADIENTS.heroOverlay)',
+      'Technical IDs (TXN-2024-00123)',
+      'Timestamps & tabular numbers',
+      'Terminal commands',
+      'File paths & URLs',
+    ]}
+    dontUseFor={[
+      'Headings or titles',
+      'Body text or paragraphs',
+      'Form labels',
+      'Button text',
+      'Navigation items',
+      'Card content',
+      'User-facing messages',
+    ]}
+  />
 </div>
 
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Type Scale</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Fixel Type Scale</h2>
 
 <div style={{
   background: PRIMITIVES.softLinen,
@@ -690,5 +578,67 @@ import { TokenTable, CodeBlock } from './DocComponents';
   </div>
 </div>
 
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>JetBrains Mono Type Scale</h2>
 
-
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '48px',
+}}>
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  }}>
+    {[
+      { class: 'text-base font-mono', size: '16px', weight: 400, label: 'const config = { theme: "dark" }', usage: 'Code blocks' },
+      { class: 'text-sm font-mono', size: '14px', weight: 400, label: 'npm install @adrozdenko/dds', usage: 'Inline code' },
+      { class: 'text-sm font-mono font-medium', size: '14px', weight: 500, label: 'GRADIENTS.heroOverlay', usage: 'Token paths' },
+      { class: 'text-xs font-mono', size: '12px', weight: 400, label: 'TXN-2024-00123', usage: 'IDs, timestamps' },
+      { class: 'text-xs font-mono text-muted', size: '12px', weight: 400, label: '/src/components/ui/button.tsx', usage: 'File paths', muted: true },
+    ].map((item, i) => (
+      <div
+        key={i}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '24px',
+          padding: '12px 0',
+          borderBottom: i < 4 ? `1px solid ${SLATE[100]}` : 'none',
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <div style={{
+            fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+            fontSize: item.size,
+            fontWeight: item.weight,
+            color: item.muted ? DUSK_REEF[500] : ABYSS[500],
+          }}>
+            {item.label}
+          </div>
+        </div>
+        <code style={{
+          background: DEEP_CURRENT[50],
+          padding: '4px 8px',
+          borderRadius: '4px',
+          fontSize: '11px',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+          color: DEEP_CURRENT[700],
+          whiteSpace: 'nowrap',
+        }}>
+          {item.class}
+        </code>
+        <div style={{
+          fontSize: '12px',
+          color: DUSK_REEF[500],
+          fontFamily: '"Fixel", sans-serif',
+          width: '120px',
+        }}>
+          {item.usage}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

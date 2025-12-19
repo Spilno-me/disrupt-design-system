@@ -1,11 +1,10 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Sparkles, Clock } from 'lucide-react';
+import { Sparkles, Clock, Loader2, Check, Play } from 'lucide-react';
 import {
   BrandHero,
   InfoBox,
-  SectionHeader,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
@@ -14,62 +13,193 @@ import {
   RADIUS,
   SLATE,
   SPACING,
-  TYPOGRAPHY,
 } from '../brand/BrandComponents';
 import { CodeBlock } from './DocComponents';
 import { Button } from '../../components/ui/button';
+import { Skeleton, SkeletonImage, SkeletonText } from '../../components/ui/Skeleton';
+import { ExecutingAnimation } from '../../components/ui/ExecutingAnimation';
 import { TRANSITIONS } from '../../constants/designTokens';
 
 <Meta title="Foundation/Design Tokens/Animations" />
 
 {/* Hero Header */}
 <BrandHero
-  title="Animations & Transitions"
-  description="Motion creates meaning. Consistent timing and easing functions make interactions feel natural and responsive."
+  title="Animations & Loading States"
+  description="DDS provides a suite of animated components for loading states and micro-interactions. Use these components consistently across your application."
   gradient="purple"
   decorativeIcon={<Sparkles size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="tip">
-  <strong>Rule:</strong> Use shorter durations for small elements (150-200ms),
-  longer for large elements (300-500ms). Always use ease-out for user-initiated actions.
+  <strong>Use DDS components:</strong> Always import loading and animation components from the design system.
+  Don't create custom loaders or skeleton implementations.
 </InfoBox>
 
----
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Loading Components</h2>
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Transition Durations</h2>
+### ExecutingAnimation (Primary Loader)
+
+The orbital three-dot loader used for primary loading states like form submissions, page loads, and async operations.
+
+<div style={{
+  display: 'flex',
+  gap: '48px',
+  marginBottom: '32px',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+}}>
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '32px',
+    border: `1px solid ${SLATE[200]}`,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '16px',
+  }}>
+    <ExecutingAnimation className="w-24 h-24" variant="light" />
+    <span style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+      <span>Light variant (default)</span>
+    </span>
+  </div>
+
+  <div style={{
+    background: ABYSS[500],
+    borderRadius: RADIUS.lg,
+    padding: '32px',
+    border: `1px solid ${ABYSS[400]}`,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '16px',
+  }}>
+    <ExecutingAnimation className="w-24 h-24" variant="dark" />
+    <span style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: SLATE[300] }}>
+      <span>Dark variant</span>
+    </span>
+  </div>
+</div>
+
+<CodeBlock
+  language="tsx"
+  code={`import { ExecutingAnimation } from '@adrozdenko/design-system'
+
+// Default (light background)
+<ExecutingAnimation className="w-24 h-24" />
+
+// Dark background
+<ExecutingAnimation className="w-24 h-24" variant="dark" />
+
+// Smaller size for inline loading
+<ExecutingAnimation className="w-8 h-8" />`}
+/>
+
+### Skeleton Components
+
+Use skeletons to indicate content is loading while maintaining layout structure.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+      <span>Skeleton (basic)</span>
+    </div>
+    <Skeleton className="w-full h-10 mb-3" />
+    <Skeleton className="w-3/4 h-10" />
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+      <span>SkeletonImage</span>
+    </div>
+    <SkeletonImage aspectRatio="16/9" />
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+      <span>SkeletonText</span>
+    </div>
+    <SkeletonText lines={4} />
+  </div>
+</div>
+
+<CodeBlock
+  language="tsx"
+  code={`import { Skeleton, SkeletonImage, SkeletonText } from '@adrozdenko/design-system'
+
+// Basic skeleton
+<Skeleton className="w-[200px] h-[20px]" />
+
+// Image placeholder with aspect ratio
+<SkeletonImage aspectRatio="16/9" />
+<SkeletonImage aspectRatio="square" />
+<SkeletonImage aspectRatio="4/3" />
+
+// Text paragraph skeleton
+<SkeletonText lines={3} />
+
+// Card skeleton example
+<div className="p-4 border rounded-lg">
+  <SkeletonImage aspectRatio="16/9" className="mb-4" />
+  <Skeleton className="w-3/4 h-6 mb-2" />
+  <SkeletonText lines={2} />
+</div>`}
+/>
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Transition Tokens</h2>
+
+Use these tokens for custom transitions when DDS components don't cover your use case.
 
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(4, 1fr)',
   gap: '16px',
-  marginBottom: '48px',
+  marginBottom: '32px',
 }}>
   {[
-    { name: 'Fast', value: TRANSITIONS.duration.fast, usage: 'Micro-interactions, hover states' },
-    { name: 'Normal', value: TRANSITIONS.duration.normal, usage: 'Standard transitions (DEFAULT)' },
-    { name: 'Smooth', value: TRANSITIONS.duration.smooth, usage: 'Larger element transitions' },
-    { name: 'Slow', value: TRANSITIONS.duration.slow, usage: 'Page transitions, emphasis' },
+    { name: 'Fast', value: TRANSITIONS.duration.fast, usage: 'Micro-interactions, hover' },
+    { name: 'Normal', value: TRANSITIONS.duration.normal, usage: 'Standard transitions' },
+    { name: 'Smooth', value: TRANSITIONS.duration.smooth, usage: 'Larger elements' },
+    { name: 'Slow', value: TRANSITIONS.duration.slow, usage: 'Page transitions' },
   ].map((item) => (
     <div
       key={item.name}
       style={{
         background: PRIMITIVES.softLinen,
         borderRadius: RADIUS.lg,
-        padding: '24px',
+        padding: '20px',
         border: `1px solid ${SLATE[200]}`,
-        boxShadow: SHADOWS.sm,
       }}
     >
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        marginBottom: '12px',
+        marginBottom: '8px',
       }}>
-        <Clock size={16} color={DEEP_CURRENT[500]} />
+        <Clock size={14} color={DEEP_CURRENT[500]} />
         <span style={{
-          fontSize: '14px',
+          fontSize: '13px',
           fontWeight: 600,
           fontFamily: '"Fixel", sans-serif',
           color: ABYSS[500],
@@ -78,16 +208,16 @@ import { TRANSITIONS } from '../../constants/designTokens';
         </span>
       </div>
       <div style={{
-        fontSize: '24px',
+        fontSize: '20px',
         fontWeight: 700,
-        fontFamily: '"Pilat Extended", sans-serif',
+        fontFamily: '"JetBrains Mono", monospace',
         color: DEEP_CURRENT[500],
-        marginBottom: '8px',
+        marginBottom: '4px',
       }}>
         <span>{item.value}</span>
       </div>
       <div style={{
-        fontSize: '12px',
+        fontSize: '11px',
         fontFamily: '"Fixel", sans-serif',
         color: DUSK_REEF[500],
       }}>
@@ -97,132 +227,7 @@ import { TRANSITIONS } from '../../constants/designTokens';
   ))}
 </div>
 
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Interactive Demos</h2>
-
-### Button Timing Comparison
-
-<div style={{
-  display: 'flex',
-  gap: '16px',
-  marginBottom: '48px',
-  flexWrap: 'wrap',
-}}>
-  <Button
-    variant="accent"
-    noEffect
-    className="transition-all duration-150 ease-out hover:-translate-y-0.5 hover:shadow-md"
-  >
-    Fast (150ms)
-  </Button>
-
-  <Button
-    variant="accent"
-    noEffect
-    className="transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md"
-  >
-    Normal (200ms)
-  </Button>
-
-  <Button
-    variant="accent"
-    noEffect
-    className="transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md"
-  >
-    Smooth (300ms)
-  </Button>
-</div>
-
-### Card Hover
-
-<div style={{
-  display: 'flex',
-  gap: '24px',
-  marginBottom: '48px',
-}}>
-  <div
-    style={{
-      width: '200px',
-      background: PRIMITIVES.softLinen,
-      borderRadius: RADIUS.lg,
-      padding: '20px',
-      border: `1px solid ${SLATE[200]}`,
-      boxShadow: SHADOWS.sm,
-      cursor: 'pointer',
-      transition: `all ${TRANSITIONS.duration.normal} ${TRANSITIONS.timing.easeOut}`,
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'translateY(-4px)'
-      e.currentTarget.style.boxShadow = SHADOWS.lg
-      e.currentTarget.style.borderColor = DEEP_CURRENT[500]
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'translateY(0)'
-      e.currentTarget.style.boxShadow = SHADOWS.sm
-      e.currentTarget.style.borderColor = SLATE[200]
-    }}
-  >
-    <div style={{ fontWeight: 600, marginBottom: '8px', color: ABYSS[500], fontFamily: '"Fixel", sans-serif' }}>
-      <span>Card Title</span>
-    </div>
-    <div style={{ fontSize: '14px', color: DUSK_REEF[500], fontFamily: '"Fixel", sans-serif' }}>
-      <span>Hover to see elevation change</span>
-    </div>
-  </div>
-</div>
-
-### Loading States
-
-<style>{`
-  @keyframes dds-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes dds-shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-`}</style>
-
-<div style={{
-  display: 'flex',
-  gap: '32px',
-  marginBottom: '48px',
-  alignItems: 'center',
-}}>
-  <div style={{ textAlign: 'center' }}>
-    <div
-      style={{
-        width: '48px',
-        height: '48px',
-        border: `3px solid ${SLATE[200]}`,
-        borderTopColor: DEEP_CURRENT[500],
-        borderRadius: RADIUS.full,
-        animation: 'dds-spin 1s linear infinite',
-        marginBottom: '8px',
-      }}
-    />
-    <span style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>Spinner</span>
-  </div>
-
-  <div style={{ textAlign: 'center' }}>
-    <div
-      style={{
-        width: '200px',
-        height: '48px',
-        background: `linear-gradient(90deg, ${SLATE[200]} 25%, ${SLATE[100]} 50%, ${SLATE[200]} 75%)`,
-        backgroundSize: '200% 100%',
-        borderRadius: RADIUS.md,
-        animation: 'dds-shimmer 1.5s ease-in-out infinite',
-        marginBottom: '8px',
-      }}
-    />
-    <span style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>Skeleton</span>
-  </div>
-</div>
-
-### Easing Functions Visual
+### Easing Functions
 
 <div
   id="easing-demo-container"
@@ -231,7 +236,7 @@ import { TRANSITIONS } from '../../constants/designTokens';
     borderRadius: RADIUS.lg,
     padding: '24px',
     border: `1px solid ${SLATE[200]}`,
-    marginBottom: '48px',
+    marginBottom: '32px',
   }}
 >
   <div style={{
@@ -246,7 +251,7 @@ import { TRANSITIONS } from '../../constants/designTokens';
       fontFamily: '"Fixel", sans-serif',
       color: ABYSS[500],
     }}>
-      <span>Compare easing functions side by side</span>
+      <span>Compare easing functions</span>
     </div>
     <Button
       variant="accent"
@@ -259,21 +264,21 @@ import { TRANSITIONS } from '../../constants/designTokens';
         }, 100);
       }}
     >
-      Play All
+      <Play size={14} className="mr-1" />
+      <span>Play</span>
     </Button>
   </div>
 
   {[
-    { name: 'ease', timing: TRANSITIONS.timing.ease, desc: 'General purpose' },
     { name: 'ease-out', timing: TRANSITIONS.timing.easeOut, desc: 'Recommended for UI', highlight: true },
+    { name: 'ease', timing: TRANSITIONS.timing.ease, desc: 'General purpose' },
     { name: 'ease-in', timing: TRANSITIONS.timing.easeIn, desc: 'Elements exiting' },
     { name: 'ease-in-out', timing: TRANSITIONS.timing.easeInOut, desc: 'Looping animations' },
-    { name: 'linear', timing: 'linear', desc: 'Constant speed' },
   ].map((item) => (
     <div key={item.name} style={{ marginBottom: '12px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
         <code style={{
-          width: '100px',
+          width: '90px',
           fontSize: '12px',
           fontFamily: '"JetBrains Mono", ui-monospace, monospace',
           color: item.highlight ? DEEP_CURRENT[600] : DUSK_REEF[500],
@@ -289,7 +294,7 @@ import { TRANSITIONS } from '../../constants/designTokens';
       <div style={{
         background: SLATE[100],
         borderRadius: RADIUS.xs,
-        height: '28px',
+        height: '24px',
         position: 'relative',
         overflow: 'hidden',
       }}>
@@ -311,72 +316,71 @@ import { TRANSITIONS } from '../../constants/designTokens';
   ))}
 </div>
 
----
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Guidelines</h2>
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Examples</h2>
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+      marginBottom: '16px',
+    }}>
+      <span>When to use each loader</span>
+    </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+      <div><strong style={{ color: ABYSS[500] }}>ExecutingAnimation:</strong> Form submissions, auth flows, page transitions, async operations</div>
+      <div><strong style={{ color: ABYSS[500] }}>Skeleton:</strong> Content loading, data fetching, lazy-loaded components, list placeholders</div>
+    </div>
+  </div>
 
-<CodeBlock
-  language="tsx"
-  code={`// Button hover
-<button className="
-  bg-accent-strong
-  text-inverse
-  transition-all
-  duration-200
-  ease-out
-  hover:bg-accent-strong/90
-  hover:-translate-y-0.5
-  hover:shadow-md
-">
-  Hover me
-</button>
-
-// Card hover elevation
-<div className="
-  bg-surface
-  shadow-sm
-  transition-all
-  duration-200
-  hover:shadow-elevated
-  hover:-translate-y-1
-  hover:border-accent
-">
-  Interactive card
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+      marginBottom: '16px',
+    }}>
+      <span>Import from DDS</span>
+    </div>
+    <div style={{
+      background: ABYSS[700],
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      fontFamily: '"JetBrains Mono", monospace',
+      fontSize: '12px',
+      color: SLATE[300],
+      lineHeight: 1.6,
+    }}>
+      <div style={{ color: DUSK_REEF[300] }}>// Loading components</div>
+      <div><span style={{ color: '#C586C0' }}>import</span> {'{'}</div>
+      <div style={{ paddingLeft: '16px' }}>ExecutingAnimation,</div>
+      <div style={{ paddingLeft: '16px' }}>Skeleton,</div>
+      <div style={{ paddingLeft: '16px' }}>SkeletonImage,</div>
+      <div style={{ paddingLeft: '16px' }}>SkeletonText,</div>
+      <div>{'}'} <span style={{ color: '#C586C0' }}>from</span> <span style={{ color: '#CE9178' }}>'@adrozdenko/design-system'</span></div>
+    </div>
+  </div>
 </div>
 
-// Focus ring animation
-<input className="
-  transition-all
-  duration-150
-  focus:ring-2
-  focus:ring-focus
-  focus:border-focus
-" />
-
-// Smooth page transitions
-<div className="
-  transition-opacity
-  duration-300
-  ease-out
-">
-  Page content
-</div>`}
-/>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>TypeScript Usage</h2>
-
-<CodeBlock
-  language="typescript"
-  code={`import { TRANSITIONS } from '@adrozdenko/design-system'
-
-const buttonStyle = {
-  transition: \`all \${TRANSITIONS.duration.normal} \${TRANSITIONS.timing.easeOut}\`,
-}
-
-// Or use the common patterns
-const cardStyle = {
-  transition: 'all 200ms ease-out',
-}`}
-/>
+<InfoBox variant="warning">
+  <strong>Don't create custom loaders.</strong> Always use the DDS animation components to maintain consistency.
+  If you need a new animation pattern, propose it for the design system.
+</InfoBox>
