@@ -1,13 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { CTASection } from './CTASection'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof CTASection> = {
   title: 'Website/Sections/CTASection',
   component: CTASection,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
+    docs: {
+      description: {
+        component: organismDescription('Call-to-action section with customizable title, subtitle, buttons, and background options.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

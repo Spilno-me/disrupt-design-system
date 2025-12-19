@@ -22,6 +22,7 @@ import {
   LoginAccount,
   CreateLoginAccountData,
 } from '../../components/partners'
+import { PAGE_META, pageDescription } from '../_infrastructure'
 
 // =============================================================================
 // STORY CONFIGURATION
@@ -29,8 +30,14 @@ import {
 
 const meta: Meta = {
   title: 'Partner/Pages/LoginAccounts',
+  ...PAGE_META,
   parameters: {
-    layout: 'fullscreen',
+    ...PAGE_META.parameters,
+    docs: {
+      description: {
+        component: pageDescription(`Partner login accounts management page within the app shell context. Demonstrates login account CRUD operations with full navigation layout.`),
+      },
+    },
   },
 }
 

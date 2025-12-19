@@ -4,21 +4,20 @@ import { AssignLeadDialog } from './AssignLeadDialog'
 import { Lead } from './LeadCard'
 import { Partner } from './CreateLeadDialog'
 import { Button } from '../ui/button'
+import { MOLECULE_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof AssignLeadDialog> = {
   title: 'Partner/Dialogs/AssignLeadDialog',
   component: AssignLeadDialog,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Dialog for assigning leads to partners with partner selection. Partner-specific component.`,
+        component: organismDescription('Dialog for assigning leads to partners with partner selection. Partner-specific component.'),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     open: {
       control: 'boolean',

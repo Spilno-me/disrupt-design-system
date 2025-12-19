@@ -2,15 +2,17 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { optimizedImages } from '../assets/optimized'
 import { aboutImages } from '../assets/optimized/about'
 import { Zap, Globe, Shield, Image, FileImage, Layers } from 'lucide-react'
+import { ORGANISM_META, organismDescription } from './_infrastructure'
 
 const meta: Meta = {
   title: 'Foundation/Assets/HeroImages',
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: 'fullscreen',
     docs: {
       description: {
-        component: `
-Hero images used across the Disrupt website. All images are optimized with:
+        component: organismDescription(`Hero images used across the Disrupt website. All images are optimized with:
 - **AVIF**: Best compression, modern browsers
 - **WebP**: Good compression, wide support
 - **PNG**: Fallback for older browsers
@@ -18,12 +20,10 @@ Hero images used across the Disrupt website. All images are optimized with:
 Each image has responsive variants:
 - **Mobile**: 640px width
 - **Tablet**: 1024px width
-- **Desktop**: 1440px width
-        `,
+- **Desktop**: 1440px width`),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

@@ -4,6 +4,7 @@ import {
   MOCK_NETWORK_PARTNERS,
   type NetworkPartner,
 } from '../../components/partners/PartnerNetworkPage'
+import { PAGE_META, pageDescription } from '../_infrastructure'
 
 // =============================================================================
 // STORY CONFIGURATION
@@ -12,14 +13,12 @@ import {
 const meta: Meta<typeof PartnerNetworkPage> = {
   title: 'Partner/Partner Network',
   component: PartnerNetworkPage,
+  ...PAGE_META,
   parameters: {
-    layout: 'fullscreen',
+    ...PAGE_META.parameters,
     docs: {
       description: {
-        component: `
-# Partner Network Page
-
-A hierarchical data table component for managing partner relationships. Displays master partners and their sub-partners in an expandable tree structure with performance metrics.
+        component: pageDescription(`A hierarchical data table component for managing partner relationships. Displays master partners and their sub-partners in an expandable tree structure with performance metrics.
 
 ## Features
 
@@ -70,12 +69,10 @@ interface NetworkPartner {
   subPartners?: NetworkPartner[]
   parentId?: string
 }
-\`\`\`
-        `,
+\`\`\``),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     partners: {
       description: 'Array of partner data with hierarchical structure',

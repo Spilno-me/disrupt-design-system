@@ -20,15 +20,17 @@ import {
   ANIMATION,
   Z_INDEX,
 } from '../constants/designTokens'
+import { ORGANISM_META, organismDescription } from './_infrastructure'
 
 const meta: Meta = {
   title: 'Foundation/Design Tokens',
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: 'fullscreen',
     docs: {
       description: {
-        component: `
-Design tokens are the foundational values that define the visual design of the Disrupt Design System.
+        component: organismDescription(`Design tokens are the foundational values that define the visual design of the Disrupt Design System.
 They ensure consistency across all components and applications.
 
 **2-Tier Architecture:**
@@ -40,8 +42,7 @@ Components use ALIAS tokens directly. No component-specific tier needed.
 Import tokens:
 \`\`\`typescript
 import { ALIAS, SHADOWS, SPACING } from '@/constants/designTokens'
-\`\`\`
-        `,
+\`\`\``),
       },
     },
   },

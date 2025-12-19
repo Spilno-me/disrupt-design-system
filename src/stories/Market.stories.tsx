@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { MOLECULE_META, moleculeDescription } from './_infrastructure'
 
 // Placeholder component for Market section
 const MarketPlaceholder = () => (
@@ -11,8 +12,14 @@ const MarketPlaceholder = () => (
 const meta: Meta<typeof MarketPlaceholder> = {
   title: 'Market/Overview',
   component: MarketPlaceholder,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
+    docs: {
+      description: {
+        component: moleculeDescription('Placeholder for Market section components. Components for marketplace management will be added here.'),
+      },
+    },
   },
 }
 

@@ -8,6 +8,7 @@ import {
   Partner,
   PartnerFormData,
 } from '../../components/partners'
+import { ORGANISM_META, organismDescription } from '../_infrastructure'
 
 // =============================================================================
 // STORY CONFIGURATION
@@ -15,20 +16,17 @@ import {
 
 const meta: Meta = {
   title: 'Partner/Dialogs/PartnerDialogs',
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: 'centered',
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-# Partner Dialogs
-
-This showcase demonstrates all the dialog components used in the Partners Management system.
+        component: organismDescription(`Dialog components used in the Partners Management system.
 
 ## Components
 - **EditPartnerDialog**: Create or edit partner information
-- **DeletePartnerDialog**: Confirm partner deletion with warning
-        `,
+- **DeletePartnerDialog**: Confirm partner deletion with warning`),
       },
     },
   },

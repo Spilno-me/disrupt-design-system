@@ -3,14 +3,20 @@ import { PageLayout, Container } from './PageLayout'
 import { Header } from '../ui/Header'
 import { Footer } from './Footer'
 import { Button } from '../ui/button'
+import { TEMPLATE_META, templateDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof PageLayout> = {
   title: 'Website/Layout/PageLayout',
   component: PageLayout,
+  ...TEMPLATE_META,
   parameters: {
-    layout: 'fullscreen',
+    ...TEMPLATE_META.parameters,
+    docs: {
+      description: {
+        component: templateDescription('Main page layout shell for the marketing website. Includes header/footer slots and configurable content width.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     maxWidth: {
       control: 'select',

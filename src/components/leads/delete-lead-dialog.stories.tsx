@@ -3,21 +3,20 @@ import { useState } from 'react'
 import { DeleteLeadDialog } from './DeleteLeadDialog'
 import { Lead } from './LeadCard'
 import { Button } from '../ui/button'
+import { MOLECULE_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof DeleteLeadDialog> = {
   title: 'Partner/Dialogs/DeleteLeadDialog',
   component: DeleteLeadDialog,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Confirmation dialog for lead deletion with warning message. Partner-specific component.`,
+        component: organismDescription('Confirmation dialog for lead deletion with warning message. Partner-specific component.'),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     open: {
       control: 'boolean',

@@ -1,13 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { FAQSection, FAQItem } from './FAQSection'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof FAQSection> = {
   title: 'Website/Sections/FAQSection',
   component: FAQSection,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
+    docs: {
+      description: {
+        component: organismDescription('Accordion-style FAQ section with expandable question/answer items.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

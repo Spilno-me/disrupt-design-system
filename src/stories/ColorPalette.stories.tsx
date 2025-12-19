@@ -11,6 +11,7 @@ import {
   SLATE,
   PRIMITIVES,
 } from '@/constants/designTokens';
+import { MOLECULE_META, moleculeDescription } from './_infrastructure';
 
 /**
  * Color Palette Stories
@@ -23,8 +24,15 @@ import {
 const meta = {
   title: 'Foundation/Colors',
   component: ColorPalette,
+  ...MOLECULE_META,
   parameters: {
+    ...MOLECULE_META.parameters,
     layout: 'padded',
+    docs: {
+      description: {
+        component: moleculeDescription('Color palette swatches for documenting the design system color scales and semantic tokens.'),
+      },
+    },
   },
 } satisfies Meta<typeof ColorPalette>;
 

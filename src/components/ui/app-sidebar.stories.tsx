@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { AppSidebar, type NavItem } from './AppSidebar'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 import { GridBlobBackground } from './GridBlobCanvas'
 import {
   LayoutDashboard,
@@ -119,17 +120,15 @@ const partnerNavItems: NavItem[] = [
 const meta: Meta<typeof AppSidebar> = {
   title: 'Shared/App Shell/AppSidebar',
   component: AppSidebar,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Collapsible navigation sidebar with nested menu support, badges, and responsive behavior. Part of the shared App Shell system.`,
+        component: organismDescription('Collapsible navigation sidebar with nested menu support, badges, and responsive behavior. Part of the shared App Shell system.'),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

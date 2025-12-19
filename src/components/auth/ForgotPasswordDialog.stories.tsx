@@ -2,14 +2,20 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
 import { ForgotPasswordDialog } from "./ForgotPasswordDialog"
 import { Button } from "../ui/button"
+import { MOLECULE_META, moleculeDescription } from "@/stories/_infrastructure"
 
 const meta: Meta<typeof ForgotPasswordDialog> = {
   title: "Shared/Auth/ForgotPasswordDialog",
   component: ForgotPasswordDialog,
+  ...MOLECULE_META,
   parameters: {
-    layout: "centered",
+    ...MOLECULE_META.parameters,
+    docs: {
+      description: {
+        component: moleculeDescription("Password recovery dialog with email input and validation. Used in the authentication flow."),
+      },
+    },
   },
-  tags: ["autodocs"],
   argTypes: {
     open: {
       control: "boolean",

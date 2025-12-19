@@ -1,13 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Header, NavItem } from './Header'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof Header> = {
   title: 'Website/Header',
   component: Header,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
+    docs: {
+      description: {
+        component: organismDescription('Website navigation header with responsive design, mobile menu support, and customizable navigation items.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     navItems: {
       description: 'Navigation items to display',

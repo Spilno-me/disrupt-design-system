@@ -1,14 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { FeaturesSection, Feature } from './FeaturesSection'
 import { Workflow, BrainCircuit, LayoutDashboard, TrendingUp, Shield, Zap, Users } from 'lucide-react'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof FeaturesSection> = {
   title: 'Website/Sections/FeaturesSection',
   component: FeaturesSection,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
+    docs: {
+      description: {
+        component: organismDescription('Features grid section with icon cards. Supports 2, 3, or 4 column layouts.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     columns: {
       control: 'select',

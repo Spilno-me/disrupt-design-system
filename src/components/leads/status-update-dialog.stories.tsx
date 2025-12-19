@@ -3,21 +3,20 @@ import { useState } from 'react'
 import { StatusUpdateDialog } from './StatusUpdateDialog'
 import { Lead, LeadStatus } from './LeadCard'
 import { Button } from '../ui/button'
+import { MOLECULE_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof StatusUpdateDialog> = {
   title: 'Partner/Dialogs/StatusUpdateDialog',
   component: StatusUpdateDialog,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Dialog for updating lead status with status selection dropdown. Partner-specific component.`,
+        component: organismDescription('Dialog for updating lead status with status selection dropdown. Partner-specific component.'),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     open: {
       control: 'boolean',

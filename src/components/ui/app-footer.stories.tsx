@@ -1,20 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { AppFooter } from './AppFooter'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta = {
   title: 'Shared/App Shell/AppFooter',
   component: AppFooter,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Application footer with copyright, version info, and optional links. Part of the shared App Shell system.`,
+        component: organismDescription('Application footer with copyright, version info, and optional links. Part of the shared App Shell system.'),
       },
     },
   },
-  tags: ['autodocs'],
 } satisfies Meta<typeof AppFooter>
 
 export default meta

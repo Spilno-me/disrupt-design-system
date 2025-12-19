@@ -5,6 +5,7 @@ import { Button } from '../../../components/ui/button'
 import { EditInvoiceDialog } from '../../../components/partners/invoices/EditInvoiceDialog'
 import { InvoicePreviewSheet } from '../../../components/partners/invoices/InvoicePreviewSheet'
 import type { Invoice } from '../../../components/partners/invoices/types'
+import { ORGANISM_META, organismDescription } from '../../_infrastructure'
 
 // =============================================================================
 // STORY CONFIGURATION
@@ -12,19 +13,17 @@ import type { Invoice } from '../../../components/partners/invoices/types'
 
 const meta: Meta = {
   title: 'Partner/Dialogs/InvoiceDialogs',
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: 'centered',
     docs: {
       description: {
-        component: `
-# Invoice Dialogs
-
-This showcase demonstrates all the dialog components used in the Invoice Management system.
+        component: organismDescription(`Dialog components used in the Invoice Management system.
 
 ## Components
 - **EditInvoiceDialog**: Edit invoice details like payment terms and notes
-- **InvoicePreviewSheet**: Full preview of invoice with line items
-        `,
+- **InvoicePreviewSheet**: Full preview of invoice with line items`),
       },
     },
   },

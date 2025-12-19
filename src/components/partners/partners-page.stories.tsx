@@ -1,19 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { PartnersPage, MOCK_PARTNERS, type Partner } from "./PartnersPage"
+import { ORGANISM_META, organismDescription } from "@/stories/_infrastructure"
 
 const meta: Meta<typeof PartnersPage> = {
   title: "Partner/Components/PartnersPage",
   component: PartnersPage,
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: "padded",
     docs: {
       description: {
-        component:
-          "A complete partners management page with search, filtering, data table, and pagination.",
+        component: organismDescription("A complete partners management page with search, filtering, data table, and pagination."),
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     partners: {
       control: false,

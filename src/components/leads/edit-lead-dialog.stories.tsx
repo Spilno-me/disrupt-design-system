@@ -4,21 +4,20 @@ import { EditLeadDialog } from './EditLeadDialog'
 import { Lead } from './LeadCard'
 import { CreateLeadFormData, Partner } from './CreateLeadDialog'
 import { Button } from '../ui/button'
+import { MOLECULE_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof EditLeadDialog> = {
   title: 'Partner/Dialogs/EditLeadDialog',
   component: EditLeadDialog,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Form dialog for editing existing lead information with pre-filled data. Partner-specific component.`,
+        component: organismDescription('Form dialog for editing existing lead information with pre-filled data. Partner-specific component.'),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     open: {
       control: 'boolean',

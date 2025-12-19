@@ -1,20 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { StatsCard } from './StatsCard'
+import { MOLECULE_META, moleculeDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof StatsCard> = {
   title: 'Partner/Components/StatsCard',
   component: StatsCard,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-KPI display card with value, trend indicator, and optional description. Partner-specific component.`,
+        component: moleculeDescription('KPI display card with value, trend indicator, and optional description. Partner-specific component.'),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     trendDirection: {
       control: 'select',

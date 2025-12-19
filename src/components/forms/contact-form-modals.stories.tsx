@@ -3,23 +3,22 @@ import { useState } from 'react'
 import { ContactFormSuccessModal } from './ContactFormSuccessModal'
 import { ContactFormErrorModal } from './ContactFormErrorModal'
 import { Button } from '../ui/button'
+import { MOLECULE_META, moleculeDescription } from '@/stories/_infrastructure'
 
 const meta: Meta = {
   title: 'Website/Forms/ContactFormModals',
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `
-Modal dialogs for contact form submission feedback.
+        component: moleculeDescription(`Modal dialogs for contact form submission feedback.
 
 **Success Modal:** Shows animated Disrupt logo that responds to button hover.
-**Error Modal:** Shows "broken" logo with scattered pixels that reassemble on hover.
-        `,
+**Error Modal:** Shows "broken" logo with scattered pixels that reassemble on hover.`),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

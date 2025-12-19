@@ -2,21 +2,20 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import { CreateLeadDialog, CreateLeadFormData, Partner } from './CreateLeadDialog'
 import { Button } from '../ui/button'
+import { MOLECULE_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof CreateLeadDialog> = {
   title: 'Partner/Dialogs/CreateLeadDialog',
   component: CreateLeadDialog,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Form dialog for creating new leads with validation and partner assignment. Partner-specific component.`,
+        component: organismDescription('Form dialog for creating new leads with validation and partner assignment. Partner-specific component.'),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     open: {
       control: 'boolean',

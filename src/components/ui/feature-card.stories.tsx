@@ -1,19 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FeatureCard } from './FeatureCard';
 import { ALIAS } from '../../constants/designTokens';
+import { MOLECULE_META, moleculeDescription } from '@/stories/_infrastructure';
 
 const meta = {
   title: 'Website/FeatureCard',
   component: FeatureCard,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: 'Animated feature card with rotating dashed circle, electric icon effect, and expandable description. Used in the 4 main features: Automate, Advice, Adapt, Scale.',
+        component: moleculeDescription('Animated feature card with rotating dashed circle, electric icon effect, and expandable description. Used in the 4 main features: Automate, Advice, Adapt, Scale.'),
       },
     },
   },
-  tags: ['autodocs'],
 } satisfies Meta<typeof FeatureCard>;
 
 export default meta;

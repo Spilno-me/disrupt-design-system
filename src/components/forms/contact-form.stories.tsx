@@ -1,14 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { fn, expect, within, userEvent } from 'storybook/test'
 import { ContactForm, ContactFormField } from './ContactForm'
+import { MOLECULE_META, moleculeDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof ContactForm> = {
   title: 'Website/Forms/ContactForm',
   component: ContactForm,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
+    docs: {
+      description: {
+        component: moleculeDescription('Customizable contact form with field configuration, validation, and privacy policy checkbox. Used for demo requests and contact pages.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   args: {
     onSubmit: fn(),
   },

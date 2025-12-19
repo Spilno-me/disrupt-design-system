@@ -1,14 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { LoginPage } from "./LoginPage"
 import heroFrame from "../../assets/optimized/auth/hero-frame-desktop.webp"
+import { PAGE_META, pageDescription } from "@/stories/_infrastructure"
 
 const meta: Meta<typeof LoginPage> = {
   title: "Shared/Auth/LoginPage",
   component: LoginPage,
+  ...PAGE_META,
   parameters: {
-    layout: "fullscreen",
+    ...PAGE_META.parameters,
+    docs: {
+      description: {
+        component: pageDescription("Unified login page for all Disrupt products (Flow, Market, Partner). Features product-specific branding and hero image."),
+      },
+    },
   },
-  tags: ["autodocs"],
 }
 
 export default meta

@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { LeadsPage } from './LeadsPage'
 import { Lead } from './LeadCard'
+import { PAGE_META, pageDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof LeadsPage> = {
   title: 'Partner/Components/LeadsPage',
   component: LeadsPage,
+  ...PAGE_META,
   parameters: {
-    layout: 'fullscreen',
+    ...PAGE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** PAGE
-
-LeadsPage - Full page layout for managing leads
+        component: pageDescription(`LeadsPage - Full page layout for managing leads
 
 Features:
 - Stats cards row showing KPIs
@@ -20,12 +20,10 @@ Features:
 - **Cards for mobile** (below md breakpoint)
 - Pagination with page size selector
 - Row selection with selection count
-- Sortable columns
-        `,
+- Sortable columns`),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

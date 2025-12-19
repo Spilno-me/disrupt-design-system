@@ -4,6 +4,7 @@ import { PartnerLoginAccountsPage, MOCK_LOGIN_ACCOUNTS, LoginAccount } from "./P
 import { ResetPasswordDialog } from "./ResetPasswordDialog"
 import { CreateLoginAccountDialog } from "./CreateLoginAccountDialog"
 import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
+import { ORGANISM_META, organismDescription } from "@/stories/_infrastructure"
 
 // =============================================================================
 // PARTNER LOGIN ACCOUNTS PAGE
@@ -12,7 +13,9 @@ import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
 const meta: Meta<typeof PartnerLoginAccountsPage> = {
   title: "Partner/Components/LoginAccountsPage",
   component: PartnerLoginAccountsPage,
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: "padded",
     backgrounds: {
       default: "cream",
@@ -21,8 +24,12 @@ const meta: Meta<typeof PartnerLoginAccountsPage> = {
         { name: "white", value: "#FFFFFF" },
       ],
     },
+    docs: {
+      description: {
+        component: organismDescription("Partner login accounts management page with data table, dialogs for create/reset/delete operations."),
+      },
+    },
   },
-  tags: ["autodocs"],
   argTypes: {
     partnerName: {
       control: "text",

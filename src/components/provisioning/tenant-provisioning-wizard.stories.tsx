@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { TenantProvisioningWizard, type TenantFormData } from './TenantProvisioningWizard'
 import { Card, CardContent } from '../ui/card'
 import { Button } from '../ui/button'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 // =============================================================================
 // META
@@ -11,12 +12,12 @@ import { Button } from '../ui/button'
 const meta: Meta<typeof TenantProvisioningWizard> = {
   title: 'Partner/Components/TenantProvisioningWizard',
   component: TenantProvisioningWizard,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `
-A complete tenant provisioning wizard for onboarding new customers.
+        component: organismDescription(`A complete tenant provisioning wizard for onboarding new customers.
 
 ## Features
 - 4-step wizard flow: Company Info, Contact & Billing, Pricing, Review & Pay
@@ -35,12 +36,10 @@ import { TenantProvisioningWizard } from '@/components/provisioning'
   onCancel={() => console.log('Cancelled')}
   commissionPercentage={15}  // Optional, for partner portal
 />
-\`\`\`
-        `,
+\`\`\``),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     commissionPercentage: {
       control: { type: 'number', min: 0, max: 100 },

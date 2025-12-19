@@ -1,13 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Footer } from './Footer'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof Footer> = {
   title: 'Website/Layout/Footer',
   component: Footer,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
+    docs: {
+      description: {
+        component: organismDescription('Website footer with copyright, links, and social icons. Supports default, dark, and transparent variants.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     companyName: {
       control: 'text',

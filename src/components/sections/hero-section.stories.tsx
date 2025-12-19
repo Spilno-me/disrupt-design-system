@@ -1,14 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { HeroSection } from './HeroSection'
 import { optimizedImages } from '../../assets/optimized'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof HeroSection> = {
   title: 'Website/Sections/HeroSection',
   component: HeroSection,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
+    docs: {
+      description: {
+        component: organismDescription('Hero section with rotating titles, particle effects, grid blob background, and multiple layout options.'),
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

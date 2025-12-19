@@ -25,6 +25,7 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react"
+import { ORGANISM_META, organismDescription } from "./_infrastructure"
 
 // =============================================================================
 // MOCK DATA
@@ -113,14 +114,13 @@ const MOCK_PARTNERS: Partner[] = [
 const meta: Meta<typeof DataTable<Partner>> = {
   title: 'Shared/Data/DataTable Patterns',
   component: DataTable,
+  ...ORGANISM_META,
   parameters: {
+    ...ORGANISM_META.parameters,
     layout: 'padded',
     docs: {
       description: {
-        component: `
-# Unified DataTable System
-
-Complete data table solution with composable sub-components:
+        component: organismDescription(`Complete data table solution with composable sub-components.
 
 ## Components
 
@@ -140,12 +140,10 @@ Complete data table solution with composable sub-components:
 
 ## Philosophy
 
-**Composition over Configuration** - Build from small, focused components instead of a monolithic table with 100 props.
-        `,
+**Composition over Configuration** - Build from small, focused components instead of a monolithic table with 100 props.`),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

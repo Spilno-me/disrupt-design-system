@@ -7,6 +7,7 @@ import { ForgotPasswordForm } from "../../components/auth/ForgotPasswordForm"
 import { ResetPasswordForm } from "../../components/auth/ResetPasswordForm"
 import { SetInitialPasswordForm } from "../../components/auth/SetInitialPasswordForm"
 import { ForgotPasswordDialog } from "../../components/auth/ForgotPasswordDialog"
+import { PAGE_META, pageDescription } from "../_infrastructure"
 
 // =============================================================================
 // META
@@ -14,10 +15,22 @@ import { ForgotPasswordDialog } from "../../components/auth/ForgotPasswordDialog
 
 const meta: Meta = {
   title: "Shared/Auth/AllFlows",
+  ...PAGE_META,
   parameters: {
-    layout: "fullscreen",
+    ...PAGE_META.parameters,
+    docs: {
+      description: {
+        component: pageDescription(`Complete authentication flow pages including login, forgot password, reset password, and initial password setup.
+
+## Components
+- **LoginForm**: Standard email/password login
+- **ForgotPasswordForm**: Request password reset email
+- **ResetPasswordForm**: Set new password from email link
+- **SetInitialPasswordForm**: First-time password setup for new users
+- **ForgotPasswordDialog**: Modal variant for password reset`),
+      },
+    },
   },
-  tags: ["autodocs"],
 }
 
 export default meta

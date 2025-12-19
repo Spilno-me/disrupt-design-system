@@ -8,6 +8,7 @@ import { Card, CardContent } from '../ui/card'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 // =============================================================================
 // META
@@ -16,12 +17,12 @@ import { Button } from '../ui/button'
 const meta: Meta<typeof Wizard> = {
   title: 'Partner/Components/Wizard',
   component: Wizard,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `
-A reusable multi-step wizard component for complex form flows.
+        component: organismDescription(`A reusable multi-step wizard component for complex form flows.
 
 ## Features
 - Generic wizard context with step management
@@ -50,12 +51,10 @@ const steps = [
   <WizardStep step={1}>Content for step 2</WizardStep>
   <WizardNavigation />
 </Wizard>
-\`\`\`
-        `,
+\`\`\``),
       },
     },
   },
-  tags: ['autodocs'],
 }
 
 export default meta

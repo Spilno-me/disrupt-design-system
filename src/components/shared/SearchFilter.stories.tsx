@@ -2,18 +2,18 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useState, useEffect } from 'react'
 import { SearchFilter } from './SearchFilter/SearchFilter'
 import type { FilterState, FilterGroup } from './SearchFilter/types'
+import { MOLECULE_META, moleculeDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof SearchFilter> = {
   title: 'Shared/Data/SearchFilter',
   component: SearchFilter,
-  tags: ['autodocs'],
+  ...MOLECULE_META,
   parameters: {
+    ...MOLECULE_META.parameters,
     layout: 'padded',
     docs: {
       description: {
-        component: `**Type:** MOLECULE
-
-A universal search input with optional filter functionality.
+        component: moleculeDescription(`A universal search input with optional filter functionality.
 
 ## Features
 - **Debounced search** - Use \`onDebouncedChange\` for API calls (configurable delay)
@@ -43,8 +43,7 @@ A universal search input with optional filter functionality.
   filters={filters}
   onFiltersChange={setFilters}
 />
-\`\`\`
-        `,
+\`\`\``),
       },
     },
   },

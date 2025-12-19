@@ -31,6 +31,7 @@ import {
 } from '../components/layout/mock-data'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button'
+import { TEMPLATE_META, templateDescription } from './_infrastructure'
 
 // =============================================================================
 // STORY CONFIGURATION
@@ -39,15 +40,12 @@ import { Button } from '../components/ui/button'
 const meta: Meta<typeof AppLayoutShell> = {
   title: 'Shared/App Shell/AppLayoutShell',
   component: AppLayoutShell,
+  ...TEMPLATE_META,
   parameters: {
-    layout: 'fullscreen',
+    ...TEMPLATE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** TEMPLATE
-
-# AppLayoutShell - Shared Product Layout
-
-The AppLayoutShell is the foundation for all DDS product apps. It provides:
+        component: templateDescription(`The AppLayoutShell is the foundation for all DDS product apps. It provides:
 
 - **Consistent header** with product branding, notifications, and user menu
 - **Responsive sidebar** for desktop navigation (collapsible)
@@ -86,8 +84,7 @@ const [page, setPage] = useState('dashboard')
   {page === 'dashboard' && <DashboardPage />}
   {page === 'incidents' && <IncidentsPage />}
 </AppLayoutShell>
-\`\`\`
-        `,
+\`\`\``),
       },
     },
   },

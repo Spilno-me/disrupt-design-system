@@ -1,18 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { IndustryCarouselSection } from './IndustryCarouselSection'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof IndustryCarouselSection> = {
   title: 'Website/Sections/IndustryCarouselSection',
   component: IndustryCarouselSection,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: 'An expandable card carousel showcasing different industries. Features parallax effects, auto-scrolling on mobile, and blur-up image loading.',
+        component: organismDescription('An expandable card carousel showcasing different industries. Features parallax effects, auto-scrolling on mobile, and blur-up image loading.'),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

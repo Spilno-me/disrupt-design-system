@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { MOLECULE_META, moleculeDescription } from './_infrastructure'
 
 // Placeholder component for Flow section
 const FlowPlaceholder = () => (
@@ -11,8 +12,14 @@ const FlowPlaceholder = () => (
 const meta: Meta<typeof FlowPlaceholder> = {
   title: 'Flow/Overview',
   component: FlowPlaceholder,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
+    docs: {
+      description: {
+        component: moleculeDescription('Placeholder for Flow section components. Components for EHS workflow management will be added here.'),
+      },
+    },
   },
 }
 

@@ -1,20 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { LeadCard, Lead } from './LeadCard'
+import { MOLECULE_META, moleculeDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof LeadCard> = {
   title: 'Partner/Components/LeadCard',
   component: LeadCard,
+  ...MOLECULE_META,
   parameters: {
-    layout: 'centered',
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: `**Type:** ORGANISM
-
-Business card displaying lead information with status, priority, and actions. Partner-specific component.`,
+        component: moleculeDescription('Business card displaying lead information with status, priority, and actions. Partner-specific component.'),
       },
     },
   },
-  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div className="w-[400px]">

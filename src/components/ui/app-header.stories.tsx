@@ -1,20 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { AppHeader } from './AppHeader'
 import { User, Settings, LogOut } from 'lucide-react'
+import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
 
 const meta: Meta<typeof AppHeader> = {
   title: 'Shared/App Shell/AppHeader',
   component: AppHeader,
+  ...ORGANISM_META,
   parameters: {
-    layout: 'fullscreen',
+    ...ORGANISM_META.parameters,
     docs: {
       description: {
-        component: `
-# AppHeader
-
-**Type:** ORGANISM (complex UI section with multiple sub-components)
-
-Application header component for the Disrupt Family apps (Flow, Market, Partner).
+        component: organismDescription(`Application header component for the Disrupt Family apps (Flow, Market, Partner).
 
 ## Features
 - **Product-specific branding**: Automatically displays the correct logo based on the \`product\` prop. Set \`tagline\` prop to display text next to logo (e.g., "Environmental Compliance" for Flow)
@@ -57,11 +54,10 @@ import { AppHeader } from '@/components/ui/AppHeader'
   ]}
 />
 \`\`\`
-        `,
+`),
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     product: {
       control: 'select',
