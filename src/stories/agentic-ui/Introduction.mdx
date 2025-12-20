@@ -1,0 +1,241 @@
+{/* Introduction.mdx - Agentic UI Fusion Documentation */}
+
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Agentic UI/Introduction" />
+
+# Agentic UI Fusion
+
+<div style={{
+  padding: '24px',
+  background: 'linear-gradient(135deg, #E6F7FA 0%, #CCEFF5 100%)',
+  borderRadius: '12px',
+  marginBottom: '24px',
+  border: '1px solid #08A4BD'
+}}>
+  <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#056271', marginBottom: '8px' }}>
+    The Component is Dead. Long Live the Intention.
+  </div>
+  <div style={{ color: '#5E4F7E' }}>
+    A next-generation UI paradigm where AI agents express intentions, and the system resolves them into concrete forms based on constraints.
+  </div>
+</div>
+
+## The Paradigm Shift
+
+| Old Paradigm | New Paradigm |
+|--------------|--------------|
+| Agent selects components | Agent expresses **intentions** |
+| Composes layout | Constraints **shape** resolution |
+| Renders output | Form **emerges** |
+
+**The agent never says "RadioGroup" or "Select".** It expresses what the user needs to DO.
+
+## Core Abstractions
+
+### 1. Intention
+
+What the user wants to **DO** — not what they should see.
+
+```typescript
+{
+  action: "choose-one",           // The verb
+  subject: {
+    type: "severity",             // What kind of thing
+    label: "Issue Severity"       // Human description
+  },
+  purpose: "request"              // Why
+}
+```
+
+### 2. Constraints
+
+The **boundaries** that shape resolution:
+
+- **Device**: Mobile, desktop, touch, voice
+- **Accessibility**: Screen reader, high contrast, reduced motion
+- **Design System**: DDS tokens, density, theme
+- **Context**: Urgency, available space, journey phase
+
+### 3. Resolution
+
+The process where intention + constraints → **manifest form**.
+
+Not component selection. **Form emergence.**
+
+## How It Works
+
+<div style={{
+  background: '#2D3142',
+  color: '#FFFFFF',
+  padding: '24px',
+  borderRadius: '12px',
+  fontFamily: 'monospace',
+  fontSize: '14px',
+  lineHeight: '1.8'
+}}>
+  <div>INTENTION: "user needs to choose severity"</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div>CONSTRAINTS: desktop + mouse + normal urgency</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div>TRAITS: selectable + focusable</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div>PATTERN: "selection"</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div style={{ color: '#22C55E' }}>MANIFESTATION: RadioGroup-like UI</div>
+</div>
+
+**Same intention with different constraints:**
+
+<div style={{
+  background: '#2D3142',
+  color: '#FFFFFF',
+  padding: '24px',
+  borderRadius: '12px',
+  fontFamily: 'monospace',
+  fontSize: '14px',
+  lineHeight: '1.8',
+  marginTop: '16px'
+}}>
+  <div>INTENTION: "user needs to choose severity"</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div>CONSTRAINTS: <span style={{ color: '#FBBF24' }}>mobile + touch</span> + normal urgency</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div>TRAITS: selectable + <span style={{ color: '#FBBF24' }}>clickable</span> + focusable</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div>PATTERN: "selection"</div>
+  <div style={{ color: '#66CFE1' }}>         ↓</div>
+  <div style={{ color: '#22C55E' }}>MANIFESTATION: <span style={{ color: '#FBBF24' }}>Touch-optimized buttons</span></div>
+</div>
+
+**No code change. Constraint change = form change.**
+
+## The Demos
+
+### 🎮 Intention Playground
+
+The **star demo**. Build an intention, toggle constraints, watch the UI change.
+
+→ [View Playground](?path=/story/agentic-ui-intention-playground--default)
+
+### 🔬 Resolution Visualizer
+
+See the **full pipeline**: Intent → Traits → Pattern → Render
+
+→ [View Visualizer](?path=/story/agentic-ui-resolution-visualizer--default)
+
+### 💬 Conversational Demo
+
+The **mind-bender**. Chat interface where messages ARE UI components.
+
+→ [View Chat Demo](?path=/story/agentic-ui-conversational-demo--default)
+
+## Key Insights
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginTop: '24px' }}>
+  <div style={{ padding: '20px', background: '#EFEDF3', borderRadius: '12px', border: '1px solid #BFB7CF' }}>
+    <div style={{ fontSize: '24px', marginBottom: '8px' }}>🧠</div>
+    <div style={{ fontWeight: '600', color: '#2D3142', marginBottom: '4px' }}>Agent Ignorance</div>
+    <div style={{ fontSize: '14px', color: '#5E4F7E' }}>
+      The agent doesn't know component names. It only knows intentions.
+    </div>
+  </div>
+
+  <div style={{ padding: '20px', background: '#E6F7FA', borderRadius: '12px', border: '1px solid #99DFEB' }}>
+    <div style={{ fontSize: '24px', marginBottom: '8px' }}>🌊</div>
+    <div style={{ fontWeight: '600', color: '#2D3142', marginBottom: '4px' }}>Fluid Resolution</div>
+    <div style={{ fontSize: '14px', color: '#5E4F7E' }}>
+      Same intention resolves differently based on context. Like water taking the shape of its container.
+    </div>
+  </div>
+
+  <div style={{ padding: '20px', background: '#FEF2F2', borderRadius: '12px', border: '1px solid #FCA5A5' }}>
+    <div style={{ fontSize: '24px', marginBottom: '8px' }}>♿</div>
+    <div style={{ fontWeight: '600', color: '#2D3142', marginBottom: '4px' }}>Native Accessibility</div>
+    <div style={{ fontSize: '14px', color: '#5E4F7E' }}>
+      Accessibility isn't bolted on — it's a constraint that shapes resolution.
+    </div>
+  </div>
+
+  <div style={{ padding: '20px', background: '#F0FDF4', borderRadius: '12px', border: '1px solid #86EFAC' }}>
+    <div style={{ fontSize: '24px', marginBottom: '8px' }}>🔮</div>
+    <div style={{ fontWeight: '600', color: '#2D3142', marginBottom: '4px' }}>Future-Proof</div>
+    <div style={{ fontSize: '14px', color: '#5E4F7E' }}>
+      New devices, new constraints — same intentions still resolve. No rewrites needed.
+    </div>
+  </div>
+</div>
+
+## Architecture
+
+```
+src/lib/agentic-ui/
+├── index.ts              # Public API
+├── intention-types.ts    # Intention, Action, Subject types
+├── constraint-types.ts   # Device, Accessibility, DDS constraints
+├── resolution-types.ts   # Resolution, Manifestation, Traits
+├── behavior-primitives.ts # Clickable, Selectable, Editable, etc.
+├── affinity-rules.ts     # How traits combine into patterns
+└── resolution-engine.ts  # The magic: intent + constraints → form
+```
+
+## Usage
+
+```typescript
+import {
+  resolve,
+  createDefaultConstraints,
+  createSelectionIntention
+} from '@/lib/agentic-ui';
+
+// Create an intention
+const intention = createSelectionIntention(
+  [
+    { value: 'critical', label: 'Critical' },
+    { value: 'high', label: 'High' },
+    { value: 'medium', label: 'Medium' },
+  ],
+  'Issue Severity',
+  { required: true, type: 'severity' }
+);
+
+// Get constraints (auto-detects device, accessibility, etc.)
+const constraints = createDefaultConstraints();
+
+// Resolve!
+const resolution = resolve(intention, constraints);
+
+// Use the resolution
+console.log(resolution.manifestation.pattern);  // "selection"
+console.log(resolution.manifestation.traits);   // { interactive: true, ... }
+console.log(resolution.reasoning.explanation);  // Human-readable why
+```
+
+## Research Origins
+
+This prototype emerged from R&D exploring:
+
+- **Dissociative Analysis**: Dissolving assumptions about "components"
+- **Lateral Ideation**: Creative approaches to agent-driven UI
+- **Intention Resolution Architecture (IRA)**: The core paradigm
+- **Quantum-Emergent UI Forest**: Holistic system design
+
+The key insight: **"The component is a tombstone — it marks where interaction DIED and became static. The living thing is the intention pattern that can manifest in infinite ways."**
+
+---
+
+<div style={{
+  textAlign: 'center',
+  padding: '24px',
+  background: '#2D3142',
+  color: '#FFFFFF',
+  borderRadius: '12px',
+  marginTop: '32px'
+}}>
+  <div style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
+    ✨ The Component is Dead. Long Live the Intention. ✨
+  </div>
+  <div style={{ fontSize: '14px', opacity: 0.8 }}>
+    Built with the Disrupt Design System (DDS)
+  </div>
+</div>
