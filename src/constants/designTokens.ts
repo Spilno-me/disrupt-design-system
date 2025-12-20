@@ -268,11 +268,30 @@ export const ALIAS = {
     white60: 'rgba(255, 255, 255, 0.6)',
     subtle: 'rgba(229, 229, 229, 0.5)',
     tealGlass: 'rgba(0, 128, 128, 0.05)',
+    glass: 'rgba(251, 251, 243, 0.85)', // Glass effect for mobile nav
+    glassBorder: 'rgba(153, 153, 153, 0)', // Transparent end for glass borders
   },
 
   // --- GRADIENTS ---
   gradient: {
     subtle: `linear-gradient(0deg, ${DEEP_CURRENT[50]} 0%, ${PRIMITIVES.white} 100%)`,
+    // QuickActionButton gradients (Figma node-id=687-8522)
+    incident: {
+      fill: `linear-gradient(180deg, ${CORAL[100]} 0%, ${CORAL[450]} 11%, ${CORAL[700]} 100%)`,
+      border: `linear-gradient(180deg, ${PRIMITIVES.white} 0%, rgba(153, 153, 153, 0) 96%)`,
+    },
+    create: {
+      fill: `linear-gradient(180deg, ${DEEP_CURRENT[100]} 0%, ${DEEP_CURRENT[500]} 11%, ${DEEP_CURRENT[700]} 100%)`,
+      border: `linear-gradient(180deg, ${PRIMITIVES.white} 0%, rgba(153, 153, 153, 0) 96%)`,
+    },
+    emergency: {
+      fill: `linear-gradient(180deg, ${ORANGE[100]} 0%, ${ORANGE[500]} 11%, ${ORANGE[700]} 100%)`,
+      border: `linear-gradient(180deg, ${PRIMITIVES.white} 0%, rgba(153, 153, 153, 0) 96%)`,
+    },
+    capture: {
+      fill: `linear-gradient(180deg, ${HARBOR[100]} 0%, ${HARBOR[500]} 11%, ${HARBOR[700]} 100%)`,
+      border: `linear-gradient(180deg, ${PRIMITIVES.white} 0%, rgba(153, 153, 153, 0) 96%)`,
+    },
   },
 
   // --- SHADOWS ---
@@ -330,6 +349,18 @@ export const ALIAS = {
     particleBlueMed: WAVE[400],   // Medium particle color
     particleBlueLight: WAVE[300], // Light particle color
     particleBlueSubtle: WAVE[200], // Subtle particle color
+  },
+
+  // --- WAVE PATTERN (header/footer animated waves) ---
+  wave: {
+    light: {
+      start: DEEP_CURRENT[200],   // Light mode gradient start
+      end: DEEP_CURRENT[400],     // Light mode gradient end
+    },
+    dark: {
+      start: DEEP_CURRENT[300],   // Dark mode gradient start
+      end: DEEP_CURRENT[500],     // Dark mode gradient end
+    },
   },
 
   // --- ELECTRIC EFFECT (input borders, interactive glow) ---

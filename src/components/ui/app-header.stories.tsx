@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { AppHeader } from './AppHeader'
 import { User, Settings, LogOut } from 'lucide-react'
 import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
+import { GridBlobBackground } from './GridBlobCanvas'
 
 const meta: Meta<typeof AppHeader> = {
   title: 'Shared/App Shell/AppHeader',
@@ -75,8 +76,14 @@ import { AppHeader } from '@/components/ui/AppHeader'
   },
   decorators: [
     (Story) => (
-      <div className="min-h-[200px] bg-white">
-        <Story />
+      <div className="min-h-screen h-screen relative overflow-hidden bg-surface">
+        {/* Grid with animated blob mask */}
+        <GridBlobBackground />
+
+        {/* Content */}
+        <div className="relative z-10">
+          <Story />
+        </div>
       </div>
     ),
   ],
@@ -370,3 +377,4 @@ export const AllStates: Story = {
     },
   },
 }
+

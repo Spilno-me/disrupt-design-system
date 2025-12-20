@@ -19,7 +19,9 @@ import dPixelsDark from '../../public/logos/D-pixels-dark-full.svg'
 import dPixelsLight from '../../public/logos/D-pixels-light-full.svg'
 
 // Import patterns
-import wavePattern from '../../public/patterns/wave-pattern.svg'
+import wavePatternSvg from '../../public/patterns/wave-pattern.svg'
+import wavePatternPng from '../../public/patterns/wave-pattern.png'
+import wavyLinePattern from '../../public/patterns/wavy-line-pattern.svg'
 
 // =============================================================================
 // LOGO EXPORTS
@@ -53,7 +55,9 @@ export const LOGOS = {
  * Pattern assets for backgrounds
  */
 export const PATTERNS = {
-  wave: wavePattern,
+  wave: wavePatternSvg,
+  waveLines: wavePatternPng, // Figma pattern - multiple wavy lines
+  wavyLine: wavyLinePattern,
 } as const
 
 // =============================================================================

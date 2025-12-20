@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react'
 import { Bell, LogOut, Settings, User } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cn } from '../../lib/utils'
-import { SHADOWS } from '../../constants/designTokens'
-import { LOGOS, PATTERNS } from '../../assets/logos'
+import { SHADOWS, ALIAS } from '../../constants/designTokens'
+import { LOGOS } from '../../assets/logos'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -62,6 +62,8 @@ export interface UserInfo {
 export interface AppHeaderProps {
   /** Which product app this header is for */
   product: ProductType
+  /** Optional tagline override (defaults to product tagline) */
+  tagline?: string
   /** Whether to show the notification bell (default: true) */
   showNotifications?: boolean
   /** Current notification count (0 or undefined to hide badge) */
@@ -74,8 +76,6 @@ export interface AppHeaderProps {
   menuItems?: UserMenuItem[]
   /** Callback when a menu item is clicked */
   onMenuItemClick?: (item: UserMenuItem) => void
-  /** Custom tagline override (uses default per product if not provided) */
-  tagline?: string
   /** Color mode for logo: 'dark' on light backgrounds, 'light' on dark backgrounds, 'auto' detects from theme */
   colorMode?: 'dark' | 'light' | 'auto'
   /** Callback when logo is clicked */
@@ -98,17 +98,17 @@ const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   flow: {
     logoLight: LOGOS.flow.light,
     logoDark: LOGOS.flow.dark,
-    tagline: '',
+    tagline: 'Environmental Compliance',
   },
   market: {
     logoLight: LOGOS.market.light,
     logoDark: LOGOS.market.dark,
-    tagline: '',
+    tagline: 'Modules & Add-ons',
   },
   partner: {
     logoLight: LOGOS.partner.light,
     logoDark: LOGOS.partner.dark,
-    tagline: '',
+    tagline: 'Management Portal',
   },
 }
 
@@ -122,26 +122,88 @@ const DEFAULT_MENU_ITEMS: UserMenuItem[] = [
 // SUB-COMPONENTS
 // =============================================================================
 
-/** Wave pattern SVG background - matches Figma node 639:8397 */
+/**
+ * Animated ocean wave pattern background
+ *
+ * Features dual-layer animated waves that scroll horizontally
+ * with a subtle swell effect for depth. Adapted from CodePen
+ * ocean wave technique to fit the header height.
+ *
+ * Animation specs:
+ * - Wave scrolls left continuously (7s cycle)
+ * - Second wave has offset timing + vertical swell
+ * - Colors adapt to light/dark mode using ELECTRIC_CYAN tokens
+ */
 function WavePattern() {
+  // Detect dark mode for color adaptation
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      const isDark = document.documentElement.classList.contains('dark') ||
+                     document.body.classList.contains('dark')
+      setIsDarkMode(isDark)
+    }
+    checkDarkMode()
+
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Color adaptation for wave gradient using ALIAS tokens
+  // Light mode: subtle teal gradient
+  // Dark mode: slightly brighter teal gradient
+  const gradientStart = isDarkMode ? ALIAS.wave.dark.start : ALIAS.wave.light.start
+  const gradientEnd = isDarkMode ? ALIAS.wave.dark.end : ALIAS.wave.light.end
+
+  // Wave SVG with gradient - 1600px wide for smooth tiling
+  // Very subtle opacity for gentle background effect
+  const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="55" viewBox="0 0 1600 55" preserveAspectRatio="none"><defs><linearGradient id="wg" x1="50%" x2="50%" y1="0%" y2="100%"><stop stop-color="${gradientStart}" stop-opacity=".15" offset="0%"/><stop stop-color="${gradientEnd}" stop-opacity=".35" offset="100%"/></linearGradient></defs><path fill="url(#wg)" d="M0 33.6c311 0 410-33.6 811-33.6 400 0 500 33.6 789 33.6V55H0V33.6z" transform="matrix(-1 0 0 1 1600 0)"/></svg>`)}`
+
   return (
     <div
       className="absolute inset-0 pointer-events-none overflow-hidden z-0"
       data-slot="wave-pattern"
     >
-      {/* Wave pattern layer - repeat horizontally, fit to header height */}
+      {/* CSS keyframes for wave animation - slow and subtle */}
+      <style>{`
+        @keyframes wave-scroll {
+          0% { transform: translateX(0) translateZ(0); }
+          100% { transform: translateX(-1600px) translateZ(0); }
+        }
+        @keyframes wave-swell {
+          0%, 100% { transform: translateY(-2px) translateZ(0); }
+          50% { transform: translateY(1px) translateZ(0); }
+        }
+      `}</style>
+
+      {/* First wave layer - slow scroll */}
       <div
-        className="absolute inset-0"
+        className="absolute bottom-0 left-0 h-[55px]"
         style={{
-          backgroundImage: `url(${PATTERNS.wave})`,
+          // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
+          width: '6400px',
+          backgroundImage: `url("${waveSvg}")`,
           backgroundRepeat: 'repeat-x',
-          backgroundSize: 'auto 100%', // Height fits header (55px), width scales proportionally
-          backgroundPosition: 'left center',
+          backgroundSize: '1600px 55px',
+          animation: 'wave-scroll 25s linear infinite',
         }}
       />
-      {/* White overlay at 60% opacity - as per Figma rgba(255, 255, 255, 0.6) */}
+
+      {/* Second wave layer - slower with subtle swell */}
       <div
-        className="absolute inset-0 bg-surface/60"
+        className="absolute bottom-0 left-0 h-[55px] opacity-50"
+        style={{
+          // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
+          width: '6400px',
+          backgroundImage: `url("${waveSvg}")`,
+          backgroundRepeat: 'repeat-x',
+          backgroundSize: '1600px 55px',
+          animation: 'wave-scroll 30s linear -2s infinite, wave-swell 12s ease-in-out infinite',
+        }}
       />
     </div>
   )
@@ -200,8 +262,7 @@ function LogoContainer({
   return (
     <div
       className={cn(
-        'flex items-center gap-3 h-14 min-w-[219px] pl-4 pr-3 cursor-pointer rounded-r-3xl',
-        'border border-l-0 border-subtle/30',
+        'flex items-center gap-3 h-14 min-w-[219px] pl-4 pr-3 cursor-pointer rounded-r-full',
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
@@ -584,9 +645,7 @@ export function AppHeader({
         className
       )}
       style={{
-        boxShadow: SHADOWS.header,
-        // Clip shadow above, allow shadow below and sides
-        clipPath: 'inset(0px -100px -100px -100px)',
+        boxShadow: SHADOWS.md,
       }}
       // Header height defined via className for consistency
       data-slot="app-header"
