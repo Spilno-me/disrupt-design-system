@@ -577,9 +577,8 @@ UserMenu.displayName = 'UserMenu'
  * ```tsx
  * <AppHeader
  *   product="partner"
- *   tagline="Enterprise Safety Suite"  // Override default tagline
- *   showWavePattern={false}             // Disable wave background
- *   colorMode="light"                   // Use light logo on dark background
+ *   showWavePattern={false}  // Disable wave background
+ *   colorMode="light"        // Use light logo on dark background
  *   user={user}
  * />
  * ```
@@ -630,7 +629,6 @@ export function AppHeader({
   user,
   menuItems = DEFAULT_MENU_ITEMS,
   onMenuItemClick,
-  tagline,
   colorMode = 'auto',
   onLogoClick,
   className,
@@ -665,7 +663,6 @@ export function AppHeader({
         {/* Logo Container */}
         <LogoContainer
           product={product}
-          tagline={tagline}
           colorMode={colorMode}
           onClick={onLogoClick}
         />

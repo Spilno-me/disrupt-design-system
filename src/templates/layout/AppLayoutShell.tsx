@@ -36,8 +36,6 @@ export interface ProductConfig {
   userMenuItems?: UserMenuItem[]
   /** Notification count */
   notificationCount?: number
-  /** Custom tagline for header */
-  tagline?: string
   /** Show help item in navigation */
   showHelpItem?: boolean
   /** Maximum visible items in mobile bottom nav */
@@ -169,7 +167,6 @@ export function AppLayoutShell({
   user,
   userMenuItems,
   notificationCount = 0,
-  tagline,
   showHelpItem = true,
   maxBottomNavItems = 4,
   useMobileDrawer = false,
@@ -260,7 +257,6 @@ export function AppLayoutShell({
       items={navItems}
       activeItemId={currentPage}
       onNavigate={handleNavigate}
-      productTitle={tagline}
     />
   ) : null
 
@@ -287,7 +283,6 @@ export function AppLayoutShell({
           user={user}
           menuItems={userMenuItems}
           onMenuItemClick={onMenuItemClick}
-          tagline={tagline}
           onLogoClick={onLogoClick}
           leftContent={mobileNavTrigger}
         />

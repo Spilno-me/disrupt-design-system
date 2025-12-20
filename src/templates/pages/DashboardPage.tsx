@@ -17,7 +17,7 @@ import {
   FileText,
   LucideIcon,
 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
+import { AppCard, AppCardContent, AppCardHeader, AppCardTitle } from '../../components/ui/app-card'
 import { Button } from '../../components/ui/button'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { cn } from '../../lib/utils'
@@ -104,14 +104,15 @@ function KPICard({ kpi }: { kpi: KPICardData }) {
       : 'text-muted'
 
   return (
-    <Card
+    <AppCard
+      variant="flat"
       className={cn(
-        'bg-surface border-default transition-shadow',
-        kpi.onClick && 'cursor-pointer hover:shadow-md'
+        'border border-default transition-shadow',
+        kpi.onClick && 'cursor-pointer hover:shadow-lg'
       )}
       onClick={kpi.onClick}
     >
-      <CardContent className="p-4">
+      <AppCardContent className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {kpi.icon && (
@@ -129,15 +130,15 @@ function KPICard({ kpi }: { kpi: KPICardData }) {
             </div>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </AppCardContent>
+    </AppCard>
   )
 }
 
 function KPICardSkeleton() {
   return (
-    <Card className="bg-surface border-default">
-      <CardContent className="p-4">
+    <AppCard variant="flat" className="border border-default">
+      <AppCardContent className="p-4">
         <div className="flex items-center justify-between">
           <div>
             <Skeleton className="h-4 w-24 mb-2" />
@@ -145,8 +146,8 @@ function KPICardSkeleton() {
           </div>
           <Skeleton className="h-6 w-12" />
         </div>
-      </CardContent>
-    </Card>
+      </AppCardContent>
+    </AppCard>
   )
 }
 
@@ -303,11 +304,11 @@ export function DashboardPage({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Activity Feed */}
           {!hideActivity && (
-            <Card className="bg-surface border-default">
-              <CardHeader>
-                <CardTitle className="text-lg">{activityTitle}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+            <AppCard variant="flat" className="border border-default">
+              <AppCardHeader>
+                <AppCardTitle className="text-lg">{activityTitle}</AppCardTitle>
+              </AppCardHeader>
+              <AppCardContent className="space-y-3">
                 {isLoading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <ActivitySkeleton key={i} />
@@ -321,17 +322,17 @@ export function DashboardPage({
                     No recent activity
                   </p>
                 )}
-              </CardContent>
-            </Card>
+              </AppCardContent>
+            </AppCard>
           )}
 
           {/* Quick Actions */}
           {!hideQuickActions && (
-            <Card className="bg-surface border-default">
-              <CardHeader>
-                <CardTitle className="text-lg">{actionsTitle}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
+            <AppCard variant="flat" className="border border-default">
+              <AppCardHeader>
+                <AppCardTitle className="text-lg">{actionsTitle}</AppCardTitle>
+              </AppCardHeader>
+              <AppCardContent className="space-y-3">
                 {isLoading ? (
                   Array.from({ length: 3 }).map((_, i) => (
                     <Skeleton key={i} className="h-10 w-full" />
@@ -345,8 +346,8 @@ export function DashboardPage({
                     No quick actions configured
                   </p>
                 )}
-              </CardContent>
-            </Card>
+              </AppCardContent>
+            </AppCard>
           )}
         </div>
       )}
