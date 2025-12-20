@@ -1,73 +1,187 @@
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib/utils"
 
-export interface TabsProps extends React.ComponentProps<typeof TabsPrimitive.Root> {}
-export interface TabsListProps extends React.ComponentProps<typeof TabsPrimitive.List> {}
-export interface TabsTriggerProps extends React.ComponentProps<typeof TabsPrimitive.Trigger> {}
+// =============================================================================
+// TABS LIST VARIANTS
+// =============================================================================
+
+const tabsListVariants = cva(
+  "inline-flex items-center justify-center text-secondary",
+  {
+    variants: {
+      variant: {
+        // Default - Muted background, no border
+        default: "h-10 rounded-md bg-muted-bg p-1",
+        // Accent - Muted background with border (Flow EHS style)
+        // Nested corner formula: inner (md/12px) + padding (xs/4px) = outer (lg/16px)
+        // overflow-hidden clips indicator when tabs have badges that affect width
+        accent: "relative h-10 rounded-lg border border-default bg-muted-bg p-1 overflow-hidden",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+// =============================================================================
+// TABS TRIGGER VARIANTS
+// =============================================================================
+
+const tabsTriggerVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-surface transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        // Default - White active background
+        default: "h-8 rounded-sm px-3 text-sm data-[state=active]:bg-surface data-[state=active]:text-primary data-[state=active]:shadow-sm",
+        // Accent - Text only, background handled by sliding indicator
+        // Uses rounded-md (12px) to match nested corner formula with TabsList
+        // Dark mode: override text-inverse to stay white on dark teal background
+        accent: "relative z-10 h-8 flex-1 gap-2 rounded-md px-3 text-sm text-primary transition-colors duration-200 data-[state=active]:font-medium data-[state=active]:text-inverse dark:data-[state=active]:text-white",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+// =============================================================================
+// TYPE DEFINITIONS
+// =============================================================================
+
+export interface TabsProps extends React.ComponentProps<typeof TabsPrimitive.Root> {
+  /** Callback when value changes - needed for animated tabs */
+  onValueChange?: (value: string) => void
+}
+export interface TabsListProps
+  extends React.ComponentProps<typeof TabsPrimitive.List>,
+    VariantProps<typeof tabsListVariants> {
+  /** Enable sliding animation for active indicator (accent variant only) */
+  animated?: boolean
+}
+export interface TabsTriggerProps
+  extends React.ComponentProps<typeof TabsPrimitive.Trigger>,
+    VariantProps<typeof tabsTriggerVariants> {}
 export interface TabsContentProps extends React.ComponentProps<typeof TabsPrimitive.Content> {}
+
+// =============================================================================
+// SLIDING INDICATOR COMPONENT
+// =============================================================================
+
+interface SlidingIndicatorProps {
+  containerRef: React.RefObject<HTMLDivElement | null>
+}
+
+function SlidingIndicator({ containerRef }: SlidingIndicatorProps) {
+  const [indicatorStyle, setIndicatorStyle] = React.useState<React.CSSProperties>({
+    opacity: 0,
+  })
+
+  React.useEffect(() => {
+    const updateIndicator = () => {
+      if (!containerRef.current) return
+
+      const activeTab = containerRef.current.querySelector<HTMLElement>(
+        '[data-state="active"]'
+      )
+
+      if (activeTab) {
+        // Use offsetLeft/offsetWidth - these are relative to the positioned parent (TabsList)
+        // This ensures perfect alignment without coordinate math errors
+        setIndicatorStyle({
+          width: activeTab.offsetWidth,
+          height: activeTab.offsetHeight,
+          left: activeTab.offsetLeft,
+          top: activeTab.offsetTop,
+          opacity: 1,
+        })
+      }
+    }
+
+    // Initial update
+    updateIndicator()
+
+    // Create observer to watch for data-state changes
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === 'data-state') {
+          updateIndicator()
+          break
+        }
+      }
+    })
+
+    if (containerRef.current) {
+      // Observe all trigger children for state changes
+      const triggers = containerRef.current.querySelectorAll('[data-slot="tabs-trigger"]')
+      triggers.forEach((trigger) => {
+        observer.observe(trigger, { attributes: true, attributeFilter: ['data-state'] })
+      })
+    }
+
+    // Update on resize
+    window.addEventListener('resize', updateIndicator)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', updateIndicator)
+    }
+  }, [containerRef])
+
+  return (
+    <div
+      data-slot="tabs-indicator"
+      className="absolute rounded-md bg-accent-noise shadow-sm transition-all duration-300 ease-out"
+      style={indicatorStyle}
+    />
+  )
+}
+
+// =============================================================================
+// TABS COMPONENT
+// =============================================================================
 
 /**
  * Tabs component for organizing content into tabbed sections. Built on Radix UI Tabs primitive.
  *
  * **MOLECULE**: Compound component with multiple sub-components working together.
  *
+ * **Variants:**
+ * - `default` - Standard tabs with white active background
+ * - `accent` - Teal active background with bordered container (Flow EHS style)
+ *
  * **Features:**
  * - Keyboard navigation (Arrow Left/Right, Home/End)
  * - Automatic/manual activation modes
- * - Horizontal and vertical orientations
+ * - Sliding animation for accent variant (set `animated` prop on TabsList)
  * - Accessible by default (ARIA roles, keyboard support)
  * - Focus management with visible focus rings
  *
- * **Testing:**
- * - Each sub-component includes `data-slot` attribute for testing
- * - Consumer should provide `data-testid` for context-specific test IDs
- * - Test keyboard navigation, disabled states, and tab switching
- *
- * **Accessibility:**
- * - Uses ARIA `role="tablist"`, `role="tab"`, and `role="tabpanel"`
- * - Manages `aria-selected` and `aria-controls` automatically
- * - Supports keyboard navigation per ARIA authoring practices
- * - Focus visible on keyboard interaction (ring-accent)
- * - Disabled tabs have `aria-disabled` and `disabled` attributes
- *
  * @example
  * ```tsx
- * // Basic horizontal tabs
- * <Tabs defaultValue="account" data-testid="settings-tabs">
- *   <TabsList data-testid="settings-tabs-list">
- *     <TabsTrigger value="account" data-testid="tab-account">
- *       Account
- *     </TabsTrigger>
- *     <TabsTrigger value="password" data-testid="tab-password">
- *       Password
- *     </TabsTrigger>
- *   </TabsList>
- *   <TabsContent value="account" data-testid="content-account">
- *     <p>Account settings content</p>
- *   </TabsContent>
- *   <TabsContent value="password" data-testid="content-password">
- *     <p>Password settings content</p>
- *   </TabsContent>
- * </Tabs>
- *
- * // Vertical orientation
- * <Tabs defaultValue="general" orientation="vertical">
- *   <TabsList className="flex flex-col">
- *     <TabsTrigger value="general">General</TabsTrigger>
- *     <TabsTrigger value="security">Security</TabsTrigger>
- *   </TabsList>
- *   <TabsContent value="general">...</TabsContent>
- *   <TabsContent value="security">...</TabsContent>
- * </Tabs>
- *
- * // With disabled tab
+ * // Default variant (white active tab)
  * <Tabs defaultValue="account">
  *   <TabsList>
  *     <TabsTrigger value="account">Account</TabsTrigger>
- *     <TabsTrigger value="billing" disabled>Billing</TabsTrigger>
+ *     <TabsTrigger value="password">Password</TabsTrigger>
  *   </TabsList>
+ *   <TabsContent value="account">Account content</TabsContent>
+ *   <TabsContent value="password">Password content</TabsContent>
+ * </Tabs>
+ *
+ * // Accent variant with sliding animation
+ * <Tabs defaultValue="my-steps">
+ *   <TabsList variant="accent" animated>
+ *     <TabsTrigger variant="accent" value="my-steps">My Steps</TabsTrigger>
+ *     <TabsTrigger variant="accent" value="team-steps">Team Steps</TabsTrigger>
+ *   </TabsList>
+ *   <TabsContent value="my-steps">My steps content</TabsContent>
+ *   <TabsContent value="team-steps">Team steps content</TabsContent>
  * </Tabs>
  * ```
  */
@@ -82,27 +196,42 @@ Tabs.displayName = "Tabs"
 /**
  * TabsList - Container for tab triggers.
  *
+ * @param variant - "default" (muted bg) or "accent" (bordered gray bg)
+ * @param animated - Enable sliding animation for active indicator (accent variant only)
+ *
  * @example
  * ```tsx
- * <TabsList data-testid="tabs-list">
+ * // Default variant
+ * <TabsList>
  *   <TabsTrigger value="tab1">Tab 1</TabsTrigger>
- *   <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+ * </TabsList>
+ *
+ * // Accent variant with sliding animation
+ * <TabsList variant="accent" animated>
+ *   <TabsTrigger variant="accent" value="tab1">Tab 1</TabsTrigger>
  * </TabsList>
  * ```
  */
 function TabsList({
   className,
+  variant,
+  animated = false,
+  children,
   ...props
 }: TabsListProps) {
+  const containerRef = React.useRef<HTMLDivElement>(null)
+  const isAccentAnimated = variant === "accent" && animated
+
   return (
     <TabsPrimitive.List
+      ref={containerRef}
       data-slot="tabs-list"
-      className={cn(
-        "inline-flex h-10 items-center justify-center rounded-md bg-muted-bg p-1 text-secondary",
-        className
-      )}
+      className={cn(tabsListVariants({ variant }), className)}
       {...props}
-    />
+    >
+      {isAccentAnimated && <SlidingIndicator containerRef={containerRef} />}
+      {children}
+    </TabsPrimitive.List>
   )
 }
 
@@ -111,27 +240,32 @@ TabsList.displayName = "TabsList"
 /**
  * TabsTrigger - Clickable button that activates a tab.
  *
+ * @param variant - "default" (white active) or "accent" (teal active)
+ *
  * @example
  * ```tsx
- * <TabsTrigger value="account" data-testid="tab-account">
- *   Account
- * </TabsTrigger>
- * <TabsTrigger value="settings" disabled>
- *   Settings (Coming Soon)
+ * // Default variant
+ * <TabsTrigger value="account">Account</TabsTrigger>
+ *
+ * // Accent variant (Flow EHS style)
+ * <TabsTrigger variant="accent" value="account">Account</TabsTrigger>
+ *
+ * // With badge (use children)
+ * <TabsTrigger variant="accent" value="team">
+ *   Team Steps
+ *   <Badge variant="destructive" size="sm">8</Badge>
  * </TabsTrigger>
  * ```
  */
 function TabsTrigger({
   className,
+  variant,
   ...props
 }: TabsTriggerProps) {
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
-      className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-2 text-sm font-medium ring-offset-surface transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-surface data-[state=active]:text-primary data-[state=active]:shadow-sm",
-        className
-      )}
+      className={cn(tabsTriggerVariants({ variant }), className)}
       {...props}
     />
   )
@@ -168,4 +302,4 @@ function TabsContent({
 
 TabsContent.displayName = "TabsContent"
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants, tabsTriggerVariants }

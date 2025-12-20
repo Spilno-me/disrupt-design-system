@@ -39,6 +39,10 @@
   .hover\:bg-error\/90:hover { background-color: color-mix(in srgb, var(--color-error) 90%, transparent); }
   .bg-error-strong { background-color: var(--color-error-strong); }
   .hover\:bg-error-strong\/90:hover { background-color: color-mix(in srgb, var(--color-error-strong) 90%, transparent); }
+  .bg-success-strong { background-color: var(--color-success-strong); }
+  .hover\:bg-success-strong\/90:hover { background-color: color-mix(in srgb, var(--color-success-strong) 90%, transparent); }
+  .bg-warning-strong { background-color: var(--color-warning-strong); }
+  .hover\:bg-warning-strong\/90:hover { background-color: color-mix(in srgb, var(--color-warning-strong) 90%, transparent); }
   .text-warning-dark { color: var(--color-warning-dark); }
 
   /* Focus ring variants */
@@ -49,6 +53,31 @@
   .focus-visible\:ring-error\/30:focus-visible {
     --tw-ring-color: color-mix(in srgb, var(--color-error) 30%, transparent);
     box-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  }
+
+  /* Dotted pattern overlay - used on accent tabs (Flow EHS style) */
+  .bg-accent-noise {
+    background-color: var(--color-accent-strong);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+    background-size: 8px 8px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Dark mode: Use deep-current-700 for WCAG AAA contrast (7.02:1 with white)
+     deep-current-600 is only 4.47:1 which fails AA for normal text */
+  .dark .bg-accent-noise {
+    background-color: var(--brand-deep-current-700);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.18) 1.5px, transparent 1.5px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Active state for accent tabs - applies dotted pattern */
+  [data-slot="tabs-trigger"][data-state="active"].tabs-trigger-accent {
+    background-color: var(--color-accent-strong);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+    background-size: 8px 8px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    color: var(--color-inverse);
   }
 }
 
@@ -291,6 +320,8 @@ h1.dds-brand-hero-title,
   --color-success-light: #F0FDF4;
   /* Usage: bg-success-muted */
   --color-success-muted: #DCFCE7;
+  /* Usage: bg-success-strong (darker green for buttons, 5.0:1 contrast) */
+  --color-success-strong: #15803D;
   /* Usage: bg-warning, text-warning, border-warning */
   --color-warning: #EAB308;
   /* Usage: bg-warning-light */
@@ -299,6 +330,8 @@ h1.dds-brand-hero-title,
   --color-warning-muted: #FEF3C7;
   /* Usage: text-warning-dark (darker amber for text on light warning backgrounds) */
   --color-warning-dark: #92400E;
+  /* Usage: bg-warning-strong (darker amber for buttons, 7.5:1 contrast) */
+  --color-warning-strong: #92400E;
   /* Usage: bg-info, text-info, border-info */
   --color-info: #3B82F6;
   /* Usage: bg-info-light */
@@ -1009,6 +1042,11 @@ h1.dds-brand-hero-title,
   --color-warning-muted: var(--brand-sunrise-800);
   --color-info-light: var(--brand-wave-900);
   --color-info-muted: var(--brand-wave-800);
+
+  /* Status strong aliases (for buttons with white text) */
+  --color-error-strong: var(--brand-coral-600);
+  --color-success-strong: var(--brand-harbor-600);
+  --color-warning-strong: var(--brand-sunrise-700);
 
   /* Aging/urgent aliases (1 step lighter for fill, scale inversion for bg) */
   --color-aging: var(--brand-orange-400);

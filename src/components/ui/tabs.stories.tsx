@@ -4,6 +4,7 @@ import {
   moleculeDescription,
 } from '@/stories/_infrastructure'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs'
+import { Badge } from './badge'
 
 // =============================================================================
 // META CONFIGURATION
@@ -304,6 +305,80 @@ export const Vertical: Story = {
           </TabsContent>
         </div>
       </Tabs>
+    </div>
+  ),
+}
+
+/**
+ * Accent variant with teal active state and sliding animation (Flow EHS style).
+ * Use for prominent tab interfaces where the active tab needs visual emphasis.
+ */
+export const AccentVariant: Story = {
+  render: () => (
+    <div className="flex flex-col items-center space-y-8 p-8">
+      {/* Animated Accent Tabs */}
+      <div className="space-y-4 text-center">
+        <h3 className="text-lg font-semibold text-primary">Animated Accent Tabs (Flow EHS Style)</h3>
+        <p className="text-sm text-secondary">Click tabs to see the sliding animation</p>
+        <Tabs defaultValue="team-steps" className="w-[280px]">
+          <TabsList variant="accent" animated>
+            <TabsTrigger variant="accent" value="my-steps">My Steps</TabsTrigger>
+            <TabsTrigger variant="accent" value="team-steps">Team Steps</TabsTrigger>
+          </TabsList>
+          <TabsContent value="my-steps" className="p-4">
+            <p className="text-secondary text-sm">Your assigned workflow steps.</p>
+          </TabsContent>
+          <TabsContent value="team-steps" className="p-4">
+            <p className="text-secondary text-sm">All team workflow steps.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* With Badge */}
+      <div className="space-y-4 text-center">
+        <h3 className="text-lg font-semibold text-primary">With Badge Counter</h3>
+        <Tabs defaultValue="team-steps" className="w-[300px]">
+          <TabsList variant="accent" animated>
+            <TabsTrigger variant="accent" value="my-steps">My Steps</TabsTrigger>
+            <TabsTrigger variant="accent" value="team-steps">
+              Team Steps
+              <Badge variant="destructive" className="ml-1 h-5 min-w-5 rounded-full px-1.5 text-xs opacity-80 dark:opacity-100">8</Badge>
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="my-steps" className="p-4">
+            <p className="text-secondary text-sm">Your assigned workflow steps.</p>
+          </TabsContent>
+          <TabsContent value="team-steps" className="p-4">
+            <p className="text-secondary text-sm">8 pending items require attention.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* Multiple Tabs */}
+      <div className="space-y-4 text-center">
+        <h3 className="text-lg font-semibold text-primary">Multiple Tabs with Animation</h3>
+        <Tabs defaultValue="overview" className="w-[450px]">
+          <TabsList variant="accent" animated>
+            <TabsTrigger variant="accent" value="overview">Overview</TabsTrigger>
+            <TabsTrigger variant="accent" value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger variant="accent" value="reports">Reports</TabsTrigger>
+            <TabsTrigger variant="accent" value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="overview" className="p-4">
+            <p className="text-secondary text-sm">Dashboard overview.</p>
+          </TabsContent>
+          <TabsContent value="analytics" className="p-4">
+            <p className="text-secondary text-sm">Analytics and metrics.</p>
+          </TabsContent>
+          <TabsContent value="reports" className="p-4">
+            <p className="text-secondary text-sm">Generated reports.</p>
+          </TabsContent>
+          <TabsContent value="settings" className="p-4">
+            <p className="text-secondary text-sm">Configuration options.</p>
+          </TabsContent>
+        </Tabs>
+      </div>
+
     </div>
   ),
 }
