@@ -17,11 +17,21 @@ import type {
 import { GraphCanvas } from './GraphCanvas'
 import { GraphControls } from './GraphControls'
 import { NodeDetailPanel } from './NodeDetailPanel'
+import { DEEP_CURRENT, DUSK_REEF, SLATE, ABYSS } from '../../../constants/designTokens'
 
 // Import the generated dependency data
 import dependencyData from '../../../../data/dependency-graph.json'
 // Import the token architecture data (comprehensive token hierarchy)
 import tokenArchitectureData from '../../../../data/token-architecture-graph.json'
+
+// Graph visualization colors (from design tokens)
+const GRAPH_COLORS = {
+  accent: DEEP_CURRENT[500],      // #08A4BD - teal (components, alias tokens)
+  secondary: DUSK_REEF[500],      // #5E4F7E - purple (primitive tokens)
+  neutral: SLATE[500],            // #64748B - gray (other tokens)
+  linkPrimary: ABYSS[300],        // #757B87 - import links
+  linkSecondary: DEEP_CURRENT[700], // #056271 - token links
+} as const
 
 /** Default configuration for component dependency view */
 const DEFAULT_CONFIG: Omit<GraphConfig, 'width' | 'height'> = {
@@ -35,12 +45,12 @@ const DEFAULT_CONFIG: Omit<GraphConfig, 'width' | 'height'> = {
     collisionRadius: 5,
   },
   colors: {
-    component: '#08A4BD',
-    tokenScale: '#5E4F7E',
-    tokenAlias: '#08A4BD',
-    tokenOther: '#64748B',
-    linkImport: '#757B87',
-    linkToken: '#066383',
+    component: GRAPH_COLORS.accent,
+    tokenScale: GRAPH_COLORS.secondary,
+    tokenAlias: GRAPH_COLORS.accent,
+    tokenOther: GRAPH_COLORS.neutral,
+    linkImport: GRAPH_COLORS.linkPrimary,
+    linkToken: GRAPH_COLORS.linkSecondary,
   },
 }
 
@@ -56,12 +66,12 @@ const TOKEN_ARCHITECTURE_CONFIG: Omit<GraphConfig, 'width' | 'height'> = {
     collisionRadius: 8,
   },
   colors: {
-    component: '#08A4BD',
-    tokenScale: '#5E4F7E',
-    tokenAlias: '#08A4BD',
-    tokenOther: '#64748B',
-    linkImport: '#757B87',
-    linkToken: '#066383',
+    component: GRAPH_COLORS.accent,
+    tokenScale: GRAPH_COLORS.secondary,
+    tokenAlias: GRAPH_COLORS.accent,
+    tokenOther: GRAPH_COLORS.neutral,
+    linkImport: GRAPH_COLORS.linkPrimary,
+    linkToken: GRAPH_COLORS.linkSecondary,
   },
 }
 
@@ -350,13 +360,13 @@ export function DependencyGraph({
           zIndex: 50,
         }}
       >
-        <div style={{ marginBottom: '8px', fontWeight: 600, color: '#08A4BD' }}>
+        <div style={{ marginBottom: '8px', fontWeight: 600, color: GRAPH_COLORS.accent }}>
           Legend
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          <LegendItem color="#08A4BD" shape="circle" label="Component" />
-          <LegendItem color="#5E4F7E" shape="square" label="Primitive Token" />
-          <LegendItem color="#08A4BD" shape="diamond" label="Alias Token" />
+          <LegendItem color={GRAPH_COLORS.accent} shape="circle" label="Component" />
+          <LegendItem color={GRAPH_COLORS.secondary} shape="square" label="Primitive Token" />
+          <LegendItem color={GRAPH_COLORS.accent} shape="diamond" label="Alias Token" />
           <div
             style={{
               marginTop: '4px',

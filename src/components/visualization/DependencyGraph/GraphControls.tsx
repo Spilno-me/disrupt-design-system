@@ -6,7 +6,15 @@
 /* eslint-disable no-restricted-syntax */
 
 import { Filter, RotateCcw } from 'lucide-react'
+import { DEEP_CURRENT, DUSK_REEF, SLATE } from '../../../constants/designTokens'
 import type { GraphControlsProps } from './types'
+
+// Graph visualization colors (used in canvas/overlay contexts)
+const GRAPH_COLORS = {
+  accent: DEEP_CURRENT[500],    // #08A4BD - teal
+  secondary: DUSK_REEF[500],    // #5E4F7E - purple
+  neutral: SLATE[500],          // #64748B - gray
+} as const
 
 export function GraphControls({
   filters,
@@ -52,8 +60,8 @@ export function GraphControls({
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         }}
       >
-        <Filter size={14} color="#08A4BD" />
-        <span style={{ fontWeight: 600, color: '#08A4BD' }}>Filters</span>
+        <Filter size={14} color={GRAPH_COLORS.accent} />
+        <span style={{ fontWeight: 600, color: GRAPH_COLORS.accent }}>Filters</span>
       </div>
 
       {/* Filter toggles */}
@@ -62,25 +70,25 @@ export function GraphControls({
           label="Components"
           checked={filters.showComponents}
           onChange={() => toggleFilter('showComponents')}
-          color="#08A4BD"
+          color={GRAPH_COLORS.accent}
         />
         <FilterToggle
           label="Alias Tokens"
           checked={filters.showAlias}
           onChange={() => toggleFilter('showAlias')}
-          color="#08A4BD"
+          color={GRAPH_COLORS.accent}
         />
         <FilterToggle
           label="Primitive Tokens"
           checked={filters.showPrimitives}
           onChange={() => toggleFilter('showPrimitives')}
-          color="#5E4F7E"
+          color={GRAPH_COLORS.secondary}
         />
         <FilterToggle
           label="Other Tokens"
           checked={filters.showTokens}
           onChange={() => toggleFilter('showTokens')}
-          color="#64748B"
+          color={GRAPH_COLORS.neutral}
         />
       </div>
 
