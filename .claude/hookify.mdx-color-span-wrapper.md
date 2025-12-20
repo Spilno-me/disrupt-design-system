@@ -11,34 +11,16 @@ conditions:
     pattern: style=\{\{[^}]*color:
 ---
 
-## MDX Inline Color Bug - Use Span Wrapper
+## MDX Color Bug - Wrap Text in Span
 
-You're adding inline `color:` styles in an MDX file.
-
-**Storybook's CSS will override your color** unless you wrap text in `<span>`.
+Storybook CSS overrides inline `color:` unless text is wrapped.
 
 ```jsx
-// ❌ WRONG - color will be overridden by Storybook CSS
+// ❌ Color overridden by Storybook
 <div style={{ color: PRIMITIVES.white }}>Text</div>
-<code style={{ color: ABYSS[500] }}>Code text</code>
 
-// ✅ CORRECT - span prevents Storybook override
+// ✅ Span prevents override
 <div style={{ color: PRIMITIVES.white }}>
   <span style={{ color: PRIMITIVES.white }}>Text</span>
 </div>
-<code style={{ color: ABYSS[500] }}>
-  <span style={{ color: ABYSS[500] }}>Code text</span>
-</code>
 ```
-
-### Why This Happens
-
-1. Storybook's MDX processor wraps content in `<p>` tags
-2. Storybook CSS applies `colorPrimary` to those elements
-3. CSS cascade overrides your inline styles on parent elements
-
-### Quick Fix
-
-Always wrap visible text in `<span>` with the same color style.
-
-See: CLAUDE.md § "MDX Text Color Bug (CRITICAL)"

@@ -12,72 +12,34 @@ conditions:
 action: warn
 ---
 
-**⚠️ Creating New UI Component**
+## Warning: New UI Component
 
-You're creating a new component in `src/components/ui/`. Before proceeding, please verify:
+**Pre-check:** Exists already? | Truly reusable?
 
-**CHECKLIST:**
-- [ ] Did you check if this component already exists?
-- [ ] Is this component truly reusable (not one-off)?
-- [ ] Have you reviewed the existing components list in CLAUDE.md?
+**Component type → testId strategy:**
 
-**From CLAUDE.md:**
-> **ALWAYS check for existing components first** - Never build what already exists
+| Type | Example | testId |
+|------|---------|--------|
+| ATOM | Button, Badge | Accept via props spread |
+| MOLECULE | LeadCard | Auto-generate from data |
+| PAGE | Dashboard | Hardcode regions |
 
-**DDS has 50+ components including:**
-- **Forms:** Button, Input, Textarea, Checkbox, Select, Form
-- **Layout:** Card, SectionWrapper, PageLayout
-- **Overlays:** Dialog, Sheet, DropdownMenu, Tooltip
-- **Data:** DataTable, Pagination, Tabs, Badge, Skeleton
-- **Navigation:** AppHeader, AppSidebar, MobileNav, BottomNav
-- **Images:** OptimizedImage, ParallaxImage, BlurImage
-- **Auth:** LoginForm, ForgotPasswordForm, AuthLayout
-- **And many more...**
+**Implementation checklist:**
 
-**If building a new component:**
+```tsx
+// 1. Use Radix for interactive
+import * as Dialog from '@radix-ui/react-dialog'
 
-1. **Categorize component type:**
-   - ATOM: Reusable primitive (Button, Badge, Input) → Accept data-testid
-   - MOLECULE: Composed component (LeadCard, InvoiceCard) → Auto-generate testId
-   - PAGE: Top-level page → Hardcode data-testid
+// 2. Tokens only
+className="bg-surface text-primary border-default rounded-lg"
 
-2. **Use Radix UI for interactive components:**
-   ```tsx
-   import * as Dialog from '@radix-ui/react-dialog'
-   import * as Select from '@radix-ui/react-select'
-   ```
+// 3. Props spread for testId (ATOM)
+interface Props extends React.HTMLAttributes<HTMLDivElement> {}
+const Component = ({ ...props }: Props) => <div {...props} />
 
-3. **Style with DDS tokens ONLY:**
-   ```tsx
-   // Use Tailwind semantic classes
-   className="bg-surface text-primary border-default rounded-lg"
+// 4. Variants via cva(), max 3-5
+```
 
-   // For dynamic values, use ALIAS
-   import { ALIAS, SHADOWS, RADIUS } from '@/constants/designTokens'
-   style={{
-     backgroundColor: isActive ? ALIAS.interactive.accent : ALIAS.background.surface,
-     boxShadow: SHADOWS.md
-   }}
-   ```
+**Variant limits:** sizes ≤3, states ≤5, animations =1
 
-4. **Add data-testid support:**
-   - ATOM: `interface Props extends React.HTMLAttributes<HTMLDivElement>` + `{...props}`
-   - MOLECULE: `testId?: string` prop + auto-generate from data
-   - JSDoc with testId examples
-
-5. **Minimize variants (OPINIONATED):**
-   - State variants: ≤5 (success, warning, error, default)
-   - Sizes: ≤3 (sm, default, lg only if essential)
-   - Animations: 1 (no choice - consistency over freedom)
-   - Ask: Is this functional or just aesthetic?
-
-6. **Create a story file:**
-   - `src/components/ui/{component}.stories.tsx`
-   - Document essential variants only (not deprecated/aesthetic ones)
-
-**References:**
-- `.claude/testing-quick-ref.md` - testId strategy
-- `.claude/variant-reduction-strategy.md` - Variant philosophy
-- `.claude/agent-context.json` - Core rules
-
-If you're sure this component doesn't exist, you may proceed. Otherwise, please use an existing component.
+**After:** Add story + update `agent-context.json` registry

@@ -12,37 +12,23 @@ conditions:
 action: block
 ---
 
-**🚫 Raw Hex Color Detected**
+## Blocked: Raw Hex Color
 
-You're adding raw hex color values to code, which violates DDS styling rules.
-
-**Why this is blocked:**
-- Raw hex colors bypass the design token system
-- Changes to brand colors won't propagate
-- Inconsistency across components
-
-**What to use instead:**
-
-**For static styling (preferred):**
 ```tsx
-// Use Tailwind semantic classes
+// ❌ Blocked
+<div style={{ backgroundColor: '#08A4BD' }}>
+
+// ✅ Tailwind semantic (preferred)
 <div className="bg-surface text-primary border-default">
 <div className="text-error bg-error-light">
-```
 
-**For dynamic styling only:**
-```tsx
+// ✅ Dynamic only - use ALIAS
 import { ALIAS } from '@/constants/designTokens'
-
-<div style={{
-  backgroundColor: isError ? ALIAS.status.error : ALIAS.background.surface
-}}>
+<div style={{ backgroundColor: ALIAS.background.surface }}>
 ```
 
-**From CLAUDE.md:**
-> ALL styling must use design tokens - No raw colors
-
-**Available DDS classes:**
-- Text: `text-primary`, `text-secondary`, `text-error`, `text-success`
-- Background: `bg-surface`, `bg-page`, `bg-accent-strong`, `bg-error-light`
-- Border: `border-default`, `border-accent`, `border-error`
+| Category | Classes |
+|----------|---------|
+| Text | `text-primary`, `text-secondary`, `text-error`, `text-success` |
+| Background | `bg-surface`, `bg-page`, `bg-accent-strong`, `bg-error-light` |
+| Border | `border-default`, `border-accent`, `border-error` |

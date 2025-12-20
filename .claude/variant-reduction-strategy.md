@@ -74,9 +74,11 @@ REJECT variant if:
 
 ---
 
-## Anti-Pattern Checklist
+## Anti-Patterns (REJECT if true)
 
-- [ ] Adding variant because "some consumers want X"
-- [ ] Adding variant for one-off design request
-- [ ] Multiple variants that serve same purpose
-- [ ] Variants without clear usage guidelines
+| Signal | Action |
+|--------|--------|
+| "Some consumers want X" | Reject — not semantic |
+| One-off design request | Reject — use composition |
+| Same purpose as existing | Reject — redundant |
+| No usage guidelines | Reject — undefined scope |

@@ -1,307 +1,54 @@
 # DDS - Agent Context
 
-**SINGLE SOURCE OF TRUTH**: `.claude/agent-context.json`
-
----
+**SOURCE OF TRUTH**: `.claude/agent-context.json`
 
 ## Meta: Writing Rules for Agents
 
-Rules in this file are for **AI agents**, not humans. Optimize accordingly:
-
 | Do | Don't |
 |----|-------|
-| Terse, scannable format | Verbose explanations |
-| Code examples with ✅/❌ | Paragraphs of prose |
-| Tables for lookups | Nested bullet lists |
-| `keyword: action` patterns | "You should consider..." |
-| Symptoms → Fix (direct) | Background context first |
-
-**Template:**
-```
-## Rule Name (SEVERITY)
-Symptom: [what you'll see]
-Cause: [one line]
-Fix: [code or command]
-```
+| Terse, scannable | Verbose prose |
+| Code: ✅/❌ | Paragraphs |
+| Tables for lookup | Nested bullets |
+| `symptom → fix` | "Consider..." |
 
 ---
 
-## 🌊 Wu Wei (無為) - Effortless Action
+## Wu Wei (無為) - Effortless Action
 
-**Project Philosophy: Work with the grain, not against it.**
+| Principle | Do | Don't |
+|-----------|----|----|
+| Simple over clever | Let solutions emerge | Over-engineer |
+| Add only needed | 3 similar lines > abstraction | DRY zealotry |
+| Trust the flow | Existing patterns first | Invent when existing works |
+| No force | Step back if fighting | Hack around system |
+| Backwards compat | ADD new, DEPRECATE old | REMOVE until v3 |
 
-| Principle | Do | Don't | Self-Test |
-|-----------|----|----|-----------|
-| **Simple over clever** | Let solutions emerge naturally | Over-engineer, premature abstraction | Can a junior dev understand this in 30s? |
-| **Add only what's needed** | Three similar lines > abstraction | DRY zealotry, speculative features | Am I solving today's problem or imaginary ones? |
-| **Trust the flow** | Use existing patterns first | Invent when existing works | Does agent-context.json already have this? |
-| **No force** | Step back if fighting | Hack around the system | Am I working with or against the codebase? |
-| **Backwards compat** | ADD new, DEPRECATE old | REMOVE until v3 | Will existing consumers break? |
-
-**Pre-commit checklist:**
-- Am I adding more complexity than needed?
-- Does an existing pattern already solve this?
-- Would deletion be better than addition?
-
-*"The sage does not act, yet nothing is left undone."* — Tao Te Ching
+**Pre-commit:** Am I adding complexity? Does pattern exist? Delete > add?
 
 ---
 
-## 🎨 BEFORE WRITING ANY COLOR: Read `.claude/color-matrix.json`
+## Color Workflow (CRITICAL)
 
-**This is NOT optional.** The color matrix defines ALL allowed color combinations.
+**BEFORE any color:** Read `.claude/color-matrix.json`
 
-### Workflow:
-1. **Identify background** → Find category (dark/light/accent/subtle)
-2. **Look up allowed colors** → text.primary, icons.primary, borders.default
-3. **Check FORBIDDEN list** → Never use those combinations
+1. Identify background category (dark/light/accent/subtle)
+2. Look up allowed: text.primary, icons.primary, borders.default
+3. Check FORBIDDEN list
 
-### Quick Reference:
-| Background | Text | Icons |
-|------------|------|-------|
-| `ABYSS[500+]`, dark gradients | `PRIMITIVES.white`, `SLATE[300]` | `PRIMITIVES.white` |
-| `DEEP_CURRENT[500+]` | `PRIMITIVES.white` | `PRIMITIVES.white` |
-| `PRIMITIVES.white`, `cream` | `ABYSS[500]` | `ABYSS[500]` |
-| `SLATE[50-200]` | `ABYSS[500]`, `DUSK_REEF[500]` | `DEEP_CURRENT[500]` |
-
-### Golden Rule:
+**Golden Rule:**
 ```
-❌ Same color family on itself = INVISIBLE
+❌ Same family on itself = INVISIBLE
    ABYSS[200] on ABYSS[500] = WRONG
-   DUSK_REEF[500] on DUSK_REEF[600] = WRONG
 ```
-
----
-
-## WCAG Contrast Validation
-
-**Read:** `.claude/contrast-matrix.json` for exact ratios
-
-| Level | Category | Ratio | Use |
-|-------|----------|-------|-----|
-| AA | Normal text | 4.5:1 | Body, labels |
-| AA | Large text | 3.0:1 | 18pt+ |
-| AA | Graphics | 3.0:1 | Icons, UI |
-| AAA | Normal text | 7.0:1 | Enhanced |
-
-### Common Failures:
-```
-ABYSS[200] on ABYSS[500]    = 3.98:1 FAIL text
-DEEP_CURRENT[500] on white  = 3.57:1 FAIL text (OK icons)
-```
-
-### If User Specifies Failing Color:
-Report: `Contrast {X}:1 - {PASS|FAIL} WCAG AA` + suggest alternative
-
----
-
-## MDX Text Color Bug (CRITICAL)
-
-**Symptom:** Inline `color` styles show red/coral instead of expected color in MDX files
-**Cause:** MDX wraps text in `<p>` → Storybook CSS overrides with `colorPrimary`
-**Fix:**
-```jsx
-// ❌ <div style={{ color: '#fff' }}>Text</div>
-// ✅ <div style={{ color: '#fff' }}><span>Text</span></div>
-```
-**Details:** `.claude/storybook-rules.md` § "MDX Paragraph Wrapping Bug"
-
----
-
-## Spacing Hierarchy (4px Base)
-
-**Rule:** Related items = LESS space | Unrelated items = MORE space
-
-| Level | Size | Tailwind | Use |
-|-------|------|----------|-----|
-| Micro | 4-8px | `gap-1`, `gap-2` | Icon↔text, label↔input |
-| Base | 12-16px | `gap-3`, `gap-4` | Items within component |
-| Comfortable | 20-24px | `gap-5`, `gap-6` | Between components |
-| Spacious | 32-48px | `gap-8`, `gap-12` | Between sections |
-| Page | 64-96px | `gap-16`, `gap-24` | Hero, footer, major divisions |
-
-**Quick decisions:**
-```
-Label → Input:  8px (gap-2)
-Input → Input:  16px (space-y-4)
-Card → Card:    16-24px (gap-4, gap-6)
-Section → Section: 48-64px (py-12, py-16)
-```
-
-**Details:** `.claude/spacing-rules.md`
-
----
-
-## Border Radius (Nested Corners)
-
-**Rule:** Inner Radius + Padding = Outer Radius
-
-| Token | Value | Tailwind | Use |
-|-------|-------|----------|-----|
-| `xs` | 4px | `rounded-xs` | Badges, chips |
-| `sm` | 8px | `rounded-sm` | Buttons, inputs |
-| `md` | 12px | `rounded-md` | Cards, dialogs |
-| `lg` | 16px | `rounded-lg` | Large cards |
-| `xl` | 20px | `rounded-xl` | Sections |
-| `2xl` | 24px | `rounded-2xl` | Feature cards |
-
-**Nested formula examples:**
-```
-Inner md (12px) + Padding sm (8px) = Outer xl (20px)
-Inner sm (8px)  + Padding xs (4px) = Outer md (12px)
-```
-
-**Details:** `.claude/rounded-corners-rules.md`
-
----
-
-## Typography Hierarchy (App UI)
-
-**Rule:** Fixel for UI, JetBrains Mono for code/technical content only.
-
-**⛔ FORBIDDEN:** `font-serif`, `font-display`, any other font family.
-
-| Role | Tailwind | Use |
-|------|----------|-----|
-| Page Title | `text-2xl font-semibold` | Top-level headings |
-| Section Title | `text-lg font-semibold` | Section headings |
-| Card Title | `text-base font-semibold` | Card headers |
-| Body | `text-sm` | Primary content |
-| Label | `text-sm font-medium` | Form labels |
-| Caption | `text-xs text-muted` | Metadata, help text |
-| Code | `font-mono text-sm` | Code snippets, token paths, IDs |
-
-**`font-mono` allowed ONLY for:**
-```
-- Code snippets, syntax, API responses
-- Token paths (GRADIENTS.heroOverlay)
-- Technical IDs (TXN-2024-00123)
-- Timestamps, tabular numbers
-- NEVER for headings, labels, or body text
-```
-
-**Golden rules:**
-```
-1. Visual hierarchy = Information hierarchy
-2. Max 3-4 font sizes per view
-3. Use weight (font-semibold) not size for emphasis
-4. 45-75 characters per line (max-w-prose)
-5. Fixel = UI text, JetBrains Mono = code only
-```
-
-**Details:** `.claude/typography-rules.md`
-
----
-
-## Iconography (No Emojis)
-
-**Rule:** NEVER use emojis. ALWAYS use Lucide React icons.
-
-```tsx
-// ❌ icon="🎨"
-// ✅ icon={<Palette size={24} />}
-```
-
-| Size | Pixels | Use |
-|------|--------|-----|
-| XS | 16px | Inline, badges |
-| SM | 20px | Buttons, inputs |
-| MD | 24px | Navigation, cards |
-| LG | 32px | Features |
-| XL | 48px | Heroes, empty states |
-
-**Details:** `.claude/iconography-rules.md`
-
----
-
-## MDX Documentation (No Separators)
-
-**Rule:** NEVER use `---` markdown separators. Use `Section` component for spacing.
-
-```mdx
-// ❌ WRONG - Creates ugly horizontal lines
-<BrandHero title="Page" />
-
----
-
-<h2>Section</h2>
-
-// ✅ CORRECT - Section handles vertical rhythm
-import { Section, SectionHeader } from './foundation/DocComponents';
-
-<BrandHero title="Page" />
-
-<Section first>
-  <SectionHeader title="First Section" />
-  {/* content */}
-</Section>
-
-<Section>
-  <SectionHeader title="Second Section" />
-  {/* content */}
-</Section>
-```
-
-| Component | Spacing |
-|-----------|---------|
-| `<Section first>` | No top margin (after hero) |
-| `<Section>` | `48px` top margin |
-| `<SectionHeader>` | `16px` bottom margin |
-
-**Details:** `.claude/storybook-rules.md` § "MDX Page Structure"
-
----
-
-## CSS Styling (CRITICAL)
-
-**Rule:** Always use Tailwind classes. NEVER use `!important`.
-
-### Tailwind First
-```tsx
-// ❌ style={{ padding: '16px', backgroundColor: '#2D3142' }}
-// ✅ className="p-4 bg-abyss-500"
-
-// ❌ <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-// ✅ <div className="flex gap-2 items-center">
-```
-
-### No !important
-```css
-/* ❌ .button { color: white !important; } */
-/* ✅ .button { color: white; } */
-
-/* ❌ className="text-white !important" */
-/* ✅ Fix specificity at the source */
-```
-
-### When Styles Don't Apply
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Style ignored | Lower specificity | Increase selector specificity or use Tailwind variant |
-| Style overridden | Parent/global CSS | Check cascade, use `@layer` if needed |
-| Need `!important` | Specificity war | Refactor: remove competing styles at source |
-
-### Allowed Exceptions
-- **MDX documentation files**: Inline styles allowed for isolated examples
-- **Third-party overrides**: Only when no Tailwind alternative exists (document why)
-
-### Quick Reference
-| Instead of | Use |
-|------------|-----|
-| `style={{ margin: '8px' }}` | `className="m-2"` |
-| `style={{ color: ABYSS[500] }}` | `className="text-abyss-500"` |
-| `!important` | Fix the specificity conflict |
 
 ---
 
 ## Git Commits (CRITICAL)
 
-**NEVER add Co-Authored-By lines to commits.**
-
+**NEVER add Co-Authored-By lines.**
 ```
-❌ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
-❌ Co-Authored-By: Claude <noreply@anthropic.com>
-✅ Clean commit message without attribution lines
+❌ Co-Authored-By: Claude...
+✅ Clean commit message
 ```
 
 ---
@@ -310,71 +57,38 @@ import { Section, SectionHeader } from './foundation/DocComponents';
 
 ```bash
 npm run typecheck && npm run lint && npm run build
-npm run generate-tokens   # generates focus ring only
-npm run validate:tokens   # check for drift between token files
+npm run validate:tokens   # check token drift
 ```
 
 ---
 
 ## Token Architecture (3-File System)
 
-**DDS uses intentional manual sync between 3 token files.**
+| File | Purpose |
+|------|---------|
+| `src/constants/designTokens.ts` | Source of truth (TypeScript) |
+| `src/styles.css` @theme | Tailwind v4 CSS-first |
+| `tailwind-preset.js` | NPM package preset |
 
-| File | Format | Purpose | Consumers |
-|------|--------|---------|-----------|
-| `src/constants/designTokens.ts` | TypeScript | Source of truth, type safety | DDS components |
-| `src/styles.css` @theme | CSS | Tailwind v4 CSS-first config | Tailwind utilities |
-| `tailwind-preset.js` | JavaScript | NPM package preset | External apps |
+**Update:** Color changes → all 3 files | Semantic alias → TS + CSS
 
-### Why 3 Files (Not a Bug)
+---
 
-1. **Tailwind v4 promotes CSS-first** → `@theme` in CSS is the intended approach
-2. **TypeScript types** → Components need typed constants
-3. **Consumer preset** → NPM consumers need JS export (not all import CSS)
+## Lazy Load (ALWAYS read before task)
 
-### When to Update Each File
-
-| Change | Update These Files |
-|--------|-------------------|
-| Color value changes | All 3 files |
-| New color token | All 3 files |
-| Semantic alias | `designTokens.ts` + `styles.css` |
-| New Tailwind utility | `styles.css` + `tailwind-preset.js` |
-
-### Drift Detection
-
-```bash
-npm run validate:tokens   # Runs automatically in prebuild
-```
-
-Checks:
-- Palette values match between `designTokens.ts` and `tailwind-preset.js`
-- Radius values match
-- Key semantic tokens in `styles.css` match source values
-
-### What IS Generated
-
-Only the focus ring color (`--ring`) is generated from `designTokens.ts`:
-```bash
-npm run generate-tokens  # Creates src/styles/tokens.css
-```
-
-Everything else is manually maintained.
-
-## Lazy Load (task-specific)
-
-| Task | Read |
-|------|------|
-| **Color combinations** | **`.claude/color-matrix.json`** |
-| **Contrast ratios** | **`.claude/contrast-matrix.json`** |
-| **Dark mode mapping** | **`.claude/dark-mode-mapping-rules.md`** |
-| **Spacing/layout** | **`.claude/spacing-rules.md`** |
-| **Border radius** | **`.claude/rounded-corners-rules.md`** |
-| **Typography** | **`.claude/typography-rules.md`** |
-| **Icons (no emojis)** | **`.claude/iconography-rules.md`** |
-| **MDX page structure** | **`.claude/storybook-rules.md`** § "MDX Page Structure" |
-| Detailed tokens | `src/stories/DesignTokens.mdx` |
-| **Writing stories** | **`.claude/storybook-rules.md`** + **`src/stories/_infrastructure/`** |
-| Writing tests | `.claude/testing-quick-ref.md` |
-| Stabilization | `.claude/core-components-stabilization.md` |
-| **Delivery packages** | **`.claude/delivery-package-guide.md`** |
+| Task | Read First |
+|------|------------|
+| **Components** | `.claude/component-dev-rules.md` |
+| **Colors** | `.claude/color-matrix.json` |
+| **Contrast/WCAG** | `.claude/contrast-matrix.json` |
+| **Dark mode** | `.claude/dark-mode-mapping-rules.md` |
+| **Spacing** | `.claude/spacing-rules.md` |
+| **Border radius** | `.claude/rounded-corners-rules.md` |
+| **Typography** | `.claude/typography-rules.md` |
+| **Icons** | `.claude/iconography-rules.md` |
+| **CSS/Tailwind** | `.claude/css-styling-rules.md` |
+| **MDX/Storybook** | `.claude/storybook-rules.md` |
+| **Writing stories** | `.claude/storybook-rules.md` + `src/stories/_infrastructure/` |
+| **Tests** | `.claude/testing-quick-ref.md` |
+| **Delivery** | `.claude/delivery-package-guide.md` |
+| **Prompt templates** | `.claude/prompt-library.md` |

@@ -21,49 +21,28 @@ conditions:
 action: block
 ---
 
-**🚫 Standard Tailwind Color Detected**
+## Blocked: Standard Tailwind Color
 
-You're using standard Tailwind color classes (bg-slate-, text-gray-, etc.) in production code, which violates DDS rules.
-
-**Blocked patterns:**
-- `bg-slate-*`, `bg-gray-*`, `bg-blue-*`, etc.
-- `text-gray-*`, `text-slate-*`, `text-blue-*`, etc.
-- `border-gray-*`, `border-slate-*`, etc.
-
-**Why this is blocked:**
-- DDS uses custom primitive scales, not standard Tailwind colors
-- `SLATE` in DDS is different from Tailwind's `slate`
-- Standard Tailwind colors bypass DDS design tokens
-- Brand consistency requires DDS semantic classes
-
-**Use DDS semantic classes instead:**
+DDS uses custom primitives, not Tailwind defaults.
 
 ```tsx
-// ❌ DON'T USE standard Tailwind
+// ❌ Blocked
 <div className="bg-slate-100 text-gray-600 border-gray-300">
 
-// ✅ USE DDS semantic classes
+// ✅ Use DDS semantic
 <div className="bg-surface text-secondary border-default">
-<div className="bg-page text-primary border-subtle">
-<div className="bg-muted-bg text-muted border-strong">
 ```
 
-**Common replacements:**
-| Standard Tailwind | DDS Semantic Class |
-|------------------|-------------------|
-| `bg-slate-50/100` | `bg-page` or `bg-muted-bg` |
+| Tailwind | DDS |
+|----------|-----|
+| `bg-slate-50/100` | `bg-page` / `bg-muted-bg` |
 | `bg-white` | `bg-surface` |
-| `text-gray-600/700` | `text-secondary` or `text-muted` |
+| `text-gray-600/700` | `text-secondary` / `text-muted` |
 | `text-gray-900` | `text-primary` |
-| `border-gray-200/300` | `border-default` or `border-subtle` |
-| `bg-blue-*` | `bg-accent-strong` or `bg-info` |
-| `text-blue-*` | `text-accent` or `text-link` |
-| `bg-red-*` | `bg-error` or `bg-error-light` |
+| `border-gray-200/300` | `border-default` / `border-subtle` |
+| `bg-blue-*` | `bg-accent-strong` / `bg-info` |
+| `text-blue-*` | `text-accent` / `text-link` |
+| `bg-red-*` | `bg-error` / `bg-error-light` |
 | `text-red-*` | `text-error` |
 
-**From CLAUDE.md:**
-> ALL styling must use design tokens - No raw colors, no standard Tailwind colors
-
-**Note:** Stories and demos are excluded from this rule.
-
-**Full DDS color reference:** See CLAUDE.md or `tailwind-preset.js`
+**Excluded:** `*.stories.tsx`, `_archive/`, `/stories/demos/`
