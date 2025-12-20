@@ -129,7 +129,7 @@ import { SUNRISE } from '../../constants/designTokens';
           position: 'absolute',
           width: '160px',
           height: '100px',
-          background: SLATE[50],
+          background: PRIMITIVES.softLinen,
           borderRadius: RADIUS.md,
           top: '50px',
           left: '20px',
@@ -144,7 +144,7 @@ import { SUNRISE } from '../../constants/designTokens';
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: ABYSS[500],
-          }}>Surface (slate-50)</span>
+          }}>Surface (softLinen)</span>
         </div>
 
         {/* Card layer - closest, lightest */}
@@ -167,7 +167,7 @@ import { SUNRISE } from '../../constants/designTokens';
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: ABYSS[500],
-          }}>Card (white)</span>
+          }}>Card (softLinen)</span>
         </div>
 
         {/* Eye indicator */}
@@ -388,9 +388,9 @@ import { SUNRISE } from '../../constants/designTokens';
     </thead>
     <tbody>
       {[
-        { distance: 'Closest', layer: 'Elevated', light: { name: 'white', color: PRIMITIVES.white }, dark: { name: 'ABYSS[400]', color: ABYSS[400] }, use: 'Modals, dropdowns, tooltips' },
-        { distance: '', layer: 'Card', light: { name: 'white', color: PRIMITIVES.white }, dark: { name: 'ABYSS[500]', color: ABYSS[500] }, use: 'Cards, panels' },
-        { distance: '', layer: 'Surface', light: { name: 'SLATE[50]', color: SLATE[50] }, dark: { name: 'ABYSS[700]', color: ABYSS[700] }, use: 'Content areas, sidebars' },
+        { distance: 'Closest', layer: 'Elevated', light: { name: 'softLinen', color: PRIMITIVES.softLinen }, dark: { name: 'ABYSS[400]', color: ABYSS[400] }, use: 'Modals, dropdowns, tooltips' },
+        { distance: '', layer: 'Card', light: { name: 'softLinen', color: PRIMITIVES.softLinen }, dark: { name: 'ABYSS[500]', color: ABYSS[500] }, use: 'Cards, panels' },
+        { distance: '', layer: 'Surface', light: { name: 'softLinen', color: PRIMITIVES.softLinen }, dark: { name: 'ABYSS[700]', color: ABYSS[700] }, use: 'Content areas, sidebars' },
         { distance: 'Furthest', layer: 'Page', light: { name: 'cream', color: PRIMITIVES.cream }, dark: { name: 'ABYSS[900]', color: ABYSS[900] }, use: 'Page background' },
       ].map((row, idx) => (
         <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
@@ -501,7 +501,7 @@ import { SUNRISE } from '../../constants/designTokens';
       {/* Sidebar (Surface) */}
       <div style={{
         width: '60px',
-        background: SLATE[50],
+        background: PRIMITIVES.softLinen,
         borderRadius: RADIUS.sm,
         padding: SPACING.px.tight,
         display: 'flex',
@@ -531,7 +531,7 @@ import { SUNRISE } from '../../constants/designTokens';
       {/* Main content area (Surface) */}
       <div style={{
         flex: 1,
-        background: SLATE[50],
+        background: PRIMITIVES.softLinen,
         borderRadius: RADIUS.sm,
         padding: SPACING.px.tight,
         border: `1px solid ${SLATE[200]}`,
@@ -547,10 +547,10 @@ import { SUNRISE } from '../../constants/designTokens';
         }}>
           <div style={{ width: '60%', height: '10px', background: ABYSS[300], borderRadius: RADIUS.xs, marginBottom: SPACING.px.tight }} />
           <div style={{ width: '80%', height: '8px', background: SLATE[200], borderRadius: RADIUS.xs }} />
-          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.tight }}>Card (white)</div>
+          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.tight }}>Card (softLinen)</div>
         </div>
 
-        <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], textAlign: 'center' }}>Surface (slate-50)</div>
+        <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], textAlign: 'center' }}>Surface (softLinen)</div>
       </div>
     </div>
 
@@ -729,7 +729,7 @@ import { SUNRISE } from '../../constants/designTokens';
         marginBottom: SPACING.px.tight,
       }}>Light Mode Depth</div>
       <div style={{ display: 'flex', gap: SPACING.px.micro }}>
-        {[PRIMITIVES.white, SLATE[50], PRIMITIVES.cream, SLATE[100]].map((color, idx) => (
+        {[PRIMITIVES.softLinen, PRIMITIVES.softLinen, PRIMITIVES.cream, SLATE[100]].map((color, idx) => (
           <div key={idx} style={{
             width: '40px',
             height: `${40 + idx * 20}px`,
@@ -840,11 +840,11 @@ import { SUNRISE } from '../../constants/designTokens';
     </thead>
     <tbody>
       {[
-        { depth: 1, token: 'background.elevated', light: 'PRIMITIVES.white', lightColor: PRIMITIVES.white, dark: 'ABYSS[400]', darkColor: ABYSS[400] },
-        { depth: 2, token: 'background.surface', light: 'SLATE[50]', lightColor: SLATE[50], dark: 'ABYSS[700]', darkColor: ABYSS[700] },
-        { depth: 3, token: 'background.surfaceHover', light: 'SLATE[50]', lightColor: SLATE[50], dark: 'ABYSS[600]', darkColor: ABYSS[600] },
-        { depth: 4, token: 'background.surfaceActive', light: 'SLATE[100]', lightColor: SLATE[100], dark: 'ABYSS[500]', darkColor: ABYSS[500] },
-        { depth: 5, token: 'background.page', light: 'PRIMITIVES.cream', lightColor: PRIMITIVES.cream, dark: 'ABYSS[900]', darkColor: ABYSS[900] },
+        { depth: 1, token: 'background.elevated', light: 'softLinen', lightColor: PRIMITIVES.softLinen, dark: 'ABYSS[400]', darkColor: ABYSS[400] },
+        { depth: 2, token: 'background.surface', light: 'softLinen', lightColor: PRIMITIVES.softLinen, dark: 'ABYSS[700]', darkColor: ABYSS[700] },
+        { depth: 3, token: 'background.surfaceHover', light: 'SLATE[100]', lightColor: SLATE[100], dark: 'ABYSS[600]', darkColor: ABYSS[600] },
+        { depth: 4, token: 'background.surfaceActive', light: 'SLATE[200]', lightColor: SLATE[200], dark: 'ABYSS[500]', darkColor: ABYSS[500] },
+        { depth: 5, token: 'background.page', light: 'cream', lightColor: PRIMITIVES.cream, dark: 'ABYSS[900]', darkColor: ABYSS[900] },
       ].map((row) => (
         <tr key={row.token} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
           <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}` }}>
@@ -972,9 +972,9 @@ import { SUNRISE } from '../../constants/designTokens';
         lineHeight: TYPOGRAPHY.lineHeight.loose,
         color: ABYSS[500],
       }}>
-        <div>1. Elevated → <span style={{ color: DEEP_CURRENT[600] }}>white</span></div>
-        <div>2. Card → <span style={{ color: DEEP_CURRENT[600] }}>white</span></div>
-        <div>3. Surface → <span style={{ color: DEEP_CURRENT[600] }}>SLATE[50]</span></div>
+        <div>1. Elevated → <span style={{ color: DEEP_CURRENT[600] }}>softLinen</span></div>
+        <div>2. Card → <span style={{ color: DEEP_CURRENT[600] }}>softLinen</span></div>
+        <div>3. Surface → <span style={{ color: DEEP_CURRENT[600] }}>softLinen</span></div>
         <div>4. Page → <span style={{ color: DEEP_CURRENT[600] }}>cream</span></div>
       </div>
     </div>
