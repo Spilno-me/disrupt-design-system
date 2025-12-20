@@ -57,6 +57,9 @@
     "validate-context": "node scripts/validate-agent-context.js",
     "sync-components": "node scripts/sync-component-status.js",
     "sync-docs": "node scripts/sync-docs.js",
+    "sync:prompts": "node scripts/sync-prompt-library.js",
+    "sync:colors": "node scripts/generate-color-matrix.js",
+    "sync:all": "npm run sync:prompts && npm run sync:colors && npm run sync-docs && npm run update-docs",
     "extract-deps": "node scripts/extract-dependencies.js",
     "prepare": "simple-git-hooks",
     "version": "node scripts/bump-version.js",
@@ -65,7 +68,7 @@
     "version:major": "node scripts/bump-version.js major"
   },
   "simple-git-hooks": {
-    "pre-commit": "npm run health && node scripts/update-claude-docs.js && npx lint-staged"
+    "pre-commit": "npm run sync:all && npm run health && npx lint-staged"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [

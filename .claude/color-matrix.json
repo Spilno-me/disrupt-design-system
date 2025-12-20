@@ -1,193 +1,821 @@
 {
-  "_description": "Color Combination Matrix - CONSULT BEFORE WRITING ANY COLOR CODE",
-  "_usage": "1. Identify your background category, 2. Use ONLY the allowed foreground colors",
-
+  "_generated": "2025-12-20T22:18:18.572Z",
+  "_source": "src/constants/designTokens.ts",
+  "_note": "AUTO-GENERATED - Do not edit. Run npm run sync:colors",
   "backgrounds": {
-    "dark": {
-      "_description": "Dark backgrounds - use light foreground colors",
-      "tokens": [
-        "ABYSS[500]", "ABYSS[600]", "ABYSS[700]", "ABYSS[800]", "ABYSS[900]",
-        "DEEP_CURRENT[600]", "DEEP_CURRENT[700]", "DEEP_CURRENT[800]",
-        "DUSK_REEF[600]", "DUSK_REEF[700]", "DUSK_REEF[800]",
-        "SLATE[700]", "SLATE[800]", "SLATE[900]",
-        "linear-gradient with ABYSS", "linear-gradient with dark colors"
+    "light": [
+      "PRIMITIVES.white",
+      "PRIMITIVES.cream",
+      "PRIMITIVES.softLinen",
+      "ABYSS[50]",
+      "ABYSS[100]",
+      "ABYSS[200]",
+      "DUSK_REEF[50]",
+      "DUSK_REEF[100]",
+      "DUSK_REEF[200]",
+      "CORAL[50]",
+      "CORAL[100]",
+      "CORAL[200]",
+      "WAVE[50]",
+      "WAVE[100]",
+      "WAVE[200]",
+      "SUNRISE[50]",
+      "SUNRISE[100]",
+      "SUNRISE[200]",
+      "HARBOR[50]",
+      "HARBOR[100]",
+      "HARBOR[200]",
+      "SLATE[50]",
+      "SLATE[100]",
+      "SLATE[200]",
+      "ORANGE[50]",
+      "ORANGE[100]",
+      "ORANGE[200]"
+    ],
+    "dark": [
+      "ABYSS[500]",
+      "ABYSS[600]",
+      "ABYSS[700]",
+      "ABYSS[800]",
+      "ABYSS[900]",
+      "DEEP_CURRENT[500]",
+      "DEEP_CURRENT[600]",
+      "DEEP_CURRENT[700]",
+      "DEEP_CURRENT[800]",
+      "DEEP_CURRENT[900]",
+      "DUSK_REEF[500]",
+      "DUSK_REEF[600]",
+      "DUSK_REEF[700]",
+      "DUSK_REEF[800]",
+      "DUSK_REEF[900]"
+    ],
+    "accent": [
+      "DEEP_CURRENT[50]",
+      "DEEP_CURRENT[100]",
+      "DEEP_CURRENT[200]"
+    ]
+  },
+  "allowedCombinations": {
+    "PRIMITIVES.white": {
+      "hex": "#FFFFFF",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ],
-      "text": {
-        "primary": "PRIMITIVES.white",
-        "secondary": "SLATE[300]",
-        "muted": "SLATE[400]",
-        "link": "DEEP_CURRENT[300]"
-      },
-      "icons": {
-        "primary": "PRIMITIVES.white",
-        "secondary": "SLATE[300]",
-        "accent": "DEEP_CURRENT[300]"
-      },
-      "borders": {
-        "default": "rgba(255,255,255,0.1)",
-        "strong": "rgba(255,255,255,0.2)",
-        "accent": "DEEP_CURRENT[400]"
-      },
-      "FORBIDDEN": [
-        "ABYSS[200-600] for text",
-        "DUSK_REEF[400-600] for text",
-        "DEEP_CURRENT[400-600] for text",
-        "Any dark color for text/icons"
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ]
     },
-
-    "light": {
-      "_description": "Light backgrounds - use dark foreground colors",
-      "tokens": [
-        "PRIMITIVES.white", "PRIMITIVES.cream",
-        "SLATE[50]", "SLATE[100]", "SLATE[200]",
-        "DEEP_CURRENT[50]", "DUSK_REEF[50]", "CORAL[50]",
-        "bg-surface", "bg-background"
+    "PRIMITIVES.cream": {
+      "hex": "#FBFBF3",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ],
-      "text": {
-        "primary": "ABYSS[500]",
-        "secondary": "DUSK_REEF[500]",
-        "muted": "SLATE[500]",
-        "link": "DEEP_CURRENT[500]"
-      },
-      "icons": {
-        "primary": "ABYSS[500]",
-        "secondary": "SLATE[500]",
-        "accent": "DEEP_CURRENT[500]"
-      },
-      "borders": {
-        "default": "SLATE[200]",
-        "strong": "SLATE[300]",
-        "accent": "DEEP_CURRENT[500]"
-      },
-      "FORBIDDEN": [
-        "PRIMITIVES.white for text",
-        "SLATE[100-300] for text",
-        "Any light color for text/icons"
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ]
     },
-
-    "accent-teal": {
-      "_description": "Teal accent backgrounds (buttons, CTAs)",
-      "tokens": [
-        "DEEP_CURRENT[500]", "DEEP_CURRENT[600]",
-        "bg-accent-strong", "bg-brand-secondary"
+    "PRIMITIVES.softLinen": {
+      "hex": "#EBF9FF",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ],
-      "text": {
-        "primary": "PRIMITIVES.white",
-        "secondary": "DEEP_CURRENT[100]"
-      },
-      "icons": {
-        "primary": "PRIMITIVES.white"
-      },
-      "borders": {
-        "default": "DEEP_CURRENT[600]",
-        "focus": "PRIMITIVES.white"
-      },
-      "FORBIDDEN": [
-        "ABYSS colors for text",
-        "DEEP_CURRENT[400-700] for text"
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ]
     },
-
-    "accent-purple": {
-      "_description": "Purple accent backgrounds",
-      "tokens": [
-        "DUSK_REEF[500]", "DUSK_REEF[600]"
+    "ABYSS[50]": {
+      "hex": "#E8E9EB",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ],
-      "text": {
-        "primary": "PRIMITIVES.white",
-        "secondary": "DUSK_REEF[100]"
-      },
-      "icons": {
-        "primary": "PRIMITIVES.white"
-      },
-      "borders": {
-        "default": "DUSK_REEF[600]"
-      },
-      "FORBIDDEN": [
-        "DUSK_REEF[400-700] for text"
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ]
     },
-
-    "subtle": {
-      "_description": "Subtle tinted backgrounds",
-      "tokens": [
-        "SLATE[50]", "SLATE[100]",
-        "DEEP_CURRENT[50]", "DUSK_REEF[50]",
-        "bg-muted", "bg-accent-bg"
+    "ABYSS[100]": {
+      "hex": "#D1D3D7",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ],
-      "text": {
-        "primary": "ABYSS[500]",
-        "secondary": "DUSK_REEF[600]",
-        "muted": "SLATE[600]"
-      },
-      "icons": {
-        "primary": "ABYSS[500]",
-        "secondary": "SLATE[500]",
-        "accent": "DEEP_CURRENT[600]"
-      },
-      "borders": {
-        "default": "SLATE[200]",
-        "strong": "SLATE[300]"
-      },
-      "FORBIDDEN": [
-        "Light colors for text",
-        "White for text"
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ]
     },
-
-    "error": {
-      "_description": "Error/danger backgrounds",
-      "tokens": [
-        "CORAL[500]", "CORAL[600]", "bg-destructive"
+    "ABYSS[200]": {
+      "hex": "#A3A7AF",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ],
-      "text": {
-        "primary": "PRIMITIVES.white"
-      },
-      "icons": {
-        "primary": "PRIMITIVES.white"
-      },
-      "FORBIDDEN": [
-        "CORAL colors for text"
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ]
     },
-
-    "error-subtle": {
-      "_description": "Subtle error backgrounds",
-      "tokens": [
-        "CORAL[50]", "CORAL[100]"
+    "DEEP_CURRENT[50]": {
+      "hex": "#E6F7FA",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
       ],
-      "text": {
-        "primary": "CORAL[700]",
-        "secondary": "CORAL[600]"
-      },
-      "icons": {
-        "primary": "CORAL[600]"
-      },
-      "borders": {
-        "default": "CORAL[200]"
-      }
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "DEEP_CURRENT[100]": {
+      "hex": "#CCEFF5",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "DEEP_CURRENT[200]": {
+      "hex": "#99DFEB",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "DUSK_REEF[50]": {
+      "hex": "#EFEDF3",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "DUSK_REEF[100]": {
+      "hex": "#DFDBE7",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "DUSK_REEF[200]": {
+      "hex": "#BFB7CF",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "CORAL[50]": {
+      "hex": "#FEF2F2",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "CORAL[100]": {
+      "hex": "#FEE2E2",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "CORAL[200]": {
+      "hex": "#FECACA",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "WAVE[50]": {
+      "hex": "#EFF6FF",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "WAVE[100]": {
+      "hex": "#DBEAFE",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "WAVE[200]": {
+      "hex": "#BFDBFE",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "SUNRISE[50]": {
+      "hex": "#FFFBEB",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "SUNRISE[100]": {
+      "hex": "#FEF3C7",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "SUNRISE[200]": {
+      "hex": "#FDE68A",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "HARBOR[50]": {
+      "hex": "#F0FDF4",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "HARBOR[100]": {
+      "hex": "#DCFCE7",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "HARBOR[200]": {
+      "hex": "#BBF7D0",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "SLATE[50]": {
+      "hex": "#F8FAFC",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "SLATE[100]": {
+      "hex": "#F1F5F9",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "SLATE[200]": {
+      "hex": "#E2E8F0",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "ORANGE[50]": {
+      "hex": "#FFF7ED",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "ORANGE[100]": {
+      "hex": "#FFEDD5",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "ORANGE[200]": {
+      "hex": "#FED7AA",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "ABYSS[500]": {
+      "hex": "#2D3142",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "ABYSS[600]": {
+      "hex": "#252836",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "ABYSS[700]": {
+      "hex": "#1D1F2A",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "ABYSS[800]": {
+      "hex": "#14161E",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "ABYSS[900]": {
+      "hex": "#0C0D12",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "DEEP_CURRENT[500]": {
+      "hex": "#08A4BD",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "DEEP_CURRENT[600]": {
+      "hex": "#068397",
+      "text": [],
+      "icons": [
+        "PRIMITIVES.white",
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]"
+      ]
+    },
+    "DEEP_CURRENT[700]": {
+      "hex": "#056271",
+      "text": [
+        "PRIMITIVES.white"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]"
+      ]
+    },
+    "DEEP_CURRENT[800]": {
+      "hex": "#03424B",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "DEEP_CURRENT[900]": {
+      "hex": "#022125",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "DUSK_REEF[500]": {
+      "hex": "#5E4F7E",
+      "text": [
+        "PRIMITIVES.white"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]"
+      ]
+    },
+    "DUSK_REEF[600]": {
+      "hex": "#4B3F65",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "DUSK_REEF[700]": {
+      "hex": "#382F4C",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "DUSK_REEF[800]": {
+      "hex": "#262033",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
+    },
+    "DUSK_REEF[900]": {
+      "hex": "#13101A",
+      "text": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ],
+      "icons": [
+        "PRIMITIVES.white",
+        "SUNRISE[500]",
+        "HARBOR[500]",
+        "ORANGE[500]",
+        "SUNRISE[600]"
+      ]
     }
   },
-
-  "quickLookup": {
-    "_description": "Fast lookup: background → text color",
-    "ABYSS[500-900]": "PRIMITIVES.white or SLATE[300]",
-    "DEEP_CURRENT[500-700]": "PRIMITIVES.white",
-    "DUSK_REEF[500-700]": "PRIMITIVES.white",
-    "PRIMITIVES.white": "ABYSS[500]",
-    "PRIMITIVES.cream": "ABYSS[500]",
-    "SLATE[50-200]": "ABYSS[500] or DUSK_REEF[500]",
-    "SLATE[700-900]": "PRIMITIVES.white or SLATE[200]",
-    "gradients(dark)": "PRIMITIVES.white + SLATE[300]",
-    "gradients(light)": "ABYSS[500] + DUSK_REEF[500]"
-  },
-
-  "rules": {
-    "golden": "Same color family on itself = BAD (ABYSS text on ABYSS bg)",
-    "contrast": "Dark bg → Light text | Light bg → Dark text",
-    "hierarchy": "primary = strongest contrast, muted = weakest (but still readable)",
-    "test": "Would this be visible if printed in grayscale? No = wrong choice"
-  }
+  "forbidden": [
+    {
+      "rule": "ABYSS on ABYSS",
+      "reason": "Same color family - insufficient contrast"
+    },
+    {
+      "rule": "DEEP_CURRENT on DEEP_CURRENT",
+      "reason": "Same color family - insufficient contrast"
+    },
+    {
+      "rule": "DUSK_REEF on DUSK_REEF",
+      "reason": "Same color family - insufficient contrast"
+    },
+    {
+      "rule": "CORAL on CORAL",
+      "reason": "Same color family - insufficient contrast"
+    },
+    {
+      "rule": "SLATE on SLATE",
+      "reason": "Same color family - insufficient contrast"
+    }
+  ]
 }
