@@ -208,7 +208,7 @@ When designing a new system, ask:
 
 Generate these files:
 
-1. `src/constants/tokens.ts` - Full 2-tier system (PRIMITIVES → ALIAS)
+1. `src/constants/designTokens.ts` - Full 2-tier system (PRIMITIVES → ALIAS)
 2. `tailwind-preset.js` - Tailwind theme extension
 3. `src/styles/tokens.css` - CSS custom properties
 4. `.claude/color-matrix.json` - Valid combinations
