@@ -1,9 +1,30 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "Machine-readable changelog for AI agents",
-  "currentVersion": "2.5.0",
-  "lastUpdated": "2025-12-15",
+  "currentVersion": "2.6.0",
+  "lastUpdated": "2025-12-20",
   "versions": {
+    "2.6.0": {
+      "date": "2025-12-20",
+      "added": [
+        "Multi-package architecture with subpath exports",
+        "src/core/ - shared components, tokens, utils",
+        "src/flow/ - Flow EHS mobile components (MobileNavButton, MobileNavBar, QuickActionButton, NextStepButton)",
+        "src/portal/ - Portal-specific components (placeholder)",
+        "MobileNavButton dark mode support with CSS variables"
+      ],
+      "changed": [
+        {
+          "component": "package.json",
+          "change": "Added exports field for subpath imports (@dds/core, @dds/flow, @dds/portal)",
+          "breaking": false
+        }
+      ],
+      "improved": [
+        "Tree-shaking by product - Portal won't bundle Flow components",
+        "Separate bundle outputs for each subpackage"
+      ]
+    },
     "unreleased": {
       "status": "in-progress",
       "targetVersion": "2.4.0",

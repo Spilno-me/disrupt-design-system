@@ -77,6 +77,15 @@
 ✅ Clean commit message
 ```
 
+**Version Bump Checklist:**
+
+| Change | Bump | Update |
+|--------|------|--------|
+| New component/feature | MINOR | package.json, changelog.json |
+| Architecture change | MINOR+ | package.json, changelog.json, CLAUDE.md |
+| Breaking change | MAJOR | package.json, changelog.json, v3-breaking-changes.md |
+| Bug fix | PATCH | package.json, changelog.json |
+
 ---
 
 ## Quick Commands
@@ -84,6 +93,22 @@
 ```bash
 npm run typecheck && npm run lint && npm run build
 npm run validate:tokens   # check token drift
+```
+
+---
+
+## Package Architecture (Multi-Package)
+
+| Subpath | Purpose | Components |
+|---------|---------|------------|
+| `@dds/core` | Shared across ALL products | Button, Card, Input, tokens, utils |
+| `@dds/flow` | Flow EHS mobile app | MobileNavButton, MobileNavBar, QuickActionButton |
+| `@dds/portal` | Portal web app | (future) |
+
+**Import Pattern:**
+```tsx
+import { Button } from '@dds/design-system/core'
+import { MobileNavButton } from '@dds/design-system/flow'
 ```
 
 ---
