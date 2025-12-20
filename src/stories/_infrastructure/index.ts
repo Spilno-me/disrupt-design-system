@@ -89,6 +89,44 @@ export {
 } from './backgrounds'
 
 // =============================================================================
+// DEVICE FRAMES (mobile & tablet presentation)
+// =============================================================================
+
+export {
+  // iPhone component & presets
+  IPhoneFrame,
+  IPhoneSEFrame,
+  IPhoneStandardFrame,
+  IPhoneProFrame,
+  IPhoneProMaxFrame,
+  // iPad component & presets
+  IPadFrame,
+  IPadStandardFrame,
+  IPadAirFrame,
+  IPadPro11Frame,
+  IPadPro12Frame,
+  IPadMiniFrame,
+  // Adaptive component (auto-detects viewport)
+  AdaptiveDeviceFrame,
+  // Decorators
+  withIPhoneFrame,
+  withIPadFrame,
+  withAdaptiveDeviceFrame,
+  // Viewport detection hook
+  useDeviceFromViewport,
+  // Specs for reference
+  IPHONE_SPECS,
+  IPAD_SPECS,
+  // Types
+  type IPhoneFrameProps,
+  type IPhoneModel,
+  type IPadFrameProps,
+  type IPadModel,
+  type AdaptiveDeviceFrameProps,
+  type DeviceDetectionResult,
+} from './device-frames'
+
+// =============================================================================
 // STORY TEMPLATES (copy-paste starters)
 // =============================================================================
 

@@ -46,6 +46,8 @@ export interface GraphNode extends d3.SimulationNodeDatum {
     referencedScale?: string
     referencedShade?: string
     resolvedHex?: string
+    /** Representative color for color-scale nodes (typically [500] shade) */
+    representativeHex?: string
   }
   // D3 simulation adds these
   x?: number

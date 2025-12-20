@@ -34,7 +34,7 @@
       "name": "ABYSS",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Dark neutral scale", "hue": "neutral-dark", "shadeCount": 10 }
+      "metadata": { "description": "Dark neutral scale", "hue": "neutral-dark", "shadeCount": 10, "representativeHex": "#2D3142" }
     },
     { "id": "shade:ABYSS[50]", "name": "ABYSS[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#E8E9EB", "scale": "ABYSS", "shade": "50" } },
     { "id": "shade:ABYSS[100]", "name": "ABYSS[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#D1D3D7", "scale": "ABYSS", "shade": "100" } },
@@ -52,7 +52,7 @@
       "name": "DEEP_CURRENT",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Teal/Cyan scale (Brand Primary)", "hue": "teal", "shadeCount": 10 }
+      "metadata": { "description": "Teal/Cyan scale (Brand Primary)", "hue": "teal", "shadeCount": 10, "representativeHex": "#08A4BD" }
     },
     { "id": "shade:DEEP_CURRENT[50]", "name": "DEEP_CURRENT[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#E6F7FA", "scale": "DEEP_CURRENT", "shade": "50" } },
     { "id": "shade:DEEP_CURRENT[100]", "name": "DEEP_CURRENT[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#CCEFF5", "scale": "DEEP_CURRENT", "shade": "100" } },
@@ -70,7 +70,7 @@
       "name": "DUSK_REEF",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Purple scale", "hue": "purple", "shadeCount": 10 }
+      "metadata": { "description": "Purple scale", "hue": "purple", "shadeCount": 10, "representativeHex": "#5E4F7E" }
     },
     { "id": "shade:DUSK_REEF[50]", "name": "DUSK_REEF[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#EFEDF3", "scale": "DUSK_REEF", "shade": "50" } },
     { "id": "shade:DUSK_REEF[100]", "name": "DUSK_REEF[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#DFDBE7", "scale": "DUSK_REEF", "shade": "100" } },
@@ -88,7 +88,7 @@
       "name": "CORAL",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Red scale", "hue": "red", "shadeCount": 11 }
+      "metadata": { "description": "Red scale", "hue": "red", "shadeCount": 11, "representativeHex": "#F70D1A" }
     },
     { "id": "shade:CORAL[50]", "name": "CORAL[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#FEF2F2", "scale": "CORAL", "shade": "50" } },
     { "id": "shade:CORAL[100]", "name": "CORAL[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#FEE2E2", "scale": "CORAL", "shade": "100" } },
@@ -107,7 +107,7 @@
       "name": "WAVE",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Blue scale", "hue": "blue", "shadeCount": 10 }
+      "metadata": { "description": "Blue scale", "hue": "blue", "shadeCount": 10, "representativeHex": "#3B82F6" }
     },
     { "id": "shade:WAVE[50]", "name": "WAVE[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#EFF6FF", "scale": "WAVE", "shade": "50" } },
     { "id": "shade:WAVE[100]", "name": "WAVE[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#DBEAFE", "scale": "WAVE", "shade": "100" } },
@@ -125,7 +125,7 @@
       "name": "SUNRISE",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Yellow scale", "hue": "yellow", "shadeCount": 10 }
+      "metadata": { "description": "Yellow scale", "hue": "yellow", "shadeCount": 10, "representativeHex": "#EAB308" }
     },
     { "id": "shade:SUNRISE[50]", "name": "SUNRISE[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#FFFBEB", "scale": "SUNRISE", "shade": "50" } },
     { "id": "shade:SUNRISE[100]", "name": "SUNRISE[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#FEF3C7", "scale": "SUNRISE", "shade": "100" } },
@@ -143,7 +143,7 @@
       "name": "ORANGE",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Orange scale", "hue": "orange", "shadeCount": 10 }
+      "metadata": { "description": "Orange scale", "hue": "orange", "shadeCount": 10, "representativeHex": "#F97316" }
     },
     { "id": "shade:ORANGE[50]", "name": "ORANGE[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#FFF7ED", "scale": "ORANGE", "shade": "50" } },
     { "id": "shade:ORANGE[100]", "name": "ORANGE[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#FFEDD5", "scale": "ORANGE", "shade": "100" } },
@@ -161,7 +161,7 @@
       "name": "HARBOR",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Green scale", "hue": "green", "shadeCount": 10 }
+      "metadata": { "description": "Green scale", "hue": "green", "shadeCount": 10, "representativeHex": "#22C55E" }
     },
     { "id": "shade:HARBOR[50]", "name": "HARBOR[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#F0FDF4", "scale": "HARBOR", "shade": "50" } },
     { "id": "shade:HARBOR[100]", "name": "HARBOR[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#DCFCE7", "scale": "HARBOR", "shade": "100" } },
@@ -179,7 +179,7 @@
       "name": "SLATE",
       "type": "color-scale",
       "group": "scales",
-      "metadata": { "description": "Neutral gray scale", "hue": "gray", "shadeCount": 10 }
+      "metadata": { "description": "Neutral gray scale", "hue": "gray", "shadeCount": 10, "representativeHex": "#64748B" }
     },
     { "id": "shade:SLATE[50]", "name": "SLATE[50]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#F8FAFC", "scale": "SLATE", "shade": "50" } },
     { "id": "shade:SLATE[100]", "name": "SLATE[100]", "type": "primitive-shade", "group": "shades", "metadata": { "hex": "#F1F5F9", "scale": "SLATE", "shade": "100" } },

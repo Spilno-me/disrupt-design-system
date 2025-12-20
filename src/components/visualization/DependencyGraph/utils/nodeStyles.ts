@@ -33,6 +33,7 @@ const COLORS = {
 /**
  * Get fill color for a node based on its type
  * For shade nodes, returns the actual hex color from metadata
+ * For color-scale nodes (central hexagons), returns the representative [500] shade
  */
 export function getNodeColor(node: GraphNode): string {
   // For primitive shades, use the actual hex color
@@ -46,6 +47,10 @@ export function getNodeColor(node: GraphNode): string {
   // For primitive base (white, cream, etc), use hex
   if (node.type === 'primitive-base' && node.metadata?.hex) {
     return node.metadata.hex
+  }
+  // For color scales (central hexagon), use representative hex from [500] shade
+  if (node.type === 'color-scale' && node.metadata?.representativeHex) {
+    return node.metadata.representativeHex
   }
 
   switch (node.type) {

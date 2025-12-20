@@ -13,6 +13,32 @@
 
 ---
 
+## Prompt Library (FIRST STEP)
+
+**BEFORE any task:** Check `.claude/prompt-library.md` for matching template.
+
+| Request Type | Template |
+|--------------|----------|
+| Story/Storybook | Create Full Story for Component |
+| New component | Create New UI Component |
+| Stabilize component | Stabilize Existing Component |
+| Add color/token | Add New Color Token |
+| Audit tokens | Audit Token Usage |
+| MDX docs | Create MDX Documentation Page |
+| Code review | Code Review for DDS Compliance |
+| Pre-PR check | Pre-PR Checklist |
+
+**Workflow:**
+```
+1. Match request → template
+2. Follow template REQUIREMENTS
+3. Read referenced .claude/*.md files
+4. Respect FORBIDDEN items
+5. Deliver in OUTPUT format
+```
+
+---
+
 ## Wu Wei (無為) - Effortless Action
 
 | Principle | Do | Don't |

@@ -44,6 +44,58 @@
   .bg-warning-strong { background-color: var(--color-warning-strong); }
   .hover\:bg-warning-strong\/90:hover { background-color: color-mix(in srgb, var(--color-warning-strong) 90%, transparent); }
   .text-warning-dark { color: var(--color-warning-dark); }
+  .border-warning-dark { border-color: var(--color-warning-dark); }
+  .bg-warning-dark { background-color: var(--color-warning-dark); }
+
+  /* Aging (urgent) severity variants */
+  .text-aging-dark { color: var(--color-aging-dark); }
+  .border-aging-dark { border-color: var(--color-aging-dark); }
+  .bg-aging-dark { background-color: var(--color-aging-dark); }
+
+  /* Success strong severity variants */
+  .text-success-strong { color: var(--color-success-strong); }
+  .border-success-strong { border-color: var(--color-success-strong); }
+
+  /* Teal (DEEP_CURRENT[700]) severity variants for "none" */
+  .text-teal { color: var(--color-teal); }
+  .border-teal { border-color: var(--color-teal); }
+  .bg-teal { background-color: var(--color-teal); }
+
+  /* Dark mode border variants for severity tokens */
+  .dark\:border-aging:is(.dark *) { border-color: var(--color-aging); }
+  .dark\:border-warning:is(.dark *) { border-color: var(--color-warning); }
+  .dark\:border-success:is(.dark *) { border-color: var(--color-success); }
+  .dark\:border-accent-strong:is(.dark *) { border-color: var(--color-accent-strong); }
+
+  /* Dark mode text variants for severity tokens */
+  .dark\:text-aging:is(.dark *) { color: var(--color-aging); }
+  .dark\:text-warning:is(.dark *) { color: var(--color-warning); }
+  .dark\:text-success:is(.dark *) { color: var(--color-success); }
+  .dark\:text-accent-strong:is(.dark *) { color: var(--color-accent-strong); }
+
+  /* Dark mode background variants for severity tokens */
+  .dark\:bg-aging:is(.dark *) { background-color: var(--color-aging); }
+  .dark\:bg-warning:is(.dark *) { background-color: var(--color-warning); }
+  .dark\:bg-success:is(.dark *) { background-color: var(--color-success); }
+  .dark\:bg-accent-strong:is(.dark *) { background-color: var(--color-accent-strong); }
+
+  /* Group-hover variants for NextStepButton */
+  .group-hover\:text-on-status:is(:where(.group):hover *) { color: #FFFFFF; }
+  .group-hover\:bg-error:is(:where(.group):hover *) { background-color: var(--color-error); }
+  .group-hover\:bg-aging:is(:where(.group):hover *) { background-color: var(--color-aging); }
+  .group-hover\:bg-aging-dark:is(:where(.group):hover *) { background-color: var(--color-aging-dark); }
+  .group-hover\:bg-warning:is(:where(.group):hover *) { background-color: var(--color-warning); }
+  .group-hover\:bg-warning-dark:is(:where(.group):hover *) { background-color: var(--color-warning-dark); }
+  .group-hover\:bg-success:is(:where(.group):hover *) { background-color: var(--color-success); }
+  .group-hover\:bg-success-strong:is(:where(.group):hover *) { background-color: var(--color-success-strong); }
+  .group-hover\:bg-teal:is(:where(.group):hover *) { background-color: var(--color-teal); }
+  .group-hover\:bg-accent-strong:is(:where(.group):hover *) { background-color: var(--color-accent-strong); }
+
+  /* Dark mode group-hover variants for NextStepButton */
+  .dark\:group-hover\:bg-aging:is(.dark *):is(:where(.group):hover *) { background-color: var(--color-aging); }
+  .dark\:group-hover\:bg-warning:is(.dark *):is(:where(.group):hover *) { background-color: var(--color-warning); }
+  .dark\:group-hover\:bg-success:is(.dark *):is(:where(.group):hover *) { background-color: var(--color-success); }
+  .dark\:group-hover\:bg-accent-strong:is(.dark *):is(:where(.group):hover *) { background-color: var(--color-accent-strong); }
 
   /* Focus ring variants */
   .focus-visible\:ring-accent\/30:focus-visible {
@@ -78,6 +130,36 @@
     background-size: 8px 8px;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
     color: var(--color-inverse);
+  }
+
+  /* =============================================================================
+   * MobileNavButton - Dark Mode Support
+   * Light: white → SLATE[200] gradient with ABYSS[500] text
+   * Dark: ABYSS[700] → ABYSS[800] gradient with SLATE[100] text
+   * ============================================================================= */
+  [data-slot="mobile-nav-button"] {
+    --mobile-nav-gradient-start: #FFFFFF;
+    --mobile-nav-gradient-end: #CBD5E1;
+    --mobile-nav-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+    --mobile-nav-pressed-bg: #CBD5E1;
+    --mobile-nav-pressed-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+    --mobile-nav-icon-color: #2D3142;
+    --mobile-nav-icon-active: #08A4BD;
+    --mobile-nav-text-color: #2D3142;
+    --mobile-nav-text-active: #08A4BD;
+  }
+
+  .dark [data-slot="mobile-nav-button"],
+  [data-slot="mobile-nav-button"]:is(.dark *) {
+    --mobile-nav-gradient-start: #474F5F;
+    --mobile-nav-gradient-end: #373E4D;
+    --mobile-nav-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
+    --mobile-nav-pressed-bg: #373E4D;
+    --mobile-nav-pressed-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.35);
+    --mobile-nav-icon-color: #F1F5F9;
+    --mobile-nav-icon-active: #66CFE1;
+    --mobile-nav-text-color: #F1F5F9;
+    --mobile-nav-text-active: #66CFE1;
   }
 }
 
