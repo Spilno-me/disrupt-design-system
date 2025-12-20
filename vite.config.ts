@@ -50,10 +50,14 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        'core/index': resolve(__dirname, 'src/core/index.ts'),
+        'flow/index': resolve(__dirname, 'src/flow/index.ts'),
+        'portal/index': resolve(__dirname, 'src/portal/index.ts'),
+      },
       name: 'DisruptDesignSystem',
       formats: ['es'],
-      fileName: 'index',
     },
     rollupOptions: {
       external: [

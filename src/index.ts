@@ -184,14 +184,19 @@ export { GenericErrorPage } from './components/ui/GenericErrorPage'
 export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
 export { SeverityIndicator } from './components/ui/SeverityIndicator'
 export type { SeverityIndicatorProps, SeverityLevel } from './components/ui/SeverityIndicator'
-export { QuickActionButton, quickActionButtonVariants } from './components/ui/quick-action-button'
-export type { QuickActionButtonProps, QuickActionVariant } from './components/ui/quick-action-button'
-export { MobileNavButton, mobileNavButtonVariants } from './components/ui/mobile-nav-button'
-export type { MobileNavButtonProps, MobileNavButtonVariant } from './components/ui/mobile-nav-button'
-export { MobileNavBar, mobileNavBarVariants, FlowMobileNav } from './components/ui/mobile-nav-bar'
-export type { MobileNavBarProps, FlowMobileNavProps } from './components/ui/mobile-nav-bar'
-export { NextStepButton, nextStepButtonVariants } from './components/ui/next-step-button'
-export type { NextStepButtonProps, NextStepSeverity } from './components/ui/next-step-button'
+
+// =============================================================================
+// FLOW-SPECIFIC COMPONENTS - Moved to @adrozdenko/design-system/flow
+// =============================================================================
+// The following components are Flow EHS mobile-specific and have been moved
+// to the /flow subpath to prevent polluting Portal/Market imports:
+//   - QuickActionButton, quickActionButtonVariants
+//   - MobileNavButton, mobileNavButtonVariants
+//   - MobileNavBar, mobileNavBarVariants, FlowMobileNav
+//   - NextStepButton, nextStepButtonVariants
+//
+// Import them from: import { ... } from '@adrozdenko/design-system/flow'
+// =============================================================================
 
 // Export section components
 export { FAQSection } from './components/sections/FAQSection'

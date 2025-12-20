@@ -11,6 +11,18 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./core": {
+      "import": "./dist/core/index.js",
+      "types": "./dist/core/index.d.ts"
+    },
+    "./flow": {
+      "import": "./dist/flow/index.js",
+      "types": "./dist/flow/index.d.ts"
+    },
+    "./portal": {
+      "import": "./dist/portal/index.js",
+      "types": "./dist/portal/index.d.ts"
+    },
     "./tokens": {
       "import": "./dist/constants/designTokens.js",
       "types": "./dist/constants/designTokens.d.ts"

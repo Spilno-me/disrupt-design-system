@@ -7,7 +7,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react'
 import { expect, within, userEvent, fn } from 'storybook/test'
-import { NextStepButton, type NextStepSeverity } from './next-step-button'
+import { NextStepButton, type NextStepSeverity } from '../../flow/components/next-step-button'
 import {
   ATOM_META,
   atomDescription,

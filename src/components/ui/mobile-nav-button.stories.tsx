@@ -7,7 +7,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react'
 import { Settings, User, Bell, Search } from 'lucide-react'
-import { MobileNavButton, type MobileNavButtonVariant } from './mobile-nav-button'
+import { MobileNavButton, type MobileNavButtonVariant } from '../../flow/components/mobile-nav-button'
 import {
   ATOM_META,
   atomDescription,

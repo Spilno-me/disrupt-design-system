@@ -6,9 +6,9 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/react'
-import { MobileNavBar, FlowMobileNav } from './mobile-nav-bar'
-import { MobileNavButton } from './mobile-nav-button'
-import { QuickActionButton } from './quick-action-button'
+import { MobileNavBar, FlowMobileNav } from '../../flow/components/mobile-nav-bar'
+import { MobileNavButton } from '../../flow/components/mobile-nav-button'
+import { QuickActionButton } from '../../flow/components/quick-action-button'
 import {
   MOLECULE_META,
   moleculeDescription,

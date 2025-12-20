@@ -7,7 +7,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react'
 import { Home, FileText, Bell, Settings, ClipboardList } from 'lucide-react'
-import { QuickActionButton, type QuickActionVariant } from './quick-action-button'
+import { QuickActionButton, type QuickActionVariant } from '../../flow/components/quick-action-button'
 import {
   ATOM_META,
   atomDescription,
