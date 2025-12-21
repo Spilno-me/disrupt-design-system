@@ -12,7 +12,7 @@ import { cn } from '../../lib/utils'
  * </ActionTile>
  *
  * @example
- * // Filled mode (for light backgrounds)
+ * // Filled mode (subtle colored fill, works on any background)
  * <ActionTile variant="destructive" appearance="filled" onClick={onDelete}>
  *   <Trash2 className="size-8" />
  * </ActionTile>
@@ -63,23 +63,24 @@ const actionTileVariants = cva(
       },
     },
     compoundVariants: [
-      // Filled backgrounds per variant
+      // Filled: subtle colored fill at rest, stronger on hover
+      // Works on dark backgrounds using border color with transparency
       {
         variant: 'success',
         appearance: 'filled',
-        className: 'bg-success-light hover:bg-success-muted',
+        className: 'bg-success/5 hover:bg-success/20',
       },
       {
         variant: 'neutral',
         appearance: 'filled',
-        className: 'bg-surface hover:bg-cream',
+        className: 'bg-white/5 hover:bg-white/20',
       },
       {
         variant: 'destructive',
         appearance: 'filled',
-        className: 'bg-error-light hover:bg-error-muted',
+        className: 'bg-error/5 hover:bg-error/20',
       },
-      // Outline hover states
+      // Outline: transparent at rest, light fill on hover
       {
         variant: 'success',
         appearance: 'outline',
@@ -88,7 +89,7 @@ const actionTileVariants = cva(
       {
         variant: 'neutral',
         appearance: 'outline',
-        className: 'hover:bg-surface/50',
+        className: 'hover:bg-white/10',
       },
       {
         variant: 'destructive',
@@ -122,8 +123,8 @@ export interface ActionTileProps
  * - `destructive` - Red, for dangerous actions (delete, remove, cancel)
  *
  * Use `appearance` to set the visual style:
- * - `outline` - Transparent bg with colored border (for dark backgrounds)
- * - `filled` - Tinted background with colored border (for light backgrounds)
+ * - `outline` - Transparent bg, colored border, subtle hover fill
+ * - `filled` - Subtle colored fill at rest, stronger hover effect
  */
 const ActionTile = React.forwardRef<HTMLButtonElement, ActionTileProps>(
   ({ className, variant, appearance, size, children, ...props }, ref) => {

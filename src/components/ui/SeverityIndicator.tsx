@@ -40,28 +40,27 @@ interface SeverityConfig {
 }
 
 /**
- * Text color choices based on WCAG contrast requirements:
- * - Dark fills (red): Use white text (4.79:1 contrast)
- * - Bright fills (orange, yellow, green): Use dark text for readability
- * - Teal fill: Use dark text (white only gets 3.57:1)
+ * Text color choices: Darker shade of same color family for cohesive look
+ * - Critical: White on red (high contrast needed for urgency)
+ * - High/Medium/Low/None: Dark shade of fill color (800 level)
  *
- * WCAG AA requires 4.5:1 for normal text, 3:1 for UI components.
- * These small badges with "!", "!!" text need readable contrast.
+ * Using same-family dark shades creates visual harmony while maintaining
+ * good contrast for readability.
  */
 const severityConfig: Record<SeverityLevel, SeverityConfig> = {
   critical: {
     fill: 'var(--color-error)',
     stroke: 'var(--color-error-light)',
     text: '',
-    textColor: 'var(--brand-white)',  // White on red: 4.79:1 ✓
+    textColor: 'var(--brand-white)',  // White for maximum urgency contrast
     showFlame: true,
     label: 'Critical',
   },
   high: {
-    fill: 'var(--color-aging)',       // Orange for high priority
+    fill: 'var(--color-aging)',
     stroke: 'var(--color-aging-light)',
     text: '!!!',
-    textColor: 'var(--brand-abyss-900)',  // Dark on orange for contrast
+    textColor: 'var(--color-aging-dark)',  // Dark orange from same family
     showFlame: false,
     label: 'High',
   },
@@ -69,7 +68,7 @@ const severityConfig: Record<SeverityLevel, SeverityConfig> = {
     fill: 'var(--color-warning)',
     stroke: 'var(--color-warning-light)',
     text: '!!',
-    textColor: 'var(--brand-abyss-900)',  // Dark on yellow for contrast
+    textColor: 'var(--color-warning-dark)',  // Dark amber from same family
     showFlame: false,
     label: 'Medium',
   },
@@ -77,15 +76,15 @@ const severityConfig: Record<SeverityLevel, SeverityConfig> = {
     fill: 'var(--color-success)',
     stroke: 'var(--color-success-light)',
     text: '!',
-    textColor: 'var(--brand-abyss-900)',  // Dark on green for contrast
+    textColor: 'var(--color-success-dark)',  // Dark green from same family
     showFlame: false,
     label: 'Low',
   },
   none: {
     fill: 'var(--color-accent-strong)',
     stroke: 'var(--color-accent-bg)',
-    text: '--',
-    textColor: 'var(--brand-abyss-900)',  // Dark on teal for contrast
+    text: '––',
+    textColor: 'var(--color-accent-dark)',  // Dark teal from same family
     showFlame: false,
     label: 'None',
   },
@@ -95,15 +94,16 @@ const severityConfig: Record<SeverityLevel, SeverityConfig> = {
 // SUBCOMPONENTS
 // =============================================================================
 
-/** Squircle background shape */
+/** Squircle background shape - horizontally stretched per Figma reference */
 const SquircleBackground: React.FC<{
   fill: string
   stroke: string
   size: 'sm' | 'md'
 }> = ({ fill, stroke, size }) => {
+  // Dimensions match Figma reference: wider aspect ratio
   const dimensions = size === 'sm'
-    ? { width: 24, height: 20, viewBox: '0 0 30 25' }
-    : { width: 30, height: 25, viewBox: '0 0 30 25' }
+    ? { width: 32, height: 24, viewBox: '0 0 40 30' }
+    : { width: 40, height: 30, viewBox: '0 0 40 30' }
 
   return (
     <svg
@@ -115,11 +115,12 @@ const SquircleBackground: React.FC<{
       className="absolute inset-0"
       aria-hidden="true"
     >
+      {/* Squircle path: smooth corners with horizontal stretch */}
       <path
-        d="M15 3.125C24 3.125 26.25 5 26.25 12.5C26.25 20 24 21.875 15 21.875C6 21.875 3.75 20 3.75 12.5C3.75 5 6 3.125 15 3.125Z"
+        d="M20 3C32 3 36 6 36 15C36 24 32 27 20 27C8 27 4 24 4 15C4 6 8 3 20 3Z"
         fill={fill}
         stroke={stroke}
-        strokeWidth="2"
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -172,11 +173,12 @@ export function SeverityIndicator({
 }: SeverityIndicatorProps) {
   const config = severityConfig[level]
 
+  // Dimensions match Figma reference: wider aspect ratio
   const dimensions = size === 'sm'
-    ? { width: 24, height: 20 }
-    : { width: 30, height: 25 }
+    ? { width: 32, height: 24 }
+    : { width: 40, height: 30 }
 
-  const fontSize = size === 'sm' ? 11 : 14
+  const fontSize = size === 'sm' ? 12 : 15
 
   return (
     <div
@@ -198,14 +200,14 @@ export function SeverityIndicator({
       {config.showFlame ? (
         <Flame
           className="relative z-10"
-          size={size === 'sm' ? 12 : 14}
+          size={size === 'sm' ? 14 : 18}
           color={config.textColor}
           fill={config.textColor}
           aria-hidden="true"
         />
       ) : (
         <span
-          className="relative z-10 font-medium leading-none select-none"
+          className="relative z-10 font-bold leading-none select-none tracking-tight"
           style={{
             color: config.textColor,
             fontSize,

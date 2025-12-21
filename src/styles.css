@@ -372,6 +372,8 @@ h1.dds-brand-hero-title,
   --color-accent-bg: #E6F7FA;
   /* Usage: bg-accent-strong (strong teal) */
   --color-accent-strong: #08A4BD;
+  /* Usage: text-accent-dark (dark teal for text on light teal backgrounds) */
+  --color-accent-dark: #03424B;
 
   /* --- BORDER COLORS --- */
   /* Usage: border-default (standard borders) */
@@ -404,6 +406,8 @@ h1.dds-brand-hero-title,
   --color-success-muted: #DCFCE7;
   /* Usage: bg-success-strong (darker green for buttons, 5.0:1 contrast) */
   --color-success-strong: #15803D;
+  /* Usage: text-success-dark (darkest green for text on light green backgrounds) */
+  --color-success-dark: #166534;
   /* Usage: bg-warning, text-warning, border-warning */
   --color-warning: #EAB308;
   /* Usage: bg-warning-light */
@@ -446,7 +450,7 @@ h1.dds-brand-hero-title,
   /* Usage: bg-aging, text-aging, border-aging */
   --color-aging: #F97316;
   /* Usage: bg-aging-dark */
-  --color-aging-dark: #EA580C;
+  --color-aging-dark: #7C2D12;  /* ORANGE[900] - was [600], now darker for contrast */
   /* Usage: bg-aging-light */
   --color-aging-light: #FFF7ED;
 

@@ -36,7 +36,7 @@ const meta: Meta<typeof ActionTile> = {
     appearance: {
       control: 'select',
       options: ['outline', 'filled'],
-      description: 'Visual style (outline for dark backgrounds, filled for light)',
+      description: 'Visual style (outline = transparent, filled = subtle colored fill)',
     },
     size: {
       control: 'select',
@@ -93,7 +93,7 @@ export const AllStates: Story = {
       {/* Filled variants on dark background */}
       <StorySection
         title="Filled Appearance (Dark Background)"
-        description="Use filled appearance for higher visibility on dark surfaces"
+        description="Filled uses subtle colored fill at rest, stronger on hover"
       >
         <div className="bg-dark rounded-xl p-8">
           <StoryFlex>
@@ -113,7 +113,7 @@ export const AllStates: Story = {
       {/* Filled variants on light background */}
       <StorySection
         title="Filled Appearance (Light Background)"
-        description="Filled appearance on light surfaces"
+        description="Same subtle fills work on light surfaces too"
       >
         <StoryFlex>
           <ActionTile variant="success" appearance="filled" aria-label="Create new">

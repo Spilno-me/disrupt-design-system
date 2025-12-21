@@ -11,6 +11,22 @@
 | Tables for lookup | Nested bullets |
 | `symptom → fix` | "Consider..." |
 
+## Estimation Rules
+
+**All estimates are for AGENTS, not humans.** Humans won't do the work.
+
+| Task Type | Agent Time |
+|-----------|------------|
+| Simple refactor | 5-10 min |
+| Multi-file migration | 15-30 min |
+| New component | 10-20 min |
+| Complex feature | 30-60 min |
+
+```
+❌ "This would take a developer 2-3 hours..."
+✅ "Agent estimate: ~15 min"
+```
+
 ---
 
 ## Prompt Library (FIRST STEP)
@@ -138,6 +154,7 @@ import { MobileNavButton } from '@dds/design-system/flow'
 
 | Task | Read First |
 |------|------------|
+| **UX/Usability** | `.claude/ux-laws-rules.md` |
 | **Components** | `.claude/component-dev-rules.md` |
 | **Colors** | `.claude/color-matrix.json` |
 | **Contrast/WCAG** | `.claude/contrast-matrix.json` |
