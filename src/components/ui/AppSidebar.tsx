@@ -152,8 +152,8 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false }:
       className={cn(
         'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-        isActive && 'bg-accent-bg',
-        !isActive && !item.disabled && 'hover:bg-accent-bg',
+        isActive && 'bg-surface-active',
+        !isActive && !item.disabled && 'hover:bg-surface-hover',
         item.disabled && 'opacity-50 cursor-not-allowed',
         isNested && !collapsed && 'pl-9'
       )}
@@ -217,8 +217,8 @@ function NavGroup({
           className={cn(
             'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-            groupActive && 'bg-accent-bg',
-            !groupActive && 'hover:bg-accent-bg'
+            groupActive && 'bg-surface-active',
+            !groupActive && 'hover:bg-surface-hover'
           )}
           onClick={() => {
             if (collapsed) onNavigate(item)
@@ -288,7 +288,7 @@ function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => 
       className={cn(
         'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-        'hover:bg-accent-bg'
+        'hover:bg-surface-hover'
       )}
       data-slot="help-item"
     >
@@ -404,7 +404,7 @@ export function AppSidebar({
   return (
     <motion.nav
       ref={sidebarRef}
-      className={cn('relative flex flex-col h-full bg-surface/60 backdrop-blur-sm', className)}
+      className={cn('relative flex flex-col h-full', className)}
       initial={false}
       animate={{ width: collapsed ? COLLAPSED_WIDTH : EXPANDED_WIDTH }}
       transition={{ duration: TRANSITION_DURATION, ease: 'easeInOut' }}
@@ -415,11 +415,18 @@ export function AppSidebar({
       onMouseLeave={handleMouseLeave}
       {...props}
     >
+      {/* Background with gradient fade to transparent at bottom */}
+      <div
+        className="absolute inset-0 pointer-events-none bg-gradient-to-b from-surface/60 from-70% to-transparent backdrop-blur-sm"
+        style={{ maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
+        data-slot="sidebar-bg"
+      />
+
       {/* Gradient border on right edge */}
-      <div className="absolute right-0 top-0 bottom-0 w-px pointer-events-none bg-gradient-to-b from-surface via-default to-surface" data-slot="border" />
+      <div className="absolute right-0 top-0 bottom-[100px] w-px pointer-events-none bg-gradient-to-b from-surface via-default to-transparent" data-slot="border" />
 
       {/* Navigation items */}
-      <div className="flex-1 flex flex-col gap-1 py-3 overflow-y-auto overflow-x-hidden" data-slot="nav-items">
+      <div className="relative flex-1 flex flex-col gap-1 py-3 overflow-y-auto overflow-x-hidden" data-slot="nav-items">
         {items.map((item) => {
           if (item.children && item.children.length > 0) {
             return (
@@ -447,10 +454,10 @@ export function AppSidebar({
         })}
       </div>
 
-      {/* Help item at bottom */}
+      {/* Help item at bottom - floats over transparent area */}
       {showHelpItem && (
-        <div className="py-3" data-slot="help-section">
-          <div className="h-px mb-3 bg-gradient-to-r from-surface via-default to-surface" data-slot="separator" />
+        <div className="relative py-3" data-slot="help-section">
+          <div className="h-px mb-3 bg-gradient-to-r from-transparent via-default/50 to-transparent" data-slot="separator" />
           <HelpItem collapsed={collapsed} onClick={onHelpClick} />
         </div>
       )}

@@ -154,12 +154,32 @@ export const LINEN = {
   900: '#132029',  // Near black with blue
 } as const
 
+/** Ivory - Warm white scale for depth layering (EHS-optimized) */
+export const IVORY = {
+  50: '#FFFEF9',   // Elevated/Card - warmest near-white
+  100: '#FAF8F3',  // Surface - warm ivory
+  200: '#F0EDE6',  // Page background - warm beige
+  300: '#E5E2DB',  // Hover states
+  400: '#D5D2CB',  // Active states
+  500: '#B5B2AB',  // Muted elements
+  600: '#8A877F',  // Secondary text on light
+  700: '#5F5C54',  // Primary text on light
+  800: '#3A3832',  // Dark accents
+  900: '#1F1E1B',  // Near black with warmth
+} as const
+
 /** Base primitives - single color values */
 export const PRIMITIVES = {
   white: '#FFFFFF',
   black: '#000000',
   cream: '#FBFBF3',
-  softLinen: LINEN[100],  // References LINEN scale for consistency
+  // Depth layering primitives (Ivory family - warm whites)
+  ivoryElevated: IVORY[50],   // #FFFEF9 - Card/elevated surfaces (lightest)
+  ivorySurface: IVORY[100],   // #FAF8F3 - Content surfaces
+  ivoryPage: IVORY[400],      // #D5D2CB - Page background (darkest of the three)
+  // Legacy (kept for backwards compatibility)
+  winterWhite: IVORY[400],    // Aliased to ivoryPage
+  softLinen: IVORY[100],      // Aliased to ivorySurface
   linkedIn: '#0A66C2',
 } as const
 
@@ -188,11 +208,11 @@ export const ALIAS = {
 
   // --- BACKGROUND ---
   background: {
-    page: LINEN[200],  // Darker variation of softLinen
-    surface: PRIMITIVES.softLinen,
-    surfaceHover: ABYSS[50],
-    surfaceActive: ABYSS[100],
-    elevated: PRIMITIVES.softLinen,
+    page: PRIMITIVES.ivoryPage,       // #D5D2CB - Warm beige page background
+    surface: PRIMITIVES.ivorySurface, // #FAF8F3 - Warm ivory surface (1 step lighter)
+    surfaceHover: IVORY[300],         // #E5E2DB - Hover state
+    surfaceActive: IVORY[400],        // #D5D2CB - Active/pressed state
+    elevated: PRIMITIVES.ivoryElevated, // #FFFEF9 - Card/elevated (2 steps lighter)
     muted: DUSK_REEF[50],
     inverse: ABYSS[500],
     inverseSubtle: ABYSS[700],
@@ -273,16 +293,16 @@ export const ALIAS = {
 
   // --- OVERLAY ---
   overlay: {
-    light: 'rgba(251, 251, 243, 0.3)',
+    light: 'rgba(250, 248, 243, 0.3)',   // Based on ivorySurface
     medium: 'rgba(0, 0, 0, 0.3)',
     dark: 'rgba(0, 0, 0, 0.5)',
     darkStrong: 'rgba(0, 0, 0, 0.8)',
     white15: 'rgba(255, 255, 255, 0.15)',
     white50: 'rgba(255, 255, 255, 0.5)',
     white60: 'rgba(255, 255, 255, 0.6)',
-    subtle: 'rgba(229, 229, 229, 0.5)',
+    subtle: 'rgba(229, 226, 219, 0.5)',  // Based on IVORY[300]
     tealGlass: 'rgba(0, 128, 128, 0.05)',
-    glass: 'rgba(251, 251, 243, 0.85)', // Glass effect for mobile nav
+    glass: 'rgba(250, 248, 243, 0.85)',  // Glass effect - ivorySurface based
     glassBorder: 'rgba(153, 153, 153, 0)', // Transparent end for glass borders
   },
 
@@ -403,6 +423,7 @@ function getPrimitiveName(color: string): string {
     if (color === hex) return `ABYSS[${shade}]`
   }
   // Fallback to primitive names
+  if (color === PRIMITIVES.winterWhite) return 'winterWhite'
   if (color === PRIMITIVES.cream) return 'cream'
   if (color === PRIMITIVES.white) return 'white'
   return color
@@ -934,7 +955,7 @@ export const LAYOUT = {
 // =============================================================================
 
 export const COLOR_CONSTANTS = {
-  DEFAULT_BG: 'rgb(251, 251, 243)',
+  DEFAULT_BG: 'rgb(250, 248, 243)',  // ivorySurface
   ASSUMED_DARK: 'rgb(50, 50, 50)',
   BRIGHTNESS_THRESHOLD: 128,
 } as const

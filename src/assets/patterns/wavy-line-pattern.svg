@@ -1,0 +1,10 @@
+<svg width="80" height="120" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Single vertical wavy line - tiles horizontally -->
+  <path
+    d="M40 0 C60 20, 60 40, 40 60 C20 80, 20 100, 40 120"
+    stroke="#4DD0E1"
+    stroke-width="2"
+    stroke-linecap="round"
+    fill="none"
+  />
+</svg>

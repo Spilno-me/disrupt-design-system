@@ -62,8 +62,27 @@ export interface IncidentManagementTableProps {
   onIncidentClick?: (id: string) => void
   /** Callback for bulk delete */
   onBulkDelete?: (ids: string[]) => void
+  /** Hide the priority legend */
+  hideLegend?: boolean
+  /** Hide the bulk actions panel */
+  hideBulkActions?: boolean
   /** Additional CSS classes */
   className?: string
+  // Pagination props
+  /** Enable pagination footer inside table */
+  pagination?: boolean
+  /** Current page (1-indexed) */
+  currentPage?: number
+  /** Total number of items (for pagination) */
+  totalItems?: number
+  /** Number of items per page */
+  pageSize?: number
+  /** Callback when page changes */
+  onPageChange?: (page: number) => void
+  /** Callback when page size changes */
+  onPageSizeChange?: (pageSize: number) => void
+  /** Available page sizes */
+  pageSizeOptions?: number[]
 }
 
 // =============================================================================
@@ -76,7 +95,7 @@ const COLUMN_WIDTHS = {
   location: '220px', // Typical location names
   reporter: '140px', // Typical names
   status: '145px',   // Status badges + border padding
-  severity: '100px', // Severity indicator
+  severity: '115px', // Severity indicator + label (e.g., "Critical")
   age: '100px',      // Age badge
   actions: '140px',  // Action buttons + right padding
 } as const
@@ -120,7 +139,17 @@ export function IncidentManagementTable({
   onDelete,
   onIncidentClick,
   onBulkDelete,
+  hideLegend = false,
+  hideBulkActions = false,
   className,
+  // Pagination props
+  pagination = false,
+  currentPage,
+  totalItems,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  pageSizeOptions,
 }: IncidentManagementTableProps) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set())
   const [sortColumn, setSortColumn] = useState<string | null>(null)
@@ -334,29 +363,31 @@ export function IncidentManagementTable({
   return (
     <div className={cn('space-y-4', className)}>
       {/* Legend */}
-      <div className="flex flex-wrap gap-4 text-xs">
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-sm bg-error" /> Critical
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-sm bg-aging" /> High
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-sm bg-warning" /> Medium
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-sm bg-success" /> Low
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-sm bg-info" /> None
-        </span>
-        <span className="inline-flex items-center gap-2">
-          <span className="w-3 h-3 rounded-sm border border-dashed border-default bg-muted-bg" /> Draft
-        </span>
-      </div>
+      {!hideLegend && (
+        <div className="flex flex-wrap gap-4 text-xs">
+          <span className="inline-flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-error" /> Critical
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-aging" /> High
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-warning" /> Medium
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-success" /> Low
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm bg-info" /> None
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="w-3 h-3 rounded-sm border border-dashed border-default bg-muted-bg" /> Draft
+          </span>
+        </div>
+      )}
 
       {/* Bulk Actions Panel - hidden on mobile */}
-      {!isMobile && (
+      {!hideBulkActions && !isMobile && (
         <div className="flex items-center justify-between">
           <button
             type="button"
@@ -451,6 +482,14 @@ export function IncidentManagementTable({
           hoverable
           bordered
           getRowPriority={(row) => row.priority}
+          // Pagination props
+          pagination={pagination}
+          currentPage={currentPage}
+          totalItems={totalItems}
+          pageSize={pageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          pageSizeOptions={pageSizeOptions}
         />
       )}
     </div>

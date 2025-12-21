@@ -21,6 +21,7 @@ import {
   Camera,
   Shield,
   ClipboardCheck,
+  Download,
 } from 'lucide-react'
 import { AppLayoutShell } from '../../templates/layout/AppLayoutShell'
 import { DashboardPage } from '../../templates/pages'
@@ -29,21 +30,102 @@ import {
   IncidentManagementTable,
   type Incident,
 } from '../../components/ui/table'
+import { SearchFilter } from '../../components/shared/SearchFilter/SearchFilter'
+import type { FilterGroup, FilterState } from '../../components/shared/SearchFilter/types'
+import {
+  QuickFilter,
+  DraftsFilter,
+  ReportedFilter,
+  AgingFilter,
+  InProgressFilter,
+  ReviewsFilter,
+} from '../../components/ui/QuickFilter'
+import { PageActionPanel } from '../../components/ui/PageActionPanel'
+import { Button } from '../../components/ui/button'
+import { useState, useMemo } from 'react'
 
 // =============================================================================
 // MOCK DATA - Incidents
 // =============================================================================
 
-const incidentData: Incident[] = [
-  { id: '1', incidentId: 'INC-516344565333', title: 'Critical Chemical Spill in Warehouse B Section 4 - Hazardous Materials Containment Protocol Required', location: 'Warehouse B - Section 4', reporter: 'Patricia Davis', priority: 'critical', severity: 'critical', status: 'investigation', ageDays: 95, overdue: true },
-  { id: '7', incidentId: 'INC-516344565339', title: 'Major Ventilation System Failure Affecting Multiple Production Areas', location: 'Production Floor - Building A', reporter: 'Sarah Connor', priority: 'high', severity: 'high', status: 'investigation', ageDays: 42, overdue: true },
-  { id: '9', incidentId: 'INC-516344565341', title: 'Electrical Panel Inspection Overdue - Potential Fire Hazard', location: 'Utility Room 3B', reporter: 'Mike Chen', priority: 'medium', severity: 'medium', status: 'review', ageDays: 14, overdue: true },
-  { id: '2', incidentId: 'INC-516344565334', title: 'Equipment Malfunction Near Assembly Line', location: 'Assembly Line 3', reporter: 'Michael Johnson', priority: 'low', severity: 'low', status: 'review', ageDays: 21 },
-  { id: '8', incidentId: 'INC-516344565340', title: 'Fire Extinguisher Expired', location: 'Storage Room C', reporter: 'John Martinez', priority: 'medium', severity: 'medium', status: 'review', ageDays: 5 },
-  { id: '3', incidentId: 'INC-516344565335', title: 'Minor Injury Report - Slip Hazard', location: 'Loading Dock - East Wing', reporter: 'Linda Smith', priority: 'medium', severity: 'medium', status: 'investigation', ageDays: 3 },
-  { id: '5', incidentId: 'INC-516344565337', title: 'Near Miss Reported at Entrance', location: 'Building Entrance', reporter: 'Patricia Taylor', priority: 'none', severity: 'none', status: 'reported', ageDays: 1 },
-  { id: '6', incidentId: 'INC-516344565338', title: 'New Incident Draft', location: 'TBD', reporter: 'Robert Wilson', priority: 'draft', severity: 'none', status: 'draft', ageDays: 0 },
+// Generate 100 incidents with various severities and statuses
+const incidentTitles = [
+  'Chemical Spill in Storage Area', 'Equipment Malfunction', 'Slip and Fall Incident', 'Fire Alarm Activation',
+  'Gas Leak Detected', 'Electrical Hazard Reported', 'Vehicle Collision', 'Structural Damage Found',
+  'PPE Violation Observed', 'Ergonomic Issue Reported', 'Noise Exposure Concern', 'Heat Stress Incident',
+  'Confined Space Entry Issue', 'Lockout/Tagout Violation', 'Fall Protection Failure', 'Machine Guarding Missing',
+  'Hazardous Waste Spillage', 'Air Quality Concern', 'Water Contamination', 'Radiation Exposure Risk',
+  'Biological Hazard Found', 'Sharp Object Injury', 'Crushing Hazard Near Miss', 'Forklift Incident',
+  'Ladder Safety Issue', 'Scaffolding Problem', 'Crane Operation Concern', 'Welding Safety Violation',
+  'Chemical Burn Reported', 'Eye Injury Incident', 'Back Injury Complaint', 'Respiratory Issue',
 ]
+const locations = [
+  'Warehouse A - Section 1', 'Warehouse B - Section 4', 'Production Floor - Building A', 'Assembly Line 3',
+  'Loading Dock - East Wing', 'Storage Room C', 'Utility Room 3B', 'Building Entrance', 'Parking Lot B',
+  'Office Building - Floor 2', 'Maintenance Shop', 'Quality Control Lab', 'Shipping Department',
+  'Receiving Area', 'Break Room - North', 'Conference Room 101', 'Server Room', 'Chemical Storage',
+  'Outdoor Tank Farm', 'Compressor Building', 'Boiler Room', 'HVAC Equipment Area', 'Roof Access',
+]
+const reporters = [
+  'Patricia Davis', 'Sarah Connor', 'Mike Chen', 'Michael Johnson', 'John Martinez', 'Linda Smith',
+  'Patricia Taylor', 'Robert Wilson', 'James Brown', 'Jennifer Garcia', 'David Miller', 'Maria Rodriguez',
+  'William Anderson', 'Elizabeth Thomas', 'Richard Jackson', 'Susan White', 'Joseph Harris', 'Margaret Martin',
+  'Charles Thompson', 'Dorothy Moore', 'Christopher Lee', 'Nancy Walker', 'Daniel Hall', 'Karen Allen',
+]
+
+const generateIncidents = (): Incident[] => {
+  const incidents: Incident[] = []
+  const _severities: Array<'critical' | 'high' | 'medium' | 'low' | 'none'> = ['critical', 'high', 'medium', 'low', 'none']
+  const _statuses: Array<'draft' | 'reported' | 'investigation' | 'review'> = ['draft', 'reported', 'investigation', 'review']
+
+  // Distribution: 5 critical, 10 high, 30 medium, 35 low, 20 none
+  // Status distribution: 8 draft, 15 reported, 40 investigation, 37 review
+  const severityDistribution = [
+    ...Array(5).fill('critical'),
+    ...Array(10).fill('high'),
+    ...Array(30).fill('medium'),
+    ...Array(35).fill('low'),
+    ...Array(20).fill('none'),
+  ] as Array<'critical' | 'high' | 'medium' | 'low' | 'none'>
+
+  const statusDistribution = [
+    ...Array(8).fill('draft'),
+    ...Array(15).fill('reported'),
+    ...Array(40).fill('investigation'),
+    ...Array(37).fill('review'),
+  ] as Array<'draft' | 'reported' | 'investigation' | 'review'>
+
+  for (let i = 0; i < 100; i++) {
+    const severity = severityDistribution[i]
+    const status = statusDistribution[i]
+    const ageDays = status === 'draft' ? 0 : Math.floor(Math.random() * 120)
+    const isOverdue = ageDays > 30 && status !== 'draft' && status !== 'reported'
+
+    incidents.push({
+      id: String(i + 1),
+      incidentId: `INC-${516344565333 + i}`,
+      title: incidentTitles[i % incidentTitles.length] + (i > 31 ? ` - Case ${i + 1}` : ''),
+      location: locations[i % locations.length],
+      reporter: reporters[i % reporters.length],
+      priority: status === 'draft' ? 'draft' : severity,
+      severity: severity,
+      status: status,
+      ageDays: ageDays,
+      overdue: isOverdue,
+    })
+  }
+
+  // Sort by severity (critical first) then by age (oldest first)
+  return incidents.sort((a, b) => {
+    const severityOrder = { critical: 0, high: 1, medium: 2, low: 3, none: 4 }
+    const aSev = severityOrder[a.severity as keyof typeof severityOrder] ?? 5
+    const bSev = severityOrder[b.severity as keyof typeof severityOrder] ?? 5
+    if (aSev !== bSev) return aSev - bSev
+    return (b.ageDays || 0) - (a.ageDays || 0)
+  })
+}
+
+const incidentData: Incident[] = generateIncidents()
 
 // =============================================================================
 // MOCK DATA - EHS Specific
@@ -183,18 +265,11 @@ const flowNavItems = [
     badge: 3,
     component: (
       <DashboardPage
-        title="Incident Management"
-        subtitle="Track and manage safety incidents"
-        kpis={[
-          { id: '1', label: 'Open', value: 3, icon: <TriangleAlert className="w-5 h-5 text-warning" /> },
-          { id: '2', label: 'In Progress', value: 5, icon: <ClipboardCheck className="w-5 h-5 text-info" /> },
-          { id: '3', label: 'Resolved', value: 42, icon: <Shield className="w-5 h-5 text-success" /> },
-        ]}
-        kpiColumns={3}
         hideQuickActions
         hideActivity
+        hideTitle
       >
-        <IncidentManagementTable data={incidentData} />
+        <IncidentsTableWithSearch data={incidentData} />
       </DashboardPage>
     ),
   },
@@ -293,6 +368,247 @@ const userMenuItems = [
 ]
 
 // =============================================================================
+// FILTER CONFIGURATION
+// =============================================================================
+
+const incidentFilterGroups: FilterGroup[] = [
+  {
+    key: 'status',
+    label: 'Status',
+    options: [
+      { id: 'draft', label: 'Draft' },
+      { id: 'reported', label: 'Reported' },
+      { id: 'investigation', label: 'Investigation' },
+      { id: 'review', label: 'Review' },
+    ],
+  },
+  {
+    key: 'severity',
+    label: 'Severity',
+    options: [
+      { id: 'critical', label: 'Critical' },
+      { id: 'high', label: 'High' },
+      { id: 'medium', label: 'Medium' },
+      { id: 'low', label: 'Low' },
+      { id: 'none', label: 'None' },
+    ],
+  },
+  {
+    key: 'overdue',
+    label: 'Overdue',
+    options: [
+      { id: 'overdue', label: 'Overdue Only' },
+    ],
+  },
+]
+
+// =============================================================================
+// INCIDENTS TABLE WITH SEARCH FILTER
+// =============================================================================
+
+type QuickFilterType = 'all' | 'drafts' | 'reported' | 'aging' | 'investigation' | 'reviews'
+
+function IncidentsTableWithSearch({ data }: { data: Incident[] }) {
+  const [searchValue, setSearchValue] = useState('')
+  const [filters, setFilters] = useState<FilterState>({})
+  const [activeQuickFilter, setActiveQuickFilter] = useState<QuickFilterType>('all')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(50)
+
+  // Calculate counts for quick filters
+  const filterCounts = useMemo(() => {
+    return {
+      drafts: data.filter(i => i.status === 'draft').length,
+      reported: data.filter(i => i.status === 'reported').length,
+      aging: data.filter(i => i.overdue === true).length,
+      investigation: data.filter(i => i.status === 'investigation').length,
+      reviews: data.filter(i => i.status === 'review').length,
+    }
+  }, [data])
+
+  // Handle quick filter click
+  const handleQuickFilterClick = (filter: QuickFilterType) => {
+    setActiveQuickFilter(prev => prev === filter ? 'all' : filter)
+    // Clear advanced filters when using quick filter
+    setFilters({})
+  }
+
+  // Filter incidents based on search, quick filter, and advanced filters
+  const filteredIncidents = useMemo(() => {
+    return data.filter((incident) => {
+      // Quick filter - takes precedence
+      if (activeQuickFilter !== 'all') {
+        switch (activeQuickFilter) {
+          case 'drafts':
+            if (incident.status !== 'draft') return false
+            break
+          case 'reported':
+            if (incident.status !== 'reported') return false
+            break
+          case 'aging':
+            if (!incident.overdue) return false
+            break
+          case 'investigation':
+            if (incident.status !== 'investigation') return false
+            break
+          case 'reviews':
+            if (incident.status !== 'review') return false
+            break
+        }
+      }
+
+      // Search filter - check title, location, reporter, incidentId
+      if (searchValue) {
+        const searchLower = searchValue.toLowerCase()
+        const matchesSearch =
+          incident.title.toLowerCase().includes(searchLower) ||
+          incident.location.toLowerCase().includes(searchLower) ||
+          incident.reporter.toLowerCase().includes(searchLower) ||
+          incident.incidentId.toLowerCase().includes(searchLower)
+        if (!matchesSearch) return false
+      }
+
+      // Status filter (advanced)
+      if (filters.status && filters.status.length > 0) {
+        if (!filters.status.includes(incident.status)) return false
+      }
+
+      // Severity filter
+      if (filters.severity && filters.severity.length > 0) {
+        if (!filters.severity.includes(incident.severity)) return false
+      }
+
+      // Overdue filter
+      if (filters.overdue && filters.overdue.length > 0) {
+        if (!incident.overdue) return false
+      }
+
+      return true
+    })
+  }, [data, searchValue, filters, activeQuickFilter])
+
+  // Paginate filtered incidents
+  const paginatedIncidents = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize
+    return filteredIncidents.slice(startIndex, startIndex + pageSize)
+  }, [filteredIncidents, currentPage, pageSize])
+
+  // Reset to page 1 when filters change
+  const handleFiltersChange = (newFilters: FilterState) => {
+    setFilters(newFilters)
+    setCurrentPage(1)
+    if (Object.keys(newFilters).length > 0) {
+      setActiveQuickFilter('all')
+    }
+  }
+
+  const handleSearchChange = (value: string) => {
+    setSearchValue(value)
+    setCurrentPage(1)
+  }
+
+  const handleQuickFilterWithReset = (filter: QuickFilterType) => {
+    handleQuickFilterClick(filter)
+    setCurrentPage(1)
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Page Action Panel */}
+      <PageActionPanel
+        icon={<TriangleAlert className="w-8 h-8" />}
+        title="Incidents"
+        subtitle="Environmental and safety incident tracking and management"
+        actions={
+          <>
+            <Button variant="outline" size="sm">
+              <Download className="w-4 h-4" />
+              Export
+            </Button>
+            <Button variant="destructive" size="sm">
+              <TriangleAlert className="w-4 h-4" />
+              Report Incident
+            </Button>
+          </>
+        }
+      />
+
+      {/* Quick Filters */}
+      <QuickFilter gap="sm">
+        <DraftsFilter
+          size="sm"
+          count={filterCounts.drafts}
+          selected={activeQuickFilter === 'drafts'}
+          onClick={() => handleQuickFilterWithReset('drafts')}
+        />
+        <ReportedFilter
+          size="sm"
+          count={filterCounts.reported}
+          selected={activeQuickFilter === 'reported'}
+          onClick={() => handleQuickFilterWithReset('reported')}
+        />
+        <AgingFilter
+          size="sm"
+          count={filterCounts.aging}
+          selected={activeQuickFilter === 'aging'}
+          onClick={() => handleQuickFilterWithReset('aging')}
+        />
+        <InProgressFilter
+          size="sm"
+          count={filterCounts.investigation}
+          selected={activeQuickFilter === 'investigation'}
+          onClick={() => handleQuickFilterWithReset('investigation')}
+        />
+        <ReviewsFilter
+          size="sm"
+          count={filterCounts.reviews}
+          selected={activeQuickFilter === 'reviews'}
+          onClick={() => handleQuickFilterWithReset('reviews')}
+        />
+      </QuickFilter>
+
+      {/* Search Filter */}
+      <SearchFilter
+        placeholder="Search incidents by title, location, reporter..."
+        value={searchValue}
+        onChange={handleSearchChange}
+        filterGroups={incidentFilterGroups}
+        filters={filters}
+        onFiltersChange={handleFiltersChange}
+      />
+
+      {/* Incidents Table with integrated pagination */}
+      <IncidentManagementTable
+        data={paginatedIncidents}
+        onNextStep={(id) => alert(`Next step for incident ${id}`)}
+        onEdit={(id) => alert(`Edit incident ${id}`)}
+        onDelete={(id) => alert(`Delete incident ${id}`)}
+        onSubmit={(id) => alert(`Submit incident ${id}`)}
+        hideLegend
+        hideBulkActions
+        pagination
+        currentPage={currentPage}
+        totalItems={filteredIncidents.length}
+        pageSize={pageSize}
+        onPageChange={setCurrentPage}
+        onPageSizeChange={(size) => {
+          setPageSize(size)
+          setCurrentPage(1)
+        }}
+        pageSizeOptions={[10, 25, 50, 100]}
+      />
+
+      {/* Empty state when filters return no results */}
+      {filteredIncidents.length === 0 && data.length > 0 && (
+        <div className="text-center py-8 text-secondary">
+          No incidents match your search criteria
+        </div>
+      )}
+    </div>
+  )
+}
+
+// =============================================================================
 // META
 // =============================================================================
 
@@ -348,6 +664,7 @@ export const Default: Story = {
     userMenuItems,
     notificationCount: 4,
     showHelpItem: true,
+    footerVariant: 'wave-only',
     onNotificationClick: () => alert('Opening notifications...'),
     onMenuItemClick: (item) => {
       if (item.id === 'logout') {

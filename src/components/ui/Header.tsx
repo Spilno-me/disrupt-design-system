@@ -120,7 +120,7 @@ export function Header({
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 backdrop-blur-[10px] bg-page/30 border-b border-accent',
+        'fixed top-0 left-0 right-0 z-50 backdrop-blur-[10px] bg-surface/70 border-b border-accent',
         className
       )}
       style={{ boxShadow: SHADOWS.header }}

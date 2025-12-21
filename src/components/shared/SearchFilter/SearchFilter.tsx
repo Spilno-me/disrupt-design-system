@@ -116,14 +116,15 @@ const SearchFilterInner = memo(function SearchFilterInner({
   return (
     <div
       className={cn(
-        'relative flex items-center justify-between gap-3 p-3 rounded-md shadow-sm',
-        'border border-subtle/50',
+        'relative flex items-center justify-between gap-3 p-3 rounded-xl shadow-md',
+        'border border-default',
         fullWidth && 'w-full',
         disabled && 'opacity-60',
         className
       )}
       style={{
-        background: 'var(--alias-gradient-subtle)',
+        // Highlight effect: IVORY[100] at top (0-20%) creates a light strip, then fades to IVORY[300]
+        background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 20%, var(--color-surface-hover) 100%)',
       }}
       aria-disabled={disabled}
     >

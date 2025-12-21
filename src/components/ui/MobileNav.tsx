@@ -62,8 +62,8 @@ function MobileNavItemButton({
       className={cn(
         'relative w-full flex items-center gap-4',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-        'active:bg-accent-bg transition-colors',
-        isActive && 'bg-accent-bg',
+        'active:bg-surface-active transition-colors',
+        isActive && 'bg-surface-active',
         !isActive && !item.disabled && 'hover:bg-muted-bg',
         item.disabled && 'opacity-50 cursor-not-allowed',
         isNested ? 'pl-14' : 'px-4'
@@ -116,8 +116,8 @@ function MobileNavGroup({
         className={cn(
           'relative w-full flex items-center gap-4 px-4',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-          'active:bg-accent-bg transition-colors',
-          groupActive && 'bg-accent-bg',
+          'active:bg-surface-active transition-colors',
+          groupActive && 'bg-surface-active',
           !groupActive && 'hover:bg-muted-bg'
         )}
         style={{
@@ -168,7 +168,7 @@ function MobileHelpItem({ onClick }: { onClick?: () => void }) {
       className={cn(
         'relative w-full flex items-center gap-4 px-4',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-        'hover:bg-muted-bg active:bg-accent-bg transition-colors'
+        'hover:bg-muted-bg active:bg-surface-active transition-colors'
       )}
       style={{ height: ITEM_HEIGHT, minHeight: ITEM_HEIGHT }}
     >

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
-import { SHADOWS, RADIUS } from '../../constants/designTokens'
+import { RADIUS } from '../../constants/designTokens'
 import { FileText, Flag, Barrel, Search, ClipboardCheck, Clock } from 'lucide-react'
 
 // =============================================================================
@@ -19,7 +19,7 @@ export type QuickFilterVariant =
   | 'primary'    // Dark - for in progress
 
 const quickFilterItemVariants = cva(
-  'relative flex flex-col items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105',
+  'relative flex flex-col items-center justify-center cursor-pointer transition-all duration-200',
   {
     variants: {
       variant: {
@@ -34,8 +34,8 @@ const quickFilterItemVariants = cva(
         lg: 'min-w-[140px] h-[88px] px-6',
       },
       selected: {
-        true: '',
-        false: '',
+        true: '', // Pressed state - no hover scale
+        false: 'hover:scale-105', // Normal state - hover lifts up
       },
     },
     defaultVariants: {
@@ -142,6 +142,26 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
         })
       : icon
 
+    // Pressed/selected state styles
+    // Glow ring uses the border color with transparency for a soft effect
+    const glowShadow = `0 0 6px 1px color-mix(in srgb, ${colors.border} 50%, transparent)`
+
+    const pressedStyles = selected ? {
+      // Combine inner shadow (pressed) with outer glow ring (focus attention)
+      // eslint-disable-next-line no-restricted-syntax -- Dynamic glow requires composite shadow with color-mix
+      boxShadow: `inset 0 2px 4px rgba(0, 0, 0, 0.1), ${glowShadow}`,
+      // Gradient: top darker, bottom lighter (light from above pressing down)
+      background: 'linear-gradient(180deg, var(--color-surface-hover) 0%, var(--color-surface) 100%)',
+      // Slightly scaled down
+      transform: 'scale(0.98)',
+    } : {
+      // Medium shadow when raised (normal state) - use CSS variable for consistency with shadow-md class
+      boxShadow: 'var(--shadow-md)',
+      // Highlight gradient: ~13px solid surface at top to match SearchFilter visual appearance
+      background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 13px, var(--color-surface-hover) 100%)',
+      transform: 'scale(1)',
+    }
+
     return (
       <button
         ref={ref}
@@ -151,20 +171,22 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
           className
         )}
         style={{
-          // Uses CSS variables for dark mode support
-          background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-hover) 100%)',
-          boxShadow: SHADOWS.sm,
+          ...pressedStyles,
           borderRadius: RADIUS.md,
+          transition: 'all 0.15s ease-out',
         }}
         {...props}
       >
-        {/* Gradient border overlay */}
+        {/* Gradient border overlay - stronger when selected */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            border: '2px solid transparent',
+            border: selected ? '2.5px solid transparent' : '2px solid transparent',
             // Uses rgba white for the fade effect - works on both light and dark backgrounds
-            background: `linear-gradient(180deg, rgba(255,255,255,0.2) 0%, ${colors.border} 60%, ${colors.border} 100%) border-box`,
+            // When selected, border starts from top for more prominent effect
+            background: selected
+              ? `linear-gradient(180deg, ${colors.border} 0%, ${colors.border} 100%) border-box`
+              : `linear-gradient(180deg, rgba(255,255,255,0.2) 0%, ${colors.border} 60%, ${colors.border} 100%) border-box`,
             WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',

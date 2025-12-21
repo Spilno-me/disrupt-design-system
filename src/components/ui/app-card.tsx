@@ -37,7 +37,7 @@ import { SHADOWS, type ShadowLevel } from "../../constants/designTokens"
 // =============================================================================
 
 const appCardVariants = cva(
-  "flex flex-col rounded-lg font-sans",
+  "flex flex-col rounded-xl font-sans",
   {
     variants: {
       variant: {

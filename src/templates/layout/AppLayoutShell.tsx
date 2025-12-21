@@ -68,6 +68,8 @@ export interface AppLayoutShellProps extends ProductConfig {
   showBackground?: boolean
   /** Show the footer (default: true) */
   showFooter?: boolean
+  /** Footer visual variant */
+  footerVariant?: 'default' | 'wave-only'
   /** Scale for the grid blob background */
   backgroundScale?: number
   /** Show the search bar (default: false) */
@@ -181,6 +183,7 @@ export function AppLayoutShell({
   children,
   showBackground = true,
   showFooter = true,
+  footerVariant = 'default',
   backgroundScale = 1,
   showSearch = false,
   searchPlaceholder = 'Search...',
@@ -263,7 +266,7 @@ export function AppLayoutShell({
   return (
     <div
       className={cn(
-        'relative flex flex-col h-screen bg-background overflow-hidden',
+        'relative flex flex-col h-screen overflow-hidden',
         className
       )}
       data-product={product}
@@ -272,9 +275,8 @@ export function AppLayoutShell({
       {/* Grid blob background */}
       {showBackground && <GridBlobBackground scale={backgroundScale} />}
 
-      {/* Content layer */}
-      <div className="relative z-10 flex flex-col h-full">
-        {/* App Header */}
+      {/* App Header - fixed at z-30, OUTSIDE content layer for glassmorphism to work */}
+      <div className="fixed top-0 left-0 right-0 z-30">
         <AppHeader
           product={product}
           showNotifications={true}
@@ -286,11 +288,14 @@ export function AppLayoutShell({
           onLogoClick={onLogoClick}
           leftContent={mobileNavTrigger}
         />
+      </div>
 
+      {/* Content layer - z-10 so header's backdrop-filter can blur this */}
+      <div className="relative z-10 flex flex-col h-full">
         {/* Main Content Area */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar - hidden on mobile */}
-          <div className="hidden md:block">
+          {/* Sidebar - hidden on mobile, has bg-page and pt-[55px] for header clearance */}
+          <div className="hidden md:block bg-page pt-[55px]">
             <AppSidebar
               product={product}
               items={navItems}
@@ -303,9 +308,9 @@ export function AppLayoutShell({
             />
           </div>
 
-          {/* Page Content - includes mobile footer at bottom of scroll */}
-          <main className="flex-1 overflow-auto">
-            <div className="flex flex-col min-h-full">
+          {/* Page Content - pt-[55px] is INSIDE scroll area so content can scroll under header */}
+          <main className="flex-1 overflow-auto bg-page">
+            <div className="flex flex-col min-h-full pt-[55px]">
               {/* Search Bar inside page content */}
               {showSearch && (
                 <div className="border-b border-default bg-surface px-4 py-3 sticky top-0 z-20">
@@ -328,17 +333,17 @@ export function AppLayoutShell({
               {/* Mobile footer - appears at bottom of scrollable content, above BottomNav */}
               {showFooter && !useMobileDrawer && (
                 <div className="md:hidden pb-16">
-                  <AppFooter compactOnMobile />
+                  <AppFooter compactOnMobile variant={footerVariant} />
                 </div>
               )}
             </div>
           </main>
         </div>
 
-        {/* Desktop Footer - fixed at bottom */}
+        {/* Desktop Footer - fixed at bottom with bg-page */}
         {showFooter && (
-          <div className="hidden md:block">
-            <AppFooter compactOnMobile={false} />
+          <div className="hidden md:block bg-page">
+            <AppFooter compactOnMobile={false} variant={footerVariant} />
           </div>
         )}
 

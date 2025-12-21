@@ -21,11 +21,11 @@
 
 | Depth | Layer | Token | Light | Dark | Shadow |
 |-------|-------|-------|-------|------|--------|
-| 1 | Elevated | `bg-elevated` | `white` | `ABYSS[400]` | `shadow-lg` |
-| 2 | Card | `bg-elevated` | `white` | `ABYSS[500]` | `shadow-md` |
-| 3 | Surface | `bg-surface` | `LINEN[100]` | `ABYSS[700]` | `shadow-sm` |
-| 4 | SurfaceHover | `bg-surfaceHover` | `LINEN[200]` | `ABYSS[600]` | — |
-| 5 | Page | `bg-page` | `LINEN[300]` | `ABYSS[900]` | — |
+| 1 | Elevated | `bg-elevated` | `IVORY[50]` #FFFEF9 | `ABYSS[400]` | `shadow-lg` |
+| 2 | Card | `bg-elevated` | `IVORY[50]` #FFFEF9 | `ABYSS[500]` | `shadow-md` |
+| 3 | Surface | `bg-surface` | `IVORY[100]` #FAF8F3 | `ABYSS[700]` | `shadow-sm` |
+| 4 | SurfaceHover | `bg-surfaceHover` | `IVORY[300]` #E5E2DB | `ABYSS[600]` | — |
+| 5 | Page | `bg-page` | `IVORY[400]` #D5D2CB | `ABYSS[900]` | — |
 
 ## FORBIDDEN
 

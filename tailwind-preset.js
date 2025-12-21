@@ -136,11 +136,31 @@ const SLATE = {
   900: '#0F172A',
 }
 
+/** Ivory - Warm white scale for depth layering (EHS-optimized) */
+const IVORY = {
+  50: '#FFFEF9',   // Elevated/Card - warmest near-white
+  100: '#FAF8F3',  // Surface - warm ivory
+  200: '#F0EDE6',  // Page background - warm beige
+  300: '#E5E2DB',  // Hover states
+  400: '#D5D2CB',  // Active states
+  500: '#B5B2AB',  // Muted elements
+  600: '#8A877F',  // Secondary text on light
+  700: '#5F5C54',  // Primary text on light
+  800: '#3A3832',  // Dark accents
+  900: '#1F1E1B',  // Near black with warmth
+}
+
 const PRIMITIVES = {
   white: '#FFFFFF',
   black: '#000000',
   cream: '#FBFBF3',
-  softLinen: '#EBF9FF',
+  // Depth layering primitives (Ivory family - warm whites)
+  ivoryElevated: IVORY[50],   // #FFFEF9 - Card/elevated surfaces (lightest)
+  ivorySurface: IVORY[100],   // #FAF8F3 - Content surfaces
+  ivoryPage: IVORY[400],      // #D5D2CB - Page background (darkest of the three)
+  // Legacy (aliased for backwards compatibility)
+  winterWhite: IVORY[400],
+  softLinen: IVORY[100],
   linkedIn: '#0A66C2',
 }
 
@@ -469,6 +489,7 @@ module.exports = {
         orange: ORANGE,
         harbor: HARBOR,
         slate: SLATE,
+        ivory: IVORY,
 
         // --- BRAND COLORS (semantic shortcuts) ---
         dark: ABYSS[500],
@@ -492,11 +513,11 @@ module.exports = {
 
         // --- BACKGROUND COLORS ---
         // Usage: bg-page, bg-surface, bg-elevated, etc.
-        page: PRIMITIVES.cream,
-        surface: PRIMITIVES.white,
-        'surface-hover': ABYSS[50],
-        'surface-active': ABYSS[100],
-        elevated: PRIMITIVES.white,
+        page: PRIMITIVES.ivoryPage,         // #D5D2CB - warm beige
+        surface: PRIMITIVES.ivorySurface,   // #FAF8F3 - warm ivory (1 step lighter)
+        'surface-hover': IVORY[300],        // #E5E2DB
+        'surface-active': IVORY[400],       // #D5D2CB
+        elevated: PRIMITIVES.ivoryElevated, // #FFFEF9 - near-white (2 steps lighter)
         'muted-bg': DUSK_REEF[50],
         'inverse-bg': ABYSS[500],
         'inverse-subtle': ABYSS[700],
@@ -571,14 +592,14 @@ module.exports = {
 
         // --- OVERLAY COLORS ---
         // Usage: bg-overlay-light, bg-overlay-dark, etc.
-        'overlay-light': 'rgba(251, 251, 243, 0.3)',
+        'overlay-light': 'rgba(250, 248, 243, 0.3)',  // ivorySurface based
         'overlay-medium': 'rgba(0, 0, 0, 0.3)',
         'overlay-dark': 'rgba(0, 0, 0, 0.5)',
         'overlay-darker': 'rgba(0, 0, 0, 0.8)',
         'overlay-white-15': 'rgba(255, 255, 255, 0.15)',
         'overlay-white-50': 'rgba(255, 255, 255, 0.5)',
         'overlay-white-60': 'rgba(255, 255, 255, 0.6)',
-        'overlay-subtle': 'rgba(229, 229, 229, 0.5)',
+        'overlay-subtle': 'rgba(229, 226, 219, 0.5)',  // IVORY[300] based
         'overlay-teal': 'rgba(0, 128, 128, 0.05)',
 
         // --- ELECTRIC EFFECT COLORS ---

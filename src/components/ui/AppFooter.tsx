@@ -13,6 +13,8 @@ export interface AppFooterProps extends React.HTMLAttributes<HTMLElement> {
   colorMode?: 'dark' | 'light' | 'auto'
   /** Show compact mobile version */
   compactOnMobile?: boolean
+  /** Visual variant: 'default' shows full footer, 'wave-only' shows only the wave animation */
+  variant?: 'default' | 'wave-only'
 }
 
 // =============================================================================
@@ -20,10 +22,12 @@ export interface AppFooterProps extends React.HTMLAttributes<HTMLElement> {
 // =============================================================================
 
 /**
- * Animated ocean wave pattern background (matches AppHeader)
+ * Animated wave pattern with glass background (matches AppHeader style)
  *
- * Features dual-layer animated waves that scroll horizontally
- * with a subtle swell effect for depth.
+ * Features:
+ * - Glass blur background layer
+ * - Single stroke-only wave line
+ * - Wave contained within footer bounds
  */
 function WavePattern() {
   // Detect dark mode for color adaptation
@@ -48,11 +52,12 @@ function WavePattern() {
   const gradientStart = isDarkMode ? ALIAS.wave.dark.start : ALIAS.wave.light.start
   const gradientEnd = isDarkMode ? ALIAS.wave.dark.end : ALIAS.wave.light.end
 
-  // Wave SVG with gradient - matches header pattern
-  const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="55" viewBox="0 0 1600 55" preserveAspectRatio="none"><defs><linearGradient id="wg" x1="50%" x2="50%" y1="0%" y2="100%"><stop stop-color="${gradientStart}" stop-opacity=".15" offset="0%"/><stop stop-color="${gradientEnd}" stop-opacity=".35" offset="100%"/></linearGradient></defs><path fill="url(#wg)" d="M0 33.6c311 0 410-33.6 811-33.6 400 0 500 33.6 789 33.6V55H0V33.6z" transform="matrix(-1 0 0 1 1600 0)"/></svg>`)}`
+  // Wave SVG - stroke only, contained within 40px height
+  // Path oscillates from y=8 to y=32 (amplitude 24px), stroke 4px stays within bounds
+  const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="40" viewBox="0 0 1600 40" preserveAspectRatio="none"><defs><linearGradient id="fwg" x1="0%" x2="100%" y1="0%" y2="0%"><stop stop-color="${gradientStart}" offset="0%"/><stop stop-color="${gradientEnd}" offset="50%"/><stop stop-color="${gradientStart}" offset="100%"/></linearGradient></defs><path fill="none" stroke="url(#fwg)" stroke-width="4" stroke-linecap="round" d="M0 8 c200 0 300 24 400 24 c100 0 200-24 400-24 c200 0 300 24 400 24 c100 0 200-24 400-24"/></svg>`)}`
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {/* CSS keyframes for wave animation */}
       <style>{`
         @keyframes footer-wave-scroll {
@@ -61,18 +66,31 @@ function WavePattern() {
         }
       `}</style>
 
-      {/* Single wave layer - subtle scroll */}
+      {/* Glass background layer - blurs content underneath */}
       <div
-        className="absolute bottom-0 left-0 h-full"
+        className="absolute inset-0 z-0"
         style={{
-          // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
-          width: '6400px',
-          backgroundImage: `url("${waveSvg}")`,
-          backgroundRepeat: 'repeat-x',
-          backgroundSize: '1600px 100%',
-          animation: 'footer-wave-scroll 30s linear infinite',
+          // eslint-disable-next-line no-restricted-syntax -- Glassmorphism requires specific rgba opacity
+          background: 'rgba(255, 255, 255, 0.5)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
         }}
       />
+
+      {/* Single wave line - subtle, almost not there */}
+      <div className="absolute inset-0 z-10 flex items-center opacity-30">
+        <div
+          className="absolute left-0 h-[40px]"
+          style={{
+            // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
+            width: '6400px',
+            backgroundImage: `url("${waveSvg}")`,
+            backgroundRepeat: 'repeat-x',
+            backgroundSize: '1600px 40px',
+            animation: 'footer-wave-scroll 40s linear infinite',
+          }}
+        />
+      </div>
     </div>
   )
 }
@@ -103,6 +121,9 @@ function WavePattern() {
  * // Full size on mobile (no compact mode)
  * <AppFooter compactOnMobile={false} />
  *
+ * // Wave-only: transparent background, no border, wave + content visible
+ * <AppFooter variant="wave-only" />
+ *
  * // With custom data-testid
  * <AppFooter data-testid="custom-footer" />
  * ```
@@ -110,6 +131,7 @@ function WavePattern() {
  * **Props:**
  * - `colorMode`: 'dark' (default) for light backgrounds, 'light' for dark backgrounds
  * - `compactOnMobile`: true (default) scales down on mobile, false keeps full size
+ * - `variant`: 'default' shows full footer, 'wave-only' removes background/border (transparent)
  * - Standard HTML attributes (className, style, etc.)
  *
  * **Testing:**
@@ -128,6 +150,7 @@ export function AppFooter({
   colorMode = 'auto',
   className,
   compactOnMobile = true,
+  variant = 'default',
   ...props
 }: AppFooterProps) {
   const currentYear = new Date().getFullYear()
@@ -164,10 +187,15 @@ export function AppFooter({
     ? (isDarkMode ? 'light' : 'dark')
     : colorMode
 
+  // Wave-only variant: transparent background, no border, but content visible
+  const isWaveOnly = variant === 'wave-only'
+
   return (
     <footer
       className={cn(
-        'relative flex items-center justify-between border-t border-default/30 bg-surface',
+        'relative flex items-center justify-between overflow-hidden',
+        // Always transparent - glass effect comes from WavePattern
+        isWaveOnly ? '' : 'border-t border-default/30',
         // Mobile: compact height (32px = 8 * 4px grid), Desktop: normal height
         compactOnMobile ? 'h-8 md:h-auto md:py-3 px-4 md:px-6' : 'px-6 py-3',
         className
@@ -178,8 +206,8 @@ export function AppFooter({
       {/* Wave pattern background (matches header) */}
       <WavePattern />
 
-      {/* Content wrapper */}
-      <div className="relative z-10 flex items-center justify-between w-full">
+      {/* Content wrapper - z-20 to be ABOVE wave line (z-10) */}
+      <div className="relative z-20 flex items-center justify-between w-full">
         {/* Left: MadeWithLove */}
         <MadeWithLove
           colorMode={effectiveColorMode}

@@ -54,7 +54,7 @@ export function Footer({
   }
 
   const variantClasses = {
-    default: 'bg-page/30 backdrop-blur-[10px]',
+    default: 'bg-surface/70 backdrop-blur-[10px]',
     transparent: 'bg-transparent',
     dark: 'bg-inverse-bg text-inverse',
   }

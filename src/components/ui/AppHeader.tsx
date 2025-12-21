@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'
 import { Bell, LogOut, Settings, User } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cn } from '../../lib/utils'
-import { SHADOWS, ALIAS } from '../../constants/designTokens'
+// eslint-disable-next-line no-restricted-syntax -- DEEP_CURRENT needed for wave SVG color
+import { SHADOWS, DEEP_CURRENT } from '../../constants/designTokens'
 import { LOGOS } from '../../assets/logos'
 import {
   DropdownMenu,
@@ -135,76 +136,68 @@ const DEFAULT_MENU_ITEMS: UserMenuItem[] = [
  * - Colors adapt to light/dark mode using ELECTRIC_CYAN tokens
  */
 function WavePattern() {
-  // Detect dark mode for color adaptation
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  // Teal color from DEEP_CURRENT palette
+  const teal = DEEP_CURRENT[400] // #33BFD7
 
-  useEffect(() => {
-    const checkDarkMode = () => {
-      const isDark = document.documentElement.classList.contains('dark') ||
-                     document.body.classList.contains('dark')
-      setIsDarkMode(isDark)
-    }
-    checkDarkMode()
-
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-
-    return () => observer.disconnect()
-  }, [])
-
-  // Color adaptation for wave gradient using ALIAS tokens
-  // Light mode: subtle teal gradient
-  // Dark mode: slightly brighter teal gradient
-  const gradientStart = isDarkMode ? ALIAS.wave.dark.start : ALIAS.wave.light.start
-  const gradientEnd = isDarkMode ? ALIAS.wave.dark.end : ALIAS.wave.light.end
-
-  // Wave SVG with gradient - 1600px wide for smooth tiling
-  // Very subtle opacity for gentle background effect
-  const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="55" viewBox="0 0 1600 55" preserveAspectRatio="none"><defs><linearGradient id="wg" x1="50%" x2="50%" y1="0%" y2="100%"><stop stop-color="${gradientStart}" stop-opacity=".15" offset="0%"/><stop stop-color="${gradientEnd}" stop-opacity=".35" offset="100%"/></linearGradient></defs><path fill="url(#wg)" d="M0 33.6c311 0 410-33.6 811-33.6 400 0 500 33.6 789 33.6V55H0V33.6z" transform="matrix(-1 0 0 1 1600 0)"/></svg>`)}`
+  // Wave SVG with teal color
+  const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="55" viewBox="0 0 1600 55" preserveAspectRatio="none"><path fill="none" stroke="${teal}" stroke-width="5" stroke-linecap="round" d="M0 10 c200 0 300 35 400 35 c100 0 200-35 400-35 c200 0 300 35 400 35 c100 0 200-35 400-35"/></svg>`)}`
 
   return (
     <div
-      className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+      className="absolute inset-0 pointer-events-none overflow-hidden"
       data-slot="wave-pattern"
     >
-      {/* CSS keyframes for wave animation - slow and subtle */}
+      {/* CSS keyframes for wave animation */}
       <style>{`
-        @keyframes wave-scroll {
+        @keyframes header-wave-scroll {
           0% { transform: translateX(0) translateZ(0); }
           100% { transform: translateX(-1600px) translateZ(0); }
         }
-        @keyframes wave-swell {
-          0%, 100% { transform: translateY(-2px) translateZ(0); }
-          50% { transform: translateY(1px) translateZ(0); }
+        @keyframes header-wave-swell {
+          0%, 100% { transform: translateY(3px) translateZ(0); }
+          50% { transform: translateY(-3px) translateZ(0); }
         }
       `}</style>
 
-      {/* First wave layer - slow scroll */}
+      {/* Glass background layer - see-through with blur */}
       <div
-        className="absolute bottom-0 left-0 h-[55px]"
+        className="absolute inset-0 z-0"
         style={{
-          // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
-          width: '6400px',
-          backgroundImage: `url("${waveSvg}")`,
-          backgroundRepeat: 'repeat-x',
-          backgroundSize: '1600px 55px',
-          animation: 'wave-scroll 25s linear infinite',
+          // eslint-disable-next-line no-restricted-syntax -- Glassmorphism requires specific rgba opacity
+          background: 'rgba(255, 255, 255, 0.15)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
         }}
       />
 
-      {/* Second wave layer - slower with subtle swell */}
-      <div
-        className="absolute bottom-0 left-0 h-[55px] opacity-50"
-        style={{
-          // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
-          width: '6400px',
-          backgroundImage: `url("${waveSvg}")`,
-          backgroundRepeat: 'repeat-x',
-          backgroundSize: '1600px 55px',
-          animation: 'wave-scroll 30s linear -2s infinite, wave-swell 12s ease-in-out infinite',
-        }}
-      />
+      {/* Wave lines layer - ON TOP of glass, stays crisp */}
+      <div className="absolute inset-0 z-10">
+        {/* First wave - teal */}
+        <div
+          className="absolute top-0 left-0 h-[55px] opacity-50"
+          style={{
+            // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
+            width: '6400px',
+            backgroundImage: `url("${waveSvg}")`,
+            backgroundRepeat: 'repeat-x',
+            backgroundSize: '1600px 55px',
+            animation: 'header-wave-scroll 35s linear infinite',
+          }}
+        />
+
+        {/* Second wave - teal with offset for depth */}
+        <div
+          className="absolute top-0 left-0 h-[55px] opacity-40"
+          style={{
+            // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
+            width: '6400px',
+            backgroundImage: `url("${waveSvg}")`,
+            backgroundRepeat: 'repeat-x',
+            backgroundSize: '1600px 55px',
+            animation: 'header-wave-scroll 40s linear -5s infinite, header-wave-swell 8s ease-in-out infinite',
+          }}
+        />
+      </div>
     </div>
   )
 }
@@ -266,12 +259,17 @@ function LogoContainer({
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
+      /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba and composite shadows */
       style={{
-        // Use CSS variable for gradient - responds to dark mode
-        background: 'var(--alias-gradient-subtle)',
-        // Subtle shadow for depth
-        boxShadow: SHADOWS.sm,
+        // Glass morphism: light blur, more transparent to let light through
+        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
+        // Combined shadows: subtle ambient + bottom drop shadow that extends below header
+        boxShadow: `${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.12)`,
+        border: '1px solid rgba(255, 255, 255, 0.15)',
       }}
+      /* eslint-enable no-restricted-syntax */
       data-slot="logo-container"
     >
       <img
@@ -639,20 +637,17 @@ export function AppHeader({
   return (
     <header
       className={cn(
-        'relative z-20 flex items-center justify-between w-full h-[55px] overflow-hidden bg-surface',
+        'relative z-20 flex items-center justify-between w-full h-[55px] overflow-hidden',
         className
       )}
-      style={{
-        boxShadow: SHADOWS.md,
-      }}
       // Header height defined via className for consistency
       data-slot="app-header"
     >
       {/* Wave Pattern Background */}
       {showWavePattern && <WavePattern />}
 
-      {/* Left Side: Mobile menu + Logo */}
-      <div className="relative z-[1] flex items-center">
+      {/* Left Side: Mobile menu + Logo - z-20 to be ABOVE wave lines (z-10) */}
+      <div className="relative z-20 flex items-center">
         {/* Mobile hamburger menu (optional) */}
         {leftContent && (
           <div className="pl-2">
@@ -668,9 +663,9 @@ export function AppHeader({
         />
       </div>
 
-      {/* Actions (Right) */}
+      {/* Actions (Right) - z-20 to be ABOVE wave lines (z-10) */}
       <div
-        className="relative z-[1] flex items-center gap-4 pr-4"
+        className="relative z-20 flex items-center gap-4 pr-4"
         data-slot="header-actions"
       >
         {/* Notifications */}

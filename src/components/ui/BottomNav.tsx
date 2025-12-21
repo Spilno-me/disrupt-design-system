@@ -99,8 +99,8 @@ function BottomNavTab({
       disabled={item.disabled}
       className={cn(
         'flex flex-col items-center justify-center flex-1 h-full gap-1 px-2',
-        'focus:outline-none focus-visible:bg-accent-bg',
-        'active:bg-accent-bg transition-colors',
+        'focus:outline-none focus-visible:bg-surface-hover',
+        'active:bg-surface-active transition-colors',
         item.disabled && 'opacity-50 cursor-not-allowed'
       )}
       aria-current={isActive ? 'page' : undefined}
@@ -179,8 +179,8 @@ function SheetNavItem({
       className={cn(
         'relative w-full flex items-center gap-3 px-5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-        'active:bg-accent-bg transition-colors',
-        isActive && 'bg-accent-bg',
+        'active:bg-surface-active transition-colors',
+        isActive && 'bg-surface-active',
         !isActive && !item.disabled && 'hover:bg-muted-bg',
         item.disabled && 'opacity-50 cursor-not-allowed',
         isNested ? 'pl-14' : 'pl-5'
@@ -231,8 +231,8 @@ function SheetNavGroup({
         className={cn(
           'relative w-full flex items-center gap-3 px-5',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-          'active:bg-accent-bg transition-colors',
-          groupActive && 'bg-accent-bg',
+          'active:bg-surface-active transition-colors',
+          groupActive && 'bg-surface-active',
           !groupActive && 'hover:bg-muted-bg'
         )}
         style={{ height: ITEM_HEIGHT, minHeight: ITEM_HEIGHT }}
@@ -280,7 +280,7 @@ function SheetHelpItem({ onClick }: { onClick?: () => void }) {
       className={cn(
         'relative w-full flex items-center gap-3 px-5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
-        'hover:bg-muted-bg active:bg-accent-bg transition-colors'
+        'hover:bg-muted-bg active:bg-surface-active transition-colors'
       )}
       style={{ height: ITEM_HEIGHT, minHeight: ITEM_HEIGHT }}
     >

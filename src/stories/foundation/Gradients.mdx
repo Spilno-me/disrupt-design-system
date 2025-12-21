@@ -468,6 +468,222 @@ const HERO_GRADIENT = 'linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5
 
 ---
 
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Glassmorphism Panel Effect</h2>
+
+<SectionHeader
+  icon={<Blend size={20} />}
+  title="Frosted Glass Panel"
+  description="Semi-transparent panel with backdrop blur used in AppHeader LogoContainer. Creates a frosted glass effect that allows background animations to show through."
+/>
+
+<div style={{
+  position: 'relative',
+  borderRadius: RADIUS.lg,
+  overflow: 'hidden',
+  marginBottom: '24px',
+  height: '200px',
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[400]} 0%, ${DEEP_CURRENT[600]} 50%, ${ABYSS[500]} 100%)`,
+}}>
+  {/* Animated wave simulation */}
+  <div style={{
+    position: 'absolute',
+    inset: 0,
+    opacity: 0.3,
+    background: `repeating-linear-gradient(90deg, transparent, transparent 50px, ${DEEP_CURRENT[300]} 50px, ${DEEP_CURRENT[300]} 100px)`,
+  }} />
+
+  {/* Glassmorphism panel demo */}
+  <div style={{
+    position: 'absolute',
+    top: '50%',
+    left: '24px',
+    transform: 'translateY(-50%)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    height: '56px',
+    minWidth: '219px',
+    paddingLeft: '16px',
+    paddingRight: '12px',
+    borderRadius: '0 28px 28px 0',
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
+    backdropFilter: 'blur(6px)',
+    WebkitBackdropFilter: 'blur(6px)',
+    boxShadow: `${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25)`,
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+  }}>
+    <div style={{
+      width: '32px',
+      height: '32px',
+      borderRadius: '8px',
+      background: DEEP_CURRENT[500],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Blend size={18} color={PRIMITIVES.white} />
+    </div>
+    <span style={{
+      fontSize: '12px',
+      fontWeight: 500,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+      whiteSpace: 'nowrap',
+    }}>Environmental Compliance</span>
+  </div>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '13px',
+      fontWeight: 600,
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      marginBottom: '8px',
+    }}><span>Background Gradient</span></div>
+    <code style={{
+      display: 'block',
+      fontSize: '11px',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      color: DEEP_CURRENT[600],
+      marginBottom: '8px',
+    }}>rgba(255,255,255,0.3) → rgba(255,255,255,0.15)</code>
+    <div style={{
+      fontSize: '12px',
+      color: DUSK_REEF[500],
+      fontFamily: '"Fixel", sans-serif',
+    }}><span>30% white at top, 15% at bottom for depth</span></div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '13px',
+      fontWeight: 600,
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      marginBottom: '8px',
+    }}><span>Backdrop Blur</span></div>
+    <code style={{
+      display: 'block',
+      fontSize: '11px',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      color: DEEP_CURRENT[600],
+      marginBottom: '8px',
+    }}>backdrop-filter: blur(6px)</code>
+    <div style={{
+      fontSize: '12px',
+      color: DUSK_REEF[500],
+      fontFamily: '"Fixel", sans-serif',
+    }}><span>Light blur lets animations show through</span></div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '13px',
+      fontWeight: 600,
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      marginBottom: '8px',
+    }}><span>Inner Highlight</span></div>
+    <code style={{
+      display: 'block',
+      fontSize: '11px',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      color: DEEP_CURRENT[600],
+      marginBottom: '8px',
+    }}>inset 0 1px 0 0 rgba(255,255,255,0.25)</code>
+    <div style={{
+      fontSize: '12px',
+      color: DUSK_REEF[500],
+      fontFamily: '"Fixel", sans-serif',
+    }}><span>Top edge highlight for glass rim effect</span></div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontSize: '13px',
+      fontWeight: 600,
+      color: ABYSS[500],
+      fontFamily: '"Fixel", sans-serif',
+      marginBottom: '8px',
+    }}><span>Border</span></div>
+    <code style={{
+      display: 'block',
+      fontSize: '11px',
+      fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+      color: DEEP_CURRENT[600],
+      marginBottom: '8px',
+    }}>1px solid rgba(255,255,255,0.15)</code>
+    <div style={{
+      fontSize: '12px',
+      color: DUSK_REEF[500],
+      fontFamily: '"Fixel", sans-serif',
+    }}><span>Subtle edge definition</span></div>
+  </div>
+</div>
+
+<CodeBlock
+  language="tsx"
+  code={`// Glassmorphism panel effect (from AppHeader LogoContainer)
+const glassmorphismStyle = {
+  // Semi-transparent gradient: more opaque at top, lighter at bottom
+  background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
+
+  // Light blur to let background animations show through
+  backdropFilter: 'blur(6px)',
+  WebkitBackdropFilter: 'blur(6px)',  // Safari support
+
+  // Combine drop shadow with inner highlight for glass rim
+  boxShadow: \`\${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25)\`,
+
+  // Subtle border for edge definition
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+}
+
+// Usage in component
+<div style={glassmorphismStyle}>
+  <Logo />
+  <span>Environmental Compliance</span>
+</div>`}
+/>
+
+<InfoBox variant="tip">
+  <strong>Key Properties:</strong>
+  <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
+    <li><strong>backdrop-filter: blur(6px)</strong> - Light blur lets content show through</li>
+    <li><strong>Semi-transparent gradient</strong> - Creates depth without full opacity</li>
+    <li><strong>Inset shadow</strong> - Adds glass rim highlight at top edge</li>
+  </ul>
+</InfoBox>
+
+---
+
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
 
 <div style={{
@@ -530,6 +746,15 @@ const HERO_GRADIENT = 'linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5
           </code>
         </td>
         <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}><span>Wrapper for glass effects</span></td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[200]}` }}>
+        <td style={{ padding: '12px 16px' }}><span>AppHeader LogoContainer</span></td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>
+            Glassmorphism
+          </code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}><span>Frosted glass panel with backdrop blur</span></td>
       </tr>
       <tr>
         <td style={{ padding: '12px 16px' }}><span>HeroSection</span></td>

@@ -390,16 +390,16 @@ h1.dds-brand-hero-title,
   --color-text-accent: #056271;
 
   /* --- BACKGROUND COLORS --- */
-  /* Usage: bg-surface (cards, panels) */
-  --color-surface: #EBF9FF;
-  /* Usage: bg-surface-hover */
-  --color-surface-hover: #E8E9EB;
-  /* Usage: bg-surface-active */
-  --color-surface-active: #D1D3D7;
-  /* Usage: bg-page (main page background) - same as cream */
-  --color-page: #FBFBF3;
-  /* Usage: bg-elevated (elevated surfaces) */
-  --color-elevated: #EBF9FF;
+  /* Usage: bg-surface (cards, panels) - IVORY[100] */
+  --color-surface: #FAF8F3;
+  /* Usage: bg-surface-hover - IVORY[300] */
+  --color-surface-hover: #E5E2DB;
+  /* Usage: bg-surface-active - IVORY[400] */
+  --color-surface-active: #D5D2CB;
+  /* Usage: bg-page (main page background) - IVORY[200] */
+  --color-page: #F0EDE6;
+  /* Usage: bg-elevated (elevated surfaces) - IVORY[50] */
+  --color-elevated: #FFFEF9;
   /* Usage: bg-muted-bg (muted backgrounds) */
   --color-muted-bg: #EFEDF3;
   /* Usage: bg-inverse-bg (dark backgrounds) */
@@ -415,9 +415,9 @@ h1.dds-brand-hero-title,
 
   /* --- BORDER COLORS --- */
   /* Usage: border-default (standard borders) */
-  --color-default: #CBD5E1;
+  --color-default: #E5E2DB;  /* IVORY[300] - warm border */
   /* Usage: border-slate (same as default, common name) */
-  --color-slate: #CBD5E1;
+  --color-slate: #E5E2DB;  /* IVORY[300] - warm border */
   /* Usage: border-subtle */
   --color-subtle: #D1D3D7;
   /* Usage: border-strong */
@@ -718,9 +718,11 @@ h1.dds-brand-hero-title,
   /* Other Brand Primitives */
   --brand-red-coral: #F70D1A;
   --brand-tide-foam: #FBFBF3;
+  --brand-winter-white: #D5D2CB;   /* IVORY[400] - page background */
   --brand-slate: #CBD5E1;
   --brand-white: #FFFFFF;
-  --brand-soft-linen: #EBF9FF;
+  --brand-soft-linen: #FAF8F3;     /* IVORY[100] - surface */
+  --brand-ivory-elevated: #FFFEF9; /* IVORY[50] - elevated/card */
   --brand-black: #000000;
   --brand-wave: #3B82F6;
   --brand-tide-alert: #F70D1A;
@@ -747,10 +749,10 @@ h1.dds-brand-hero-title,
   --alias-text-info: var(--brand-wave);
 
   /* Background Colors */
-  --alias-bg-page: var(--brand-tide-foam);
-  --alias-bg-surface: var(--brand-soft-linen);
-  --alias-bg-surface-hover: var(--brand-abyss-50);
-  --alias-bg-elevated: var(--brand-soft-linen);
+  --alias-bg-page: var(--brand-winter-white);      /* IVORY[400] - #D5D2CB */
+  --alias-bg-surface: var(--brand-soft-linen);     /* IVORY[100] - #FAF8F3 */
+  --alias-bg-surface-hover: #E5E2DB;               /* IVORY[300] */
+  --alias-bg-elevated: var(--brand-ivory-elevated); /* IVORY[50] - #FFFEF9 */
   --alias-bg-muted: var(--brand-dusk-reef-50);
   --alias-bg-inverse: var(--brand-abyss-500);
   --alias-bg-inverse-subtle: var(--brand-abyss-700);
@@ -762,7 +764,7 @@ h1.dds-brand-hero-title,
   --alias-bg-info: #EFF6FF;
 
   /* Border Colors */
-  --alias-border-default: var(--brand-slate);
+  --alias-border-default: #E5E2DB;  /* IVORY[300] - warm border to match IVORY backgrounds */
   --alias-border-subtle: var(--brand-abyss-100);
   --alias-border-strong: var(--brand-abyss-300);
   --alias-border-focus: var(--brand-deep-current-500);
@@ -784,7 +786,7 @@ h1.dds-brand-hero-title,
   --alias-interactive-disabled-text: var(--brand-abyss-300);
 
   /* Overlay Colors */
-  --alias-overlay-light: rgba(251, 251, 243, 0.3);
+  --alias-overlay-light: rgba(250, 248, 243, 0.3);  /* ivorySurface based */
   --alias-overlay-dark: rgba(0, 0, 0, 0.5);
   --alias-overlay-dark-strong: rgba(0, 0, 0, 0.8);
 
@@ -792,7 +794,7 @@ h1.dds-brand-hero-title,
   --alias-grid-color: rgba(180, 180, 180, 0.4);
 
   /* Gradients */
-  --alias-gradient-subtle: linear-gradient(0deg, var(--brand-deep-current-50) 0%, var(--brand-white) 100%);
+  --alias-gradient-subtle: linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-hover) 100%);  /* IVORY[100] → IVORY[300] visible gradient */
   --alias-gradient-header: linear-gradient(180deg, var(--brand-white) 0%, rgba(251, 251, 243, 0.9) 100%);
 
   /* ============================================================ */
@@ -908,6 +910,7 @@ h1.dds-brand-hero-title,
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner-sm: inset 0 1px 2px rgba(0, 0, 0, 0.08);
 
   /* Transitions */
   --transition-fast: 150ms;
@@ -965,7 +968,7 @@ h1.dds-brand-hero-title,
 /* Glass morphism header styling - Figma design */
 .glass-header {
   backdrop-filter: blur(10px);
-  background: rgba(251, 251, 243, 0.3);
+  background: rgba(250, 248, 243, 0.3);  /* ivorySurface based */
   border-bottom: 1px solid #08A4BD;
   box-shadow: 0px 2px 4px 5px rgba(0, 0, 0, 0.15);
 }
@@ -1040,7 +1043,7 @@ h1.dds-brand-hero-title,
 
 :root {
   --radius: 0.625rem;
-  --background: var(--brand-soft-linen);  /* Soft linen - primary surface background */
+  --background: var(--brand-soft-linen);  /* IVORY[100] - #FAF8F3 - primary surface background */
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

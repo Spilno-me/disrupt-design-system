@@ -33,6 +33,8 @@ export {
   AppCardAction,
 } from './components/ui/app-card'
 export type { AppCardProps } from './components/ui/app-card'
+export { PageActionPanel } from './components/ui/PageActionPanel'
+export type { PageActionPanelProps } from './components/ui/PageActionPanel'
 export { PricingConnector } from './components/ui/pricing-connector'
 export { Input } from './components/ui/input'
 export { Textarea } from './components/ui/textarea'

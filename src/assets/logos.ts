@@ -21,7 +21,7 @@ import dPixelsLight from '../../public/logos/D-pixels-light-full.svg'
 // Import patterns
 import wavePatternSvg from '../../public/patterns/wave-pattern.svg'
 import wavePatternPng from '../../public/patterns/wave-pattern.png'
-import wavyLinePattern from '../../public/patterns/wavy-line-pattern.svg'
+import wavyLinePattern from './patterns/wavy-line-pattern.svg'
 
 // =============================================================================
 // LOGO EXPORTS

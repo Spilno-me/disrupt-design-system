@@ -11,14 +11,14 @@
 
 | Token | px | Tailwind | Use |
 |-------|-----|----------|-----|
-| none | 0 | `rounded-none` | Sharp |
+| none | 0 | `rounded-none` | Sharp edges |
 | xs | 4 | `rounded-xs` | Badges, chips |
 | sm | 8 | `rounded-sm` | Buttons, inputs |
-| md | 12 | `rounded-md` | Cards, dialogs |
-| lg | 16 | `rounded-lg` | Large cards |
-| xl | 20 | `rounded-xl` | Hero sections |
-| 2xl | 24 | `rounded-2xl` | Feature cards |
-| 3xl | 32 | `rounded-3xl` | Full-width |
+| md | 12 | `rounded-md` | Nested containers |
+| lg | 16 | `rounded-lg` | Medium containers |
+| xl | 20 | `rounded-xl` | **Cards, dialogs, tables** |
+| 2xl | 24 | `rounded-2xl` | Hero sections |
+| 3xl | 32 | `rounded-3xl` | Full-width sections |
 | full | 9999 | `rounded-full` | Pills, avatars |
 
 ## Nested Formula: Inner + Padding = Outer
@@ -42,8 +42,8 @@ Outer (20px) = Inner (12px) + Padding (8px)
 | Pill/Avatar | `full` |
 | Badge/Chip | `xs`/`sm` |
 | Button/Input | `sm` |
-| Card/Dialog | `md`/`lg` |
-| Section/Hero | `xl`/`2xl` |
+| Card/Dialog/Table | `xl` (20px) |
+| Section/Hero | `2xl`/`3xl` |
 | Nested | Apply formula |
 
 ## Per-Corner

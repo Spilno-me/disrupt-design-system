@@ -48,9 +48,9 @@ export function SearchInput({
   return (
     <div
       className={cn(
-        // Base styles - matching Radix Input
+        // Base styles - matching Radix Input with inset shadow for depth
         'relative flex flex-1 items-center h-10',
-        'rounded-sm border border-default bg-surface shadow-sm',
+        'rounded-sm border border-default bg-surface',
         'transition-[color,box-shadow]',
         // Focus state - matching Radix Input
         isFocused && !disabled && 'border-accent ring-accent/20 ring-[3px]',
@@ -58,6 +58,7 @@ export function SearchInput({
         disabled && 'pointer-events-none cursor-not-allowed opacity-50 bg-muted-bg',
         className
       )}
+      style={{ boxShadow: 'var(--shadow-inner-sm)' }}
     >
       {/* Search icon or loading spinner */}
       <div className="absolute left-3 flex items-center pointer-events-none">
@@ -93,7 +94,7 @@ export function SearchInput({
           // Base input styles - matching Radix Input
           'w-full h-full bg-transparent border-none outline-none',
           'text-base md:text-sm font-sans',
-          'text-primary placeholder:text-muted',
+          'text-primary placeholder:text-tertiary/50',
           'selection:bg-accent-strong selection:text-inverse',
           'pl-9 pr-3',
           disabled && 'cursor-not-allowed'

@@ -11,6 +11,7 @@ import {
 import { cn } from "../../lib/utils"
 import { Checkbox } from "./checkbox"
 import { Skeleton } from "./Skeleton"
+import { Pagination } from "./Pagination"
 
 // =============================================================================
 // TYPES
@@ -105,6 +106,21 @@ export interface DataTableProps<T> {
   compact?: boolean
   /** Function to determine row priority for colored left border */
   getRowPriority?: (row: T) => RowPriority
+  // Pagination props
+  /** Enable pagination footer inside table */
+  pagination?: boolean
+  /** Current page (1-indexed) */
+  currentPage?: number
+  /** Total number of items (for pagination) */
+  totalItems?: number
+  /** Number of items per page */
+  pageSize?: number
+  /** Callback when page changes */
+  onPageChange?: (page: number) => void
+  /** Callback when page size changes */
+  onPageSizeChange?: (pageSize: number) => void
+  /** Available page sizes */
+  pageSizeOptions?: number[]
 }
 
 // =============================================================================
@@ -205,6 +221,14 @@ export function DataTable<T>({
   hoverable = true,
   compact = false,
   getRowPriority,
+  // Pagination props
+  pagination = false,
+  currentPage = 1,
+  totalItems,
+  pageSize = 10,
+  onPageChange,
+  onPageSizeChange,
+  pageSizeOptions = [5, 10, 25, 50],
 }: DataTableProps<T>) {
   // Local sort state (used if onSortChange is not provided)
   const [localSortColumn, setLocalSortColumn] = useState<string | null>(null)
@@ -318,13 +342,13 @@ export function DataTable<T>({
   // Render loading skeleton
   if (loading) {
     return (
-      <div className={cn("overflow-hidden rounded-lg border border-default w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
+      <div className={cn("overflow-hidden rounded-xl border border-default shadow-md w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
         <div className="overflow-hidden w-full" style={{ maxHeight }}>
           <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'fixed' }} data-slot="data-table">
             <thead
               className="border-b border-default"
               style={{
-                background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-hover) 100%)',
+                background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 20%, var(--color-surface-hover) 100%)',
               }}
               data-slot="data-table-header"
             >
@@ -388,13 +412,13 @@ export function DataTable<T>({
   // Render empty state
   if (data.length === 0) {
     return (
-      <div className={cn("overflow-hidden rounded-lg border border-default w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
+      <div className={cn("overflow-hidden rounded-xl border border-default shadow-md w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
         <div className="overflow-hidden w-full" style={{ maxHeight }}>
           <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'fixed' }} data-slot="data-table">
             <thead
               className={cn("border-b border-default", stickyHeader && "sticky top-0 z-10")}
               style={{
-                background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-hover) 100%)',
+                background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 20%, var(--color-surface-hover) 100%)',
               }}
               data-slot="data-table-header"
             >
@@ -442,7 +466,7 @@ export function DataTable<T>({
   }
 
   return (
-    <div className={cn("overflow-hidden rounded-lg border border-default w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
+    <div className={cn("overflow-hidden rounded-xl border border-default shadow-md w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
       <div className="overflow-hidden w-full" style={{ maxHeight }}>
         <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'fixed' }} data-slot="data-table">
           <thead
@@ -452,7 +476,7 @@ export function DataTable<T>({
             )}
             style={{
               // Gradient background matching QuickFilter pattern
-              background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-hover) 100%)',
+              background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 20%, var(--color-surface-hover) 100%)',
             }}
             data-slot="data-table-header"
           >
@@ -590,6 +614,29 @@ export function DataTable<T>({
           </tbody>
         </table>
       </div>
+
+      {/* Pagination footer */}
+      {pagination && onPageChange && (
+        <div
+          className="border-t border-default px-4 py-3"
+          style={{
+            background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 20%, var(--color-surface-hover) 100%)',
+          }}
+          data-slot="data-table-pagination"
+        >
+          <Pagination
+            currentPage={currentPage}
+            totalItems={totalItems ?? data.length}
+            pageSize={pageSize}
+            onPageChange={onPageChange}
+            onPageSizeChange={onPageSizeChange}
+            pageSizeOptions={pageSizeOptions}
+            showPageSizeSelector={!!onPageSizeChange}
+            showResultsText
+            layout="row"
+          />
+        </div>
+      )}
     </div>
   )
 }

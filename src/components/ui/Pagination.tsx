@@ -50,6 +50,8 @@ export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   compact?: boolean
   /** Custom results text format */
   resultsTextFormat?: (start: number, end: number, total: number) => string
+  /** Layout mode: 'responsive' uses container queries, 'row' forces horizontal layout */
+  layout?: 'responsive' | 'row'
 }
 
 // =============================================================================
@@ -123,8 +125,11 @@ export function Pagination({
   className,
   compact: _compact = false,
   resultsTextFormat,
+  layout = 'responsive',
   ...props
 }: PaginationProps) {
+  // Layout classes based on mode
+  const isRowLayout = layout === 'row'
   // Calculate pagination values
   const totalPages = Math.ceil(totalItems / pageSize)
   const startItem = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1
@@ -208,14 +213,20 @@ export function Pagination({
     <div
       data-slot="pagination"
       className={cn(
-        "@container flex flex-col gap-3 items-center @md:flex-row @md:items-center @md:justify-between",
+        "flex gap-3 items-center",
+        isRowLayout
+          ? "flex-row justify-between"
+          : "@container flex-col @md:flex-row @md:justify-between",
         className
       )}
       {...props}
     >
       {/* Results text - hidden on mobile, left on desktop */}
       {showResultsText && (
-        <p className="hidden @md:block text-sm text-primary text-left order-1">
+        <p className={cn(
+          "text-sm text-primary text-left order-1",
+          isRowLayout ? "block" : "hidden @md:block"
+        )}>
           {resultsText}
         </p>
       )}
@@ -223,7 +234,10 @@ export function Pagination({
       {/* Page navigation - centered on mobile, center position on desktop */}
       {totalPages > 1 && (
         <nav
-          className="flex items-center gap-0.5 @md:gap-1 bg-surface rounded-lg shadow-sm p-1.5 @md:p-1 border border-default order-1 @md:order-2"
+          className={cn(
+            "flex items-center bg-surface rounded-lg shadow-inner border border-default",
+            isRowLayout ? "gap-1 p-1 order-2" : "gap-0.5 @md:gap-1 p-1.5 @md:p-1 order-1 @md:order-2"
+          )}
           aria-label="Pagination navigation"
         >
           {/* First page button - hidden on mobile */}
@@ -235,7 +249,10 @@ export function Pagination({
               onClick={goToFirstPage}
               disabled={currentPage === 1 || loading}
               aria-label="Go to first page"
-              className="hidden @md:flex h-9 w-9 hover:bg-[var(--brand-deep-current-100)]"
+              className={cn(
+                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)]",
+                isRowLayout ? "flex" : "hidden @md:flex"
+              )}
             >
               <ChevronsLeft className="h-4 w-4" />
             </Button>
@@ -249,9 +266,12 @@ export function Pagination({
             onClick={goToPreviousPage}
             disabled={currentPage === 1 || loading}
             aria-label="Go to previous page"
-            className="h-11 w-11 @md:h-9 @md:w-9 hover:bg-[var(--brand-deep-current-100)]"
+            className={cn(
+              "hover:bg-[var(--brand-deep-current-100)]",
+              isRowLayout ? "h-9 w-9" : "h-11 w-11 @md:h-9 @md:w-9"
+            )}
           >
-            <ChevronLeft className="h-5 w-5 @md:h-4 @md:w-4" />
+            <ChevronLeft className={isRowLayout ? "h-4 w-4" : "h-5 w-5 @md:h-4 @md:w-4"} />
           </Button>
 
           {/* Page numbers - 44px touch targets on mobile */}
@@ -261,7 +281,10 @@ export function Pagination({
                 return (
                   <span
                     key={page}
-                    className="flex h-11 w-6 @md:h-9 @md:w-9 items-center justify-center text-secondary"
+                    className={cn(
+                      "flex items-center justify-center text-secondary",
+                      isRowLayout ? "h-9 w-9" : "h-11 w-6 @md:h-9 @md:w-9"
+                    )}
                     aria-hidden="true"
                   >
                     <MoreHorizontal className="h-4 w-4" />
@@ -282,10 +305,14 @@ export function Pagination({
                   aria-label={`Go to page ${page}`}
                   aria-current={isCurrentPage ? "page" : undefined}
                   className={cn(
-                    "h-11 w-10 @md:h-9 @md:w-9 font-medium text-base @md:text-sm",
-                    isCurrentPage && "pointer-events-none",
+                    "font-medium transition-shadow duration-200",
+                    isRowLayout ? "h-9 w-9 text-sm" : "h-11 w-10 @md:h-9 @md:w-9 text-base @md:text-sm",
+                    isCurrentPage && "[--pg-shadow:inset_0_2px_4px_rgba(0,0,0,0.2)] hover:[--pg-shadow:none] cursor-default",
                     !isCurrentPage && "hover:bg-[var(--brand-deep-current-100)]"
                   )}
+                  style={isCurrentPage ? {
+                    boxShadow: 'var(--pg-shadow)'
+                  } : undefined}
                 >
                   {page}
                 </Button>
@@ -301,9 +328,12 @@ export function Pagination({
             onClick={goToNextPage}
             disabled={currentPage === totalPages || loading}
             aria-label="Go to next page"
-            className="h-11 w-11 @md:h-9 @md:w-9 hover:bg-[var(--brand-deep-current-100)]"
+            className={cn(
+              "hover:bg-[var(--brand-deep-current-100)]",
+              isRowLayout ? "h-9 w-9" : "h-11 w-11 @md:h-9 @md:w-9"
+            )}
           >
-            <ChevronRight className="h-5 w-5 @md:h-4 @md:w-4" />
+            <ChevronRight className={isRowLayout ? "h-4 w-4" : "h-5 w-5 @md:h-4 @md:w-4"} />
           </Button>
 
           {/* Last page button - hidden on mobile */}
@@ -315,7 +345,10 @@ export function Pagination({
               onClick={goToLastPage}
               disabled={currentPage === totalPages || loading}
               aria-label="Go to last page"
-              className="hidden @md:flex h-9 w-9 hover:bg-[var(--brand-deep-current-100)]"
+              className={cn(
+                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)]",
+                isRowLayout ? "flex" : "hidden @md:flex"
+              )}
             >
               <ChevronsRight className="h-4 w-4" />
             </Button>
@@ -325,7 +358,10 @@ export function Pagination({
 
       {/* Page size selector - hidden on mobile, right side on desktop */}
       {showPageSizeSelector && onPageSizeChange && (
-        <div className="hidden @md:flex items-center gap-2 order-3">
+        <div className={cn(
+          "items-center gap-2 order-3",
+          isRowLayout ? "flex" : "hidden @md:flex"
+        )}>
           <span className="text-sm text-secondary">Rows:</span>
           <Select
             value={pageSize.toString()}

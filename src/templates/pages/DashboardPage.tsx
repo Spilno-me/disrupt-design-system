@@ -82,6 +82,8 @@ export interface DashboardPageProps {
   hideActivity?: boolean
   /** Hide quick actions section */
   hideQuickActions?: boolean
+  /** Hide title section (use when PageActionPanel provides title) */
+  hideTitle?: boolean
 }
 
 // =============================================================================
@@ -269,6 +271,7 @@ export function DashboardPage({
   kpiColumns = 4,
   hideActivity = false,
   hideQuickActions = false,
+  hideTitle = false,
 }: DashboardPageProps) {
   const kpiGridClass =
     kpiColumns === 2
@@ -280,10 +283,12 @@ export function DashboardPage({
   return (
     <div className={cn('flex flex-col gap-6 p-6', className)}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <h1 className="text-2xl font-semibold text-primary">{title}</h1>
-        {subtitle && <span className="text-sm text-secondary">{subtitle}</span>}
-      </div>
+      {!hideTitle && (title || subtitle) && (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          {title && <h1 className="text-2xl font-semibold text-primary">{title}</h1>}
+          {subtitle && <span className="text-sm text-secondary">{subtitle}</span>}
+        </div>
+      )}
 
       {/* KPI Cards */}
       {(kpis.length > 0 || isLoading) && (

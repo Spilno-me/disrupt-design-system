@@ -41,11 +41,11 @@ const actionTileVariants = cva(
           'focus-visible:ring-success',
         ],
         neutral: [
-          // Gray - DUSK_REEF colors (secondary text tone)
+          // Warm neutral - ABYSS colors (warm dark gray)
           // Hover: solid fill with white text
-          'border-secondary text-secondary',
-          'hover:bg-secondary hover:text-on-status hover:border-secondary',
-          'focus-visible:ring-secondary',
+          'border-strong text-strong',
+          'hover:bg-strong hover:text-inverse hover:border-strong',
+          'focus-visible:ring-strong',
         ],
         destructive: [
           // Red - CORAL colors
@@ -82,7 +82,7 @@ const actionTileVariants = cva(
       {
         variant: 'neutral',
         appearance: 'filled',
-        className: 'bg-muted-bg dark:bg-secondary/10',
+        className: 'bg-surface-hover dark:bg-strong/10',
       },
       {
         variant: 'destructive',
