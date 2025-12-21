@@ -81,10 +81,20 @@
 
 | Change | Bump | Update |
 |--------|------|--------|
-| New component/feature | MINOR | package.json, changelog.json |
-| Architecture change | MINOR+ | package.json, changelog.json, CLAUDE.md |
-| Breaking change | MAJOR | package.json, changelog.json, v3-breaking-changes.md |
+| New component/feature | MINOR | package.json, changelog.json, **README.md** |
+| Architecture change | MINOR+ | package.json, changelog.json, CLAUDE.md, **README.md** |
+| Breaking change | MAJOR | package.json, changelog.json, v3-breaking-changes.md, **README.md** |
 | Bug fix | PATCH | package.json, changelog.json |
+| New subpath export | MINOR | package.json, changelog.json, **README.md** (Package Architecture) |
+
+**README Drift Prevention:**
+```
+BEFORE PR: Does this change affect consumers?
+├── New import path? → Update README Package Architecture
+├── New component category? → Update README Components list
+├── New setup step? → Update README Quick Start
+└── API change? → Update README Usage examples
+```
 
 ---
 

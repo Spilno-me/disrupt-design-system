@@ -21,6 +21,33 @@ Or install from GitHub:
 npm install git+https://github.com/Spilno-me/disrupt-design-system.git
 ```
 
+## Package Architecture
+
+DDS uses **subpath exports** to organize components by product domain:
+
+| Subpath | Purpose | Example Components |
+|---------|---------|-------------------|
+| `/core` | Shared across ALL products | Button, Card, Input, Dialog |
+| `/flow` | Flow EHS mobile app | MobileNavButton, MobileNavBar, QuickActionButton |
+| `/portal` | Portal web app | (future) |
+| `/tokens` | Design tokens (TypeScript) | ALIAS, SHADOWS, SPACING |
+
+### Import Patterns
+
+```tsx
+// Core components (shared)
+import { Button, Card, Input } from '@adrozdenko/design-system/core'
+
+// Flow-specific components (mobile)
+import { MobileNavButton, MobileNavBar } from '@adrozdenko/design-system/flow'
+
+// Design tokens
+import { ALIAS, SHADOWS, SPACING } from '@adrozdenko/design-system/tokens'
+
+// Legacy: All components (still works, but prefer subpaths)
+import { Button, Card } from '@adrozdenko/design-system'
+```
+
 ## Quick Start
 
 ### 1. Install the package
@@ -64,7 +91,7 @@ import '@adrozdenko/design-system/styles'
 ### 4. Use components
 
 ```tsx
-import { Button, Card, Input, DataTable } from '@adrozdenko/design-system'
+import { Button, Card, Input } from '@adrozdenko/design-system/core'
 
 function App() {
   return (
@@ -82,7 +109,7 @@ function App() {
 ### Importing Components
 
 ```typescript
-// Import UI components
+// Core components (recommended)
 import {
   Button,
   Card,
@@ -94,13 +121,17 @@ import {
   Pagination,
   AppSidebar,
   Tabs,
-} from '@adrozdenko/design-system'
+} from '@adrozdenko/design-system/core'
 
-// Import form components
-import { ContactForm } from '@adrozdenko/design-system'
+// Flow mobile components
+import {
+  MobileNavButton,
+  MobileNavBar,
+  QuickActionButton,
+} from '@adrozdenko/design-system/flow'
 
-// Import layout components
-import { Header, Footer, PageLayout } from '@adrozdenko/design-system'
+// Layout components
+import { Header, Footer, PageLayout } from '@adrozdenko/design-system/core'
 ```
 
 ### Importing Design Tokens
