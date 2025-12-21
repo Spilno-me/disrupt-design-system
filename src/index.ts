@@ -132,6 +132,23 @@ export {
   SheetDescription,
 } from './components/ui/sheet'
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup,
+} from './components/ui/dropdown-menu'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs'
 export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/ui/tabs'
 export { Label } from './components/ui/label'
@@ -184,6 +201,21 @@ export { GenericErrorPage } from './components/ui/GenericErrorPage'
 export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
 export { SeverityIndicator } from './components/ui/SeverityIndicator'
 export type { SeverityIndicatorProps, SeverityLevel } from './components/ui/SeverityIndicator'
+export {
+  QuickFilter,
+  QuickFilterItem,
+  DraftsFilter,
+  ReportedFilter,
+  AgingFilter,
+  InProgressFilter,
+  ReviewsFilter,
+  DLBFilter,
+} from './components/ui/QuickFilter'
+export type { QuickFilterVariant, QuickFilterItemProps, QuickFilterProps } from './components/ui/QuickFilter'
+export { NotificationsPanel } from './components/ui/NotificationsPanel'
+export type { NotificationType, Notification, NotificationsPanelProps } from './components/ui/NotificationsPanel'
+export { ActionTile, actionTileVariants } from './components/ui/ActionTile'
+export type { ActionTileProps } from './components/ui/ActionTile'
 
 // =============================================================================
 // FLOW-SPECIFIC COMPONENTS - Moved to @adrozdenko/design-system/flow

@@ -13,6 +13,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { createHash } from 'crypto'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -150,10 +151,16 @@ function parseTokens(content) {
   return tokens
 }
 
+// Generate content hash from tokens
+function generateContentHash(tokens) {
+  const content = JSON.stringify(tokens)
+  return createHash('sha256').update(content).digest('hex').slice(0, 12)
+}
+
 // Generate color matrix with allowed combinations
-function generateColorMatrix(tokens) {
+function generateColorMatrix(tokens, contentHash) {
   const matrix = {
-    _generated: new Date().toISOString(),
+    _contentHash: contentHash,
     _source: 'src/constants/designTokens.ts',
     _note: 'AUTO-GENERATED - Do not edit. Run npm run sync:colors',
     backgrounds: { light: [], dark: [], accent: [] },
@@ -200,9 +207,9 @@ function generateColorMatrix(tokens) {
 }
 
 // Generate contrast matrix with all ratios
-function generateContrastMatrix(tokens) {
+function generateContrastMatrix(tokens, contentHash) {
   const matrix = {
-    _generated: new Date().toISOString(),
+    _contentHash: contentHash,
     _source: 'src/constants/designTokens.ts',
     _note: 'AUTO-GENERATED - Do not edit. Run npm run sync:colors',
     wcagRequirements: { 'AA-normal-text': '4.5:1', 'AA-large-text': '3.0:1', 'AAA-normal-text': '7.0:1' },
@@ -246,8 +253,9 @@ function main() {
   console.log(`${DIM}  ${tokens.backgrounds.length} backgrounds, ${tokens.foregrounds.length} foregrounds${RESET}`)
 
   console.log(`${CYAN}>${RESET} Calculating WCAG contrast ratios...`)
-  const colorMatrix = generateColorMatrix(tokens)
-  const contrastMatrix = generateContrastMatrix(tokens)
+  const contentHash = generateContentHash(tokens)
+  const colorMatrix = generateColorMatrix(tokens, contentHash)
+  const contrastMatrix = generateContrastMatrix(tokens, contentHash)
   console.log(`${DIM}  ${contrastMatrix.combinations.length} combinations calculated${RESET}`)
   console.log(`${DIM}  ${contrastMatrix.combinations.filter((c) => c.pass).length} pass WCAG AA${RESET}`)
 

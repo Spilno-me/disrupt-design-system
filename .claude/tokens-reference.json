@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "Complete design token reference for AI agents. Visual examples are in DesignTokens.mdx for humans.",
-  "version": "2.5.0",
-  "lastUpdated": "2025-12-15",
+  "version": "2.6.0",
+  "lastUpdated": "2025-12-21",
   "spacing": {
     "website": {
       "_usage": "Marketing sites, landing pages - larger spacing for content-focused layouts",
@@ -138,27 +138,27 @@
         "use": "Flat elements, text links"
       },
       "sm": {
-        "value": "0 1px 3px 0 rgba(0,0,0,0.12), 0 1px 2px -1px rgba(0,0,0,0.08)",
+        "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
         "use": "Data display",
         "examples": "Tags, badges, list items, stats"
       },
       "md": {
-        "value": "0 2px 8px -1px rgba(0,0,0,0.12), 0 4px 12px -2px rgba(0,0,0,0.08)",
+        "value": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
         "use": "Standard interactive (DEFAULT)",
         "examples": "Cards, buttons, dropdowns"
       },
       "elevated": {
-        "value": "0 3px 12px -1px rgba(0,0,0,0.14), 0 10px 28px -4px rgba(0,0,0,0.10)",
+        "value": "0 2px 8px -1px rgba(0, 0, 0, 0.14), 0 6px 20px -4px rgba(0, 0, 0, 0.10)",
         "use": "Premium emphasis",
         "examples": "KPI cards, featured content, CTAs"
       },
       "lg": {
-        "value": "0 4px 16px -2px rgba(0,0,0,0.12), 0 8px 24px -4px rgba(0,0,0,0.08)",
+        "value": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
         "use": "Interactive overlays",
         "examples": "Modals, sheets, drawers"
       },
       "xl": {
-        "value": "0 8px 24px -4px rgba(0,0,0,0.12), 0 12px 32px -6px rgba(0,0,0,0.08)",
+        "value": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
         "use": "Critical attention",
         "examples": "System alerts, error dialogs"
       }

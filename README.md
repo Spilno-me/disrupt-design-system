@@ -29,7 +29,6 @@ DDS uses **subpath exports** to organize components by product domain:
 |---------|---------|-------------------|
 | `/core` | Shared across ALL products | Button, Card, Input, Dialog |
 | `/flow` | Flow EHS mobile app | MobileNavButton, MobileNavBar, QuickActionButton |
-| `/portal` | Portal web app | (future) |
 | `/tokens` | Design tokens (TypeScript) | ALIAS, SHADOWS, SPACING |
 
 ### Import Patterns

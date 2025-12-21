@@ -1,5 +1,5 @@
 {
-  "_generated": "2025-12-21T02:47:13.532Z",
+  "_contentHash": "85e23819012c",
   "_source": "src/constants/designTokens.ts",
   "_note": "AUTO-GENERATED - Do not edit. Run npm run sync:colors",
   "wcagRequirements": {

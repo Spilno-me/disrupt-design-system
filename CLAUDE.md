@@ -113,7 +113,6 @@ npm run validate:tokens   # check token drift
 |---------|---------|------------|
 | `@dds/core` | Shared across ALL products | Button, Card, Input, tokens, utils |
 | `@dds/flow` | Flow EHS mobile app | MobileNavButton, MobileNavBar, QuickActionButton |
-| `@dds/portal` | Portal web app | (future) |
 
 **Import Pattern:**
 ```tsx

@@ -198,9 +198,26 @@ function detectExportDrift() {
   const indexContent = readFileSync(INDEX_PATH, 'utf8')
 
   // Get all exported components from index.ts
+  // Match both patterns:
+  //   export * from './components/ui/xxx'
+  //   export { Name } from './components/ui/xxx'
   const exportedComponents = new Set()
-  const exportMatches = indexContent.matchAll(/export \* from ['"]\.\/components\/ui\/([^'"]+)['"]/g)
-  for (const match of exportMatches) {
+
+  // Pattern 1: export * from './components/ui/xxx'
+  const starExports = indexContent.matchAll(/export \* from ['"]\.\/components\/ui\/([^'"]+)['"]/g)
+  for (const match of starExports) {
+    exportedComponents.add(match[1].replace(/\.tsx?$/, ''))
+  }
+
+  // Pattern 2: export { ... } from './components/ui/xxx'
+  const namedExports = indexContent.matchAll(/export \{[^}]+\} from ['"]\.\/components\/ui\/([^'"]+)['"]/g)
+  for (const match of namedExports) {
+    exportedComponents.add(match[1].replace(/\.tsx?$/, ''))
+  }
+
+  // Pattern 3: export type { ... } from './components/ui/xxx'
+  const typeExports = indexContent.matchAll(/export type \{[^}]+\} from ['"]\.\/components\/ui\/([^'"]+)['"]/g)
+  for (const match of typeExports) {
     exportedComponents.add(match[1].replace(/\.tsx?$/, ''))
   }
 
@@ -212,7 +229,8 @@ function detectExportDrift() {
 
     // Find components not exported
     const notExported = componentFiles.filter((c) => {
-      const kebab = c.toLowerCase().replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+      // Check both original name and kebab-case conversion
+      const kebab = c.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
       return !exportedComponents.has(c) && !exportedComponents.has(kebab)
     })
 
