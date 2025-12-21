@@ -140,12 +140,26 @@ export const SLATE = {
   900: '#0F172A',
 } as const
 
+/** Linen - Cool blue-white scale (based on softLinen) */
+export const LINEN = {
+  50: '#F5FCFF',   // Lightest - near white with blue tint
+  100: '#EBF9FF',  // softLinen (original)
+  200: '#D9F0FB',  // Subtle blue
+  300: '#B8DCF0',  // Light blue-gray
+  400: '#8CBDD8',  // Medium light
+  500: '#6199B8',  // Base - muted blue
+  600: '#4A7A96',  // Darker blue
+  700: '#365B71',  // Dark blue-gray
+  800: '#243D4D',  // Very dark
+  900: '#132029',  // Near black with blue
+} as const
+
 /** Base primitives - single color values */
 export const PRIMITIVES = {
   white: '#FFFFFF',
   black: '#000000',
   cream: '#FBFBF3',
-  softLinen: '#EBF9FF',
+  softLinen: LINEN[100],  // References LINEN scale for consistency
   linkedIn: '#0A66C2',
 } as const
 
@@ -174,7 +188,7 @@ export const ALIAS = {
 
   // --- BACKGROUND ---
   background: {
-    page: PRIMITIVES.cream,
+    page: LINEN[200],  // Darker variation of softLinen
     surface: PRIMITIVES.softLinen,
     surfaceHover: ABYSS[50],
     surfaceActive: ABYSS[100],
@@ -369,6 +383,123 @@ export const ALIAS = {
     cyanBright: '#00FFFF',     // Bright cyan for glow
     cyanGlow: 'rgba(0, 206, 209, 0.6)',
     cyanGlowSubtle: 'rgba(0, 255, 255, 0.4)',
+  },
+} as const
+
+// =============================================================================
+// DEPTH MODEL
+// Semantic layer definitions for UI depth/elevation visualization
+// Single source of truth for DepthLayeringModel.mdx and related documentation
+// =============================================================================
+
+/** Helper to get primitive name from color value - used for dynamic DEPTH_MODEL labels */
+function getPrimitiveName(color: string): string {
+  // Check LINEN scale first (softLinen = LINEN[100], so use scale notation for consistency)
+  for (const [shade, hex] of Object.entries(LINEN)) {
+    if (color === hex) return `LINEN[${shade}]`
+  }
+  // Check ABYSS scale for dark mode
+  for (const [shade, hex] of Object.entries(ABYSS)) {
+    if (color === hex) return `ABYSS[${shade}]`
+  }
+  // Fallback to primitive names
+  if (color === PRIMITIVES.cream) return 'cream'
+  if (color === PRIMITIVES.white) return 'white'
+  return color
+}
+
+export const DEPTH_MODEL = {
+  /** Layers ordered from closest to viewer (1) to furthest (5) */
+  layers: [
+    {
+      depth: 1,
+      name: 'elevated',
+      displayName: 'Elevated',
+      description: 'Modals, dropdowns, tooltips - closest to user',
+      light: {
+        token: 'background.elevated',
+        color: ALIAS.background.elevated,
+        label: getPrimitiveName(ALIAS.background.elevated),
+      },
+      dark: {
+        token: 'ABYSS[400]',
+        color: ABYSS[400],
+        label: getPrimitiveName(ABYSS[400]),
+      },
+    },
+    {
+      depth: 2,
+      name: 'card',
+      displayName: 'Card',
+      description: 'Cards, panels - floating content',
+      light: {
+        token: 'background.elevated',
+        color: ALIAS.background.elevated,
+        label: getPrimitiveName(ALIAS.background.elevated),
+      },
+      dark: {
+        token: 'ABYSS[500]',
+        color: ABYSS[500],
+        label: getPrimitiveName(ABYSS[500]),
+      },
+    },
+    {
+      depth: 3,
+      name: 'surface',
+      displayName: 'Surface',
+      description: 'Content areas, sidebars',
+      light: {
+        token: 'background.surface',
+        color: ALIAS.background.surface,
+        label: getPrimitiveName(ALIAS.background.surface),
+      },
+      dark: {
+        token: 'ABYSS[700]',
+        color: ABYSS[700],
+        label: getPrimitiveName(ABYSS[700]),
+      },
+    },
+    {
+      depth: 4,
+      name: 'surfaceHover',
+      displayName: 'Surface Hover',
+      description: 'Hover state for surfaces',
+      light: {
+        token: 'background.surfaceHover',
+        color: ALIAS.background.surfaceHover,
+        label: getPrimitiveName(ALIAS.background.surfaceHover),
+      },
+      dark: {
+        token: 'ABYSS[600]',
+        color: ABYSS[600],
+        label: getPrimitiveName(ABYSS[600]),
+      },
+    },
+    {
+      depth: 5,
+      name: 'page',
+      displayName: 'Page',
+      description: 'Page background - furthest from user',
+      light: {
+        token: 'background.page',
+        color: ALIAS.background.page,
+        label: getPrimitiveName(ALIAS.background.page),
+      },
+      dark: {
+        token: 'ABYSS[900]',
+        color: ABYSS[900],
+        label: getPrimitiveName(ABYSS[900]),
+      },
+    },
+  ],
+
+  /** Key insight for documentation */
+  insight: 'Elements closer to the viewer are always relatively lighter than elements further away, regardless of theme.',
+
+  /** Depth formula explanation */
+  formula: {
+    light: 'Further from eye → Higher shade number → Darker',
+    dark: 'Further from eye → Higher shade number → Darker',
   },
 } as const
 

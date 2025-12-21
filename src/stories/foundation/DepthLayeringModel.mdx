@@ -7,24 +7,22 @@ import {
   Sun,
   Moon,
   ArrowDown,
-  ArrowUp,
   Lightbulb,
   FileStack,
   SquareStack,
   Palette,
-  Monitor,
+  Check,
+  X,
 } from 'lucide-react';
 import {
   BrandHero,
   InfoBox,
-  FeatureCard,
   SectionHeader,
-  GuidelineCard,
-  StoryLink,
   ABYSS,
   DEEP_CURRENT,
   DUSK_REEF,
   CORAL,
+  LINEN,
   PRIMITIVES,
   SHADOWS,
   RADIUS,
@@ -32,6 +30,7 @@ import {
   SPACING,
   TYPOGRAPHY,
   SIZES,
+  DEPTH_MODEL,
 } from '../brand/BrandComponents';
 import { SUNRISE } from '../../constants/designTokens';
 
@@ -40,14 +39,14 @@ import { SUNRISE } from '../../constants/designTokens';
 {/* Hero Header */}
 <BrandHero
   title="Depth Layering Model"
-  description="A mental model for understanding UI depth through the metaphor of stacked paper sheets. Distance from the viewer determines shade intensity."
+  description="The mandatory depth system for all DDS interfaces. These rules define how background shades must be applied based on UI element proximity to the viewer."
   gradient="primary"
   decorativeIcon={<Layers size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
-<InfoBox variant="tip">
-  <strong>Core Principle:</strong> Think of UI as sheets of paper stacked on top of each other.
-  In light theme, objects further from your eye become darker. In dark theme, they become lighter.
+<InfoBox variant="warning">
+  <strong>Required:</strong> All DDS implementations must follow this depth model exactly.
+  Light theme: closer = lighter. Dark theme: closer = lighter (inverted scale). No exceptions.
 </InfoBox>
 
 ---
@@ -57,12 +56,12 @@ import { SUNRISE } from '../../constants/designTokens';
 <SectionHeader
   icon={<FileStack size={20} />}
   title="Layered Surfaces"
-  description="Visualize your UI as physical sheets of paper, each at a different distance from the viewer."
+  description="UI elements are organized as stacked layers. Each layer has a fixed shade assignment."
 />
 
 {/* Main Visual Metaphor */}
 <div style={{
-  background: PRIMITIVES.softLinen,
+  background: LINEN[300],
   borderRadius: RADIUS.lg,
   padding: SPACING.px.spacious,
   border: `1px solid ${SLATE[200]}`,
@@ -79,22 +78,6 @@ import { SUNRISE } from '../../constants/designTokens';
   }}>
     {/* Light Theme Stack */}
     <div style={{ textAlign: 'center' }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: SPACING.px.tight,
-        marginBottom: SPACING.px.comfortable,
-        justifyContent: 'center',
-      }}>
-        <Sun size={20} color={SUNRISE[500]} />
-        <span style={{
-          fontSize: TYPOGRAPHY.fontSize.sm[0],
-          fontWeight: TYPOGRAPHY.fontWeight.semibold,
-          fontFamily: TYPOGRAPHY.fontFamily.sans,
-          color: ABYSS[500],
-        }}>Light Theme</span>
-      </div>
-
       {/* Stacked Papers - Light */}
       <div style={{
         position: 'relative',
@@ -107,21 +90,22 @@ import { SUNRISE } from '../../constants/designTokens';
           position: 'absolute',
           width: '180px',
           height: '120px',
-          background: PRIMITIVES.cream,
+          background: DEPTH_MODEL.layers.find(l => l.name === 'page').light.color,
           borderRadius: RADIUS.md,
           top: '80px',
           left: '10px',
           transform: 'rotateX(45deg)',
-          boxShadow: `0 4px 8px rgba(0,0,0,0.1)`,
+          boxShadow: SHADOWS.sm,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
+          paddingBottom: SPACING.px.tight,
         }}>
           <span style={{
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: ABYSS[500],
-          }}>Page (cream)</span>
+          }}>Page ({DEPTH_MODEL.layers.find(l => l.name === 'page').light.label})</span>
         </div>
 
         {/* Surface layer - middle distance */}
@@ -129,22 +113,23 @@ import { SUNRISE } from '../../constants/designTokens';
           position: 'absolute',
           width: '160px',
           height: '100px',
-          background: PRIMITIVES.softLinen,
+          background: DEPTH_MODEL.layers.find(l => l.name === 'surface').light.color,
           borderRadius: RADIUS.md,
           top: '50px',
           left: '20px',
           transform: 'rotateX(45deg)',
-          boxShadow: `0 6px 12px rgba(0,0,0,0.12)`,
+          boxShadow: SHADOWS.md,
           border: `1px solid ${SLATE[200]}`,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
+          paddingBottom: SPACING.px.tight,
         }}>
           <span style={{
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: ABYSS[500],
-          }}>Surface (softLinen)</span>
+          }}>Surface ({DEPTH_MODEL.layers.find(l => l.name === 'surface').light.label})</span>
         </div>
 
         {/* Card layer - closest, lightest */}
@@ -152,22 +137,23 @@ import { SUNRISE } from '../../constants/designTokens';
           position: 'absolute',
           width: '140px',
           height: '80px',
-          background: PRIMITIVES.softLinen,
+          background: DEPTH_MODEL.layers.find(l => l.name === 'card').light.color,
           borderRadius: RADIUS.md,
           top: '20px',
           left: '30px',
           transform: 'rotateX(45deg)',
-          boxShadow: `0 8px 16px rgba(0,0,0,0.15)`,
+          boxShadow: SHADOWS.lg,
           border: `1px solid ${SLATE[200]}`,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
+          paddingBottom: SPACING.px.tight,
         }}>
           <span style={{
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: ABYSS[500],
-          }}>Card (softLinen)</span>
+          }}>Card ({DEPTH_MODEL.layers.find(l => l.name === 'card').light.label})</span>
         </div>
 
         {/* Eye indicator */}
@@ -191,30 +177,14 @@ import { SUNRISE } from '../../constants/designTokens';
         color: SLATE[500],
         marginTop: SPACING.px.comfortable,
       }}>
-        <span style={{ color: DEEP_CURRENT[500], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Closer = Lighter</span>
+        <span style={{ color: DEEP_CURRENT[700], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Closer = Lighter</span>
         <br />
-        <span style={{ color: DUSK_REEF[500], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Further = Darker</span>
+        <span style={{ color: DUSK_REEF[600], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Further = Darker</span>
       </div>
     </div>
 
     {/* Dark Theme Stack */}
     <div style={{ textAlign: 'center' }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: SPACING.px.tight,
-        marginBottom: SPACING.px.comfortable,
-        justifyContent: 'center',
-      }}>
-        <Moon size={20} color={DUSK_REEF[500]} />
-        <span style={{
-          fontSize: TYPOGRAPHY.fontSize.sm[0],
-          fontWeight: TYPOGRAPHY.fontWeight.semibold,
-          fontFamily: TYPOGRAPHY.fontFamily.sans,
-          color: ABYSS[500],
-        }}>Dark Theme</span>
-      </div>
-
       {/* Stacked Papers - Dark */}
       <div style={{
         position: 'relative',
@@ -227,21 +197,22 @@ import { SUNRISE } from '../../constants/designTokens';
           position: 'absolute',
           width: '180px',
           height: '120px',
-          background: ABYSS[900],
+          background: DEPTH_MODEL.layers.find(l => l.name === 'page').dark.color,
           borderRadius: RADIUS.md,
           top: '80px',
           left: '10px',
           transform: 'rotateX(45deg)',
-          boxShadow: `0 4px 8px rgba(0,0,0,0.3)`,
+          boxShadow: SHADOWS.md,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
+          paddingBottom: SPACING.px.tight,
         }}>
           <span style={{
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: SLATE[500],
-          }}>Page (900)</span>
+          }}>Page ({DEPTH_MODEL.layers.find(l => l.name === 'page').dark.label})</span>
         </div>
 
         {/* Surface layer - middle */}
@@ -249,22 +220,23 @@ import { SUNRISE } from '../../constants/designTokens';
           position: 'absolute',
           width: '160px',
           height: '100px',
-          background: ABYSS[700],
+          background: DEPTH_MODEL.layers.find(l => l.name === 'surface').dark.color,
           borderRadius: RADIUS.md,
           top: '50px',
           left: '20px',
           transform: 'rotateX(45deg)',
-          boxShadow: `0 6px 12px rgba(0,0,0,0.4)`,
+          boxShadow: SHADOWS.lg,
           border: `1px solid ${ABYSS[600]}`,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
+          paddingBottom: SPACING.px.tight,
         }}>
           <span style={{
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: SLATE[300],
-          }}>Surface (700)</span>
+          }}>Surface ({DEPTH_MODEL.layers.find(l => l.name === 'surface').dark.label})</span>
         </div>
 
         {/* Card layer - closest, lightest */}
@@ -272,22 +244,23 @@ import { SUNRISE } from '../../constants/designTokens';
           position: 'absolute',
           width: '140px',
           height: '80px',
-          background: ABYSS[500],
+          background: DEPTH_MODEL.layers.find(l => l.name === 'card').dark.color,
           borderRadius: RADIUS.md,
           top: '20px',
           left: '30px',
           transform: 'rotateX(45deg)',
-          boxShadow: `0 8px 16px rgba(0,0,0,0.5)`,
+          boxShadow: SHADOWS.xl,
           border: `1px solid ${ABYSS[400]}`,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
+          paddingBottom: SPACING.px.tight,
         }}>
           <span style={{
             fontSize: TYPOGRAPHY.fontSize.xs[0],
             fontFamily: TYPOGRAPHY.fontFamily.mono,
             color: PRIMITIVES.white,
-          }}>Card (500)</span>
+          }}>Card ({DEPTH_MODEL.layers.find(l => l.name === 'card').dark.label})</span>
         </div>
 
         {/* Eye indicator */}
@@ -311,9 +284,9 @@ import { SUNRISE } from '../../constants/designTokens';
         color: SLATE[500],
         marginTop: SPACING.px.comfortable,
       }}>
-        <span style={{ color: DEEP_CURRENT[500], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Closer = Lighter</span>
+        <span style={{ color: DEEP_CURRENT[700], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Closer = Lighter</span>
         <br />
-        <span style={{ color: DUSK_REEF[500], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Further = Darker</span>
+        <span style={{ color: DUSK_REEF[600], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Further = Darker</span>
       </div>
     </div>
   </div>
@@ -344,72 +317,82 @@ import { SUNRISE } from '../../constants/designTokens';
 <SectionHeader
   icon={<SquareStack size={20} />}
   title="Layer Progression"
-  description="Each layer has a specific purpose and shade value based on its distance from the viewer."
+  description="Fixed layer assignments. Use only these tokens for each UI depth level."
 />
 
 {/* Depth Layers Table */}
 <div style={{
-  background: PRIMITIVES.softLinen,
+  background: LINEN[300],
   borderRadius: RADIUS.lg,
   padding: SPACING.px.comfortable,
   border: `1px solid ${SLATE[200]}`,
   marginBottom: SPACING.px.section,
-  overflow: 'hidden',
 }}>
   <table style={{
     width: '100%',
-    borderCollapse: 'collapse',
+    borderCollapse: 'separate',
+    borderSpacing: 0,
     fontSize: TYPOGRAPHY.fontSize.sm[0],
     fontFamily: TYPOGRAPHY.fontFamily.sans,
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
+    background: PRIMITIVES.white,
   }}>
     <thead>
-      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+      <tr>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
             <Eye size={14} color={DEEP_CURRENT[500]} />
             Distance
           </div>
         </th>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Layer</th>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Layer</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
             <Sun size={14} color={SUNRISE[500]} />
             Light Mode
           </div>
         </th>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
             <Moon size={14} color={DUSK_REEF[500]} />
             Dark Mode
           </div>
         </th>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Use Case</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Use Case</th>
       </tr>
     </thead>
     <tbody>
-      {[
-        { distance: 'Closest', layer: 'Elevated', light: { name: 'softLinen', color: PRIMITIVES.softLinen }, dark: { name: 'ABYSS[400]', color: ABYSS[400] }, use: 'Modals, dropdowns, tooltips' },
-        { distance: '', layer: 'Card', light: { name: 'softLinen', color: PRIMITIVES.softLinen }, dark: { name: 'ABYSS[500]', color: ABYSS[500] }, use: 'Cards, panels' },
-        { distance: '', layer: 'Surface', light: { name: 'softLinen', color: PRIMITIVES.softLinen }, dark: { name: 'ABYSS[700]', color: ABYSS[700] }, use: 'Content areas, sidebars' },
-        { distance: 'Furthest', layer: 'Page', light: { name: 'cream', color: PRIMITIVES.cream }, dark: { name: 'ABYSS[900]', color: ABYSS[900] }, use: 'Page background' },
-      ].map((row, idx) => (
-        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+      {DEPTH_MODEL.layers.filter(l => ['elevated', 'card', 'surface', 'page'].includes(l.name)).map((layer, idx, arr) => (
+        <tr key={layer.name} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
           <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}` }}>
-            {row.distance && (
+            {idx === 0 && (
               <span style={{
-                background: row.distance === 'Closest' ? DEEP_CURRENT[50] : DUSK_REEF[50],
-                color: row.distance === 'Closest' ? DEEP_CURRENT[600] : DUSK_REEF[600],
+                background: DEEP_CURRENT[50],
+                color: DEEP_CURRENT[700],
                 padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
                 borderRadius: RADIUS.xs,
                 fontSize: TYPOGRAPHY.fontSize.xs[0],
                 fontWeight: TYPOGRAPHY.fontWeight.medium,
               }}>
-                {row.distance}
+                Closest
+              </span>
+            )}
+            {idx === arr.length - 1 && (
+              <span style={{
+                background: DUSK_REEF[50],
+                color: DUSK_REEF[600],
+                padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+                borderRadius: RADIUS.xs,
+                fontSize: TYPOGRAPHY.fontSize.xs[0],
+                fontWeight: TYPOGRAPHY.fontWeight.medium,
+              }}>
+                Furthest
               </span>
             )}
           </td>
           <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontWeight: TYPOGRAPHY.fontWeight.medium, color: ABYSS[500] }}>
-            {row.layer}
+            {layer.displayName}
           </td>
           <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
@@ -417,11 +400,11 @@ import { SUNRISE } from '../../constants/designTokens';
                 width: '24px',
                 height: '24px',
                 borderRadius: RADIUS.xs,
-                background: row.light.color,
+                background: layer.light.color,
                 border: `1px solid ${SLATE[200]}`,
               }} />
               <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[400] }}>
-                {row.light.name}
+                {layer.light.label}
               </span>
             </div>
           </td>
@@ -431,16 +414,16 @@ import { SUNRISE } from '../../constants/designTokens';
                 width: '24px',
                 height: '24px',
                 borderRadius: RADIUS.xs,
-                background: row.dark.color,
+                background: layer.dark.color,
                 border: `1px solid ${SLATE[600]}`,
               }} />
               <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[400] }}>
-                {row.dark.name}
+                {layer.dark.label}
               </span>
             </div>
           </td>
           <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, color: SLATE[600], fontSize: TYPOGRAPHY.fontSize.xs[0] }}>
-            {row.use}
+            {layer.description}
           </td>
         </tr>
       ))}
@@ -460,7 +443,7 @@ import { SUNRISE } from '../../constants/designTokens';
 <SectionHeader
   icon={<Layers size={20} />}
   title="Real UI Example"
-  description="See how the depth model applies to actual UI layouts."
+  description="Required implementation pattern for standard layouts."
 />
 
 {/* Side-by-side UI comparison */}
@@ -472,7 +455,7 @@ import { SUNRISE } from '../../constants/designTokens';
 }}>
   {/* Light Theme UI */}
   <div style={{
-    background: PRIMITIVES.cream,
+    background: DEPTH_MODEL.layers.find(l => l.name === 'page').light.color,
     borderRadius: RADIUS.lg,
     padding: SPACING.px.comfortable,
     border: `1px solid ${SLATE[200]}`,
@@ -501,18 +484,19 @@ import { SUNRISE } from '../../constants/designTokens';
       {/* Sidebar (Surface) */}
       <div style={{
         width: '60px',
-        background: PRIMITIVES.softLinen,
+        background: DEPTH_MODEL.layers.find(l => l.name === 'surface').light.color,
         borderRadius: RADIUS.sm,
         padding: SPACING.px.tight,
         display: 'flex',
         flexDirection: 'column',
         gap: SPACING.px.tight,
         border: `1px solid ${SLATE[200]}`,
+        boxShadow: SHADOWS.sm,
       }}>
         <div style={{
           width: '100%',
           height: '32px',
-          background: PRIMITIVES.softLinen,
+          background: DEPTH_MODEL.layers.find(l => l.name === 'elevated').light.color,
           borderRadius: RADIUS.xs,
           border: `1px solid ${SLATE[200]}`,
           boxShadow: SHADOWS.sm,
@@ -520,7 +504,7 @@ import { SUNRISE } from '../../constants/designTokens';
         <div style={{
           width: '100%',
           height: '32px',
-          background: PRIMITIVES.softLinen,
+          background: DEPTH_MODEL.layers.find(l => l.name === 'elevated').light.color,
           borderRadius: RADIUS.xs,
           border: `1px solid ${SLATE[200]}`,
           boxShadow: SHADOWS.sm,
@@ -531,35 +515,36 @@ import { SUNRISE } from '../../constants/designTokens';
       {/* Main content area (Surface) */}
       <div style={{
         flex: 1,
-        background: PRIMITIVES.softLinen,
+        background: DEPTH_MODEL.layers.find(l => l.name === 'surface').light.color,
         borderRadius: RADIUS.sm,
         padding: SPACING.px.tight,
         border: `1px solid ${SLATE[200]}`,
+        boxShadow: SHADOWS.sm,
       }}>
         {/* Card - closest */}
         <div style={{
-          background: PRIMITIVES.softLinen,
+          background: DEPTH_MODEL.layers.find(l => l.name === 'card').light.color,
           borderRadius: RADIUS.sm,
           padding: SPACING.px.base,
-          boxShadow: SHADOWS.sm,
+          boxShadow: SHADOWS.md,
           marginBottom: SPACING.px.tight,
           border: `1px solid ${SLATE[200]}`,
         }}>
           <div style={{ width: '60%', height: '10px', background: ABYSS[300], borderRadius: RADIUS.xs, marginBottom: SPACING.px.tight }} />
           <div style={{ width: '80%', height: '8px', background: SLATE[200], borderRadius: RADIUS.xs }} />
-          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.tight }}>Card (softLinen)</div>
+          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.tight }}>Card ({DEPTH_MODEL.layers.find(l => l.name === 'card').light.label})</div>
         </div>
 
-        <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], textAlign: 'center' }}>Surface (softLinen)</div>
+        <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], textAlign: 'center' }}>Surface ({DEPTH_MODEL.layers.find(l => l.name === 'surface').light.label})</div>
       </div>
     </div>
 
-    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], textAlign: 'center', marginTop: SPACING.px.tight }}>Page (cream)</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], textAlign: 'center', marginTop: SPACING.px.tight }}>Page ({DEPTH_MODEL.layers.find(l => l.name === 'page').light.label})</div>
   </div>
 
   {/* Dark Theme UI */}
   <div style={{
-    background: ABYSS[900],
+    background: DEPTH_MODEL.layers.find(l => l.name === 'page').dark.color,
     borderRadius: RADIUS.lg,
     padding: SPACING.px.comfortable,
     border: `1px solid ${ABYSS[700]}`,
@@ -588,29 +573,30 @@ import { SUNRISE } from '../../constants/designTokens';
       {/* Sidebar (Surface) */}
       <div style={{
         width: '60px',
-        background: ABYSS[700],
+        background: DEPTH_MODEL.layers.find(l => l.name === 'surface').dark.color,
         borderRadius: RADIUS.sm,
         padding: SPACING.px.tight,
         display: 'flex',
         flexDirection: 'column',
         gap: SPACING.px.tight,
         border: `1px solid ${ABYSS[600]}`,
+        boxShadow: SHADOWS.sm,
       }}>
         <div style={{
           width: '100%',
           height: '32px',
-          background: ABYSS[500],
+          background: DEPTH_MODEL.layers.find(l => l.name === 'elevated').dark.color,
           borderRadius: RADIUS.xs,
           border: `1px solid ${ABYSS[400]}`,
-          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          boxShadow: SHADOWS.sm,
         }} />
         <div style={{
           width: '100%',
           height: '32px',
-          background: ABYSS[500],
+          background: DEPTH_MODEL.layers.find(l => l.name === 'elevated').dark.color,
           borderRadius: RADIUS.xs,
           border: `1px solid ${ABYSS[400]}`,
-          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          boxShadow: SHADOWS.sm,
         }} />
         <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[400], textAlign: 'center', marginTop: 'auto' }}>Surface</div>
       </div>
@@ -618,30 +604,31 @@ import { SUNRISE } from '../../constants/designTokens';
       {/* Main content area */}
       <div style={{
         flex: 1,
-        background: ABYSS[700],
+        background: DEPTH_MODEL.layers.find(l => l.name === 'surface').dark.color,
         borderRadius: RADIUS.sm,
         padding: SPACING.px.tight,
         border: `1px solid ${ABYSS[600]}`,
+        boxShadow: SHADOWS.sm,
       }}>
         {/* Card - closest */}
         <div style={{
-          background: ABYSS[500],
+          background: DEPTH_MODEL.layers.find(l => l.name === 'card').dark.color,
           borderRadius: RADIUS.sm,
           padding: SPACING.px.base,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+          boxShadow: SHADOWS.md,
           marginBottom: SPACING.px.tight,
           border: `1px solid ${ABYSS[400]}`,
         }}>
           <div style={{ width: '60%', height: '10px', background: SLATE[300], borderRadius: RADIUS.xs, marginBottom: SPACING.px.tight }} />
           <div style={{ width: '80%', height: '8px', background: ABYSS[400], borderRadius: RADIUS.xs }} />
-          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: PRIMITIVES.white, marginTop: SPACING.px.tight }}>Card (500)</div>
+          <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: PRIMITIVES.white, marginTop: SPACING.px.tight }}>Card ({DEPTH_MODEL.layers.find(l => l.name === 'card').dark.label})</div>
         </div>
 
-        <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[300], textAlign: 'center' }}>Surface (700)</div>
+        <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[300], textAlign: 'center' }}>Surface ({DEPTH_MODEL.layers.find(l => l.name === 'surface').dark.label})</div>
       </div>
     </div>
 
-    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500], textAlign: 'center', marginTop: SPACING.px.tight }}>Page (900)</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500], textAlign: 'center', marginTop: SPACING.px.tight }}>Page ({DEPTH_MODEL.layers.find(l => l.name === 'page').dark.label})</div>
   </div>
 </div>
 
@@ -652,67 +639,16 @@ import { SUNRISE } from '../../constants/designTokens';
 <SectionHeader
   icon={<Lightbulb size={20} />}
   title="Mathematical Relationship"
-  description="How depth and shade values relate across themes."
+  description="The exact shade progression formula. Do not deviate."
 />
 
 <div style={{
-  background: PRIMITIVES.softLinen,
+  background: LINEN[300],
   borderRadius: RADIUS.lg,
   padding: SPACING.px.spacious,
   border: `1px solid ${SLATE[200]}`,
   marginBottom: SPACING.px.section,
 }}>
-  {/* Visual formula representation */}
-  <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    gap: SPACING.px.comfortable,
-    alignItems: 'center',
-    marginBottom: SPACING.px.spacious,
-  }}>
-    {/* Light Theme Formula */}
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: SPACING.px.comfortable,
-      padding: SPACING.px.comfortable,
-      background: SUNRISE[50],
-      borderRadius: RADIUS.md,
-      width: '100%',
-      justifyContent: 'center',
-    }}>
-      <Sun size={20} color={SUNRISE[600]} />
-      <div style={{
-        fontFamily: TYPOGRAPHY.fontFamily.mono,
-        fontSize: TYPOGRAPHY.fontSize.base[0],
-        color: ABYSS[500],
-      }}>
-        <strong>Light:</strong> Further from eye → <span style={{ color: ABYSS[500] }}>Higher shade number</span> → Darker
-      </div>
-    </div>
-
-    {/* Dark Theme Formula */}
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: SPACING.px.comfortable,
-      padding: SPACING.px.comfortable,
-      background: DUSK_REEF[50],
-      borderRadius: RADIUS.md,
-      width: '100%',
-      justifyContent: 'center',
-    }}>
-      <Moon size={20} color={DUSK_REEF[600]} />
-      <div style={{
-        fontFamily: TYPOGRAPHY.fontFamily.mono,
-        fontSize: TYPOGRAPHY.fontSize.base[0],
-        color: ABYSS[500],
-      }}>
-        <strong>Dark:</strong> Further from eye → <span style={{ color: ABYSS[500] }}>Higher shade number</span> → Darker
-      </div>
-    </div>
-  </div>
-
   {/* Depth scale visualization */}
   <div style={{
     display: 'flex',
@@ -729,11 +665,11 @@ import { SUNRISE } from '../../constants/designTokens';
         marginBottom: SPACING.px.tight,
       }}>Light Mode Depth</div>
       <div style={{ display: 'flex', gap: SPACING.px.micro }}>
-        {[PRIMITIVES.softLinen, PRIMITIVES.softLinen, PRIMITIVES.cream, SLATE[100]].map((color, idx) => (
-          <div key={idx} style={{
+        {DEPTH_MODEL.layers.filter(l => ['elevated', 'card', 'surface', 'page'].includes(l.name)).map((layer, idx) => (
+          <div key={layer.name} style={{
             width: '40px',
             height: `${40 + idx * 20}px`,
-            background: color,
+            background: layer.light.color,
             borderRadius: RADIUS.xs,
             border: `1px solid ${SLATE[200]}`,
           }} />
@@ -761,11 +697,11 @@ import { SUNRISE } from '../../constants/designTokens';
         marginBottom: SPACING.px.tight,
       }}>Dark Mode Depth</div>
       <div style={{ display: 'flex', gap: SPACING.px.micro }}>
-        {[ABYSS[400], ABYSS[500], ABYSS[700], ABYSS[900]].map((color, idx) => (
-          <div key={idx} style={{
+        {DEPTH_MODEL.layers.filter(l => ['elevated', 'card', 'surface', 'page'].includes(l.name)).map((layer, idx) => (
+          <div key={layer.name} style={{
             width: '40px',
             height: `${40 + idx * 20}px`,
-            background: color,
+            background: layer.dark.color,
             borderRadius: RADIUS.xs,
             border: `1px solid ${ABYSS[300]}`,
           }} />
@@ -807,60 +743,57 @@ import { SUNRISE } from '../../constants/designTokens';
 <SectionHeader
   icon={<Palette size={20} />}
   title="DDS Background Tokens"
-  description="Semantic tokens ordered by depth (closest to furthest)."
+  description="Required token assignments. Use exactly as specified."
 />
 
 <div style={{
-  background: PRIMITIVES.softLinen,
+  background: LINEN[300],
   borderRadius: RADIUS.lg,
   padding: SPACING.px.comfortable,
   border: `1px solid ${SLATE[200]}`,
   marginBottom: SPACING.px.section,
-  overflow: 'hidden',
 }}>
   <table style={{
     width: '100%',
-    borderCollapse: 'collapse',
+    borderCollapse: 'separate',
+    borderSpacing: 0,
     fontSize: TYPOGRAPHY.fontSize.sm[0],
     fontFamily: TYPOGRAPHY.fontFamily.sans,
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
+    background: PRIMITIVES.white,
   }}>
     <thead>
-      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Depth Level</th>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>Semantic Token</th>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+      <tr>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Depth Level</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Semantic Token</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>
           <Sun size={14} color={SUNRISE[500]} style={{ verticalAlign: 'middle', marginRight: SPACING.px.micro }} />
           Light
         </th>
-        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold }}>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>
           <Moon size={14} color={DUSK_REEF[500]} style={{ verticalAlign: 'middle', marginRight: SPACING.px.micro }} />
           Dark
         </th>
       </tr>
     </thead>
     <tbody>
-      {[
-        { depth: 1, token: 'background.elevated', light: 'softLinen', lightColor: PRIMITIVES.softLinen, dark: 'ABYSS[400]', darkColor: ABYSS[400] },
-        { depth: 2, token: 'background.surface', light: 'softLinen', lightColor: PRIMITIVES.softLinen, dark: 'ABYSS[700]', darkColor: ABYSS[700] },
-        { depth: 3, token: 'background.surfaceHover', light: 'SLATE[100]', lightColor: SLATE[100], dark: 'ABYSS[600]', darkColor: ABYSS[600] },
-        { depth: 4, token: 'background.surfaceActive', light: 'SLATE[200]', lightColor: SLATE[200], dark: 'ABYSS[500]', darkColor: ABYSS[500] },
-        { depth: 5, token: 'background.page', light: 'cream', lightColor: PRIMITIVES.cream, dark: 'ABYSS[900]', darkColor: ABYSS[900] },
-      ].map((row) => (
-        <tr key={row.token} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+      {DEPTH_MODEL.layers.map((layer) => (
+        <tr key={layer.name} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
           <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}` }}>
             <span style={{
               background: DEEP_CURRENT[50],
-              color: DEEP_CURRENT[600],
+              color: DEEP_CURRENT[700],
               padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
               borderRadius: RADIUS.full,
               fontSize: TYPOGRAPHY.fontSize.xs[0],
               fontWeight: TYPOGRAPHY.fontWeight.semibold,
             }}>
-              {row.depth}
+              {layer.depth}
             </span>
           </td>
-          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: DEEP_CURRENT[600] }}>
-            {row.token}
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontFamily: TYPOGRAPHY.fontFamily.mono, color: DEEP_CURRENT[700] }}>
+            {layer.light.token}
           </td>
           <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, justifyContent: 'center' }}>
@@ -868,11 +801,11 @@ import { SUNRISE } from '../../constants/designTokens';
                 width: '28px',
                 height: '28px',
                 borderRadius: RADIUS.xs,
-                background: row.lightColor,
+                background: layer.light.color,
                 border: `1px solid ${SLATE[200]}`,
               }} />
               <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[400] }}>
-                {row.light}
+                {layer.light.label}
               </span>
             </div>
           </td>
@@ -882,11 +815,11 @@ import { SUNRISE } from '../../constants/designTokens';
                 width: '28px',
                 height: '28px',
                 borderRadius: RADIUS.xs,
-                background: row.darkColor,
+                background: layer.dark.color,
                 border: `1px solid ${SLATE[600]}`,
               }} />
               <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], fontFamily: TYPOGRAPHY.fontFamily.mono, color: ABYSS[400] }}>
-                {row.dark}
+                {layer.dark.label}
               </span>
             </div>
           </td>
@@ -898,7 +831,7 @@ import { SUNRISE } from '../../constants/designTokens';
 
 ---
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Guidelines</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Rules</h2>
 
 <div style={{
   display: 'grid',
@@ -906,239 +839,69 @@ import { SUNRISE } from '../../constants/designTokens';
   gap: SPACING.px.cardGap,
   marginBottom: SPACING.px.section,
 }}>
-  <GuidelineCard type="do" title="Use semantic tokens">
-    Let the token system handle depth automatically. Use `background.elevated` for floating elements instead of hardcoding shades.
-  </GuidelineCard>
-
-  <GuidelineCard type="dont" title="Reverse the depth order">
-    Never make background elements lighter than foreground elements. This breaks the depth illusion and confuses users.
-  </GuidelineCard>
-
-  <GuidelineCard type="do" title="Add shadows for emphasis">
-    Combine lighter shades with shadows for elevated elements. This reinforces the "floating closer" effect.
-  </GuidelineCard>
-
-  <GuidelineCard type="dont" title="Use arbitrary shade values">
-    Don't pick random shade numbers. Follow the progression: 50/white (closest) → 100 → 200 (furthest in light mode).
-  </GuidelineCard>
-
-  <GuidelineCard type="do" title="Maintain consistent steps">
-    Keep 1-2 shade steps between adjacent layers. Background to Surface = 1 step. Surface to Card = 1 step.
-  </GuidelineCard>
-
-  <GuidelineCard type="dont" title="Skip depth levels">
-    Don't jump from ABYSS[900] to ABYSS[500] for adjacent elements. Use the intermediate values for smooth transitions.
-  </GuidelineCard>
-</div>
-
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
-
-<div style={{
-  background: PRIMITIVES.softLinen,
-  borderRadius: RADIUS.lg,
-  padding: SPACING.px.spacious,
-  border: `1px solid ${SLATE[200]}`,
-  marginBottom: SPACING.px.section,
-}}>
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: SPACING.px.comfortable,
-  }}>
-    {/* Light Theme Reference */}
-    <div style={{
-      padding: SPACING.px.comfortable,
-      background: PRIMITIVES.cream,
-      borderRadius: RADIUS.md,
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: SPACING.px.tight,
-        marginBottom: SPACING.px.base,
-      }}>
-        <Sun size={16} color={SUNRISE[600]} />
-        <span style={{
-          fontSize: TYPOGRAPHY.fontSize.sm[0],
-          fontWeight: TYPOGRAPHY.fontWeight.semibold,
-          color: ABYSS[500],
-        }}>Light Theme</span>
-      </div>
-      <div style={{
-        fontFamily: TYPOGRAPHY.fontFamily.mono,
-        fontSize: TYPOGRAPHY.fontSize.xs[0],
-        lineHeight: TYPOGRAPHY.lineHeight.loose,
-        color: ABYSS[500],
-      }}>
-        <div>1. Elevated → <span style={{ color: DEEP_CURRENT[600] }}>softLinen</span></div>
-        <div>2. Card → <span style={{ color: DEEP_CURRENT[600] }}>softLinen</span></div>
-        <div>3. Surface → <span style={{ color: DEEP_CURRENT[600] }}>softLinen</span></div>
-        <div>4. Page → <span style={{ color: DEEP_CURRENT[600] }}>cream</span></div>
-      </div>
+  {/* Do: Use semantic tokens */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: DEEP_CURRENT[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <Check size={16} color={DEEP_CURRENT[700]} strokeWidth={3} />
     </div>
-
-    {/* Dark Theme Reference */}
-    <div style={{
-      padding: SPACING.px.comfortable,
-      background: ABYSS[900],
-      borderRadius: RADIUS.md,
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: SPACING.px.tight,
-        marginBottom: SPACING.px.base,
-      }}>
-        <Moon size={16} color={SLATE[300]} />
-        <span style={{
-          fontSize: TYPOGRAPHY.fontSize.sm[0],
-          fontWeight: TYPOGRAPHY.fontWeight.semibold,
-          color: PRIMITIVES.white,
-        }}>Dark Theme</span>
-      </div>
-      <div style={{
-        fontFamily: TYPOGRAPHY.fontFamily.mono,
-        fontSize: TYPOGRAPHY.fontSize.xs[0],
-        lineHeight: TYPOGRAPHY.lineHeight.loose,
-        color: SLATE[300],
-      }}>
-        <div>1. Elevated → <span style={{ color: DEEP_CURRENT[300] }}>ABYSS[400]</span></div>
-        <div>2. Card → <span style={{ color: DEEP_CURRENT[300] }}>ABYSS[500]</span></div>
-        <div>3. Surface → <span style={{ color: DEEP_CURRENT[300] }}>ABYSS[700]</span></div>
-        <div>4. Page → <span style={{ color: DEEP_CURRENT[300] }}>ABYSS[900]</span></div>
-      </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Always use semantic tokens</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Use the token system. Apply <code style={{ background: SLATE[100], padding: '2px 4px', borderRadius: RADIUS.xs, fontSize: TYPOGRAPHY.fontSize.xs[0] }}>background.elevated</code> for floating elements.</div>
     </div>
   </div>
-</div>
 
----
-
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Related Documentation</h2>
-
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: SPACING.px.base,
-}}>
-  <StoryLink to="/docs/foundation-dark-mode-mapping--docs" style={{ textDecoration: 'none' }}>
-    <div style={{
-      background: PRIMITIVES.softLinen,
-      borderRadius: RADIUS.md,
-      padding: SPACING.px.cardGap,
-      border: `1px solid ${SLATE[200]}`,
-      transition: 'border-color 0.2s',
-    }}>
-      <div style={{
-        width: SIZES.iconMd,
-        height: SIZES.iconMd,
-        borderRadius: RADIUS.sm,
-        background: DUSK_REEF[50],
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: SPACING.px.compact,
-        color: DUSK_REEF[500],
-      }}>
-        <Moon size={20} />
-      </div>
-      <div style={{
-        fontSize: TYPOGRAPHY.fontSize.sm[0],
-        fontWeight: TYPOGRAPHY.fontWeight.semibold,
-        fontFamily: TYPOGRAPHY.fontFamily.sans,
-        color: ABYSS[500],
-        marginBottom: SPACING.px.micro,
-      }}>
-        Dark Mode Mapping
-      </div>
-      <div style={{
-        fontSize: TYPOGRAPHY.fontSize.xs[0],
-        fontFamily: TYPOGRAPHY.fontFamily.sans,
-        color: SLATE[500],
-      }}>
-        Scale inversion formulas
-      </div>
+  {/* Don't: Reverse depth order */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <X size={16} color={CORAL[600]} strokeWidth={3} />
     </div>
-  </StoryLink>
-
-  <StoryLink to="/docs/foundation-design-tokens-colors--docs" style={{ textDecoration: 'none' }}>
-    <div style={{
-      background: PRIMITIVES.softLinen,
-      borderRadius: RADIUS.md,
-      padding: SPACING.px.cardGap,
-      border: `1px solid ${SLATE[200]}`,
-      transition: 'border-color 0.2s',
-    }}>
-      <div style={{
-        width: SIZES.iconMd,
-        height: SIZES.iconMd,
-        borderRadius: RADIUS.sm,
-        background: DEEP_CURRENT[50],
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: SPACING.px.compact,
-        color: DEEP_CURRENT[500],
-      }}>
-        <Palette size={20} />
-      </div>
-      <div style={{
-        fontSize: TYPOGRAPHY.fontSize.sm[0],
-        fontWeight: TYPOGRAPHY.fontWeight.semibold,
-        fontFamily: TYPOGRAPHY.fontFamily.sans,
-        color: ABYSS[500],
-        marginBottom: SPACING.px.micro,
-      }}>
-        Color System
-      </div>
-      <div style={{
-        fontSize: TYPOGRAPHY.fontSize.xs[0],
-        fontFamily: TYPOGRAPHY.fontFamily.sans,
-        color: SLATE[500],
-      }}>
-        Full color palette
-      </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Never reverse depth order</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Background elements must never be lighter than foreground elements.</div>
     </div>
-  </StoryLink>
+  </div>
 
-  <StoryLink to="/docs/foundation-architecture--docs" style={{ textDecoration: 'none' }}>
-    <div style={{
-      background: PRIMITIVES.softLinen,
-      borderRadius: RADIUS.md,
-      padding: SPACING.px.cardGap,
-      border: `1px solid ${SLATE[200]}`,
-      transition: 'border-color 0.2s',
-    }}>
-      <div style={{
-        width: SIZES.iconMd,
-        height: SIZES.iconMd,
-        borderRadius: RADIUS.sm,
-        background: ABYSS[50],
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: SPACING.px.compact,
-        color: ABYSS[500],
-      }}>
-        <Layers size={20} />
-      </div>
-      <div style={{
-        fontSize: TYPOGRAPHY.fontSize.sm[0],
-        fontWeight: TYPOGRAPHY.fontWeight.semibold,
-        fontFamily: TYPOGRAPHY.fontFamily.sans,
-        color: ABYSS[500],
-        marginBottom: SPACING.px.micro,
-      }}>
-        Architecture
-      </div>
-      <div style={{
-        fontSize: TYPOGRAPHY.fontSize.xs[0],
-        fontFamily: TYPOGRAPHY.fontFamily.sans,
-        color: SLATE[500],
-      }}>
-        Token tier system
-      </div>
+  {/* Do: Add shadows */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: DEEP_CURRENT[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <Check size={16} color={DEEP_CURRENT[700]} strokeWidth={3} />
     </div>
-  </StoryLink>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Always add shadows for elevation</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Elevated elements require shadows. Use <code style={{ background: SLATE[100], padding: '2px 4px', borderRadius: RADIUS.xs, fontSize: TYPOGRAPHY.fontSize.xs[0] }}>SHADOWS.md</code> or <code style={{ background: SLATE[100], padding: '2px 4px', borderRadius: RADIUS.xs, fontSize: TYPOGRAPHY.fontSize.xs[0] }}>SHADOWS.lg</code>.</div>
+    </div>
+  </div>
+
+  {/* Don't: Arbitrary shades */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <X size={16} color={CORAL[600]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Never use arbitrary shades</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Only use values specified in the token table above. No exceptions.</div>
+    </div>
+  </div>
+
+  {/* Do: Exact steps */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: DEEP_CURRENT[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <Check size={16} color={DEEP_CURRENT[700]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Follow exact shade steps</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Adjacent layers must differ by 1-2 shade steps. Page → Surface → Card.</div>
+    </div>
+  </div>
+
+  {/* Don't: Skip levels */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <X size={16} color={CORAL[600]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Never skip depth levels</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Do not jump from ABYSS[900] to ABYSS[500]. Use intermediate values.</div>
+    </div>
+  </div>
 </div>

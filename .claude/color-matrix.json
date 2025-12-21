@@ -1,36 +1,47 @@
 {
-  "_generated": "2025-12-20T22:18:18.572Z",
+  "_generated": "2025-12-21T02:46:50.242Z",
   "_source": "src/constants/designTokens.ts",
   "_note": "AUTO-GENERATED - Do not edit. Run npm run sync:colors",
   "backgrounds": {
     "light": [
       "PRIMITIVES.white",
       "PRIMITIVES.cream",
-      "PRIMITIVES.softLinen",
       "ABYSS[50]",
       "ABYSS[100]",
       "ABYSS[200]",
+      "ABYSS[300]",
       "DUSK_REEF[50]",
       "DUSK_REEF[100]",
       "DUSK_REEF[200]",
+      "DUSK_REEF[300]",
       "CORAL[50]",
       "CORAL[100]",
       "CORAL[200]",
+      "CORAL[300]",
       "WAVE[50]",
       "WAVE[100]",
       "WAVE[200]",
+      "WAVE[300]",
       "SUNRISE[50]",
       "SUNRISE[100]",
       "SUNRISE[200]",
+      "SUNRISE[300]",
       "HARBOR[50]",
       "HARBOR[100]",
       "HARBOR[200]",
+      "HARBOR[300]",
       "SLATE[50]",
       "SLATE[100]",
       "SLATE[200]",
+      "SLATE[300]",
       "ORANGE[50]",
       "ORANGE[100]",
-      "ORANGE[200]"
+      "ORANGE[200]",
+      "ORANGE[300]",
+      "LINEN[50]",
+      "LINEN[100]",
+      "LINEN[200]",
+      "LINEN[300]"
     ],
     "dark": [
       "ABYSS[500]",
@@ -52,7 +63,8 @@
     "accent": [
       "DEEP_CURRENT[50]",
       "DEEP_CURRENT[100]",
-      "DEEP_CURRENT[200]"
+      "DEEP_CURRENT[200]",
+      "DEEP_CURRENT[300]"
     ]
   },
   "allowedCombinations": {
@@ -75,23 +87,6 @@
     },
     "PRIMITIVES.cream": {
       "hex": "#FBFBF3",
-      "text": [
-        "ABYSS[900]",
-        "DUSK_REEF[900]",
-        "ABYSS[800]",
-        "SLATE[900]",
-        "DEEP_CURRENT[900]"
-      ],
-      "icons": [
-        "ABYSS[900]",
-        "DUSK_REEF[900]",
-        "ABYSS[800]",
-        "SLATE[900]",
-        "DEEP_CURRENT[900]"
-      ]
-    },
-    "PRIMITIVES.softLinen": {
-      "hex": "#EBF9FF",
       "text": [
         "ABYSS[900]",
         "DUSK_REEF[900]",
@@ -158,6 +153,19 @@
         "DEEP_CURRENT[900]"
       ]
     },
+    "ABYSS[300]": {
+      "hex": "#757B87",
+      "text": [
+        "ABYSS[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "PRIMITIVES.white",
+        "SLATE[900]"
+      ]
+    },
     "DEEP_CURRENT[50]": {
       "hex": "#E6F7FA",
       "text": [
@@ -194,6 +202,23 @@
     },
     "DEEP_CURRENT[200]": {
       "hex": "#99DFEB",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "DEEP_CURRENT[300]": {
+      "hex": "#66CFE1",
       "text": [
         "ABYSS[900]",
         "DUSK_REEF[900]",
@@ -260,6 +285,23 @@
         "DEEP_CURRENT[900]"
       ]
     },
+    "DUSK_REEF[300]": {
+      "hex": "#9F93B7",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
     "CORAL[50]": {
       "hex": "#FEF2F2",
       "text": [
@@ -296,6 +338,23 @@
     },
     "CORAL[200]": {
       "hex": "#FECACA",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "CORAL[300]": {
+      "hex": "#FCA5A5",
       "text": [
         "ABYSS[900]",
         "DUSK_REEF[900]",
@@ -362,6 +421,23 @@
         "DEEP_CURRENT[900]"
       ]
     },
+    "WAVE[300]": {
+      "hex": "#93C5FD",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
     "SUNRISE[50]": {
       "hex": "#FFFBEB",
       "text": [
@@ -398,6 +474,23 @@
     },
     "SUNRISE[200]": {
       "hex": "#FDE68A",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "SUNRISE[300]": {
+      "hex": "#FCD34D",
       "text": [
         "ABYSS[900]",
         "DUSK_REEF[900]",
@@ -464,6 +557,23 @@
         "DEEP_CURRENT[900]"
       ]
     },
+    "HARBOR[300]": {
+      "hex": "#86EFAC",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
     "SLATE[50]": {
       "hex": "#F8FAFC",
       "text": [
@@ -515,6 +625,23 @@
         "DEEP_CURRENT[900]"
       ]
     },
+    "SLATE[300]": {
+      "hex": "#CBD5E1",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
     "ORANGE[50]": {
       "hex": "#FFF7ED",
       "text": [
@@ -551,6 +678,91 @@
     },
     "ORANGE[200]": {
       "hex": "#FED7AA",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "ORANGE[300]": {
+      "hex": "#FDBA74",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "LINEN[50]": {
+      "hex": "#F5FCFF",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "LINEN[100]": {
+      "hex": "#EBF9FF",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "LINEN[200]": {
+      "hex": "#D9F0FB",
+      "text": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ],
+      "icons": [
+        "ABYSS[900]",
+        "DUSK_REEF[900]",
+        "ABYSS[800]",
+        "SLATE[900]",
+        "DEEP_CURRENT[900]"
+      ]
+    },
+    "LINEN[300]": {
+      "hex": "#B8DCF0",
       "text": [
         "ABYSS[900]",
         "DUSK_REEF[900]",

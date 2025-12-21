@@ -73,7 +73,7 @@ function parseTokens(content) {
   const tokens = { primitives: {}, backgrounds: [], foregrounds: [] }
 
   // Extract color scale objects
-  const scaleNames = ['ABYSS', 'DEEP_CURRENT', 'DUSK_REEF', 'CORAL', 'WAVE', 'SUNRISE', 'HARBOR', 'SLATE', 'ORANGE']
+  const scaleNames = ['ABYSS', 'DEEP_CURRENT', 'DUSK_REEF', 'CORAL', 'WAVE', 'SUNRISE', 'HARBOR', 'SLATE', 'ORANGE', 'LINEN']
 
   for (const name of scaleNames) {
     const regex = new RegExp(`export const ${name}[^=]*=\\s*\\{([^}]+)\\}`, 's')
@@ -115,7 +115,7 @@ function parseTokens(content) {
   for (const [scaleName, scale] of Object.entries(tokens.primitives)) {
     if (scaleName === 'PRIMITIVES') continue
 
-    for (const shade of ['50', '100', '200']) {
+    for (const shade of ['50', '100', '200', '300']) {
       if (scale[shade]) {
         backgroundColors.push({ name: `${scaleName}[${shade}]`, hex: scale[shade], token: `${scaleName}[${shade}]` })
       }

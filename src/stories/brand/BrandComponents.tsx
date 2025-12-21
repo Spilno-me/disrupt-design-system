@@ -76,6 +76,7 @@ import {
   DUSK_REEF,
   CORAL,
   SLATE,
+  LINEN,
   PRIMITIVES,
   SHADOWS,
   RADIUS,
@@ -85,6 +86,7 @@ import {
   SIZES,
   GRADIENTS,
   GLASS_GRADIENTS,
+  DEPTH_MODEL,
 } from '../../constants/designTokens';
 
 // Re-export tokens for MDX usage
@@ -110,6 +112,7 @@ export {
   DUSK_REEF,
   CORAL,
   SLATE,
+  LINEN,
   PRIMITIVES,
   SHADOWS,
   RADIUS,
@@ -119,6 +122,7 @@ export {
   SIZES,
   GRADIENTS,
   GLASS_GRADIENTS,
+  DEPTH_MODEL,
 };
 
 interface HeroHeaderProps {
