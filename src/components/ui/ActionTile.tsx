@@ -37,9 +37,9 @@ const actionTileVariants = cva(
           'focus-visible:ring-success',
         ],
         neutral: [
-          // Gray - SLATE colors
-          'border-default text-secondary',
-          'focus-visible:ring-default',
+          // Gray - SLATE colors (not DUSK_REEF purple!)
+          'border-slate-400 text-slate-500',
+          'focus-visible:ring-slate-400',
         ],
         destructive: [
           // Red - CORAL colors
@@ -72,7 +72,7 @@ const actionTileVariants = cva(
       {
         variant: 'neutral',
         appearance: 'filled',
-        className: 'bg-surface hover:bg-muted',
+        className: 'bg-surface hover:bg-cream',
       },
       {
         variant: 'destructive',
@@ -88,7 +88,7 @@ const actionTileVariants = cva(
       {
         variant: 'neutral',
         appearance: 'outline',
-        className: 'hover:bg-default/10',
+        className: 'hover:bg-surface/50',
       },
       {
         variant: 'destructive',
