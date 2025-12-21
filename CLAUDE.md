@@ -29,28 +29,38 @@
 
 ---
 
-## Prompt Library (FIRST STEP)
+## Prompt Library & Skills
 
-**BEFORE any task:** Check `.claude/prompt-library.md` for matching template.
+**Single source of truth:** `src/components/shared/PromptLibrary/prompts.ts`
 
-| Request Type | Template |
-|--------------|----------|
-| Story/Storybook | Create Full Story for Component |
-| New component | Create New UI Component |
-| Stabilize component | Stabilize Existing Component |
-| Add color/token | Add New Color Token |
-| Audit tokens | Audit Token Usage |
-| MDX docs | Create MDX Documentation Page |
-| Code review | Code Review for DDS Compliance |
-| Pre-PR check | Pre-PR Checklist |
+**Auto-generated:**
+- `.claude/prompt-library.md` - Human-readable reference
+- `.claude/skills/*.md` - Agent-consumable skill files
 
-**Workflow:**
+| Request Type | Skill File |
+|--------------|------------|
+| Story/Storybook | `story-full.md`, `story-allstates.md` |
+| New component | `component-create.md` |
+| Stabilize component | `component-stabilize.md` |
+| Add color/token | `token-add-color.md` |
+| Audit tokens | `token-audit.md` |
+| MDX docs | `docs-mdx-page.md` |
+| Code review | `review-dds-compliance.md` |
+| Pre-PR check | `review-pre-pr.md` |
+
+**Agent Workflow:**
 ```
-1. Match request → template
-2. Follow template REQUIREMENTS
-3. Read referenced .claude/*.md files
+1. Match request → skill in .claude/skills/
+2. Read skill file for REQUIREMENTS
+3. Read referenced .claude/*.md files (listed in skill)
 4. Respect FORBIDDEN items
 5. Deliver in OUTPUT format
+```
+
+**Validation:**
+```bash
+npm run validate:prompts   # Check paths in prompts exist
+npm run sync:prompts       # Regenerate skills from prompts.ts
 ```
 
 ---
@@ -118,7 +128,10 @@ BEFORE PR: Does this change affect consumers?
 
 ```bash
 npm run typecheck && npm run lint && npm run build
+npm run health            # full validation suite
 npm run validate:tokens   # check token drift
+npm run validate:prompts  # check prompt path drift
+npm run sync:prompts      # regenerate skills from prompts.ts
 ```
 
 ---
@@ -169,4 +182,4 @@ import { MobileNavButton } from '@dds/design-system/flow'
 | **Writing stories** | `.claude/storybook-rules.md` + `src/stories/_infrastructure/` |
 | **Tests** | `.claude/testing-quick-ref.md` |
 | **Delivery** | `.claude/delivery-package-guide.md` |
-| **Prompt templates** | `.claude/prompt-library.md` |
+| **Prompt templates** | `.claude/skills/*.md` (task-specific skill files) |

@@ -77,8 +77,9 @@ Use withStoryContainer('{LEVEL}') decorator where LEVEL is atom, molecule, or or
 
 BEFORE WRITING:
 1. Read \`.claude/component-dev-rules.md\`
-2. Read \`.claude/color-matrix.json\` for allowed colors
-3. Check existing similar components in \`src/components/ui/\`
+2. Read \`.claude/ux-laws-rules.md\` for UX principles
+3. Read \`.claude/color-matrix.json\` for allowed colors
+4. Check existing similar components in \`src/components/ui/\`
 
 REQUIREMENTS:
 - Use DDS tokens only (PRIMITIVES, ALIAS, SHADOWS, RADIUS)
@@ -214,11 +215,12 @@ Run \`npm run health\` to verify docs sync.`,
     prompt: `Review {FILE_PATH} for DDS compliance.
 
 Check against:
-1. \`.claude/color-matrix.json\` - color combinations
-2. \`.claude/contrast-matrix.json\` - WCAG compliance
-3. \`.claude/spacing-rules.md\` - spacing hierarchy
-4. \`.claude/typography-rules.md\` - font usage (Fixel only)
-5. \`.claude/iconography-rules.md\` - no emojis
+1. \`.claude/ux-laws-rules.md\` - UX principles (Fitts, Hick, Miller, etc.)
+2. \`.claude/color-matrix.json\` - color combinations
+3. \`.claude/contrast-matrix.json\` - WCAG compliance
+4. \`.claude/spacing-rules.md\` - spacing hierarchy
+5. \`.claude/typography-rules.md\` - font usage (Fixel only)
+6. \`.claude/iconography-rules.md\` - no emojis
 
 Report format:
 | Line | Issue | Severity | Fix |

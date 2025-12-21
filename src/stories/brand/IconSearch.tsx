@@ -529,7 +529,7 @@ export const IconSearch: React.FC<IconSearchProps> = ({ defaultCategory }) => {
             borderRadius: RADIUS.sm,
             cursor: 'pointer',
             transition: 'all 200ms ease-out',
-            background: selectedCategory === null ? DEEP_CURRENT[500] : SLATE[100],
+            background: selectedCategory === null ? DEEP_CURRENT[700] : SLATE[100],
             color: selectedCategory === null ? PRIMITIVES.white : ABYSS[500],
           }}
         >
@@ -550,7 +550,7 @@ export const IconSearch: React.FC<IconSearchProps> = ({ defaultCategory }) => {
                 borderRadius: RADIUS.sm,
                 cursor: 'pointer',
                 transition: 'all 200ms ease-out',
-                background: selectedCategory === category ? DEEP_CURRENT[500] : SLATE[100],
+                background: selectedCategory === category ? DEEP_CURRENT[700] : SLATE[100],
                 color: selectedCategory === category ? PRIMITIVES.white : ABYSS[500],
               }}
             >

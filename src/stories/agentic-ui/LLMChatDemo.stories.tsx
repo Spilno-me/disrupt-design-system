@@ -157,7 +157,7 @@ function LLMChatDemoComponent() {
     <div
       className="flex flex-col h-screen"
       style={{
-        background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DEEP_CURRENT[500]} 100%)`,
+        background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
       }}
     >
       {/* Header */}
@@ -285,7 +285,7 @@ function LLMChatDemoComponent() {
               {message.role === 'assistant' && (
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: HARBOR[500] }}
+                  style={{ backgroundColor: HARBOR[700] }}
                 >
                   <Bot className="w-4 h-4" style={{ color: PRIMITIVES.white }} />
                 </div>
@@ -429,7 +429,7 @@ function LLMChatDemoComponent() {
             onClick={handleSendMessage}
             disabled={!inputValue.trim() || isLoading}
             style={{
-              backgroundColor: HARBOR[500],
+              backgroundColor: HARBOR[700],
               color: PRIMITIVES.white,
             }}
           >

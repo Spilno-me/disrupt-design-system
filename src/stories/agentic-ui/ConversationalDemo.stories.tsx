@@ -577,8 +577,8 @@ function TextForm({ label, onSubmit }: TextFormProps) {
           alignItems: 'center',
           gap: '6px',
           padding: '10px 18px',
-          backgroundColor: value.trim() ? DEEP_CURRENT[500] : SLATE[200],
-          color: value.trim() ? PRIMITIVES.white : SLATE[500],
+          backgroundColor: value.trim() ? DEEP_CURRENT[700] : SLATE[200],
+          color: value.trim() ? PRIMITIVES.white : SLATE[600],
           border: 'none',
           borderRadius: RADIUS.sm,
           cursor: value.trim() ? 'pointer' : 'not-allowed',
@@ -678,7 +678,7 @@ function ConfirmationForm({ onConfirm, onCancel }: ConfirmationFormProps) {
           alignItems: 'center',
           gap: '6px',
           padding: '10px 18px',
-          backgroundColor: HARBOR[500],
+          backgroundColor: HARBOR[700],
           color: PRIMITIVES.white,
           border: 'none',
           borderRadius: RADIUS.sm,
@@ -822,7 +822,7 @@ function FormStatePanel({ formData, scenario }: FormStatePanelProps) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: hasValue ? HARBOR[600] : ABYSS[400],
+                  color: hasValue ? HARBOR[700] : ABYSS[400],
                 }}
               >
                 {hasValue ? <Check className="w-4 h-4" /> : <Lightbulb className="w-4 h-4" />}

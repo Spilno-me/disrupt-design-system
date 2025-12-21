@@ -220,7 +220,7 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: DEEP_CURRENT[600],
+                color: DEEP_CURRENT[700],
               }}
             >
               <Smartphone className="w-5 h-5" />
@@ -281,7 +281,7 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
                   width: '48px',
                   height: '48px',
                   borderRadius: RADIUS.md,
-                  backgroundColor: isSelected ? config?.bgColor || DEEP_CURRENT[500] : SLATE[100],
+                  backgroundColor: isSelected ? config?.bgColor || DEEP_CURRENT[700] : SLATE[100],
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -307,7 +307,7 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
                     width: '28px',
                     height: '28px',
                     borderRadius: '50%',
-                    backgroundColor: config?.bgColor || DEEP_CURRENT[500],
+                    backgroundColor: config?.bgColor || DEEP_CURRENT[700],
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -379,9 +379,9 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
                   alignItems: 'center',
                   gap: '6px',
                   padding: '6px 14px',
-                  backgroundColor: isSelected ? config?.bgColor || DEEP_CURRENT[500] : PRIMITIVES.white,
+                  backgroundColor: isSelected ? config?.bgColor || DEEP_CURRENT[700] : PRIMITIVES.white,
                   color: isSelected ? PRIMITIVES.white : config?.color || ABYSS[600],
-                  border: `1px solid ${isSelected ? config?.bgColor || DEEP_CURRENT[500] : config?.borderColor || SLATE[300]}`,
+                  border: `1px solid ${isSelected ? config?.bgColor || DEEP_CURRENT[700] : config?.borderColor || SLATE[300]}`,
                   borderRadius: RADIUS.full,
                   cursor: 'pointer',
                   fontSize: '13px',
@@ -426,7 +426,7 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
             alignItems: 'center',
             gap: '12px',
             padding: '14px 18px',
-            background: `linear-gradient(135deg, ${CORAL[500]} 0%, ${CORAL[600]} 100%)`,
+            background: `linear-gradient(135deg, ${CORAL[600]} 0%, ${CORAL[700]} 100%)`,
             borderRadius: RADIUS.sm,
             color: PRIMITIVES.white,
           }}
@@ -473,7 +473,7 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
                     width: '44px',
                     height: '44px',
                     borderRadius: RADIUS.md,
-                    backgroundColor: isSelected ? config?.bgColor || CORAL[500] : SLATE[100],
+                    backgroundColor: isSelected ? config?.bgColor || CORAL[700] : SLATE[100],
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -533,7 +533,7 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: DEEP_CURRENT[600],
+              color: DEEP_CURRENT[700],
             }}
           >
             <Monitor className="w-5 h-5" />
@@ -595,12 +595,12 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
                   width: '48px',
                   height: '48px',
                   borderRadius: RADIUS.md,
-                  backgroundColor: isSelected ? config?.bgColor || DEEP_CURRENT[500] : SLATE[100],
+                  backgroundColor: isSelected ? config?.bgColor || DEEP_CURRENT[700] : SLATE[100],
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: isSelected ? PRIMITIVES.white : config?.color || ABYSS[500],
-                  boxShadow: isSelected ? `0 4px 12px ${config?.bgColor || DEEP_CURRENT[500]}40` : 'none',
+                  boxShadow: isSelected ? `0 4px 12px ${config?.bgColor || DEEP_CURRENT[700]}40` : 'none',
                 }}
               >
                 {config?.icon || <AlertCircle className="w-6 h-6" />}
@@ -621,7 +621,7 @@ function Manifestation({ intention, constraints, selectedValue, onSelect }: Mani
                     width: '24px',
                     height: '24px',
                     borderRadius: '50%',
-                    backgroundColor: config?.bgColor || DEEP_CURRENT[500],
+                    backgroundColor: config?.bgColor || DEEP_CURRENT[700],
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -703,9 +703,9 @@ function ConstraintPanel({ constraints, onChange }: ConstraintPanelProps) {
                 justifyContent: 'center',
                 gap: '6px',
                 padding: '10px 14px',
-                backgroundColor: constraints.device === opt.value ? DEEP_CURRENT[500] : SLATE[50],
+                backgroundColor: constraints.device === opt.value ? DEEP_CURRENT[700] : SLATE[50],
                 color: constraints.device === opt.value ? PRIMITIVES.white : ABYSS[600],
-                border: `1px solid ${constraints.device === opt.value ? DEEP_CURRENT[500] : SLATE[300]}`,
+                border: `1px solid ${constraints.device === opt.value ? DEEP_CURRENT[700] : SLATE[300]}`,
                 borderRadius: RADIUS.sm,
                 cursor: 'pointer',
                 fontSize: '13px',

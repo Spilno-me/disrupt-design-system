@@ -11,7 +11,7 @@
  * Usage: npm run sync:prompts
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, unlinkSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -20,6 +20,7 @@ const ROOT = join(__dirname, '..')
 
 const PROMPTS_SOURCE = join(ROOT, 'src', 'components', 'shared', 'PromptLibrary', 'prompts.ts')
 const OUTPUT_PATH = join(ROOT, '.claude', 'prompt-library.md')
+const SKILLS_DIR = join(ROOT, '.claude', 'skills')
 
 // ═══════════════════════════════════════════════════════════════════════════
 // ANSI Formatting
@@ -188,6 +189,87 @@ function generateMarkdown(prompts) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// Generate Skill Files for Claude Code
+// ═══════════════════════════════════════════════════════════════════════════
+
+function generateSkillFiles(prompts) {
+  // Ensure skills directory exists
+  if (!existsSync(SKILLS_DIR)) {
+    mkdirSync(SKILLS_DIR, { recursive: true })
+  }
+
+  // Track generated files to clean up stale ones
+  const generatedFiles = new Set()
+
+  for (const prompt of prompts) {
+    const skillId = prompt.id
+    const filename = `${skillId}.md`
+    const filepath = join(SKILLS_DIR, filename)
+    generatedFiles.add(filename)
+
+    // Generate skill file content
+    const variablesSection = prompt.variables.length > 0
+      ? `\n## Variables\n\n${prompt.variables.map(v => `- \`{${v}}\` - Replace with actual value`).join('\n')}\n`
+      : ''
+
+    const filesRequired = extractRequiredFiles(prompt.prompt)
+    const filesSection = filesRequired.length > 0
+      ? `\n## Required Files\n\nRead these files before executing:\n${filesRequired.map(f => `- \`${f}\``).join('\n')}\n`
+      : ''
+
+    const skillContent = `# ${prompt.title}
+
+> **AUTO-GENERATED** from prompts.ts - Do not edit directly!
+> Source: \`src/components/shared/PromptLibrary/prompts.ts\`
+
+${prompt.description}
+${variablesSection}${filesSection}
+## Prompt
+
+\`\`\`
+${prompt.prompt}
+\`\`\`
+
+## Usage
+
+This skill is automatically available to agents working in the DDS codebase.
+Agents should read the required files before executing this prompt.
+`
+
+    // Write skill file
+    writeFileSync(filepath, skillContent)
+  }
+
+  // Clean up stale skill files (files in skills/ not in current prompts)
+  if (existsSync(SKILLS_DIR)) {
+    const existingFiles = readdirSync(SKILLS_DIR).filter(f => f.endsWith('.md'))
+    for (const file of existingFiles) {
+      if (!generatedFiles.has(file)) {
+        unlinkSync(join(SKILLS_DIR, file))
+        log.dim(`  Removed stale: ${file}`)
+      }
+    }
+  }
+
+  return generatedFiles.size
+}
+
+/**
+ * Extract file paths that should be read before executing prompt
+ */
+function extractRequiredFiles(promptText) {
+  const files = new Set()
+
+  // Pattern: .claude/*.md or .claude/*.json
+  const claudeFiles = promptText.matchAll(/\.claude\/[\w-]+\.(md|json)/g)
+  for (const match of claudeFiles) {
+    files.add(match[0])
+  }
+
+  return Array.from(files)
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // Main
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -224,6 +306,11 @@ function main() {
   } else {
     log.success('prompt-library.md is already in sync')
   }
+
+  // Generate skill files for agents
+  log.info('Generating skill files...')
+  const skillCount = generateSkillFiles(prompts)
+  log.success(`Generated ${skillCount} skill files in .claude/skills/`)
 
   console.log('')
 }

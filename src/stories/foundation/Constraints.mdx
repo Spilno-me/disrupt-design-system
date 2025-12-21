@@ -1,0 +1,1035 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Shield, Target, Brain, Zap, Eye, Accessibility, Code, Layout, Loader, Smartphone, Timer, Users, AlertTriangle, CheckCircle, XCircle, Layers, Pointer, List, MousePointer } from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  StoryLink,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  LINEN,
+} from '../brand/BrandComponents';
+import { Button } from '../../components/ui/button';
+import { Badge } from '../../components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import { Skeleton } from '../../components/ui/Skeleton';
+import { Label } from '../../components/ui/label';
+
+<Meta title="Foundation/Design System Constraints" />
+
+<BrandHero
+  title="Design Constraints"
+  description="The guardrails that keep our interfaces fast, accessible, and usable. These aren't arbitrary rules—they're battle-tested principles from cognitive science and decades of UX research."
+  gradient="primary"
+  decorativeIcon={<Shield size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <span><strong>Enforced automatically.</strong> These constraints trigger when you edit component files. Warnings guide you toward better patterns; blocks prevent critical mistakes. All source files live in <code>.claude/hookify.*.md</code>.</span>
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>The Science Behind the Rules</span>
+</h2>
+
+<div style={{
+  background: `linear-gradient(135deg, ${ABYSS[50]} 0%, ${DUSK_REEF[50]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginBottom: '48px',
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <p style={{
+    fontSize: '16px',
+    fontFamily: '"Fixel", sans-serif',
+    color: ABYSS[500],
+    lineHeight: 1.7,
+    margin: 0,
+  }}>
+    <span>Every constraint in this system maps to human cognition. Your users aren't reading your UI—they're <strong>scanning</strong> it while juggling meetings, notifications, and real-world distractions. These rules ensure your interface works <em>with</em> the human brain, not against it.</span>
+  </p>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>Fitts's Law — Touch Targets Matter</span>
+</h2>
+
+<SectionHeader
+  icon={<Target size={20} />}
+  title="Minimum 44px for Mobile"
+  description="The time to acquire a target is a function of target size and distance. Small targets = frustration."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  {/* Violation Demo */}
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <XCircle size={18} color={CORAL[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: CORAL[700],
+      }}>Violation: Tiny Target</span>
+    </div>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px',
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      marginBottom: '16px',
+    }}>
+      <button style={{
+        padding: '4px 8px',
+        fontSize: '11px',
+        background: ABYSS[500],
+        color: PRIMITIVES.white,
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+      }}>
+        <span>×</span>
+      </button>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: CORAL[700],
+      margin: 0,
+    }}>
+      <span>This close button is ~20px. On mobile, users will tap it 3-4 times before hitting the target. Pure frustration.</span>
+    </p>
+  </div>
+
+  {/* Compliant Demo */}
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <CheckCircle size={18} color={DEEP_CURRENT[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: DEEP_CURRENT[700],
+      }}>Compliant: 44px Target</span>
+    </div>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px',
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      marginBottom: '16px',
+    }}>
+      <Button size="icon" variant="outline">
+        <XCircle size={20} />
+      </Button>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DEEP_CURRENT[700],
+      margin: 0,
+    }}>
+      <span>DDS buttons use <code>min-h-11</code> (44px) on mobile. One tap, every time.</span>
+    </p>
+  </div>
+</div>
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.md,
+  padding: '16px 20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '32px',
+}}>
+  <div style={{
+    fontSize: '13px',
+    fontFamily: '"JetBrains Mono", monospace',
+    color: ABYSS[500],
+  }}>
+    <span><strong>Tailwind:</strong> <code>min-h-11 min-w-11</code> (mobile) → <code>md:min-h-10 md:min-w-10</code> (desktop)</span>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>Hick's Law — Decision Paralysis</span>
+</h2>
+
+<SectionHeader
+  icon={<Brain size={20} />}
+  title="Maximum 5-7 Options"
+  description="Decision time increases logarithmically with the number of choices. More options = slower users."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  {/* Violation: Too many options */}
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <XCircle size={18} color={CORAL[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: CORAL[700],
+      }}>Violation: 12 Flat Options</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      marginBottom: '16px',
+    }}>
+      <Label htmlFor="bad-select" style={{ marginBottom: '8px', display: 'block' }}>
+        <span>Select priority</span>
+      </Label>
+      <Select>
+        <SelectTrigger id="bad-select" aria-label="Priority with too many options" style={{ width: '100%' }}>
+          <SelectValue placeholder="Choose..." />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="1">Critical - P0</SelectItem>
+          <SelectItem value="2">Urgent - P1</SelectItem>
+          <SelectItem value="3">High - P2</SelectItem>
+          <SelectItem value="4">Medium-High - P2.5</SelectItem>
+          <SelectItem value="5">Medium - P3</SelectItem>
+          <SelectItem value="6">Medium-Low - P3.5</SelectItem>
+          <SelectItem value="7">Low - P4</SelectItem>
+          <SelectItem value="8">Very Low - P5</SelectItem>
+          <SelectItem value="9">Backlog</SelectItem>
+          <SelectItem value="10">Ice Box</SelectItem>
+          <SelectItem value="11">Won't Fix</SelectItem>
+          <SelectItem value="12">Duplicate</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: CORAL[700],
+      margin: 0,
+    }}>
+      <span>Users freeze. What's the difference between P2 and P2.5? This forces cognitive load onto your users.</span>
+    </p>
+  </div>
+
+  {/* Compliant: Grouped options */}
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <CheckCircle size={18} color={DEEP_CURRENT[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: DEEP_CURRENT[700],
+      }}>Compliant: 5 Clear Options</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      marginBottom: '16px',
+    }}>
+      <Label htmlFor="good-select" style={{ marginBottom: '8px', display: 'block' }}>
+        <span>Select priority</span>
+      </Label>
+      <Select>
+        <SelectTrigger id="good-select" aria-label="Priority with appropriate options" style={{ width: '100%' }}>
+          <SelectValue placeholder="Choose..." />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="critical">Critical</SelectItem>
+          <SelectItem value="high">High</SelectItem>
+          <SelectItem value="medium">Medium</SelectItem>
+          <SelectItem value="low">Low</SelectItem>
+          <SelectItem value="none">None</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DEEP_CURRENT[700],
+      margin: 0,
+    }}>
+      <span>Five options. Clear hierarchy. Instant decision. Users spend brain cycles on their work, not your UI.</span>
+    </p>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>Miller's Law — Working Memory</span>
+</h2>
+
+<SectionHeader
+  icon={<List size={20} />}
+  title="7±2 Items Maximum"
+  description="Humans can hold about 7 items in working memory. Long lists overwhelm; chunked lists scale."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  {/* Violation: Too many nav items */}
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <XCircle size={18} color={CORAL[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: CORAL[700],
+      }}>Violation: 12 Nav Items</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      marginBottom: '16px',
+    }}>
+      <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+        {['Home', 'Dashboard', 'Projects', 'Tasks', 'Reports', 'Analytics', 'Settings', 'Users', 'Billing', 'Integrations', 'Support', 'Docs'].map((item) => (
+          <Badge key={item} variant="secondary" size="sm">{item}</Badge>
+        ))}
+      </nav>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: CORAL[700],
+      margin: 0,
+    }}>
+      <span>Users can't scan this. They're forced to read each item sequentially, hunting for what they need.</span>
+    </p>
+  </div>
+
+  {/* Compliant: Grouped navigation */}
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <CheckCircle size={18} color={DEEP_CURRENT[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: DEEP_CURRENT[700],
+      }}>Compliant: 5 Primary + Grouped</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      marginBottom: '16px',
+    }}>
+      <nav style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <Badge variant="default">Home</Badge>
+        <Badge variant="secondary" size="sm">Projects</Badge>
+        <Badge variant="secondary" size="sm">Reports</Badge>
+        <Badge variant="secondary" size="sm">Settings</Badge>
+        <Badge variant="outline" size="sm">More ▾</Badge>
+      </nav>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DEEP_CURRENT[700],
+      margin: 0,
+    }}>
+      <span>5 visible items + progressive disclosure. Users find the 80% case instantly; the rest is a click away.</span>
+    </p>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>Von Restorff Effect — Visual Hierarchy</span>
+</h2>
+
+<SectionHeader
+  icon={<Eye size={20} />}
+  title="Primary Actions Must Stand Out"
+  description="Items that are visually distinct are more likely to be remembered. Your CTA should be unmissable."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  {/* Violation: Same style buttons */}
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <XCircle size={18} color={CORAL[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: CORAL[700],
+      }}>Violation: Equal Visual Weight</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '24px',
+      marginBottom: '16px',
+      display: 'flex',
+      gap: '12px',
+      justifyContent: 'center',
+    }}>
+      <Button variant="outline">Cancel</Button>
+      <Button variant="outline">Save Draft</Button>
+      <Button variant="outline">Submit</Button>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: CORAL[700],
+      margin: 0,
+    }}>
+      <span>Which one is the primary action? Users hesitate. Every hesitation is friction you've added.</span>
+    </p>
+  </div>
+
+  {/* Compliant: Clear hierarchy */}
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <CheckCircle size={18} color={DEEP_CURRENT[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: DEEP_CURRENT[700],
+      }}>Compliant: Visual Hierarchy</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '24px',
+      marginBottom: '16px',
+      display: 'flex',
+      gap: '12px',
+      justifyContent: 'center',
+    }}>
+      <Button variant="ghost">Cancel</Button>
+      <Button variant="outline">Save Draft</Button>
+      <Button variant="default">Submit</Button>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DEEP_CURRENT[700],
+      margin: 0,
+    }}>
+      <span>Primary action pops. Secondary is visible but subdued. Tertiary is discoverable but out of the way.</span>
+    </p>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>Doherty Threshold — Perceived Performance</span>
+</h2>
+
+<SectionHeader
+  icon={<Timer size={20} />}
+  title="Feedback Within 400ms"
+  description="Productivity soars when response time is under 400ms. Beyond that, show loading state."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  {/* Violation: No loading state */}
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <XCircle size={18} color={CORAL[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: CORAL[700],
+      }}>Violation: No Loading State</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '24px',
+      marginBottom: '16px',
+      minHeight: '80px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <span style={{
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: SLATE[400],
+      }}>[ Blank space during load ]</span>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: CORAL[700],
+      margin: 0,
+    }}>
+      <span>User clicks, nothing happens. Did it work? Should they click again? Uncertainty breeds frustration.</span>
+    </p>
+  </div>
+
+  {/* Compliant: Skeleton loading */}
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '16px',
+    }}>
+      <CheckCircle size={18} color={DEEP_CURRENT[500]} />
+      <span style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: DEEP_CURRENT[700],
+      }}>Compliant: Skeleton State</span>
+    </div>
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '24px',
+      marginBottom: '16px',
+    }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-1/2" />
+        <Skeleton className="h-8 w-24" />
+      </div>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DEEP_CURRENT[700],
+      margin: 0,
+    }}>
+      <span>Skeleton shows content structure. Users know something is loading and where it will appear.</span>
+    </p>
+  </div>
+</div>
+
+<div style={{
+  background: DUSK_REEF[50],
+  borderRadius: RADIUS.md,
+  padding: '20px',
+  border: `1px solid ${DUSK_REEF[200]}`,
+  marginBottom: '32px',
+}}>
+  <div style={{
+    fontSize: '14px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[700],
+    fontWeight: 600,
+    marginBottom: '8px',
+  }}>
+    <span>Response Time Guidelines:</span>
+  </div>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '16px',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <div><span style={{ fontWeight: 600, color: DEEP_CURRENT[600] }}>&lt;100ms</span><br/><span style={{ color: DUSK_REEF[600] }}>Instant feel</span></div>
+    <div><span style={{ fontWeight: 600, color: DUSK_REEF[600] }}>100-400ms</span><br/><span style={{ color: DUSK_REEF[600] }}>Subtle indicator</span></div>
+    <div><span style={{ fontWeight: 600, color: CORAL[500] }}>&gt;400ms</span><br/><span style={{ color: DUSK_REEF[600] }}>Spinner required</span></div>
+    <div><span style={{ fontWeight: 600, color: CORAL[600] }}>&gt;1s</span><br/><span style={{ color: DUSK_REEF[600] }}>Progress bar</span></div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>Code Quality Constraints</span>
+</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '20px',
+  marginBottom: '32px',
+}}>
+  {/* Accessibility */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+    borderTop: `4px solid ${DEEP_CURRENT[500]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginBottom: '16px',
+    }}>
+      <Accessibility size={20} color={DEEP_CURRENT[500]} />
+      <span style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>Accessibility</span>
+    </div>
+    <div style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[600],
+      lineHeight: 1.7,
+    }}>
+      <span><strong>Semantic HTML first.</strong><br/>No <code>&lt;div onClick&gt;</code> — use <code>&lt;button&gt;</code>.<br/>No <code>role="button"</code> hacks.<br/>Keyboard navigation built-in.</span>
+    </div>
+  </div>
+
+  {/* TypeScript */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+    borderTop: `4px solid ${DUSK_REEF[500]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginBottom: '16px',
+    }}>
+      <Code size={20} color={DUSK_REEF[500]} />
+      <span style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>TypeScript</span>
+    </div>
+    <div style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[600],
+      lineHeight: 1.7,
+    }}>
+      <span><strong>No <code>any</code> type.</strong><br/>Use <code>unknown</code> when uncertain.<br/>Explicit return types.<br/>Strict null checks enabled.</span>
+    </div>
+  </div>
+
+  {/* Component API */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+    borderTop: `4px solid ${CORAL[500]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginBottom: '16px',
+    }}>
+      <Layout size={20} color={CORAL[500]} />
+      <span style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>Component API</span>
+    </div>
+    <div style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[600],
+      lineHeight: 1.7,
+    }}>
+      <span><strong>Max 7 props.</strong><br/>Max 2 boolean props.<br/>No icon props—use children.<br/>Composition over configuration.</span>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>Responsive & Async Patterns</span>
+</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: '32px',
+}}>
+  {/* Mobile-First */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginBottom: '16px',
+    }}>
+      <Smartphone size={20} color={DEEP_CURRENT[500]} />
+      <span style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>Mobile-First Required</span>
+    </div>
+    <div style={{
+      background: ABYSS[700],
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      marginBottom: '16px',
+    }}>
+      <code style={{
+        fontSize: '12px',
+        fontFamily: '"JetBrains Mono", monospace',
+        color: SLATE[300],
+        display: 'block',
+        lineHeight: 1.8,
+      }}>
+        <span style={{ color: CORAL[400] }}>// ❌ Desktop-first</span>{'\n'}
+        <span>className="px-8 max-sm:px-4"</span>{'\n\n'}
+        <span style={{ color: DEEP_CURRENT[400] }}>// ✅ Mobile-first</span>{'\n'}
+        <span>className="px-4 sm:px-6 lg:px-8"</span>
+      </code>
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[600],
+      margin: 0,
+    }}>
+      <span>Base styles are mobile. Add complexity as viewport grows.</span>
+    </p>
+  </div>
+
+  {/* Async States */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginBottom: '16px',
+    }}>
+      <Loader size={20} color={DUSK_REEF[500]} />
+      <span style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>All Async States Required</span>
+    </div>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '12px',
+      marginBottom: '16px',
+    }}>
+      {[
+        { state: 'Loading', icon: <Loader size={14} />, color: DUSK_REEF[500] },
+        { state: 'Error', icon: <AlertTriangle size={14} />, color: CORAL[500] },
+        { state: 'Empty', icon: <List size={14} />, color: SLATE[400] },
+        { state: 'Success', icon: <CheckCircle size={14} />, color: DEEP_CURRENT[500] },
+      ].map(({ state, icon, color }) => (
+        <div key={state} style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '10px 12px',
+          background: SLATE[50],
+          borderRadius: RADIUS.sm,
+        }}>
+          <span style={{ color }}>{icon}</span>
+          <span style={{
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>{state}</span>
+        </div>
+      ))}
+    </div>
+    <p style={{
+      fontSize: '13px',
+      fontFamily: '"Fixel", sans-serif',
+      color: DUSK_REEF[600],
+      margin: 0,
+    }}>
+      <span>Every async operation needs all four states handled.</span>
+    </p>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  <span>All Active Rules</span>
+</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  border: `1px solid ${SLATE[200]}`,
+  overflow: 'hidden',
+}}>
+  <table style={{
+    width: '100%',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+    borderCollapse: 'collapse',
+  }}>
+    <thead>
+      <tr style={{ background: SLATE[50], borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ textAlign: 'left', padding: '14px 20px', color: ABYSS[500], fontWeight: 600 }}>
+          <span>Rule</span>
+        </th>
+        <th style={{ textAlign: 'left', padding: '14px 20px', color: ABYSS[500], fontWeight: 600 }}>
+          <span>Trigger</span>
+        </th>
+        <th style={{ textAlign: 'center', padding: '14px 20px', color: ABYSS[500], fontWeight: 600 }}>
+          <span>Action</span>
+        </th>
+        <th style={{ textAlign: 'left', padding: '14px 20px', color: ABYSS[500], fontWeight: 600 }}>
+          <span>Source</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { rule: 'UX Laws Check', trigger: 'Component file edit', action: 'warn', file: 'hookify.ux-laws-check.md' },
+        { rule: 'Accessibility', trigger: '<div onClick>, role="button"', action: 'warn', file: 'hookify.accessibility-enforcement.md' },
+        { rule: 'TypeScript Strictness', trigger: ': any, as any', action: 'warn', file: 'hookify.typescript-strictness.md' },
+        { rule: 'Component API', trigger: 'Props interface', action: 'warn', file: 'hookify.component-api-limits.md' },
+        { rule: 'Async States', trigger: 'isLoading, await fetch', action: 'warn', file: 'hookify.async-state-handling.md' },
+        { rule: 'Responsive', trigger: 'sm:, md:, lg: classes', action: 'warn', file: 'hookify.responsive-patterns.md' },
+        { rule: 'Story Required', trigger: 'Component w/o story', action: 'warn', file: 'hookify.require-story-file.md' },
+        { rule: 'Raw Hex Colors', trigger: '#RRGGBB in code', action: 'block', file: 'hookify.color-enforcement.md' },
+        { rule: 'Tailwind Colors', trigger: 'red-500, blue-600', action: 'block', file: 'hookify.color-enforcement.md' },
+      ].map((item, i) => (
+        <tr key={item.rule} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 20px', fontWeight: 500, color: ABYSS[500] }}>
+            <span>{item.rule}</span>
+          </td>
+          <td style={{ padding: '12px 20px' }}>
+            <code style={{
+              fontSize: '11px',
+              fontFamily: '"JetBrains Mono", monospace',
+              background: SLATE[100],
+              padding: '2px 6px',
+              borderRadius: '4px',
+              color: DUSK_REEF[600],
+            }}>{item.trigger}</code>
+          </td>
+          <td style={{ padding: '12px 20px', textAlign: 'center' }}>
+            <span style={{
+              display: 'inline-block',
+              padding: '3px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+              background: item.action === 'block' ? CORAL[100] : DUSK_REEF[100],
+              color: item.action === 'block' ? CORAL[700] : DUSK_REEF[700],
+            }}>{item.action}</span>
+          </td>
+          <td style={{ padding: '12px 20px' }}>
+            <code style={{
+              fontSize: '11px',
+              fontFamily: '"JetBrains Mono", monospace',
+              color: SLATE[500],
+            }}>.claude/{item.file}</code>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<div style={{
+  background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DUSK_REEF[600]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginTop: '48px',
+}}>
+  <h3 style={{
+    margin: '0 0 16px 0',
+    fontSize: '20px',
+    fontWeight: 600,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: PRIMITIVES.white,
+  }}>
+    <span>Want the Full Reference?</span>
+  </h3>
+  <p style={{
+    fontSize: '15px',
+    fontFamily: '"Fixel", sans-serif',
+    color: PRIMITIVES.white,
+    margin: '0 0 20px 0',
+    lineHeight: 1.6,
+    opacity: 0.9,
+  }}>
+    <span>All UX laws with detailed implementation guidance live in <code style={{ background: PRIMITIVES.white, padding: '3px 8px', borderRadius: '4px', color: ABYSS[500], fontWeight: 500 }}>.claude/ux-laws-rules.md</code>. The hookify rules that enforce these constraints are in <code style={{ background: PRIMITIVES.white, padding: '3px 8px', borderRadius: '4px', color: ABYSS[500], fontWeight: 500 }}>.claude/hookify.*.md</code>.</span>
+  </p>
+  <div style={{ display: 'flex', gap: '12px' }}>
+    <StoryLink to="/docs/foundation-design-tokens-overview--docs">
+      <Button variant="outline" style={{ background: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.3)', color: PRIMITIVES.white }}>
+        <span>Design Tokens →</span>
+      </Button>
+    </StoryLink>
+    <StoryLink to="/docs/foundation-colors--docs">
+      <Button variant="ghost" style={{ color: PRIMITIVES.white, opacity: 0.85 }}>
+        <span>Color System</span>
+      </Button>
+    </StoryLink>
+  </div>
+</div>

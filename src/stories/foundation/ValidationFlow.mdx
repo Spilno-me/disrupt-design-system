@@ -1,0 +1,868 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Shield,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  ArrowRight,
+  ArrowDown,
+  GitCommit,
+  Package,
+  FileCode,
+  Palette,
+  FileText,
+  Bot,
+  Layers,
+  Eye,
+  RefreshCw,
+  Terminal,
+  Workflow,
+  BookOpen,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SPACING,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/Validation Flow" />
+
+<BrandHero
+  title="Validation Flow"
+  description="How DDS prevents drift, ensures consistency, and maintains quality through automated validation at every stage."
+  gradient="teal"
+  decorativeIcon={<Shield size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Zero drift architecture.</strong> Every commit runs through sync scripts and validators.
+  If something drifts out of sync, the build fails before it reaches production.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Big Picture</h2>
+
+<SectionHeader
+  icon={<Workflow size={20} />}
+  title="Pre-Commit Pipeline"
+  description="What happens when you commit code to DDS."
+/>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  border: `1px solid ${ABYSS[100]}`,
+}}>
+  <div style={{
+    color: ABYSS[600],
+    marginBottom: '20px',
+    fontFamily: 'JetBrains Mono, monospace',
+    fontSize: '13px',
+  }}>
+    git commit triggers simple-git-hooks:
+  </div>
+
+  {/* Pipeline Flow */}
+  <div style={{
+    display: 'flex',
+    alignItems: 'stretch',
+    gap: '16px',
+  }}>
+    {/* Stage 1 */}
+    <div style={{
+      flex: 1,
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      border: `1px solid ${ABYSS[100]}`,
+      boxShadow: SHADOWS.sm,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        <span style={{
+          background: DEEP_CURRENT[700],
+          color: PRIMITIVES.white,
+          fontSize: '11px',
+          fontWeight: 700,
+          width: '18px',
+          height: '18px',
+          borderRadius: '4px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          1
+        </span>
+        <span style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: '14px',
+          fontWeight: 700,
+          color: DEEP_CURRENT[700],
+        }}>
+          sync:all
+        </span>
+      </div>
+      <div style={{ fontSize: '13px', color: ABYSS[500], lineHeight: 1.4 }}>
+        Generate files from sources of truth
+      </div>
+    </div>
+
+    <ArrowRight size={24} color={ABYSS[300]} style={{ alignSelf: 'center', flexShrink: 0 }} />
+
+    {/* Stage 2 */}
+    <div style={{
+      flex: 1,
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      border: `1px solid ${ABYSS[100]}`,
+      boxShadow: SHADOWS.sm,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        <span style={{
+          background: DEEP_CURRENT[700],
+          color: PRIMITIVES.white,
+          fontSize: '11px',
+          fontWeight: 700,
+          width: '18px',
+          height: '18px',
+          borderRadius: '4px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          2
+        </span>
+        <span style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: '14px',
+          fontWeight: 700,
+          color: DEEP_CURRENT[700],
+        }}>
+          health
+        </span>
+      </div>
+      <div style={{ fontSize: '13px', color: ABYSS[500], lineHeight: 1.4 }}>
+        Run all validators (typecheck, lint, validate:*)
+      </div>
+    </div>
+
+    <ArrowRight size={24} color={ABYSS[300]} style={{ alignSelf: 'center', flexShrink: 0 }} />
+
+    {/* Stage 3 */}
+    <div style={{
+      flex: 1,
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      border: `1px solid ${ABYSS[100]}`,
+      boxShadow: SHADOWS.sm,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        <span style={{
+          background: DEEP_CURRENT[700],
+          color: PRIMITIVES.white,
+          fontSize: '11px',
+          fontWeight: 700,
+          width: '18px',
+          height: '18px',
+          borderRadius: '4px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          3
+        </span>
+        <span style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: '14px',
+          fontWeight: 700,
+          color: DEEP_CURRENT[700],
+        }}>
+          lint-staged
+        </span>
+      </div>
+      <div style={{ fontSize: '13px', color: ABYSS[500], lineHeight: 1.4 }}>
+        ESLint on staged files only
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Sync Scripts (Stage 1)</h2>
+
+<SectionHeader
+  icon={<RefreshCw size={20} />}
+  title="Auto-Generation from Sources of Truth"
+  description="These scripts generate files from single sources of truth, preventing manual drift."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* sync:prompts */}
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${ABYSS[100]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <BookOpen size={20} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: 600, color: ABYSS[700] }}>sync:prompts</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500], marginBottom: '12px' }}>
+      Source: <code>prompts.ts</code>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600] }}>
+      Generates:
+      <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
+        <li><code>.claude/prompt-library.md</code></li>
+        <li><code>.claude/skills/*.md</code> (11 files)</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* sync:colors */}
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${ABYSS[100]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <Palette size={20} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: 600, color: ABYSS[700] }}>sync:colors</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500], marginBottom: '12px' }}>
+      Source: <code>designTokens.ts</code>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600] }}>
+      Generates:
+      <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
+        <li><code>.claude/color-matrix.json</code></li>
+        <li><code>.claude/contrast-matrix.json</code></li>
+      </ul>
+    </div>
+  </div>
+
+  {/* sync-docs */}
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${ABYSS[100]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <FileText size={20} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: 600, color: ABYSS[700] }}>sync-docs</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500], marginBottom: '12px' }}>
+      Source: <code>agent-context.json</code>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600] }}>
+      Generates:
+      <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
+        <li><code>.claude/component-status.md</code></li>
+        <li>Various agent reference docs</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* update-docs */}
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${ABYSS[100]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <Bot size={20} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: 600, color: ABYSS[700] }}>update-docs</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500], marginBottom: '12px' }}>
+      Source: Multiple agent rule files
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600] }}>
+      Generates:
+      <ul style={{ margin: '8px 0 0 0', paddingLeft: '20px' }}>
+        <li>Agent instruction aggregations</li>
+        <li>Rule file indexes</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Validators (Stage 2)</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="Health Check Suite"
+  description="These validators run in sequence. If any fails, the commit is blocked."
+/>
+
+{/* Validator Flow Diagram */}
+<div style={{
+  background: ABYSS[800],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+}}>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '8px',
+    fontSize: '12px',
+    fontFamily: 'JetBrains Mono, monospace',
+  }}>
+    {/* Row 1 */}
+    <div style={{
+      background: DEEP_CURRENT[700],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      typecheck
+    </div>
+    <div style={{
+      background: DEEP_CURRENT[700],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      lint
+    </div>
+    <div style={{
+      background: HARBOR[700],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      validate:tokens
+    </div>
+    <div style={{
+      background: HARBOR[700],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      validate:readme
+    </div>
+
+    {/* Row 2 */}
+    <div style={{
+      background: DUSK_REEF[600],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      validate-context
+    </div>
+    <div style={{
+      background: DUSK_REEF[600],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      validate:agents
+    </div>
+    <div style={{
+      background: CORAL[600],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      validate:version
+    </div>
+    <div style={{
+      background: CORAL[600],
+      color: PRIMITIVES.white,
+      padding: '12px 8px',
+      borderRadius: RADIUS.md,
+      textAlign: 'center',
+    }}>
+      validate:prompts
+    </div>
+  </div>
+</div>
+
+{/* Detailed Validator Cards */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* typecheck */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <FileCode size={20} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>typecheck</span>
+      <span style={{ fontSize: '11px', color: ABYSS[400], marginLeft: 'auto' }}>tsc --noEmit</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> TypeScript compilation without emit
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500] }}>
+      <strong>Catches:</strong> Type errors, missing imports, interface violations
+    </div>
+  </div>
+
+  {/* lint */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <Eye size={20} color={DEEP_CURRENT[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>lint</span>
+      <span style={{ fontSize: '11px', color: ABYSS[400], marginLeft: 'auto' }}>eslint src/</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> Code style and best practices
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500] }}>
+      <strong>Catches:</strong> Unused vars, hook violations, style issues
+    </div>
+  </div>
+
+  {/* validate:tokens */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${HARBOR[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <Palette size={20} color={HARBOR[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>validate:tokens</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> Detect drift between 3-file token system
+    </div>
+    <div style={{ fontSize: '12px', color: ABYSS[500], lineHeight: 1.5 }}>
+      <strong>Validates:</strong>
+      <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>
+        <li>designTokens.ts ↔ styles.css</li>
+        <li>designTokens.ts ↔ tailwind-preset.js</li>
+        <li>Color hex values match across files</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* validate:readme */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${HARBOR[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <FileText size={20} color={HARBOR[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>validate:readme</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> README matches package.json exports
+    </div>
+    <div style={{ fontSize: '12px', color: ABYSS[500], lineHeight: 1.5 }}>
+      <strong>Validates:</strong>
+      <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>
+        <li>All exports documented in README</li>
+        <li>Import examples use correct syntax</li>
+        <li>Package Architecture table accurate</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* validate-context */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${DUSK_REEF[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <Layers size={20} color={DUSK_REEF[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>validate-context</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> agent-context.json integrity
+    </div>
+    <div style={{ fontSize: '12px', color: ABYSS[500], lineHeight: 1.5 }}>
+      <strong>Validates:</strong>
+      <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>
+        <li>Component paths exist on disk</li>
+        <li>Tailwind classes in safelist</li>
+        <li>Status enums match legend</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* validate:agents */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${DUSK_REEF[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <Bot size={20} color={DUSK_REEF[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>validate:agents</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> Agent instructions match reality
+    </div>
+    <div style={{ fontSize: '12px', color: ABYSS[500], lineHeight: 1.5 }}>
+      <strong>Validates:</strong>
+      <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>
+        <li>File paths in instructions exist</li>
+        <li>Hex colors match designTokens.ts</li>
+        <li>Token names are valid</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* validate:version */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${CORAL[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <Package size={20} color={CORAL[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>validate:version</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> Version bump requirements
+    </div>
+    <div style={{ fontSize: '12px', color: ABYSS[500], lineHeight: 1.5 }}>
+      <strong>Validates:</strong>
+      <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>
+        <li>package.json ↔ changelog.json sync</li>
+        <li>New components → MINOR bump needed</li>
+        <li>New exports → MINOR bump needed</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* validate:prompts */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `2px solid ${CORAL[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <BookOpen size={20} color={CORAL[600]} />
+      <span style={{ fontWeight: 700, color: ABYSS[700] }}>validate:prompts</span>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[600], marginBottom: '8px' }}>
+      <strong>Purpose:</strong> Prompt path references valid
+    </div>
+    <div style={{ fontSize: '12px', color: ABYSS[500], lineHeight: 1.5 }}>
+      <strong>Validates:</strong>
+      <ul style={{ margin: '4px 0', paddingLeft: '16px' }}>
+        <li>.claude/*.md files exist</li>
+        <li>src/ directory paths exist</li>
+        <li>Referenced files not deleted</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Manual Validators</h2>
+
+<SectionHeader
+  icon={<Terminal size={20} />}
+  title="On-Demand Validation"
+  description="These validators run manually for specific use cases."
+/>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* validate:contrast */}
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '16px' }}>
+    <div style={{
+      background: DEEP_CURRENT[100],
+      borderRadius: RADIUS.md,
+      padding: '8px',
+      flexShrink: 0,
+    }}>
+      <Eye size={24} color={DEEP_CURRENT[700]} />
+    </div>
+    <div style={{ flex: 1 }}>
+      <div style={{ fontWeight: 600, color: ABYSS[700], marginBottom: '4px' }}>
+        validate:contrast
+      </div>
+      <div style={{ fontSize: '13px', color: ABYSS[500], marginBottom: '8px' }}>
+        WCAG 2.1 contrast ratio validation for color combinations in components.
+      </div>
+      <code style={{
+        background: ABYSS[100],
+        padding: '4px 8px',
+        borderRadius: RADIUS.sm,
+        fontSize: '12px',
+      }}>
+        npm run validate:contrast [path]
+      </code>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Command Reference</h2>
+
+<div style={{
+  background: ABYSS[800],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  fontFamily: 'JetBrains Mono, monospace',
+  fontSize: '13px',
+  lineHeight: 1.8,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ color: ABYSS[400], marginBottom: '8px' }}># Run everything (pre-commit does this)</div>
+  <div style={{ color: PRIMITIVES.white }}>npm run sync:all && npm run health</div>
+
+  <div style={{ color: ABYSS[400], marginTop: '16px', marginBottom: '8px' }}># Individual sync scripts</div>
+  <div style={{ color: DEEP_CURRENT[300] }}>npm run sync:prompts      <span style={{ color: ABYSS[500] }}># Generate skill files</span></div>
+  <div style={{ color: DEEP_CURRENT[300] }}>npm run sync:colors       <span style={{ color: ABYSS[500] }}># Generate color matrices</span></div>
+  <div style={{ color: DEEP_CURRENT[300] }}>npm run sync-docs         <span style={{ color: ABYSS[500] }}># Generate component status</span></div>
+  <div style={{ color: DEEP_CURRENT[300] }}>npm run update-docs       <span style={{ color: ABYSS[500] }}># Update agent docs</span></div>
+
+  <div style={{ color: ABYSS[400], marginTop: '16px', marginBottom: '8px' }}># Individual validators</div>
+  <div style={{ color: HARBOR[300] }}>npm run validate:tokens   <span style={{ color: ABYSS[500] }}># 3-file token sync</span></div>
+  <div style={{ color: HARBOR[300] }}>npm run validate:readme   <span style={{ color: ABYSS[500] }}># README ↔ exports</span></div>
+  <div style={{ color: DUSK_REEF[300] }}>npm run validate-context  <span style={{ color: ABYSS[500] }}># agent-context.json</span></div>
+  <div style={{ color: DUSK_REEF[300] }}>npm run validate:agents   <span style={{ color: ABYSS[500] }}># Agent instructions</span></div>
+  <div style={{ color: CORAL[300] }}>npm run validate:version  <span style={{ color: ABYSS[500] }}># Version drift</span></div>
+  <div style={{ color: CORAL[300] }}>npm run validate:prompts  <span style={{ color: ABYSS[500] }}># Prompt paths</span></div>
+
+  <div style={{ color: ABYSS[400], marginTop: '16px', marginBottom: '8px' }}># Manual only</div>
+  <div style={{ color: ABYSS[300] }}>npm run validate:contrast <span style={{ color: ABYSS[500] }}># WCAG contrast (slow)</span></div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Data Flow Diagram</h2>
+
+<SectionHeader
+  icon={<Workflow size={20} />}
+  title="Sources of Truth → Generated Files"
+  description="Single sources of truth generate multiple derived files."
+/>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Source 1: designTokens.ts */}
+  <div style={{ marginBottom: '24px' }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      background: DEEP_CURRENT[700],
+      color: PRIMITIVES.white,
+      padding: '8px 16px',
+      borderRadius: RADIUS.md,
+      fontWeight: 600,
+      marginBottom: '12px',
+    }}>
+      <FileCode size={16} />
+      designTokens.ts
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px', marginBottom: '4px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>.claude/color-matrix.json</span>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px', marginBottom: '4px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>.claude/contrast-matrix.json</span>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>validate:tokens checks vs styles.css & tailwind-preset.js</span>
+    </div>
+  </div>
+
+  {/* Source 2: prompts.ts */}
+  <div style={{ marginBottom: '24px' }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      background: HARBOR[700],
+      color: PRIMITIVES.white,
+      padding: '8px 16px',
+      borderRadius: RADIUS.md,
+      fontWeight: 600,
+      marginBottom: '12px',
+    }}>
+      <BookOpen size={16} />
+      prompts.ts
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px', marginBottom: '4px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>.claude/prompt-library.md</span>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>.claude/skills/*.md (11 skill files)</span>
+    </div>
+  </div>
+
+  {/* Source 3: agent-context.json */}
+  <div style={{ marginBottom: '24px' }}>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      background: DUSK_REEF[600],
+      color: PRIMITIVES.white,
+      padding: '8px 16px',
+      borderRadius: RADIUS.md,
+      fontWeight: 600,
+      marginBottom: '12px',
+    }}>
+      <Bot size={16} />
+      agent-context.json
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px', marginBottom: '4px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>.claude/component-status.md</span>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>validate-context checks vs actual files</span>
+    </div>
+  </div>
+
+  {/* Source 4: package.json */}
+  <div>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px',
+      background: CORAL[600],
+      color: PRIMITIVES.white,
+      padding: '8px 16px',
+      borderRadius: RADIUS.md,
+      fontWeight: 600,
+      marginBottom: '12px',
+    }}>
+      <Package size={16} />
+      package.json
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px', marginBottom: '4px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>validate:readme checks vs README.md</span>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: '24px' }}>
+      <ArrowRight size={16} color={ABYSS[400]} />
+      <span style={{ marginLeft: '8px', fontSize: '13px', color: ABYSS[600] }}>validate:version checks vs changelog.json</span>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Failure Modes</h2>
+
+<SectionHeader
+  icon={<AlertTriangle size={20} />}
+  title="What Happens When Validation Fails"
+  description="Each validator provides actionable error messages."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gap: '12px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard
+    icon={<XCircle size={18} color={CORAL[500]} />}
+    title="Token Drift"
+    correct="Update all 3 files (designTokens.ts, styles.css, tailwind-preset.js)"
+    incorrect="Update only one file"
+  />
+  <GuidelineCard
+    icon={<XCircle size={18} color={CORAL[500]} />}
+    title="README Drift"
+    correct="Update README.md with new export paths"
+    incorrect="Add exports without documenting"
+  />
+  <GuidelineCard
+    icon={<XCircle size={18} color={CORAL[500]} />}
+    title="Agent Instruction Drift"
+    correct="Update .claude/agents/*.md or fix referenced paths"
+    incorrect="Leave stale file references in instructions"
+  />
+  <GuidelineCard
+    icon={<XCircle size={18} color={CORAL[500]} />}
+    title="Version Drift"
+    correct="Run npm run version:minor (or patch/major)"
+    incorrect="Add components without version bump"
+  />
+  <GuidelineCard
+    icon={<XCircle size={18} color={CORAL[500]} />}
+    title="Prompt Drift"
+    correct="Update prompts.ts or restore deleted files"
+    incorrect="Reference files that don't exist"
+  />
+</div>
+
+<InfoBox variant="warning">
+  <strong>All validators block commits.</strong> Fix the issue, then commit again.
+  The error messages tell you exactly what to fix.
+</InfoBox>

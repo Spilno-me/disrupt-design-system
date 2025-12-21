@@ -75,6 +75,7 @@ import {
   DEEP_CURRENT,
   DUSK_REEF,
   CORAL,
+  HARBOR,
   SLATE,
   LINEN,
   PRIMITIVES,
@@ -111,6 +112,7 @@ export {
   DEEP_CURRENT,
   DUSK_REEF,
   CORAL,
+  HARBOR,
   SLATE,
   LINEN,
   PRIMITIVES,
@@ -707,7 +709,7 @@ export const NavCard: React.FC<NavCardProps> = ({ icon, title, description, href
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: DEEP_CURRENT[600],
+          color: DEEP_CURRENT[700],
           flexShrink: 0,
         }}
       >
@@ -792,7 +794,7 @@ export const GuidelineCard: React.FC<GuidelineCardProps> = ({
               width: '24px',
               height: '24px',
               borderRadius: '50%',
-              background: isDo ? DEEP_CURRENT[500] : CORAL[500],
+              background: isDo ? DEEP_CURRENT[700] : CORAL[700],
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -880,7 +882,7 @@ export const DownloadCard: React.FC<DownloadCardProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: '16px',
-          color: DEEP_CURRENT[600],
+          color: DEEP_CURRENT[700],
         }}
       >
         {icon}
@@ -1034,7 +1036,7 @@ export const TechStackItem: React.FC<TechStackItemProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: DEEP_CURRENT[600],
+          color: DEEP_CURRENT[700],
           flexShrink: 0,
         }}
       >
@@ -1063,7 +1065,7 @@ export const TechStackItem: React.FC<TechStackItemProps> = ({
               style={{
                 fontSize: '11px',
                 fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-                color: DEEP_CURRENT[600],
+                color: DEEP_CURRENT[700],
                 background: DEEP_CURRENT[50],
                 padding: '2px 6px',
                 borderRadius: RADIUS.xs,
@@ -1118,7 +1120,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: DEEP_CURRENT[600],
+            color: DEEP_CURRENT[700],
           }}
         >
           {icon}

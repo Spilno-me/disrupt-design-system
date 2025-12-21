@@ -374,7 +374,7 @@ function QuickSelect({
                 <div
                   className="absolute inset-y-0 left-0 w-1"
                   style={{
-                    backgroundColor: DEEP_CURRENT[500],
+                    backgroundColor: DEEP_CURRENT[700],
                     borderRadius: `${RADIUS.sm} 0 0 ${RADIUS.sm}`,
                   }}
                 />
@@ -384,7 +384,7 @@ function QuickSelect({
                   className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center"
                   style={{
                     backgroundColor: selected ? DEEP_CURRENT[100] : WAVE[50],
-                    color: selected ? DEEP_CURRENT[600] : WAVE[500],
+                    color: selected ? DEEP_CURRENT[700] : WAVE[700],
                   }}
                 >
                   {option.icon}
@@ -407,7 +407,7 @@ function QuickSelect({
               {selected && (
                 <span
                   className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: DEEP_CURRENT[500] }}
+                  style={{ backgroundColor: DEEP_CURRENT[700] }}
                 >
                   <Check className="w-3.5 h-3.5 text-white" />
                 </span>
@@ -493,7 +493,7 @@ function LocationPicker({
           className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
           style={{
             backgroundColor: value ? HARBOR[100] : WAVE[50],
-            color: value ? HARBOR[600] : WAVE[500],
+            color: value ? HARBOR[700] : WAVE[700],
           }}
         >
           <MapPin className="w-5 h-5" />
@@ -778,7 +778,7 @@ function FileUpload({
           className="w-14 h-14 rounded-xl flex items-center justify-center"
           style={{
             backgroundColor: isDragging ? DUSK_REEF[100] : WAVE[100],
-            color: isDragging ? DUSK_REEF[600] : WAVE[600],
+            color: isDragging ? DUSK_REEF[700] : WAVE[700],
           }}
         >
           <Upload className="w-7 h-7" />
@@ -832,7 +832,7 @@ function FileUpload({
               </div>
               <span
                 className="w-6 h-6 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: HARBOR[500] }}
+                style={{ backgroundColor: HARBOR[700] }}
               >
                 <Check className="w-3.5 h-3.5 text-white" />
               </span>
@@ -921,7 +921,7 @@ function SummaryCard({
             {item.icon && (
               <span
                 className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                style={{ backgroundColor: WAVE[100], color: WAVE[600] }}
+                style={{ backgroundColor: WAVE[100], color: WAVE[700] }}
               >
                 {item.icon}
               </span>
@@ -936,7 +936,7 @@ function SummaryCard({
               <button
                 onClick={item.onEdit}
                 className="text-xs font-semibold px-2 py-1 rounded-md transition-colors flex items-center gap-1"
-                style={{ color: DEEP_CURRENT[600], backgroundColor: DEEP_CURRENT[50] }}
+                style={{ color: DEEP_CURRENT[700], backgroundColor: DEEP_CURRENT[50] }}
               >
                 <Edit3 className="w-3 h-3" />
                 Edit
@@ -959,7 +959,7 @@ function SummaryCard({
         <Button
           onClick={onSubmit}
           className="flex-1 font-semibold"
-          style={{ backgroundColor: HARBOR[500], color: "white", boxShadow: `0 4px 12px ${HARBOR[400]}40` }}
+          style={{ backgroundColor: HARBOR[700], color: "white", boxShadow: `0 4px 12px ${HARBOR[400]}40` }}
           disabled={isSubmitting}
         >
           {isSubmitting ? (
@@ -1175,7 +1175,7 @@ function ActionCard({
             </Button>
           )}
           {onApprove && status === "pending" && (
-            <Button size="sm" onClick={onApprove} style={{ backgroundColor: HARBOR[500], color: PRIMITIVES.white }}>
+            <Button size="sm" onClick={onApprove} style={{ backgroundColor: HARBOR[700], color: PRIMITIVES.white }}>
               <CheckCircle2 className="w-4 h-4 mr-1" />
               Approve
             </Button>
@@ -1364,7 +1364,7 @@ function InvitePeople({
         >
           <span
             className="w-10 h-10 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: DEEP_CURRENT[100], color: DEEP_CURRENT[600] }}
+            style={{ backgroundColor: DEEP_CURRENT[100], color: DEEP_CURRENT[700] }}
           >
             <UserPlus className="w-5 h-5" />
           </span>
@@ -1432,7 +1432,7 @@ function InvitePeople({
               <button
                 onClick={onInviteNew}
                 className="flex items-center gap-2 text-sm font-semibold px-3 py-1.5 rounded-lg"
-                style={{ color: DEEP_CURRENT[600], backgroundColor: DEEP_CURRENT[50] }}
+                style={{ color: DEEP_CURRENT[700], backgroundColor: DEEP_CURRENT[50] }}
               >
                 <Mail className="w-4 h-4" />
                 Invite by email
@@ -1517,7 +1517,7 @@ function CommentThread({
                   {comment.isInternal && (
                     <span
                       className="text-xs font-bold px-2 py-0.5 rounded-full"
-                      style={{ backgroundColor: SUNRISE[500], color: PRIMITIVES.white }}
+                      style={{ backgroundColor: SUNRISE[700], color: PRIMITIVES.white }}
                     >
                       Internal
                     </span>
@@ -1553,7 +1553,7 @@ function CommentThread({
         <div className="flex items-center justify-between pl-13">
           <label
             className="flex items-center gap-2 text-xs font-medium cursor-pointer px-3 py-1.5 rounded-lg"
-            style={{ color: isInternal ? SUNRISE[700] : ABYSS[500], backgroundColor: isInternal ? SUNRISE[100] : "transparent" }}
+            style={{ color: isInternal ? SUNRISE[800] : ABYSS[500], backgroundColor: isInternal ? SUNRISE[100] : "transparent" }}
           >
             <input
               type="checkbox"
@@ -1568,7 +1568,7 @@ function CommentThread({
             onClick={handleSubmit}
             disabled={!newComment.trim()}
             style={{
-              backgroundColor: newComment.trim() ? DEEP_CURRENT[500] : SLATE[300],
+              backgroundColor: newComment.trim() ? DEEP_CURRENT[700] : SLATE[300],
               color: PRIMITIVES.white,
             }}
           >
@@ -1852,7 +1852,7 @@ function IncidentFormSection({ step, data, onUpdate, onSubmit }: IncidentFormSec
                   onClick={onSubmit}
                   className="w-full mt-4 font-semibold"
                   style={{
-                    backgroundColor: DEEP_CURRENT[500],
+                    backgroundColor: DEEP_CURRENT[700],
                     color: PRIMITIVES.white,
                     border: `1px solid ${DEEP_CURRENT[400]}`,
                     borderRadius: RADIUS.sm,

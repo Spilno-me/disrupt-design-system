@@ -200,7 +200,7 @@ function MaterializerDemoComponent() {
     <div
       className="min-h-screen p-8"
       style={{
-        background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DEEP_CURRENT[500]} 100%)`,
+        background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
       }}
     >
       {/* Header */}
@@ -478,7 +478,7 @@ function AllPatternsShowcase() {
     <div
       className="min-h-screen p-8"
       style={{
-        background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DEEP_CURRENT[500]} 100%)`,
+        background: `linear-gradient(135deg, ${ABYSS[500]} 0%, ${DEEP_CURRENT[700]} 100%)`,
       }}
     >
       <div className="max-w-4xl mx-auto">

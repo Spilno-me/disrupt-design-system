@@ -729,7 +729,7 @@ export const ReporterWorkflow: StoryObj = {
             <div className="flex items-center gap-3">
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium"
-                style={{ backgroundColor: DEEP_CURRENT[500] }}
+                style={{ backgroundColor: DEEP_CURRENT[700] }}
               >
                 AM
               </div>
@@ -738,7 +738,7 @@ export const ReporterWorkflow: StoryObj = {
                 <p className="text-xs" style={{ color: ABYSS[500] }}>Reporting an incident</p>
               </div>
             </div>
-            <span className="text-xs font-medium px-2 py-1 rounded" style={{ backgroundColor: SUNRISE[100], color: SUNRISE[700] }}>
+            <span className="text-xs font-medium px-2 py-1 rounded" style={{ backgroundColor: SUNRISE[100], color: SUNRISE[800] }}>
               Reporter View
             </span>
           </div>
@@ -837,7 +837,7 @@ export const ReporterWorkflow: StoryObj = {
                   disabled={bodyParts.length === 0}
                   className="w-full py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
                   style={{
-                    backgroundColor: bodyParts.length > 0 ? DEEP_CURRENT[500] : ABYSS[200],
+                    backgroundColor: bodyParts.length > 0 ? DEEP_CURRENT[700] : ABYSS[200],
                     color: "white",
                   }}
                 >
@@ -870,7 +870,7 @@ export const ReporterWorkflow: StoryObj = {
                   disabled={!description.trim()}
                   className="w-full py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
                   style={{
-                    backgroundColor: description.trim() ? DEEP_CURRENT[500] : ABYSS[200],
+                    backgroundColor: description.trim() ? DEEP_CURRENT[700] : ABYSS[200],
                     color: "white",
                   }}
                 >
@@ -894,7 +894,7 @@ export const ReporterWorkflow: StoryObj = {
                 <button
                   onClick={() => setStep(7)}
                   className="w-full py-3 rounded-lg font-medium transition-colors"
-                  style={{ backgroundColor: DEEP_CURRENT[500], color: "white" }}
+                  style={{ backgroundColor: DEEP_CURRENT[700], color: "white" }}
                 >
                   Continue to Review
                 </button>
@@ -1083,7 +1083,7 @@ export const ManagerDashboard: StoryObj = {
             <div className="flex items-center gap-4">
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium"
-                style={{ backgroundColor: SUNRISE[500] }}
+                style={{ backgroundColor: SUNRISE[700] }}
               >
                 MR
               </div>
@@ -1092,7 +1092,7 @@ export const ManagerDashboard: StoryObj = {
                 <p className="text-xs" style={{ color: ABYSS[300] }}>EHS Safety Officer</p>
               </div>
             </div>
-            <span className="text-xs font-medium px-2 py-1 rounded" style={{ backgroundColor: HARBOR[500], color: "white" }}>
+            <span className="text-xs font-medium px-2 py-1 rounded" style={{ backgroundColor: HARBOR[700], color: "white" }}>
               Manager View
             </span>
           </div>
@@ -1214,7 +1214,7 @@ export const ManagerDashboard: StoryObj = {
                         <div className="flex gap-3">
                           <button
                             className="flex-1 py-2 px-4 rounded-lg font-medium text-white"
-                            style={{ backgroundColor: HARBOR[500] }}
+                            style={{ backgroundColor: HARBOR[700] }}
                           >
                             Mark as Resolved
                           </button>
