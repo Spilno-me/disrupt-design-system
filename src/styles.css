@@ -31,6 +31,7 @@
   .text-accent { color: var(--color-text-accent); }
   /* Always white - for colored status backgrounds (error, success, warning, info) */
   .text-on-status { color: #FFFFFF; }
+  .hover\:text-on-status:hover { color: #FFFFFF; }
 
   /* Hover variants with opacity */
   .hover\:bg-inverse-bg\/90:hover { background-color: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent); }
@@ -56,6 +57,11 @@
   .text-success-strong { color: var(--color-success-strong); }
   .border-success-strong { border-color: var(--color-success-strong); }
 
+  /* Info severity variants (blue) */
+  .text-info { color: var(--color-info); }
+  .border-info { border-color: var(--color-info); }
+  .bg-info { background-color: var(--color-info); }
+
   /* Teal (DEEP_CURRENT[700]) severity variants for "none" */
   .text-teal { color: var(--color-teal); }
   .border-teal { border-color: var(--color-teal); }
@@ -65,18 +71,21 @@
   .dark\:border-aging:is(.dark *) { border-color: var(--color-aging); }
   .dark\:border-warning:is(.dark *) { border-color: var(--color-warning); }
   .dark\:border-success:is(.dark *) { border-color: var(--color-success); }
+  .dark\:border-info:is(.dark *) { border-color: var(--color-info); }
   .dark\:border-accent-strong:is(.dark *) { border-color: var(--color-accent-strong); }
 
   /* Dark mode text variants for severity tokens */
   .dark\:text-aging:is(.dark *) { color: var(--color-aging); }
   .dark\:text-warning:is(.dark *) { color: var(--color-warning); }
   .dark\:text-success:is(.dark *) { color: var(--color-success); }
+  .dark\:text-info:is(.dark *) { color: var(--color-info); }
   .dark\:text-accent-strong:is(.dark *) { color: var(--color-accent-strong); }
 
   /* Dark mode background variants for severity tokens */
   .dark\:bg-aging:is(.dark *) { background-color: var(--color-aging); }
   .dark\:bg-warning:is(.dark *) { background-color: var(--color-warning); }
   .dark\:bg-success:is(.dark *) { background-color: var(--color-success); }
+  .dark\:bg-info:is(.dark *) { background-color: var(--color-info); }
   .dark\:bg-accent-strong:is(.dark *) { background-color: var(--color-accent-strong); }
 
   /* Group-hover variants for NextStepButton */
@@ -96,6 +105,19 @@
   .dark\:group-hover\:bg-warning:is(.dark *):is(:where(.group):hover *) { background-color: var(--color-warning); }
   .dark\:group-hover\:bg-success:is(.dark *):is(:where(.group):hover *) { background-color: var(--color-success); }
   .dark\:group-hover\:bg-accent-strong:is(.dark *):is(:where(.group):hover *) { background-color: var(--color-accent-strong); }
+
+  /* Hover variants for ActionTile (solid fills with white text) */
+  .hover\:bg-success-strong:hover { background-color: var(--color-success-strong); }
+  .hover\:bg-error:hover { background-color: var(--color-error); }
+  .hover\:bg-slate-500:hover { background-color: #64748b; }
+  .hover\:border-success-strong:hover { border-color: var(--color-success-strong); }
+  .hover\:border-error:hover { border-color: var(--color-error); }
+  .hover\:border-slate-500:hover { border-color: #64748b; }
+
+  /* Dark mode hover variants for ActionTile */
+  .dark\:hover\:bg-success:is(.dark *):hover { background-color: var(--color-success); }
+  .dark\:hover\:border-success:is(.dark *):hover { border-color: var(--color-success); }
+  .dark\:hover\:text-on-status:is(.dark *):hover { color: #FFFFFF; }
 
   /* Focus ring variants */
   .focus-visible\:ring-accent\/30:focus-visible {
@@ -292,6 +314,22 @@ h1.dds-brand-hero-title,
   font-family: 'Fixel';
   src: url('./fonts/FixelText-Medium.woff2') format('woff2');
   font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fixel';
+  src: url('./fonts/FixelText-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fixel';
+  src: url('./fonts/FixelText-SemiBold.woff2') format('woff2');
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
@@ -1860,6 +1898,48 @@ h1.dds-brand-hero-title,
     }
     50% {
       opacity: 0.5;
+    }
+  }
+
+  /* Overdue alert animation - glowing beacon effect like emergency warning lights
+   * Uses hardcoded CORAL[500] RGB for animation (CSS variables don't work in box-shadow rgba)
+   * Light: CORAL[500] = #E53935 = 229, 57, 53
+   * Dark: CORAL[400] = #EF5350 = 239, 83, 80
+   */
+  .overdue-pulse {
+    animation: overdue-glow 1.5s ease-in-out infinite;
+  }
+
+  @keyframes overdue-glow {
+    0%, 100% {
+      /* Tight glow - resting state */
+      box-shadow:
+        0 0 0 0 rgba(229, 57, 53, 0.4),
+        0 0 4px 0 rgba(229, 57, 53, 0.3);
+    }
+    50% {
+      /* Expanded glow - alert state (beacon pulse outward) */
+      box-shadow:
+        0 0 0 4px rgba(229, 57, 53, 0.25),
+        0 0 14px 3px rgba(229, 57, 53, 0.5);
+    }
+  }
+
+  /* Dark mode uses lighter CORAL[400] for better visibility */
+  .dark .overdue-pulse {
+    animation: overdue-glow-dark 1.5s ease-in-out infinite;
+  }
+
+  @keyframes overdue-glow-dark {
+    0%, 100% {
+      box-shadow:
+        0 0 0 0 rgba(239, 83, 80, 0.4),
+        0 0 4px 0 rgba(239, 83, 80, 0.3);
+    }
+    50% {
+      box-shadow:
+        0 0 0 4px rgba(239, 83, 80, 0.3),
+        0 0 14px 3px rgba(239, 83, 80, 0.5);
     }
   }
 }

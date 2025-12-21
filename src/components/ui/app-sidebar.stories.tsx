@@ -10,7 +10,7 @@ import {
   Settings,
   Users,
   ShieldCheck,
-  BookOpenText,
+  BookOpen,
   MapPin,
   Files,
   Boxes,
@@ -54,7 +54,7 @@ const flowNavItems: NavItem[] = [
     children: [
       { id: 'users', label: 'Users', icon: <Users />, href: '/config/users' },
       { id: 'roles', label: 'Roles & Permissions', icon: <ShieldCheck />, href: '/config/roles' },
-      { id: 'dictionaries', label: 'Dictionaries', icon: <BookOpenText />, href: '/config/dictionaries' },
+      { id: 'dictionaries', label: 'Dictionaries', icon: <BookOpen />, href: '/config/dictionaries' },
       { id: 'locations', label: 'Locations', icon: <MapPin />, href: '/config/locations' },
       { id: 'templates', label: 'Entity Templates', icon: <Files />, href: '/config/templates' },
       { id: 'modules', label: 'Modules', icon: <Boxes />, href: '/config/modules' },

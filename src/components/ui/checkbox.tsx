@@ -56,12 +56,14 @@ function Checkbox({
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        // Base styles - darker teal border for visibility on light backgrounds
-        "peer size-4 shrink-0 rounded-xs border-2 border-accent-dark bg-surface shadow-sm transition-shadow outline-none",
-        // Checked state - matches Button accent variant (DEEP_CURRENT[500])
+        // Base styles - subtle border for clean appearance
+        "peer size-4 shrink-0 rounded border border-muted bg-surface transition-all outline-none",
+        // Checked state - accent fill with white checkmark
         "data-[state=checked]:bg-accent-strong data-[state=checked]:text-white data-[state=checked]:border-accent-strong",
         // Focus state - uses design token
-        "focus-visible:border-ring focus-visible:ring-4 focus-visible:ring-ring/40",
+        "focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30",
+        // Hover state
+        "hover:border-accent-dark",
         // Error state
         "aria-invalid:ring-error/20 aria-invalid:border-error",
         // Disabled state

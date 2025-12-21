@@ -22,7 +22,8 @@ const actionTileVariants = cva(
   [
     // Base styles
     'inline-flex items-center justify-center',
-    'rounded-xl border-2',
+    // Border thickness matches NextStepButton (1px)
+    'rounded-xl border',
     'transition-all duration-200',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'disabled:pointer-events-none disabled:opacity-50',
@@ -33,17 +34,24 @@ const actionTileVariants = cva(
       variant: {
         success: [
           // Green - HARBOR colors
-          'border-success text-success',
+          // Hover: solid fill with white text (matches NextStepButton pattern)
+          'border-success-strong dark:border-success text-success-strong dark:text-success',
+          'hover:bg-success-strong hover:text-on-status hover:border-success-strong',
+          'dark:hover:bg-success dark:hover:border-success dark:hover:text-on-status',
           'focus-visible:ring-success',
         ],
         neutral: [
-          // Gray - SLATE colors (not DUSK_REEF purple!)
-          'border-slate-400 text-slate-500',
-          'focus-visible:ring-slate-400',
+          // Gray - DUSK_REEF colors (secondary text tone)
+          // Hover: solid fill with white text
+          'border-secondary text-secondary',
+          'hover:bg-secondary hover:text-on-status hover:border-secondary',
+          'focus-visible:ring-secondary',
         ],
         destructive: [
           // Red - CORAL colors
+          // Hover: solid fill with white text (matches NextStepButton pattern)
           'border-error text-error',
+          'hover:bg-error hover:text-on-status hover:border-error',
           'focus-visible:ring-error',
         ],
       },
@@ -53,48 +61,33 @@ const actionTileVariants = cva(
           'bg-transparent',
         ],
         filled: [
-          // Light tinted background
+          // Light tinted background (matches NextStepButton default state)
         ],
       },
       size: {
-        sm: 'size-12',
-        md: 'size-16',
-        lg: 'size-20',
+        xs: 'size-8 rounded-md',    // 32px - for compact table cells
+        sm: 'size-10 rounded-lg',   // 40px - for table cells
+        md: 'size-12',              // 48px
+        lg: 'size-16',              // 64px
+        xl: 'size-20',              // 80px
       },
     },
     compoundVariants: [
-      // Filled: subtle colored fill at rest, stronger on hover
-      // Works on dark backgrounds using border color with transparency
+      // Filled: light tinted fill at rest, solid fill on hover (NextStepButton pattern)
       {
         variant: 'success',
         appearance: 'filled',
-        className: 'bg-success/5 hover:bg-success/20',
+        className: 'bg-success-light dark:bg-success/10',
       },
       {
         variant: 'neutral',
         appearance: 'filled',
-        className: 'bg-white/5 hover:bg-white/20',
+        className: 'bg-muted-bg dark:bg-secondary/10',
       },
       {
         variant: 'destructive',
         appearance: 'filled',
-        className: 'bg-error/5 hover:bg-error/20',
-      },
-      // Outline: transparent at rest, light fill on hover
-      {
-        variant: 'success',
-        appearance: 'outline',
-        className: 'hover:bg-success/10',
-      },
-      {
-        variant: 'neutral',
-        appearance: 'outline',
-        className: 'hover:bg-white/10',
-      },
-      {
-        variant: 'destructive',
-        appearance: 'outline',
-        className: 'hover:bg-error/10',
+        className: 'bg-error-light dark:bg-error/10',
       },
     ],
     defaultVariants: {

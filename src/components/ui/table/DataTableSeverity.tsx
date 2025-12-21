@@ -74,6 +74,24 @@ export const URGENCY_SEVERITY_MAP: SeverityMapping<'urgent' | 'high' | 'normal' 
 }
 
 // =============================================================================
+// FONT WEIGHT MAPPING
+// =============================================================================
+
+/**
+ * Maps severity levels to font weights for visual hierarchy.
+ * Higher severity = bolder text, creating intuitive visual urgency.
+ *
+ * Scale: Bold (700) → SemiBold (600) → Medium (500) → Regular (400) → Light (300)
+ */
+const SEVERITY_FONT_WEIGHT: Record<SeverityLevel, string> = {
+  critical: 'font-bold',      // 700 - Maximum urgency
+  high: 'font-semibold',      // 600 - High urgency
+  medium: 'font-medium',      // 500 - Moderate
+  low: 'font-normal',         // 400 - Low priority
+  none: 'font-light',         // 300 - Minimal emphasis
+}
+
+// =============================================================================
 // COMPONENT
 // =============================================================================
 
@@ -83,6 +101,9 @@ export const URGENCY_SEVERITY_MAP: SeverityMapping<'urgent' | 'high' | 'normal' 
  * Combines the SeverityIndicator squircle icon with a text label for
  * clear, accessible priority display in data tables. Recommended as
  * the standard for severity/priority columns.
+ *
+ * Font weight scales with severity: Bold (critical) → Light (none)
+ * This provides additional visual hierarchy beyond color.
  *
  * @component ATOM
  * @category Data Display
@@ -111,6 +132,7 @@ export const URGENCY_SEVERITY_MAP: SeverityMapping<'urgent' | 'high' | 'normal' 
  * @accessibility
  * - Icon has aria-label for screen readers
  * - Text label provides redundant information for colorblind users
+ * - Font weight adds another layer of visual differentiation
  * - Semantic severity levels map to consistent visual indicators
  */
 export function DataTableSeverity<T extends string = string>({
@@ -129,7 +151,7 @@ export function DataTableSeverity<T extends string = string>({
       <span className={cn("inline-flex items-center gap-2", className)}>
         <SeverityIndicator level="none" size={size} />
         {showLabel && (
-          <span className="text-muted text-sm">
+          <span className="text-muted text-sm font-light">
             {value}
           </span>
         )}
@@ -138,12 +160,13 @@ export function DataTableSeverity<T extends string = string>({
   }
 
   const { level, label } = config
+  const fontWeight = SEVERITY_FONT_WEIGHT[level]
 
   return (
     <span className={cn("inline-flex items-center gap-2", className)}>
       <SeverityIndicator level={level} size={size} />
       {showLabel && (
-        <span className="text-primary text-sm">
+        <span className={cn("text-primary text-sm", fontWeight)}>
           {label}
         </span>
       )}

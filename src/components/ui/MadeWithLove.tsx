@@ -12,8 +12,10 @@ export interface MadeWithLoveProps {
   className?: string
   /** Color mode: 'dark' for dark text on light bg, 'light' for light text on dark bg */
   colorMode?: 'dark' | 'light'
-  /** Optional click handler */
+  /** Optional click handler (overrides default link behavior) */
   onClick?: () => void
+  /** URL to link to (defaults to Disrupt website) */
+  href?: string
 }
 
 // =============================================================================
@@ -159,6 +161,9 @@ function BeatingHeart({ color, size = 'md' }: { color: string; size?: 'sm' | 'md
 // MAIN COMPONENT
 // =============================================================================
 
+/** Default URL for Disrupt website */
+const DISRUPT_URL = 'https://disruptinc.io/'
+
 /**
  * MadeWithLove - A footer badge with a beating heart and full Disrupt logo
  *
@@ -167,39 +172,34 @@ function BeatingHeart({ color, size = 'md' }: { color: string; size?: 'sm' | 'md
  * - Full Disrupt logo with text (no tagline)
  * - Properly aligned text and logo baseline
  * - Supports light/dark color modes
+ * - Links to Disrupt website by default
  *
  * @example
  * ```tsx
- * // In footer on light background
+ * // Default - links to disruptinc.io
  * <MadeWithLove colorMode="dark" />
  *
  * // In footer on dark background
  * <MadeWithLove colorMode="light" />
  *
- * // With click handler
- * <MadeWithLove onClick={() => window.open('https://disrupt.com')} />
+ * // Custom link
+ * <MadeWithLove href="https://custom-url.com" />
+ *
+ * // With click handler (overrides link)
+ * <MadeWithLove onClick={() => console.log('clicked')} />
  * ```
  */
 export function MadeWithLove({
   className,
   colorMode = 'dark',
   onClick,
+  href = DISRUPT_URL,
 }: MadeWithLoveProps) {
   const textColor = colorMode === 'light' ? ALIAS.text.inverse : ALIAS.text.primary
   const heartColor = ALIAS.status.error
 
-  return (
-    <div
-      className={cn(
-        'inline-flex items-center gap-2 select-none',
-        onClick && 'cursor-pointer hover:opacity-80 transition-opacity',
-        className
-      )}
-      onClick={onClick}
-      role={onClick ? 'button' : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
-    >
+  const content = (
+    <>
       <span
         className="text-sm font-medium"
         style={{ color: textColor }}
@@ -214,7 +214,40 @@ export function MadeWithLove({
         by
       </span>
       <DisruptFullLogo textColor={textColor} />
-    </div>
+    </>
+  )
+
+  // If onClick is provided, use a div with click handler
+  if (onClick) {
+    return (
+      <div
+        className={cn(
+          'inline-flex items-center gap-2 select-none cursor-pointer hover:opacity-80 transition-opacity',
+          className
+        )}
+        onClick={onClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && onClick()}
+      >
+        {content}
+      </div>
+    )
+  }
+
+  // Default: render as a link to Disrupt website
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        'inline-flex items-center gap-2 select-none hover:opacity-80 transition-opacity no-underline',
+        className
+      )}
+    >
+      {content}
+    </a>
   )
 }
 

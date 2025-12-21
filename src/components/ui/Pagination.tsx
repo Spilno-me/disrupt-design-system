@@ -208,49 +208,25 @@ export function Pagination({
     <div
       data-slot="pagination"
       className={cn(
-        "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between",
+        "@container flex flex-col gap-3 items-center @md:flex-row @md:items-center @md:justify-between",
         className
       )}
       {...props}
     >
-      {/* Results text and page size selector */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-        {showResultsText && (
-          <p className="text-base md:text-sm text-primary">
-            {resultsText}
-          </p>
-        )}
+      {/* Results text - hidden on mobile, left on desktop */}
+      {showResultsText && (
+        <p className="hidden @md:block text-sm text-primary text-left order-1">
+          {resultsText}
+        </p>
+      )}
 
-        {showPageSizeSelector && onPageSizeChange && (
-          <div className="flex items-center gap-3">
-            <span className="text-base md:text-sm text-secondary">Rows per page:</span>
-            <Select
-              value={pageSize.toString()}
-              onValueChange={(value) => onPageSizeChange(parseInt(value, 10))}
-              disabled={loading}
-            >
-              <SelectTrigger className="w-[80px] h-11 md:h-9 text-base md:text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {pageSizeOptions.map((size) => (
-                  <SelectItem key={size} value={size.toString()} className="text-base md:text-sm py-3 md:py-2">
-                    {size}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-      </div>
-
-      {/* Page navigation */}
+      {/* Page navigation - centered on mobile, center position on desktop */}
       {totalPages > 1 && (
         <nav
-          className="flex items-center gap-1"
+          className="flex items-center gap-0.5 @md:gap-1 bg-surface rounded-lg shadow-sm p-1.5 @md:p-1 border border-default order-1 @md:order-2"
           aria-label="Pagination navigation"
         >
-          {/* First page button */}
+          {/* First page button - hidden on mobile */}
           {showFirstLastButtons && (
             <Button
               data-slot="pagination-first"
@@ -259,13 +235,13 @@ export function Pagination({
               onClick={goToFirstPage}
               disabled={currentPage === 1 || loading}
               aria-label="Go to first page"
-              className="h-11 w-11 md:h-9 md:w-9"
+              className="hidden @md:flex h-9 w-9 hover:bg-[var(--brand-deep-current-100)]"
             >
-              <ChevronsLeft className="h-5 w-5 md:h-4 md:w-4" />
+              <ChevronsLeft className="h-4 w-4" />
             </Button>
           )}
 
-          {/* Previous page button */}
+          {/* Previous page button - 44px on mobile for touch targets */}
           <Button
             data-slot="pagination-prev"
             variant="ghost"
@@ -273,22 +249,22 @@ export function Pagination({
             onClick={goToPreviousPage}
             disabled={currentPage === 1 || loading}
             aria-label="Go to previous page"
-            className="h-11 w-11 md:h-9 md:w-9"
+            className="h-11 w-11 @md:h-9 @md:w-9 hover:bg-[var(--brand-deep-current-100)]"
           >
-            <ChevronLeft className="h-5 w-5 md:h-4 md:w-4" />
+            <ChevronLeft className="h-5 w-5 @md:h-4 @md:w-4" />
           </Button>
 
-          {/* Page numbers */}
-          <div className="flex items-center gap-1">
+          {/* Page numbers - 44px touch targets on mobile */}
+          <div className="flex items-center gap-0.5">
             {pageNumbers.map((page) => {
               if (page === "ellipsis-start" || page === "ellipsis-end") {
                 return (
                   <span
                     key={page}
-                    className="flex h-11 w-11 md:h-9 md:w-9 items-center justify-center text-secondary"
+                    className="flex h-11 w-6 @md:h-9 @md:w-9 items-center justify-center text-secondary"
                     aria-hidden="true"
                   >
-                    <MoreHorizontal className="h-5 w-5 md:h-4 md:w-4" />
+                    <MoreHorizontal className="h-4 w-4" />
                   </span>
                 )
               }
@@ -306,8 +282,9 @@ export function Pagination({
                   aria-label={`Go to page ${page}`}
                   aria-current={isCurrentPage ? "page" : undefined}
                   className={cn(
-                    "h-11 w-11 md:h-9 md:w-9 font-medium text-base md:text-sm",
-                    isCurrentPage && "pointer-events-none"
+                    "h-11 w-10 @md:h-9 @md:w-9 font-medium text-base @md:text-sm",
+                    isCurrentPage && "pointer-events-none",
+                    !isCurrentPage && "hover:bg-[var(--brand-deep-current-100)]"
                   )}
                 >
                   {page}
@@ -316,7 +293,7 @@ export function Pagination({
             })}
           </div>
 
-          {/* Next page button */}
+          {/* Next page button - 44px on mobile for touch targets */}
           <Button
             data-slot="pagination-next"
             variant="ghost"
@@ -324,12 +301,12 @@ export function Pagination({
             onClick={goToNextPage}
             disabled={currentPage === totalPages || loading}
             aria-label="Go to next page"
-            className="h-11 w-11 md:h-9 md:w-9"
+            className="h-11 w-11 @md:h-9 @md:w-9 hover:bg-[var(--brand-deep-current-100)]"
           >
-            <ChevronRight className="h-5 w-5 md:h-4 md:w-4" />
+            <ChevronRight className="h-5 w-5 @md:h-4 @md:w-4" />
           </Button>
 
-          {/* Last page button */}
+          {/* Last page button - hidden on mobile */}
           {showFirstLastButtons && (
             <Button
               data-slot="pagination-last"
@@ -338,12 +315,35 @@ export function Pagination({
               onClick={goToLastPage}
               disabled={currentPage === totalPages || loading}
               aria-label="Go to last page"
-              className="h-11 w-11 md:h-9 md:w-9"
+              className="hidden @md:flex h-9 w-9 hover:bg-[var(--brand-deep-current-100)]"
             >
-              <ChevronsRight className="h-5 w-5 md:h-4 md:w-4" />
+              <ChevronsRight className="h-4 w-4" />
             </Button>
           )}
         </nav>
+      )}
+
+      {/* Page size selector - hidden on mobile, right side on desktop */}
+      {showPageSizeSelector && onPageSizeChange && (
+        <div className="hidden @md:flex items-center gap-2 order-3">
+          <span className="text-sm text-secondary">Rows:</span>
+          <Select
+            value={pageSize.toString()}
+            onValueChange={(value) => onPageSizeChange(parseInt(value, 10))}
+            disabled={loading}
+          >
+            <SelectTrigger className="w-[70px] h-9 text-sm bg-linen border-default">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {pageSizeOptions.map((size) => (
+                <SelectItem key={size} value={size.toString()} className="text-sm py-2">
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       )}
     </div>
   )

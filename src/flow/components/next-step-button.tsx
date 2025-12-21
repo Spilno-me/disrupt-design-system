@@ -9,6 +9,7 @@
 
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { StepForward } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 // =============================================================================
@@ -16,30 +17,6 @@ import { cn } from '../../lib/utils'
 // =============================================================================
 
 export type NextStepSeverity = 'critical' | 'high' | 'medium' | 'low' | 'none'
-
-// =============================================================================
-// PLAY ICON COMPONENT
-// =============================================================================
-
-const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    width="18"
-    height="16"
-    viewBox="0 0 18 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    aria-hidden="true"
-  >
-    <path
-      d="M5.5 3.5L12.5 8L5.5 12.5V3.5Z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
 
 // =============================================================================
 // SEVERITY STYLING
@@ -61,7 +38,6 @@ const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
  * - text: Text/icon color (default state)
  * - hoverBg: Fill color on hover
  * - hoverText: Text color on hover fill
- * - accentLine: Bottom accent stripe
  */
 const severityClasses: Record<
   NextStepSeverity,
@@ -70,7 +46,6 @@ const severityClasses: Record<
     text: string
     hoverBg: string
     hoverText: string
-    accentLine: string
   }
 > = {
   critical: {
@@ -79,7 +54,6 @@ const severityClasses: Record<
     text: 'text-error',
     hoverBg: 'group-hover:bg-error',
     hoverText: 'group-hover:text-on-status',
-    accentLine: 'bg-error',
   },
   high: {
     // Light: aging-dark = ORANGE[600] (5.18:1) | Dark: aging = ORANGE[400] (5.85:1)
@@ -87,7 +61,6 @@ const severityClasses: Record<
     text: 'text-aging-dark dark:text-aging',
     hoverBg: 'group-hover:bg-aging-dark dark:group-hover:bg-aging',
     hoverText: 'group-hover:text-on-status',
-    accentLine: 'bg-aging-dark dark:bg-aging',
   },
   medium: {
     // Light: warning-dark = SUNRISE[700] (4.92:1) | Dark: warning = SUNRISE[400] (8.54:1)
@@ -95,7 +68,6 @@ const severityClasses: Record<
     text: 'text-warning-dark dark:text-warning',
     hoverBg: 'group-hover:bg-warning-dark dark:group-hover:bg-warning',
     hoverText: 'group-hover:text-on-status',
-    accentLine: 'bg-warning-dark dark:bg-warning',
   },
   low: {
     // Light: success-strong = HARBOR[700] (5.02:1) | Dark: success = HARBOR[400] (7.19:1)
@@ -103,7 +75,6 @@ const severityClasses: Record<
     text: 'text-success-strong dark:text-success',
     hoverBg: 'group-hover:bg-success-strong dark:group-hover:bg-success',
     hoverText: 'group-hover:text-on-status',
-    accentLine: 'bg-success-strong dark:bg-success',
   },
   none: {
     // Light: teal = DEEP_CURRENT[700] (7.02:1) | Dark: accent-strong = DEEP_CURRENT[400] (5.50:1)
@@ -111,7 +82,6 @@ const severityClasses: Record<
     text: 'text-teal dark:text-accent-strong',
     hoverBg: 'group-hover:bg-teal dark:group-hover:bg-accent-strong',
     hoverText: 'group-hover:text-on-status',
-    accentLine: 'bg-teal dark:bg-accent-strong',
   },
 }
 
@@ -247,19 +217,10 @@ const NextStepButton = React.forwardRef<HTMLButtonElement, NextStepButtonProps>(
               colors.hoverText
             )}
           >
-            <PlayIcon />
+            <StepForward className="size-4" />
           </span>
         </span>
 
-        {/* Bottom accent line */}
-        <span
-          data-slot="next-step-button-accent"
-          className={cn(
-            'absolute -bottom-1 left-0 right-0 h-0.5 rounded-full',
-            colors.accentLine
-          )}
-          aria-hidden="true"
-        />
       </button>
     )
   }

@@ -195,20 +195,6 @@ export const AllStates: Story = {
   name: 'All States',
   render: () => (
     <div className="space-y-12 pb-8">
-      {/* Anatomy Diagram */}
-      <div className="px-6 py-4 bg-muted-bg rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-primary">Component Anatomy</h3>
-        <div className="space-y-2 text-sm">
-          <p><code className="px-2 py-1 bg-surface rounded">data-slot="app-header"</code> - Main header container</p>
-          <p><code className="px-2 py-1 bg-surface rounded">data-slot="logo-container"</code> - Logo and tagline section</p>
-          <p><code className="px-2 py-1 bg-surface rounded">data-slot="notification-bell"</code> - Notification bell button</p>
-          <p><code className="px-2 py-1 bg-surface rounded">data-slot="notification-badge"</code> - Badge showing count</p>
-          <p><code className="px-2 py-1 bg-surface rounded">data-slot="user-avatar"</code> - User avatar</p>
-          <p><code className="px-2 py-1 bg-surface rounded">data-slot="user-menu-trigger"</code> - User menu trigger button</p>
-          <p><code className="px-2 py-1 bg-surface rounded">data-slot="user-menu-content"</code> - User menu dropdown</p>
-        </div>
-      </div>
-
       {/* All Products */}
       <div>
         <h3 className="text-lg font-semibold mb-4 px-4 text-primary">Product Variants</h3>

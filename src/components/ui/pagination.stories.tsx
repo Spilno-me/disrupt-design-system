@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
 import {
-  ORGANISM_META,
-  organismDescription,
+  MOLECULE_META,
+  moleculeDescription,
 } from '@/stories/_infrastructure'
+import { IPhoneFrame, IPadFrame } from '@/stories/_infrastructure/device-frames'
 import { Pagination } from './Pagination'
 
 // =============================================================================
@@ -13,12 +14,12 @@ import { Pagination } from './Pagination'
 const meta: Meta<typeof Pagination> = {
   title: 'Shared/Data/Pagination',
   component: Pagination,
-  ...ORGANISM_META,
+  ...MOLECULE_META,
   parameters: {
-    ...ORGANISM_META.parameters,
+    ...MOLECULE_META.parameters,
     docs: {
       description: {
-        component: organismDescription(
+        component: moleculeDescription(
           `Comprehensive pagination component with smart ellipsis, page size selector, and keyboard accessibility.
 
 **Features:**
@@ -114,161 +115,51 @@ export const Minimal: Story = {
 }
 
 /**
- * Visual reference showing all states and configurations.
- * Use this as a reference for testing and visual regression.
+ * Visual reference showing responsive variants.
+ * Standard pattern: Mobile (iPhone 16 Pro), Tablet (iPad Pro 11")
  */
 export const AllStates: Story = {
   render: function AllStatesExample() {
-    const [page1, setPage1] = useState(1)
-    const [page2, setPage2] = useState(5)
-    const [page3, setPage3] = useState(50)
-    const [pageSize, setPageSize] = useState(10)
+    const [mobilePage, setMobilePage] = useState(5)
+    const [mobilePageSize, setMobilePageSize] = useState(10)
+    const [tabletPage, setTabletPage] = useState(5)
+    const [tabletPageSize, setTabletPageSize] = useState(10)
 
     return (
-      <div className="flex flex-col gap-12 w-full max-w-4xl">
-        {/* Anatomy */}
+      <div className="flex flex-col gap-16 w-full items-start">
+        {/* Mobile - iPhone 16 Pro */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">Anatomy</h3>
-          <div className="space-y-2 text-sm text-secondary mb-4">
-            <p>Component type: MOLECULE</p>
-            <p>Composed of: Button, Select components</p>
-            <p>Testing: Use data-slot attributes for targeting elements</p>
-          </div>
+          <h3 className="text-lg font-semibold mb-2">Mobile</h3>
+          <p className="text-sm text-secondary mb-4">iPhone 16 Pro (402×874) • 44px touch targets • 5 page buttons max</p>
+          <IPhoneFrame model="iphone16pro">
+            <div className="flex-1 flex flex-col justify-end px-4 pb-8 bg-page">
+              <Pagination
+                currentPage={mobilePage}
+                totalItems={200}
+                pageSize={mobilePageSize}
+                onPageChange={setMobilePage}
+                onPageSizeChange={setMobilePageSize}
+                maxPageButtons={5}
+              />
+            </div>
+          </IPhoneFrame>
         </div>
 
-        {/* First Page */}
+        {/* Tablet - iPad Pro 11" */}
         <div>
-          <h3 className="text-lg font-semibold mb-4">First Page (Previous/First disabled)</h3>
-          <Pagination
-            currentPage={page1}
-            totalItems={100}
-            pageSize={pageSize}
-            onPageChange={setPage1}
-            onPageSizeChange={setPageSize}
-          />
-        </div>
-
-        {/* Middle Page */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Middle Page (All buttons enabled)</h3>
-          <Pagination
-            currentPage={page2}
-            totalItems={100}
-            pageSize={pageSize}
-            onPageChange={setPage2}
-            onPageSizeChange={setPageSize}
-          />
-        </div>
-
-        {/* Last Page */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Last Page (Next/Last disabled)</h3>
-          <Pagination
-            currentPage={10}
-            totalItems={100}
-            pageSize={pageSize}
-            onPageChange={() => {}}
-            onPageSizeChange={setPageSize}
-          />
-        </div>
-
-        {/* Many Pages with Ellipsis */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Many Pages (Smart ellipsis)</h3>
-          <Pagination
-            currentPage={page3}
-            totalItems={1000}
-            pageSize={10}
-            onPageChange={setPage3}
-            onPageSizeChange={setPageSize}
-          />
-        </div>
-
-        {/* Few Pages */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Few Pages (No ellipsis)</h3>
-          <Pagination
-            currentPage={2}
-            totalItems={35}
-            pageSize={10}
-            onPageChange={() => {}}
-          />
-        </div>
-
-        {/* Loading State */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Loading State (All buttons disabled)</h3>
-          <Pagination
-            currentPage={5}
-            totalItems={100}
-            pageSize={10}
-            onPageChange={() => {}}
-            onPageSizeChange={setPageSize}
-            loading
-          />
-        </div>
-
-        {/* Without Page Size Selector */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Without Page Size Selector</h3>
-          <Pagination
-            currentPage={3}
-            totalItems={100}
-            pageSize={10}
-            onPageChange={() => {}}
-            showPageSizeSelector={false}
-          />
-        </div>
-
-        {/* Without Results Text */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Without Results Text</h3>
-          <Pagination
-            currentPage={3}
-            totalItems={100}
-            pageSize={10}
-            onPageChange={() => {}}
-            onPageSizeChange={setPageSize}
-            showResultsText={false}
-          />
-        </div>
-
-        {/* Without First/Last Buttons */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Without First/Last Buttons</h3>
-          <Pagination
-            currentPage={5}
-            totalItems={100}
-            pageSize={10}
-            onPageChange={() => {}}
-            onPageSizeChange={setPageSize}
-            showFirstLastButtons={false}
-          />
-        </div>
-
-        {/* Custom Results Text */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Custom Results Text</h3>
-          <Pagination
-            currentPage={1}
-            totalItems={156}
-            pageSize={10}
-            onPageChange={() => {}}
-            onPageSizeChange={setPageSize}
-            resultsTextFormat={(start, end, total) =>
-              `Displaying items ${start}-${end} of ${total} total`
-            }
-          />
-        </div>
-
-        {/* Keyboard Navigation Reference */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Keyboard Navigation</h3>
-          <div className="space-y-2 text-sm text-secondary">
-            <p><kbd className="px-2 py-1 bg-surface rounded text-xs border">Tab</kbd> - Navigate between buttons</p>
-            <p><kbd className="px-2 py-1 bg-surface rounded text-xs border">Enter</kbd> / <kbd className="px-2 py-1 bg-surface rounded text-xs border">Space</kbd> - Activate focused button</p>
-            <p><kbd className="px-2 py-1 bg-surface rounded text-xs border">Shift + Tab</kbd> - Navigate backwards</p>
-          </div>
+          <h3 className="text-lg font-semibold mb-2">Tablet</h3>
+          <p className="text-sm text-secondary mb-4">iPad Pro 11" landscape (1194×834)</p>
+          <IPadFrame model="ipadPro11" orientation="landscape">
+            <div className="flex-1 flex flex-col justify-end px-8 pb-10 bg-page">
+              <Pagination
+                currentPage={tabletPage}
+                totalItems={200}
+                pageSize={tabletPageSize}
+                onPageChange={setTabletPage}
+                onPageSizeChange={setTabletPageSize}
+              />
+            </div>
+          </IPadFrame>
         </div>
       </div>
     )
