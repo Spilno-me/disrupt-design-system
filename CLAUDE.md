@@ -133,6 +133,7 @@ import { MobileNavButton } from '@dds/design-system/flow'
 | **Colors** | `.claude/color-matrix.json` |
 | **Contrast/WCAG** | `.claude/contrast-matrix.json` |
 | **Dark mode** | `.claude/dark-mode-mapping-rules.md` |
+| **Depth/Elevation** | `.claude/depth-layering-rules.md` |
 | **Spacing** | `.claude/spacing-rules.md` |
 | **Border radius** | `.claude/rounded-corners-rules.md` |
 | **Typography** | `.claude/typography-rules.md` |
