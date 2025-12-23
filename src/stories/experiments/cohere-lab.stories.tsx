@@ -856,83 +856,84 @@ function ModelCard({
         </div>
       </div>
 
-      {/* Content */}
+      {/* Content - Using 4px grid spacing rhythm */}
       <div style={{ padding: '16px', fontFamily: FONT.sans }}>
+        {/* Title + Subtitle group */}
         <h4 style={{
           margin: 0,
           fontSize: '15px',
           fontWeight: 600,
           color: COHERE.text.primary,
           lineHeight: 1.3,
+          minHeight: '40px', // Reserve 2 lines (15px × 1.3 × 2 ≈ 40px) for consistent card heights
         }}>
           {title}
         </h4>
         <p style={{
-          margin: '4px 0 0',
+          margin: '8px 0 0',  // tight (8px) - title↔subtitle
           fontSize: '12px',
           color: COHERE.text.muted,
         }}>
           {subtitle}
         </p>
 
-        {/* Model ID */}
+        {/* Model ID - base spacing (16px) from title group */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '4px',
-          marginTop: '12px',
+          gap: '4px',        // micro (4px) - icon↔text
+          marginTop: '16px', // base (16px) - between sections
           fontSize: '12px',
           color: COHERE.text.secondary,
         }}>
           Model ID <Lock size={10} />
         </div>
 
-        {/* Status/Action */}
-        {(status || action) && (
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: '12px',
-          }}>
-            {status && (
-              <>
-                <span style={{ fontSize: '12px', color: COHERE.text.muted }}>
-                  Wake
-                </span>
-                <span style={{
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  background: status.state === 'asleep' ? COHERE.surfaceMuted : COHERE.sage[100],
-                  color: status.state === 'asleep' ? COHERE.text.muted : COHERE.sage[700],
-                  letterSpacing: '0.5px',
-                }}>
-                  {status.label}
-                </span>
-              </>
-            )}
-            {action && (
-              <>
-                <span style={{ fontSize: '12px', color: COHERE.text.muted }}>
-                  {action.label}
-                </span>
-                <span style={{
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  background: action.state === 'ready' ? COHERE.sage[100] : COHERE.surfaceMuted,
-                  color: action.state === 'ready' ? COHERE.sage[700] : COHERE.text.muted,
-                  letterSpacing: '0.5px',
-                }}>
-                  READY
-                </span>
-              </>
-            )}
-          </div>
-        )}
+        {/* Status/Action - base spacing (16px) from Model ID */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: '16px', // base (16px) - consistent rhythm
+          minHeight: '24px', // ensure consistent height even when empty
+        }}>
+          {status && (
+            <>
+              <span style={{ fontSize: '12px', color: COHERE.text.muted }}>
+                Wake
+              </span>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: 600,
+                padding: '4px 8px',
+                borderRadius: '4px',
+                background: status.state === 'asleep' ? COHERE.surfaceMuted : COHERE.sage[100],
+                color: status.state === 'asleep' ? COHERE.text.muted : COHERE.sage[700],
+                letterSpacing: '0.5px',
+              }}>
+                {status.label}
+              </span>
+            </>
+          )}
+          {action && (
+            <>
+              <span style={{ fontSize: '12px', color: COHERE.text.muted }}>
+                {action.label}
+              </span>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: 600,
+                padding: '4px 8px',
+                borderRadius: '4px',
+                background: action.state === 'ready' ? COHERE.sage[100] : COHERE.surfaceMuted,
+                color: action.state === 'ready' ? COHERE.sage[700] : COHERE.text.muted,
+                letterSpacing: '0.5px',
+              }}>
+                READY
+              </span>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )
