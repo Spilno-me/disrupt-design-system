@@ -41,10 +41,13 @@ const appCardVariants = cva(
   {
     variants: {
       variant: {
-        // Default card - white background with subtle border and padding
-        default: "bg-surface text-primary gap-6 border border-default py-6",
+        // Default card - elevated background per DAPS (Card on page = bg-elevated)
+        // Closer = Lighter: Cards float above page with lighter background
+        default: "bg-elevated text-primary gap-6 border border-default py-6",
         // Elevated card - gradient background matching AppHeader for emphasized content
         elevated: "text-primary gap-6 border border-subtle p-6",
+        // Surface card - one level deeper, for nested content or sidebars
+        surface: "bg-surface text-primary gap-6 border border-default py-6",
         // Flat card - minimal styling, no border
         flat: "bg-surface text-primary gap-4 p-4",
       },

@@ -14,24 +14,30 @@ import {
   Save,
 } from 'lucide-react'
 
-import { SplitButton } from './split-button'
+import { SplitButton } from './SplitButton'
 
 const meta: Meta<typeof SplitButton> = {
-  title: 'Components/SplitButton',
+  title: 'Shared/SplitButton',
   component: SplitButton,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component: `
-Split Button with diagonal divider design. Features a main action area and a separate icon section.
+Split Button with diagonal divider design inspired by Cohere/Pentagram. Features a main action area with a diagonal clip-path and a separate icon section.
+
+## Design
+- **Diagonal cut**: Main section clips diagonally into the icon section
+- **Icon color**: Automatically matches the main section's accent color
+- **Consistent corners**: All sizes use \`rounded-xl\` (12px)
+- **Full width**: Main section grows, icon section stays fixed
 
 ## Features
 - **5 variants**: primary, secondary, destructive, success, outline
-- **3 sizes**: sm, default, lg
+- **3 sizes**: sm, default, lg (padding/font only, same radius)
 - **Custom icons**: Pass any Lucide icon
 - **Separate icon action**: Optional \`onIconClick\` for split functionality
-- **Full width mode**: Responsive layouts
+- **Full width mode**: Text section expands, icon stays fixed
 
 ## Usage
 \`\`\`tsx
@@ -147,7 +153,7 @@ export const Sizes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Three size options: sm, default, and lg.',
+        story: 'Three size options: sm, default, and lg. All sizes use consistent `rounded-xl` corners - only padding and font size change.',
       },
     },
   },
@@ -200,7 +206,7 @@ export const FullWidth: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Full width mode for responsive layouts.',
+        story: 'Full width mode for responsive layouts. The main text section expands (`flex-1`) while the icon section stays fixed width (`shrink-0`).',
       },
     },
   },

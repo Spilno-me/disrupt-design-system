@@ -90,6 +90,19 @@ export interface AppLayoutShellProps extends ProductConfig {
   onSearchFiltersChange?: (filters: FilterState) => void
   /** Show loading state for search */
   isSearching?: boolean
+  /**
+   * Custom mobile navigation component (replaces default BottomNav)
+   * Use this for Flow app with FlowMobileNav that has the incident reporting button
+   * @example
+   * customMobileNav={
+   *   <FlowMobileNav
+   *     activeItem="incidents"
+   *     onNavigate={(item) => setCurrentPage(item)}
+   *     onQuickAction={() => openIncidentForm()}
+   *   />
+   * }
+   */
+  customMobileNav?: ReactNode
 }
 
 // =============================================================================
@@ -194,6 +207,7 @@ export function AppLayoutShell({
   searchFilters = {},
   onSearchFiltersChange,
   isSearching = false,
+  customMobileNav,
 }: AppLayoutShellProps) {
   // Determine if we're in controlled mode
   const isControlled = controlledPageId !== undefined
@@ -290,12 +304,19 @@ export function AppLayoutShell({
         />
       </div>
 
+      {/* Desktop Footer - fixed at z-30, OUTSIDE content layer for glassmorphism to work (like header) */}
+      {showFooter && (
+        <div className="hidden md:fixed md:bottom-0 md:left-0 md:right-0 md:z-30 md:block">
+          <AppFooter compactOnMobile={false} variant={footerVariant} />
+        </div>
+      )}
+
       {/* Content layer - z-10 so header's backdrop-filter can blur this */}
       <div className="relative z-10 flex flex-col h-full">
         {/* Main Content Area */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar - hidden on mobile, has bg-page and pt-[55px] for header clearance */}
-          <div className="hidden md:block bg-page pt-[55px]">
+          {/* Sidebar - hidden on mobile, transparent to show grid blob, pt-[55px] for header clearance */}
+          <div className="hidden md:block pt-[55px]">
             <AppSidebar
               product={product}
               items={navItems}
@@ -308,9 +329,17 @@ export function AppLayoutShell({
             />
           </div>
 
-          {/* Page Content - pt-[55px] is INSIDE scroll area so content can scroll under header */}
-          <main className="flex-1 overflow-auto bg-page">
-            <div className="flex flex-col min-h-full pt-[55px]">
+          {/* Page Content - pt-[55px] for header, pb for fixed elements (nav/footer) */}
+          {/* Mobile: pb-[80px] for FlowMobileNav (~70px + safe area), Desktop: pb-[48px] for footer */}
+          {/* Transparent to show grid blob background - individual sections add their own bg as needed */}
+          <main className="flex-1 overflow-auto">
+            <div className={cn(
+              "flex flex-col min-h-full pt-[55px]",
+              // Mobile bottom padding when using custom mobile nav (FlowMobileNav is ~70px + safe area)
+              customMobileNav && "pb-[88px] md:pb-[48px]",
+              // Default desktop footer padding
+              !customMobileNav && "md:pb-[48px]"
+            )}>
               {/* Search Bar inside page content */}
               {showSearch && (
                 <div className="border-b border-default bg-surface px-4 py-3 sticky top-0 z-20">
@@ -330,33 +359,35 @@ export function AppLayoutShell({
                 </div>
               )}
               <div className="flex-1">{pageContent}</div>
-              {/* Mobile footer - appears at bottom of scrollable content, above BottomNav */}
-              {showFooter && !useMobileDrawer && (
-                <div className="md:hidden pb-16">
-                  <AppFooter compactOnMobile variant={footerVariant} />
-                </div>
-              )}
+              {/*
+                Mobile footer REMOVED per UX best practices:
+                - Bottom nav should be THE bottom element (Fitts' Law - thumb zone)
+                - Branding/copyright wastes valuable mobile real estate
+                - Move "Made with ❤️" to Settings > About screen instead
+                See: https://blog.appmysite.com/bottom-navigation-bar-in-mobile-apps-heres-all-you-need-to-know/
+              */}
             </div>
           </main>
         </div>
 
-        {/* Desktop Footer - fixed at bottom with bg-page */}
-        {showFooter && (
-          <div className="hidden md:block bg-page">
-            <AppFooter compactOnMobile={false} variant={footerVariant} />
-          </div>
-        )}
-
         {/* Mobile Bottom Navigation (unless using MobileNav drawer) */}
         {!useMobileDrawer && (
-          <BottomNav
-            items={bottomNavItems}
-            activeItemId={currentPage}
-            onNavigate={handleBottomNavigate}
-            maxVisibleItems={maxBottomNavItems}
-            showHelpItem={showHelpItem}
-            onHelpClick={onHelpClick}
-          />
+          customMobileNav ? (
+            // Custom mobile nav (e.g., FlowMobileNav with incident reporting button)
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+              {customMobileNav}
+            </div>
+          ) : (
+            // Default BottomNav
+            <BottomNav
+              items={bottomNavItems}
+              activeItemId={currentPage}
+              onNavigate={handleBottomNavigate}
+              maxVisibleItems={maxBottomNavItems}
+              showHelpItem={showHelpItem}
+              onHelpClick={onHelpClick}
+            />
+          )
         )}
       </div>
     </div>

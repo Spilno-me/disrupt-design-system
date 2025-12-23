@@ -6,8 +6,9 @@
  *
  * @description
  * A sophisticated sidebar navigation component that features:
- * - Auto-collapse on click outside
- * - Hover-to-expand behavior (150ms delay)
+ * - Click-to-expand behavior (default, configurable)
+ * - Optional hover-to-expand with 150ms delay (disabled by default)
+ * - Auto-collapse on click outside (configurable)
  * - Nested navigation groups with collapsible sections
  * - Active state tracking with visual indicators
  * - Badge support for notification counts
@@ -82,12 +83,15 @@
  * - Hover expand delay: 150ms
  * - Background: semi-transparent with backdrop blur
  * - Nav item height: 41px (consistent touch target)
- * - Border radius: xs (4px) for nav items
+ * - Border radius: lg (8px) for nav items
  * - Spacing: gap-1 (4px) between nav items, gap-2 (8px) for icon-to-text
+ * - Animated indicator: Optional sliding active state indicator (default: true)
+ *   When enabled, active state slides between items with spring animation.
+ *   When disabled, uses standard CSS active background on each item.
  */
 
 import * as React from 'react'
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, createContext, useContext } from 'react'
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 import { motion } from 'motion/react'
 import { ChevronDown, CircleHelp } from 'lucide-react'
@@ -121,6 +125,14 @@ export interface AppSidebarProps extends Omit<React.HTMLAttributes<HTMLElement>,
   showHelpItem?: boolean
   /** Callback when help item is clicked */
   onHelpClick?: () => void
+  /** Enable expand on hover (default: false) */
+  expandOnHover?: boolean
+  /** Enable expand on click (default: true) */
+  expandOnClick?: boolean
+  /** Collapse when clicking outside (default: true) */
+  collapseOnClickOutside?: boolean
+  /** Enable animated sliding indicator for active state (default: true) */
+  animatedIndicator?: boolean
 }
 
 // =============================================================================
@@ -131,6 +143,29 @@ const COLLAPSED_WIDTH = 63
 const EXPANDED_WIDTH = 255
 const TRANSITION_DURATION = 0.25
 const HOVER_EXPAND_DELAY = 150
+const NAV_ITEM_HEIGHT = 41
+
+// Context for tracking nav item positions
+interface NavItemPosition {
+  top: number
+  left: number
+  width: number
+  height: number
+}
+
+interface NavItemRegistryContextType {
+  registerItem: (id: string, element: HTMLElement | null) => void
+  getPosition: (id: string) => NavItemPosition | null
+  activeItemId?: string
+}
+
+const NavItemRegistryContext = createContext<NavItemRegistryContextType | null>(null)
+
+function useNavItemRegistry() {
+  const context = useContext(NavItemRegistryContext)
+  if (!context) throw new Error('useNavItemRegistry must be used within NavItemRegistryProvider')
+  return context
+}
 
 // =============================================================================
 // SUB-COMPONENTS
@@ -142,23 +177,45 @@ interface NavItemButtonProps {
   collapsed: boolean
   onClick: () => void
   isNested?: boolean
+  /** When true, active bg is handled by sliding indicator */
+  animatedIndicator?: boolean
 }
 
-function NavItemButton({ item, isActive, collapsed, onClick, isNested = false }: NavItemButtonProps) {
+function NavItemButton({ item, isActive, collapsed, onClick, isNested = false, animatedIndicator = true }: NavItemButtonProps) {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const registry = useContext(NavItemRegistryContext)
+
+  useEffect(() => {
+    if (registry) {
+      registry.registerItem(item.id, buttonRef.current)
+    }
+  }, [item.id, registry])
+
+  // Show active background only when NOT using animated indicator (or when collapsed)
+  const showActiveBackground = isActive && (!animatedIndicator || collapsed)
+
   return (
     <button
-      onClick={onClick}
+      type="button"
+      ref={buttonRef}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick()
+      }}
       disabled={item.disabled}
       className={cn(
-        'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
+        'relative z-[1] w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-        isActive && 'bg-surface-active',
-        !isActive && !item.disabled && 'hover:bg-surface-hover',
+        !item.disabled && 'hover:bg-surface-hover',
         item.disabled && 'opacity-50 cursor-not-allowed',
-        isNested && !collapsed && 'pl-9'
+        // When collapsed, center icon; when expanded, use gap and padding for label
+        collapsed ? 'justify-center' : 'gap-2 px-3',
+        isNested && !collapsed && 'pl-8',
+        showActiveBackground && 'bg-surface-active'
       )}
       aria-current={isActive ? 'page' : undefined}
       data-slot="nav-item-button"
+      data-item-id={item.id}
     >
       <NavIcon
         icon={item.icon}
@@ -190,6 +247,7 @@ interface NavGroupProps {
   onNavigate: (item: NavItem) => void
   expandedGroups: Set<string>
   toggleGroup: (id: string) => void
+  animatedIndicator?: boolean
 }
 
 function NavGroup({
@@ -199,6 +257,7 @@ function NavGroup({
   onNavigate,
   expandedGroups,
   toggleGroup,
+  animatedIndicator = true,
 }: NavGroupProps) {
   const isOpen = expandedGroups.has(item.id)
   const groupActive = isGroupActive(item, activeItemId)
@@ -214,13 +273,16 @@ function NavGroup({
     >
       <CollapsiblePrimitive.Trigger asChild>
         <button
+          type="button"
           className={cn(
-            'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
+            'relative z-[1] w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-            groupActive && 'bg-surface-active',
-            !groupActive && 'hover:bg-surface-hover'
+            'hover:bg-surface-hover',
+            // When collapsed, center icon; when expanded, use gap and padding for label
+            collapsed ? 'justify-center' : 'gap-2 px-3'
           )}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             if (collapsed) onNavigate(item)
           }}
           data-slot="nav-group-trigger"
@@ -271,6 +333,7 @@ function NavGroup({
                 collapsed={collapsed}
                 onClick={() => onNavigate(child)}
                 isNested
+                animatedIndicator={animatedIndicator}
               />
             ))}
           </div>
@@ -284,11 +347,17 @@ NavGroup.displayName = 'AppSidebar.NavGroup'
 function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => void }) {
   return (
     <button
-      onClick={onClick}
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick?.()
+      }}
       className={cn(
-        'relative w-full h-[41px] min-h-[41px] flex items-center gap-2 px-4 rounded-xs',
+        'relative w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-        'hover:bg-surface-hover'
+        'hover:bg-surface-hover',
+        // When collapsed, center icon; when expanded, use gap and padding for label
+        collapsed ? 'justify-center' : 'gap-2 px-3'
       )}
       data-slot="help-item"
     >
@@ -322,15 +391,97 @@ export function AppSidebar({
   className,
   showHelpItem = true,
   onHelpClick,
+  expandOnHover = false,
+  expandOnClick = true,
+  collapseOnClickOutside = true,
+  animatedIndicator = true,
   ...props
 }: AppSidebarProps) {
   const sidebarRef = useRef<HTMLElement>(null)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const navContainerRef = useRef<HTMLDivElement>(null)
+  const itemRefsMap = useRef<Map<string, HTMLElement>>(new Map())
+  const [indicatorStyle, setIndicatorStyle] = useState<NavItemPosition | null>(null)
+  const [shouldAnimateIndicator, setShouldAnimateIndicator] = useState(false)
+  const prevCollapsedRef = useRef(collapsed)
+  const prevActiveItemRef = useRef(activeItemId)
 
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
     const parentId = activeItemId ? findParentGroupId(items, activeItemId) : undefined
     return parentId ? new Set([parentId]) : new Set()
   })
+
+  // Register nav items for sliding indicator
+  const registerItem = useCallback((id: string, element: HTMLElement | null) => {
+    if (element) {
+      itemRefsMap.current.set(id, element)
+    } else {
+      itemRefsMap.current.delete(id)
+    }
+  }, [])
+
+  const getPosition = useCallback((id: string) => {
+    const element = itemRefsMap.current.get(id)
+    if (!element || !navContainerRef.current) return null
+    const containerRect = navContainerRef.current.getBoundingClientRect()
+    const elementRect = element.getBoundingClientRect()
+    return {
+      top: elementRect.top - containerRect.top,
+      left: elementRect.left - containerRect.left,
+      width: elementRect.width,
+      height: elementRect.height,
+    }
+  }, [])
+
+  // Update indicator position
+  const updateIndicatorPosition = useCallback(() => {
+    if (activeItemId && !collapsed) {
+      const position = getPosition(activeItemId)
+      setIndicatorStyle(position)
+    } else {
+      setIndicatorStyle(null)
+    }
+  }, [activeItemId, collapsed, getPosition])
+
+  // Handle collapsed state changes - clear indicator during transition
+  useEffect(() => {
+    const wasCollapsed = prevCollapsedRef.current
+    prevCollapsedRef.current = collapsed
+
+    // If expanding from collapsed, disable animation for initial placement
+    if (wasCollapsed && !collapsed) {
+      setShouldAnimateIndicator(false)
+      setIndicatorStyle(null)
+    }
+    // If collapsing, just clear the indicator
+    if (!wasCollapsed && collapsed) {
+      setIndicatorStyle(null)
+    }
+  }, [collapsed])
+
+  // Update when active item changes
+  useEffect(() => {
+    const prevActiveItem = prevActiveItemRef.current
+    prevActiveItemRef.current = activeItemId
+
+    if (!collapsed) {
+      // Enable animation only when active item changes (user clicked different item)
+      if (prevActiveItem && prevActiveItem !== activeItemId) {
+        setShouldAnimateIndicator(true)
+      }
+      updateIndicatorPosition()
+    }
+  }, [activeItemId, collapsed, updateIndicatorPosition])
+
+  // Recalculate when expanded groups change (nested items appear/disappear)
+  useEffect(() => {
+    if (activeItemId && !collapsed) {
+      const timer = setTimeout(updateIndicatorPosition, 50)
+      return () => clearTimeout(timer)
+    }
+  }, [expandedGroups, activeItemId, collapsed, updateIndicatorPosition])
+
+  const registryValue = { registerItem, getPosition, activeItemId }
 
   const toggleGroup = useCallback((groupId: string) => {
     setExpandedGroups((prev) => {
@@ -348,13 +499,20 @@ export function AppSidebar({
     (item: NavItem) => {
       if (item.disabled) return
 
-      if (item.children && collapsed) {
+      // When collapsed, expand the sidebar
+      if (collapsed) {
         onCollapsedChange?.(false)
-        setExpandedGroups((prev) => new Set([...prev, item.id]))
-        return
+        // If it's a group, also expand that group
+        if (item.children) {
+          setExpandedGroups((prev) => new Set([...prev, item.id]))
+          return // Don't navigate for groups, just expand
+        }
       }
 
-      onNavigate?.(item)
+      // Navigate for non-group items (even from collapsed state)
+      if (!item.children) {
+        onNavigate?.(item)
+      }
     },
     [collapsed, onCollapsedChange, onNavigate]
   )
@@ -369,13 +527,13 @@ export function AppSidebar({
   }, [activeItemId, items])
 
   const handleMouseEnter = useCallback(() => {
-    if (collapsed) {
+    if (expandOnHover && collapsed) {
       if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
       hoverTimeoutRef.current = setTimeout(() => {
         onCollapsedChange?.(false)
       }, HOVER_EXPAND_DELAY)
     }
-  }, [collapsed, onCollapsedChange])
+  }, [expandOnHover, collapsed, onCollapsedChange])
 
   const handleMouseLeave = useCallback(() => {
     if (hoverTimeoutRef.current) {
@@ -384,7 +542,16 @@ export function AppSidebar({
     }
   }, [])
 
+  const handleSidebarClick = useCallback(() => {
+    if (expandOnClick && collapsed) {
+      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
+      onCollapsedChange?.(false)
+    }
+  }, [expandOnClick, collapsed, onCollapsedChange])
+
   useEffect(() => {
+    if (!collapseOnClickOutside) return
+
     const handleClickOutside = (event: MouseEvent) => {
       if (!collapsed && sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
         onCollapsedChange?.(true)
@@ -393,7 +560,7 @@ export function AppSidebar({
 
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [collapsed, onCollapsedChange])
+  }, [collapseOnClickOutside, collapsed, onCollapsedChange])
 
   useEffect(() => {
     return () => {
@@ -408,9 +575,11 @@ export function AppSidebar({
       initial={false}
       animate={{ width: collapsed ? COLLAPSED_WIDTH : EXPANDED_WIDTH }}
       transition={{ duration: TRANSITION_DURATION, ease: 'easeInOut' }}
+      onAnimationComplete={updateIndicatorPosition}
       aria-label={`${product} navigation`}
       data-collapsed={collapsed}
       data-slot="app-sidebar"
+      onClick={handleSidebarClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       {...props}
@@ -426,33 +595,64 @@ export function AppSidebar({
       <div className="absolute right-0 top-0 bottom-[100px] w-px pointer-events-none bg-gradient-to-b from-surface via-default to-transparent" data-slot="border" />
 
       {/* Navigation items */}
-      <div className="relative flex-1 flex flex-col gap-1 py-3 overflow-y-auto overflow-x-hidden" data-slot="nav-items">
-        {items.map((item) => {
-          if (item.children && item.children.length > 0) {
+      <NavItemRegistryContext.Provider value={registryValue}>
+        <div
+          ref={navContainerRef}
+          className="relative z-10 flex-1 flex flex-col gap-1 py-3 overflow-y-auto overflow-x-hidden"
+          data-slot="nav-items"
+        >
+          {/* Sliding active indicator - only shown when expanded and animatedIndicator is enabled */}
+          {animatedIndicator && indicatorStyle && !collapsed && (
+            <motion.div
+              className="absolute bg-surface-active rounded-lg pointer-events-none"
+              initial={false}
+              animate={{
+                top: indicatorStyle.top,
+                left: indicatorStyle.left,
+                width: indicatorStyle.width,
+                height: indicatorStyle.height
+              }}
+              transition={shouldAnimateIndicator ? {
+                type: 'spring',
+                stiffness: 500,
+                damping: 35,
+                mass: 1
+              } : {
+                duration: 0
+              }}
+              data-slot="active-indicator"
+            />
+          )}
+
+          {items.map((item) => {
+            if (item.children && item.children.length > 0) {
+              return (
+                <NavGroup
+                  key={item.id}
+                  item={item}
+                  activeItemId={activeItemId}
+                  collapsed={collapsed}
+                  onNavigate={handleNavigate}
+                  expandedGroups={expandedGroups}
+                  toggleGroup={toggleGroup}
+                  animatedIndicator={animatedIndicator}
+                />
+              )
+            }
+
             return (
-              <NavGroup
+              <NavItemButton
                 key={item.id}
                 item={item}
-                activeItemId={activeItemId}
+                isActive={item.id === activeItemId}
                 collapsed={collapsed}
-                onNavigate={handleNavigate}
-                expandedGroups={expandedGroups}
-                toggleGroup={toggleGroup}
+                onClick={() => handleNavigate(item)}
+                animatedIndicator={animatedIndicator}
               />
-            )
-          }
-
-          return (
-            <NavItemButton
-              key={item.id}
-              item={item}
-              isActive={item.id === activeItemId}
-              collapsed={collapsed}
-              onClick={() => handleNavigate(item)}
-            />
           )
         })}
-      </div>
+        </div>
+      </NavItemRegistryContext.Provider>
 
       {/* Help item at bottom - floats over transparent area */}
       {showHelpItem && (

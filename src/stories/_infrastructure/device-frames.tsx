@@ -4,28 +4,86 @@
  * Realistic device frames for showcasing mobile components in Storybook.
  * These provide proper context for mobile-first component development.
  *
- * Features:
- * - All iPhone models from Storybook viewport presets
- * - iPad/tablet support
+ * ## Features
+ * - All iPhone models from Storybook viewport presets (iPhone 5 → iPhone 17)
+ * - iPad/tablet support (iPad, iPad Air, iPad Pro 11", iPad Pro 12.9", iPad Mini)
+ * - Safari browser chrome for PWA/mobile web previews
  * - Automatic viewport detection via useDeviceFromViewport hook
  * - Accurate device specifications (dimensions, corner radius, safe areas)
  *
- * @example
- * import { IPhoneFrame, useDeviceFromViewport } from '@/stories/_infrastructure'
+ * ## Safari iOS 18 Browser Chrome Measurements (2025)
  *
- * // Auto-detect from Storybook viewport
- * const { model, deviceType } = useDeviceFromViewport()
- * <IPhoneFrame model={model}>
+ * Research-based measurements for accurate Safari browser simulation:
+ *
+ * | Component              | Height (pt) | Notes                                    |
+ * |------------------------|-------------|------------------------------------------|
+ * | Status Bar             | 47-59pt     | 59pt for Dynamic Island (iPhone 14 Pro+)|
+ * | Safari Address Bar     | 50pt        | Compact mode (iOS 15+)                   |
+ * | Safari Bottom Toolbar  | 44pt        | Back, Forward, Share, Bookmarks, Tabs    |
+ * | Home Indicator         | 34pt        | Safe area bottom inset                   |
+ *
+ * ### iPhone 16 Pro Max Safari Chrome Total:
+ * - Top: 59pt (status) + 50pt (address bar) = 109pt
+ * - Bottom: 44pt (toolbar) + 34pt (home indicator) = 78pt
+ * - Total: 187pt of browser chrome
+ *
+ * ### Sources:
+ * - https://samuelkraft.com/blog/safari-15-bottom-tab-bars-web
+ * - https://benfrain.com/the-ios-safari-menu-bar-is-hostile-to-web-apps-discuss/
+ * - https://www.sabhya.dev/handling-ios-safari-toolbar-for-full-height-web-content
+ * - https://developer.apple.com/design/human-interface-guidelines/layout
+ *
+ * ## Components
+ *
+ * ### IPhoneFrame
+ * Visual wrapper for components - does NOT trigger CSS media queries.
+ * Use for visual presentation only.
+ *
+ * ### IPhoneMobileFrame
+ * Uses iframe at actual device dimensions - CSS media queries WORK!
+ * Use for testing responsive behavior in stories.
+ *
+ * @example Native app style (no browser chrome)
+ * ```tsx
+ * <IPhoneMobileFrame model="iphone16promax" storyId="my-story--default" />
+ * ```
+ *
+ * @example PWA/Mobile web with Safari browser chrome
+ * ```tsx
+ * <IPhoneMobileFrame
+ *   model="iphone16promax"
+ *   storyId="flow-dashboard--default"
+ *   showBrowser
+ *   browserUrl="flow.disrupt.app"
+ * />
+ * ```
+ *
+ * @example Visual wrapper only (CSS won't trigger)
+ * ```tsx
+ * <IPhoneFrame model="iphone15promax">
  *   <YourMobileComponent />
  * </IPhoneFrame>
- *
- * // Or use specific model
- * <IPhoneFrame model="iphone14promax">
- *   <YourMobileComponent />
- * </IPhoneFrame>
+ * ```
  */
 
 import * as React from 'react'
+
+// =============================================================================
+// SHARED STATUS BAR DEFAULTS (Single source of truth)
+// =============================================================================
+
+/**
+ * Default values for status bar display across all device frames.
+ * Update these to change the appearance in all iPhone/iPad frames.
+ */
+export const STATUS_BAR_DEFAULTS = {
+  /** Time displayed in status bar */
+  time: '4:20',
+  /** Battery percentage (0-100) */
+  batteryLevel: 100,
+  /** Show charging indicator (green battery + lightning bolt) */
+  isCharging: true,
+} as const
 
 // =============================================================================
 // IPHONE DEVICE SPECIFICATIONS
@@ -642,21 +700,28 @@ interface StatusBarProps {
   showWifi?: boolean
   /** Light or dark mode (default: "dark" for visibility on dark bg) */
   mode?: 'light' | 'dark'
+  /** Show battery as charging with lightning bolt (default: true) */
+  isCharging?: boolean
 }
 
 /**
  * iOS-style status bar with time, cellular, wifi, and battery
  */
 const StatusBar: React.FC<StatusBarProps> = ({
-  time = '9:41',
-  batteryLevel = 100,
+  time = STATUS_BAR_DEFAULTS.time,
+  batteryLevel = STATUS_BAR_DEFAULTS.batteryLevel,
   showCellular = true,
   showWifi = true,
   mode = 'dark',
+  isCharging = STATUS_BAR_DEFAULTS.isCharging,
 }) => {
   const textColor = mode === 'dark' ? 'text-inverse' : 'text-primary'
   const iconColor = mode === 'dark' ? 'text-inverse' : 'text-primary'
   const batteryBorderColor = mode === 'dark' ? 'border-inverse/60' : 'border-primary/60'
+
+  // iOS shows green battery when charging or above 80%
+  const batteryColor = isCharging || batteryLevel >= 80 ? 'bg-green-500' :
+                       batteryLevel <= 20 ? 'bg-red-500' : 'bg-white'
 
   return (
     <div className="flex items-center justify-between w-full">
@@ -679,13 +744,24 @@ const StatusBar: React.FC<StatusBarProps> = ({
           </svg>
         )}
 
-        {/* Battery */}
+        {/* Battery with charging indicator */}
         <div className="flex items-center">
           <div className={`w-6 h-3 border ${batteryBorderColor} rounded-sm relative overflow-hidden`}>
+            {/* Battery fill - green when charging */}
             <div
-              className="absolute inset-0.5 bg-harbor-500 rounded-[1px] transition-all"
+              className={`absolute inset-0.5 ${batteryColor} rounded-[1px] transition-all`}
               style={{ width: `${Math.min(100, Math.max(0, batteryLevel))}%` }}
             />
+            {/* Lightning bolt for charging */}
+            {isCharging && (
+              <svg
+                className="absolute inset-0 w-full h-full text-black/70"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66l.1-.16L12 5h1l-1 7h3.5c.58 0 .57.32.38.66l-.1.16L11 21z" />
+              </svg>
+            )}
           </div>
           {/* Battery cap */}
           <div className={`w-0.5 h-1.5 ${mode === 'dark' ? 'bg-inverse/40' : 'bg-primary/40'} rounded-r-sm ml-px`} />
@@ -775,6 +851,392 @@ const Notch: React.FC<NotchProps> = ({
 )
 
 // =============================================================================
+// IFRAME MOBILE FRAME (for real CSS media query testing)
+// =============================================================================
+
+export interface IPhoneMobileFrameProps {
+  /** iPhone model to simulate (default: "iphone16promax") */
+  model?: IPhoneModel
+  /** Storybook story ID to embed (e.g., "flow-dashboard--default") */
+  storyId?: string
+  /** Content to render (alternative to storyId for simple content) */
+  children?: React.ReactNode
+  /** Scale factor for the frame (default: 0.7 to fit in viewport) */
+  scale?: number
+  /** Additional className for the outer container */
+  className?: string
+  /** Show Safari browser chrome (address bar + toolbar) */
+  showBrowser?: boolean
+  /** URL to display in Safari address bar */
+  browserUrl?: string
+}
+
+/**
+ * IPhoneMobileFrame - iPhone frame with REAL viewport via iframe
+ *
+ * Uses an actual iframe to render content, making CSS media queries work correctly.
+ * The iframe has the actual device dimensions, triggering responsive breakpoints.
+ *
+ * ## Content Modes
+ * 1. **storyId** - Embeds another Storybook story in an iframe (CSS works!)
+ * 2. **children** - Renders children directly (CSS won't work, visual only)
+ *
+ * ## Browser Chrome (showBrowser prop)
+ * When `showBrowser={true}`, renders Safari iOS 18 browser chrome:
+ *
+ * | Element           | Height | Description                          |
+ * |-------------------|--------|--------------------------------------|
+ * | Status Bar        | 59pt   | Time, signal, battery (Dynamic Island)|
+ * | Address Bar       | 50pt   | Compact URL bar with lock icon       |
+ * | Bottom Toolbar    | 44pt   | Back, Forward, Share, Bookmarks, Tabs|
+ * | Home Indicator    | 34pt   | Swipe-up gesture area                |
+ *
+ * Total Safari chrome: 187pt (109pt top + 78pt bottom)
+ *
+ * @example Native app (no browser chrome)
+ * ```tsx
+ * <IPhoneMobileFrame
+ *   model="iphone16promax"
+ *   storyId="flow-dashboard--default"
+ * />
+ * ```
+ *
+ * @example PWA with Safari browser chrome
+ * ```tsx
+ * <IPhoneMobileFrame
+ *   model="iphone16promax"
+ *   storyId="flow-dashboard--default"
+ *   showBrowser
+ *   browserUrl="flow.disrupt.app"
+ * />
+ * ```
+ *
+ * @example Direct children (visual only)
+ * ```tsx
+ * <IPhoneMobileFrame>
+ *   <YourMobileApp />
+ * </IPhoneMobileFrame>
+ * ```
+ */
+export const IPhoneMobileFrame: React.FC<IPhoneMobileFrameProps> = ({
+  model = 'iphone16promax',
+  storyId,
+  children,
+  scale = 0.7,
+  className,
+  showBrowser = false,
+  browserUrl = 'flow.disrupt.app',
+}) => {
+  const specs = IPHONE_SPECS[model]
+  const frameColor = '#2a2a2a' // Dark titanium frame
+  const bezelWidth = 10
+
+  const contentWidth = specs.width
+  const contentHeight = specs.height
+
+  // Safari browser chrome heights (iOS 18 compact style)
+  // Research: Address bar ~50pt, Bottom toolbar ~44pt
+  // Sources: https://samuelkraft.com/blog/safari-15-bottom-tab-bars-web
+  //          https://benfrain.com/the-ios-safari-menu-bar-is-hostile-to-web-apps-discuss/
+  const SAFARI_ADDRESS_BAR_HEIGHT = 50 // Compact address bar (iOS 15+)
+  const SAFARI_TOOLBAR_HEIGHT = 44 // Bottom navigation toolbar
+  const safariTopHeight = showBrowser ? specs.safeAreaTop + SAFARI_ADDRESS_BAR_HEIGHT : 0
+  const safariBottomHeight = showBrowser ? SAFARI_TOOLBAR_HEIGHT + specs.safeAreaBottom : 0
+  const safariTotalHeight = safariTopHeight + safariBottomHeight
+
+  // Content (iframe) height after Safari chrome
+  const iframeHeight = showBrowser ? contentHeight - safariTotalHeight : contentHeight
+
+  // Build iframe URL for Storybook story
+  const iframeSrc = storyId
+    ? `/iframe.html?id=${storyId}&viewMode=story&shortcuts=false&singleStory=true`
+    : undefined
+
+  return (
+    <div
+      className={`relative mx-auto ${className || ''}`}
+      style={{
+        width: `${(contentWidth + bezelWidth * 2) * scale}px`,
+        height: `${(contentHeight + bezelWidth * 2) * scale}px`,
+      }}
+    >
+      {/* Scaled container - overflow:hidden prevents corner leakage during transform */}
+      <div
+        className="overflow-hidden"
+        style={{
+          width: `${contentWidth + bezelWidth * 2}px`,
+          height: `${contentHeight + bezelWidth * 2}px`,
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+          borderRadius: `${specs.cornerRadius + 6}px`, // Match bezel radius
+        }}
+      >
+        {/* Phone outer frame (bezel) - dark titanium style */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            backgroundColor: frameColor,
+            borderRadius: `${specs.cornerRadius + 6}px`,
+            padding: `${bezelWidth}px`,
+            boxShadow: `
+              0 50px 100px -20px rgba(0, 0, 0, 0.5),
+              0 30px 60px -30px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255,255,255,0.1),
+              inset 0 -1px 0 rgba(0,0,0,0.3)
+            `,
+          }}
+        >
+          {/* Screen area - clip-path ensures proper corner clipping for iframes */}
+          <div
+            className="relative overflow-hidden flex flex-col"
+            style={{
+              width: `${contentWidth}px`,
+              height: `${contentHeight}px`,
+              borderRadius: `${specs.cornerRadius - 4}px`,
+              backgroundColor: '#000',
+              // clip-path is more reliable than overflow:hidden for clipping at rounded corners
+              clipPath: `inset(0 round ${specs.cornerRadius - 4}px)`,
+            }}
+          >
+            {/* === BROWSER MODE: Safari iOS Chrome === */}
+            {showBrowser ? (
+              <>
+                {/* Safari top area: Dynamic Island + status bar + compact address bar */}
+                <div
+                  className="flex-shrink-0 bg-neutral-100 relative"
+                  style={{ height: `${safariTopHeight}px` }}
+                >
+                  {/* Dynamic Island overlay (renders on top of Safari chrome) */}
+                  {specs.hasDynamicIsland && (
+                    <div
+                      className="absolute top-2.5 left-1/2 -translate-x-1/2 z-50 bg-black rounded-full pointer-events-none"
+                      style={{ width: '126px', height: '37px' }}
+                    />
+                  )}
+                  {/* Status bar - mode="light" for dark text on light Safari chrome */}
+                  <div
+                    className="flex items-end px-6 pb-0.5"
+                    style={{ height: `${specs.safeAreaTop}px` }}
+                  >
+                    <StatusBar mode="light" />
+                  </div>
+                  {/* Safari compact address bar */}
+                  <SafariAddressBar url={browserUrl} isSecure={true} />
+                </div>
+
+                {/* Web content area (iframe) */}
+                {iframeSrc ? (
+                  <iframe
+                    src={iframeSrc}
+                    title="Mobile Preview"
+                    className="flex-1"
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${iframeHeight}px`,
+                      border: 'none',
+                      backgroundColor: '#fff',
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="flex-1 overflow-hidden bg-white"
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${iframeHeight}px`,
+                    }}
+                  >
+                    {children}
+                  </div>
+                )}
+
+                {/* Safari bottom toolbar + home indicator */}
+                <div
+                  className="flex-shrink-0 bg-neutral-50"
+                  style={{ height: `${safariBottomHeight}px` }}
+                >
+                  <SafariToolbar mode="light" />
+                  {/* Home indicator area - mode="light" for dark pill on light Safari chrome */}
+                  <div
+                    className="flex items-center justify-center"
+                    style={{ height: `${specs.safeAreaBottom}px` }}
+                  >
+                    <HomeIndicator mode="light" />
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* === NATIVE MODE: Full screen content === */
+              <>
+                {/* Dynamic Island overlay */}
+                {specs.hasDynamicIsland && (
+                  <div
+                    className="absolute top-2.5 left-1/2 -translate-x-1/2 z-50 bg-black rounded-full pointer-events-none"
+                    style={{ width: '126px', height: '37px' }}
+                  />
+                )}
+
+                {/* Content: iframe or children */}
+                {iframeSrc ? (
+                  <iframe
+                    src={iframeSrc}
+                    title="Mobile Preview"
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${contentHeight}px`,
+                      border: 'none',
+                      backgroundColor: '#fff',
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${contentHeight}px`,
+                      overflow: 'hidden',
+                      backgroundColor: '#fff',
+                    }}
+                  >
+                    {children}
+                  </div>
+                )}
+
+                {/* Home indicator overlay */}
+                {specs.safeAreaBottom > 0 && (
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+                    <div
+                      className="rounded-full"
+                      style={{
+                        width: '134px',
+                        height: '5px',
+                        backgroundColor: 'rgba(0,0,0,0.3)',
+                      }}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Side buttons - Volume rocker */}
+        <div
+          className="absolute rounded-l-sm"
+          style={{
+            left: '-2px',
+            top: '115px',
+            width: '3px',
+            height: '28px',
+            backgroundColor: '#3a3a3a',
+          }}
+        />
+        <div
+          className="absolute rounded-l-sm"
+          style={{
+            left: '-2px',
+            top: '155px',
+            width: '3px',
+            height: '56px',
+            backgroundColor: '#3a3a3a',
+          }}
+        />
+        {/* Side button - Power/Action */}
+        <div
+          className="absolute rounded-r-sm"
+          style={{
+            right: '-2px',
+            top: '145px',
+            width: '3px',
+            height: '72px',
+            backgroundColor: '#3a3a3a',
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// SAFARI BROWSER CHROME (iOS 17+ style)
+// =============================================================================
+
+interface SafariAddressBarProps {
+  /** URL to display */
+  url?: string
+  /** Is the page secure (shows lock icon) */
+  isSecure?: boolean
+}
+
+/**
+ * Safari iOS address bar (compact style - iOS 15+)
+ * Shows URL in a pill-shaped container with reader/share icons
+ */
+const SafariAddressBar: React.FC<SafariAddressBarProps> = ({
+  url = 'flow.disrupt.app',
+  isSecure = true,
+}) => (
+  <div className="flex items-center justify-center gap-2 px-3 py-1">
+    <div className="flex-1 flex items-center justify-center gap-1.5 bg-neutral-100 rounded-xl px-3 py-1.5 min-h-[36px]">
+      {/* Lock icon (secure) */}
+      {isSecure && (
+        <svg className="w-3 h-3 text-neutral-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 1C8.676 1 6 3.676 6 7v2H4v14h16V9h-2V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v2H8V7c0-2.276 1.724-4 4-4z"/>
+        </svg>
+      )}
+      {/* URL */}
+      <span className="text-sm text-neutral-900 truncate">{url}</span>
+    </div>
+  </div>
+)
+
+interface SafariToolbarProps {
+  /** Light or dark mode */
+  mode?: 'light' | 'dark'
+}
+
+/**
+ * Safari iOS bottom toolbar with navigation buttons
+ */
+const SafariToolbar: React.FC<SafariToolbarProps> = ({ mode = 'light' }) => {
+  const iconColor = mode === 'light' ? 'text-blue-500' : 'text-blue-400'
+  const disabledColor = mode === 'light' ? 'text-neutral-300' : 'text-neutral-600'
+
+  return (
+    <div className="flex items-center justify-around px-4 py-2 bg-neutral-50/95 backdrop-blur-sm border-t border-neutral-200">
+      {/* Back (disabled) */}
+      <button className={`p-2 ${disabledColor}`} disabled>
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      {/* Forward (disabled) */}
+      <button className={`p-2 ${disabledColor}`} disabled>
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+      {/* Share */}
+      <button className={`p-2 ${iconColor}`}>
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3v11.25" />
+        </svg>
+      </button>
+      {/* Bookmarks */}
+      <button className={`p-2 ${iconColor}`}>
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </svg>
+      </button>
+      {/* Tabs */}
+      <button className={`p-2 ${iconColor}`}>
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6" />
+        </svg>
+      </button>
+    </div>
+  )
+}
+
+// =============================================================================
 // IPHONE FRAME COMPONENT
 // =============================================================================
 
@@ -787,20 +1249,27 @@ export interface IPhoneFrameProps {
   scale?: number
   /** Additional className for the outer container */
   className?: string
+  /** Show Safari browser chrome (for PWA/web apps) */
+  showBrowser?: boolean
+  /** URL to display in browser address bar */
+  browserUrl?: string
 }
 
 /**
  * IPhoneFrame - iPhone device frame for Storybook previews
  *
  * Simple wrapper to preview components in an iPhone context.
+ * Use `showBrowser={true}` for PWA/mobile web apps to show Safari chrome.
  *
  * @example
  * ```tsx
+ * // Native app style (full screen, no browser chrome)
  * <IPhoneFrame>
  *   <YourMobileComponent />
  * </IPhoneFrame>
  *
- * <IPhoneFrame model="iphonex" scale={0.5}>
+ * // PWA / Mobile web app with Safari browser chrome
+ * <IPhoneFrame showBrowser browserUrl="flow.disrupt.app">
  *   <YourMobileComponent />
  * </IPhoneFrame>
  * ```
@@ -810,10 +1279,11 @@ export const IPhoneFrame: React.FC<IPhoneFrameProps> = ({
   children,
   scale = 1,
   className,
+  showBrowser = false,
+  browserUrl = 'flow.disrupt.app',
 }) => {
   // Static light frame - content inside determines theme
-  const time = '9:41'
-  const batteryLevel = 100
+  // StatusBar uses STATUS_BAR_DEFAULTS for time/battery (single source of truth)
   const screenBackground = '#ffffff'
   const frameColor = '#e5e5e0'
   const colorMode = 'light' as const
@@ -856,15 +1326,15 @@ export const IPhoneFrame: React.FC<IPhoneFrameProps> = ({
             backgroundColor: screenBackground,
           }}
         >
-          {/* Dynamic Island (for iPhone 14 Pro+ models) */}
-          {specs.hasDynamicIsland && (
+          {/* Dynamic Island - hidden when browser is shown (Safari covers it) */}
+          {specs.hasDynamicIsland && !showBrowser && (
             <div className="absolute top-3 left-1/2 -translate-x-1/2 z-50">
               <DynamicIsland />
             </div>
           )}
 
-          {/* Notch (for iPhone X - 13 series) */}
-          {specs.hasNotch && (
+          {/* Notch - hidden when browser is shown (Safari covers it) */}
+          {specs.hasNotch && !showBrowser && (
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-50">
               <Notch />
             </div>
@@ -872,35 +1342,69 @@ export const IPhoneFrame: React.FC<IPhoneFrameProps> = ({
 
           {/* Screen content wrapper */}
           <div className="relative w-full h-full flex flex-col">
-            {/* Status bar area */}
-            <div
-              className="flex items-end px-8 pb-1"
-              style={{ height: `${specs.safeAreaTop}px` }}
-            >
-              <StatusBar
-                time={time}
-                batteryLevel={batteryLevel}
-                mode={colorMode}
-              />
-            </div>
+            {/* === BROWSER MODE: Safari iOS Chrome === */}
+            {showBrowser ? (
+              <>
+                {/* Safari top area: status bar + compact address bar */}
+                <div className="flex-shrink-0 bg-neutral-100">
+                  {/* Status bar (in Safari's area) */}
+                  <div
+                    className="flex items-end px-6 pb-0.5"
+                    style={{ height: `${specs.safeAreaTop}px` }}
+                  >
+                    <StatusBar mode="light" />
+                  </div>
+                  {/* Safari compact address bar */}
+                  <SafariAddressBar url={browserUrl} isSecure={true} />
+                </div>
 
-            {/* Main content area */}
-            <div className="flex-1 flex flex-col overflow-hidden">
-              {children}
-            </div>
+                {/* Web content area (between Safari chrome) */}
+                <div className="flex-1 flex flex-col overflow-hidden bg-white">
+                  {children}
+                </div>
 
-            {/* Safe area bottom padding (for home indicator) */}
-            {specs.safeAreaBottom > 0 && (
-              <div style={{ height: `${specs.safeAreaBottom}px` }} />
+                {/* Safari bottom toolbar */}
+                <div className="flex-shrink-0">
+                  <SafariToolbar mode={colorMode} />
+                  {/* Home indicator area */}
+                  <div
+                    className="bg-neutral-50 flex items-center justify-center"
+                    style={{ height: `${specs.safeAreaBottom}px` }}
+                  >
+                    <HomeIndicator mode="dark" />
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* === NATIVE MODE: Full screen app === */
+              <>
+                {/* Status bar area */}
+                <div
+                  className="flex items-end px-8 pb-1 flex-shrink-0"
+                  style={{ height: `${specs.safeAreaTop}px` }}
+                >
+                  <StatusBar mode={colorMode} />
+                </div>
+
+                {/* Main content area */}
+                <div className="flex-1 flex flex-col overflow-hidden">
+                  {children}
+                </div>
+
+                {/* Safe area bottom padding (for home indicator) */}
+                {specs.safeAreaBottom > 0 && (
+                  <div style={{ height: `${specs.safeAreaBottom}px` }} />
+                )}
+
+                {/* Home indicator */}
+                {specs.safeAreaBottom > 0 && (
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-50">
+                    <HomeIndicator mode={colorMode} />
+                  </div>
+                )}
+              </>
             )}
           </div>
-
-          {/* Home indicator */}
-          {specs.safeAreaBottom > 0 && (
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-50">
-              <HomeIndicator mode={colorMode} />
-            </div>
-          )}
         </div>
       </div>
       </div>
@@ -949,8 +1453,7 @@ export const IPadFrame: React.FC<IPadFrameProps> = ({
   className,
 }) => {
   // Static light frame - content inside determines theme
-  const time = '9:41'
-  const batteryLevel = 100
+  // StatusBar uses STATUS_BAR_DEFAULTS for time/battery (single source of truth)
   const screenBackground = '#ffffff'
   const frameColor = '#e5e5e0'
   const colorMode = 'light' as const
@@ -1005,11 +1508,7 @@ export const IPadFrame: React.FC<IPadFrameProps> = ({
               className="flex items-end px-8 pb-1"
               style={{ height: `${specs.safeAreaTop}px` }}
             >
-              <StatusBar
-                time={time}
-                batteryLevel={batteryLevel}
-                mode={colorMode}
-              />
+              <StatusBar mode={colorMode} />
             </div>
 
             {/* Main content area */}

@@ -23,6 +23,26 @@
 /* These classes are used by components but need to be pre-gen   */
 /* ============================================================ */
 @layer utilities {
+  /* Beacon animation for attention-grabbing buttons */
+  @keyframes beacon-ping {
+    0% { box-shadow: 0 0 0 0 var(--beacon-color, rgba(220, 38, 38, 0.5)); }
+    70% { box-shadow: 0 0 0 10px var(--beacon-color-fade, rgba(220, 38, 38, 0)); }
+    100% { box-shadow: 0 0 0 10px var(--beacon-color-fade, rgba(220, 38, 38, 0)); }
+  }
+
+  .animate-beacon {
+    animation: beacon-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Hide scrollbar while maintaining scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Opera */
+  }
+
   /* Button variant classes - these are used dynamically by CVA */
   .bg-inverse-bg { background-color: var(--color-inverse-bg); }
   .bg-muted-bg { background-color: var(--color-muted-bg); }
@@ -32,6 +52,17 @@
   /* Always white - for colored status backgrounds (error, success, warning, info) */
   .text-on-status { color: #FFFFFF; }
   .hover\:text-on-status:hover { color: #FFFFFF; }
+
+  /* Badge background utilities - solid tinted backgrounds (40% color on white) */
+  .bg-accent-tint { background-color: #9CDAE4; }
+  .bg-warning-tint { background-color: #F6E09C; }
+  .bg-success-tint { background-color: #A6E7BE; }
+  .bg-error-tint { background-color: #FB9EA3; }
+  /* Dark mode badge backgrounds - darker tints for dark surfaces */
+  .dark\:bg-accent-tint:is(.dark *) { background-color: #0D5A68; }
+  .dark\:bg-warning-tint:is(.dark *) { background-color: #6B5206; }
+  .dark\:bg-success-tint:is(.dark *) { background-color: #1A5C35; }
+  .dark\:bg-error-tint:is(.dark *) { background-color: #7A1A1F; }
 
   /* Hover variants with opacity */
   .hover\:bg-inverse-bg\/90:hover { background-color: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent); }
@@ -56,6 +87,28 @@
   /* Success strong severity variants */
   .text-success-strong { color: var(--color-success-strong); }
   .border-success-strong { border-color: var(--color-success-strong); }
+  /* WCAG AA-compliant success text for colored backgrounds (5.6:1 on success/25) */
+  .text-success-dark { color: var(--brand-harbor-800); }
+
+  /* Accent dark variant (for WCAG AA contrast on light tinted backgrounds) */
+  .text-accent-dark { color: var(--color-accent-dark); }
+
+  /* Accent strong variants */
+  .text-accent-strong { color: var(--color-accent-strong); }
+  .border-accent-strong { border-color: var(--color-accent-strong); }
+
+  /* Purple variants (for Review status badge) */
+  .text-dark-purple { color: var(--color-dark-purple); }
+  .border-dark-purple { border-color: var(--color-dark-purple); }
+
+  /* Error/Critical severity variants (red) */
+  .text-error { color: var(--color-error); }
+  /* WCAG AA-compliant error text (4.83:1 vs 4.18:1 for text-error) - use for small text on white */
+  .text-error-accessible { color: var(--brand-coral-600); }
+  /* WCAG AA-compliant error text for colored backgrounds (5.6:1 on error/25) */
+  .text-error-dark { color: var(--brand-coral-800); }
+  .border-error { border-color: var(--color-error); }
+  .bg-error { background-color: var(--color-error); }
 
   /* Info severity variants (blue) */
   .text-info { color: var(--color-info); }
@@ -390,12 +443,12 @@ h1.dds-brand-hero-title,
   --color-text-accent: #056271;
 
   /* --- BACKGROUND COLORS --- */
-  /* Usage: bg-surface (cards, panels) - IVORY[100] */
-  --color-surface: #FAF8F3;
-  /* Usage: bg-surface-hover - IVORY[300] */
-  --color-surface-hover: #E5E2DB;
-  /* Usage: bg-surface-active - IVORY[400] */
-  --color-surface-active: #D5D2CB;
+  /* Usage: bg-surface (cards, panels) - WHITE for contrast against cream page */
+  --color-surface: #FFFFFF;
+  /* Usage: bg-surface-hover - Light teal tint */
+  --color-surface-hover: #E6F7FA;
+  /* Usage: bg-surface-active - Teal tint (selected state) */
+  --color-surface-active: #D4F2F6;
   /* Usage: bg-page (main page background) - IVORY[200] */
   --color-page: #F0EDE6;
   /* Usage: bg-elevated (elevated surfaces) - IVORY[50] */
@@ -1136,6 +1189,7 @@ h1.dds-brand-hero-title,
   --color-page: var(--brand-abyss-800);
   --color-surface: var(--brand-abyss-700);
   --color-surface-hover: var(--brand-abyss-600);
+  --color-surface-active: var(--brand-abyss-500);  /* Active/pressed state - lighter for emphasis */
   --color-elevated: var(--brand-abyss-600);
   --color-muted-bg: var(--brand-dusk-reef-900);
   --color-inverse-bg: var(--brand-white);
@@ -1891,6 +1945,20 @@ h1.dds-brand-hero-title,
     }
   }
 
+  /* Progress bar shimmer animation - sweeping light effect */
+  .animate-shimmer {
+    animation: progress-shimmer 2s ease-in-out infinite;
+  }
+
+  @keyframes progress-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
   .skeleton-wave {
     animation: skeleton-wave 1.6s ease-in-out infinite;
   }
@@ -1944,5 +2012,122 @@ h1.dds-brand-hero-title,
         0 0 0 4px rgba(239, 83, 80, 0.3),
         0 0 14px 3px rgba(239, 83, 80, 0.5);
     }
+  }
+
+  /* =============================================================================
+     ROTATING GRADIENT BORDER (Dialog, Modal effects)
+     "Tube" effect - colors flow inside a channel-like border
+     ============================================================================= */
+
+  @property --gradient-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes gradient-rotate {
+    0% {
+      --gradient-angle: 0deg;
+    }
+    100% {
+      --gradient-angle: 360deg;
+    }
+  }
+
+  .gradient-border-animated {
+    --gradient-angle: 0deg;
+    --border-width: 3px;
+    /* Use isolation to create stacking context without affecting position */
+    isolation: isolate;
+    border-radius: var(--radius-xl);
+  }
+
+  /* The flowing gradient border - uses mask to show only the border ring
+     Uses brand colors: DEEP_CURRENT (teal) + DUSK_REEF (purple) + WAVE (blue) */
+  .gradient-border-animated::before {
+    content: '';
+    position: absolute;
+    inset: calc(var(--border-width) * -1);
+    border-radius: calc(var(--radius-xl) + var(--border-width));
+    /* Border thickness via padding */
+    padding: var(--border-width);
+    background: conic-gradient(
+      from var(--gradient-angle),
+      #08A4BD 0%,      /* DEEP_CURRENT[500] - teal */
+      #068397 15%,     /* DEEP_CURRENT[600] - deep teal */
+      #5E4F7E 30%,     /* DUSK_REEF[500] - muted purple */
+      #7F6F9F 45%,     /* DUSK_REEF[400] - lighter purple */
+      #3B82F6 60%,     /* WAVE[500] - professional blue */
+      #056271 75%,     /* DEEP_CURRENT[700] - dark teal */
+      #08A4BD 100%     /* DEEP_CURRENT[500] - back to teal */
+    );
+    /* Mask cuts out the center, leaving only the border ring */
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: gradient-rotate 6s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* No ::after needed - element has its own background */
+  .gradient-border-animated::after {
+    content: none;
+  }
+
+
+  /* Outer glow - subtle brand color glow */
+  .gradient-border-animated-glow {
+    position: absolute;
+    inset: calc(var(--border-width) * -1);
+    border-radius: calc(var(--radius-xl) + var(--border-width));
+    background: conic-gradient(
+      from var(--gradient-angle),
+      #08A4BD 0%,      /* DEEP_CURRENT[500] */
+      #5E4F7E 33%,     /* DUSK_REEF[500] */
+      #3B82F6 66%,     /* WAVE[500] */
+      #08A4BD 100%     /* DEEP_CURRENT[500] */
+    );
+    filter: blur(18px);
+    opacity: 0.3;
+    animation: gradient-rotate 6s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* =============================================================================
+     DATA TABLE ROW HOVER EFFECTS
+     Refined hover states for light and dark themes
+     ============================================================================= */
+
+  /* Light mode: Warm subtle glow with soft accent on left edge */
+  tr[data-slot="data-table-body-row"][data-hoverable="true"]:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(8, 164, 189, 0.08) 0%,
+      rgba(229, 226, 219, 0.5) 8%,
+      rgba(229, 226, 219, 0.3) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.02);
+  }
+
+  /* Dark mode: Cool electric accent with subtle luminosity */
+  .dark tr[data-slot="data-table-body-row"][data-hoverable="true"]:hover {
+    background: linear-gradient(
+      90deg,
+      rgba(8, 164, 189, 0.15) 0%,
+      rgba(45, 48, 62, 0.8) 8%,
+      rgba(37, 40, 54, 0.4) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.03),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
   }
 }

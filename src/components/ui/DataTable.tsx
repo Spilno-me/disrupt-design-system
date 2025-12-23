@@ -187,6 +187,7 @@ export interface DataTableProps<T> {
  */
 // Priority border color mapping - using CSS variables for dark mode support
 // Colors match the severity scale: critical (red) → high (orange) → medium (amber) → low (green) → none (cyan)
+// Border design: 4px left border (solid) + 1px bottom border (solid across all columns, fades to transparent in last column)
 const PRIORITY_BORDER_COLORS: Record<Exclude<RowPriority, null>, { color: string; style: 'solid' | 'dashed' }> = {
   critical: { color: 'var(--color-error)', style: 'solid' },         // Red - highest priority
   high: { color: 'var(--color-aging)', style: 'solid' },             // Orange - urgent
@@ -343,8 +344,8 @@ export function DataTable<T>({
   if (loading) {
     return (
       <div className={cn("overflow-hidden rounded-xl border border-default shadow-md w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
-        <div className="overflow-hidden w-full" style={{ maxHeight }}>
-          <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'fixed' }} data-slot="data-table">
+        <div className="overflow-x-auto w-full" style={{ maxHeight }}>
+          <table className={cn("w-full min-w-max", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'auto' }} data-slot="data-table">
             <thead
               className="border-b border-default"
               style={{
@@ -363,15 +364,14 @@ export function DataTable<T>({
                     key={column.id}
                     className={cn(
                       headerPadding,
-                      "text-left text-sm font-medium text-secondary",
+                      "text-left text-sm font-medium text-secondary whitespace-nowrap",
                       colIndex < columns.length - 1 && "border-r border-default",
                       column.headerClassName
                     )}
                     style={{
                       width: column.width,
-                      minWidth: column.minWidth,
+                      minWidth: column.minWidth || '80px',
                       maxWidth: column.maxWidth,
-                      // Headers default to left-aligned; use headerClassName to override
                     }}
                   >
                     <Skeleton className="h-4 w-20" rounded="sm" />
@@ -395,7 +395,10 @@ export function DataTable<T>({
                     <td
                       key={column.id}
                       className={cn(cellPadding, column.cellClassName)}
-                      style={{ textAlign: column.align }}
+                      style={{
+                        textAlign: column.align,
+                        minWidth: column.minWidth || '80px',
+                      }}
                     >
                       <Skeleton className="h-4 w-full max-w-[120px]" rounded="sm" />
                     </td>
@@ -413,8 +416,8 @@ export function DataTable<T>({
   if (data.length === 0) {
     return (
       <div className={cn("overflow-hidden rounded-xl border border-default shadow-md w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
-        <div className="overflow-hidden w-full" style={{ maxHeight }}>
-          <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'fixed' }} data-slot="data-table">
+        <div className="overflow-x-auto w-full" style={{ maxHeight }}>
+          <table className={cn("w-full min-w-max", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'auto' }} data-slot="data-table">
             <thead
               className={cn("border-b border-default", stickyHeader && "sticky top-0 z-10")}
               style={{
@@ -433,15 +436,14 @@ export function DataTable<T>({
                     key={column.id}
                     className={cn(
                       headerPadding,
-                      "text-left text-sm font-medium text-secondary",
+                      "text-left text-sm font-medium text-secondary whitespace-nowrap",
                       colIndex < columns.length - 1 && "border-r border-default",
                       column.headerClassName
                     )}
                     style={{
                       width: column.width,
-                      minWidth: column.minWidth,
+                      minWidth: column.minWidth || '80px',
                       maxWidth: column.maxWidth,
-                      // Headers default to left-aligned; use headerClassName to override
                     }}
                   >
                     {column.header}
@@ -467,8 +469,8 @@ export function DataTable<T>({
 
   return (
     <div className={cn("overflow-hidden rounded-xl border border-default shadow-md w-full min-w-0", wrapperClassName)} data-slot="data-table-wrapper">
-      <div className="overflow-hidden w-full" style={{ maxHeight }}>
-        <table className={cn("w-full", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'fixed' }} data-slot="data-table">
+      <div className="overflow-x-auto w-full" style={{ maxHeight }}>
+        <table className={cn("w-full min-w-max", className)} style={{ borderCollapse: 'separate', borderSpacing: 0, tableLayout: 'auto' }} data-slot="data-table">
           <thead
             className={cn(
               "border-b border-default",
@@ -497,7 +499,7 @@ export function DataTable<T>({
                   key={column.id}
                   className={cn(
                     headerPadding,
-                    "text-left text-sm font-medium text-secondary",
+                    "text-left text-sm font-medium text-secondary whitespace-nowrap",
                     // Add right border separator except for last column
                     colIndex < columns.length - 1 && "border-r border-default",
                     column.sortable && "cursor-pointer select-none hover:text-primary transition-colors",
@@ -505,9 +507,8 @@ export function DataTable<T>({
                   )}
                   style={{
                     width: column.width,
-                    minWidth: column.minWidth,
+                    minWidth: column.minWidth || '80px', // Ensure minimum width to prevent collapse
                     maxWidth: column.maxWidth,
-                    // Headers default to left-aligned; use headerClassName to override
                   }}
                   onClick={() => column.sortable && handleSort(column.id)}
                   role={column.sortable ? "button" : undefined}
@@ -548,8 +549,10 @@ export function DataTable<T>({
                 <tr
                   key={rowId}
                   className={cn(
+                    "relative group/row",
                     striped && index % 2 === 1 && "bg-muted-bg/30",
-                    hoverable && "hover:bg-surface-hover transition-colors",
+                    // Refined hover: subtle background + inner glow effect
+                    hoverable && "transition-all duration-150 ease-out",
                     isSelected && "bg-accent-bg",
                     onRowClick && "cursor-pointer",
                     bodyRowClassName
@@ -557,15 +560,11 @@ export function DataTable<T>({
                   data-slot="data-table-body-row"
                   data-row-id={rowId}
                   data-selected={isSelected ? 'true' : undefined}
+                  data-hoverable={hoverable ? 'true' : undefined}
                   style={{
-                    // Apply priority-colored borders using box-shadow (works reliably on <tr>)
-                    // Combines left border (6px) + bottom border (2px) in same color
+                    // Apply priority-colored left border using box-shadow (thinner: 4px)
                     boxShadow: priorityBorderConfig
-                      ? `inset 6px 0 0 0 ${priorityBorderConfig.color}${!isLastRow ? `, inset 0 -2px 0 0 ${priorityBorderConfig.color}` : ''}`
-                      : undefined,
-                    // Default bottom border for non-priority rows
-                    borderBottom: bordered && !isLastRow && !priorityBorderConfig
-                      ? '1px solid var(--border)'
+                      ? `inset 4px 0 0 0 ${priorityBorderConfig.color}`
                       : undefined,
                   }}
                   onClick={() => onRowClick?.(row)}
@@ -580,7 +579,7 @@ export function DataTable<T>({
                 >
                   {selectable && (
                     <td
-                      className={cn(cellPadding, "w-10")}
+                      className={cn(cellPadding, "w-10 relative")}
                       onClick={(e) => e.stopPropagation()}
                     >
                       <Checkbox
@@ -588,26 +587,66 @@ export function DataTable<T>({
                         onCheckedChange={(checked) => handleSelectRow(rowId, checked === true)}
                         aria-label={`Select row ${rowId}`}
                       />
+                      {/* Priority solid bottom border - spans this cell */}
+                      {priorityBorderConfig && !isLastRow && (
+                        <div
+                          className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+                          style={{ background: priorityBorderConfig.color }}
+                          data-slot="priority-border"
+                        />
+                      )}
+                      {/* Default bottom border for non-priority rows */}
+                      {bordered && !isLastRow && !priorityBorderConfig && (
+                        <div
+                          className="absolute bottom-0 left-0 right-0 h-px bg-default pointer-events-none"
+                        />
+                      )}
                     </td>
                   )}
-                  {columns.map((column) => (
-                    <td
-                      key={column.id}
-                      className={cn(
-                        cellPadding,
-                        "text-sm text-primary overflow-hidden",
-                        column.cellClassName
-                      )}
-                      style={{
-                        textAlign: column.align,
-                        width: column.width,
-                        minWidth: column.minWidth,
-                        maxWidth: column.maxWidth,
-                      }}
-                    >
-                      {column.accessor(row)}
-                    </td>
-                  ))}
+                  {columns.map((column, colIndex) => {
+                    const isLastColumn = colIndex === columns.length - 1
+                    return (
+                      <td
+                        key={column.id}
+                        className={cn(
+                          cellPadding,
+                          "text-sm text-primary relative whitespace-nowrap",
+                          column.cellClassName
+                        )}
+                        style={{
+                          textAlign: column.align,
+                          width: column.width,
+                          minWidth: column.minWidth || '80px', // Ensure minimum width to prevent collapse
+                          maxWidth: column.maxWidth,
+                        }}
+                      >
+                        {column.accessor(row)}
+                        {/* Priority bottom border: solid for all columns, gradient fade on last column */}
+                        {priorityBorderConfig && !isLastRow && (
+                          <div
+                            className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+                            style={{
+                              background: isLastColumn
+                                ? `linear-gradient(to right, ${priorityBorderConfig.color} 0%, transparent 85%)`
+                                : priorityBorderConfig.color,
+                            }}
+                            data-slot="priority-border"
+                          />
+                        )}
+                        {/* Default bottom border for non-priority rows */}
+                        {bordered && !isLastRow && !priorityBorderConfig && (
+                          <div
+                            className="absolute bottom-0 left-0 right-0 h-px pointer-events-none"
+                            style={{
+                              background: isLastColumn
+                                ? 'linear-gradient(to right, var(--border) 0%, transparent 85%)'
+                                : 'var(--border)',
+                            }}
+                          />
+                        )}
+                      </td>
+                    )
+                  })}
                 </tr>
               )
             })}

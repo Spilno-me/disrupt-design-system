@@ -92,6 +92,8 @@ interface VariantConfig {
   icon: LucideIcon | React.FC<{ size?: number; className?: string }>
   iconColor: string
   label: string
+  /** Whether the icon supports strokeWidth prop (Lucide icons do, custom SVGs don't) */
+  isLucideIcon: boolean
 }
 
 const variantConfig: Record<Exclude<QuickActionVariant, 'custom'>, VariantConfig> = {
@@ -102,6 +104,7 @@ const variantConfig: Record<Exclude<QuickActionVariant, 'custom'>, VariantConfig
     icon: AddIncidentIcon,
     iconColor: ALIAS.text.inverse,
     label: 'Report Incident',
+    isLucideIcon: false, // Custom SVG icon
   },
   create: {
     // Teal gradient for general creation actions
@@ -110,6 +113,7 @@ const variantConfig: Record<Exclude<QuickActionVariant, 'custom'>, VariantConfig
     icon: Plus,
     iconColor: ALIAS.text.inverse,
     label: 'Create New',
+    isLucideIcon: true,
   },
   emergency: {
     // Orange gradient for emergency/urgent actions
@@ -118,6 +122,7 @@ const variantConfig: Record<Exclude<QuickActionVariant, 'custom'>, VariantConfig
     icon: Phone,
     iconColor: ALIAS.text.inverse,
     label: 'Emergency',
+    isLucideIcon: true,
   },
   capture: {
     // Green gradient for capture/document actions
@@ -126,6 +131,7 @@ const variantConfig: Record<Exclude<QuickActionVariant, 'custom'>, VariantConfig
     icon: Camera,
     iconColor: ALIAS.text.inverse,
     label: 'Capture',
+    isLucideIcon: true,
   },
 }
 
@@ -291,16 +297,15 @@ const QuickActionButton = React.forwardRef<HTMLButtonElement, QuickActionButtonP
           style={{ color: config.iconColor }}
         >
           {icon || (
-            // Custom icons (like AddIncidentIcon) don't accept strokeWidth
-            // Lucide icons do - check by name to differentiate
-            IconComponent === AddIncidentIcon ? (
-              <IconComponent size={iconSize} />
-            ) : (
+            config.isLucideIcon ? (
               <IconComponent
                 size={iconSize}
                 strokeWidth={1.75}
                 aria-hidden="true"
               />
+            ) : (
+              // Custom SVG icons don't support strokeWidth
+              <IconComponent size={iconSize} aria-hidden="true" />
             )
           )}
         </span>

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Footer } from './Footer'
 import { ORGANISM_META, organismDescription } from '@/stories/_infrastructure'
+import { GridBlobBackground } from '@/components/ui/GridBlobCanvas'
 
 const meta: Meta<typeof Footer> = {
   title: 'Website/Layout/Footer',
@@ -29,6 +30,19 @@ const meta: Meta<typeof Footer> = {
       description: 'Background style',
     },
   },
+  decorators: [
+    (Story) => (
+      <div className="min-h-screen h-screen relative overflow-hidden bg-surface">
+        {/* Grid with animated blob mask */}
+        <GridBlobBackground />
+
+        {/* Content */}
+        <div className="absolute z-10 bottom-0 left-0 right-0">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 }
 
 export default meta
@@ -71,13 +85,6 @@ export const Transparent: Story = {
     ],
     variant: 'transparent',
   },
-  decorators: [
-    (Story) => (
-      <div className="bg-cream min-h-[100px]">
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 // With more links
@@ -181,21 +188,28 @@ export const FullCustom: Story = {
 // In page context
 export const InPageContext: Story = {
   render: () => (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 bg-white p-8">
-        <h1 className="text-2xl font-bold mb-4">Page Content</h1>
-        <p className="text-muted-foreground">
-          This demonstrates the footer at the bottom of a page layout.
+    <div className="min-h-screen h-screen relative overflow-hidden bg-surface">
+      {/* Grid with animated blob mask */}
+      <GridBlobBackground />
+
+      <div className="absolute z-10 top-0 left-0 right-0 p-8">
+        <h1 className="text-2xl font-bold mb-4 text-primary">Page Content</h1>
+        <p className="text-secondary">
+          This demonstrates the footer at the bottom of a page layout with glass morphism effect.
         </p>
       </div>
-      <Footer
-        companyName="DisruptInc.io"
-        copyrightYear={2024}
-        links={[
-          { label: 'Privacy Policy', href: '/privacy' },
-          { label: 'Terms of Service', href: '/terms' },
-        ]}
-      />
+      <div className="absolute z-10 bottom-0 left-0 right-0">
+        <Footer
+          companyName="DisruptInc.io"
+          copyrightYear={2024}
+          links={[
+            { label: 'Privacy Policy', href: '/privacy' },
+            { label: 'Terms of Service', href: '/terms' },
+          ]}
+        />
+      </div>
     </div>
   ),
+  // Override the global decorator for this story
+  decorators: [(Story) => <Story />],
 }

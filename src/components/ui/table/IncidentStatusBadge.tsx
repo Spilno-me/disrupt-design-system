@@ -1,15 +1,13 @@
 /**
  * IncidentStatusBadge - Status badge for incident management tables
  *
- * Displays workflow status with semantic icons and severity-based colors.
- * The icon is determined by the status, the color by the row severity.
- * Outline-only design (no filled background) for a lighter visual weight.
+ * Displays workflow status with colored backgrounds for visibility.
+ * Draft status uses outline-only design (dashed border, no background).
  *
  * @figma https://www.figma.com/design/19jjsBQEpNsQaryNQgXedT/Flow-EHS?node-id=576-15539
  */
 
 import * as React from 'react'
-import { Search, User, Flag, FileText } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 
 // =============================================================================
@@ -29,25 +27,17 @@ export type IncidentStatus = 'investigation' | 'review' | 'reported' | 'draft' |
 export type IncidentSeverity = 'critical' | 'high' | 'medium' | 'low' | 'none'
 
 export interface IncidentStatusBadgeProps {
-  /** Workflow status determines the icon */
+  /** Workflow status determines the styling */
   status: IncidentStatus
-  /** Row severity determines the color (except draft which has its own style) */
+  /** @deprecated Severity is no longer used - kept for API compatibility */
   severity?: IncidentSeverity
   /** Additional className */
   className?: string
 }
 
 // =============================================================================
-// STATUS ICONS
+// STATUS LABELS
 // =============================================================================
-
-const statusIcons: Record<IncidentStatus, React.ComponentType<{ className?: string }>> = {
-  investigation: Search,
-  review: User,
-  reported: Flag,
-  draft: FileText,
-  closed: FileText,
-}
 
 const statusLabels: Record<IncidentStatus, string> = {
   investigation: 'Investigation',
@@ -58,49 +48,36 @@ const statusLabels: Record<IncidentStatus, string> = {
 }
 
 // =============================================================================
-// SEVERITY COLORS (Outline-only design)
+// STATUS STYLES (Colored backgrounds for visibility)
 // =============================================================================
 
 /**
- * Severity color classes for badges.
- * Outline-only: border and text in same color, transparent background.
- * Uses semantic tokens for consistent theming with WCAG AA contrast.
+ * Status-based styling for badges.
+ * Uses visible colored backgrounds (20% opacity) for quick scanning.
+ * Draft is special: no background, dashed border only.
  *
- * Order: critical (red) → high (orange) → medium (amber) → low (green) → none (cyan/teal)
+ * Color mapping:
+ * - Draft: No bg, dashed gray border - not yet submitted
+ * - Reported: Teal/Cyan bg - newly submitted, awaiting action
+ * - Investigation: Warning/Gold bg - actively being investigated
+ * - Review: Warning/Gold bg - under review/approval
+ * - Closed: Green bg - resolved/completed
  */
-const severityColors: Record<IncidentSeverity, { border: string; text: string }> = {
-  critical: {
-    // Coral/red - uses error token
-    border: 'border-error',
-    text: 'text-error',
-  },
-  high: {
-    // Orange - uses aging token (darker in light mode for contrast)
-    border: 'border-aging-dark dark:border-aging',
-    text: 'text-aging-dark dark:text-aging',
-  },
-  medium: {
-    // Yellow/amber - uses warning token (darker in light mode for contrast)
-    border: 'border-warning-dark dark:border-warning',
-    text: 'text-warning-dark dark:text-warning',
-  },
-  low: {
-    // Green - uses success token (stronger in light mode for contrast)
-    border: 'border-success-strong dark:border-success',
-    text: 'text-success-strong dark:text-success',
-  },
-  none: {
-    // Cyan/teal - for incidents without assigned severity (e.g., "Reported" status)
-    border: 'border-info',
-    text: 'text-info',
-  },
-}
-
-// Draft has special styling (dashed border, muted colors)
-// Dark mode: DUSK_REEF[300] (#9F93B7) for better contrast on dark backgrounds
-const draftColors = {
-  border: 'border-dashed border-secondary dark:border-tertiary',
-  text: 'text-secondary dark:text-tertiary',
+const statusStyles: Record<IncidentStatus, string> = {
+  // Draft: outline-only with dashed border (no background)
+  draft: 'bg-transparent border-dashed border-secondary text-secondary dark:border-tertiary dark:text-tertiary',
+  // Reported: Teal/Cyan - newly submitted
+  // BG contrast vs white: 1.61:1 | Text contrast: 9.9:1 (AAA)
+  reported: 'bg-accent-tint border-transparent text-accent-dark dark:bg-accent-tint dark:text-accent',
+  // Investigation: Warning/Gold - actively being investigated
+  // BG contrast vs white: 1.35:1 | Text contrast: 6.2:1 (AA)
+  investigation: 'bg-warning-tint border-transparent text-warning-dark dark:bg-warning-tint dark:text-warning',
+  // Review: Warning/Gold - under review/approval
+  // BG contrast vs white: 1.35:1 | Text contrast: 6.2:1 (AA)
+  review: 'bg-warning-tint border-transparent text-warning-dark dark:bg-warning-tint dark:text-warning',
+  // Closed: Green - resolved/completed
+  // BG contrast vs white: 1.42:1 | Text contrast: 5.1:1 (AA)
+  closed: 'bg-success-tint border-transparent text-success-dark dark:bg-success-tint dark:text-success',
 }
 
 // =============================================================================
@@ -108,55 +85,48 @@ const draftColors = {
 // =============================================================================
 
 /**
- * IncidentStatusBadge - Workflow status badge with severity-based colors
+ * IncidentStatusBadge - Workflow status badge with colored backgrounds
  *
- * Outline-only design: thin border with icon + label, no filled background.
- * This provides a lighter visual weight that doesn't compete with row content.
- *
- * @example
- * // Investigation with critical severity (coral/pink outline)
- * <IncidentStatusBadge status="investigation" severity="critical" />
+ * Uses visible colored backgrounds (20% opacity) for quick visual scanning.
+ * Draft status is special: no background, dashed border only.
  *
  * @example
- * // Review with high severity (orange outline)
- * <IncidentStatusBadge status="review" severity="high" />
+ * // Investigation status (gold/yellow background)
+ * <IncidentStatusBadge status="investigation" />
  *
  * @example
- * // Reported with info severity (cyan/teal outline)
- * <IncidentStatusBadge status="reported" severity="info" />
+ * // Reported status (teal background)
+ * <IncidentStatusBadge status="reported" />
  *
  * @example
- * // Draft status (gray dashed outline)
+ * // Draft status (no bg, dashed border)
  * <IncidentStatusBadge status="draft" />
+ *
+ * @example
+ * // Closed status (green background)
+ * <IncidentStatusBadge status="closed" />
  */
 export function IncidentStatusBadge({
   status,
-  severity = 'none',
+  severity: _severity,
   className,
 }: IncidentStatusBadgeProps) {
-  const Icon = statusIcons[status]
   const label = statusLabels[status]
-
-  // Draft always uses its own style regardless of severity
-  const colors = status === 'draft' ? draftColors : severityColors[severity]
 
   return (
     <span
       className={cn(
-        // Compact sizing: smaller padding, thinner appearance
-        'inline-flex items-center gap-1.5 px-2.5 py-0.5',
-        // Pill shape with thin border (1px via border class)
+        // Compact sizing
+        'inline-flex items-center px-2.5 py-0.5',
+        // Pill shape with border (visible for draft, transparent for others)
         'rounded-full border',
-        // Transparent background - outline only
-        'bg-transparent',
         // Typography: smaller, medium weight
-        'text-xs font-medium',
-        colors.border,
-        colors.text,
+        'text-xs font-medium whitespace-nowrap',
+        // Status-specific styling
+        statusStyles[status],
         className
       )}
     >
-      <Icon className="size-4 flex-shrink-0" />
       {label}
     </span>
   )

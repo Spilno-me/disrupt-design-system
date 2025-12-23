@@ -33,6 +33,8 @@ export interface FilterDropdownProps {
   disabled?: boolean
   /** Whether filters are loading */
   isLoading?: boolean
+  /** Size variant */
+  size?: 'default' | 'compact'
 }
 
 /**
@@ -49,8 +51,10 @@ export function FilterDropdown({
   onOpenChange,
   disabled = false,
   isLoading = false,
+  size = 'default',
 }: FilterDropdownProps) {
   const hasFilters = filterGroups.length > 0
+  const isCompact = size === 'compact'
 
   return (
     <DropdownMenu open={open} onOpenChange={disabled ? undefined : onOpenChange}>
@@ -60,7 +64,8 @@ export function FilterDropdown({
           disabled={disabled}
           className={cn(
             'relative hidden md:flex items-center justify-center',
-            'w-10 h-10 flex-shrink-0',
+            isCompact ? 'w-9 h-9' : 'w-10 h-10',
+            'flex-shrink-0',
             'rounded-sm shadow-sm',
             'transition-all',
             // Active state - light teal background when filters are selected
@@ -73,9 +78,9 @@ export function FilterDropdown({
           aria-label={`Filter options${activeCount > 0 ? ` (${activeCount} active)` : ''}`}
         >
           {isLoading ? (
-            <Loader2 className="w-4 h-4 text-accent animate-spin" aria-hidden="true" />
+            <Loader2 className={cn('text-accent animate-spin', isCompact ? 'w-3.5 h-3.5' : 'w-4 h-4')} aria-hidden="true" />
           ) : (
-            <FilterIcon className="text-primary" />
+            <FilterIcon className={cn('text-primary', isCompact && 'w-4 h-4')} />
           )}
           <FilterBadge count={activeCount} size="sm" />
         </button>

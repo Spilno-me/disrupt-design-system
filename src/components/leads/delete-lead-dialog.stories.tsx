@@ -171,24 +171,32 @@ export const NewLead: Story = {
 }
 
 export const OpenByDefault: Story = {
-  args: {
-    open: true,
-    onOpenChange: () => {},
-    lead: sampleLead,
-    onConfirm: (lead) => console.log('Deleted:', lead),
-  },
+  render: () => (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <DeleteLeadDialog
+        open={true}
+        onOpenChange={() => {}}
+        lead={sampleLead}
+        onConfirm={(lead) => console.log('Deleted:', lead)}
+      />
+    </div>
+  ),
 }
 
 export const Deleting: Story = {
-  args: {
-    open: true,
-    onOpenChange: () => {},
-    lead: sampleLead,
-    onConfirm: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000))
-    },
-    isDeleting: true,
-  },
+  render: () => (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <DeleteLeadDialog
+        open={true}
+        onOpenChange={() => {}}
+        lead={sampleLead}
+        onConfirm={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 5000))
+        }}
+        isDeleting={true}
+      />
+    </div>
+  ),
 }
 
 // Full workflow story - delete from list

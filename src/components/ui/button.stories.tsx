@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { fn, expect, within, userEvent } from 'storybook/test'
 import { ArrowRight, ArrowLeft } from 'lucide-react'
 import {
   ATOM_META,
@@ -28,6 +29,9 @@ const meta: Meta<typeof Button> = {
         ),
       },
     },
+  },
+  args: {
+    onClick: fn(),
   },
   argTypes: {
     variant: {
@@ -228,4 +232,155 @@ export const AllStates: Story = {
       </StoryInfoBox>
     </div>
   ),
+}
+
+// =============================================================================
+// INTERACTION TESTS
+// =============================================================================
+
+/** Tests that clicking the button fires the onClick handler */
+export const TestClickHandler: Story = {
+  name: '✅ Test: Click Handler',
+  args: {
+    children: 'Click Me',
+    variant: 'default',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: /click me/i })
+
+    // Click the button
+    await userEvent.click(button)
+
+    // Verify onClick was called
+    await expect(args.onClick).toHaveBeenCalledTimes(1)
+
+    // Click again to verify multiple clicks work
+    await userEvent.click(button)
+    await expect(args.onClick).toHaveBeenCalledTimes(2)
+  },
+}
+
+/** Tests that disabled buttons cannot be clicked */
+export const TestDisabledState: Story = {
+  name: '✅ Test: Disabled State',
+  args: {
+    children: 'Disabled Button',
+    variant: 'default',
+    disabled: true,
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: /disabled button/i })
+
+    // Verify button has disabled attribute
+    await expect(button).toBeDisabled()
+
+    // Verify button has pointer-events: none (via CSS)
+    await expect(button).toHaveClass('disabled:pointer-events-none')
+
+    // onClick should NOT have been called (no interaction possible)
+    await expect(args.onClick).not.toHaveBeenCalled()
+  },
+}
+
+/** Tests keyboard activation with Enter key */
+export const TestKeyboardEnter: Story = {
+  name: '✅ Test: Keyboard (Enter)',
+  args: {
+    children: 'Press Enter',
+    variant: 'default',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: /press enter/i })
+
+    // Focus the button
+    button.focus()
+    await expect(button).toHaveFocus()
+
+    // Press Enter key
+    await userEvent.keyboard('{Enter}')
+
+    // Verify onClick was called
+    await expect(args.onClick).toHaveBeenCalledTimes(1)
+  },
+}
+
+/** Tests keyboard activation with Space key */
+export const TestKeyboardSpace: Story = {
+  name: '✅ Test: Keyboard (Space)',
+  args: {
+    children: 'Press Space',
+    variant: 'default',
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: /press space/i })
+
+    // Focus the button
+    button.focus()
+    await expect(button).toHaveFocus()
+
+    // Press Space key
+    await userEvent.keyboard(' ')
+
+    // Verify onClick was called
+    await expect(args.onClick).toHaveBeenCalledTimes(1)
+  },
+}
+
+/** Tests focus ring visibility */
+export const TestFocusState: Story = {
+  name: '✅ Test: Focus State',
+  args: {
+    children: 'Focus Me',
+    variant: 'default',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const button = canvas.getByRole('button', { name: /focus me/i })
+
+    // Button should not have focus initially
+    await expect(button).not.toHaveFocus()
+
+    // Tab to focus the button
+    await userEvent.tab()
+
+    // Verify button has focus
+    await expect(button).toHaveFocus()
+
+    // Tab away
+    await userEvent.tab()
+    await expect(button).not.toHaveFocus()
+  },
+}
+
+/** Tests all variant buttons are clickable */
+export const TestAllVariants: Story = {
+  name: '✅ Test: All Variants Clickable',
+  render: (args) => (
+    <StoryFlex>
+      <Button {...args} variant="default">Default</Button>
+      <Button {...args} variant="accent">Accent</Button>
+      <Button {...args} variant="outline">Outline</Button>
+      <Button {...args} variant="secondary">Secondary</Button>
+      <Button {...args} variant="destructive">Destructive</Button>
+      <Button {...args} variant="ghost">Ghost</Button>
+      <Button {...args} variant="link">Link</Button>
+    </StoryFlex>
+  ),
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement)
+
+    const variants = ['Default', 'Accent', 'Outline', 'Secondary', 'Destructive', 'Ghost', 'Link']
+
+    for (const variant of variants) {
+      const button = canvas.getByRole('button', { name: variant })
+      await userEvent.click(button)
+    }
+
+    // All 7 variants should have triggered onClick
+    await expect(args.onClick).toHaveBeenCalledTimes(7)
+  },
 }

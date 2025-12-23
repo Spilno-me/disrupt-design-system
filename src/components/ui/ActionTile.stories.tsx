@@ -30,7 +30,7 @@ const meta: Meta<typeof ActionTile> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['success', 'neutral', 'destructive'],
+      options: ['success', 'info', 'neutral', 'destructive'],
       description: 'Semantic color variant',
     },
     appearance: {
@@ -77,11 +77,14 @@ export const AllStates: Story = {
       >
         <div className="bg-dark rounded-xl p-8">
           <StoryFlex>
-            <ActionTile variant="success" appearance="outline" aria-label="Create new">
+            <ActionTile variant="success" appearance="outline" aria-label="Submit">
               <Rocket className="size-8" />
             </ActionTile>
-            <ActionTile variant="neutral" appearance="outline" aria-label="Edit">
+            <ActionTile variant="info" appearance="outline" aria-label="Edit">
               <Pencil className="size-8" />
+            </ActionTile>
+            <ActionTile variant="neutral" appearance="outline" aria-label="Settings">
+              <Settings className="size-8" />
             </ActionTile>
             <ActionTile variant="destructive" appearance="outline" aria-label="Delete">
               <Trash2 className="size-8" />
@@ -97,11 +100,14 @@ export const AllStates: Story = {
       >
         <div className="bg-dark rounded-xl p-8">
           <StoryFlex>
-            <ActionTile variant="success" appearance="filled" aria-label="Create new">
+            <ActionTile variant="success" appearance="filled" aria-label="Submit">
               <Rocket className="size-8" />
             </ActionTile>
-            <ActionTile variant="neutral" appearance="filled" aria-label="Edit">
+            <ActionTile variant="info" appearance="filled" aria-label="Edit">
               <Pencil className="size-8" />
+            </ActionTile>
+            <ActionTile variant="neutral" appearance="filled" aria-label="Settings">
+              <Settings className="size-8" />
             </ActionTile>
             <ActionTile variant="destructive" appearance="filled" aria-label="Delete">
               <Trash2 className="size-8" />
@@ -116,11 +122,14 @@ export const AllStates: Story = {
         description="Same subtle fills work on light surfaces too"
       >
         <StoryFlex>
-          <ActionTile variant="success" appearance="filled" aria-label="Create new">
+          <ActionTile variant="success" appearance="filled" aria-label="Submit">
             <Rocket className="size-8" />
           </ActionTile>
-          <ActionTile variant="neutral" appearance="filled" aria-label="Edit">
+          <ActionTile variant="info" appearance="filled" aria-label="Edit">
             <Pencil className="size-8" />
+          </ActionTile>
+          <ActionTile variant="neutral" appearance="filled" aria-label="Settings">
+            <Settings className="size-8" />
           </ActionTile>
           <ActionTile variant="destructive" appearance="filled" aria-label="Delete">
             <Trash2 className="size-8" />
@@ -172,11 +181,14 @@ export const AllStates: Story = {
       <StorySection title="Disabled State" description="All variants in disabled state">
         <div className="bg-dark rounded-xl p-8">
           <StoryFlex>
-            <ActionTile variant="success" appearance="outline" disabled aria-label="Disabled create">
+            <ActionTile variant="success" appearance="outline" disabled aria-label="Disabled submit">
               <Rocket className="size-8" />
             </ActionTile>
-            <ActionTile variant="neutral" appearance="outline" disabled aria-label="Disabled edit">
+            <ActionTile variant="info" appearance="outline" disabled aria-label="Disabled edit">
               <Pencil className="size-8" />
+            </ActionTile>
+            <ActionTile variant="neutral" appearance="outline" disabled aria-label="Disabled settings">
+              <Settings className="size-8" />
             </ActionTile>
             <ActionTile variant="destructive" appearance="outline" disabled aria-label="Disabled delete">
               <Trash2 className="size-8" />
@@ -211,6 +223,22 @@ export const Success: Story = {
 export const Neutral: Story = {
   args: {
     variant: 'neutral',
+    appearance: 'outline',
+    'aria-label': 'Settings',
+    children: <Settings className="size-8" />,
+  },
+  decorators: [
+    (Story) => (
+      <div className="bg-dark rounded-xl p-8">
+        <Story />
+      </div>
+    ),
+  ],
+}
+
+export const Info: Story = {
+  args: {
+    variant: 'info',
     appearance: 'outline',
     'aria-label': 'Edit item',
     children: <Pencil className="size-8" />,

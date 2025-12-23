@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react'
+import React, { useEffect, useState, ReactNode, useMemo } from 'react'
 import { motion, useMotionValue, useTransform, animate } from 'motion/react'
 import { ALIAS } from '../../constants/designTokens'
 
@@ -23,6 +23,23 @@ const CONFIG = {
     { x: 38, y: 35, w: 360, h: 290 },
   ],
   initialBlob: { x: 40, y: 30, w: 400, h: 320 },
+}
+
+// Second blob waypoints - positioned on opposite side, different rhythm
+const CONFIG_BLOB_2 = {
+  waypointInterval: 2500, // Slightly slower for visual variety
+  transitionDuration: 2.2,
+  waypoints: [
+    { x: 75, y: 70, w: 300, h: 260 },
+    { x: 70, y: 55, w: 320, h: 280 },
+    { x: 60, y: 45, w: 340, h: 300 },
+    { x: 50, y: 35, w: 320, h: 280 },
+    { x: 45, y: 45, w: 300, h: 260 },
+    { x: 55, y: 55, w: 280, h: 240 },
+    { x: 65, y: 65, w: 310, h: 270 },
+    { x: 72, y: 60, w: 290, h: 250 },
+  ],
+  initialBlob: { x: 70, y: 65, w: 320, h: 280 },
 }
 
 // =============================================================================
@@ -55,60 +72,110 @@ function GridPattern() {
 }
 
 // =============================================================================
-// MAIN COMPONENT
+// SINGLE BLOB COMPONENT (internal)
 // =============================================================================
 
-interface GridBlobBackgroundProps {
-  scale?: number
+interface SingleBlobProps {
+  scale: number
+  config: typeof CONFIG | typeof CONFIG_BLOB_2
+  initialDelay?: number // Stagger start for visual interest
 }
 
-export function GridBlobBackground({ scale = 1 }: GridBlobBackgroundProps) {
+function SingleBlob({ scale, config, initialDelay = 0 }: SingleBlobProps) {
   const [waypointIndex, setWaypointIndex] = useState(0)
+  const [started, setStarted] = useState(initialDelay === 0)
+
+  const blobConfig = 'blob' in config ? config.blob : config
+  const waypoints = config.waypoints
+  const initial = config.initialBlob
 
   // Motion values for smooth animation
-  const x = useMotionValue(CONFIG.initialBlob.x)
-  const y = useMotionValue(CONFIG.initialBlob.y)
-  const width = useMotionValue(CONFIG.initialBlob.w * scale)
-  const height = useMotionValue(CONFIG.initialBlob.h * scale)
+  const x = useMotionValue(initial.x)
+  const y = useMotionValue(initial.y)
+  const width = useMotionValue(initial.w * scale)
+  const height = useMotionValue(initial.h * scale)
 
   // Transform to CSS mask position and size
   const maskImage = useTransform(
     [x, y, width, height],
     ([xVal, yVal, wVal, hVal]) => {
-      // Create radial gradient mask with soft edges using design token
       return ALIAS.mask.radialFade(wVal as number, hVal as number, xVal as number, yVal as number)
     }
   )
 
+  // Initial delay before starting animation
+  useEffect(() => {
+    if (initialDelay > 0) {
+      const timeout = setTimeout(() => setStarted(true), initialDelay)
+      return () => clearTimeout(timeout)
+    }
+  }, [initialDelay])
+
   // Animate through waypoints
   useEffect(() => {
+    if (!started) return
+
     const interval = setInterval(() => {
-      setWaypointIndex(prev => (prev + 1) % CONFIG.waypoints.length)
-    }, CONFIG.blob.waypointInterval)
+      setWaypointIndex(prev => (prev + 1) % waypoints.length)
+    }, blobConfig.waypointInterval)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [started, waypoints.length, blobConfig.waypointInterval])
 
   // Animate to new waypoint when index changes
   useEffect(() => {
-    const wp = CONFIG.waypoints[waypointIndex]
-    const duration = CONFIG.blob.transitionDuration
+    if (!started) return
+
+    const wp = waypoints[waypointIndex]
+    const duration = blobConfig.transitionDuration
 
     animate(x, wp.x, { duration, ease: 'easeInOut' })
     animate(y, wp.y, { duration, ease: 'easeInOut' })
     animate(width, wp.w * scale, { duration, ease: 'easeInOut' })
     animate(height, wp.h * scale, { duration, ease: 'easeInOut' })
-  }, [waypointIndex, scale, x, y, width, height])
+  }, [waypointIndex, started, scale, x, y, width, height, waypoints, blobConfig.transitionDuration])
+
+  return (
+    <motion.div
+      className="absolute inset-0"
+      style={{ maskImage, WebkitMaskImage: maskImage }}
+      aria-hidden="true"
+    >
+      <GridPattern />
+    </motion.div>
+  )
+}
+
+// =============================================================================
+// MAIN COMPONENT
+// =============================================================================
+
+interface GridBlobBackgroundProps {
+  scale?: number
+  /** Number of blobs to render (1 or 2). Default: 1 */
+  blobCount?: 1 | 2
+}
+
+export function GridBlobBackground({ scale = 1, blobCount = 1 }: GridBlobBackgroundProps) {
+  // Memoize blob configs to prevent re-renders
+  const blobs = useMemo(() => {
+    const configs = [
+      { config: CONFIG, delay: 0 },
+      { config: CONFIG_BLOB_2, delay: 500 }, // Stagger second blob
+    ]
+    return configs.slice(0, blobCount)
+  }, [blobCount])
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <motion.div
-        className="absolute inset-0"
-        style={{ maskImage, WebkitMaskImage: maskImage }}
-        aria-hidden="true"
-      >
-        <GridPattern />
-      </motion.div>
+      {blobs.map((blob, index) => (
+        <SingleBlob
+          key={index}
+          scale={scale}
+          config={blob.config}
+          initialDelay={blob.delay}
+        />
+      ))}
     </div>
   )
 }

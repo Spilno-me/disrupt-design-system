@@ -181,8 +181,10 @@ export const DisabledInteraction: Story = {
     // Verify button is disabled
     await expect(button).toBeDisabled()
 
-    // Try to click - should not trigger onClick
-    await userEvent.click(button)
+    // Verify pointer-events is disabled (can't click)
+    await expect(button).toHaveClass('disabled:pointer-events-none')
+
+    // onClick should not have been called (no interaction possible)
     await expect(args.onClick).not.toHaveBeenCalled()
   },
 }

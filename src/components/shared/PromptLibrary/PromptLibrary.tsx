@@ -25,6 +25,11 @@ import {
   FileText,
   ClipboardCheck,
   BookOpen,
+  Brush,
+  Brain,
+  Smartphone,
+  Grid3X3,
+  Package,
 } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 
@@ -46,8 +51,13 @@ export type PromptCategory =
   | 'stories'
   | 'components'
   | 'tokens'
+  | 'styling'
+  | 'ux'
+  | 'responsive'
+  | 'icons'
   | 'documentation'
   | 'review'
+  | 'delivery'
 
 // =============================================================================
 // CATEGORY CONFIG - Using Tailwind classes
@@ -97,6 +107,41 @@ const CATEGORY_CONFIG: Record<
     badgeClass: 'bg-warning-subtle text-warning',
     activeClass: 'bg-warning-strong text-inverse',
     headerClass: 'text-warning',
+  },
+  styling: {
+    label: 'Styling',
+    icon: <Brush className="w-4 h-4" />,
+    badgeClass: 'bg-info-subtle text-info',
+    activeClass: 'bg-info-strong text-inverse',
+    headerClass: 'text-info',
+  },
+  ux: {
+    label: 'UX',
+    icon: <Brain className="w-4 h-4" />,
+    badgeClass: 'bg-accent-subtle text-accent',
+    activeClass: 'bg-accent-strong text-inverse',
+    headerClass: 'text-accent',
+  },
+  responsive: {
+    label: 'Responsive',
+    icon: <Smartphone className="w-4 h-4" />,
+    badgeClass: 'bg-success-subtle text-success',
+    activeClass: 'bg-success-strong text-inverse',
+    headerClass: 'text-success',
+  },
+  icons: {
+    label: 'Icons',
+    icon: <Grid3X3 className="w-4 h-4" />,
+    badgeClass: 'bg-muted-bg text-secondary',
+    activeClass: 'bg-inverse-bg text-inverse',
+    headerClass: 'text-secondary',
+  },
+  delivery: {
+    label: 'Delivery',
+    icon: <Package className="w-4 h-4" />,
+    badgeClass: 'bg-error-subtle text-error',
+    activeClass: 'bg-error-strong text-inverse',
+    headerClass: 'text-error',
   },
 }
 

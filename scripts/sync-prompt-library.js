@@ -75,11 +75,25 @@ function parsePrompts(content) {
     const categoryMatch = promptStr.match(/category:\s*['"]([^'"]+)['"]/)
     const descriptionMatch = promptStr.match(/description:\s*['"]([^'"]+)['"]/)
 
-    // Extract prompt content (handles template literals)
+    // Extract prompt content (handles template literals with escaped backticks)
     let promptContent = ''
-    const promptMatch = promptStr.match(/prompt:\s*`([\s\S]*?)`/)
-    if (promptMatch) {
-      promptContent = promptMatch[1]
+    const promptStartMatch = promptStr.match(/prompt:\s*`/)
+    if (promptStartMatch) {
+      const contentStart = promptStartMatch.index + promptStartMatch[0].length
+      // Walk through to find unescaped closing backtick
+      let i = contentStart
+      while (i < promptStr.length) {
+        if (promptStr[i] === '\\' && i + 1 < promptStr.length) {
+          // Skip escaped character (handles \` and \\)
+          i += 2
+        } else if (promptStr[i] === '`') {
+          // Found unescaped closing backtick
+          break
+        } else {
+          i++
+        }
+      }
+      promptContent = promptStr.slice(contentStart, i)
         .replace(/\\`/g, '`')
         .replace(/\\\\/g, '\\')
         .trim()

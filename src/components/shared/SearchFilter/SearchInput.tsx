@@ -26,6 +26,8 @@ export interface SearchInputProps {
   onBlur: () => void
   /** Additional class names */
   className?: string
+  /** Size variant */
+  size?: 'default' | 'compact'
 }
 
 /**
@@ -44,12 +46,16 @@ export function SearchInput({
   onFocus,
   onBlur,
   className,
+  size = 'default',
 }: SearchInputProps) {
+  const isCompact = size === 'compact'
+
   return (
     <div
       className={cn(
         // Base styles - matching Radix Input with inset shadow for depth
-        'relative flex flex-1 items-center h-10',
+        'relative flex flex-1 items-center',
+        isCompact ? 'h-9' : 'h-10',
         'rounded-sm border border-default bg-surface',
         'transition-[color,box-shadow]',
         // Focus state - matching Radix Input
@@ -61,17 +67,18 @@ export function SearchInput({
       style={{ boxShadow: 'var(--shadow-inner-sm)' }}
     >
       {/* Search icon or loading spinner */}
-      <div className="absolute left-3 flex items-center pointer-events-none">
+      <div className={cn('absolute flex items-center pointer-events-none', isCompact ? 'left-2.5' : 'left-3')}>
         {isSearching ? (
           <Loader2
-            className="w-4 h-4 text-accent animate-spin"
+            className={cn('text-accent animate-spin', isCompact ? 'w-3.5 h-3.5' : 'w-4 h-4')}
             aria-hidden="true"
           />
         ) : (
           <SearchIcon
             className={cn(
               'transition-colors duration-150',
-              'text-secondary'
+              'text-secondary',
+              isCompact && 'w-3.5 h-3.5'
             )}
           />
         )}
@@ -93,10 +100,10 @@ export function SearchInput({
         className={cn(
           // Base input styles - matching Radix Input
           'w-full h-full bg-transparent border-none outline-none',
-          'text-base md:text-sm font-sans',
-          'text-primary placeholder:text-tertiary/50',
+          isCompact ? 'text-sm' : 'text-base md:text-sm',
+          'font-sans text-primary placeholder:text-tertiary/50',
           'selection:bg-accent-strong selection:text-inverse',
-          'pl-9 pr-3',
+          isCompact ? 'pl-8 pr-2.5' : 'pl-9 pr-3',
           disabled && 'cursor-not-allowed'
         )}
       />

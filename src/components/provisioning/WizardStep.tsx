@@ -95,14 +95,14 @@ export function WizardStepSection({
   className,
 }: WizardStepSectionProps) {
   return (
-    <div className={cn('space-y-4', className)}>
+    <div className={cn(className)}>
       {(title || description) && (
         <div className="mb-4">
           {title && (
             <h3 className="text-base font-semibold font-sans text-primary">{title}</h3>
           )}
           {description && (
-            <p className="mt-0.5 text-sm font-sans text-emphasis">{description}</p>
+            <p className="mt-1 text-sm font-sans text-emphasis">{description}</p>
           )}
         </div>
       )}

@@ -250,7 +250,7 @@ export function Pagination({
               disabled={currentPage === 1 || loading}
               aria-label="Go to first page"
               className={cn(
-                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)]",
+                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
                 isRowLayout ? "flex" : "hidden @md:flex"
               )}
             >
@@ -267,7 +267,7 @@ export function Pagination({
             disabled={currentPage === 1 || loading}
             aria-label="Go to previous page"
             className={cn(
-              "hover:bg-[var(--brand-deep-current-100)]",
+              "hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
               isRowLayout ? "h-9 w-9" : "h-11 w-11 @md:h-9 @md:w-9"
             )}
           >
@@ -308,7 +308,7 @@ export function Pagination({
                     "font-medium transition-shadow duration-200",
                     isRowLayout ? "h-9 w-9 text-sm" : "h-11 w-10 @md:h-9 @md:w-9 text-base @md:text-sm",
                     isCurrentPage && "[--pg-shadow:inset_0_2px_4px_rgba(0,0,0,0.2)] hover:[--pg-shadow:none] cursor-default",
-                    !isCurrentPage && "hover:bg-[var(--brand-deep-current-100)]"
+                    !isCurrentPage && "hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]"
                   )}
                   style={isCurrentPage ? {
                     boxShadow: 'var(--pg-shadow)'
@@ -329,7 +329,7 @@ export function Pagination({
             disabled={currentPage === totalPages || loading}
             aria-label="Go to next page"
             className={cn(
-              "hover:bg-[var(--brand-deep-current-100)]",
+              "hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
               isRowLayout ? "h-9 w-9" : "h-11 w-11 @md:h-9 @md:w-9"
             )}
           >
@@ -346,7 +346,7 @@ export function Pagination({
               disabled={currentPage === totalPages || loading}
               aria-label="Go to last page"
               className={cn(
-                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)]",
+                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
                 isRowLayout ? "flex" : "hidden @md:flex"
               )}
             >

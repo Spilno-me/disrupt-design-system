@@ -84,7 +84,26 @@ interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeo
   effectActive?: boolean
   /** Make button full width */
   fullWidth?: boolean
+  /** Enable beacon/pulse effect to draw attention (default: true for destructive variant) */
+  beacon?: boolean
 }
+
+// Beacon color mapping per variant (color, fade color)
+// These rgba values are derived from palette colors (ABYSS, EMBER, LAGOON, VELVET)
+// with specific alpha values for the pulse animation effect.
+// Cannot use ALIAS tokens as they don't support dynamic alpha for animation keyframes.
+/* eslint-disable no-restricted-syntax -- Beacon animation requires rgba with specific alpha values for pulse effect */
+const BEACON_COLORS = {
+  default: { color: 'rgba(45, 49, 66, 0.5)', fade: 'rgba(45, 49, 66, 0)' },       // ABYSS[700]
+  destructive: { color: 'rgba(220, 38, 38, 0.5)', fade: 'rgba(220, 38, 38, 0)' }, // EMBER[600]
+  outline: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },     // LAGOON[500]
+  secondary: { color: 'rgba(94, 79, 126, 0.5)', fade: 'rgba(94, 79, 126, 0)' },   // VELVET[500]
+  ghost: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },       // LAGOON[500]
+  link: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },        // LAGOON[500]
+  contact: { color: 'rgba(45, 49, 66, 0.5)', fade: 'rgba(45, 49, 66, 0)' },       // ABYSS[700]
+  accent: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },      // LAGOON[500]
+} as const
+/* eslint-enable no-restricted-syntax */
 
 function Button({
   className,
@@ -94,8 +113,11 @@ function Button({
   noEffect = false,
   effectActive = false,
   fullWidth = false,
+  beacon,
   ...props
 }: ButtonProps) {
+  // Beacon defaults to true for destructive variant
+  const showBeacon = beacon ?? (variant === 'destructive')
   const Comp = asChild ? Slot : "button"
   const [isHovered, setIsHovered] = useState(false)
 
@@ -147,6 +169,7 @@ function Button({
   // Get variant-specific gradients
   const variantKey = variant || 'default'
   const { gradient: glassGradient, glow: glassGlow } = VARIANT_GRADIENTS[variantKey]
+  const beaconColors = BEACON_COLORS[variantKey]
 
   return (
     <div
@@ -154,11 +177,24 @@ function Button({
       style={{
         borderRadius,
         isolation: 'isolate',
-        width: isFullWidth ? '100%' : 'fit-content'
+        width: isFullWidth ? '100%' : 'fit-content',
+        // Set CSS variables for beacon animation
+        ...(showBeacon && {
+          '--beacon-color': beaconColors.color,
+          '--beacon-color-fade': beaconColors.fade,
+        } as React.CSSProperties)
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Beacon pulse effect */}
+      {showBeacon && (
+        <span
+          className="absolute inset-0 rounded-xl animate-beacon pointer-events-none"
+          aria-hidden="true"
+        />
+      )}
+
       {/* Glow container */}
       <div
         className="absolute inset-0 overflow-hidden pointer-events-none"

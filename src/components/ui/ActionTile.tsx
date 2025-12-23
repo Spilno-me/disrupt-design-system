@@ -28,6 +28,8 @@ const actionTileVariants = cva(
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'disabled:pointer-events-none disabled:opacity-50',
     'cursor-pointer',
+    // Pressed: subtle scale for tactile feedback
+    'active:scale-95',
   ],
   {
     variants: {
@@ -38,13 +40,30 @@ const actionTileVariants = cva(
           'border-success-strong dark:border-success text-success-strong dark:text-success',
           'hover:bg-success-strong hover:text-on-status hover:border-success-strong',
           'dark:hover:bg-success dark:hover:border-success dark:hover:text-on-status',
+          // Pressed: darker shade for tactile feedback
+          'active:bg-[var(--brand-harbor-700)] active:border-[var(--brand-harbor-700)] active:text-on-status',
+          'dark:active:bg-[var(--brand-harbor-600)] dark:active:border-[var(--brand-harbor-600)]',
           'focus-visible:ring-success',
+        ],
+        info: [
+          // Teal - DEEP_CURRENT colors (brand accent)
+          // Use for edit/modify actions - more visible than neutral gray
+          'border-accent-strong dark:border-info text-accent-strong dark:text-info',
+          'hover:bg-accent-strong hover:text-on-status hover:border-accent-strong',
+          'dark:hover:bg-info dark:hover:border-info dark:hover:text-on-status',
+          // Pressed: darker shade for tactile feedback
+          'active:bg-[var(--brand-deep-current-700)] active:border-[var(--brand-deep-current-700)] active:text-on-status',
+          'dark:active:bg-[var(--brand-deep-current-400)] dark:active:border-[var(--brand-deep-current-400)]',
+          'focus-visible:ring-info',
         ],
         neutral: [
           // Warm neutral - ABYSS colors (warm dark gray)
           // Hover: solid fill with white text
           'border-strong text-strong',
           'hover:bg-strong hover:text-inverse hover:border-strong',
+          // Pressed: darker shade for tactile feedback
+          'active:bg-[var(--brand-abyss-800)] active:border-[var(--brand-abyss-800)] active:text-inverse',
+          'dark:active:bg-[var(--brand-abyss-300)] dark:active:border-[var(--brand-abyss-300)]',
           'focus-visible:ring-strong',
         ],
         destructive: [
@@ -52,6 +71,9 @@ const actionTileVariants = cva(
           // Hover: solid fill with white text (matches NextStepButton pattern)
           'border-error text-error',
           'hover:bg-error hover:text-on-status hover:border-error',
+          // Pressed: darker shade for tactile feedback
+          'active:bg-[var(--brand-coral-700)] active:border-[var(--brand-coral-700)] active:text-on-status',
+          'dark:active:bg-[var(--brand-coral-400)] dark:active:border-[var(--brand-coral-400)]',
           'focus-visible:ring-error',
         ],
       },
@@ -78,6 +100,11 @@ const actionTileVariants = cva(
         variant: 'success',
         appearance: 'filled',
         className: 'bg-success-light dark:bg-success/10',
+      },
+      {
+        variant: 'info',
+        appearance: 'filled',
+        className: 'bg-info-light dark:bg-info/10',
       },
       {
         variant: 'neutral',
@@ -111,8 +138,9 @@ export interface ActionTileProps
  * ActionTile - Square icon button for common actions
  *
  * Use `variant` to set the semantic color:
- * - `success` - Green, for positive actions (create, approve, complete)
- * - `neutral` - Gray, for neutral actions (edit, view, settings)
+ * - `success` - Green, for positive actions (create, approve, submit)
+ * - `info` - Teal, for informational actions (edit, view, modify)
+ * - `neutral` - Gray, for low-emphasis actions (settings, options)
  * - `destructive` - Red, for dangerous actions (delete, remove, cancel)
  *
  * Use `appearance` to set the visual style:

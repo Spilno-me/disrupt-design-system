@@ -62,8 +62,8 @@ const mobileNavButtonVariants = cva(
   // Base styles
   [
     'relative flex flex-col items-center justify-center',
-    'w-[76px] h-[44px]',
-    'rounded-[10px]',
+    'w-[68px] h-[52px]',  // Balanced: 68×52px (comfortable touch target, good proportions)
+    'rounded-xl',         // Softer radius
     'transition-all duration-150',
     'cursor-pointer',
     'select-none',

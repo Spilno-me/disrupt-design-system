@@ -75,11 +75,22 @@ Use withStoryContainer('{LEVEL}') decorator where LEVEL is atom, molecule, or or
     tags: ['component', 'ui', 'cva'],
     prompt: `Create a new UI component: {COMPONENT}
 
-BEFORE WRITING:
-1. Read \`.claude/component-dev-rules.md\`
-2. Read \`.claude/ux-laws-rules.md\` for UX principles
-3. Read \`.claude/color-matrix.json\` for allowed colors
-4. Check existing similar components in \`src/components/ui/\`
+BEFORE WRITING (MANDATORY - DO NOT SKIP):
+1. Read \`.claude/component-dev-rules.md\` - especially "Duplicate Detection" section
+2. Complete ALL 4 duplicate detection steps:
+   - Search for similar components by concept + synonyms
+   - Check \`agent-context.json\` registry
+   - Check existing Storybook stories
+   - Document your decision (exact match? 80% match? no match?)
+3. Read \`.claude/ux-laws-rules.md\` for UX principles
+4. Read \`.claude/color-matrix.json\` for allowed colors
+
+DUPLICATE CHECK OUTPUT (required before proceeding):
+\`\`\`
+Similar components found: [list or "none"]
+Decision: [USE_EXISTING | EXTEND_EXISTING | NEW_COMPONENT]
+Reason: [brief justification]
+\`\`\`
 
 REQUIREMENTS:
 - Use DDS tokens only (PRIMITIVES, ALIAS, SHADOWS, RADIUS)
@@ -89,6 +100,7 @@ REQUIREMENTS:
 - TypeScript strict
 
 FORBIDDEN:
+- Creating component without completing duplicate detection
 - Hardcoded hex colors
 - Tailwind standard colors (red-500, blue-600)
 - Custom CSS outside tokens
@@ -264,5 +276,410 @@ Report:
 |------|------|-----------|---------------|
 
 Group by severity and provide fix commands where possible.`,
+  },
+
+  // =============================================================================
+  // STYLING (Applying foundational rules)
+  // =============================================================================
+  {
+    id: 'styling-depth-layering',
+    title: 'Apply Depth/Elevation Layering',
+    description: 'Apply correct depth layering with elevation, shadows, and backgrounds.',
+    category: 'styling',
+    variables: ['COMPONENT'],
+    tags: ['depth', 'elevation', 'shadows', 'layering'],
+    prompt: `Apply depth layering rules to {COMPONENT}.
+
+READ FIRST: \`.claude/depth-layering-rules.md\`
+
+CORE RULE: Closer = Lighter (both themes, no exceptions)
+
+Layer Hierarchy:
+| Depth | Layer | Token | Shadow |
+|-------|-------|-------|--------|
+| 1 | Elevated | \`bg-elevated\` | \`shadow-lg\` |
+| 2 | Card | \`bg-elevated\` | \`shadow-md\` |
+| 3 | Surface | \`bg-surface\` | \`shadow-sm\` |
+| 4 | Page | \`bg-page\` | — |
+
+Decision Table:
+| Element | Classes |
+|---------|---------|
+| Modal/Dropdown | \`bg-elevated shadow-lg\` |
+| Card on page | \`bg-elevated shadow-md\` |
+| Sidebar/panel | \`bg-surface shadow-sm\` |
+| Main background | \`bg-page\` |
+| Nested same-shade | Add \`border border-default\` |
+
+FORBIDDEN:
+- Elevated without shadow
+- Page lighter than card
+- Raw colors (\`bg-white\`, \`bg-gray-*\`)
+- Skip >2 shade steps
+
+OUTPUT: Updated component with correct depth tokens.`,
+  },
+  {
+    id: 'styling-spacing',
+    title: 'Apply Spacing Tokens',
+    description: 'Apply correct spacing using DDS spacing tokens.',
+    category: 'styling',
+    variables: ['COMPONENT'],
+    tags: ['spacing', 'layout', 'tokens'],
+    prompt: `Apply spacing rules to {COMPONENT}.
+
+READ FIRST: \`.claude/spacing-rules.md\`
+
+CORE RULE: Base 4px. NEVER arbitrary values. ALWAYS tokens.
+
+Quick Reference:
+| Relationship | px | Tailwind |
+|--------------|-----|----------|
+| Icon↔Text | 8 | \`gap-2\` |
+| Label↔Input | 8 | \`mb-2\` |
+| Input↔Input | 16 | \`space-y-4\` |
+| Card↔Card | 16-24 | \`gap-4\`/\`gap-6\` |
+| Section↔Section | 48-64 | \`py-12\`/\`py-16\` |
+
+Decision:
+| Relationship | Token |
+|--------------|-------|
+| Directly related | tight (8px) |
+| Same group | base (16px) |
+| Separate components | comfortable (24px) |
+| Different sections | spacious (32-48px) |
+
+FORBIDDEN:
+- Arbitrary values: \`gap-[18px]\`, \`p-[23px]\`
+- Inline styles: \`style={{ marginTop: '32px' }}\`
+
+OUTPUT: Updated component with DDS spacing tokens.`,
+  },
+  {
+    id: 'styling-typography',
+    title: 'Apply Typography Rules',
+    description: 'Apply correct typography using DDS font scale and weights.',
+    category: 'styling',
+    variables: ['COMPONENT'],
+    tags: ['typography', 'fonts', 'text'],
+    prompt: `Apply typography rules to {COMPONENT}.
+
+READ FIRST: \`.claude/typography-rules.md\`
+
+FONTS: Fixel (UI) + JetBrains Mono (code only)
+
+Scale:
+| Role | Tailwind |
+|------|----------|
+| Page Title | \`text-2xl font-semibold\` |
+| Section Title | \`text-lg font-semibold\` |
+| Card Title | \`text-base font-semibold\` |
+| Body | \`text-sm\` |
+| Label | \`text-sm font-medium\` |
+| Caption | \`text-xs text-muted\` |
+| Code | \`font-mono text-sm\` |
+
+Colors:
+| Element | Token |
+|---------|-------|
+| Primary | \`text-primary\` |
+| Secondary | \`text-secondary\` |
+| Muted | \`text-muted\` |
+| Error | \`text-error\` |
+| Link | \`text-link\` |
+
+FORBIDDEN:
+- \`font-serif\`, \`font-display\`
+- Non-Fixel UI text
+- \`font-mono\` for non-code text
+- Font sizes below 12px
+
+OUTPUT: Updated component with DDS typography.`,
+  },
+  {
+    id: 'styling-colors-semantic',
+    title: 'Apply Semantic Color Tokens',
+    description: 'Apply correct color token priority: semantic > contextual > primitive.',
+    category: 'styling',
+    variables: ['COMPONENT'],
+    tags: ['colors', 'tokens', 'semantic'],
+    prompt: `Apply semantic color rules to {COMPONENT}.
+
+READ FIRST: \`.claude/css-styling-rules.md\` and \`.claude/color-matrix.json\`
+
+TOKEN PRIORITY (ALWAYS follow this order):
+| Priority | Type | Example | When |
+|----------|------|---------|------|
+| 1st | Semantic | \`text-warning\`, \`bg-error\` | Color conveys meaning |
+| 2nd | Contextual | \`text-primary\`, \`bg-surface\` | UI structure |
+| 3rd | Primitive | \`text-abyss-500\` | ONLY when neither fits |
+
+Examples:
+\`\`\`tsx
+// ✅ Semantic - self-documenting
+<Badge className="border-warning text-warning">Investigation</Badge>
+
+// ❌ Primitive - meaning unclear
+<Badge className="border-amber-500 text-amber-600">Investigation</Badge>
+\`\`\`
+
+FORBIDDEN:
+- Standard Tailwind colors (\`red-500\`, \`blue-600\`)
+- Hardcoded hex values
+- Same color family on itself (invisible: \`bg-abyss-500 text-abyss-400\`)
+
+OUTPUT: Updated component with semantic-first color tokens.`,
+  },
+
+  // =============================================================================
+  // UX & ACCESSIBILITY
+  // =============================================================================
+  {
+    id: 'ux-apply-laws',
+    title: 'Apply UX Laws to Component',
+    description: 'Apply Fitts, Hick, Miller, and Gestalt principles to UI.',
+    category: 'ux',
+    variables: ['COMPONENT'],
+    tags: ['ux', 'usability', 'laws'],
+    prompt: `Apply UX laws to {COMPONENT}.
+
+READ FIRST: \`.claude/ux-laws-rules.md\`
+
+Core Laws:
+| Law | Rule | Value |
+|-----|------|-------|
+| Fitts | Target size | \`min-h-11\` (44px mobile) |
+| Hick | Options limit | 5-7 max choices |
+| Miller | Memory limit | 7±2 items |
+| Doherty | Response time | <400ms or spinner |
+
+Action Overflow Rule (CRITICAL):
+- ≤3 actions = Visible buttons
+- ≥4 actions = Overflow menu (ActionSheet/Dropdown)
+
+By Component:
+| Type | Requirements |
+|------|--------------|
+| Button | 44px touch, primary distinct |
+| Form | 5-7 fields max, grouped sections |
+| Nav | ≤7 items, key at start/end |
+| Modal | Reachable close, single purpose |
+| List | 7 visible, grouped items |
+
+OUTPUT: Updated component following UX laws.`,
+  },
+  {
+    id: 'a11y-semantic-html',
+    title: 'Fix Accessibility Issues',
+    description: 'Replace inaccessible patterns with semantic HTML and Radix.',
+    category: 'ux',
+    variables: ['COMPONENT'],
+    tags: ['accessibility', 'a11y', 'semantic'],
+    prompt: `Fix accessibility in {COMPONENT}.
+
+READ FIRST: \`.claude/hookify.accessibility-enforcement.md\`
+
+Replace These Patterns:
+| Bad | Fix |
+|-----|-----|
+| \`<div onClick>\` | \`<button>\` |
+| \`<span onClick>\` | \`<button>\` |
+| \`role="button"\` | \`<button>\` |
+| \`tabIndex={0}\` workaround | Semantic element |
+
+For Complex Interactions → Use Radix:
+\`\`\`tsx
+// ✅ Radix handles a11y
+<Dialog.Trigger asChild><Button>Open</Button></Dialog.Trigger>
+\`\`\`
+
+Requirements:
+- Focus visible: \`focus:ring-2 focus:ring-accent\`
+- Contrast: Check \`.claude/contrast-matrix.json\`
+- Touch targets: min 44px (\`min-h-11\`)
+- Labels: All inputs need labels
+
+OUTPUT: Accessible component with semantic HTML.`,
+  },
+
+  // =============================================================================
+  // RESPONSIVE & MOBILE
+  // =============================================================================
+  {
+    id: 'responsive-mobile-first',
+    title: 'Apply Mobile-First Responsive',
+    description: 'Convert to mobile-first responsive patterns.',
+    category: 'responsive',
+    variables: ['COMPONENT'],
+    tags: ['responsive', 'mobile', 'breakpoints'],
+    prompt: `Apply mobile-first responsive patterns to {COMPONENT}.
+
+READ FIRST: \`.claude/hookify.responsive-patterns.md\`
+
+Breakpoints:
+| Prefix | Width | Usage |
+|--------|-------|-------|
+| (none) | 0+ | Mobile base |
+| \`sm:\` | 640px | Large phones |
+| \`md:\` | 768px | Tablets |
+| \`lg:\` | 1024px | Laptops |
+| \`xl:\` | 1280px | Desktops |
+
+Pattern:
+\`\`\`tsx
+// ❌ Desktop-first
+<div className="px-8 max-sm:px-4">
+
+// ✅ Mobile-first
+<div className="px-4 sm:px-6 lg:px-8">
+
+// ✅ Responsive grid
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+\`\`\`
+
+Mobile Requirements:
+- Touch targets ≥44px
+- Text ≥16px (no zoom)
+- No horizontal scroll
+
+OUTPUT: Mobile-first responsive component.`,
+  },
+
+  // =============================================================================
+  // ICONS
+  // =============================================================================
+  {
+    id: 'icons-replace-emoji',
+    title: 'Replace Emojis with Lucide Icons',
+    description: 'Convert emoji usage to Lucide React icons.',
+    category: 'icons',
+    variables: ['COMPONENT'],
+    tags: ['icons', 'lucide', 'emoji'],
+    prompt: `Replace emojis with Lucide icons in {COMPONENT}.
+
+READ FIRST: \`.claude/iconography-rules.md\`
+
+RULE: NEVER emojis. ALWAYS Lucide React.
+
+Common Replacements:
+| Emoji | Lucide |
+|-------|--------|
+| 🎨 | \`Palette\` |
+| 📱 | \`Smartphone\` |
+| 💡 | \`Lightbulb\` |
+| ⚠️ | \`AlertTriangle\` |
+| ✨ | \`Sparkles\` |
+| ⚡ | \`Zap\` |
+| 🌙 | \`Moon\` |
+| ☀️ | \`Sun\` |
+
+Sizes:
+| Size | px | Use |
+|------|-----|-----|
+| XS | 16 | Inline, badges |
+| SM | 20 | Buttons, inputs |
+| MD | 24 | Navigation (default) |
+| LG | 32 | Feature highlights |
+| XL | 48 | Empty states, heroes |
+
+Browse: https://lucide.dev
+
+OUTPUT: Component with Lucide icons, zero emojis.`,
+  },
+
+  // =============================================================================
+  // DELIVERY
+  // =============================================================================
+  {
+    id: 'delivery-package',
+    title: 'Create Delivery Package',
+    description: 'Create a standalone delivery package for a component.',
+    category: 'delivery',
+    variables: ['COMPONENT'],
+    tags: ['delivery', 'package', 'standalone'],
+    prompt: `Create delivery package for {COMPONENT}.
+
+READ FIRST: \`.claude/delivery-package-guide.md\`
+
+Package Structure:
+\`\`\`
+[package-name]/
+├── setup.sh
+├── [Component].tsx
+├── tokens.css          # WITH @theme block
+├── README.md
+├── example-usage.tsx
+├── lib/utils.ts        # cn()
+└── ui/*.tsx            # dependencies
+\`\`\`
+
+Steps:
+1. Find deps: \`grep "from './ui" src/components/{COMPONENT}.tsx\`
+2. Copy component + ui deps + lib/utils.ts
+3. Fix import paths: \`@/components/ui/x\` → \`./ui/x\`
+4. Create tokens.css with @theme block (CRITICAL)
+5. Create setup.sh supporting npm/yarn/pnpm
+6. Test all package managers
+
+CRITICAL - tokens.css:
+\`\`\`css
+// ❌ BROKEN - no utilities generated
+:root { --color-primary: #2D3142; }
+
+// ✅ CORRECT - generates bg-primary, text-primary
+@theme { --color-primary: #2D3142; }
+\`\`\`
+
+Validation:
+- Colors render
+- Hover states work
+- All package managers work
+- No missing imports
+
+OUTPUT: Complete delivery package ready to zip.`,
+  },
+
+  // =============================================================================
+  // DARK MODE
+  // =============================================================================
+  {
+    id: 'dark-mode-check',
+    title: 'Verify Dark Mode Compatibility',
+    description: 'Ensure component works correctly in dark mode.',
+    category: 'styling',
+    variables: ['COMPONENT'],
+    tags: ['dark-mode', 'themes', 'colors'],
+    prompt: `Verify dark mode compatibility for {COMPONENT}.
+
+READ FIRST: \`.claude/dark-mode-mapping-rules.md\`
+
+Formula: Dark = 950 - Light
+| Light | Dark |
+|-------|------|
+| 50 | 900 |
+| 100 | 800 |
+| 500 | 400 |
+
+Semantic Tokens (auto-switch):
+| Token | Light | Dark |
+|-------|-------|------|
+| \`bg-page\` | cream | ABYSS[900] |
+| \`bg-surface\` | white | ABYSS[800] |
+| \`text-primary\` | ABYSS[500] | SLATE[100] |
+| \`border-default\` | SLATE[300] | SLATE[600] |
+
+Status Colors (shift 1 step lighter in dark):
+| Token | Light | Dark |
+|-------|-------|------|
+| \`error\` | CORAL[500] | CORAL[400] |
+| \`success\` | HARBOR[500] | HARBOR[400] |
+
+FORBIDDEN:
+- Hardcoded: \`isDark ? '#0C0D12' : '#FBFBF3'\`
+- Raw hex in dark mode logic
+
+Use semantic tokens - they auto-switch themes.
+
+OUTPUT: Dark mode compatible component (test in Storybook).`,
   },
 ]

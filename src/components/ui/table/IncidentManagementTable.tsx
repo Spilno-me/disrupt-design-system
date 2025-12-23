@@ -7,7 +7,8 @@
  * - Status badges
  * - Age tracking with overdue alerts
  * - Bulk actions
- * - Mobile responsive card view
+ * - Mobile responsive card view with pagination
+ * - Touch-friendly 44px targets on mobile (Fitts' Law)
  */
 
 import * as React from 'react'
@@ -21,6 +22,7 @@ import { CopyableId } from './CopyableId'
 import { TruncatedText } from './TruncatedText'
 import { ActionTile } from '../ActionTile'
 import { Tooltip, TooltipTrigger, TooltipContent } from '../tooltip'
+import { Pagination } from '../Pagination'
 import { NextStepButton, type NextStepSeverity } from '../../../flow/components/next-step-button'
 import { cn } from '../../../lib/utils'
 import { formatAge, getAgingStyles } from '../../../lib/date-utils'
@@ -97,7 +99,7 @@ const COLUMN_WIDTHS = {
   status: '145px',   // Status badges + border padding
   severity: '115px', // Severity indicator + label (e.g., "Critical")
   age: '100px',      // Age badge
-  actions: '140px',  // Action buttons + right padding
+  actions: '155px',  // Draft rows: 3 × 32px buttons (≤3 = visible per UX rule)
 } as const
 
 const INCIDENT_TABLE_SEVERITY_MAP = {
@@ -288,6 +290,7 @@ export function IncidentManagementTable({
           return 'none'
         }
 
+        // Draft incidents: ≤3 actions = visible buttons (UX Action Overflow Rule)
         if (row.status === 'draft') {
           return (
             <div className="flex items-center gap-1">
@@ -308,7 +311,7 @@ export function IncidentManagementTable({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <ActionTile
-                    variant="neutral"
+                    variant="info"
                     appearance="filled"
                     size="xs"
                     onClick={() => { if (onEdit) onEdit(row.id) }}
@@ -427,42 +430,116 @@ export function IncidentManagementTable({
 
       {/* Mobile Card View */}
       {isMobile ? (
-        <div className="space-y-3">
-          {data.map((incident) => (
-            <DataTableMobileCard
-              key={incident.id}
-              title={incident.title}
-              subtitle={incident.incidentId}
-              status={<IncidentStatusBadge status={incident.status} severity={incident.severity} />}
-              fields={[
-                { label: 'Location', value: incident.location },
-                { label: 'Reporter', value: incident.reporter },
-                {
-                  label: 'Severity',
-                  value: (
-                    <DataTableSeverity
-                      value={incident.severity}
-                      mapping={INCIDENT_TABLE_SEVERITY_MAP}
-                      size="sm"
-                      showLabel
-                    />
-                  ),
-                },
-                {
-                  label: 'Age',
-                  value: incident.overdue ? (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error text-on-status text-xs font-bold">
-                      {formatAge(incident.ageDays)}
-                    </span>
-                  ) : (
-                    <span className="text-sm tabular-nums">{formatAge(incident.ageDays)}</span>
-                  ),
-                },
-              ]}
-              className={getPriorityBorderClass(incident.priority)}
-              onTap={() => { if (onIncidentClick) onIncidentClick(incident.id) }}
+        <div className="flex flex-col gap-3">
+          {data.map((incident) => {
+            // Build actions for mobile - same as desktop table
+            const getSeverity = (priority: RowPriority): NextStepSeverity => {
+              if (priority === 'critical') return 'critical'
+              if (priority === 'high') return 'high'
+              if (priority === 'medium') return 'medium'
+              if (priority === 'low') return 'low'
+              return 'none'
+            }
+
+            // Draft incidents: ≤3 actions = visible buttons (UX Action Overflow Rule)
+            const mobileActions = incident.status === 'draft' ? (
+              <div className="flex items-center justify-end gap-2">
+                <ActionTile
+                  variant="success"
+                  appearance="filled"
+                  size="xs"
+                  onClick={(e) => { e.stopPropagation(); if (onSubmit) onSubmit(incident.id) }}
+                  aria-label="Submit incident"
+                >
+                  <Rocket className="size-4" />
+                </ActionTile>
+                <ActionTile
+                  variant="info"
+                  appearance="filled"
+                  size="xs"
+                  onClick={(e) => { e.stopPropagation(); if (onEdit) onEdit(incident.id) }}
+                  aria-label="Edit incident"
+                >
+                  <Pencil className="size-4" />
+                </ActionTile>
+                <ActionTile
+                  variant="destructive"
+                  appearance="filled"
+                  size="xs"
+                  onClick={(e) => { e.stopPropagation(); if (onDelete) onDelete(incident.id) }}
+                  aria-label="Delete incident"
+                >
+                  <Trash2 className="size-4" />
+                </ActionTile>
+              </div>
+            ) : (
+              <div className="flex justify-end">
+                <NextStepButton
+                  severity={getSeverity(incident.priority)}
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (onNextStep) onNextStep(incident.id)
+                  }}
+                />
+              </div>
+            )
+
+            return (
+              <DataTableMobileCard
+                key={incident.id}
+                title={incident.title}
+                subtitle={incident.incidentId}
+                status={<IncidentStatusBadge status={incident.status} severity={incident.severity} />}
+                fields={[
+                  { label: 'Location', value: incident.location },
+                  { label: 'Reporter', value: incident.reporter },
+                  {
+                    label: 'Severity',
+                    value: (
+                      <DataTableSeverity
+                        value={incident.severity}
+                        mapping={INCIDENT_TABLE_SEVERITY_MAP}
+                        size="sm"
+                        showLabel
+                      />
+                    ),
+                  },
+                  {
+                    label: 'Age',
+                    value: incident.overdue ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error text-on-status text-xs font-bold">
+                        {formatAge(incident.ageDays)}
+                      </span>
+                    ) : (
+                      <span className={`text-sm tabular-nums ${getAgingStyles(incident.ageDays)}`}>
+                        {formatAge(incident.ageDays)}
+                      </span>
+                    ),
+                  },
+                ]}
+                actions={mobileActions}
+                className={getPriorityBorderClass(incident.priority)}
+                onTap={() => { if (onIncidentClick) onIncidentClick(incident.id) }}
+                showChevron={false}
+              />
+            )
+          })}
+
+          {/* Mobile Pagination */}
+          {pagination && totalItems && pageSize && currentPage && onPageChange && (
+            <Pagination
+              currentPage={currentPage}
+              totalItems={totalItems}
+              pageSize={pageSize}
+              onPageChange={onPageChange}
+              showPageSizeSelector={false}
+              showResultsText={false}
+              showFirstLastButtons={false}
+              maxPageButtons={5}
+              className="justify-center pt-2"
             />
-          ))}
+          )}
         </div>
       ) : (
         /* Desktop Table View */

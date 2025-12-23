@@ -52,6 +52,13 @@ function WavePattern() {
   const gradientStart = isDarkMode ? ALIAS.wave.dark.start : ALIAS.wave.light.start
   const gradientEnd = isDarkMode ? ALIAS.wave.dark.end : ALIAS.wave.light.end
 
+  // Glass background (matching AppHeader WavePattern exactly)
+  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba opacity for glass effect */
+  const glassBackground = isDarkMode
+    ? 'linear-gradient(0deg, rgba(20, 22, 30, 0.85) 0%, rgba(29, 31, 42, 0.7) 100%)'
+    : 'rgba(255, 255, 255, 0.15)'
+  /* eslint-enable no-restricted-syntax */
+
   // Wave SVG - stroke only, contained within 40px height
   // Path oscillates from y=8 to y=32 (amplitude 24px), stroke 4px stays within bounds
   const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="40" viewBox="0 0 1600 40" preserveAspectRatio="none"><defs><linearGradient id="fwg" x1="0%" x2="100%" y1="0%" y2="0%"><stop stop-color="${gradientStart}" offset="0%"/><stop stop-color="${gradientEnd}" offset="50%"/><stop stop-color="${gradientStart}" offset="100%"/></linearGradient></defs><path fill="none" stroke="url(#fwg)" stroke-width="4" stroke-linecap="round" d="M0 8 c200 0 300 24 400 24 c100 0 200-24 400-24 c200 0 300 24 400 24 c100 0 200-24 400-24"/></svg>`)}`
@@ -66,14 +73,13 @@ function WavePattern() {
         }
       `}</style>
 
-      {/* Glass background layer - blurs content underneath */}
+      {/* Glass background layer - matches AppHeader WavePattern exactly */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          // eslint-disable-next-line no-restricted-syntax -- Glassmorphism requires specific rgba opacity
-          background: 'rgba(255, 255, 255, 0.5)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          background: glassBackground,
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
         }}
       />
 
@@ -187,15 +193,15 @@ export function AppFooter({
     ? (isDarkMode ? 'light' : 'dark')
     : colorMode
 
-  // Wave-only variant: transparent background, no border, but content visible
-  const isWaveOnly = variant === 'wave-only'
+  // Note: variant prop kept for backward compatibility but currently unused
+  // The gradient border now always shows regardless of variant
+  void variant
 
   return (
     <footer
       className={cn(
         'relative flex items-center justify-between overflow-hidden',
-        // Always transparent - glass effect comes from WavePattern
-        isWaveOnly ? '' : 'border-t border-default/30',
+        // No border class - gradient border is rendered separately
         // Mobile: compact height (32px = 8 * 4px grid), Desktop: normal height
         compactOnMobile ? 'h-8 md:h-auto md:py-3 px-4 md:px-6' : 'px-6 py-3',
         className
@@ -205,6 +211,12 @@ export function AppFooter({
     >
       {/* Wave pattern background (matches header) */}
       <WavePattern />
+
+      {/* Gradient border on top edge - matches AppHeader style (always visible) */}
+      <div
+        className="absolute top-0 left-0 right-0 h-px pointer-events-none bg-gradient-to-r from-transparent via-default to-transparent z-20"
+        data-slot="footer-border"
+      />
 
       {/* Content wrapper - z-20 to be ABOVE wave line (z-10) */}
       <div className="relative z-20 flex items-center justify-between w-full">

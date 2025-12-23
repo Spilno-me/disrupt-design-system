@@ -95,6 +95,7 @@ export {
 export {
   // iPhone component & presets
   IPhoneFrame,
+  IPhoneMobileFrame,
   IPhoneSEFrame,
   IPhoneStandardFrame,
   IPhoneProFrame,
@@ -117,8 +118,11 @@ export {
   // Specs for reference
   IPHONE_SPECS,
   IPAD_SPECS,
+  // Defaults (single source of truth)
+  STATUS_BAR_DEFAULTS,
   // Types
   type IPhoneFrameProps,
+  type IPhoneMobileFrameProps,
   type IPhoneModel,
   type IPadFrameProps,
   type IPadModel,

@@ -14,6 +14,8 @@ export interface MobileFilterButtonProps {
   isLoading?: boolean
   /** Additional class names */
   className?: string
+  /** Size variant */
+  size?: 'default' | 'compact'
 }
 
 /**
@@ -26,7 +28,10 @@ export function MobileFilterButton({
   disabled = false,
   isLoading = false,
   className,
+  size = 'default',
 }: MobileFilterButtonProps) {
+  const isCompact = size === 'compact'
+
   return (
     <button
       type="button"
@@ -34,7 +39,8 @@ export function MobileFilterButton({
       disabled={disabled}
       className={cn(
         'relative flex items-center justify-center md:hidden',
-        'w-10 h-10 flex-shrink-0',
+        isCompact ? 'w-9 h-9' : 'w-10 h-10',
+        'flex-shrink-0',
         'rounded-sm shadow-sm',
         'transition-all',
         // Active state - light teal background when filters are selected
@@ -47,11 +53,11 @@ export function MobileFilterButton({
       aria-label={`Open filters${activeCount > 0 ? ` (${activeCount} active)` : ''}`}
     >
       {isLoading ? (
-        <Loader2 className="w-5 h-5 text-accent animate-spin" aria-hidden="true" />
+        <Loader2 className={cn('text-accent animate-spin', isCompact ? 'w-4 h-4' : 'w-5 h-5')} aria-hidden="true" />
       ) : (
-        <FilterIcon className="w-5 h-5 text-primary" />
+        <FilterIcon className={cn('text-primary', isCompact ? 'w-4 h-4' : 'w-5 h-5')} />
       )}
-      <FilterBadge count={activeCount} size="md" />
+      <FilterBadge count={activeCount} size={isCompact ? 'sm' : 'md'} />
     </button>
   )
 }

@@ -1393,17 +1393,19 @@ function ReviewCard({
     accuracy: string
   }>
 }) {
-  const categoryConfig: Record<string, { bg: string; text: string; icon: React.ElementType }> = {
-    Story: { bg: COHERE.sage[100], text: COHERE.sage[700], icon: BookOpen },
-    Gameplay: { bg: COHERE.purple[100], text: COHERE.purple[600], icon: Gamepad2 },
-    Bug: { bg: COHERE.coral[100], text: COHERE.coral[600], icon: Bug },
+  // Category config with WCAG AA contrast ratios (4.5:1 minimum for text)
+  // Using darker shades for better readability
+  const categoryConfig: Record<string, { bg: string; text: string; border: string; icon: React.ElementType }> = {
+    Story: { bg: COHERE.sage[50], text: COHERE.sage[800], border: COHERE.sage[300], icon: BookOpen },
+    Gameplay: { bg: COHERE.purple[100], text: COHERE.purple[600], border: COHERE.purple[300], icon: Gamepad2 },
+    Bug: { bg: COHERE.coral[100], text: COHERE.coral[600], border: COHERE.coral[300], icon: Bug },
   }
 
-  // Rating distribution data (visual representation)
+  // Rating distribution - using stronger colors for visibility
   const ratingBars = [
-    { width: '90%', color: COHERE.sage[400] },
-    { width: '60%', color: COHERE.sage[300] },
-    { width: '30%', color: COHERE.purple[300] },
+    { width: '90%', color: COHERE.sage[500] },  // Was [400] - improved contrast
+    { width: '60%', color: COHERE.sage[400] },  // Was [300] - improved contrast
+    { width: '30%', color: COHERE.purple[400] }, // Was [300] - improved contrast
   ]
 
   return (
@@ -1415,47 +1417,56 @@ function ReviewCard({
       fontFamily: FONT.sans,
       maxWidth: '320px',
     }}>
-      {/* Header */}
+      {/* Header - 16px padding, 4px grid rhythm */}
       <div style={{
         padding: '16px',
         borderBottom: `1px solid ${COHERE.border}`,
       }}>
+        {/* Nav row */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
-          marginBottom: '8px',
+          gap: '8px',        // tight spacing
+          marginBottom: '16px', // base spacing to title
         }}>
-          <ChevronLeft size={16} style={{ color: COHERE.sage[600] }} />
-          <span style={{ color: COHERE.sage[600], fontSize: '13px', fontWeight: 500 }}>Back</span>
+          <ChevronLeft size={16} style={{ color: COHERE.sage[700] }} />
+          <span style={{ color: COHERE.sage[700], fontSize: '13px', fontWeight: 500 }}>Back</span>
           <span style={{
             marginLeft: 'auto',
-            fontSize: '13px',
-            color: COHERE.text.secondary,
+            fontSize: '12px',
+            color: COHERE.text.primary, // Improved contrast from text.secondary
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
           }}>
-            <Gamepad2 size={14} /> Mobile Heroes: Boom Boom
+            <Gamepad2 size={14} /> Mobile Heroes
           </span>
         </div>
-        <h3 style={{ margin: '8px 0 4px', fontSize: '18px', fontWeight: 600 }}>
+
+        {/* Title + Rating group */}
+        <h3 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: 600,
+          color: COHERE.text.primary,
+        }}>
           {title}
         </h3>
         <div style={{
           display: 'flex',
           alignItems: 'baseline',
           gap: '8px',
+          marginTop: '8px', // tight spacing from title
         }}>
-          <span style={{ fontSize: '32px', fontWeight: 300 }}>{rating}</span>
-          <span style={{ fontSize: '14px', color: COHERE.text.muted }}>out of 5</span>
-          <span style={{ marginLeft: 'auto', fontSize: '13px', color: COHERE.text.muted }}>
+          <span style={{ fontSize: '32px', fontWeight: 300, color: COHERE.text.primary }}>{rating}</span>
+          <span style={{ fontSize: '14px', color: COHERE.text.secondary }}>out of 5</span>
+          <span style={{ marginLeft: 'auto', fontSize: '13px', color: COHERE.text.secondary }}>
             {totalRatings} Ratings
           </span>
         </div>
 
-        {/* Rating Distribution Bars */}
-        <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {/* Rating Distribution Bars - base spacing from rating */}
+        <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {ratingBars.map((bar, i) => (
             <div key={i} style={{
               height: '4px',
@@ -1474,41 +1485,50 @@ function ReviewCard({
         </div>
       </div>
 
-      {/* Reviews */}
+      {/* Reviews - 16px padding, consistent rhythm */}
       <div style={{ maxHeight: '300px', overflow: 'auto' }}>
         {reviews.map((review, i) => (
           <div key={i} style={{
             padding: '16px',
             borderBottom: i < reviews.length - 1 ? `1px solid ${COHERE.borderSubtle}` : 'none',
           }}>
+            {/* Review header */}
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-start',
-              marginBottom: '8px',
+              gap: '12px',
+              marginBottom: '12px', // spacing to content
             }}>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 600 }}>{review.title}</div>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: COHERE.text.primary, // Ensure dark text
+                }}>
+                  {review.title}
+                </div>
                 <div style={{ display: 'flex', gap: '2px', marginTop: '4px' }}>
                   {[...Array(5)].map((_, idx) => (
                     <Star
                       key={idx}
                       size={12}
-                      fill={idx < review.rating ? COHERE.sage[500] : 'transparent'}
-                      stroke={idx < review.rating ? COHERE.sage[500] : COHERE.text.muted}
+                      fill={idx < review.rating ? COHERE.sage[600] : 'transparent'}
+                      stroke={idx < review.rating ? COHERE.sage[600] : COHERE.sage[300]}
                     />
                   ))}
                 </div>
               </div>
-              {/* Category Badge with Diagonal Divider */}
+
+              {/* Category Badge with Diagonal Divider - improved contrast */}
               <div style={{
                 display: 'inline-flex',
                 alignItems: 'stretch',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                border: `1px solid ${COHERE.coral[200]}`,
-                fontSize: '12px',
-                fontWeight: 500,
+                fontSize: '11px',
+                fontWeight: 600,
+                flexShrink: 0,
               }}>
                 {(() => {
                   const config = categoryConfig[review.category.label] || categoryConfig.Story
@@ -1520,26 +1540,26 @@ function ReviewCard({
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '4px',
-                        padding: '6px 10px',
-                        background: 'transparent',
+                        padding: '4px 8px',
+                        background: config.bg,
                         color: config.text,
-                        position: 'relative',
+                        border: `1px solid ${config.border}`,
+                        borderRight: 'none',
+                        borderRadius: '8px 0 0 8px',
                       }}>
                         <IconComponent size={12} />
                         {review.category.label}
                       </span>
-                      {/* Diagonal divider using SVG */}
-                      <span style={{
-                        width: '12px',
-                        position: 'relative',
-                        background: `linear-gradient(to bottom right, transparent 49%, ${COHERE.coral[200]} 49%, ${COHERE.coral[200]} 51%, transparent 51%)`,
-                      }} />
                       {/* Accuracy section */}
                       <span style={{
                         display: 'inline-flex',
                         alignItems: 'center',
-                        padding: '6px 10px',
-                        color: COHERE.text.secondary,
+                        padding: '4px 8px',
+                        background: COHERE.surfaceMuted,
+                        color: COHERE.text.primary, // Improved from text.secondary
+                        border: `1px solid ${config.border}`,
+                        borderLeft: 'none',
+                        borderRadius: '0 8px 8px 0',
                       }}>
                         {review.accuracy}
                       </span>
@@ -1548,6 +1568,8 @@ function ReviewCard({
                 })()}
               </div>
             </div>
+
+            {/* Review content */}
             <p style={{
               margin: 0,
               fontSize: '13px',

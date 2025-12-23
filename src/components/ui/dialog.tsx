@@ -128,6 +128,8 @@ DialogOverlay.displayName = "DialogOverlay"
  * @description
  * Renders the dialog panel with overlay, animations, and close button.
  * Centers in viewport with max-width constraint.
+ * Features an animated "tube" border effect where colors flow inside the border
+ * like liquid in a channel (purple → pink → teal → green).
  */
 function DialogContent({
   className,
@@ -140,23 +142,28 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          // Base dialog styles with design system colors
-          "bg-surface text-primary font-sans",
+          // Animated gradient border effect
+          "gradient-border-animated",
           // Animation
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
           // Positioning
           "fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%]",
-          // Spacing & appearance
-          "gap-4 border border-default p-6 shadow-lg duration-200 sm:rounded-lg",
+          // Spacing & appearance (no padding here - applied to inner wrapper)
+          "duration-200 sm:rounded-xl",
           className
         )}
         {...props}
       >
-        {children}
-        <DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-page data-[state=open]:text-muted">
-          <XIcon className="size-4" />
-          <span className="sr-only">Close</span>
-        </DialogPrimitive.Close>
+        {/* Animated glow layer (follows the rotating gradient) - OUTSIDE content */}
+        <span className="gradient-border-animated-glow rounded-xl" aria-hidden="true" />
+        {/* Solid background wrapper - covers the glow completely */}
+        <div className="relative bg-white dark:bg-abyss-700 text-primary font-sans rounded-xl p-6 grid gap-4">
+          {children}
+          <DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-page data-[state=open]:text-muted">
+            <XIcon className="size-4" />
+            <span className="sr-only">Close</span>
+          </DialogPrimitive.Close>
+        </div>
       </DialogPrimitive.Content>
     </DialogPortal>
   )

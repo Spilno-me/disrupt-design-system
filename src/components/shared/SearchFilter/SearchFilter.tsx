@@ -58,6 +58,12 @@ export interface SearchFilterProps {
   onError?: (error: Error, errorInfo: React.ErrorInfo) => void
   /** Custom fallback UI for errors */
   errorFallback?: React.ReactNode
+  /**
+   * Size variant:
+   * - 'default': Full-featured with gradient, shadow, larger padding (for page-level)
+   * - 'compact': Smaller, no gradient/shadow, button-height (for inner sections)
+   */
+  size?: 'default' | 'compact'
 }
 
 // =============================================================================
@@ -84,6 +90,7 @@ const SearchFilterInner = memo(function SearchFilterInner({
   disabled = false,
   isSearching = false,
   isLoadingFilters = false,
+  size = 'default',
 }: SearchFilterInnerProps) {
   // UI state for dropdowns/sheets
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -113,16 +120,22 @@ const SearchFilterInner = memo(function SearchFilterInner({
   // 3. Has onFiltersChange callback
   const showFilters = !hideFilters && (filterGroups.length > 0 || isLoadingFilters) && onFiltersChange
 
+  // Size-based styles
+  const isCompact = size === 'compact'
+
   return (
     <div
       className={cn(
-        'relative flex items-center justify-between gap-3 p-3 rounded-xl shadow-md',
-        'border border-default',
+        'relative flex items-center justify-between border border-default',
+        // Size variants
+        isCompact
+          ? 'gap-2 px-2 py-1.5 rounded-lg bg-surface'
+          : 'gap-3 p-3 rounded-xl shadow-md',
         fullWidth && 'w-full',
         disabled && 'opacity-60',
         className
       )}
-      style={{
+      style={isCompact ? undefined : {
         // Highlight effect: IVORY[100] at top (0-20%) creates a light strip, then fades to IVORY[300]
         background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 20%, var(--color-surface-hover) 100%)',
       }}
@@ -140,6 +153,7 @@ const SearchFilterInner = memo(function SearchFilterInner({
         onKeyDown={searchInput.handleKeyDown}
         onFocus={searchInput.handleFocus}
         onBlur={searchInput.handleBlur}
+        size={size}
       />
 
       {/* Filter Controls */}
@@ -151,6 +165,7 @@ const SearchFilterInner = memo(function SearchFilterInner({
             activeCount={filterState.activeCount}
             disabled={disabled}
             isLoading={isLoadingFilters}
+            size={size}
           />
 
           {/* Desktop: Dropdown menu */}
@@ -164,6 +179,7 @@ const SearchFilterInner = memo(function SearchFilterInner({
             onOpenChange={setIsDropdownOpen}
             disabled={disabled}
             isLoading={isLoadingFilters}
+            size={size}
           />
 
           {/* Mobile: Bottom sheet */}

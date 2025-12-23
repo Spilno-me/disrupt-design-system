@@ -5,6 +5,87 @@ import { RADIUS } from '../../constants/designTokens'
 import { FileText, Flag, Barrel, Search, ClipboardCheck, Clock } from 'lucide-react'
 
 // =============================================================================
+// SCROLL FADE CONTEXT
+// =============================================================================
+
+interface ScrollFadeContextValue {
+  containerRef: React.RefObject<HTMLDivElement | null>
+  fadeZoneWidth: number
+  scrollLeft: number
+  containerWidth: number
+  enabled: boolean
+}
+
+const ScrollFadeContext = React.createContext<ScrollFadeContextValue | null>(null)
+
+/**
+ * Hook to calculate item opacity based on scroll position
+ * Items near edges fade out for a native-app-like effect
+ */
+function useScrollFadeOpacity(itemRef: React.RefObject<HTMLElement | null>): number {
+  const context = React.useContext(ScrollFadeContext)
+  const [opacity, setOpacity] = React.useState(1)
+
+  React.useEffect(() => {
+    if (!context?.enabled || !itemRef.current || !context.containerRef.current) {
+      setOpacity(1)
+      return
+    }
+
+    const calculateOpacity = () => {
+      const item = itemRef.current
+      const container = context.containerRef.current
+      if (!item || !container) return
+
+      const containerRect = container.getBoundingClientRect()
+      const itemRect = item.getBoundingClientRect()
+
+      // Item center relative to container
+      const itemCenter = itemRect.left + itemRect.width / 2
+      const containerLeft = containerRect.left
+      const containerRight = containerRect.right
+
+      // Distance from edges
+      const distanceFromLeft = itemCenter - containerLeft
+      const distanceFromRight = containerRight - itemCenter
+
+      // Calculate opacity based on distance from nearest edge
+      const fadeZone = context.fadeZoneWidth
+      const minOpacity = 0.25
+
+      let newOpacity = 1
+
+      if (distanceFromLeft < fadeZone) {
+        // Fading on left edge
+        newOpacity = minOpacity + (distanceFromLeft / fadeZone) * (1 - minOpacity)
+      } else if (distanceFromRight < fadeZone) {
+        // Fading on right edge
+        newOpacity = minOpacity + (distanceFromRight / fadeZone) * (1 - minOpacity)
+      }
+
+      setOpacity(Math.max(minOpacity, Math.min(1, newOpacity)))
+    }
+
+    // Initial calculation
+    calculateOpacity()
+
+    // Listen to scroll events on container
+    const container = context.containerRef.current
+    container?.addEventListener('scroll', calculateOpacity, { passive: true })
+
+    // Also recalculate on resize
+    window.addEventListener('resize', calculateOpacity, { passive: true })
+
+    return () => {
+      container?.removeEventListener('scroll', calculateOpacity)
+      window.removeEventListener('resize', calculateOpacity)
+    }
+  }, [context, itemRef])
+
+  return opacity
+}
+
+// =============================================================================
 // QUICK FILTER ITEM COMPONENT
 // =============================================================================
 
@@ -19,7 +100,8 @@ export type QuickFilterVariant =
   | 'primary'    // Dark - for in progress
 
 const quickFilterItemVariants = cva(
-  'relative flex flex-col items-center justify-center cursor-pointer transition-all duration-200',
+  // Base + snap-start for mobile horizontal scroll
+  'relative flex flex-col items-center justify-center cursor-pointer transition-all duration-200 snap-start flex-shrink-0',
   {
     variants: {
       variant: {
@@ -134,6 +216,13 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
   ) => {
     const colors = getVariantColors(variant)
 
+    // Internal ref for scroll fade calculations
+    const internalRef = React.useRef<HTMLButtonElement>(null)
+    const scrollFadeOpacity = useScrollFadeOpacity(internalRef)
+
+    // Merge refs
+    React.useImperativeHandle(ref, () => internalRef.current as HTMLButtonElement)
+
     // Clone icon with proper color
     const coloredIcon = icon && React.isValidElement(icon)
       ? React.cloneElement(icon as React.ReactElement<{ style?: React.CSSProperties; color?: string }>, {
@@ -164,7 +253,7 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
 
     return (
       <button
-        ref={ref}
+        ref={internalRef}
         className={cn(
           quickFilterItemVariants({ variant, size, selected }),
           'overflow-hidden',
@@ -173,7 +262,8 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
         style={{
           ...pressedStyles,
           borderRadius: RADIUS.md,
-          transition: 'all 0.15s ease-out',
+          transition: 'all 0.15s ease-out, opacity 0.15s ease-out',
+          opacity: scrollFadeOpacity,
         }}
         {...props}
       >
@@ -247,6 +337,38 @@ export interface QuickFilterProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   /** Gap between items */
   gap?: 'sm' | 'md' | 'lg'
+  /**
+   * Enable dynamic fade effect on scroll (mobile only)
+   * Items near edges will fade out for a native-app-like feel
+   * @default true
+   */
+  fadeOnScroll?: boolean
+  /**
+   * Width of the fade zone in pixels
+   * Items within this distance from edges will fade
+   * @default 80
+   */
+  fadeZoneWidth?: number
+  /**
+   * Show static edge gradient overlays
+   * Set to false when using fadeOnScroll for cleaner look
+   * @default false (when fadeOnScroll is true)
+   */
+  showEdgeGradients?: boolean
+  /**
+   * Enable edge-to-edge layout on mobile
+   * Items will stretch from screen edge to screen edge
+   * First/last items get padding to prevent clipping
+   * @default true
+   */
+  edgeToEdge?: boolean
+  /**
+   * Break out of parent container padding (full bleed)
+   * Use when QuickFilter is inside a padded container but needs to reach screen edges
+   * Applies negative margins to counteract parent padding (mobile only)
+   * @default false
+   */
+  fullBleed?: boolean
 }
 
 const gapClasses = {
@@ -260,17 +382,138 @@ const gapClasses = {
  *
  * Displays a horizontal row of filter buttons typically used for
  * quick status filtering in dashboards.
+ *
+ * Mobile behavior (Fitts' Law + Discoverability):
+ * - Horizontal scroll with snap points for smooth navigation
+ * - Dynamic item fade on scroll (fadeOnScroll) - items dim near edges
+ * - Optional static edge fade gradients
+ * - Shadow overflow preserved for depth perception
+ * - Desktop: wraps normally
  */
 export const QuickFilter = React.forwardRef<HTMLDivElement, QuickFilterProps>(
-  ({ className, children, gap = 'md', ...props }, ref) => {
+  ({
+    className,
+    children,
+    gap = 'md',
+    fadeOnScroll = true,
+    fadeZoneWidth = 80,
+    showEdgeGradients,
+    edgeToEdge = true,
+    fullBleed = false,
+    ...props
+  }, ref) => {
+    const containerRef = React.useRef<HTMLDivElement>(null)
+    const [scrollState, setScrollState] = React.useState({ scrollLeft: 0, containerWidth: 0 })
+
+    // Track scroll for context updates
+    React.useEffect(() => {
+      const container = containerRef.current
+      if (!container) return
+
+      const updateScrollState = () => {
+        setScrollState({
+          scrollLeft: container.scrollLeft,
+          containerWidth: container.clientWidth,
+        })
+      }
+
+      updateScrollState()
+      container.addEventListener('scroll', updateScrollState, { passive: true })
+      window.addEventListener('resize', updateScrollState, { passive: true })
+
+      return () => {
+        container.removeEventListener('scroll', updateScrollState)
+        window.removeEventListener('resize', updateScrollState)
+      }
+    }, [])
+
+    // Merge refs
+    React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement)
+
+    // Default: hide static gradients when fadeOnScroll is enabled
+    const shouldShowGradients = showEdgeGradients ?? !fadeOnScroll
+
+    const contextValue: ScrollFadeContextValue = {
+      containerRef,
+      fadeZoneWidth,
+      scrollLeft: scrollState.scrollLeft,
+      containerWidth: scrollState.containerWidth,
+      enabled: fadeOnScroll,
+    }
+
+    // Process children to add edge padding for edge-to-edge layout
+    const childArray = React.Children.toArray(children)
+    const processedChildren = edgeToEdge
+      ? childArray.map((child, index) => {
+          if (!React.isValidElement(child)) return child
+
+          const isFirst = index === 0
+          const isLast = index === childArray.length - 1
+
+          // Add margin to first/last items for edge spacing (mobile only)
+          // This creates space from screen edges while allowing edge-to-edge scroll
+          return React.cloneElement(child as React.ReactElement<{ className?: string; style?: React.CSSProperties }>, {
+            className: cn(
+              (child.props as { className?: string }).className,
+              isFirst && 'ml-4 md:ml-0',
+              isLast && 'mr-4 md:mr-0'
+            ),
+          })
+        })
+      : children
+
     return (
-      <div
-        ref={ref}
-        className={cn('flex flex-row items-center flex-wrap', gapClasses[gap], className)}
-        {...props}
-      >
-        {children}
-      </div>
+      <ScrollFadeContext.Provider value={contextValue}>
+        {/* Full bleed: negative margins to break out of parent padding (mobile only) */}
+        <div
+          className={cn(
+            'relative',
+            // Full bleed breaks out of parent p-6 padding on mobile
+            fullBleed && '-mx-6 md:mx-0'
+          )}
+          {...props}
+        >
+          {/* Left edge fade - mobile only. Uses --color-page for main content area background */}
+          {shouldShowGradients && (
+            <div
+              className="absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none md:hidden"
+              style={{
+                background: 'linear-gradient(to right, var(--color-page) 0%, transparent 100%)',
+              }}
+            />
+          )}
+
+          {/* Right edge fade - mobile only. Uses --color-page for main content area background */}
+          {shouldShowGradients && (
+            <div
+              className="absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none md:hidden"
+              style={{
+                background: 'linear-gradient(to left, var(--color-page) 0%, transparent 100%)',
+              }}
+            />
+          )}
+
+          {/* Scrollable content */}
+          <div
+            ref={containerRef}
+            className={cn(
+              'flex flex-row items-center',
+              // Mobile: horizontal scroll with snap, hide scrollbar
+              'overflow-x-auto overflow-y-visible snap-x snap-mandatory scrollbar-hide',
+              // Vertical padding for shadow overflow (py-2 -my-2 preserves shadow space)
+              'py-2 -my-2',
+              // Horizontal padding: none for edge-to-edge, px-3 otherwise
+              !edgeToEdge && 'px-3',
+              // Desktop: wrap normally, no scroll, reset padding
+              'md:flex-wrap md:overflow-visible md:px-0 md:py-0 md:my-0',
+              gapClasses[gap],
+              className
+            )}
+          >
+            {processedChildren}
+          </div>
+        </div>
+      </ScrollFadeContext.Provider>
     )
   }
 )

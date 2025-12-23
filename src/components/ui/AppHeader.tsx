@@ -136,11 +136,36 @@ const DEFAULT_MENU_ITEMS: UserMenuItem[] = [
  * - Colors adapt to light/dark mode using ELECTRIC_CYAN tokens
  */
 function WavePattern() {
+  // Detect dark mode
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      const isDark = document.documentElement.classList.contains('dark') ||
+                     document.body.classList.contains('dark')
+      setIsDarkMode(isDark)
+    }
+    checkDarkMode()
+
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+
+    return () => observer.disconnect()
+  }, [])
+
   // Teal color from DEEP_CURRENT palette
   const teal = DEEP_CURRENT[400] // #33BFD7
 
   // Wave SVG with teal color
   const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="55" viewBox="0 0 1600 55" preserveAspectRatio="none"><path fill="none" stroke="${teal}" stroke-width="5" stroke-linecap="round" d="M0 10 c200 0 300 35 400 35 c100 0 200-35 400-35 c200 0 300 35 400 35 c100 0 200-35 400-35"/></svg>`)}`
+
+  // Glass styles for light and dark modes
+  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba opacity for glass effect */
+  const glassBackground = isDarkMode
+    ? 'linear-gradient(180deg, rgba(29, 31, 42, 0.7) 0%, rgba(20, 22, 30, 0.85) 100%)'
+    : 'rgba(255, 255, 255, 0.15)'
+  /* eslint-enable no-restricted-syntax */
 
   return (
     <div
@@ -163,8 +188,7 @@ function WavePattern() {
       <div
         className="absolute inset-0 z-0"
         style={{
-          // eslint-disable-next-line no-restricted-syntax -- Glassmorphism requires specific rgba opacity
-          background: 'rgba(255, 255, 255, 0.15)',
+          background: glassBackground,
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
         }}
@@ -252,6 +276,30 @@ function LogoContainer({
   const logoSrc = effectiveColorMode === 'dark' ? config.logoDark : config.logoLight
   const displayTagline = tagline ?? config.tagline
 
+  // Glass styles for light and dark modes
+  // Glassmorphism requires specific rgba values and composite shadows for the glass effect
+  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba and composite shadows */
+  const glassStyles = isDarkMode
+    ? {
+        // Dark glass: semi-transparent dark with subtle light edge
+        background: 'linear-gradient(180deg, rgba(29, 31, 42, 0.85) 0%, rgba(20, 22, 30, 0.9) 100%)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        // Top highlight + ambient shadow for depth
+        boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.4)',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
+      }
+    : {
+        // Light glass: light blur, more transparent to let light through
+        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
+        // Combined shadows: subtle ambient + bottom drop shadow
+        boxShadow: `${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.12)`,
+        border: '1px solid rgba(255, 255, 255, 0.15)',
+      }
+  /* eslint-enable no-restricted-syntax */
+
   return (
     <div
       className={cn(
@@ -259,17 +307,7 @@ function LogoContainer({
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
-      /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba and composite shadows */
-      style={{
-        // Glass morphism: light blur, more transparent to let light through
-        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
-        // Combined shadows: subtle ambient + bottom drop shadow that extends below header
-        boxShadow: `${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.12)`,
-        border: '1px solid rgba(255, 255, 255, 0.15)',
-      }}
-      /* eslint-enable no-restricted-syntax */
+      style={glassStyles}
       data-slot="logo-container"
     >
       <img
@@ -591,6 +629,7 @@ UserMenu.displayName = 'UserMenu'
  * - `data-slot="user-menu-trigger"` - User menu trigger button
  * - `data-slot="user-menu-content"` - User menu dropdown content
  * - `data-slot="header-actions"` - Right-side actions container
+ * - `data-slot="header-border"` - Bottom gradient border
  *
  * Example test:
  * ```tsx
@@ -637,7 +676,7 @@ export function AppHeader({
   return (
     <header
       className={cn(
-        'relative z-20 flex items-center justify-between w-full h-[55px] overflow-hidden',
+        'relative z-20 flex items-center justify-between w-full h-[55px]',
         className
       )}
       // Header height defined via className for consistency
@@ -645,6 +684,12 @@ export function AppHeader({
     >
       {/* Wave Pattern Background */}
       {showWavePattern && <WavePattern />}
+
+      {/* Gradient border on bottom edge - matches AppSidebar style */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px pointer-events-none bg-gradient-to-r from-transparent via-default to-transparent z-20"
+        data-slot="header-border"
+      />
 
       {/* Left Side: Mobile menu + Logo - z-20 to be ABOVE wave lines (z-10) */}
       <div className="relative z-20 flex items-center">

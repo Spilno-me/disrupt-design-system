@@ -584,6 +584,203 @@ export const ResponsiveWrap: Story = {
 }
 
 // =============================================================================
+// SCROLL FADE EFFECT
+// =============================================================================
+
+/**
+ * Dynamic scroll fade effect (Mobile)
+ *
+ * Items near the edges fade out as you scroll, creating a native-app-like feel.
+ * This effect is inspired by modern mobile banking apps where content dims as
+ * it approaches viewport edges.
+ *
+ * **Key features:**
+ * - Edge-to-edge layout (items scroll from screen edge to edge)
+ * - Items dynamically adjust opacity based on distance from container edges
+ * - Smooth transitions as you scroll
+ * - Enabled by default (fadeOnScroll prop)
+ * - Configurable fade zone width
+ */
+export const ScrollFadeEffect: Story = {
+  render: () => (
+    <div className="w-[375px] border border-gray-400 rounded-2xl bg-gray-800 overflow-hidden">
+      <p className="text-sm text-white p-4 pb-2">
+        📱 Mobile viewport (375px) - Edge-to-edge scroll with fade
+      </p>
+      {/* No padding wrapper - QuickFilter goes edge-to-edge */}
+      <div className="pb-4">
+        <QuickFilter gap="md" fadeOnScroll={true} fadeZoneWidth={80} edgeToEdge={true}>
+          <DraftsFilter count={4} />
+          <ReportedFilter count={10} />
+          <AgingFilter count={4} />
+          <InProgressFilter count={4} />
+          <ReviewsFilter count={3} />
+          <DLBFilter count={2} />
+          <QuickFilterItem
+            variant="info"
+            label="Completed"
+            count={25}
+            icon={<CheckCircle size={24} />}
+          />
+          <QuickFilterItem
+            variant="default"
+            label="Archived"
+            count={8}
+            icon={<FileText size={24} />}
+          />
+        </QuickFilter>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: `Dynamic scroll fade effect where items near the edges fade out as you scroll.
+
+**Props:**
+- \`edgeToEdge={true}\` (default) - Items scroll from device edge to edge
+- \`fadeOnScroll={true}\` (default) - Enable dynamic fade
+- \`fadeZoneWidth={80}\` - Width of the fade zone in pixels
+
+**Compared to static edge gradients:**
+- ✅ Items themselves become translucent (depth illusion)
+- ✅ Effect follows the content, not the container
+- ✅ Works better with varied item sizes
+- ✅ More native-app-like feel`,
+      },
+    },
+  },
+}
+
+/**
+ * Comparison: Fade On Scroll vs Static Gradients
+ */
+export const FadeComparisonModes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-8">
+      <div className="max-w-[375px] border border-gray-400 rounded-lg bg-gray-800 overflow-hidden">
+        <p className="text-sm text-white p-4 pb-2">
+          <strong>Dynamic Fade (fadeOnScroll=true)</strong> - Items dim near edges
+        </p>
+        <div className="pb-4">
+          <QuickFilter gap="md" fadeOnScroll={true}>
+            <DraftsFilter count={4} />
+            <ReportedFilter count={10} />
+            <AgingFilter count={4} />
+            <InProgressFilter count={4} />
+            <ReviewsFilter count={3} />
+            <DLBFilter count={2} />
+          </QuickFilter>
+        </div>
+      </div>
+
+      <div className="max-w-[375px] border border-gray-400 rounded-lg bg-gray-800 overflow-hidden">
+        <p className="text-sm text-white p-4 pb-2">
+          <strong>Static Gradients (fadeOnScroll=false)</strong> - Fixed overlay
+        </p>
+        <div className="pb-4">
+          <QuickFilter gap="md" fadeOnScroll={false} showEdgeGradients={true}>
+            <DraftsFilter count={4} />
+            <ReportedFilter count={10} />
+            <AgingFilter count={4} />
+            <InProgressFilter count={4} />
+            <ReviewsFilter count={3} />
+            <DLBFilter count={2} />
+          </QuickFilter>
+        </div>
+      </div>
+
+      <div className="max-w-[375px] border border-gray-400 rounded-lg bg-gray-800 overflow-hidden">
+        <p className="text-sm text-white p-4 pb-2">
+          <strong>Both Effects Combined</strong>
+        </p>
+        <div className="pb-4">
+          <QuickFilter gap="md" fadeOnScroll={true} showEdgeGradients={true}>
+            <DraftsFilter count={4} />
+            <ReportedFilter count={10} />
+            <AgingFilter count={4} />
+            <InProgressFilter count={4} />
+            <ReviewsFilter count={3} />
+            <DLBFilter count={2} />
+          </QuickFilter>
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Compare the three modes: dynamic fade, static gradients, or both combined.',
+      },
+    },
+  },
+}
+
+/**
+ * Different fade zone widths
+ */
+export const FadeZoneWidths: Story = {
+  render: () => (
+    <div className="flex flex-col gap-8">
+      <div className="max-w-[375px] border border-gray-400 rounded-lg bg-gray-800 overflow-hidden">
+        <p className="text-sm text-white p-4 pb-2">
+          <strong>Narrow fade (40px)</strong> - Subtle effect
+        </p>
+        <div className="pb-4">
+          <QuickFilter gap="md" fadeZoneWidth={40}>
+            <DraftsFilter count={4} />
+            <ReportedFilter count={10} />
+            <AgingFilter count={4} />
+            <InProgressFilter count={4} />
+            <ReviewsFilter count={3} />
+            <DLBFilter count={2} />
+          </QuickFilter>
+        </div>
+      </div>
+
+      <div className="max-w-[375px] border border-gray-400 rounded-lg bg-gray-800 overflow-hidden">
+        <p className="text-sm text-white p-4 pb-2">
+          <strong>Default fade (80px)</strong> - Balanced
+        </p>
+        <div className="pb-4">
+          <QuickFilter gap="md" fadeZoneWidth={80}>
+            <DraftsFilter count={4} />
+            <ReportedFilter count={10} />
+            <AgingFilter count={4} />
+            <InProgressFilter count={4} />
+            <ReviewsFilter count={3} />
+            <DLBFilter count={2} />
+          </QuickFilter>
+        </div>
+      </div>
+
+      <div className="max-w-[375px] border border-gray-400 rounded-lg bg-gray-800 overflow-hidden">
+        <p className="text-sm text-white p-4 pb-2">
+          <strong>Wide fade (120px)</strong> - Dramatic effect
+        </p>
+        <div className="pb-4">
+          <QuickFilter gap="md" fadeZoneWidth={120}>
+            <DraftsFilter count={4} />
+            <ReportedFilter count={10} />
+            <AgingFilter count={4} />
+            <InProgressFilter count={4} />
+            <ReviewsFilter count={3} />
+            <DLBFilter count={2} />
+          </QuickFilter>
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Adjust the `fadeZoneWidth` prop to control how far from the edge items start fading.',
+      },
+    },
+  },
+}
+
+// =============================================================================
 // CUSTOM ICONS
 // =============================================================================
 

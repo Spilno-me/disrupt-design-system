@@ -9,6 +9,8 @@ import '@fontsource/jetbrains-mono/600.css'
 
 // Export all components
 export { Button, buttonVariants } from './components/ui/button'
+export { SplitButton, splitButtonVariants } from './components/shared/SplitButton'
+export type { SplitButtonProps } from './components/shared/SplitButton'
 export { Badge, badgeVariants } from './components/ui/badge'
 // Card - Website pricing cards only (FROZEN)
 export {
@@ -51,6 +53,33 @@ export {
   SelectTrigger,
   SelectValue,
 } from './components/ui/select'
+
+// What3Words location selector
+export {
+  What3WordsInput,
+  What3WordsMap,
+  UseMyLocationButton,
+  mockAutosuggest,
+  mockConvertToWords,
+} from './components/ui/what3words'
+export type {
+  What3WordsValue,
+  What3WordsCoordinates,
+  What3WordsSuggestion,
+  What3WordsInputProps,
+  What3WordsMapProps,
+  UseMyLocationButtonProps,
+} from './components/ui/what3words'
+
+// Location Picker (hierarchical tree with GPS)
+export { LocationPicker, LocationTree } from './components/ui/location-picker'
+export type {
+  LocationNode,
+  LocationValue,
+  LocationPickerProps,
+  LocationTreeProps,
+} from './components/ui/location-picker'
+
 export { Separator } from './components/ui/separator'
 export { Skeleton, SkeletonImage, SkeletonText } from './components/ui/Skeleton'
 export { Slider } from './components/ui/Slider'
@@ -151,6 +180,42 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
 } from './components/ui/dropdown-menu'
+
+// ActionSheet - iOS-style contextual action menu (mobile)
+export {
+  ActionSheet,
+  ActionSheetTrigger,
+  ActionSheetContent,
+  ActionSheetItem,
+  ActionSheetSeparator,
+  ActionSheetLabel,
+} from './components/ui/ActionSheet'
+export type {
+  ActionSheetProps,
+  ActionSheetTriggerProps,
+  ActionSheetContentProps,
+  ActionSheetItemProps,
+  ActionSheetSeparatorProps,
+  ActionSheetLabelProps,
+} from './components/ui/ActionSheet'
+
+// ResponsiveActionMenu - Adaptive menu (ActionSheet on mobile, DropdownMenu on desktop)
+export {
+  ResponsiveActionMenu,
+  ResponsiveActionMenuTrigger,
+  ResponsiveActionMenuContent,
+  ResponsiveActionMenuItem,
+  ResponsiveActionMenuSeparator,
+  ResponsiveActionMenuLabel,
+} from './components/ui/ResponsiveActionMenu'
+export type {
+  ResponsiveActionMenuProps,
+  ResponsiveActionMenuTriggerProps,
+  ResponsiveActionMenuContentProps,
+  ResponsiveActionMenuItemProps,
+  ResponsiveActionMenuSeparatorProps,
+  ResponsiveActionMenuLabelProps,
+} from './components/ui/ResponsiveActionMenu'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs'
 export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/ui/tabs'
 export { Label } from './components/ui/label'
@@ -199,6 +264,8 @@ export { MapWithMarkers } from './components/ui/MapWithMarkers'
 export { ErrorBoundary, CanvasErrorBoundary, SectionErrorBoundary } from './components/ui/ErrorBoundary'
 export { ErrorState, errorStateVariants } from './components/ui/ErrorState'
 export type { ErrorStateProps } from './components/ui/ErrorState'
+export { EmptyState } from './components/ui/EmptyState'
+export type { EmptyStateProps, EmptyStateVariant } from './components/ui/EmptyState'
 export { GenericErrorPage } from './components/ui/GenericErrorPage'
 export type { GenericErrorPageProps } from './components/ui/GenericErrorPage'
 export { SeverityIndicator } from './components/ui/SeverityIndicator'
@@ -214,6 +281,12 @@ export {
   DLBFilter,
 } from './components/ui/QuickFilter'
 export type { QuickFilterVariant, QuickFilterItemProps, QuickFilterProps } from './components/ui/QuickFilter'
+export {
+  ScrollFadeList,
+  ScrollFadeItem,
+  useVerticalScrollFadeOpacity,
+} from './components/ui/ScrollFadeList'
+export type { ScrollFadeListProps, ScrollFadeItemProps } from './components/ui/ScrollFadeList'
 export { NotificationsPanel } from './components/ui/NotificationsPanel'
 export type { NotificationType, Notification, NotificationsPanelProps } from './components/ui/NotificationsPanel'
 export { ActionTile, actionTileVariants } from './components/ui/ActionTile'
@@ -427,6 +500,7 @@ export { useHeaderContrast, useContrastColor } from './hooks/useHeaderContrast'
 // Export visualization components
 export { DependencyGraph } from './components/visualization/DependencyGraph'
 export type { GraphNode, GraphLink, DependencyData, GraphFilters, DependencyGraphProps } from './components/visualization/DependencyGraph'
+
 
 // Export assets
 export { optimizedImages } from './assets/optimized'
