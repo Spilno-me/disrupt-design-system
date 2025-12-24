@@ -2,7 +2,7 @@
  * Flow EHS Dashboard Stories
  *
  * Demonstrates the Flow EHS application using existing DDS components.
- * Reuses AppLayoutShell and DashboardPage with EHS-specific data.
+ * Uses EHSAnalyticsDashboard as the primary dashboard component.
  */
 
 import type { Meta, StoryObj } from '@storybook/react'
@@ -43,7 +43,6 @@ import {
   Hourglass,
 } from 'lucide-react'
 import { AppLayoutShell } from '../../templates/layout/AppLayoutShell'
-import { DashboardPage } from '../../templates/pages'
 import { PAGE_META, pageDescription, IPhoneMobileFrame } from '../_infrastructure'
 import {
   IncidentManagementTable,
@@ -126,6 +125,44 @@ import {
   UpcomingTasksCard,
   SectionHeader,
 } from '../../flow/components/dashboard'
+import {
+  UsersPage,
+  type User,
+  type Role,
+  type Permission,
+  type LocationNode,
+  type UserStats,
+  type UserActivity,
+  type EnhancedPermission,
+} from '../../flow/components/users'
+
+// =============================================================================
+// FLOW PAGE CONTENT WRAPPER
+// =============================================================================
+
+/**
+ * Simple page content wrapper for Flow app pages.
+ * Replaces DashboardPage when only layout padding is needed.
+ */
+interface FlowPageContentProps {
+  title?: string
+  subtitle?: string
+  children?: React.ReactNode
+}
+
+function FlowPageContent({ title, subtitle, children }: FlowPageContentProps) {
+  return (
+    <div className="flex flex-col gap-6 p-6">
+      {(title || subtitle) && (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          {title && <h1 className="text-2xl font-semibold text-primary">{title}</h1>}
+          {subtitle && <span className="text-sm text-secondary">{subtitle}</span>}
+        </div>
+      )}
+      {children}
+    </div>
+  )
+}
 
 // =============================================================================
 // MOCK DATA - Documents & Evidence
@@ -1776,6 +1813,375 @@ const mySteps = allSteps.filter(step => step.assignee.id === 'user-1').slice(0, 
 const teamSteps = allSteps.filter(step => step.assignee.id !== 'user-1').slice(0, 15)
 
 // =============================================================================
+// USER MANAGEMENT MOCK DATA
+// =============================================================================
+
+const mockPermissions: Permission[] = [
+  { id: 'perm-1', resource: 'incidents', actions: ['create', 'read', 'update', 'delete'] },
+  { id: 'perm-2', resource: 'users', actions: ['create', 'read', 'update', 'delete'] },
+  { id: 'perm-3', resource: 'reports', actions: ['read'] },
+  { id: 'perm-4', resource: 'settings', actions: ['read', 'update'] },
+  { id: 'perm-5', resource: 'inspections', actions: ['create', 'read', 'update'] },
+  { id: 'perm-6', resource: 'tasks', actions: ['create', 'read', 'update', 'delete'] },
+]
+
+// Enhanced permissions for role creation/editing dialogs
+const mockEnhancedPermissions: EnhancedPermission[] = [
+  // Incidents
+  { id: 'incidents-create', resource: 'incidents', action: 'create', category: 'access', bitmask: 1, label: 'Create incidents', description: 'Permission to create new incident reports' },
+  { id: 'incidents-read', resource: 'incidents', action: 'read', category: 'access', bitmask: 2, label: 'View incidents', description: 'Permission to view all incident data' },
+  { id: 'incidents-update', resource: 'incidents', action: 'update', category: 'access', bitmask: 4, label: 'Update incidents', description: 'Permission to modify incident records' },
+  { id: 'incidents-delete', resource: 'incidents', action: 'delete', category: 'management', bitmask: 8, label: 'Delete incidents', description: 'Permission to permanently remove incident records' },
+  { id: 'incidents-approve', resource: 'incidents', action: 'approve', category: 'management', bitmask: 1024, label: 'Approve incidents', description: 'Permission to approve incident submissions' },
+  // Users
+  { id: 'users-create', resource: 'users', action: 'create', category: 'access', bitmask: 1, label: 'Create users', description: 'Permission to create new user accounts' },
+  { id: 'users-read', resource: 'users', action: 'read', category: 'access', bitmask: 2, label: 'View users', description: 'Permission to view all user data' },
+  { id: 'users-update', resource: 'users', action: 'update', category: 'access', bitmask: 4, label: 'Update users', description: 'Permission to modify user accounts' },
+  { id: 'users-delete', resource: 'users', action: 'delete', category: 'management', bitmask: 8, label: 'Delete users', description: 'Permission to permanently remove user accounts' },
+  // Reports
+  { id: 'reports-create', resource: 'reports', action: 'create', category: 'access', bitmask: 1, label: 'Create reports', description: 'Permission to generate new reports' },
+  { id: 'reports-read', resource: 'reports', action: 'read', category: 'access', bitmask: 2, label: 'View reports', description: 'Permission to view report data' },
+  { id: 'reports-update', resource: 'reports', action: 'update', category: 'access', bitmask: 4, label: 'Update reports', description: 'Permission to modify report configurations' },
+  { id: 'reports-delete', resource: 'reports', action: 'delete', category: 'management', bitmask: 8, label: 'Delete reports', description: 'Permission to remove reports' },
+  // Settings
+  { id: 'settings-read', resource: 'settings', action: 'read', category: 'access', bitmask: 2, label: 'View settings', description: 'Permission to view system settings' },
+  { id: 'settings-update', resource: 'settings', action: 'update', category: 'management', bitmask: 4, label: 'Update settings', description: 'Permission to modify system settings' },
+  // Inspections
+  { id: 'inspections-create', resource: 'inspections', action: 'create', category: 'access', bitmask: 1, label: 'Create inspections', description: 'Permission to create inspection records' },
+  { id: 'inspections-read', resource: 'inspections', action: 'read', category: 'access', bitmask: 2, label: 'View inspections', description: 'Permission to view inspection data' },
+  { id: 'inspections-update', resource: 'inspections', action: 'update', category: 'access', bitmask: 4, label: 'Update inspections', description: 'Permission to modify inspection records' },
+  { id: 'inspections-delete', resource: 'inspections', action: 'delete', category: 'management', bitmask: 8, label: 'Delete inspections', description: 'Permission to remove inspection records' },
+  // Tasks
+  { id: 'tasks-create', resource: 'tasks', action: 'create', category: 'access', bitmask: 1, label: 'Create tasks', description: 'Permission to create new tasks' },
+  { id: 'tasks-read', resource: 'tasks', action: 'read', category: 'access', bitmask: 2, label: 'View tasks', description: 'Permission to view task data' },
+  { id: 'tasks-update', resource: 'tasks', action: 'update', category: 'access', bitmask: 4, label: 'Update tasks', description: 'Permission to modify task records' },
+  { id: 'tasks-delete', resource: 'tasks', action: 'delete', category: 'management', bitmask: 8, label: 'Delete tasks', description: 'Permission to remove tasks' },
+  { id: 'tasks-manage-own', resource: 'tasks', action: 'manage-own-tasks', category: 'access', bitmask: 16384, label: 'Manage own tasks', description: 'Permission to manage tasks assigned to you' },
+]
+
+const mockRoles: Role[] = [
+  {
+    id: 'role-admin',
+    name: 'Administrator',
+    description: 'Full system access with all permissions',
+    permissions: mockPermissions,
+    isSystem: true,
+    userCount: 3,
+  },
+  {
+    id: 'role-manager',
+    name: 'EHS Manager',
+    description: 'Manage incidents, users, and reports for assigned locations',
+    permissions: mockPermissions.filter(p => p.resource !== 'settings'),
+    isSystem: false,
+    userCount: 8,
+  },
+  {
+    id: 'role-investigator',
+    name: 'Investigator',
+    description: 'Investigate and update assigned incidents',
+    permissions: mockPermissions.filter(p => p.resource === 'incidents'),
+    isSystem: false,
+    userCount: 15,
+  },
+  {
+    id: 'role-reporter',
+    name: 'Reporter',
+    description: 'Create and view incident reports',
+    permissions: [{ id: 'perm-inc-cr', resource: 'incidents', actions: ['create', 'read'] }],
+    isSystem: false,
+    userCount: 142,
+  },
+  {
+    id: 'role-viewer',
+    name: 'Viewer',
+    description: 'Read-only access to incidents and reports',
+    permissions: [
+      { id: 'perm-inc-r', resource: 'incidents', actions: ['read'] },
+      { id: 'perm-rep-r', resource: 'reports', actions: ['read'] },
+    ],
+    isSystem: true,
+    userCount: 56,
+  },
+]
+
+const mockLocationTree: LocationNode[] = [
+  {
+    id: 'loc-corp',
+    label: 'Corporate HQ',
+    level: 0,
+    children: [
+      {
+        id: 'loc-plant-a',
+        label: 'Plant A - Chicago',
+        level: 1,
+        children: [
+          { id: 'loc-warehouse-1', label: 'Warehouse 1', level: 2 },
+          { id: 'loc-warehouse-2', label: 'Warehouse 2', level: 2 },
+          { id: 'loc-office-a', label: 'Office Building A', level: 2 },
+        ],
+      },
+      {
+        id: 'loc-plant-b',
+        label: 'Plant B - Detroit',
+        level: 1,
+        children: [
+          { id: 'loc-production-1', label: 'Production Floor 1', level: 2 },
+          { id: 'loc-production-2', label: 'Production Floor 2', level: 2 },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'loc-west',
+    label: 'West Region',
+    level: 0,
+    children: [
+      {
+        id: 'loc-plant-c',
+        label: 'Plant C - Phoenix',
+        level: 1,
+        children: [
+          { id: 'loc-assembly', label: 'Assembly Building', level: 2 },
+        ],
+      },
+    ],
+  },
+]
+
+const mockUsers: User[] = [
+  {
+    id: 'user-1',
+    email: 'john.smith@acme.com',
+    firstName: 'John',
+    lastName: 'Smith',
+    phone: '+1 555-0101',
+    avatarUrl: 'https://i.pravatar.cc/150?u=john.smith',
+    jobTitle: 'EHS Director',
+    department: 'Environmental Health & Safety',
+    status: 'active',
+    roleAssignments: [
+      {
+        id: 'ra-1',
+        role: mockRoles[0],
+        scopes: [{ id: 'scope-1', locationId: 'loc-corp', locationName: 'Corporate HQ', locationPath: ['Corporate HQ'], includeChildren: true }],
+        assignedAt: '2024-01-15T10:00:00Z',
+        assignedBy: 'System',
+      },
+    ],
+    createdAt: '2024-01-15T10:00:00Z',
+    lastLoginAt: '2025-01-10T08:30:00Z',
+  },
+  {
+    id: 'user-2',
+    email: 'sarah.johnson@acme.com',
+    firstName: 'Sarah',
+    lastName: 'Johnson',
+    phone: '+1 555-0102',
+    avatarUrl: 'https://i.pravatar.cc/150?u=sarah.johnson',
+    jobTitle: 'Safety Manager',
+    department: 'Environmental Health & Safety',
+    status: 'active',
+    roleAssignments: [
+      {
+        id: 'ra-2',
+        role: mockRoles[1],
+        scopes: [{ id: 'scope-2', locationId: 'loc-plant-a', locationName: 'Plant A - Chicago', locationPath: ['Corporate HQ', 'Plant A - Chicago'], includeChildren: true }],
+        assignedAt: '2024-02-20T14:00:00Z',
+        assignedBy: 'John Smith',
+      },
+    ],
+    createdAt: '2024-02-20T14:00:00Z',
+    lastLoginAt: '2025-01-09T16:45:00Z',
+  },
+  {
+    id: 'user-3',
+    email: 'mike.chen@acme.com',
+    firstName: 'Mike',
+    lastName: 'Chen',
+    phone: '+1 555-0103',
+    jobTitle: 'Incident Investigator',
+    department: 'Environmental Health & Safety',
+    status: 'active',
+    roleAssignments: [
+      {
+        id: 'ra-3',
+        role: mockRoles[2],
+        scopes: [
+          { id: 'scope-3a', locationId: 'loc-plant-a', locationName: 'Plant A - Chicago', locationPath: ['Corporate HQ', 'Plant A - Chicago'], includeChildren: false },
+          { id: 'scope-3b', locationId: 'loc-plant-b', locationName: 'Plant B - Detroit', locationPath: ['Corporate HQ', 'Plant B - Detroit'], includeChildren: false },
+        ],
+        assignedAt: '2024-03-10T09:00:00Z',
+        assignedBy: 'John Smith',
+      },
+    ],
+    createdAt: '2024-03-10T09:00:00Z',
+    lastLoginAt: '2025-01-10T11:20:00Z',
+  },
+  {
+    id: 'user-4',
+    email: 'emily.davis@acme.com',
+    firstName: 'Emily',
+    lastName: 'Davis',
+    phone: '+1 555-0104',
+    avatarUrl: 'https://i.pravatar.cc/150?u=emily.davis',
+    jobTitle: 'Production Supervisor',
+    department: 'Operations',
+    status: 'active',
+    roleAssignments: [
+      {
+        id: 'ra-4',
+        role: mockRoles[3],
+        scopes: [{ id: 'scope-4', locationId: 'loc-production-1', locationName: 'Production Floor 1', locationPath: ['Corporate HQ', 'Plant B - Detroit', 'Production Floor 1'], includeChildren: false }],
+        assignedAt: '2024-04-05T11:00:00Z',
+        assignedBy: 'Sarah Johnson',
+      },
+    ],
+    createdAt: '2024-04-05T11:00:00Z',
+    lastLoginAt: '2025-01-08T14:00:00Z',
+  },
+  {
+    id: 'user-5',
+    email: 'robert.wilson@acme.com',
+    firstName: 'Robert',
+    lastName: 'Wilson',
+    jobTitle: 'Warehouse Lead',
+    department: 'Logistics',
+    status: 'pending',
+    roleAssignments: [],
+    createdAt: '2025-01-05T10:00:00Z',
+  },
+  {
+    id: 'user-6',
+    email: 'jennifer.martinez@acme.com',
+    firstName: 'Jennifer',
+    lastName: 'Martinez',
+    phone: '+1 555-0106',
+    avatarUrl: 'https://i.pravatar.cc/150?u=jennifer.martinez',
+    jobTitle: 'HR Manager',
+    department: 'Human Resources',
+    status: 'active',
+    roleAssignments: [
+      {
+        id: 'ra-6',
+        role: mockRoles[4],
+        scopes: [{ id: 'scope-6', locationId: 'loc-corp', locationName: 'Corporate HQ', locationPath: ['Corporate HQ'], includeChildren: true }],
+        assignedAt: '2024-05-15T09:00:00Z',
+        assignedBy: 'John Smith',
+      },
+    ],
+    createdAt: '2024-05-15T09:00:00Z',
+    lastLoginAt: '2025-01-07T10:30:00Z',
+  },
+  {
+    id: 'user-7',
+    email: 'david.brown@acme.com',
+    firstName: 'David',
+    lastName: 'Brown',
+    jobTitle: 'Maintenance Technician',
+    department: 'Facilities',
+    status: 'inactive',
+    roleAssignments: [
+      {
+        id: 'ra-7',
+        role: mockRoles[3],
+        scopes: [{ id: 'scope-7', locationId: 'loc-plant-a', locationName: 'Plant A - Chicago', locationPath: ['Corporate HQ', 'Plant A - Chicago'], includeChildren: true }],
+        assignedAt: '2024-06-01T08:00:00Z',
+        assignedBy: 'Sarah Johnson',
+      },
+    ],
+    createdAt: '2024-06-01T08:00:00Z',
+    lastLoginAt: '2024-12-15T16:00:00Z',
+  },
+  {
+    id: 'user-8',
+    email: 'lisa.anderson@acme.com',
+    firstName: 'Lisa',
+    lastName: 'Anderson',
+    phone: '+1 555-0108',
+    avatarUrl: 'https://i.pravatar.cc/150?u=lisa.anderson',
+    jobTitle: 'Quality Analyst',
+    department: 'Quality Assurance',
+    status: 'locked',
+    roleAssignments: [
+      {
+        id: 'ra-8',
+        role: mockRoles[2],
+        scopes: [{ id: 'scope-8', locationId: 'loc-plant-b', locationName: 'Plant B - Detroit', locationPath: ['Corporate HQ', 'Plant B - Detroit'], includeChildren: false }],
+        assignedAt: '2024-07-10T13:00:00Z',
+        assignedBy: 'John Smith',
+      },
+    ],
+    createdAt: '2024-07-10T13:00:00Z',
+    lastLoginAt: '2024-11-20T09:15:00Z',
+  },
+]
+
+const mockUserStats: UserStats = {
+  totalUsers: 168,
+  activeUsers: 142,
+  pendingInvites: 12,
+  roleDistribution: [
+    { roleName: 'Administrator', count: 3, percentage: 1.8 },
+    { roleName: 'EHS Manager', count: 8, percentage: 4.8 },
+    { roleName: 'Investigator', count: 15, percentage: 8.9 },
+    { roleName: 'Reporter', count: 142, percentage: 84.5 },
+  ],
+}
+
+const mockDepartments = [
+  'Environmental Health & Safety',
+  'Operations',
+  'Logistics',
+  'Human Resources',
+  'Facilities',
+  'Quality Assurance',
+  'Engineering',
+  'Administration',
+]
+
+const mockJobTitles = [
+  'EHS Director',
+  'Safety Manager',
+  'Incident Investigator',
+  'Production Supervisor',
+  'Warehouse Lead',
+  'HR Manager',
+  'Maintenance Technician',
+  'Quality Analyst',
+  'Plant Manager',
+  'Safety Coordinator',
+]
+
+const mockUserActivities: UserActivity[] = [
+  {
+    id: 'act-1',
+    userId: 'user-1',
+    type: 'login',
+    title: 'Logged in',
+    timestamp: '2025-01-10T08:30:00Z',
+    performedBy: { id: 'user-1', name: 'John Smith' },
+  },
+  {
+    id: 'act-2',
+    userId: 'user-1',
+    type: 'role_assigned',
+    title: 'Administrator role assigned',
+    details: 'Granted full system access',
+    timestamp: '2024-01-15T10:00:00Z',
+    performedBy: { id: 'system', name: 'System' },
+  },
+  {
+    id: 'act-3',
+    userId: 'user-1',
+    type: 'created',
+    title: 'Account created',
+    timestamp: '2024-01-15T10:00:00Z',
+    performedBy: { id: 'system', name: 'System' },
+  },
+]
+
+// =============================================================================
 // FILTER CONFIGURATION (moved before flowNavItems for reference order)
 // =============================================================================
 
@@ -1851,11 +2257,7 @@ const flowNavItems = [
     label: 'Workflow Steps',
     icon: <Waypoints className="w-5 h-5" />,
     component: (
-      <DashboardPage
-        hideQuickActions
-        hideActivity
-        hideTitle
-      >
+      <FlowPageContent>
         <StepsPage
           mySteps={mySteps}
           teamSteps={teamSteps}
@@ -1879,7 +2281,7 @@ const flowNavItems = [
           }}
           onExport={() => alert('Exporting steps...')}
         />
-      </DashboardPage>
+      </FlowPageContent>
     ),
   },
   {
@@ -1888,11 +2290,7 @@ const flowNavItems = [
     icon: <TriangleAlert className="w-5 h-5" />,
     badge: 3,
     component: (
-      <DashboardPage
-        hideQuickActions
-        hideActivity
-        hideTitle
-      >
+      <FlowPageContent>
         <IncidentsPage
           incidents={incidentData}
           locations={locationOptions}
@@ -1908,7 +2306,7 @@ const flowNavItems = [
             alert(`Incident submitted successfully!`)
           }}
         />
-      </DashboardPage>
+      </FlowPageContent>
     ),
   },
   {
@@ -1918,27 +2316,62 @@ const flowNavItems = [
     children: [
       {
         id: 'users',
-        label: 'Users',
+        label: 'User Management',
         icon: <Users className="w-5 h-5" />,
         component: (
-          <DashboardPage
-            title="Users"
-            subtitle="Manage system users"
-            hideActivity
-            hideQuickActions
-          />
-        ),
-      },
-      {
-        id: 'roles',
-        label: 'Roles & Permissions',
-        icon: <ShieldCheck className="w-5 h-5" />,
-        component: (
-          <DashboardPage
-            title="Roles & Permissions"
-            subtitle="Configure access control"
-            hideActivity
-            hideQuickActions
+          <UsersPage
+            users={mockUsers}
+            roles={mockRoles}
+            locations={mockLocationTree}
+            departments={mockDepartments}
+            jobTitles={mockJobTitles}
+            stats={mockUserStats}
+            onUserCreate={async (data) => {
+              console.log('Creating user:', data)
+              alert(`User "${data.firstName} ${data.lastName}" created!`)
+            }}
+            onUserUpdate={async (data) => {
+              console.log('Updating user:', data)
+              alert(`User "${data.firstName} ${data.lastName}" updated!`)
+            }}
+            onUserDelete={async (userId) => {
+              console.log('Deleting user:', userId)
+              alert(`User deleted!`)
+            }}
+            onRoleAssign={async (userId, data) => {
+              console.log('Assigning role:', { userId, data })
+              alert(`Role assigned!`)
+            }}
+            onRoleAssignmentUpdate={async (assignmentId, scopes) => {
+              console.log('Updating role assignment:', { assignmentId, scopes })
+              alert(`Role assignment updated!`)
+            }}
+            onRoleAssignmentRemove={async (assignmentId) => {
+              console.log('Removing role assignment:', assignmentId)
+              alert(`Role assignment removed!`)
+            }}
+            onBulkAction={async (payload) => {
+              console.log('Bulk action:', payload)
+              alert(`Bulk action "${payload.action}" performed on ${payload.userIds.length} users!`)
+            }}
+            onFetchUserActivity={async (userId) => {
+              console.log('Fetching activity for user:', userId)
+              return mockUserActivities.filter(a => a.userId === userId)
+            }}
+            // Role CRUD props
+            availablePermissions={mockEnhancedPermissions}
+            onRoleCreate={async (data) => {
+              console.log('Creating role:', data)
+              alert(`Role "${data.name}" created with ${data.permissions.length} permissions!`)
+            }}
+            onRoleUpdate={async (data) => {
+              console.log('Updating role:', data)
+              alert(`Role "${data.name}" updated with ${data.permissions.length} permissions!`)
+            }}
+            onRoleDelete={async (roleId) => {
+              console.log('Deleting role:', roleId)
+              alert(`Role deleted!`)
+            }}
           />
         ),
       },
@@ -1947,12 +2380,7 @@ const flowNavItems = [
         label: 'Dictionaries',
         icon: <BookOpen className="w-5 h-5" />,
         component: (
-          <DashboardPage
-            title="Dictionaries"
-            subtitle="Manage lookup values"
-            hideActivity
-            hideQuickActions
-          />
+          <FlowPageContent title="Dictionaries" subtitle="Manage lookup values" />
         ),
       },
       {
@@ -1960,12 +2388,7 @@ const flowNavItems = [
         label: 'Locations',
         icon: <MapPin className="w-5 h-5" />,
         component: (
-          <DashboardPage
-            title="Locations"
-            subtitle="Configure site locations"
-            hideActivity
-            hideQuickActions
-          />
+          <FlowPageContent title="Locations" subtitle="Configure site locations" />
         ),
       },
       {
@@ -1973,12 +2396,7 @@ const flowNavItems = [
         label: 'Entity Templates',
         icon: <Files className="w-5 h-5" />,
         component: (
-          <DashboardPage
-            title="Entity Templates"
-            subtitle="Manage entity configurations"
-            hideActivity
-            hideQuickActions
-          />
+          <FlowPageContent title="Entity Templates" subtitle="Manage entity configurations" />
         ),
       },
       {
@@ -1986,12 +2404,7 @@ const flowNavItems = [
         label: 'Modules',
         icon: <Boxes className="w-5 h-5" />,
         component: (
-          <DashboardPage
-            title="Modules"
-            subtitle="Configure system modules"
-            hideActivity
-            hideQuickActions
-          />
+          <FlowPageContent title="Modules" subtitle="Configure system modules" />
         ),
       },
     ],
@@ -2020,19 +2433,19 @@ const meta: Meta<typeof AppLayoutShell> = {
         component: pageDescription(`
 # Flow EHS Dashboard
 
-A complete EHS (Environment, Health & Safety) application built using the **AppLayoutShell** and **DashboardPage** components.
+A complete EHS (Environment, Health & Safety) application built using the **AppLayoutShell** and **EHSAnalyticsDashboard** components.
 
 ## Features
-- **Dashboard**: Overview with key safety metrics
+- **Dashboard**: Advanced analytics with KPIs, sparklines, status zones, and edit mode
 - **Workflow Steps**: Manage and track workflow progress
 - **Report Incident**: Track and resolve safety incidents with full DataTable
 - **Configuration**: Users, Roles, Dictionaries, Locations, Templates, Modules
 
 ## Architecture
-Reuses the same 3-tier architecture as Partner Portal:
+Flow-specific component hierarchy:
 1. **Primitives**: Button, Card, DataTable, etc.
 2. **AppLayoutShell**: Handles layout, navigation, responsive behavior
-3. **DashboardPage**: Customized with EHS-specific KPIs and actions
+3. **EHSAnalyticsDashboard**: Advanced dashboard with KPI cards, breakdown charts, trending, heatmaps, and edit mode
         `),
       },
     },
@@ -2074,12 +2487,13 @@ const PAGE_TO_NAV: Record<string, FlowNavItem> = {
 interface FlowAppProps {
   /** Initial page to display */
   initialPage?: FlowNavItem
+  /** Initial Configuration sub-page (for starting on users, dictionaries, etc.) */
+  initialConfigPage?: string | null
 }
 
 // More menu items from Configuration children (for FlowMobileNav)
 const moreMenuItems: MoreMenuItem[] = [
-  { id: 'users', label: 'Users', icon: <Users className="w-5 h-5" /> },
-  { id: 'roles', label: 'Roles & Permissions', icon: <ShieldCheck className="w-5 h-5" /> },
+  { id: 'users', label: 'User Management', icon: <Users className="w-5 h-5" /> },
   { id: 'dictionaries', label: 'Dictionaries', icon: <BookOpen className="w-5 h-5" /> },
   { id: 'locations', label: 'Locations', icon: <MapPin className="w-5 h-5" /> },
   { id: 'templates', label: 'Entity Templates', icon: <Files className="w-5 h-5" /> },
@@ -2098,11 +2512,11 @@ const moreMenuItems: MoreMenuItem[] = [
  *
  * This is THE standard way to render Flow EHS in stories and production.
  */
-function FlowApp({ initialPage = 'myFlow' }: FlowAppProps) {
+function FlowApp({ initialPage = 'myFlow', initialConfigPage = null }: FlowAppProps) {
   const [activeNavItem, setActiveNavItem] = useState<FlowNavItem>(initialPage)
   const [reportingOpen, setReportingOpen] = useState(false)
   // Track current page ID for Configuration children
-  const [currentConfigPage, setCurrentConfigPage] = useState<string | null>(null)
+  const [currentConfigPage, setCurrentConfigPage] = useState<string | null>(initialConfigPage)
 
   // Handle navigation from sidebar (desktop) or page changes
   const handlePageChange = (pageId: string) => {
@@ -2308,6 +2722,147 @@ Demonstrates the \`DataTableMobileCard\` component styled to look like table row
         scale={0.7}
         showBrowser
         browserUrl="flow.disrupt.app/incidents"
+      />
+    </div>
+  ),
+}
+
+/**
+ * User Management Configuration Page
+ *
+ * Full-featured user management with:
+ * - Users and Roles tabs
+ * - Search, filters, and quick status filters
+ * - Bulk operations bar
+ * - User CRUD dialogs
+ * - Role assignment with location scoping
+ * - Activity timeline sheet
+ */
+export const UserManagement: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `**User Management Configuration**
+
+Enterprise user management for Flow EHS with RBAC:
+- **Users Tab**: Stats cards, data table, search/filters, bulk operations
+- **Roles Tab**: Role definitions grid with permission display
+- **Role Assignment**: Location-based permission scoping
+- **Activity Timeline**: User activity history in slide-over sheet
+
+Navigate to Configuration > User Management in the sidebar.`,
+      },
+    },
+  },
+  render: () => <FlowApp initialPage="more" initialConfigPage="users" />,
+}
+
+/**
+ * Roles Tab Direct - Direct view of the enhanced Roles & Permissions UI
+ *
+ * Use this story to test the new Roles functionality without navigation.
+ */
+export const RolesTabDirect: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: `**Enhanced Roles & Permissions UI**
+
+Direct view of the enhanced Roles tab with all new features:
+- **Bitmasks hidden by default** - Toggle "Dev Mode" in dialogs to see them
+- **Resource-level summaries** - Shows permission counts per resource
+- **Filter dropdown** - All Types / System / Custom
+- **Create Role button** - Opens CreateRoleDialog
+- **View/Edit/Delete actions** - In each role card footer
+- **System badge** - Yellow badge for protected roles`,
+      },
+    },
+  },
+  render: () => (
+    <div className="min-h-screen bg-page p-6">
+      <UsersPage
+        users={mockUsers}
+        roles={mockRoles}
+        locations={mockLocationTree}
+        departments={mockDepartments}
+        jobTitles={mockJobTitles}
+        stats={mockUserStats}
+        onUserCreate={async (data) => {
+          console.log('Creating user:', data)
+          alert(`User "${data.firstName} ${data.lastName}" created!`)
+        }}
+        onUserUpdate={async (data) => {
+          console.log('Updating user:', data)
+          alert(`User "${data.firstName} ${data.lastName}" updated!`)
+        }}
+        onUserDelete={async (userId) => {
+          console.log('Deleting user:', userId)
+          alert(`User deleted!`)
+        }}
+        onRoleAssign={async (userId, data) => {
+          console.log('Assigning role:', { userId, data })
+          alert(`Role assigned!`)
+        }}
+        onRoleAssignmentUpdate={async (assignmentId, scopes) => {
+          console.log('Updating role assignment:', { assignmentId, scopes })
+          alert(`Role assignment updated!`)
+        }}
+        onRoleAssignmentRemove={async (assignmentId) => {
+          console.log('Removing role assignment:', assignmentId)
+          alert(`Role assignment removed!`)
+        }}
+        onBulkAction={async (payload) => {
+          console.log('Bulk action:', payload)
+          alert(`Bulk action "${payload.action}" performed on ${payload.userIds.length} users!`)
+        }}
+        onFetchUserActivity={async (userId) => {
+          console.log('Fetching activity for user:', userId)
+          return mockUserActivities.filter(a => a.userId === userId)
+        }}
+        availablePermissions={mockEnhancedPermissions}
+        onRoleCreate={async (data) => {
+          console.log('Creating role:', data)
+          alert(`Role "${data.name}" created with ${data.permissions.length} permissions!`)
+        }}
+        onRoleUpdate={async (data) => {
+          console.log('Updating role:', data)
+          alert(`Role "${data.name}" updated with ${data.permissions.length} permissions!`)
+        }}
+        onRoleDelete={async (roleId) => {
+          console.log('Deleting role:', roleId)
+          alert(`Role deleted!`)
+        }}
+      />
+    </div>
+  ),
+}
+
+/**
+ * Mobile User Management - Shows responsive user table as cards
+ */
+export const MobileUserManagement: Story = {
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        story: `**Mobile User Management**
+
+User management optimized for mobile devices:
+- Stats cards in 2-column grid
+- User list as touch-friendly cards
+- Bottom sheet for bulk actions
+- Swipe gestures for row actions`,
+      },
+    },
+  },
+  render: () => (
+    <div className="min-h-screen bg-neutral-200 flex items-center justify-center p-8">
+      <IPhoneMobileFrame
+        model="iphone16promax"
+        storyId="flow-dashboard--user-management"
+        scale={0.7}
+        showBrowser
+        browserUrl="flow.disrupt.app/settings/users"
       />
     </div>
   ),
