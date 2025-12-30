@@ -8,6 +8,7 @@
 export { LocationPicker } from './LocationPicker'
 export { LocationTree } from './LocationTree'
 export { FloorPlanMarker } from './FloorPlanMarker'
+export { useLocations } from './useLocations'
 
 export type {
   LocationNode,
@@ -16,3 +17,5 @@ export type {
   LocationTreeProps,
   PrecisionMarker,
 } from './types'
+
+export type { UseLocationsOptions, UseLocationsReturn } from './useLocations'

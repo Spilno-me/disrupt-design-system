@@ -5,6 +5,8 @@
  * 1. GPS button is PRIMARY (big, prominent, one-tap)
  * 2. Recent locations for quick access
  * 3. Browse all locations via bottom sheet
+ * 4. Preview card before final selection
+ * 5. Breadcrumb navigation in tree view
  *
  * @example
  * ```tsx
@@ -25,9 +27,12 @@ import {
   Navigation,
   Clock,
   ChevronRight,
+  ChevronLeft,
   Search,
   X,
   Check,
+  Home,
+  Image as ImageIcon,
 } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 import { Button } from '../button'
@@ -93,6 +98,158 @@ function getAllNodeIds(nodes: LocationNode[]): string[] {
   return ids
 }
 
+/**
+ * Find a node by ID in the tree
+ */
+function findNodeById(nodes: LocationNode[], id: string): LocationNode | null {
+  for (const node of nodes) {
+    if (node.id === id) return node
+    if (node.children) {
+      const found = findNodeById(node.children, id)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+/**
+ * Get path to a node
+ */
+function getPathToNode(
+  nodes: LocationNode[],
+  targetId: string,
+  currentPath: LocationNode[] = []
+): LocationNode[] | null {
+  for (const node of nodes) {
+    const newPath = [...currentPath, node]
+    if (node.id === targetId) return newPath
+    if (node.children) {
+      const found = getPathToNode(node.children, targetId, newPath)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+// =============================================================================
+// BREADCRUMB COMPONENT
+// =============================================================================
+
+interface BreadcrumbProps {
+  path: LocationNode[]
+  onNavigate: (node: LocationNode | null) => void
+}
+
+function Breadcrumbs({ path, onNavigate }: BreadcrumbProps) {
+  return (
+    <div className="flex items-center gap-1 px-3 py-2 bg-muted-bg/50 border-b border-default overflow-x-auto">
+      <button
+        type="button"
+        onClick={() => onNavigate(null)}
+        className={cn(
+          'flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors shrink-0',
+          path.length === 0
+            ? 'bg-accent/10 text-accent'
+            : 'text-tertiary hover:text-primary hover:bg-muted-bg'
+        )}
+      >
+        <Home className="h-3.5 w-3.5" />
+        <span>All</span>
+      </button>
+      {path.map((node, index) => (
+        <React.Fragment key={node.id}>
+          <ChevronRight className="h-3.5 w-3.5 text-tertiary shrink-0" />
+          <button
+            type="button"
+            onClick={() => onNavigate(node)}
+            className={cn(
+              'px-2 py-1 rounded text-xs font-medium transition-colors truncate max-w-[120px] shrink-0',
+              index === path.length - 1
+                ? 'bg-accent/10 text-accent'
+                : 'text-tertiary hover:text-primary hover:bg-muted-bg'
+            )}
+          >
+            {node.label}
+          </button>
+        </React.Fragment>
+      ))}
+    </div>
+  )
+}
+
+// =============================================================================
+// PREVIEW CARD COMPONENT
+// =============================================================================
+
+interface PreviewCardProps {
+  node: LocationNode
+  path: string[]
+  onConfirm: () => void
+  onCancel: () => void
+}
+
+function PreviewCard({ node, path, onConfirm, onCancel }: PreviewCardProps) {
+  const hasFloorPlan = !!node.floorPlanImage
+
+  return (
+    <div className="p-4 border-t border-default bg-surface">
+      <div className="flex gap-4">
+        {/* Floor plan preview */}
+        {hasFloorPlan && (
+          <div className="w-20 h-20 rounded-lg overflow-hidden bg-muted-bg shrink-0">
+            <img
+              src={node.floorPlanImage}
+              alt={`${node.label} floor plan`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-primary truncate">{node.label}</h3>
+          <p className="text-xs text-tertiary truncate mt-0.5">
+            {path.slice(0, -1).join(' → ') || 'Root location'}
+          </p>
+          {hasFloorPlan && (
+            <div className="flex items-center gap-1 mt-2 text-xs text-accent">
+              <ImageIcon className="h-3.5 w-3.5" />
+              <span>Floor plan available</span>
+            </div>
+          )}
+          {node.coordinates && (
+            <p className="text-xs text-tertiary mt-1">
+              {node.coordinates.lat.toFixed(4)}, {node.coordinates.lng.toFixed(4)}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-2 mt-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          className="flex-1"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back
+        </Button>
+        <Button
+          type="button"
+          variant="default"
+          onClick={onConfirm}
+          className="flex-1"
+        >
+          <Check className="h-4 w-4 mr-1" />
+          Select
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 // =============================================================================
 // COMPONENT
 // =============================================================================
@@ -114,9 +271,27 @@ export function LocationPicker({
   const [isGpsLoading, setIsGpsLoading] = useState(false)
   const [recentLocations, setRecentLocations] = useState<LocationValue[]>([])
 
+  // Breadcrumb navigation state
+  const [currentParentId, setCurrentParentId] = useState<string | null>(null)
+  const [breadcrumbPath, setBreadcrumbPath] = useState<LocationNode[]>([])
+
+  // Preview state - node selected but not confirmed
+  const [previewNode, setPreviewNode] = useState<{
+    node: LocationNode
+    path: string[]
+  } | null>(null)
+
   // Refs
   const sheetRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // Current level nodes based on breadcrumb navigation
+  const currentNodes = useMemo(() => {
+    if (searchQuery) return locations // Show all when searching
+    if (!currentParentId) return locations
+    const parent = findNodeById(locations, currentParentId)
+    return parent?.children || []
+  }, [locations, currentParentId, searchQuery])
 
   // Load recent locations on mount
   useEffect(() => {
@@ -137,27 +312,70 @@ export function LocationPicker({
     }
   }, [isSheetOpen])
 
-  // Handle node selection
-  const handleSelect = useCallback(
+  // Reset navigation when sheet closes
+  useEffect(() => {
+    if (!isSheetOpen) {
+      setCurrentParentId(null)
+      setBreadcrumbPath([])
+      setPreviewNode(null)
+    }
+  }, [isSheetOpen])
+
+  // Handle breadcrumb navigation
+  const handleBreadcrumbNavigate = useCallback((node: LocationNode | null) => {
+    setPreviewNode(null)
+    if (!node) {
+      setCurrentParentId(null)
+      setBreadcrumbPath([])
+    } else {
+      setCurrentParentId(node.id)
+      // Update path to this node
+      const pathToNode = getPathToNode(locations, node.id)
+      setBreadcrumbPath(pathToNode || [])
+    }
+  }, [locations])
+
+  // Handle node click - drill down or preview
+  const handleNodeClick = useCallback(
     (node: LocationNode, path: string[]) => {
-      const newValue: LocationValue = {
-        id: node.id,
-        path,
-        label: node.label,
-        coordinates: node.coordinates,
-        what3words: node.what3words,
-        floorPlanImage: node.floorPlanImage,
-        // Reset precision marker when selecting new location
-        precisionMarker: undefined,
+      const isSelectable = node.selectable !== false
+      const hasChildren = node.children && node.children.length > 0
+
+      if (hasChildren && !isSelectable) {
+        // Navigate into folder
+        setCurrentParentId(node.id)
+        const pathToNode = getPathToNode(locations, node.id)
+        setBreadcrumbPath(pathToNode || [])
+        setPreviewNode(null)
+      } else if (isSelectable) {
+        // Show preview card
+        setPreviewNode({ node, path })
       }
-      onChange(newValue)
-      saveToRecent(newValue)
-      setRecentLocations(getRecentLocations())
-      setIsSheetOpen(false)
-      setSearchQuery('')
     },
-    [onChange]
+    [locations]
   )
+
+  // Handle final selection
+  const handleConfirmSelection = useCallback(() => {
+    if (!previewNode) return
+
+    const { node, path } = previewNode
+    const newValue: LocationValue = {
+      id: node.id,
+      path,
+      label: node.label,
+      coordinates: node.coordinates,
+      what3words: node.what3words,
+      floorPlanImage: node.floorPlanImage,
+      precisionMarker: undefined,
+    }
+    onChange(newValue)
+    saveToRecent(newValue)
+    setRecentLocations(getRecentLocations())
+    setIsSheetOpen(false)
+    setSearchQuery('')
+    setPreviewNode(null)
+  }, [previewNode, onChange])
 
   // Handle precision marker change on floor plan
   const handlePrecisionMarkerChange = useCallback(
@@ -178,7 +396,7 @@ export function LocationPicker({
     setRecentLocations(getRecentLocations())
   }
 
-  // Toggle node expansion
+  // Toggle node expansion (for search mode)
   const handleToggle = useCallback((id: string) => {
     setExpandedIds((prev) => {
       const next = new Set(prev)
@@ -378,6 +596,9 @@ export function LocationPicker({
                 <span className="flex-1 text-left text-sm text-primary truncate">
                   {loc.what3words ? `///${loc.what3words}` : loc.label}
                 </span>
+                {loc.floorPlanImage && (
+                  <ImageIcon className="h-4 w-4 text-accent flex-shrink-0" />
+                )}
                 <ChevronRight className="h-4 w-4 text-tertiary flex-shrink-0" />
               </button>
             ))}
@@ -472,24 +693,42 @@ export function LocationPicker({
               </div>
             </div>
 
+            {/* Breadcrumbs - only show when not searching */}
+            {!searchQuery && breadcrumbPath.length > 0 && (
+              <Breadcrumbs
+                path={breadcrumbPath}
+                onNavigate={handleBreadcrumbNavigate}
+              />
+            )}
+
             {/* Location Tree */}
             <div className="flex-1 overflow-y-auto p-3">
-              {locations.length > 0 ? (
+              {currentNodes.length > 0 ? (
                 <LocationTree
-                  nodes={locations}
+                  nodes={currentNodes}
                   searchQuery={searchQuery}
                   selectedId={value?.id}
-                  onSelect={handleSelect}
+                  onSelect={handleNodeClick}
                   expandedIds={expandedIds}
                   onToggle={handleToggle}
+                  showDrillDown={!searchQuery}
                 />
               ) : (
                 <p className="text-sm text-tertiary text-center py-8">
-                  No locations available
+                  {searchQuery ? 'No locations match your search' : 'No locations available'}
                 </p>
               )}
             </div>
 
+            {/* Preview Card */}
+            {previewNode && (
+              <PreviewCard
+                node={previewNode.node}
+                path={previewNode.path}
+                onConfirm={handleConfirmSelection}
+                onCancel={() => setPreviewNode(null)}
+              />
+            )}
           </div>
         </div>
       )}

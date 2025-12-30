@@ -111,4 +111,6 @@ export interface LocationTreeProps {
   parentPath?: string[]
   /** Depth level for indentation */
   depth?: number
+  /** Show drill-down mode (flat list with arrows for folders) */
+  showDrillDown?: boolean
 }

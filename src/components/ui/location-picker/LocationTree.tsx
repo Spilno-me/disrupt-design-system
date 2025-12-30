@@ -2,10 +2,23 @@
  * LocationTree - Hierarchical tree view for location selection
  *
  * Renders a collapsible tree of locations with search highlighting.
+ * Supports two modes:
+ * - Tree mode (default): Expandable hierarchy with indentation
+ * - Drill-down mode: Flat list where folders navigate to children
  */
 
 import * as React from 'react'
-import { ChevronRight, MapPin, Building2, Warehouse, Factory, Car, Trees } from 'lucide-react'
+import {
+  ChevronRight,
+  MapPin,
+  Building2,
+  Warehouse,
+  Factory,
+  Car,
+  Trees,
+  FolderOpen,
+  Image as ImageIcon,
+} from 'lucide-react'
 import { cn } from '../../../lib/utils'
 import type { LocationNode, LocationTreeProps } from './types'
 
@@ -19,10 +32,12 @@ const iconMap: Record<string, React.ElementType> = {
   factory: Factory,
   parking: Car,
   outdoor: Trees,
+  folder: FolderOpen,
   default: MapPin,
 }
 
-function getIcon(iconName?: string) {
+function getIcon(iconName?: string, hasChildren?: boolean) {
+  if (hasChildren && !iconName) return FolderOpen
   if (!iconName) return MapPin
   return iconMap[iconName.toLowerCase()] || MapPin
 }
@@ -86,6 +101,7 @@ export function LocationTree({
   onToggle,
   parentPath = [],
   depth = 0,
+  showDrillDown = false,
 }: LocationTreeProps) {
   // Filter nodes based on search
   const filteredNodes = searchQuery
@@ -104,7 +120,11 @@ export function LocationTree({
         const isSelected = selectedId === node.id
         const isSelectable = node.selectable !== false && (!hasChildren || node.selectable === true)
         const currentPath = [...parentPath, node.label]
-        const Icon = getIcon(node.icon)
+        const Icon = getIcon(node.icon, hasChildren && !isSelectable)
+        const hasFloorPlan = !!node.floorPlanImage
+
+        // In drill-down mode, render flat list (no indentation)
+        const effectiveDepth = showDrillDown ? 0 : depth
 
         return (
           <li key={node.id} role="treeitem" aria-expanded={hasChildren ? String(isExpanded) as 'true' | 'false' : undefined}>
@@ -114,20 +134,16 @@ export function LocationTree({
                 'min-h-[48px]', // 48px touch target for mobile
                 'hover:bg-muted-bg active:bg-muted-bg',
                 isSelected && 'bg-accent/10 text-accent-strong',
-                !isSelectable && hasChildren && 'cursor-default'
+                !isSelectable && hasChildren && !showDrillDown && 'cursor-default'
               )}
-              style={{ paddingLeft: `${depth * 20 + 12}px` }}
+              style={{ paddingLeft: `${effectiveDepth * 20 + 12}px` }}
               onClick={() => {
-                if (hasChildren) {
-                  onToggle(node.id)
-                }
-                if (isSelectable) {
+                if (showDrillDown) {
+                  // In drill-down mode, clicking always calls onSelect
+                  // Parent component decides whether to drill or preview
                   onSelect(node, currentPath)
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
+                } else {
+                  // In tree mode, toggle folders, select leaves
                   if (hasChildren) {
                     onToggle(node.id)
                   }
@@ -136,20 +152,37 @@ export function LocationTree({
                   }
                 }
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  if (showDrillDown) {
+                    onSelect(node, currentPath)
+                  } else {
+                    if (hasChildren) {
+                      onToggle(node.id)
+                    }
+                    if (isSelectable) {
+                      onSelect(node, currentPath)
+                    }
+                  }
+                }
+              }}
               tabIndex={0}
               role="option"
               aria-selected={isSelected}
             >
-              {/* Expand/collapse chevron */}
-              {hasChildren ? (
-                <ChevronRight
-                  className={cn(
-                    'h-5 w-5 text-tertiary shrink-0 transition-transform',
-                    isExpanded && 'rotate-90'
-                  )}
-                />
-              ) : (
-                <span className="w-5 shrink-0" />
+              {/* Expand/collapse chevron - only in tree mode */}
+              {!showDrillDown && (
+                hasChildren ? (
+                  <ChevronRight
+                    className={cn(
+                      'h-5 w-5 text-tertiary shrink-0 transition-transform',
+                      isExpanded && 'rotate-90'
+                    )}
+                  />
+                ) : (
+                  <span className="w-5 shrink-0" />
+                )
               )}
 
               {/* Icon */}
@@ -170,14 +203,36 @@ export function LocationTree({
                 {highlightMatch(node.label, searchQuery)}
               </span>
 
+              {/* Floor plan indicator */}
+              {hasFloorPlan && !showDrillDown && (
+                <ImageIcon className="h-4 w-4 text-accent shrink-0" />
+              )}
+
+              {/* Children count badge - in drill-down mode */}
+              {showDrillDown && hasChildren && (
+                <span className="text-xs text-tertiary bg-muted-bg px-2 py-0.5 rounded-full shrink-0">
+                  {node.children!.length}
+                </span>
+              )}
+
+              {/* Drill-down arrow - in drill-down mode for folders */}
+              {showDrillDown && hasChildren && !isSelectable && (
+                <ChevronRight className="h-5 w-5 text-tertiary shrink-0" />
+              )}
+
+              {/* Floor plan indicator - in drill-down mode */}
+              {showDrillDown && hasFloorPlan && isSelectable && (
+                <ImageIcon className="h-4 w-4 text-accent shrink-0" />
+              )}
+
               {/* Selection indicator */}
               {isSelected && (
-                <span className="ml-auto text-accent">✓</span>
+                <span className="text-accent shrink-0">✓</span>
               )}
             </div>
 
-            {/* Children */}
-            {hasChildren && isExpanded && (
+            {/* Children - only in tree mode (not drill-down) */}
+            {!showDrillDown && hasChildren && isExpanded && (
               <LocationTree
                 nodes={node.children!}
                 searchQuery={searchQuery}
@@ -187,6 +242,7 @@ export function LocationTree({
                 onToggle={onToggle}
                 parentPath={currentPath}
                 depth={depth + 1}
+                showDrillDown={false}
               />
             )}
           </li>
