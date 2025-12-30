@@ -28,7 +28,10 @@ export default defineConfig({
             provider: playwright({}),
             instances: [{ browser: 'chromium' }],
           },
-          setupFiles: ['.storybook/vitest.setup.ts'],
+          setupFiles: [
+            '.storybook/vitest.setup.ts',
+            '.storybook/vitest.matchers.ts', // jest-dom matchers (separate to avoid Chromatic bundling)
+          ],
         },
       },
     ],

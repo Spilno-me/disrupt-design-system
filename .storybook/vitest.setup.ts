@@ -1,6 +1,7 @@
 import { beforeAll } from 'vitest'
 import { setProjectAnnotations } from '@storybook/react'
-import '@testing-library/jest-dom/vitest'
+// NOTE: jest-dom/vitest matchers are loaded via vitest.config.ts globalSetup
+// Do NOT import here - breaks Chromatic builds (customEqualityTesters error)
 
 import * as previewAnnotations from './preview'
 
