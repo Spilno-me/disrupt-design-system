@@ -1,6 +1,33 @@
 import * as React from 'react'
 import { cn } from '../../lib/utils'
 
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Border radius class mapping for skeleton variants */
+const ROUNDED_CLASSES = {
+  none: 'rounded-none',
+  sm: 'rounded-sm',
+  md: 'rounded-md',
+  lg: 'rounded-lg',
+  xl: 'rounded-xl',
+  '2xl': 'rounded-2xl',
+  full: 'rounded-full',
+} as const
+
+/** Aspect ratio class mapping for image skeletons */
+const ASPECT_CLASSES = {
+  square: 'aspect-square',
+  '4/3': 'aspect-[4/3]',
+  '16/9': 'aspect-video',
+  auto: '',
+} as const
+
+// =============================================================================
+// TYPES
+// =============================================================================
+
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
   /**
@@ -11,8 +38,22 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   variant?: 'pulse' | 'shimmer' | 'wave'
   /** Border radius style */
-  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
+  rounded?: keyof typeof ROUNDED_CLASSES
 }
+
+interface SkeletonImageProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string
+  aspectRatio?: keyof typeof ASPECT_CLASSES
+}
+
+interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> {
+  lines?: number
+  className?: string
+}
+
+// =============================================================================
+// COMPONENT
+// =============================================================================
 
 /**
  * Skeleton loading placeholder component.
@@ -44,16 +85,6 @@ export function Skeleton({
   rounded = 'lg',
   ...props
 }: SkeletonProps) {
-  const roundedClasses = {
-    none: 'rounded-none',
-    sm: 'rounded-sm',
-    md: 'rounded-md',
-    lg: 'rounded-lg',
-    xl: 'rounded-xl',
-    '2xl': 'rounded-2xl',
-    full: 'rounded-full',
-  }
-
   // Always use shimmer for consistency (ignore variant prop)
   // Deprecated variants still work in v2.x but render as shimmer
   const animation = 'skeleton-shimmer'
@@ -66,7 +97,7 @@ export function Skeleton({
         // bg-muted-bg (#EFEDF3) provides ~1.06:1 on elevated (#FFFEF9)
         // Adding slight transparency maintains subtle appearance while staying visible
         'bg-muted-bg/80',
-        roundedClasses[rounded],
+        ROUNDED_CLASSES[rounded],
         animation,
         className
       )}
@@ -77,11 +108,6 @@ export function Skeleton({
 }
 
 Skeleton.displayName = "Skeleton"
-
-interface SkeletonImageProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string
-  aspectRatio?: 'square' | '4/3' | '16/9' | 'auto'
-}
 
 /**
  * Image skeleton with proper aspect ratio maintenance.
@@ -106,17 +132,10 @@ export function SkeletonImage({
   aspectRatio = '4/3',
   ...props
 }: SkeletonImageProps) {
-  const aspectClasses = {
-    square: 'aspect-square',
-    '4/3': 'aspect-[4/3]',
-    '16/9': 'aspect-video',
-    auto: '',
-  }
-
   return (
     <Skeleton
       {...props}
-      className={cn('w-full', aspectClasses[aspectRatio], className)}
+      className={cn('w-full', ASPECT_CLASSES[aspectRatio], className)}
       rounded="2xl"
       variant="shimmer"
     />
@@ -124,11 +143,6 @@ export function SkeletonImage({
 }
 
 SkeletonImage.displayName = "SkeletonImage"
-
-interface SkeletonTextProps extends React.HTMLAttributes<HTMLDivElement> {
-  lines?: number
-  className?: string
-}
 
 /**
  * Text skeleton for paragraphs.

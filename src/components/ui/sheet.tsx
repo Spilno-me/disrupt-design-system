@@ -4,7 +4,18 @@ import { XIcon } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
-// Context for portal container (used by device frames to contain portals)
+// ============================================================================
+// CONSTANTS
+// ============================================================================
+
+/** Z-index for sheet overlay and content - ensures sheets appear above other UI */
+const SHEET_Z_INDEX = "z-50" as const
+
+// ============================================================================
+// CONTEXT
+// ============================================================================
+
+/** Context for portal container (used by device frames to contain portals) */
 const PortalContainerContext = React.createContext<HTMLElement | null>(null)
 
 /**
@@ -32,6 +43,10 @@ export function PortalContainerProvider({
 export function usePortalContainer() {
   return React.useContext(PortalContainerContext)
 }
+
+// ============================================================================
+// COMPONENT
+// ============================================================================
 
 /**
  * Sheet - Slide-out panel component for secondary content and actions.
@@ -151,7 +166,8 @@ function SheetOverlay({
       className={cn(
         // Overlay with semi-transparent backdrop (matches Dialog)
         // iOS 26: min-h-dvh ensures overlay extends behind browser chrome
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm min-h-dvh",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 bg-black/50 backdrop-blur-sm min-h-dvh",
+        SHEET_Z_INDEX,
         className
       )}
       {...props}
@@ -197,7 +213,8 @@ function SheetContent({
           // Base sheet styles with design system colors
           "bg-surface text-primary font-sans",
           // Animation - using sheet-animate class for CSS-based animation
-          "sheet-animate fixed z-50 flex flex-col gap-4 shadow-lg",
+          "sheet-animate fixed flex flex-col gap-4 shadow-lg",
+          SHEET_Z_INDEX,
           // Side-specific positioning
           side === "right" && "inset-y-0 right-0 h-full w-3/4 border-l border-default sm:max-w-sm",
           side === "left" && "inset-y-0 left-0 h-full w-3/4 border-r border-default sm:max-w-sm",

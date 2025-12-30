@@ -3,6 +3,10 @@ import * as SeparatorPrimitive from "@radix-ui/react-separator"
 
 import { cn } from "../../lib/utils"
 
+// =============================================================================
+// COMPONENT
+// =============================================================================
+
 /**
  * Separator component for visual division of content. Built on Radix UI Separator primitive.
  *

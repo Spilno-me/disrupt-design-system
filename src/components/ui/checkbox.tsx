@@ -6,7 +6,15 @@ import { CheckIcon } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+// =============================================================================
+// TYPES
+// =============================================================================
+
 export interface CheckboxProps extends React.ComponentProps<typeof CheckboxPrimitive.Root> {}
+
+// =============================================================================
+// COMPONENT
+// =============================================================================
 
 /**
  * Checkbox component for selections and toggles. Built on Radix UI Checkbox primitive.
@@ -58,8 +66,8 @@ function Checkbox({
       className={cn(
         // Base styles - subtle border for clean appearance
         "peer size-4 shrink-0 rounded border border-muted bg-surface transition-all outline-none",
-        // Checked state - accent fill with white checkmark
-        "data-[state=checked]:bg-accent-strong data-[state=checked]:text-white data-[state=checked]:border-accent-strong",
+        // Checked state - accent fill with semantic text token for contrast on status backgrounds
+        "data-[state=checked]:bg-accent-strong data-[state=checked]:text-on-status data-[state=checked]:border-accent-strong",
         // Focus state - uses design token
         "focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30",
         // Hover state

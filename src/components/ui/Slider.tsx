@@ -3,6 +3,13 @@ import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../lib/utils"
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Thumb size offset in pixels for track fill calculation (accounts for thumb width) */
+const THUMB_OFFSET_PX = 16
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
@@ -85,7 +92,7 @@ export function Slider({
         <div
           className="absolute left-4 lg:left-2.5 h-6 lg:h-4 rounded-l-full bg-accent-strong"
           style={{
-            width: `calc(${((value - min) / (max - min)) * 100}% - ${((value - min) / (max - min)) * 16}px)`,
+            width: `calc(${((value - min) / (max - min)) * 100}% - ${((value - min) / (max - min)) * THUMB_OFFSET_PX}px)`,
           }}
         />
 
@@ -117,3 +124,5 @@ export function Slider({
     </div>
   )
 }
+
+Slider.displayName = "Slider"

@@ -2,7 +2,15 @@ import * as React from "react"
 
 import { cn } from "../../lib/utils"
 
+// =============================================================================
+// TYPES
+// =============================================================================
+
 export interface InputProps extends React.ComponentProps<"input"> {}
+
+// =============================================================================
+// COMPONENT
+// =============================================================================
 
 /**
  * Input component for text entry, password, email, and other input types.

@@ -3,7 +3,15 @@ import * as LabelPrimitive from "@radix-ui/react-label"
 
 import { cn } from "../../lib/utils"
 
+// =============================================================================
+// TYPES
+// =============================================================================
+
 export interface LabelProps extends React.ComponentProps<typeof LabelPrimitive.Root> {}
+
+// =============================================================================
+// COMPONENT
+// =============================================================================
 
 /**
  * Label component for form inputs. Built on Radix UI Label primitive.
