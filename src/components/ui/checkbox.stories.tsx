@@ -30,7 +30,9 @@ type Story = StoryObj<typeof Checkbox>
 
 // Default Checkbox (for Controls panel)
 export const Default: Story = {
-  args: {},
+  args: {
+    'aria-label': 'Example checkbox',
+  },
 };
 
 // All States (Visual Matrix - No interaction needed)
