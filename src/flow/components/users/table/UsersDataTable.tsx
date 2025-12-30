@@ -6,25 +6,19 @@
 
 import * as React from 'react'
 import {
-  MoreVertical,
   Edit2,
   Trash2,
   Shield,
-  History,
+  Users,
+  SearchX,
 } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
 import { SearchFilter } from '../../../../components/shared/SearchFilter'
 import { Badge } from '../../../../components/ui/badge'
 import { Button } from '../../../../components/ui/button'
+import { ActionTile } from '../../../../components/ui/ActionTile'
 import { Checkbox } from '../../../../components/ui/checkbox'
 import { Pagination } from '../../../../components/ui/Pagination'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '../../../../components/ui/dropdown-menu'
 import {
   Tooltip,
   TooltipContent,
@@ -64,7 +58,6 @@ interface UsersDataTableProps {
   onEditUser: (user: User) => void
   onDeleteUser: (user: User) => void
   onManageRoles: (user: User) => void
-  onViewActivity: (user: User) => void
 }
 
 // =============================================================================
@@ -155,7 +148,6 @@ export function UsersDataTable({
   onEditUser,
   onDeleteUser,
   onManageRoles,
-  onViewActivity,
 }: UsersDataTableProps) {
   // Select all handler
   const handleSelectAll = React.useCallback(
@@ -220,14 +212,17 @@ export function UsersDataTable({
         size="default"
       />
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-lg border border-default bg-surface">
+      {/* Table - Depth 2 glass for prominent content container */}
+      {/* Light: white glass, Dark: black glass */}
+      <div className="overflow-hidden rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-[4px] border-2 border-accent shadow-md">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[800px]">
-            <thead>
-              <tr className="border-b border-default bg-muted-bg">
+            <thead
+              className="border-b border-accent/30 bg-white/30 dark:bg-black/30"
+            >
+              <tr>
                 {/* Selection checkbox */}
-                <th className="w-12 px-4 py-3">
+                <th className="w-12 px-4 py-3 border-r border-accent/20">
                   <Checkbox
                     checked={allSelected ? true : someSelected ? 'indeterminate' : false}
                     onCheckedChange={handleSelectAll}
@@ -237,7 +232,7 @@ export function UsersDataTable({
 
                 {/* User column */}
                 <th
-                  className="group cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary"
+                  className="group cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary whitespace-nowrap border-r border-accent/20 hover:text-primary transition-colors"
                   onClick={() => onSortChange('lastName')}
                 >
                   User
@@ -250,7 +245,7 @@ export function UsersDataTable({
 
                 {/* Email - hidden on mobile */}
                 <th
-                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary md:table-cell"
+                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary whitespace-nowrap border-r border-accent/20 hover:text-primary transition-colors md:table-cell"
                   onClick={() => onSortChange('email')}
                 >
                   Email
@@ -263,7 +258,7 @@ export function UsersDataTable({
 
                 {/* Department - hidden on mobile/tablet */}
                 <th
-                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary lg:table-cell"
+                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary whitespace-nowrap border-r border-accent/20 hover:text-primary transition-colors lg:table-cell"
                   onClick={() => onSortChange('department')}
                 >
                   Department
@@ -276,7 +271,7 @@ export function UsersDataTable({
 
                 {/* Job Title - hidden on mobile/tablet */}
                 <th
-                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary lg:table-cell"
+                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary whitespace-nowrap border-r border-accent/20 hover:text-primary transition-colors lg:table-cell"
                   onClick={() => onSortChange('jobTitle')}
                 >
                   Job Title
@@ -288,13 +283,13 @@ export function UsersDataTable({
                 </th>
 
                 {/* Roles - hidden on mobile */}
-                <th className="hidden px-4 py-3 text-left text-sm font-medium text-secondary md:table-cell">
+                <th className="hidden px-4 py-3 text-left text-sm font-medium text-secondary whitespace-nowrap border-r border-accent/20 md:table-cell">
                   Roles
                 </th>
 
                 {/* Status */}
                 <th
-                  className="group cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary"
+                  className="group cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary whitespace-nowrap border-r border-accent/20 hover:text-primary transition-colors"
                   onClick={() => onSortChange('status')}
                 >
                   Status
@@ -307,7 +302,7 @@ export function UsersDataTable({
 
                 {/* Created - hidden on mobile/tablet */}
                 <th
-                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary lg:table-cell"
+                  className="group hidden cursor-pointer px-4 py-3 text-left text-sm font-medium text-secondary whitespace-nowrap border-r border-accent/20 hover:text-primary transition-colors lg:table-cell"
                   onClick={() => onSortChange('createdAt')}
                 >
                   Created
@@ -318,14 +313,14 @@ export function UsersDataTable({
                   />
                 </th>
 
-                {/* Actions */}
-                <th className="w-16 px-4 py-3 text-right text-sm font-medium text-secondary">
+                {/* Actions - 3 visible buttons per UX rule (no right border on last column) */}
+                <th className="w-28 px-4 py-3 text-right text-sm font-medium text-secondary whitespace-nowrap">
                   Actions
                 </th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-default">
+            <tbody className="bg-white/20 dark:bg-black/20 divide-y divide-accent/20">
               {isLoading ? (
                 // Loading skeleton
                 Array.from({ length: 5 }).map((_, i) => (
@@ -364,16 +359,44 @@ export function UsersDataTable({
                 ))
               ) : users.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center">
-                    <p className="text-secondary">No users found</p>
+                  <td colSpan={9} className="px-4 py-12">
+                    <div className="flex flex-col items-center justify-center gap-3">
+                      <div className="flex size-12 items-center justify-center rounded-full bg-muted-bg">
+                        {searchValue ? (
+                          <SearchX className="size-6 text-tertiary" />
+                        ) : (
+                          <Users className="size-6 text-tertiary" />
+                        )}
+                      </div>
+                      <div className="text-center">
+                        <p className="font-medium text-primary">No users found</p>
+                        <p className="mt-1 text-sm text-secondary">
+                          {searchValue
+                            ? 'Try adjusting your search terms or clearing filters'
+                            : 'Add your first team member to get started'}
+                        </p>
+                      </div>
+                      {searchValue && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onSearchChange('')}
+                          className="mt-2"
+                        >
+                          Clear Search
+                        </Button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ) : (
                 users.map((user) => (
                   <tr
                     key={user.id}
+                    tabIndex={0}
                     className={cn(
                       'transition-colors hover:bg-muted-bg/50',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent',
                       selectedRows.has(user.id) && 'bg-accent/5'
                     )}
                   >
@@ -474,42 +497,60 @@ export function UsersDataTable({
                       </span>
                     </td>
 
-                    {/* Actions */}
-                    <td className="px-4 py-4 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="size-8"
-                            aria-label="User actions"
-                          >
-                            <MoreVertical className="size-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => onEditUser(user)}>
-                            <Edit2 className="mr-2 size-4" />
-                            Edit User
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => onManageRoles(user)}>
-                            <Shield className="mr-2 size-4" />
-                            Manage Roles
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => onViewActivity(user)}>
-                            <History className="mr-2 size-4" />
-                            View Activity
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onClick={() => onDeleteUser(user)}
-                            className="text-error focus:text-error"
-                          >
-                            <Trash2 className="mr-2 size-4" />
-                            Delete User
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                    {/* Actions - 3 visible ActionTile buttons (≤3 actions rule) */}
+                    <td className="px-4 py-4">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <ActionTile
+                                variant="info"
+                                appearance="filled"
+                                size="xs"
+                                onClick={() => onEditUser(user)}
+                                aria-label={`Edit ${user.firstName} ${user.lastName}`}
+                              >
+                                <Edit2 className="size-4" />
+                              </ActionTile>
+                            </TooltipTrigger>
+                            <TooltipContent>Edit</TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <ActionTile
+                                variant="neutral"
+                                appearance="filled"
+                                size="xs"
+                                onClick={() => onManageRoles(user)}
+                                aria-label={`Manage roles for ${user.firstName} ${user.lastName}`}
+                              >
+                                <Shield className="size-4" />
+                              </ActionTile>
+                            </TooltipTrigger>
+                            <TooltipContent>Roles</TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <ActionTile
+                                variant="destructive"
+                                appearance="filled"
+                                size="xs"
+                                onClick={() => onDeleteUser(user)}
+                                aria-label={`Delete ${user.firstName} ${user.lastName}`}
+                              >
+                                <Trash2 className="size-4" />
+                              </ActionTile>
+                            </TooltipTrigger>
+                            <TooltipContent>Delete</TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -518,9 +559,11 @@ export function UsersDataTable({
           </table>
         </div>
 
-        {/* Pagination */}
+        {/* Pagination - glass styling to match container */}
         {totalItems > 0 && (
-          <div className="border-t border-default px-4 py-3">
+          <div
+            className="border-t border-accent/30 bg-white/30 dark:bg-black/30 px-4 py-3"
+          >
             <Pagination
               currentPage={currentPage}
               totalItems={totalItems}

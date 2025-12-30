@@ -21,11 +21,12 @@
  */
 
 import * as React from 'react'
-import { Users, Shield, Plus, RefreshCw } from 'lucide-react'
+import { Users, Shield, Plus, RefreshCw, UserPlus } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../../components/ui/tabs'
 import { Button } from '../../../components/ui/button'
 import { Badge } from '../../../components/ui/badge'
+import { PageActionPanel } from '../../../components/ui/PageActionPanel'
 import { UsersTab } from './tabs/UsersTab'
 import { RolesTab } from './tabs/RolesTab'
 import type { UsersPageProps } from './types'
@@ -73,19 +74,24 @@ export function UsersPage({
       data-slot="users-page"
       className="flex flex-col gap-6 p-4 md:p-6"
     >
-      {/* Page Header */}
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold text-primary">
-            User Management
-          </h1>
-          <p className="text-sm text-secondary">
-            Manage user accounts, roles, and access controls
-          </p>
-        </div>
-
-        {/* Header Actions */}
-        <div className="flex items-center gap-2">
+      {/* Page Header - ActionCard style */}
+      <PageActionPanel
+        icon={<Users className="w-6 h-6 md:w-8 md:h-8" />}
+        iconClassName="text-accent"
+        title="User Management"
+        subtitle="Manage user accounts, roles, and access controls"
+        primaryAction={
+          <Button
+            size="sm"
+            onClick={() => setCreateDialogOpen(true)}
+            className="gap-1.5"
+          >
+            <UserPlus className="size-4" />
+            <span className="sr-only sm:not-sr-only">Add User</span>
+            <span className="sm:sr-only">Add</span>
+          </Button>
+        }
+        actions={
           <Button
             variant="outline"
             size="sm"
@@ -99,19 +105,10 @@ export function UsersPage({
                 isRefreshing && 'animate-spin'
               )}
             />
-            <span className="hidden sm:inline">Refresh</span>
+            Refresh
           </Button>
-
-          <Button
-            size="sm"
-            onClick={() => setCreateDialogOpen(true)}
-            className="gap-2"
-          >
-            <Plus className="size-4" />
-            <span>Add User</span>
-          </Button>
-        </div>
-      </header>
+        }
+      />
 
       {/* Tabs Navigation */}
       <Tabs
@@ -131,7 +128,7 @@ export function UsersPage({
               <Badge
                 variant="secondary"
                 size="sm"
-                className="ml-1 bg-surface/50"
+                className="ml-1 rounded-xs bg-muted-bg text-primary"
               >
                 {users.length}
               </Badge>
@@ -148,7 +145,7 @@ export function UsersPage({
               <Badge
                 variant="secondary"
                 size="sm"
-                className="ml-1 bg-surface/50"
+                className="ml-1 rounded-xs bg-muted-bg text-primary"
               >
                 {roles.length}
               </Badge>

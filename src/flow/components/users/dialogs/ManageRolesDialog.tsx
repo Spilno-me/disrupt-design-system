@@ -203,7 +203,7 @@ function EditRoleSubDialog({
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          <div className="rounded-lg border border-default bg-muted-bg/50 p-3">
+          <div className="rounded-lg border border-default bg-surface p-3">
             <p className="font-medium text-primary">{assignment.role.name}</p>
             <p className="text-sm text-secondary">
               {assignment.role.permissions.length} permissions
@@ -376,7 +376,7 @@ export function ManageRolesDialog({
 
             {/* Role cards */}
             {user.roleAssignments.length === 0 ? (
-              <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-default bg-muted-bg/50 py-8">
+              <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-default bg-surface py-8">
                 <Shield className="size-8 text-tertiary" />
                 <div className="text-center">
                   <p className="font-medium text-primary">No roles assigned</p>

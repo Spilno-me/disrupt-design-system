@@ -120,7 +120,9 @@ export function RoleCard({
     <div
       data-slot="role-card"
       className={cn(
-        'flex flex-col rounded-lg border border-default bg-surface p-4 shadow-sm',
+        // Depth 3 glass - content cards over blob background
+        // Light: white glass, Dark: black glass
+        'flex flex-col rounded-lg bg-white/20 dark:bg-black/20 backdrop-blur-[2px] border-2 border-accent p-4 shadow-sm',
         'transition-shadow hover:shadow-md',
         className
       )}
@@ -158,6 +160,7 @@ export function RoleCard({
                       size="icon"
                       className="size-8"
                       onClick={onEdit}
+                      aria-label="Edit assignment"
                     >
                       <Edit2 className="size-4" />
                     </Button>
@@ -175,6 +178,7 @@ export function RoleCard({
                       size="icon"
                       className="size-8 text-error hover:text-error"
                       onClick={onRemove}
+                      aria-label="Remove role"
                     >
                       <Trash2 className="size-4" />
                     </Button>
@@ -263,13 +267,14 @@ export function RoleCard({
 
       {/* Actions Footer */}
       {hasRoleActions && (
-        <div className="mt-4 flex items-center gap-2 border-t border-default pt-3">
+        <div className="mt-4 flex items-center gap-2 border-t border-accent/30 pt-3">
           {onViewPermissions && (
             <Button
               variant="ghost"
               size="sm"
-              className="gap-1.5"
+              className="gap-1.5 min-h-9"
               onClick={onViewPermissions}
+              aria-label={`View permissions for ${role.name}`}
             >
               <Eye className="size-4" />
               View
@@ -279,8 +284,9 @@ export function RoleCard({
             <Button
               variant="ghost"
               size="sm"
-              className="gap-1.5"
+              className="gap-1.5 min-h-9"
               onClick={onEditRole}
+              aria-label={`Edit ${role.name} role`}
             >
               <Edit2 className="size-4" />
               Edit
@@ -290,8 +296,9 @@ export function RoleCard({
             <Button
               variant="ghost"
               size="sm"
-              className="gap-1.5 text-error hover:text-error"
+              className="gap-1.5 min-h-9 text-error hover:text-error"
               onClick={onDeleteRole}
+              aria-label={`Delete ${role.name} role`}
             >
               <Trash2 className="size-4" />
               Delete

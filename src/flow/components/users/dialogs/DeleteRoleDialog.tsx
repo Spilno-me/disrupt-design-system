@@ -102,7 +102,7 @@ export function DeleteRoleDialog({
 
         <div className="space-y-4 py-4">
           {/* Role info */}
-          <div className="flex items-center gap-3 rounded-lg border border-default bg-muted-bg/50 p-3">
+          <div className="flex items-center gap-3 rounded-lg border border-default bg-surface p-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10">
               <Shield className="size-5 text-accent" />
             </div>

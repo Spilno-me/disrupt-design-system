@@ -25,6 +25,47 @@ export interface User {
   createdAt: string
   lastLoginAt?: string
   roleAssignments: RoleAssignment[]
+
+  // Extended contact info for User Profile (optional for backward compatibility)
+  /** Physical office/desk location (e.g., "Building A, Floor 3, Desk 42") */
+  officeLocation?: string
+  /** Working hours (e.g., "9:00 AM - 5:00 PM") */
+  workingHours?: string
+  /** IANA timezone (e.g., "America/New_York") */
+  timezone?: string
+  /** Flag for emergency response team members */
+  isEmergencyContact?: boolean
+  /** Slack handle for direct messaging */
+  slackHandle?: string
+  /** Microsoft Teams email for chat integration */
+  teamsEmail?: string
+}
+
+// =============================================================================
+// ROLE LEVEL TYPES (for Organization Directory hierarchy)
+// =============================================================================
+
+/**
+ * Role hierarchy level for organization directory grouping.
+ * Level 1 = highest authority, Level 5 = lowest.
+ */
+export type RoleLevel = 1 | 2 | 3 | 4 | 5
+
+/**
+ * Badge variant type for role levels.
+ * Uses semantic badge variants for proper contrast and theming.
+ */
+export type RoleLevelBadgeVariant = 'warning' | 'info' | 'success' | 'secondary' | 'outline'
+
+export const ROLE_LEVEL_CONFIG: Record<
+  RoleLevel,
+  { label: string; description: string; badgeVariant: RoleLevelBadgeVariant; iconColor: string }
+> = {
+  1: { label: 'Executive', description: 'Directors and senior leadership', badgeVariant: 'warning', iconColor: 'text-warning' },
+  2: { label: 'Manager', description: 'Department and team managers', badgeVariant: 'info', iconColor: 'text-info' },
+  3: { label: 'Specialist', description: 'Subject matter experts', badgeVariant: 'success', iconColor: 'text-success' },
+  4: { label: 'Field Worker', description: 'Frontline workers', badgeVariant: 'secondary', iconColor: 'text-secondary' },
+  5: { label: 'Viewer', description: 'Read-only access', badgeVariant: 'outline', iconColor: 'text-tertiary' },
 }
 
 // =============================================================================
@@ -69,6 +110,8 @@ export interface Role {
   permissions: Permission[]
   isSystem: boolean // System roles cannot be deleted
   userCount: number
+  /** Role hierarchy level for organization directory grouping (1=Executive, 5=Viewer) */
+  level?: RoleLevel
 }
 
 // =============================================================================
@@ -197,6 +240,17 @@ export interface UserStats {
     direction: 'up' | 'down' | 'stable'
     percentage: number
   }
+  // Admin-actionable metrics (EHS context)
+  /** Accounts requiring admin attention */
+  lockedAccounts?: number
+  /** Users inactive for 30+ days */
+  inactiveUsers?: number
+  /** Percentage of users with 2FA enabled */
+  twoFactorPercentage?: number
+  /** Failed login attempts in last 24h */
+  failedLogins24h?: number
+  /** Users with certifications expiring in 30 days */
+  expiringCertifications?: number
 }
 
 // =============================================================================

@@ -148,7 +148,7 @@ export function ViewRolePermissionsDialog({
         </DialogHeader>
 
         {/* Role Details */}
-        <div className="rounded-lg bg-muted-bg/50 p-4 space-y-3">
+        <div className="rounded-lg bg-surface p-4 space-y-3">
           {role.description && (
             <p className="text-sm text-secondary">{role.description}</p>
           )}
@@ -189,7 +189,7 @@ export function ViewRolePermissionsDialog({
         {/* Permission Groups - Scrollable */}
         <div className="flex-1 overflow-y-auto space-y-3 pr-1">
           {permissionsByResource.size === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-default bg-muted-bg/30 py-8">
+            <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-default bg-surface py-8">
               <Shield className="size-8 text-tertiary" />
               <p className="text-sm text-secondary">
                 No permissions assigned to this role

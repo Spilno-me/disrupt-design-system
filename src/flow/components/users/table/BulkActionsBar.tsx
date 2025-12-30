@@ -31,8 +31,16 @@ import type { Role, LocationNode, LocationScope, AddRoleAssignmentFormData } fro
 // TYPES
 // =============================================================================
 
+interface SelectedUserPreview {
+  id: string
+  firstName: string
+  lastName: string
+}
+
 interface BulkActionsBarProps {
   selectedCount: number
+  /** Optional list of selected users for preview display */
+  selectedUsers?: SelectedUserPreview[]
   roles: Role[]
   locations: LocationNode[]
   onAssignRole: (roleId: string, scopes: LocationScope[]) => Promise<void>
@@ -47,6 +55,7 @@ interface BulkActionsBarProps {
 
 export function BulkActionsBar({
   selectedCount,
+  selectedUsers = [],
   roles,
   locations,
   onAssignRole,
@@ -74,16 +83,24 @@ export function BulkActionsBar({
 
   return (
     <>
-      {/* Floating Action Bar */}
+      {/* Floating Action Bar - Depth 1 glass (elevated, floating UI) */}
       <div
         data-slot="bulk-actions-bar"
         className={cn(
-          'fixed bottom-4 left-1/2 z-50 -translate-x-1/2',
-          'flex items-center gap-3 rounded-xl border border-default bg-surface px-4 py-3 shadow-lg'
+          'fixed left-1/2 z-50 -translate-x-1/2',
+          // Mobile: higher to avoid bottom nav; Desktop: standard position
+          'bottom-20 sm:bottom-6',
+          // Safe area padding for mobile devices with home indicators
+          'pb-safe-area-inset-bottom',
+          // Depth 1 glass - elevated floating element
+          // Light: white glass, Dark: black glass
+          'flex items-center gap-2 sm:gap-3 rounded-xl bg-white/60 dark:bg-black/60 backdrop-blur-[8px] border-2 border-accent px-3 sm:px-4 py-2.5 sm:py-3 shadow-lg',
+          // Ensure minimum touch targets on mobile
+          'max-w-[calc(100vw-2rem)]'
         )}
       >
         {/* Selected count */}
-        <div className="flex items-center gap-2 pr-3 border-r border-default">
+        <div className="flex items-center gap-2 pr-3 border-r border-accent/30">
           <span className="flex size-6 items-center justify-center rounded-full bg-accent text-xs font-medium text-inverse">
             {selectedCount}
           </span>
@@ -140,6 +157,30 @@ export function BulkActionsBar({
           </DialogHeader>
 
           <div className="space-y-4 py-4">
+            {/* Affected Users Preview */}
+            {selectedUsers.length > 0 && (
+              <div className="space-y-2">
+                <Label className="text-xs text-tertiary">Affected Users</Label>
+                <div className="max-h-24 overflow-y-auto rounded-md border border-default bg-muted-bg/50 p-2">
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedUsers.slice(0, 8).map((user) => (
+                      <span
+                        key={user.id}
+                        className="inline-flex items-center rounded-full bg-surface px-2 py-0.5 text-xs font-medium text-secondary"
+                      >
+                        {user.firstName} {user.lastName}
+                      </span>
+                    ))}
+                    {selectedUsers.length > 8 && (
+                      <span className="inline-flex items-center rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                        +{selectedUsers.length - 8} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Role Selection */}
             <div className="space-y-2">
               <Label htmlFor="bulk-role">Role *</Label>
@@ -203,6 +244,30 @@ export function BulkActionsBar({
               log in until reactivated.
             </DialogDescription>
           </DialogHeader>
+
+          {/* Affected Users Preview */}
+          {selectedUsers.length > 0 && (
+            <div className="space-y-2">
+              <Label className="text-xs text-tertiary">Users to be deactivated</Label>
+              <div className="max-h-24 overflow-y-auto rounded-md border border-default bg-muted-bg/50 p-2">
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedUsers.slice(0, 8).map((user) => (
+                    <span
+                      key={user.id}
+                      className="inline-flex items-center rounded-full bg-surface px-2 py-0.5 text-xs font-medium text-secondary"
+                    >
+                      {user.firstName} {user.lastName}
+                    </span>
+                  ))}
+                  {selectedUsers.length > 8 && (
+                    <span className="inline-flex items-center rounded-full bg-warning/10 px-2 py-0.5 text-xs font-medium text-warning">
+                      +{selectedUsers.length - 8} more
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="rounded-lg border border-warning/30 bg-warning/5 p-4">
             <p className="text-sm text-warning">

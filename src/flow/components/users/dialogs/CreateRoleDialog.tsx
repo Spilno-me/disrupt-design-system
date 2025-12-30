@@ -254,13 +254,13 @@ export function CreateRoleDialog({
               {/* Search and Dev Mode */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-tertiary" />
+                  <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-tertiary pointer-events-none" />
                   <Input
                     type="search"
                     placeholder="Search permissions..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9"
+                    className="pl-10 md:pl-10"
                     disabled={isSubmitting}
                   />
                 </div>
@@ -282,7 +282,7 @@ export function CreateRoleDialog({
               {/* Permission Groups - Scrollable */}
               <div className="flex-1 overflow-y-auto space-y-3 pr-1">
                 {groupedPermissions.size === 0 ? (
-                  <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-default bg-muted-bg/30 py-8">
+                  <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-default bg-surface py-8">
                     <Shield className="size-8 text-tertiary" />
                     <p className="text-sm text-secondary">
                       {searchQuery

@@ -13,7 +13,6 @@ import { CreateUserDialog } from '../dialogs/CreateUserDialog'
 import { EditUserDialog } from '../dialogs/EditUserDialog'
 import { DeleteUserDialog } from '../dialogs/DeleteUserDialog'
 import { ManageRolesDialog } from '../dialogs/ManageRolesDialog'
-import { UserActivitySheet } from '../activity/UserActivitySheet'
 import type {
   UsersTabProps,
   User,
@@ -23,9 +22,7 @@ import type {
   CreateUserFormData,
   EditUserFormData,
   AddRoleAssignmentFormData,
-  EditRoleAssignmentFormData,
   BulkActionPayload,
-  UserActivity,
 } from '../types'
 
 // =============================================================================
@@ -93,11 +90,8 @@ export function UsersTab({
   const [editDialogOpen, setEditDialogOpen] = React.useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
   const [manageRolesDialogOpen, setManageRolesDialogOpen] = React.useState(false)
-  const [activitySheetOpen, setActivitySheetOpen] = React.useState(false)
-
   // Selected user for actions
   const [selectedUser, setSelectedUser] = React.useState<User | null>(null)
-  const [userActivities, setUserActivities] = React.useState<UserActivity[]>([])
 
   // Submission states
   const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -220,18 +214,6 @@ export function UsersTab({
     setSelectedUser(user)
     setManageRolesDialogOpen(true)
   }, [])
-
-  const handleViewActivity = React.useCallback(
-    async (user: User) => {
-      setSelectedUser(user)
-      if (onFetchUserActivity) {
-        const activities = await onFetchUserActivity(user.id)
-        setUserActivities(activities)
-      }
-      setActivitySheetOpen(true)
-    },
-    [onFetchUserActivity]
-  )
 
   // CRUD handlers
   const handleCreateSubmit = React.useCallback(
@@ -360,17 +342,22 @@ export function UsersTab({
               onClick={() => setQuickFilter(filter.value)}
               className={cn(
                 'inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition-colors',
-                'min-h-[36px]', // Touch target
+                'min-h-11 sm:min-h-9', // Touch target: 44px mobile, 36px desktop (Fitts's Law)
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+                // Glass effect - Light: white glass, Dark: black glass
                 isActive
-                  ? 'bg-accent text-inverse'
-                  : 'bg-muted-bg text-secondary hover:bg-muted-bg/80 hover:text-primary'
+                  // Use bg-accent-noise for reliable teal (same as tabs sliding indicator)
+                  ? 'bg-accent-noise text-white'
+                  : 'bg-white/20 dark:bg-black/20 backdrop-blur-[2px] text-secondary hover:bg-white/35 dark:hover:bg-black/35 hover:text-primary border border-white/30 dark:border-white/10'
               )}
             >
               {filter.label}
               <span
                 className={cn(
-                  'rounded-full px-1.5 py-0.5 text-xs',
-                  isActive ? 'bg-inverse/20 text-inverse' : 'bg-surface text-secondary'
+                  'rounded-full px-1.5 py-0.5 text-xs font-medium',
+                  // Active: white bg with accent text for max contrast on teal
+                  // Inactive: muted-bg gives visible boundary on white surface
+                  isActive ? 'bg-white text-accent' : 'bg-muted-bg text-primary'
                 )}
               >
                 {count}
@@ -403,13 +390,15 @@ export function UsersTab({
         onEditUser={handleEditUser}
         onDeleteUser={handleDeleteUser}
         onManageRoles={handleManageRoles}
-        onViewActivity={handleViewActivity}
       />
 
       {/* Bulk Actions Bar */}
       {selectedRows.size > 0 && (
         <BulkActionsBar
           selectedCount={selectedRows.size}
+          selectedUsers={users
+            .filter((u) => selectedRows.has(u.id))
+            .map((u) => ({ id: u.id, firstName: u.firstName, lastName: u.lastName }))}
           roles={roles}
           locations={locations}
           onAssignRole={handleBulkAssignRole}
@@ -456,13 +445,6 @@ export function UsersTab({
         onRoleAssign={onRoleAssign}
         onRoleAssignmentUpdate={onRoleAssignmentUpdate}
         onRoleAssignmentRemove={onRoleAssignmentRemove}
-      />
-
-      <UserActivitySheet
-        open={activitySheetOpen}
-        onOpenChange={setActivitySheetOpen}
-        user={selectedUser}
-        activities={userActivities}
       />
     </div>
   )

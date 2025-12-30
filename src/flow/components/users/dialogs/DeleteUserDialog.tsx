@@ -3,7 +3,8 @@
  */
 
 import * as React from 'react'
-import { Trash2, Loader2, AlertTriangle } from 'lucide-react'
+import { Trash2, Loader2, AlertTriangle, Shield, Briefcase } from 'lucide-react'
+import { Badge } from '../../../../components/ui/badge'
 import {
   Dialog,
   DialogContent,
@@ -61,14 +62,43 @@ export function DeleteUserDialog({
 
         <div className="space-y-4 py-4">
           {/* User info */}
-          <div className="flex items-center gap-3 rounded-lg border border-default bg-muted-bg/50 p-3">
-            <div className="flex size-10 items-center justify-center rounded-full bg-accent text-sm font-medium text-inverse">
-              {user.firstName[0]}{user.lastName[0]}
+          <div className="rounded-lg border border-default bg-surface p-3">
+            <div className="flex items-center gap-3">
+              <div className="flex size-10 items-center justify-center rounded-full bg-accent text-sm font-medium text-inverse">
+                {user.firstName[0]}{user.lastName[0]}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-primary truncate">{fullName}</p>
+                <p className="text-sm text-secondary truncate">{user.email}</p>
+              </div>
             </div>
-            <div>
-              <p className="font-medium text-primary">{fullName}</p>
-              <p className="text-sm text-secondary">{user.email}</p>
+
+            {/* Additional context */}
+            <div className="mt-3 flex flex-wrap gap-2 border-t border-default pt-3">
+              <div className="flex items-center gap-1.5 text-xs text-secondary">
+                <Briefcase className="size-3.5 text-tertiary" />
+                <span>{user.jobTitle}</span>
+                <span className="text-tertiary">•</span>
+                <span>{user.department}</span>
+              </div>
             </div>
+
+            {/* Role assignments */}
+            {user.roleAssignments.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                <Shield className="size-3.5 text-tertiary mt-0.5" />
+                {user.roleAssignments.slice(0, 3).map((ra) => (
+                  <Badge key={ra.id} variant="secondary" size="sm" className="font-normal">
+                    {ra.role.name}
+                  </Badge>
+                ))}
+                {user.roleAssignments.length > 3 && (
+                  <Badge variant="outline" size="sm">
+                    +{user.roleAssignments.length - 3} more
+                  </Badge>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Warning */}
@@ -79,20 +109,13 @@ export function DeleteUserDialog({
                 This action cannot be undone
               </p>
               <p className="text-sm text-secondary">
-                Deleting this user will permanently remove their account, role
-                assignments, and all associated data from the system.
+                Deleting this user will permanently remove their account
+                {user.roleAssignments.length > 0 && (
+                  <>, including {user.roleAssignments.length} role assignment{user.roleAssignments.length !== 1 ? 's' : ''}</>
+                )}, and all associated data from the system.
               </p>
             </div>
           </div>
-
-          {/* Role warning if user has roles */}
-          {user.roleAssignments.length > 0 && (
-            <p className="text-sm text-secondary">
-              This user has {user.roleAssignments.length} role
-              {user.roleAssignments.length !== 1 ? 's' : ''} assigned. These
-              assignments will also be removed.
-            </p>
-          )}
         </div>
 
         <DialogFooter>

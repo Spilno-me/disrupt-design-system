@@ -48,6 +48,13 @@ export { CreateRoleDialog } from './dialogs/CreateRoleDialog'
 export { EditRoleDialog } from './dialogs/EditRoleDialog'
 export { ViewRolePermissionsDialog } from './dialogs/ViewRolePermissionsDialog'
 export { DeleteRoleDialog } from './dialogs/DeleteRoleDialog'
+// User onboarding/invitation
+export { InviteUserDialog } from './dialogs/InviteUserDialog'
+export type { InviteUserFormData, LocationOption as InviteLocationOption, InviteUserDialogProps } from './dialogs/InviteUserDialog'
+export { UserActivationFlow } from './dialogs/UserActivationFlow'
+export type { PrefilledUserData, ActivationFormData, UserActivationFlowProps } from './dialogs/UserActivationFlow'
+export { EmailInvitePreview } from './dialogs/EmailInvitePreview'
+export type { EmailInvitePreviewProps } from './dialogs/EmailInvitePreview'
 
 // Location scope
 export { LocationScopeSelector } from './location-scope/LocationScopeSelector'
@@ -86,7 +93,9 @@ export type {
   CreateRoleFormData,
   EditRoleFormData,
   RoleFilterType,
+  // Role level types (used by directory)
+  RoleLevel,
 } from './types'
 
 // Constants
-export { USER_STATUS_CONFIG, ACTIVITY_TYPE_CONFIG } from './types'
+export { USER_STATUS_CONFIG, ACTIVITY_TYPE_CONFIG, ROLE_LEVEL_CONFIG } from './types'

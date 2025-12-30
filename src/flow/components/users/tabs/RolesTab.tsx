@@ -6,7 +6,7 @@
  */
 
 import * as React from 'react'
-import { Search, ShieldCheck, Key, Plus, Filter } from 'lucide-react'
+import { Search, Key, Plus, Filter } from 'lucide-react'
 import { Input } from '../../../../components/ui/input'
 import { Button } from '../../../../components/ui/button'
 import {
@@ -166,49 +166,19 @@ export function RolesTab({
 
   return (
     <div data-slot="roles-tab" className="flex flex-col gap-6">
-      {/* Header with search, filter, and create button */}
-      <div className="flex flex-col gap-4">
-        {/* Title row */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-accent/10">
-              <ShieldCheck className="size-5 text-accent" />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-primary">Role Definitions</h2>
-              <p className="text-sm text-secondary">
-                {roles.length} role{roles.length !== 1 ? 's' : ''}
-                <span className="mx-1.5 text-tertiary">•</span>
-                <span className="text-warning">{systemRoleCount} system</span>
-                <span className="mx-1.5 text-tertiary">•</span>
-                <span className="text-info">{customRoleCount} custom</span>
-              </p>
-            </div>
-          </div>
-
-          {/* Create Role button */}
-          {onRoleCreate && (
-            <Button
-              className="gap-1.5"
-              onClick={() => setCreateDialogOpen(true)}
-            >
-              <Plus className="size-4" />
-              Create Role
-            </Button>
-          )}
-        </div>
-
-        {/* Search and filter row */}
+      {/* Toolbar: Search, Filter, Stats, Create - all in one row */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Left: Search + Filter */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           {/* Search */}
-          <div className="relative flex-1 sm:max-w-64">
-            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-tertiary" />
+          <div className="relative flex-1 sm:w-64">
+            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-tertiary pointer-events-none" />
             <Input
               type="search"
               placeholder="Search roles..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="pl-9"
+              className="pl-10 md:pl-10"
             />
           </div>
 
@@ -227,12 +197,33 @@ export function RolesTab({
               <SelectItem value="custom">Custom Roles</SelectItem>
             </SelectContent>
           </Select>
+
+          {/* Stats badges - inline with filters */}
+          <div className="hidden sm:flex items-center gap-2 text-sm text-secondary">
+            <span className="text-tertiary">•</span>
+            <span>{roles.length} total</span>
+            <span className="text-tertiary">•</span>
+            <span className="text-warning">{systemRoleCount} system</span>
+            <span className="text-tertiary">•</span>
+            <span className="text-info">{customRoleCount} custom</span>
+          </div>
         </div>
+
+        {/* Right: Create Role button */}
+        {onRoleCreate && (
+          <Button
+            className="gap-1.5"
+            onClick={() => setCreateDialogOpen(true)}
+          >
+            <Plus className="size-4" />
+            Create Role
+          </Button>
+        )}
       </div>
 
       {/* Roles Grid */}
       {filteredRoles.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-default bg-muted-bg/50 py-12">
+        <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-default bg-surface py-12">
           <div className="flex size-12 items-center justify-center rounded-full bg-surface">
             <Key className="size-6 text-tertiary" />
           </div>
