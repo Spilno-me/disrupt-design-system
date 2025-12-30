@@ -42,6 +42,8 @@ interface IncidentWizardProps {
   onCancel: () => void
   /** Available locations */
   locations?: LocationOption[]
+  /** Callback when wizard step changes (for external tracking) */
+  onStepChange?: (step: number) => void
 }
 
 // =============================================================================
@@ -75,9 +77,16 @@ export function IncidentWizard({
   onSubmit,
   onCancel,
   locations = [],
+  onStepChange,
 }: IncidentWizardProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
+
+  // Notify parent when step changes
+  const handleStepChange = (step: number) => {
+    setCurrentStep(step)
+    onStepChange?.(step)
+  }
 
   // Validate current step before allowing navigation
   const handleNext = (): boolean => {
@@ -101,7 +110,7 @@ export function IncidentWizard({
   return (
     <Wizard
       steps={[...INCIDENT_WIZARD_STEPS]}
-      onStepChange={setCurrentStep}
+      onStepChange={handleStepChange}
       className="flex flex-col flex-1 min-h-0"
     >
       {/* Stepper - Always use CompactStepper in sheet (constrained width) */}

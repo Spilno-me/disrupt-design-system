@@ -603,52 +603,46 @@ export function IncidentsPage({
         title="Incidents"
         subtitle="Environmental and safety incident tracking and management"
         primaryAction={
+          <Button variant="destructive" size="sm" onClick={() => setReportingOpen(true)}>
+            <TriangleAlert className="w-4 h-4" />
+            Report Incident
+          </Button>
+        }
+        actions={
           <Button variant="outline" size="sm">
             <Download className="w-4 h-4" />
             Export
           </Button>
         }
-        actions={
-          <>
-            <Button variant="outline" size="sm">
-              <Download className="w-4 h-4" />
-              Export
-            </Button>
-            <Button variant="destructive" size="sm" onClick={() => setReportingOpen(true)}>
-              <TriangleAlert className="w-4 h-4" />
-              Report Incident
-            </Button>
-          </>
-        }
       />
 
       <QuickFilter gap="sm" fullBleed>
         <DraftsFilter
-          size="sm"
+          size="xs"
           count={filterCounts.drafts}
           selected={activeQuickFilter === 'drafts'}
           onClick={() => handleQuickFilterWithReset('drafts')}
         />
         <ReportedFilter
-          size="sm"
+          size="xs"
           count={filterCounts.reported}
           selected={activeQuickFilter === 'reported'}
           onClick={() => handleQuickFilterWithReset('reported')}
         />
         <AgingFilter
-          size="sm"
+          size="xs"
           count={filterCounts.aging}
           selected={activeQuickFilter === 'aging'}
           onClick={() => handleQuickFilterWithReset('aging')}
         />
         <InProgressFilter
-          size="sm"
+          size="xs"
           count={filterCounts.investigation}
           selected={activeQuickFilter === 'investigation'}
           onClick={() => handleQuickFilterWithReset('investigation')}
         />
         <ReviewsFilter
-          size="sm"
+          size="xs"
           count={filterCounts.reviews}
           selected={activeQuickFilter === 'reviews'}
           onClick={() => handleQuickFilterWithReset('reviews')}
@@ -700,6 +694,7 @@ export function IncidentsPage({
       )}
 
       <IncidentReportingFlow
+        variant="overlay"
         open={reportingOpen}
         onOpenChange={setReportingOpen}
         locations={locations}

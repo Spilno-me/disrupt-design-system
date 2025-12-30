@@ -4,7 +4,7 @@
  * Multi-step wizard for incident reporting and full-featured details page.
  */
 
-// Incident Reporting Wizard
+// Incident Reporting - Full-page wizard
 export { IncidentReportingFlow } from './IncidentReportingFlow'
 export type { IncidentReportingFlowProps } from './IncidentReportingFlow'
 export { IncidentWizard } from './IncidentWizard'

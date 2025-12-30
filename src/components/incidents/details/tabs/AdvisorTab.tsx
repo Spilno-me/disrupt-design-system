@@ -1,13 +1,26 @@
 /**
  * AdvisorTab - Placeholder for AI advisor recommendations
  *
- * Coming soon placeholder component for the Advisor tab.
- * Will display AI-powered insights and recommendations.
+ * @deprecated This component is deprecated as of v2.8.0.
+ * The AI Advisor functionality has been moved to a global floating assistant
+ * that's always accessible throughout the application.
  *
- * @example
+ * Use the new AIAssistant components instead:
  * ```tsx
- * <AdvisorTab title="AI Advisor" />
+ * import {
+ *   AIAssistantProvider,
+ *   AIAssistantFab,
+ *   AIAssistantPanel
+ * } from '@dds/design-system'
+ *
+ * <AIAssistantProvider>
+ *   <App />
+ *   <AIAssistantFab />
+ *   <AIAssistantPanel />
+ * </AIAssistantProvider>
  * ```
+ *
+ * This file is kept for backwards compatibility and will be removed in v3.0.0.
  */
 
 import * as React from 'react'

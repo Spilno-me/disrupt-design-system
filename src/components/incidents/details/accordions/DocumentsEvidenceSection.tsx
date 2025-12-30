@@ -37,6 +37,7 @@ import {
 import { cn } from '../../../../lib/utils'
 import { Checkbox } from '../../../ui/checkbox'
 import { Button } from '../../../ui/button'
+import { ActionTile } from '../../../ui/ActionTile'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -655,34 +656,37 @@ export function DocumentsEvidenceSection({
                       </span>
                     </td>
 
-                    {/* Actions */}
+                    {/* Actions - Color grading by intent */}
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
-                        <button
-                          type="button"
+                        <ActionTile
+                          variant="neutral"
+                          appearance="filled"
+                          size="xs"
                           onClick={() => onView?.(doc)}
-                          className="p-2 text-tertiary hover:text-primary hover:bg-muted-bg rounded transition-colors"
                           aria-label="View"
                         >
                           <Eye className="size-4" />
-                        </button>
-                        <button
-                          type="button"
+                        </ActionTile>
+                        <ActionTile
+                          variant="success"
+                          appearance="filled"
+                          size="xs"
                           onClick={() => onDownload?.([doc.id])}
-                          className="p-2 text-tertiary hover:text-primary hover:bg-muted-bg rounded transition-colors"
                           aria-label="Download"
                         >
                           <Download className="size-4" />
-                        </button>
+                        </ActionTile>
                         {canEdit && canDeleteThis && (
-                          <button
-                            type="button"
+                          <ActionTile
+                            variant="destructive"
+                            appearance="filled"
+                            size="xs"
                             onClick={() => onDelete?.([doc.id])}
-                            className="p-2 text-tertiary hover:text-error hover:bg-error/10 rounded transition-colors"
                             aria-label="Delete"
                           >
                             <Trash2 className="size-4" />
-                          </button>
+                          </ActionTile>
                         )}
                       </div>
                     </td>

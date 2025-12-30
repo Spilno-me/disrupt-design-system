@@ -3,10 +3,15 @@
  *
  * Stories for the Incidents page where users view and manage
  * environmental and safety incidents.
+ *
+ * NOTE: This story uses a simplified `Incident` type from `../../ui/table` for DataTable display,
+ * which differs from the full API `Incident` type. The incident generation logic produces the
+ * display-oriented format. Document/workflow/form data is UI-specific mock data for detail views.
  */
 
 import type { Meta, StoryObj } from '@storybook/react'
 import { IncidentsPage } from './IncidentsPage'
+import { getLocationSelectOptions } from '@/api'
 import type { Incident } from '../../ui/table'
 import type {
   IncidentDetail,
@@ -14,7 +19,6 @@ import type {
   DocumentUserContext,
   DetailedWorkflow,
   ExtendedFormSubmission,
-  FormSubmissionData,
 } from '../index'
 
 // =============================================================================
@@ -262,33 +266,10 @@ const mockDetailedWorkflows: DetailedWorkflow[] = [
 ]
 
 // =============================================================================
-// MOCK DATA - Location Options
+// MOCK DATA - Location Options (from API seed)
 // =============================================================================
 
-const locationOptions = [
-  // Warehouses
-  { value: 'warehouse-a-1', label: 'Warehouse A - Section 1', group: 'Warehouses' },
-  { value: 'warehouse-b-4', label: 'Warehouse B - Section 4', group: 'Warehouses' },
-  { value: 'storage-c', label: 'Storage Room C', group: 'Warehouses' },
-  { value: 'chemical-storage', label: 'Chemical Storage', group: 'Warehouses' },
-  // Production
-  { value: 'production-a', label: 'Production Floor - Building A', group: 'Production' },
-  { value: 'assembly-3', label: 'Assembly Line 3', group: 'Production' },
-  { value: 'quality-lab', label: 'Quality Control Lab', group: 'Production' },
-  // Logistics
-  { value: 'loading-east', label: 'Loading Dock - East Wing', group: 'Logistics' },
-  { value: 'shipping', label: 'Shipping Department', group: 'Logistics' },
-  { value: 'receiving', label: 'Receiving Area', group: 'Logistics' },
-  { value: 'parking-b', label: 'Parking Lot B', group: 'Logistics' },
-  // Facilities
-  { value: 'utility-3b', label: 'Utility Room 3B', group: 'Facilities' },
-  { value: 'maintenance', label: 'Maintenance Shop', group: 'Facilities' },
-  { value: 'compressor', label: 'Compressor Building', group: 'Facilities' },
-  // Office
-  { value: 'office-f2', label: 'Office Building - Floor 2', group: 'Office' },
-  { value: 'break-north', label: 'Break Room - North', group: 'Office' },
-  { value: 'conf-101', label: 'Conference Room 101', group: 'Office' },
-]
+const locationOptions = getLocationSelectOptions()
 
 // =============================================================================
 // MOCK DATA - Incidents

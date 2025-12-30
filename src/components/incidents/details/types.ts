@@ -729,8 +729,9 @@ export interface PlaceholderTabProps {
 
 /**
  * Tab identifier type
+ * @note 'advisor' removed in v2.8.0 - AI Assistant is now a global floating component
  */
-export type IncidentTab = 'overview' | 'steps' | 'advisor'
+export type IncidentTab = 'overview' | 'steps'
 
 /**
  * Type labels for display

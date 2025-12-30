@@ -296,46 +296,27 @@ export function StepsPage({
   // Default icon if not provided
   const defaultIcon = <Waypoints className="w-8 h-8" />
 
-  // Build header actions based on provided handlers
+  // Build header actions - only secondary actions (Export)
+  // Primary action (Add Step) is handled separately to avoid duplication
   const buildHeaderActions = () => {
-    const actions: React.ReactNode[] = []
-
-    if (onExport) {
-      actions.push(
-        <Button key="export" variant="outline" size="sm" onClick={onExport}>
-          <Download className="w-4 h-4" />
-          Export
-        </Button>
-      )
-    }
-
-    if (onAddStep) {
-      actions.push(
-        <Button key="add" variant="default" size="sm" onClick={onAddStep}>
-          <Plus className="w-4 h-4" />
-          Add Step
-        </Button>
-      )
-    }
-
-    return actions.length > 0 ? <>{actions}</> : null
-  }
-
-  // Mobile primary action - prefer Add Step over Export
-  const buildPrimaryAction = () => {
-    if (onAddStep) {
-      return (
-        <Button variant="default" size="sm" onClick={onAddStep}>
-          <Plus className="w-4 h-4" />
-          Add
-        </Button>
-      )
-    }
     if (onExport) {
       return (
         <Button variant="outline" size="sm" onClick={onExport}>
           <Download className="w-4 h-4" />
           Export
+        </Button>
+      )
+    }
+    return null
+  }
+
+  // Mobile primary action - only Add Step (Export stays in secondary actions)
+  const buildPrimaryAction = () => {
+    if (onAddStep) {
+      return (
+        <Button variant="default" size="sm" onClick={onAddStep}>
+          <Plus className="w-4 h-4" />
+          Add Step
         </Button>
       )
     }

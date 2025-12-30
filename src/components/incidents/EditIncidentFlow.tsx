@@ -127,13 +127,13 @@ export function EditIncidentFlow({
 
   return (
     <IncidentReportingFlow
+      variant="overlay"
       open={open}
       onOpenChange={onOpenChange}
       onSubmit={handleSubmit}
       initialData={initialData}
       locations={locations}
       title="Edit Incident"
-      description={`Editing draft ${incident.incidentId}. Make changes and save.`}
     />
   )
 }
