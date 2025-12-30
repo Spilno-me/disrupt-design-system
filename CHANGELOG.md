@@ -7,27 +7,134 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- **Dark mode token system** - Scale inversion architecture for automatic dark/light theming with CSS custom properties
-- **DarkModeMapping documentation** - Foundation page documenting token scale inversions and mapping rules
-- **Centralized story infrastructure** - Shared decorators, utilities, and theme support in `src/stories/_infrastructure/`
-- **Dark mode theme decorator** - Storybook decorator for testing components in both themes
-
-### Changed
-- **Stories migrated to centralized infrastructure** - All stories now use shared decorators and consistent patterns
-- **ALIAS tokens converted to CSS variables** - Enables runtime dark mode switching without rebuilds
-
-### Fixed
-- **Dark mode SVG colors in modals** - Dialog/Sheet icons now use CSS variables instead of hardcoded colors
-- **Logo auto-detection** - AppHeader/AppSidebar automatically switch between light and dark logos
-- **TypeScript errors** - Token system dark mode compliance fixes
-
 ### Planned
 - NotificationsPanel component export
-- QuickFilter component export
 - DropdownMenu component export (full Radix wrapper)
-- Tabs component export (Radix wrapper)
 - Base Wizard components exports (Wizard, WizardStepper, WizardStep, WizardNavigation, useWizard)
+
+---
+
+## [2.8.0] - 2025-12-30
+
+### Highlights
+- **Major Flow application expansion** - 7 new fully-featured modules
+- **API service layer** - Complete data management infrastructure
+- **AIAssistant component** - AI-powered assistance UI
+- **Core UI primitives expansion** - 10+ new reusable components
+- **Enhanced user management** - Invitation and activation flows
+
+### Added
+
+**Flow Application Modules:**
+- **DictionaryPage** - Terminology and lookup management with categories, search, and CRUD operations
+- **DirectoryPage** - Organization directory with profiles, location tree, and people management
+- **EntityTemplatesPage** - Template CRUD operations with schema studio integration
+- **LocationsPage** - Location hierarchy management with risk analysis and floor plan support
+- **MappingStudio** - Data mapping interface with code and form modes
+- **SchemaStudio** - Schema design tools with live preview and command palette
+- **TrainingPage** - Training management with courses, compliance tracking, and requirements
+
+**API Service Layer:**
+- **incidents.api** - Incident data management
+- **users.api** - User CRUD operations
+- **roles.api** - Role and permission management
+- **steps.api** - Workflow step handling
+- **locations.api** - Location data services
+- **dictionary.api** - Dictionary entry management
+- Seed data for all modules
+
+**AIAssistant Components:**
+- **AIAssistantFab** - Floating action button trigger
+- **AIAssistantPanel** - Slide-out assistant panel
+- **AIAssistantProvider** - Context provider for AI state
+- **AIAssistantQuickActions** - Quick action suggestions
+
+**Core UI Primitives:**
+- **CopyButton** - Clipboard copy with feedback animation
+- **RowActions** - Standardized table row action patterns
+- **StepIndicator** - Multi-step process visualization
+- **TruncatedId** - ID display with truncation and copy
+- **Collapsible** - Expandable content sections
+- **ResizablePanels** - Draggable panel resizing
+- **Sonner** - Toast notification system
+- **Switch** - Toggle switch component
+- **ToggleGroup** - Group of toggle buttons
+
+**User Management:**
+- **InviteUserDialog** - User invitation workflow
+- **EmailInvitePreview** - Email preview for invitations
+- **UserActivationFlow** - New user activation process
+
+**Components:**
+- **FloorPlanUploader** - Upload and manage floor plan images with preview
+
+**Hooks:**
+- **useVisualViewportFix** - Mobile keyboard viewport handling
+- **useLocations** - Location data management hook
+
+**Infrastructure:**
+- **GitHub CODEOWNERS** - Code ownership rules
+- **PR templates** - Standardized pull request templates
+
+**Documentation:**
+- Developer docs (AdapterPatterns, ApiSimulation, FAQ, IntegrationOverview, MigrationStrategy)
+- CoreComponentsOverview MDX page
+- DepthTransparency and GlassTransparency documentation
+
+### Changed
+- **LocationPicker** - Enhanced with useLocations hook and improved tree navigation
+- **DataTable** - Improved column utilities and row actions integration
+- **Incidents Module** - Refined reporting flow, wizard, and details pages
+- **Flow Users** - Enhanced stats cards, bulk actions, and role management dialogs
+- **SearchFilter** - Improved search input behavior and mobile responsiveness
+- **Device Frames** - Expanded Storybook infrastructure with new device stories
+
+### Improved
+- **Dark mode token system** - Scale inversion architecture for automatic dark/light theming
+- **Stories centralized infrastructure** - Shared decorators and consistent patterns
+- **ALIAS tokens** - Converted to CSS variables for runtime theme switching
+
+### Fixed
+- **Dark mode SVG colors** - Dialog/Sheet icons now use CSS variables
+- **Logo auto-detection** - AppHeader/AppSidebar switch between light/dark logos
+- **TypeScript errors** - Token system dark mode compliance
+
+---
+
+## [2.7.0] - 2025-12-24
+
+### Added
+- **KPICard enhancements** - Status zone gradients, temporal progress marker, threshold auto-detection
+- **EHSAnalyticsDashboard** - Full analytics dashboard with edit mode
+- **Dashboard Cards** - AgingCard, BreakdownCard, TrendingCard, WorkloadCard, RiskHeatmapCard, UpcomingTasksCard
+- **Dashboard Edit Mode** - DashboardEditContext, EditModeToolbar, EditableWidget, ReorderableSection
+- **Incidents Module** - IncidentsPage, IncidentDetailsPage, IncidentReportingFlow, IncidentWizard
+- **ActionSheet** - Mobile bottom sheet for actions
+- **EmptyState** - Empty data placeholder component
+- **LocationPicker** - Hierarchical location selection with floor plan support
+- **What3Words** - What3WordsInput, What3WordsMap, UseMyLocationButton
+
+### Improved
+- **AppHeader** - Enhanced glassmorphism and responsive behavior
+- **DataTable** - Better column sizing and mobile card view
+- **SearchFilter** - Enhanced mobile filter button and dropdown
+
+### Fixed
+- KPICard text contrast issue (green text blending with green chart)
+- Sparkline charts no longer show speculative future data
+
+---
+
+## [2.6.0] - 2025-12-20
+
+### Added
+- Multi-package architecture with subpath exports
+- src/core/ - shared components, tokens, utils
+- src/flow/ - Flow EHS mobile components
+- MobileNavButton dark mode support
+
+### Changed
+- package.json exports field for subpath imports
 
 ---
 
