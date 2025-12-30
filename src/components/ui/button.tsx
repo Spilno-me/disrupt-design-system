@@ -8,12 +8,21 @@ import { cn } from "../../lib/utils"
 import { GLASS_GRADIENTS, Z_INDEX } from "../../constants/designTokens"
 
 // =============================================================================
-// GLASS EFFECT CONFIGURATION
+// CONSTANTS
 // =============================================================================
 
-const ANIMATION_DURATION = 1.5
+const ANIMATION_DURATION_SECONDS = 1.5
+const BORDER_RADIUS = '12px'
+const INNER_RADIUS = '11px'
+const GLOW_RADIUS = '10px'
 
-// Variant-specific glass gradients
+/** Variants that skip glass effect */
+const SKIP_EFFECT_VARIANTS = new Set(['link', 'ghost'])
+
+/** CSS mask for border-only gradient effect (white = show through) */
+const GLASS_MASK = 'linear-gradient(white 0 0) padding-box, linear-gradient(white 0 0)'
+
+/** Variant-specific glass gradients for hover effect */
 const VARIANT_GRADIENTS = {
   default: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
   destructive: { gradient: GLASS_GRADIENTS.red, glow: GLASS_GRADIENTS.redGlow },
@@ -88,11 +97,12 @@ interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeo
   beacon?: boolean
 }
 
-// Beacon color mapping per variant (color, fade color)
-// These rgba values are derived from palette colors (ABYSS, EMBER, LAGOON, VELVET)
-// with specific alpha values for the pulse animation effect.
-// Cannot use ALIAS tokens as they don't support dynamic alpha for animation keyframes.
-/* eslint-disable no-restricted-syntax -- Beacon animation requires rgba with specific alpha values for pulse effect */
+/**
+ * Beacon pulse colors per variant.
+ * Uses rgba with specific alpha values for pulse animation keyframes.
+ * Cannot use ALIAS tokens as they don't support dynamic alpha.
+ */
+/* eslint-disable no-restricted-syntax -- Beacon animation requires rgba for pulse effect */
 const BEACON_COLORS = {
   default: { color: 'rgba(45, 49, 66, 0.5)', fade: 'rgba(45, 49, 66, 0)' },       // ABYSS[700]
   destructive: { color: 'rgba(220, 38, 38, 0.5)', fade: 'rgba(220, 38, 38, 0)' }, // EMBER[600]
@@ -105,9 +115,115 @@ const BEACON_COLORS = {
 } as const
 /* eslint-enable no-restricted-syntax */
 
+type ButtonVariant = keyof typeof VARIANT_GRADIENTS
+
+// =============================================================================
+// HOOKS
+// =============================================================================
+
+/** Manages glass border animation state and position */
+function useGlassAnimation(isHovered: boolean, effectActive: boolean) {
+  const positionX = useMotionValue(200)
+  const backgroundPosition = useTransform(positionX, (x) => `${x}% 0`)
+  const isAnimating = isHovered || effectActive
+
+  useEffect(() => {
+    if (effectActive && !isHovered) {
+      positionX.set(50)
+      return
+    }
+    if (isAnimating) {
+      positionX.set(200)
+      const animation = animate(positionX, -200, {
+        duration: ANIMATION_DURATION_SECONDS,
+        ease: 'linear',
+        repeat: Infinity,
+        repeatType: 'loop',
+      })
+      return () => animation.stop()
+    }
+  }, [isAnimating, effectActive, isHovered, positionX])
+
+  return { backgroundPosition, isAnimating }
+}
+
+// =============================================================================
+// SUB-COMPONENTS
+// =============================================================================
+
+interface GlassEffectProps {
+  isVisible: boolean
+  backgroundPosition: ReturnType<typeof useTransform<number, string>>
+  gradient: string
+  glow: string
+}
+
+/** Animated glass border effect on hover */
+function GlassEffect({ isVisible, backgroundPosition, gradient, glow }: GlassEffectProps) {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ borderRadius: BORDER_RADIUS }}>
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          inset: '1px',
+          borderRadius: INNER_RADIUS,
+          border: '2px solid transparent',
+          background: `${gradient} border-box`,
+          backgroundSize: '200% 100%',
+          backgroundPosition,
+          mask: GLASS_MASK,
+          maskComposite: 'exclude',
+          WebkitMask: GLASS_MASK,
+          WebkitMaskComposite: 'xor',
+          zIndex: Z_INDEX.dropdown,
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isVisible ? 1 : 0 }}
+        transition={{ duration: 0.2 }}
+      />
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          inset: '2px',
+          borderRadius: GLOW_RADIUS,
+          background: glow,
+          backgroundSize: '200% 100%',
+          backgroundPosition,
+          filter: 'blur(8px)',
+          zIndex: Z_INDEX.dropdown,
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isVisible ? 1 : 0 }}
+        transition={{ duration: 0.2 }}
+      />
+    </div>
+  )
+}
+
+/** Pulsing beacon effect to draw attention */
+function BeaconEffect({ variant }: { variant: ButtonVariant }) {
+  const { color, fade } = BEACON_COLORS[variant]
+  return (
+    <span
+      className="absolute inset-0 rounded-xl animate-beacon pointer-events-none"
+      style={{ '--beacon-color': color, '--beacon-color-fade': fade } as React.CSSProperties}
+      aria-hidden="true"
+    />
+  )
+}
+
+// =============================================================================
+// MAIN COMPONENT
+// =============================================================================
+
+/**
+ * Button - Primary interactive element for user actions.
+ * Features glass hover effect and optional beacon pulse.
+ * @component ATOM
+ */
 function Button({
   className,
-  variant,
+  variant = 'default',
   size,
   asChild = false,
   noEffect = false,
@@ -116,40 +232,19 @@ function Button({
   beacon,
   ...props
 }: ButtonProps) {
-  // Beacon defaults to true for destructive variant
-  const showBeacon = beacon ?? (variant === 'destructive')
-  const Comp = asChild ? Slot : "button"
   const [isHovered, setIsHovered] = useState(false)
+  const Comp = asChild ? Slot : "button"
 
-  // Variants that should not have the effect
-  const skipEffect = variant === 'link' || variant === 'ghost' || noEffect
+  const variantKey = variant as ButtonVariant
+  const shouldSkipEffect = SKIP_EFFECT_VARIANTS.has(variantKey) || noEffect
+  const showBeacon = beacon ?? (variant === 'destructive')
+  const isFullWidth = fullWidth || className?.includes('w-full')
 
-  // Show effect when hovered OR when effectActive is true
-  const showEffect = !skipEffect && (isHovered || effectActive)
+  const { backgroundPosition, isAnimating } = useGlassAnimation(isHovered, effectActive)
+  const { gradient, glow } = VARIANT_GRADIENTS[variantKey]
 
-  // Animation for glass border
-  const positionX = useMotionValue(200)
-  const backgroundPosition = useTransform(positionX, (x) => `${x}% 0`)
-
-  useEffect(() => {
-    if (effectActive && !isHovered) {
-      // Static centered position for always-active state
-      positionX.set(50)
-    } else if (showEffect) {
-      // Animate on hover
-      positionX.set(200)
-      const animation = animate(positionX, -200, {
-        duration: ANIMATION_DURATION,
-        ease: 'linear',
-        repeat: Infinity,
-        repeatType: 'loop',
-      })
-      return () => animation.stop()
-    }
-  }, [showEffect, effectActive, isHovered, positionX])
-
-  // For link and ghost variants, or when noEffect is true, render without wrapper
-  if (skipEffect) {
+  // Simple render for variants without glass effect
+  if (shouldSkipEffect) {
     return (
       <Comp
         data-slot="button"
@@ -159,91 +254,19 @@ function Button({
     )
   }
 
-  const borderRadius = '12px'
-  const innerRadius = '11px'
-  const glowRadius = '10px'
-
-  // Check if button should be full width (explicit prop takes precedence)
-  const isFullWidth = fullWidth || className?.includes('w-full')
-
-  // Get variant-specific gradients
-  const variantKey = variant || 'default'
-  const { gradient: glassGradient, glow: glassGlow } = VARIANT_GRADIENTS[variantKey]
-  const beaconColors = BEACON_COLORS[variantKey]
-
   return (
     <div
       className={cn("relative", isFullWidth ? "flex" : "inline-flex")}
-      style={{
-        borderRadius,
-        isolation: 'isolate',
-        width: isFullWidth ? '100%' : 'fit-content',
-        // Set CSS variables for beacon animation
-        ...(showBeacon && {
-          '--beacon-color': beaconColors.color,
-          '--beacon-color-fade': beaconColors.fade,
-        } as React.CSSProperties)
-      }}
+      style={{ borderRadius: BORDER_RADIUS, isolation: 'isolate', width: isFullWidth ? '100%' : 'fit-content' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Beacon pulse effect */}
-      {showBeacon && (
-        <span
-          className="absolute inset-0 rounded-xl animate-beacon pointer-events-none"
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Glow container */}
-      <div
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-        style={{ borderRadius }}
-      >
-        {/* Inner glass border */}
-        <motion.div
-          className="absolute pointer-events-none"
-          style={{
-            inset: '1px',
-            borderRadius: innerRadius,
-            border: '2px solid transparent',
-            background: `${glassGradient} border-box`,
-            backgroundSize: '200% 100%',
-            backgroundPosition,
-            mask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
-            maskComposite: 'exclude',
-            WebkitMask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
-            WebkitMaskComposite: 'xor',
-            zIndex: Z_INDEX.dropdown,
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: showEffect ? 1 : 0 }}
-          transition={{ duration: 0.2 }}
-        />
-
-        {/* Inner glow effect */}
-        <motion.div
-          className="absolute pointer-events-none"
-          style={{
-            inset: '2px',
-            borderRadius: glowRadius,
-            background: glassGlow,
-            backgroundSize: '200% 100%',
-            backgroundPosition,
-            filter: 'blur(8px)',
-            zIndex: Z_INDEX.dropdown,
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: showEffect ? 1 : 0 }}
-          transition={{ duration: 0.2 }}
-        />
-      </div>
-
-      {/* Button content */}
+      {showBeacon && <BeaconEffect variant={variantKey} />}
+      <GlassEffect isVisible={isAnimating} backgroundPosition={backgroundPosition} gradient={gradient} glow={glow} />
       <Comp
         data-slot="button"
         className={cn(buttonVariants({ variant, size, className }), "relative z-[1]")}
-        style={{ borderRadius, width: isFullWidth ? '100%' : undefined }}
+        style={{ borderRadius: BORDER_RADIUS, width: isFullWidth ? '100%' : undefined }}
         {...props}
       />
     </div>

@@ -368,7 +368,7 @@ export function Pagination({
             onValueChange={(value) => onPageSizeChange(parseInt(value, 10))}
             disabled={loading}
           >
-            <SelectTrigger className="w-[70px] h-9 text-sm bg-linen border-default">
+            <SelectTrigger className="w-[70px] h-9 text-sm bg-linen border-default" aria-label="Rows per page">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

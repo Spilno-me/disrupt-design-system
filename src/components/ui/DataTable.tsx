@@ -106,6 +106,8 @@ export interface DataTableProps<T> {
   compact?: boolean
   /** Function to determine row priority for colored left border */
   getRowPriority?: (row: T) => RowPriority
+  /** Function to generate test ID for each row */
+  getRowTestId?: (row: T) => string
   // Pagination props
   /** Enable pagination footer inside table */
   pagination?: boolean
@@ -222,6 +224,7 @@ export function DataTable<T>({
   hoverable = true,
   compact = false,
   getRowPriority,
+  getRowTestId,
   // Pagination props
   pagination = false,
   currentPage = 1,
@@ -511,7 +514,6 @@ export function DataTable<T>({
                     maxWidth: column.maxWidth,
                   }}
                   onClick={() => column.sortable && handleSort(column.id)}
-                  role={column.sortable ? "button" : undefined}
                   tabIndex={column.sortable ? 0 : undefined}
                   onKeyDown={(e) => {
                     if (column.sortable && (e.key === "Enter" || e.key === " ")) {
@@ -560,6 +562,7 @@ export function DataTable<T>({
                   data-slot="data-table-body-row"
                   data-row-id={rowId}
                   data-selected={isSelected ? 'true' : undefined}
+                  data-testid={getRowTestId?.(row)}
                   data-hoverable={hoverable ? 'true' : undefined}
                   style={{
                     // Apply priority-colored left border using box-shadow (thinner: 4px)

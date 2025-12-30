@@ -2,21 +2,37 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
 /**
- * ActionTile - Square icon button for common actions (create, edit, delete)
- *
- * @example
- * // Outline mode (for dark backgrounds)
- * <ActionTile variant="success" onClick={onCreate}>
- *   <Rocket className="size-8" />
- * </ActionTile>
- *
- * @example
- * // Filled mode (subtle colored fill, works on any background)
- * <ActionTile variant="destructive" appearance="filled" onClick={onDelete}>
- *   <Trash2 className="size-8" />
- * </ActionTile>
+ * Active/pressed state colors per variant.
+ * Uses primitive tokens because semantic "active" tokens don't exist.
+ * These are darker shades for tactile feedback on press.
  */
+const ACTIVE_STATES = {
+  success: {
+    light: 'active:bg-[var(--brand-harbor-700)] active:border-[var(--brand-harbor-700)]',
+    dark: 'dark:active:bg-[var(--brand-harbor-600)] dark:active:border-[var(--brand-harbor-600)]',
+  },
+  info: {
+    light: 'active:bg-[var(--brand-deep-current-700)] active:border-[var(--brand-deep-current-700)]',
+    dark: 'dark:active:bg-[var(--brand-deep-current-400)] dark:active:border-[var(--brand-deep-current-400)]',
+  },
+  neutral: {
+    light: 'active:bg-[var(--brand-abyss-700)] active:border-[var(--brand-abyss-700)]',
+    dark: 'dark:active:bg-[var(--brand-abyss-300)] dark:active:border-[var(--brand-abyss-300)]',
+  },
+  destructive: {
+    light: 'active:bg-[var(--brand-coral-700)] active:border-[var(--brand-coral-700)]',
+    dark: 'dark:active:bg-[var(--brand-coral-400)] dark:active:border-[var(--brand-coral-400)]',
+  },
+} as const
+
+// =============================================================================
+// VARIANTS
+// =============================================================================
 
 const actionTileVariants = cva(
   [
@@ -35,45 +51,43 @@ const actionTileVariants = cva(
     variants: {
       variant: {
         success: [
-          // Green - HARBOR colors
-          // Hover: solid fill with white text (matches NextStepButton pattern)
+          // Semantic: green for positive actions (create, approve, submit)
           'border-success-strong dark:border-success text-success-strong dark:text-success',
           'hover:bg-success-strong hover:text-on-status hover:border-success-strong',
           'dark:hover:bg-success dark:hover:border-success dark:hover:text-on-status',
-          // Pressed: darker shade for tactile feedback
-          'active:bg-[var(--brand-harbor-700)] active:border-[var(--brand-harbor-700)] active:text-on-status',
-          'dark:active:bg-[var(--brand-harbor-600)] dark:active:border-[var(--brand-harbor-600)]',
+          'active:text-on-status',
+          ACTIVE_STATES.success.light,
+          ACTIVE_STATES.success.dark,
           'focus-visible:ring-success',
         ],
         info: [
-          // Teal - DEEP_CURRENT colors (brand accent)
-          // Use for edit/modify actions - more visible than neutral gray
+          // Semantic: teal for informational actions (edit, view, modify)
           'border-accent-strong dark:border-info text-accent-strong dark:text-info',
           'hover:bg-accent-strong hover:text-on-status hover:border-accent-strong',
           'dark:hover:bg-info dark:hover:border-info dark:hover:text-on-status',
-          // Pressed: darker shade for tactile feedback
-          'active:bg-[var(--brand-deep-current-700)] active:border-[var(--brand-deep-current-700)] active:text-on-status',
-          'dark:active:bg-[var(--brand-deep-current-400)] dark:active:border-[var(--brand-deep-current-400)]',
+          'active:text-on-status',
+          ACTIVE_STATES.info.light,
+          ACTIVE_STATES.info.dark,
           'focus-visible:ring-info',
         ],
         neutral: [
-          // Warm neutral - ABYSS colors (warm dark gray)
-          // Hover: solid fill with white text
-          'border-strong text-strong',
-          'hover:bg-strong hover:text-inverse hover:border-strong',
-          // Pressed: darker shade for tactile feedback
-          'active:bg-[var(--brand-abyss-800)] active:border-[var(--brand-abyss-800)] active:text-inverse',
-          'dark:active:bg-[var(--brand-abyss-300)] dark:active:border-[var(--brand-abyss-300)]',
-          'focus-visible:ring-strong',
+          // Contextual: gray for low-emphasis actions (settings, options)
+          'border-strong text-secondary',
+          'hover:bg-inverse-bg hover:text-inverse hover:border-inverse-bg',
+          'active:text-inverse',
+          ACTIVE_STATES.neutral.light,
+          'dark:border-muted dark:text-muted',
+          'dark:hover:bg-muted dark:hover:border-muted dark:hover:text-inverse',
+          ACTIVE_STATES.neutral.dark,
+          'focus-visible:ring-muted',
         ],
         destructive: [
-          // Red - CORAL colors
-          // Hover: solid fill with white text (matches NextStepButton pattern)
+          // Semantic: red for dangerous actions (delete, remove, cancel)
           'border-error text-error',
           'hover:bg-error hover:text-on-status hover:border-error',
-          // Pressed: darker shade for tactile feedback
-          'active:bg-[var(--brand-coral-700)] active:border-[var(--brand-coral-700)] active:text-on-status',
-          'dark:active:bg-[var(--brand-coral-400)] dark:active:border-[var(--brand-coral-400)]',
+          'active:text-on-status',
+          ACTIVE_STATES.destructive.light,
+          ACTIVE_STATES.destructive.dark,
           'focus-visible:ring-error',
         ],
       },
@@ -95,27 +109,11 @@ const actionTileVariants = cva(
       },
     },
     compoundVariants: [
-      // Filled: light tinted fill at rest, solid fill on hover (NextStepButton pattern)
-      {
-        variant: 'success',
-        appearance: 'filled',
-        className: 'bg-success-light dark:bg-success/10',
-      },
-      {
-        variant: 'info',
-        appearance: 'filled',
-        className: 'bg-info-light dark:bg-info/10',
-      },
-      {
-        variant: 'neutral',
-        appearance: 'filled',
-        className: 'bg-surface-hover dark:bg-strong/10',
-      },
-      {
-        variant: 'destructive',
-        appearance: 'filled',
-        className: 'bg-error-light dark:bg-error/10',
-      },
+      // Filled appearance: subtle tinted background at rest
+      { variant: 'success', appearance: 'filled', className: 'bg-success-light dark:bg-success/10' },
+      { variant: 'info', appearance: 'filled', className: 'bg-info-light dark:bg-info/10' },
+      { variant: 'neutral', appearance: 'filled', className: 'bg-subtle dark:bg-elevated' },
+      { variant: 'destructive', appearance: 'filled', className: 'bg-error-light dark:bg-error/10' },
     ],
     defaultVariants: {
       variant: 'neutral',
@@ -124,6 +122,10 @@ const actionTileVariants = cva(
     },
   }
 )
+
+// =============================================================================
+// TYPES
+// =============================================================================
 
 export interface ActionTileProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -134,18 +136,17 @@ export interface ActionTileProps
   'aria-label': string
 }
 
+// =============================================================================
+// COMPONENT
+// =============================================================================
+
 /**
- * ActionTile - Square icon button for common actions
+ * ActionTile - Square icon button for common actions.
  *
- * Use `variant` to set the semantic color:
- * - `success` - Green, for positive actions (create, approve, submit)
- * - `info` - Teal, for informational actions (edit, view, modify)
- * - `neutral` - Gray, for low-emphasis actions (settings, options)
- * - `destructive` - Red, for dangerous actions (delete, remove, cancel)
+ * Variants: success (create), info (edit), neutral (settings), destructive (delete)
+ * Appearance: outline (transparent) or filled (tinted background)
  *
- * Use `appearance` to set the visual style:
- * - `outline` - Transparent bg, colored border, subtle hover fill
- * - `filled` - Subtle colored fill at rest, stronger hover effect
+ * @component ATOM
  */
 const ActionTile = React.forwardRef<HTMLButtonElement, ActionTileProps>(
   ({ className, variant, appearance, size, children, ...props }, ref) => {

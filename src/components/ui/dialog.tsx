@@ -103,7 +103,9 @@ function DialogPortal({
 }
 DialogPortal.displayName = "DialogPortal"
 
-/** DialogOverlay - Semi-transparent backdrop behind the dialog. */
+/** DialogOverlay - Semi-transparent backdrop behind the dialog.
+ * iOS 26 compatible: Uses min-h-dvh to extend behind Liquid Glass browser chrome.
+ */
 function DialogOverlay({
   className,
   ...props
@@ -113,7 +115,8 @@ function DialogOverlay({
       data-slot="dialog-overlay"
       className={cn(
         // Overlay with semi-transparent backdrop
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm",
+        // iOS 26: min-h-dvh ensures overlay extends behind browser chrome
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm min-h-dvh",
         className
       )}
       {...props}
@@ -157,7 +160,7 @@ function DialogContent({
         {/* Animated glow layer (follows the rotating gradient) - OUTSIDE content */}
         <span className="gradient-border-animated-glow rounded-xl" aria-hidden="true" />
         {/* Solid background wrapper - covers the glow completely */}
-        <div className="relative bg-white dark:bg-abyss-700 text-primary font-sans rounded-xl p-6 grid gap-4">
+        <div className="relative bg-elevated text-primary font-sans rounded-xl p-6 grid gap-4">
           {children}
           <DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-page data-[state=open]:text-muted">
             <XIcon className="size-4" />

@@ -57,7 +57,8 @@ function Input({ className, type, ...props }: InputProps) {
       data-slot="input"
       className={cn(
         // Base styles - mobile-first with 44px min height (touch standard), desktop 40px
-        "flex h-12 md:h-10 w-full min-w-0 rounded-sm border border-default bg-surface px-4 py-3 md:px-3 md:py-2 text-base md:text-sm text-primary font-sans shadow-sm transition-[color,box-shadow] outline-none",
+        // Inputs use darker bg (muted-bg) as they represent "holes" - recessed areas per depth rule
+        "flex h-12 md:h-10 w-full min-w-0 rounded-sm border border-default bg-muted-bg px-4 py-3 md:px-3 md:py-2 text-base md:text-sm text-primary font-sans shadow-inner transition-[color,box-shadow] outline-none",
         // Password field styling - larger text and wider letter spacing for better readability
         type === "password" && "text-lg tracking-[0.15em]",
         // Placeholder - 16px minimum on mobile to prevent iOS zoom
@@ -71,7 +72,7 @@ function Input({ className, type, ...props }: InputProps) {
         // Error state
         "aria-invalid:ring-error/20 aria-invalid:border-error",
         // Disabled state
-        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-muted-bg",
+        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}

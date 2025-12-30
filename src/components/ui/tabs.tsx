@@ -15,10 +15,13 @@ const tabsListVariants = cva(
       variant: {
         // Default - Muted background, no border
         default: "h-10 rounded-md bg-muted-bg p-1",
-        // Accent - Muted background with border (Flow EHS style)
+        // Accent - Frost glass effect with subtle border (Flow EHS style)
         // Nested corner formula: inner (md/12px) + padding (xs/4px) = outer (lg/16px)
         // overflow-hidden clips indicator when tabs have badges that affect width
-        accent: "relative h-10 rounded-lg border border-default bg-muted-bg p-1 overflow-hidden",
+        // shadow-sm for subtle depth lift
+        // Uses bg-muted-bg for portal-compatible theming (works inside Dialogs)
+        // Light: subtle default border | Dark: accent border for visibility
+        accent: "relative h-10 rounded-lg bg-muted-bg/60 backdrop-blur-[2px] border border-default dark:border-accent/50 p-1 overflow-hidden shadow-sm",
       },
     },
     defaultVariants: {
@@ -40,8 +43,9 @@ const tabsTriggerVariants = cva(
         default: "h-8 rounded-sm px-3 text-sm data-[state=active]:bg-surface data-[state=active]:text-primary data-[state=active]:shadow-sm",
         // Accent - Text only, background handled by sliding indicator
         // Uses rounded-md (12px) to match nested corner formula with TabsList
+        // px-2 (8px) for balanced spacing with vertical (~6px)
         // Dark mode: override text-inverse to stay white on dark teal background
-        accent: "relative z-10 h-8 flex-1 gap-2 rounded-md px-3 text-sm text-primary transition-colors duration-200 data-[state=active]:font-medium data-[state=active]:text-inverse dark:data-[state=active]:text-white",
+        accent: "relative z-10 h-8 flex-1 gap-2 rounded-md px-2 text-sm text-primary transition-colors duration-200 data-[state=active]:font-medium data-[state=active]:text-inverse dark:data-[state=active]:text-white",
       },
     },
     defaultVariants: {

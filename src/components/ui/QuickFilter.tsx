@@ -111,6 +111,7 @@ const quickFilterItemVariants = cva(
         primary: '',
       },
       size: {
+        xs: 'min-w-[80px] h-[56px] px-3',  // Extra small - compact pill
         sm: 'min-w-[100px] h-[72px] px-4',
         md: 'min-w-[120px] h-[80px] px-5',
         lg: 'min-w-[140px] h-[88px] px-6',
@@ -180,8 +181,8 @@ export interface QuickFilterItemProps
   variant?: QuickFilterVariant
   /** Whether this item is selected */
   selected?: boolean
-  /** Size variant */
-  size?: 'sm' | 'md' | 'lg'
+  /** Size variant - xs is compact pill-style */
+  size?: 'xs' | 'sm' | 'md' | 'lg'
 }
 
 /**
@@ -284,28 +285,39 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
           }}
         />
 
-        {/* Content container */}
-        <div className="flex flex-col items-center gap-1.5 relative z-10">
+        {/* Content container - tighter gap for xs */}
+        <div className={cn(
+          "flex flex-col items-center relative z-10",
+          size === 'xs' ? 'gap-0.5' : 'gap-1.5'
+        )}>
           {/* Icon and Badge container */}
           <div className="relative">
-            {/* Icon */}
+            {/* Icon - smaller for xs, scales SVG to fill container */}
             {coloredIcon && (
-              <div className="w-7 h-7 flex items-center justify-center">
+              <div className={cn(
+                "flex items-center justify-center [&>svg]:size-full",
+                size === 'xs' ? 'w-5 h-5' : 'w-7 h-7'
+              )}>
                 {coloredIcon}
               </div>
             )}
 
-            {/* Badge with count - positioned at top-right corner */}
+            {/* Badge with count - positioned at top-right corner, smaller for xs */}
             {count !== undefined && (
               <div
-                className="absolute min-w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold px-1"
+                className={cn(
+                  "absolute flex items-center justify-center font-bold",
+                  size === 'xs'
+                    ? 'min-w-[16px] h-[16px] text-[9px] px-0.5'
+                    : 'min-w-[20px] h-[20px] text-[11px] px-1'
+                )}
                 style={{
                   backgroundColor: colors.badge,
                   color: colors.badgeText,  // WCAG AA compliant badge text color
-                  border: '2px solid var(--color-surface)',  // Uses CSS variable for dark mode
+                  border: size === 'xs' ? '1.5px solid var(--color-surface)' : '2px solid var(--color-surface)',
                   borderRadius: RADIUS.full,
-                  top: '-6px',
-                  right: '-12px',
+                  top: size === 'xs' ? '-4px' : '-6px',
+                  right: size === 'xs' ? '-8px' : '-12px',
                 }}
               >
                 {count}
@@ -313,9 +325,12 @@ export const QuickFilterItem = React.forwardRef<HTMLButtonElement, QuickFilterIt
             )}
           </div>
 
-          {/* Label */}
+          {/* Label - smaller for xs */}
           <span
-            className="text-xs font-semibold leading-tight text-center whitespace-nowrap"
+            className={cn(
+              "font-semibold leading-tight text-center whitespace-nowrap",
+              size === 'xs' ? 'text-[10px]' : 'text-xs'
+            )}
             style={{ color: colors.text }}
           >
             {label}

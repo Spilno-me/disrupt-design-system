@@ -145,11 +145,11 @@ const ActionSheetContent = React.forwardRef<
       sideOffset={sideOffset}
       align={align}
       className={cn(
-        // Base styles
-        'z-50 min-w-[200px] overflow-hidden rounded-2xl p-1',
-        // Glassmorphism effect
-        'bg-elevated/95 backdrop-blur-xl',
-        'border border-white/20',
+        // Base styles - rounded-xl per design rules (Card/Dialog = xl)
+        'z-50 min-w-[180px] overflow-hidden rounded-xl p-1',
+        // Elevated with shadow per depth rules (dropdown = bg-elevated shadow-lg)
+        'bg-elevated',
+        'border border-default',
         'shadow-lg',
         // Animation
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
@@ -199,9 +199,10 @@ const ActionSheetItem = React.forwardRef<HTMLButtonElement, ActionSheetItemProps
         data-slot="action-sheet-item"
         className={cn(
           // Base styles - 44px min height for touch (Fitts' Law)
-          'flex w-full items-center gap-3 px-4 py-3 min-h-[44px]',
-          'text-left text-base font-medium',
-          'rounded-xl',
+          // rounded-lg per nested formula: outer(xl/20px) - padding(4px) = 16px
+          'flex w-full items-center gap-3 px-3 py-2.5 min-h-[44px]',
+          'text-left text-sm font-medium',
+          'rounded-lg',
           'transition-colors duration-150',
           // Focus styles
           'outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1',
@@ -219,7 +220,7 @@ const ActionSheetItem = React.forwardRef<HTMLButtonElement, ActionSheetItemProps
         onClick={handleClick}
         {...props}
       >
-        {icon && <span className="flex-shrink-0 size-5">{icon}</span>}
+        {icon && <span className="flex-shrink-0 size-4">{icon}</span>}
         <span className="flex-1">{children}</span>
       </button>
     )
@@ -257,7 +258,7 @@ const ActionSheetLabel = React.forwardRef<HTMLDivElement, ActionSheetLabelProps>
       ref={ref}
       data-slot="action-sheet-label"
       className={cn(
-        'px-4 py-2 text-xs font-semibold text-secondary uppercase tracking-wide',
+        'px-3 py-2 text-xs font-medium text-secondary',
         className
       )}
       {...props}

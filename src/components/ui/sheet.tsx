@@ -4,6 +4,35 @@ import { XIcon } from "lucide-react"
 
 import { cn } from "../../lib/utils"
 
+// Context for portal container (used by device frames to contain portals)
+const PortalContainerContext = React.createContext<HTMLElement | null>(null)
+
+/**
+ * Provider to set a custom container for Sheet portals.
+ * Used by device frames (IPhoneMobileFrame) to render sheets inside the frame.
+ */
+export function PortalContainerProvider({
+  container,
+  children,
+}: {
+  container: HTMLElement | null
+  children: React.ReactNode
+}) {
+  return (
+    <PortalContainerContext.Provider value={container}>
+      {children}
+    </PortalContainerContext.Provider>
+  )
+}
+
+/**
+ * Hook to get the portal container from context.
+ * Returns null if no container is set (renders at document.body by default).
+ */
+export function usePortalContainer() {
+  return React.useContext(PortalContainerContext)
+}
+
 /**
  * Sheet - Slide-out panel component for secondary content and actions.
  *
@@ -109,7 +138,9 @@ function SheetPortal({
 }
 SheetPortal.displayName = "SheetPortal"
 
-/** SheetOverlay - Semi-transparent backdrop behind the sheet. */
+/** SheetOverlay - Semi-transparent backdrop behind the sheet.
+ * iOS 26 compatible: Uses min-h-dvh to extend behind Liquid Glass browser chrome.
+ */
 function SheetOverlay({
   className,
   ...props
@@ -119,7 +150,8 @@ function SheetOverlay({
       data-slot="sheet-overlay"
       className={cn(
         // Overlay with semi-transparent backdrop (matches Dialog)
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm",
+        // iOS 26: min-h-dvh ensures overlay extends behind browser chrome
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-sm min-h-dvh",
         className
       )}
       {...props}
@@ -137,36 +169,40 @@ SheetOverlay.displayName = "SheetOverlay"
  *
  * @param side - Position from which the sheet slides in (default: "right")
  * @param hideCloseButton - Hide the default close button (default: false)
+ * @param container - Custom container element for the portal (useful for device frames)
  */
 function SheetContent({
   className,
   children,
   side = "right",
   hideCloseButton = false,
+  container,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left"
   hideCloseButton?: boolean
+  container?: HTMLElement | null
 }) {
+  // Use provided container, context container, or undefined (document.body)
+  const contextContainer = usePortalContainer()
+  const portalContainer = container ?? contextContainer ?? undefined
+
   return (
-    <SheetPortal>
+    <SheetPortal container={portalContainer}>
       <SheetOverlay />
       <SheetPrimitive.Content
         data-slot="sheet-content"
+        data-side={side}
         className={cn(
           // Base sheet styles with design system colors
           "bg-surface text-primary font-sans",
-          // Animation
-          "data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+          // Animation - using sheet-animate class for CSS-based animation
+          "sheet-animate fixed z-50 flex flex-col gap-4 shadow-lg",
           // Side-specific positioning
-          side === "right" &&
-            "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-l border-default sm:max-w-sm",
-          side === "left" &&
-            "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-r border-default sm:max-w-sm",
-          side === "top" &&
-            "data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b border-default",
-          side === "bottom" &&
-            "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t border-default",
+          side === "right" && "inset-y-0 right-0 h-full w-3/4 border-l border-default sm:max-w-sm",
+          side === "left" && "inset-y-0 left-0 h-full w-3/4 border-r border-default sm:max-w-sm",
+          side === "top" && "inset-x-0 top-0 h-auto border-b border-default",
+          side === "bottom" && "inset-x-0 bottom-0 h-auto border-t border-default",
           className
         )}
         {...props}

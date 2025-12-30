@@ -62,7 +62,10 @@ export function Skeleton({
     <div
       {...props}
       className={cn(
-        'bg-muted/30',
+        // Use muted-bg token for better contrast on elevated surfaces
+        // bg-muted-bg (#EFEDF3) provides ~1.06:1 on elevated (#FFFEF9)
+        // Adding slight transparency maintains subtle appearance while staying visible
+        'bg-muted-bg/80',
         roundedClasses[rounded],
         animation,
         className

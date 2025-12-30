@@ -4,7 +4,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  /* iOS 26: Use dvh for dynamic viewport height (extends behind browser chrome) */
+  height: 100dvh;
   z-index: 9999;
   /* CRITICAL: pointer-events: none ensures NO interference with touch/click */
   pointer-events: none;

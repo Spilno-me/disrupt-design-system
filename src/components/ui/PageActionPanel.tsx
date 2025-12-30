@@ -78,14 +78,12 @@ export function PageActionPanel({
   return (
     <div
       className={cn(
-        'flex items-center justify-between gap-3 md:gap-4 p-3 md:p-4 rounded-xl shadow-md',
-        'border border-default',
+        'flex items-center justify-between gap-3 md:gap-4 p-3 md:p-4 rounded-xl',
+        // Depth 2 glass - more solid than stats cards for visual hierarchy
+        // Light: white glass, Dark: black glass
+        'border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md',
         className
       )}
-      style={{
-        // Highlight gradient: ~13px solid surface at top to match SearchFilter visual appearance
-        background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 13px, var(--color-surface-hover) 100%)',
-      }}
     >
       {/* Left: Icon + Title + Subtitle */}
       <div className="flex items-start gap-2 md:gap-3 min-w-0">
@@ -108,20 +106,19 @@ export function PageActionPanel({
         </div>
       </div>
 
-      {/* Right: Action buttons - primaryAction on mobile, full actions on desktop */}
+      {/* Right: Action buttons - primaryAction on mobile, all actions on desktop */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        {/* Mobile: show primaryAction only */}
+        {/* Mobile: show primaryAction only (most important action) */}
         {primaryAction && (
           <div className="md:hidden">
             {primaryAction}
           </div>
         )}
-        {/* Desktop: show all actions */}
-        {actions && (
-          <div className="hidden md:flex items-center gap-2">
-            {actions}
-          </div>
-        )}
+        {/* Desktop: show secondary actions + primary action */}
+        <div className="hidden md:flex items-center gap-2">
+          {actions}
+          {primaryAction}
+        </div>
         {/* Fallback: if no primaryAction but has actions, show actions on mobile too */}
         {!primaryAction && actions && (
           <div className="md:hidden flex items-center gap-2">

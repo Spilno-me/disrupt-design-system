@@ -38,8 +38,8 @@ function Textarea({ className, ...props }: TextareaProps) {
     <textarea
       data-slot="textarea"
       className={cn(
-        // Base styles
-        "flex field-sizing-content min-h-textarea w-full rounded-sm border border-default bg-surface px-3 py-3 text-base text-primary font-sans shadow-sm transition-[color,box-shadow] outline-none md:text-sm",
+        // Base styles - inputs use darker bg (muted-bg) as they represent "holes" per depth rule
+        "flex field-sizing-content min-h-textarea w-full rounded-sm border border-default bg-muted-bg px-3 py-3 text-base text-primary font-sans shadow-inner transition-[color,box-shadow] outline-none md:text-sm",
         // Placeholder
         "placeholder:text-tertiary",
         // Focus state - uses design token (now dark blue for high contrast)
@@ -47,7 +47,7 @@ function Textarea({ className, ...props }: TextareaProps) {
         // Error state
         "aria-invalid:ring-error/20 aria-invalid:border-error",
         // Disabled state
-        "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-muted-bg",
+        "disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
