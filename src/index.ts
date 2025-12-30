@@ -163,6 +163,9 @@ export {
   SheetDescription,
 } from './components/ui/sheet'
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
+
+// Toast notifications - Sonner-based with DDS styling
+export { Toaster, toast } from './components/ui/sonner'
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -430,6 +433,23 @@ export type {
   UseFiltersReturn,
 } from './components/shared/SearchFilter'
 
+// AI Assistant - Global floating assistant component
+export {
+  AIAssistantProvider,
+  AIAssistantFab,
+  AIAssistantPanel,
+  AIAssistantQuickActions,
+  useAIAssistant,
+} from './components/shared/AIAssistant'
+export type {
+  AIAssistantContextValue,
+  AIAssistantProviderProps,
+  AIAssistantFabProps,
+  AIAssistantPanelProps,
+  AIAssistantQuickActionsProps,
+  LogoState,
+} from './components/shared/AIAssistant'
+
 // Export Market-specific filter options
 export { MARKET_FILTER_OPTIONS } from './components/market'
 export type {
@@ -496,6 +516,8 @@ export { useMouseParticles } from './hooks/useMouseParticles'
 export type { MouseParticle } from './hooks/useMouseParticles'
 export { useHeroTitleRotation } from './hooks/useHeroTitleRotation'
 export { useHeaderContrast, useContrastColor } from './hooks/useHeaderContrast'
+// iOS 26 Safari visual viewport bug fix
+export { useVisualViewportFix, isIOS26ViewportBugAffected } from './hooks/useVisualViewportFix'
 
 // Export visualization components
 export { DependencyGraph } from './components/visualization/DependencyGraph'

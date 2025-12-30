@@ -20,6 +20,25 @@ export const API_CONFIG = {
   }
 } as const;
 
+/**
+ * Responsive Breakpoints (in pixels)
+ *
+ * Matches Tailwind's default breakpoints.
+ * Use with useIsMobile(BREAKPOINTS.LG) for consistent behavior.
+ */
+export const BREAKPOINTS = {
+  /** Phone only (default for useIsMobile) */
+  SM: 640,
+  /** Tablet portrait */
+  MD: 768,
+  /** Tablet landscape / small desktop */
+  LG: 1024,
+  /** Desktop */
+  XL: 1280,
+  /** Large desktop */
+  XXL: 1536,
+} as const
+
 export const UI_CONSTANTS = {
   HEADER_HEIGHT: 'h-16',
   CONTAINER_PADDING: 'px-6',

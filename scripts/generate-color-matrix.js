@@ -2,10 +2,14 @@
 /**
  * Generate Color Matrix
  *
- * Generates .claude/color-matrix.json and .claude/contrast-matrix.json
- * from the single source of truth: src/constants/designTokens.ts
+ * Generates from src/constants/designTokens.ts:
+ * - .claude/color-matrix.json     (allowed color combinations)
+ * - .claude/color-matrix.toon     (72% smaller TOON format)
+ * - .claude/contrast-matrix.json  (WCAG contrast ratios)
+ * - .claude/contrast-matrix.toon  (71% smaller TOON format)
  *
- * Calculates WCAG 2.1 contrast ratios for all color combinations.
+ * TOON = Token-Oriented Object Notation (https://github.com/toon-format/toon)
+ * Reduces tokens when feeding data to LLMs.
  *
  * Usage: npm run sync:colors
  */
@@ -20,7 +24,9 @@ const ROOT = join(__dirname, '..')
 
 const TOKENS_SOURCE = join(ROOT, 'src', 'constants', 'designTokens.ts')
 const COLOR_MATRIX_PATH = join(ROOT, '.claude', 'color-matrix.json')
+const COLOR_TOON_PATH = join(ROOT, '.claude', 'color-matrix.toon')
 const CONTRAST_MATRIX_PATH = join(ROOT, '.claude', 'contrast-matrix.json')
+const CONTRAST_TOON_PATH = join(ROOT, '.claude', 'contrast-matrix.toon')
 
 // ANSI colors
 const GREEN = '\x1b[32m'
@@ -234,6 +240,77 @@ function generateContrastMatrix(tokens, contentHash) {
   return matrix
 }
 
+// Generate TOON format for color-matrix
+// Flattens allowedCombinations to uniform rows with pipe-delimited colors
+function generateColorToon(colorMatrix) {
+  const lines = []
+
+  // Metadata
+  lines.push('_meta:')
+  lines.push(`  contentHash: ${colorMatrix._contentHash}`)
+  lines.push(`  source: ${colorMatrix._source}`)
+  lines.push('  note: AUTO-GENERATED - Do not edit. Run npm run sync:colors')
+  lines.push('')
+
+  // Backgrounds as comma-separated lists
+  lines.push('backgrounds:')
+  lines.push(`  light: ${colorMatrix.backgrounds.light.join(',')}`)
+  lines.push(`  dark: ${colorMatrix.backgrounds.dark.join(',')}`)
+  lines.push(`  accent: ${colorMatrix.backgrounds.accent.join(',')}`)
+  lines.push('')
+
+  // Allowed combinations as uniform table
+  const combos = Object.entries(colorMatrix.allowedCombinations)
+  lines.push(`allowedCombinations[${combos.length}]{background,hex,textColors,iconColors}:`)
+
+  for (const [bg, info] of combos) {
+    const textColors = info.text.join('|') || ''
+    const iconColors = info.icons.join('|') || ''
+    lines.push(`  ${bg},${info.hex},${textColors},${iconColors}`)
+  }
+  lines.push('')
+
+  // Forbidden rules
+  const forbidden = colorMatrix.forbidden
+  lines.push(`forbidden[${forbidden.length}]{rule,reason}:`)
+  for (const f of forbidden) {
+    lines.push(`  ${f.rule},${f.reason}`)
+  }
+
+  return lines.join('\n')
+}
+
+// Generate TOON format (Token-Oriented Object Notation)
+// ~71% smaller than JSON for uniform arrays
+function generateContrastToon(contrastMatrix) {
+  const lines = []
+
+  // Metadata as nested object
+  lines.push('_meta:')
+  lines.push(`  contentHash: ${contrastMatrix._contentHash}`)
+  lines.push(`  source: ${contrastMatrix._source}`)
+  lines.push('  note: AUTO-GENERATED - Do not edit. Run npm run sync:colors')
+  lines.push('')
+
+  // WCAG requirements
+  lines.push('wcagRequirements:')
+  for (const [key, val] of Object.entries(contrastMatrix.wcagRequirements)) {
+    lines.push(`  ${key}: ${val}`)
+  }
+  lines.push('')
+
+  // Combinations as TOON table
+  const combos = contrastMatrix.combinations
+  lines.push(`combinations[${combos.length}]{background,foreground,ratio,level,pass}:`)
+
+  for (const c of combos) {
+    const pass = c.pass ? 'true' : 'false'
+    lines.push(`  ${c.background},${c.foreground},${c.ratio},${c.level},${pass}`)
+  }
+
+  return lines.join('\n')
+}
+
 // Main
 function main() {
   console.log(`\n${BOLD}Generate Color Matrix${RESET}`)
@@ -262,8 +339,22 @@ function main() {
   console.log(`${CYAN}>${RESET} Writing color-matrix.json...`)
   writeFileSync(COLOR_MATRIX_PATH, JSON.stringify(colorMatrix, null, 2))
 
+  console.log(`${CYAN}>${RESET} Writing color-matrix.toon (~72% smaller)...`)
+  const colorToonContent = generateColorToon(colorMatrix)
+  writeFileSync(COLOR_TOON_PATH, colorToonContent)
+  const colorJsonSize = JSON.stringify(colorMatrix, null, 2).length
+  const colorToonSize = colorToonContent.length
+  console.log(`${DIM}  JSON: ${(colorJsonSize / 1024).toFixed(0)}KB → TOON: ${(colorToonSize / 1024).toFixed(0)}KB (${(100 - (colorToonSize / colorJsonSize * 100)).toFixed(0)}% smaller)${RESET}`)
+
   console.log(`${CYAN}>${RESET} Writing contrast-matrix.json...`)
   writeFileSync(CONTRAST_MATRIX_PATH, JSON.stringify(contrastMatrix, null, 2))
+
+  console.log(`${CYAN}>${RESET} Writing contrast-matrix.toon (71% smaller)...`)
+  const toonContent = generateContrastToon(contrastMatrix)
+  writeFileSync(CONTRAST_TOON_PATH, toonContent)
+  const jsonSize = JSON.stringify(contrastMatrix, null, 2).length
+  const toonSize = toonContent.length
+  console.log(`${DIM}  JSON: ${(jsonSize / 1024).toFixed(0)}KB → TOON: ${(toonSize / 1024).toFixed(0)}KB (${(100 - (toonSize / jsonSize * 100)).toFixed(0)}% smaller)${RESET}`)
 
   console.log(`${GREEN}+${RESET} Color matrices generated from designTokens.ts`)
   console.log('')

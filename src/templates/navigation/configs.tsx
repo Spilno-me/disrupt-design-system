@@ -28,6 +28,7 @@ import {
   Star,
   MessageSquare,
   Bookmark,
+  Contact2,
 } from 'lucide-react'
 import type { NavItem } from '../../components/ui/navigation'
 import { addBadges as addBadgesUtil } from '../../components/ui/navigation'
@@ -129,6 +130,12 @@ export const flowNavItems: NavItem[] = [
     href: '/tasks',
   },
   {
+    id: 'directory',
+    label: 'Directory',
+    icon: <Contact2 />,
+    href: '/directory',
+  },
+  {
     id: 'calendar',
     label: 'Calendar',
     icon: <Calendar />,
@@ -151,6 +158,14 @@ export const flowNavItems: NavItem[] = [
     label: 'Settings',
     icon: <Settings />,
     href: '/settings',
+    children: [
+      {
+        id: 'users',
+        label: 'User Management',
+        icon: <Users />,
+        href: '/settings/users',
+      },
+    ],
   },
 ]
 

@@ -11,4 +11,8 @@ storybook-static
 
 # Private agent/orchestration files
 CLAUDE.md
+CLAUDE.md.backup
 .claude/
+
+# Delivery artifacts (duplicated components for distribution)
+delivery/

@@ -289,8 +289,9 @@ export function AppLayoutShell({
       {/* Grid blob background */}
       {showBackground && <GridBlobBackground scale={backgroundScale} />}
 
-      {/* App Header - fixed at z-30, OUTSIDE content layer for glassmorphism to work */}
-      <div className="fixed top-0 left-0 right-0 z-30">
+      {/* App Header - fixed at z-30, OUTSIDE content layer for glassmorphism to work
+          iOS 26: pt-safe adds padding for status bar safe area */}
+      <div className="fixed top-0 left-0 right-0 z-30 pt-safe">
         <AppHeader
           product={product}
           showNotifications={true}
@@ -304,9 +305,10 @@ export function AppLayoutShell({
         />
       </div>
 
-      {/* Desktop Footer - fixed at z-30, OUTSIDE content layer for glassmorphism to work (like header) */}
+      {/* Desktop Footer - fixed at z-30, OUTSIDE content layer for glassmorphism to work (like header)
+          iOS 26: pb-safe adds padding for home indicator safe area (iPad) */}
       {showFooter && (
-        <div className="hidden md:fixed md:bottom-0 md:left-0 md:right-0 md:z-30 md:block">
+        <div className="hidden md:fixed md:bottom-0 md:left-0 md:right-0 md:z-30 md:block md:pb-safe">
           <AppFooter compactOnMobile={false} variant={footerVariant} />
         </div>
       )}

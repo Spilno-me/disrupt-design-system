@@ -225,16 +225,16 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false, a
         showActiveBackground={collapsed}
       />
 
-      <span
-        className={cn(
-          'text-[13px] whitespace-nowrap overflow-hidden',
-          'transition-opacity duration-200',
-          isActive ? 'font-bold text-primary' : 'font-medium text-primary',
-          collapsed ? 'opacity-0 w-0' : 'opacity-100'
-        )}
-      >
-        {item.label}
-      </span>
+      {!collapsed && (
+        <span
+          className={cn(
+            'text-[13px] whitespace-nowrap overflow-hidden',
+            isActive ? 'font-bold text-primary' : 'font-medium text-primary'
+          )}
+        >
+          {item.label}
+        </span>
+      )}
     </button>
   )
 }
@@ -289,29 +289,27 @@ function NavGroup({
         >
           <NavIcon icon={displayIcon} isActive={groupActive} size="sm" showActiveBackground={collapsed} />
 
-          <span
-            className={cn(
-              'text-[13px] whitespace-nowrap overflow-hidden flex-1 text-left',
-              'transition-opacity duration-200',
-              groupActive ? 'font-bold text-primary' : 'font-medium text-primary',
-              collapsed ? 'opacity-0 w-0' : 'opacity-100'
-            )}
-          >
-            {item.label}
-          </span>
+          {!collapsed && (
+            <>
+              <span
+                className={cn(
+                  'text-[13px] whitespace-nowrap overflow-hidden flex-1 text-left',
+                  groupActive ? 'font-bold text-primary' : 'font-medium text-primary'
+                )}
+              >
+                {item.label}
+              </span>
 
-          <div
-            className={cn(
-              'transition-all duration-200',
-              collapsed ? 'opacity-0 w-0' : 'opacity-100'
-            )}
-            style={{
-              transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.2s ease, opacity 0.2s ease',
-            }}
-          >
-            <ChevronDown className="w-3 h-3 text-secondary" />
-          </div>
+              <div
+                style={{
+                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                }}
+              >
+                <ChevronDown className="w-3 h-3 text-secondary" />
+              </div>
+            </>
+          )}
         </button>
       </CollapsiblePrimitive.Trigger>
 
@@ -363,15 +361,11 @@ function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => 
     >
       <NavIcon icon={<CircleHelp />} size="sm" showActiveBackground={collapsed} />
 
-      <span
-        className={cn(
-          'text-[13px] font-medium text-primary whitespace-nowrap overflow-hidden',
-          'transition-opacity duration-200',
-          collapsed ? 'opacity-0 w-0' : 'opacity-100'
-        )}
-      >
-        Get Help
-      </span>
+      {!collapsed && (
+        <span className="text-[13px] font-medium text-primary whitespace-nowrap overflow-hidden">
+          Get Help
+        </span>
+      )}
     </button>
   )
 }
