@@ -481,14 +481,21 @@ export function KPICard({
               )}
             </div>
             {/* Value display with transition */}
-            <div className="flex items-baseline gap-2 mt-2">
+            <div className="flex items-center gap-2 mt-2">
               <span className={cn(
                 'font-bold',
                 // Use normal font feature settings to avoid slashed zero
                 'font-sans',
                 'transition-colors duration-300',
                 isHero ? 'text-4xl' : 'text-3xl',
-                showSuccess ? 'text-success' : showWarning ? 'text-warning-dark' : showCritical ? 'text-error' : 'text-primary'
+                // Use explicit dark mode overrides for proper contrast
+                showSuccess
+                  ? 'text-success dark:text-success'
+                  : showWarning
+                  ? 'text-warning-dark dark:text-warning'
+                  : showCritical
+                  ? 'text-error dark:text-error'
+                  : 'text-primary'
               )}>
                 {value}
               </span>
@@ -498,14 +505,19 @@ export function KPICard({
                 </Badge>
               )}
             </div>
-            {/* Status message with frosted glass background for contrast */}
+            {/* Status message with tint backgrounds for proper contrast */}
             {(description || isCelebratoryZero || hasThresholdStatus) && (
               <div className={cn(
                 'inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-md',
                 'transition-all duration-300',
-                // Frosted glass effect for text contrast against sparkline
-                'bg-white/80 dark:bg-abyss-800/80 backdrop-blur-sm',
-                getStatusColorClasses()
+                // Use tint backgrounds with proper dark mode variants
+                showSuccess || isCelebratoryZero
+                  ? 'bg-success-tint dark:bg-success-tint text-success-strong dark:text-white'
+                  : showWarning
+                  ? 'bg-warning-tint dark:bg-warning-tint text-warning-dark dark:text-white'
+                  : showCritical
+                  ? 'bg-error-tint dark:bg-error-tint text-error-strong dark:text-white'
+                  : 'bg-white/80 dark:bg-abyss-800/80 text-muted'
               )}>
                 {(StatusIcon || isCelebratoryZero) && (
                   <span className="flex-shrink-0 transition-transform duration-300">
@@ -527,11 +539,11 @@ export function KPICard({
             <div className={cn(
               'flex-shrink-0 p-2.5 rounded-xl transition-all duration-300',
               showSuccess || isCelebratoryZero
-                ? 'bg-[var(--brand-harbor-100)] text-success dark:bg-[var(--brand-harbor-900)] dark:text-[var(--brand-harbor-400)]'
+                ? 'bg-success-tint dark:bg-success-tint text-success-strong dark:text-white'
                 : showWarning
-                ? 'bg-[var(--brand-sunrise-100)] text-warning-dark dark:bg-[var(--brand-sunrise-900)] dark:text-[var(--brand-sunrise-400)]'
+                ? 'bg-warning-tint dark:bg-warning-tint text-warning-dark dark:text-white'
                 : showCritical
-                ? 'bg-[var(--brand-coral-100)] text-error dark:bg-[var(--brand-coral-900)] dark:text-[var(--brand-coral-400)]'
+                ? 'bg-error-tint dark:bg-error-tint text-error-strong dark:text-white'
                 : isHero
                 ? 'bg-accent-bg text-accent-strong'
                 : 'bg-muted-bg text-secondary'
