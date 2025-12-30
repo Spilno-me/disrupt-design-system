@@ -66,8 +66,8 @@ function Checkbox({
       className={cn(
         // Base styles - subtle border for clean appearance
         "peer size-4 shrink-0 rounded border border-muted bg-surface transition-all outline-none",
-        // Checked state - accent fill with semantic text token for contrast on status backgrounds
-        "data-[state=checked]:bg-accent-strong data-[state=checked]:text-on-status data-[state=checked]:border-accent-strong",
+        // Checked state - teal fill (DEEP_CURRENT[700]) for WCAG AA contrast (7.02:1 with white)
+        "data-[state=checked]:bg-teal data-[state=checked]:text-on-status data-[state=checked]:border-teal",
         // Focus state - uses design token
         "focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30",
         // Hover state
