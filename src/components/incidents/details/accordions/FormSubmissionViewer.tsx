@@ -236,7 +236,7 @@ function FieldValue({ field }: { field: FormField }) {
       }
       return <span className="text-primary">{String(value)}</span>
 
-    case 'rating':
+    case 'rating': {
       const rating = Number(value)
       const maxRating = (metadata?.maxRating as number) || 5
       return (
@@ -253,8 +253,9 @@ function FieldValue({ field }: { field: FormField }) {
           <span className="text-secondary ml-1.5">({rating}/{maxRating})</span>
         </span>
       )
+    }
 
-    case 'file':
+    case 'file': {
       const fileName = metadata?.fileName as string || String(value)
       const fileUrl = metadata?.url as string
       return (
@@ -275,8 +276,9 @@ function FieldValue({ field }: { field: FormField }) {
           )}
         </span>
       )
+    }
 
-    case 'location':
+    case 'location': {
       const address = metadata?.address as string
       const coords = metadata?.coordinates as { lat: number; lng: number }
       return (
@@ -290,6 +292,7 @@ function FieldValue({ field }: { field: FormField }) {
           )}
         </div>
       )
+    }
 
     case 'person':
       return (
@@ -312,7 +315,7 @@ function FieldValue({ field }: { field: FormField }) {
         </p>
       )
 
-    case 'signature':
+    case 'signature': {
       const sigUrl = metadata?.signatureUrl as string
       if (sigUrl) {
         return (
@@ -322,6 +325,7 @@ function FieldValue({ field }: { field: FormField }) {
         )
       }
       return <span className="text-primary italic">Signed</span>
+    }
 
     default:
       return <span className="text-primary">{String(value)}</span>

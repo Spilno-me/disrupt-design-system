@@ -24,12 +24,12 @@ const INCIDENT_TYPE_CONFIG: Record<
   { label: string; color: string; icon: string }
 > = {
   injury: { label: 'Injury', color: 'bg-error', icon: '🩹' },
-  near_miss: { label: 'Near Miss', color: 'bg-amber-400', icon: '⚠️' },
+  near_miss: { label: 'Near Miss', color: 'bg-warning', icon: '⚠️' },
   environmental: { label: 'Environmental', color: 'bg-success', icon: '🌿' },
   equipment: { label: 'Equipment Failure', color: 'bg-info', icon: '⚙️' },
-  chemical: { label: 'Chemical Spill', color: 'bg-warning', icon: '🧪' },
-  fire: { label: 'Fire', color: 'bg-red-500', icon: '🔥' },
-  other: { label: 'Other', color: 'bg-slate-400', icon: '📋' },
+  chemical: { label: 'Chemical Spill', color: 'bg-aging', icon: '🧪' },
+  fire: { label: 'Fire', color: 'bg-error', icon: '🔥' },
+  other: { label: 'Other', color: 'bg-muted-bg', icon: '📋' },
 }
 
 // =============================================================================

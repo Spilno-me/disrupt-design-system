@@ -28,7 +28,7 @@ import {
   TooltipTrigger,
 } from '../../../../components/ui/tooltip'
 import { TrendingRiskAlert } from './TrendingRiskAlert'
-import type { LocationRiskSummaryProps, RiskSeverity, RiskTrend } from './types'
+import type { LocationRiskSummaryProps, RiskTrend } from './types'
 import { DEFAULT_SAFETY_THRESHOLDS } from './types'
 
 // =============================================================================
@@ -92,7 +92,7 @@ function SeverityBar({
   const segments = [
     { severity: 'critical' as const, count: bySeverity.critical, color: 'bg-error' },
     { severity: 'high' as const, count: bySeverity.high, color: 'bg-warning' },
-    { severity: 'medium' as const, count: bySeverity.medium, color: 'bg-amber-400' },
+    { severity: 'medium' as const, count: bySeverity.medium, color: 'bg-aging' },
     { severity: 'low' as const, count: bySeverity.low, color: 'bg-success' },
   ].filter((s) => s.count > 0)
 

@@ -36,9 +36,9 @@ const SEVERITY_COLORS: Record<RiskSeverity, { bg: string; text: string; border: 
     border: 'border-warning/30',
   },
   medium: {
-    bg: 'bg-amber-100/60 dark:bg-amber-900/20',
-    text: 'text-amber-700 dark:text-amber-400',
-    border: 'border-amber-400/30',
+    bg: 'bg-warning/15',
+    text: 'text-warning-dark',
+    border: 'border-warning/30',
   },
   low: {
     bg: 'bg-success/15',
@@ -118,7 +118,7 @@ function RiskTooltipContent({
           )}
           {bySeverity.medium > 0 && (
             <div className="flex items-center justify-between">
-              <span className="text-amber-600 dark:text-amber-400">Medium</span>
+              <span className="text-warning-dark">Medium</span>
               <span className="font-medium">{bySeverity.medium}</span>
             </div>
           )}

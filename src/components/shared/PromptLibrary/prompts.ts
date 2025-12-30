@@ -766,10 +766,10 @@ Steps:
 CRITICAL - tokens.css:
 \`\`\`css
 // ❌ BROKEN - no utilities generated
-:root { --color-primary: #2D3142; }
+:root { --color-primary: oklch(0.26 0.028 265); }
 
 // ✅ CORRECT - generates bg-primary, text-primary
-@theme { --color-primary: #2D3142; }
+@theme { --color-primary: oklch(0.26 0.028 265); }
 \`\`\`
 
 Validation:
@@ -817,7 +817,7 @@ Status Colors (shift 1 step lighter in dark):
 | \`success\` | HARBOR[500] | HARBOR[400] |
 
 FORBIDDEN:
-- Hardcoded: \`isDark ? '#0C0D12' : '#FBFBF3'\`
+- Hardcoded: \`isDark ? 'abyss[950]' : 'cream'\`
 - Raw hex in dark mode logic
 
 Use semantic tokens - they auto-switch themes.

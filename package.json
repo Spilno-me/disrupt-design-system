@@ -1,6 +1,6 @@
 {
   "name": "@adrozdenko/design-system",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "Disrupt Design System - Unified design language and component library",
   "type": "module",
   "main": "./dist/index.js",
@@ -24,7 +24,8 @@
       "types": "./dist/constants/designTokens.d.ts"
     },
     "./tokens.css": "./dist/styles/tokens.css",
-    "./styles": "./dist/assets/index.css",
+    "./theme": "./dist/styles/theme.css",
+    "./styles": "./dist/assets/design-system.css",
     "./tailwind-preset": "./tailwind-preset.js",
     "./plugins/dashed-borders": "./dashed-borders-plugin.js"
   },

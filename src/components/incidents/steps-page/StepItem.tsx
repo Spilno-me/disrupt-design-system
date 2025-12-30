@@ -117,7 +117,7 @@ const STATUS_LABELS: Record<StepStatus, string> = {
  * - Completed: 1.42:1 | 5.1:1 (AA)
  */
 const STATUS_STYLES: Record<StepStatus, string> = {
-  pending: 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
+  pending: 'bg-muted-bg text-secondary',
   in_progress: 'bg-accent-tint text-accent-dark dark:bg-accent-tint dark:text-accent',
   overdue: 'bg-error-tint text-error-dark dark:bg-error-tint dark:text-error',
   completed: 'bg-success-tint text-success-dark dark:bg-success-tint dark:text-success',

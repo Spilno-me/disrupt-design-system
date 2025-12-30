@@ -116,12 +116,11 @@ function CodeEditor({
         readOnly={readOnly}
         spellCheck={false}
         className={cn(
-          'flex-1 p-3 resize-none bg-transparent outline-none',
+          'flex-1 p-3 resize-none bg-transparent outline-none min-h-[400px]',
           'leading-6 text-primary',
           'placeholder:text-secondary',
           readOnly && 'cursor-not-allowed opacity-70'
         )}
-        style={{ minHeight: '400px' }}
         placeholder="Enter mapping JSON..."
       />
     </div>
@@ -144,7 +143,7 @@ export function CodeMode({ className }: CodeModeProps) {
     applyJsonChanges,
     exportJSON,
     readOnly,
-    isDirty,
+    isDirty: _isDirty,
     config,
   } = useMappingStudio()
 

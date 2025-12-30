@@ -40,9 +40,9 @@ const ZOOM_STEP = 0.25
 const SEVERITY_MARKER_COLORS: Record<RiskSeverity, { bg: string; border: string; pulse: boolean }> = {
   critical: { bg: 'bg-error', border: 'border-error-dark', pulse: true },
   high: { bg: 'bg-warning', border: 'border-warning-dark', pulse: false },
-  medium: { bg: 'bg-amber-400', border: 'border-amber-600', pulse: false },
+  medium: { bg: 'bg-aging', border: 'border-aging', pulse: false },
   low: { bg: 'bg-success', border: 'border-success-dark', pulse: false },
-  none: { bg: 'bg-slate-400', border: 'border-slate-600', pulse: false },
+  none: { bg: 'bg-muted-bg', border: 'border-default', pulse: false },
 }
 
 // =============================================================================
@@ -110,7 +110,7 @@ interface HeatmapOverlayProps {
   height: number
 }
 
-function HeatmapOverlay({ incidents, width, height }: HeatmapOverlayProps) {
+function HeatmapOverlay({ incidents, width: _width, height: _height }: HeatmapOverlayProps) {
   // Generate SVG radial gradients for each incident cluster
   const markersWithCoords = incidents.filter((i) => i.precisionMarker)
   if (markersWithCoords.length === 0) return null

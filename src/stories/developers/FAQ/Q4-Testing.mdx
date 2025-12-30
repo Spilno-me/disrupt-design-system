@@ -152,6 +152,95 @@ test('templates page loads with real API', async () => {
 
 ---
 
+## Proven: Adapter Pattern Breakage Testing
+
+<div style={{ background: HARBOR[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${HARBOR[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: HARBOR[700] }}>
+    <CheckCircle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+    We Tested It - Here's What Happens
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"We simulated a real-world scenario: the backend API changes, but the consumer's adapter isn't updated. This is exactly the concern skeptics raise."}
+  </p>
+</div>
+
+### Test Scenario: API Version Mismatch
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <CodeBlock language="typescript" code={`// V1 API (original) - works perfectly
+{
+  severity: "high",           // string enum
+  reporter: "John Smith",     // string
+  reported_at: new Date()     // Date object
+}
+
+// V2 API (backend changed) - adapter NOT updated
+{
+  severity: 2,                           // ← Now a number!
+  reporter: { name: "John", email: "john@..." },  // ← Now an object!
+  reported_at: "2024-01-15T10:30:00Z"   // ← Now ISO string!
+}`} />
+</div>
+
+### Results: Three Scenarios Tested
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Scenario</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>What Renders</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Verdict</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { scenario: 'V1 API + V1 Adapter', renders: 'Perfect data, all columns correct', verdict: '✅ Works', color: HARBOR },
+        { scenario: 'V2 API + Broken Adapter', renders: 'DataError indicators showing "[object]", "2", "NaN"', verdict: '⚠️ Shows errors, not crash', color: SUNRISE },
+        { scenario: 'V2 API + Fixed Adapter', renders: 'Perfect data, all columns correct', verdict: '✅ Works', color: HARBOR },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontWeight: 500 }}>{row.scenario}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.renders}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.color[100], color: row.color[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.verdict}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+### Key Finding: Defensive Design Works
+
+<div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${DEEP_CURRENT[200]}`, marginBottom: '24px' }}>
+  <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: DUSK_REEF[600] }}>
+    {"When the adapter is broken, DDS components DON'T crash. Instead:"}
+  </p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+    {[
+      'Invalid values show DataError indicator (pulsing red badge)',
+      'Tooltip explains: "Invalid severity: 2 - Check your data adapter"',
+      'Sort/filter functions return safe defaults instead of crashing',
+      'Consumer immediately knows: "This is MY adapter problem"',
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <CheckCircle size={14} color={HARBOR[500]} />
+        <span style={{ fontSize: '12px', color: ABYSS[500] }}>{item}</span>
+      </div>
+    ))}
+  </div>
+  <p style={{ margin: 0, fontSize: '12px', color: DEEP_CURRENT[600], fontStyle: 'italic' }}>
+    {"DDS acts like a good waiter: if the kitchen sends bad food (broken adapter), it shows the problem clearly instead of dropping the plate (crashing)."}
+  </p>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Run It Yourself:</strong> In the <code>dds-incidents-app</code> reference implementation, run <code>npx tsx src/demo-adapter-breakage.ts</code> to see all three scenarios in your terminal.
+</InfoBox>
+
+---
+
 ## Summary
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '24px' }}>

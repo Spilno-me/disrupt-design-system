@@ -10,6 +10,7 @@ import { Reorder, useDragControls } from 'motion/react'
 import { GripVertical } from 'lucide-react'
 import { cn } from '../../../../lib/utils'
 import { CategoryCard } from './CategoryCard'
+import { SHADOWS, Z_INDEX } from '../../../../constants/designTokens'
 import type { DictionaryCategory } from '../types'
 
 // =============================================================================
@@ -64,8 +65,8 @@ export function DraggableCategoryCard({
       exit={{ opacity: 0, y: -10, transition: { duration: 0.15 } }}
       whileDrag={{
         scale: 1.02,
-        boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
-        zIndex: 50,
+        boxShadow: SHADOWS.xl,
+        zIndex: Z_INDEX.header,
       }}
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
     >

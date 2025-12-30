@@ -45,6 +45,35 @@ const preview: Preview = {
     }),
   ],
   parameters: {
+    options: {
+      storySort: {
+        order: [
+          'Introduction',
+          'Foundation',
+          'Components',
+          'Developers',
+          [
+            '*',
+            'FAQ',
+            [
+              'Overview',
+              'Q1-Delivery',
+              'Q2-Edge Cases',
+              'Q3-Updates',
+              'Q4-Testing',
+              'Q5-Migration',
+              'Q6-Performance',
+              'Q7-QuickTopics',
+              'Q8-DDSFails',
+              'Q9-Engagement',
+              'Known Gaps',
+              'Roadmap',
+            ],
+          ],
+          '*',
+        ],
+      },
+    },
     controls: {
       matchers: {
        color: /(background|color)$/i,
