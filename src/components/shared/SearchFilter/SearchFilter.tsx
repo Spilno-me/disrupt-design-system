@@ -126,20 +126,19 @@ const SearchFilterInner = memo(function SearchFilterInner({
   return (
     <div
       className={cn(
-        'relative flex items-center justify-between border border-default',
-        // Size variants
+        'relative flex items-center justify-between',
+        // Size variants - both use glass now
+        // Light: white glass, Dark: black glass
         isCompact
-          ? 'gap-2 px-2 py-1.5 rounded-lg bg-surface'
-          : 'gap-3 p-3 rounded-xl shadow-md',
+          // Depth 3 glass for compact (inner sections)
+          ? 'gap-2 px-2 py-1.5 rounded-lg bg-white/20 dark:bg-black/20 backdrop-blur-[2px] border-2 border-accent shadow-sm'
+          // Depth 2 glass for default (page-level, more prominent)
+          : 'gap-3 p-3 rounded-xl bg-white/40 dark:bg-black/40 backdrop-blur-[4px] border-2 border-accent shadow-md',
         fullWidth && 'w-full',
         disabled && 'opacity-60',
         className
       )}
-      style={isCompact ? undefined : {
-        // Highlight effect: IVORY[100] at top (0-20%) creates a light strip, then fades to IVORY[300]
-        background: 'linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface) 20%, var(--color-surface-hover) 100%)',
-      }}
-      aria-disabled={disabled}
+      data-disabled={disabled || undefined}
     >
       {/* Search Input */}
       <SearchInput

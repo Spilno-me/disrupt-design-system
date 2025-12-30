@@ -109,22 +109,72 @@ OUTPUT: Component file + story file + update to index.ts exports.`,
   },
   {
     id: 'component-stabilize',
-    title: 'Stabilize Existing Component',
+    title: 'Stabilize Component to Clean Code A+',
     description:
-      'Audit and update a component to meet DDS stabilization standards.',
+      'Full stabilization workflow: analyze, refactor to Uncle Bob A+ standard, track, and document.',
     category: 'components',
     variables: ['COMPONENT'],
-    tags: ['stabilization', 'audit', 'quality'],
-    prompt: `Stabilize {COMPONENT} per DDS standards.
+    tags: ['stabilization', 'clean-code', 'refactoring', 'production-ready'],
+    prompt: `Stabilize {COMPONENT} to Clean Code A+ standard.
 
-CHECKLIST:
-1. Read \`.claude/core-components-stabilization.md\`
-2. Verify all colors use DDS tokens
-3. Add AllStates story if missing
-4. Add data-testid or data-slot attributes
-5. Update \`.claude/agent-context.json\` registry
+READ FIRST:
+- \`.claude/clean-code-rules.md\` (grading rubric)
+- \`.claude/core-components-stabilization.md\` (tracking)
+- \`.claude/color-matrix.json\` (token selection)
 
-Run \`npm run health\` after changes.`,
+## PHASE 1: ANALYZE
+
+1. Read component file
+2. Grade current state (A+ to F):
+   | Grade | Criteria |
+   |-------|----------|
+   | A+ | Functions <30 lines, single responsibility, named constants, semantic tokens |
+   | A | Functions <40 lines, minor naming issues |
+   | B | Functions <60 lines, some magic numbers |
+   | C | Functions >60 lines, multiple responsibilities |
+   | D/F | God functions, hardcoded values, no structure |
+
+## PHASE 2: REFACTOR (apply in order)
+
+1. **Extract constants** (top of file, SCREAMING_SNAKE)
+   \`\`\`tsx
+   const ANIMATION_DURATION_MS = 1500
+   const BORDER_RADIUS = '12px'
+   \`\`\`
+
+2. **Add section headers**
+   \`\`\`tsx
+   // =============================================================================
+   // CONSTANTS | VARIANTS | TYPES | HOOKS | SUB-COMPONENTS | MAIN COMPONENT
+   // =============================================================================
+   \`\`\`
+
+3. **Extract hooks** (custom logic → \`useXxx\` function)
+
+4. **Extract sub-components** (repeated JSX → named function with props interface)
+
+5. **Semantic tokens** (priority: semantic > contextual > primitive)
+   \`\`\`tsx
+   // ❌ 'text-white', 'border-[var(--brand-abyss-300)]'
+   // ✅ 'text-inverse', 'border-strong'
+   \`\`\`
+
+6. **Document primitive exceptions** (if primitives unavoidable, explain WHY)
+
+## PHASE 3: TRACK
+
+Update \`.claude/core-components-stabilization.md\`:
+- Change status: \`⬜ TODO\` → \`✅ STABILIZED\`
+- Add entry: \`**{COMPONENT}** - ATOM, clean code A+, semantic tokens\`
+
+## PHASE 4: VERIFY
+
+Run: \`npm run typecheck && npm run lint\`
+
+OUTPUT:
+- Clean code A+ component
+- Updated tracking doc
+- Grade improvement summary (e.g., "B → A+")`,
   },
 
   // =============================================================================
@@ -276,6 +326,98 @@ Report:
 |------|------|-----------|---------------|
 
 Group by severity and provide fix commands where possible.`,
+  },
+  {
+    id: 'review-clean-code',
+    title: 'Clean Code Review (Uncle Bob A+ Standard)',
+    description: 'Review code against Uncle Bob clean code principles for production readiness.',
+    category: 'review',
+    variables: ['FILE_PATH'],
+    tags: ['review', 'clean-code', 'refactoring', 'quality'],
+    prompt: `Review {FILE_PATH} against Uncle Bob's clean code principles.
+
+READ FIRST: \`.claude/clean-code-rules.md\`
+
+GRADING RUBRIC:
+| Category | Check |
+|----------|-------|
+| Naming | Names express intent? No abbreviations? |
+| Functions | Each function does ONE thing? <30 lines? |
+| Comments | JSDoc for public APIs? Design notes for WHY? |
+| Structure | Helpers first, then main component? |
+| Errors | No silent failures? Users see feedback? |
+| Cleanliness | No magic numbers? No dead code? No duplication? |
+| SOLID | Single responsibility? Clear abstractions? |
+
+FILE SIZE LIMITS:
+| Type | Max Lines | Action |
+|------|-----------|--------|
+| Component | 300 | Extract sub-components |
+| Dialog | 400 | Extract content sections |
+| Types | 400 | Move utilities to utils.ts |
+| Any file | 500 | GOD FILE - split immediately |
+
+EXTRACT TRIGGERS:
+- Function >30 lines → extract helper
+- Repeated calculation → memoize
+- Same logic 2+ places → extract utility
+- Complex conditional → named function
+
+REPORT FORMAT:
+| Category | Grade | Issues | Action |
+|----------|-------|--------|--------|
+| Naming | A-F | List | Fix suggestion |
+| Functions | A-F | List | Fix suggestion |
+...
+
+FINAL GRADE: A+ to F with summary.
+VERDICT: SHIP IT or NEEDS WORK with specific fixes.`,
+  },
+  {
+    id: 'review-refactor-plan',
+    title: 'Create Refactoring Plan',
+    description: 'Analyze a God File (>500 lines) and create extraction plan.',
+    category: 'review',
+    variables: ['FILE_PATH'],
+    tags: ['refactoring', 'clean-code', 'architecture'],
+    prompt: `Create a refactoring plan for {FILE_PATH}.
+
+READ FIRST: \`.claude/clean-code-rules.md\`
+
+ANALYSIS STEPS:
+1. Count total lines
+2. Identify internal sub-components
+3. Find repeated logic
+4. Locate helper functions
+5. Check for dead code
+
+EXTRACTION CANDIDATES:
+| Pattern | Extract To |
+|---------|------------|
+| Repeated JSX | sub-component same file |
+| Reusable form fields | form-components/ folder |
+| View-specific display | view-components/ folder |
+| Pure utility functions | utils.ts |
+
+OUTPUT FORMAT:
+## Current State
+- Lines: X
+- Internal components: X
+- Helper functions: X
+
+## Extraction Plan
+1. Create \`component-name/utils.ts\` for: [list functions]
+2. Extract \`SubComponentA\` to \`view-components/\`
+3. Extract \`SubComponentB\` to \`form-components/\`
+
+## Expected Result
+- Main file: ~Y lines (was X)
+- New files: Z
+- LOC reduction: X%
+
+## Migration Steps
+1. Step 1...
+2. Step 2...`,
   },
 
   // =============================================================================

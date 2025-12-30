@@ -597,7 +597,26 @@ export function AgentLogo({ className, state = "idle", variant = "dark" }: Agent
     )
   }
 
-  // Idle - gentle breathing, logo pulses softly
+  // Idle - shapes swap animation patterns each cycle for perpetual variety
+  // Define 3 distinct motion patterns (offsets from base position)
+  const patternA = { xOff: [0, -3, 2, 0], yOff: [0, -6, -2, 0], scale: [1, 1.02, 0.98, 1] }
+  const patternB = { xOff: [0, 4, -2, 0], yOff: [0, 5, -3, 0], scale: [1, 0.95, 1.05, 1] }
+  const patternC = { xOff: [0, 5, -3, 0], yOff: [0, -4, 6, 0], scale: [1, 1.1, 0.9, 1] }
+
+  // Chain 3 patterns into one sequence (skip first keyframe of p2/p3 since it matches previous end)
+  const chain = (baseX: number, baseY: number, p1: typeof patternA, p2: typeof patternA, p3: typeof patternA) => ({
+    x: [...p1.xOff, ...p2.xOff.slice(1), ...p3.xOff.slice(1)].map(off => baseX + off),
+    y: [...p1.yOff, ...p2.yOff.slice(1), ...p3.yOff.slice(1)].map(off => baseY + off),
+    scale: [...p1.scale, ...p2.scale.slice(1), ...p3.scale.slice(1)],
+  })
+
+  // Each shape cycles through patterns in different order
+  const largeAnim = chain(logoPositions.large.x, logoPositions.large.y, patternA, patternB, patternC)
+  const mediumAnim = chain(logoPositions.medium.x, logoPositions.medium.y, patternB, patternC, patternA)
+  const smallAnim = chain(logoPositions.small.x, logoPositions.small.y, patternC, patternA, patternB)
+
+  const cycleDuration = 9 // 3 seconds per pattern × 3 patterns
+
   return (
     <svg
       viewBox="-15 -15 163 198"
@@ -606,59 +625,33 @@ export function AgentLogo({ className, state = "idle", variant = "dark" }: Agent
       className={className}
     >
       <motion.rect
-        x={logoPositions.large.x}
-        y={logoPositions.large.y}
         width={logoPositions.large.width}
         height={logoPositions.large.height}
         rx={logoPositions.large.rx}
         fill={colors.large}
-        animate={{
-          scale: [1, 1.03, 1],
-          opacity: [1, 0.85, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        initial={{ x: logoPositions.large.x, y: logoPositions.large.y, scale: 1 }}
+        animate={largeAnim}
+        transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
         style={{ transformOrigin: "center", transformBox: "fill-box" }}
       />
       <motion.rect
-        x={logoPositions.medium.x}
-        y={logoPositions.medium.y}
         width={logoPositions.medium.width}
         height={logoPositions.medium.height}
         rx={logoPositions.medium.rx}
         fill={colors.medium}
-        animate={{
-          scale: [1, 1.05, 1],
-          opacity: [1, 0.8, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.3,
-        }}
+        initial={{ x: logoPositions.medium.x, y: logoPositions.medium.y, scale: 1 }}
+        animate={mediumAnim}
+        transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
         style={{ transformOrigin: "center", transformBox: "fill-box" }}
       />
       <motion.rect
-        x={logoPositions.small.x}
-        y={logoPositions.small.y}
         width={logoPositions.small.width}
         height={logoPositions.small.height}
         rx={logoPositions.small.rx}
         fill={colors.small}
-        animate={{
-          scale: [1, 1.08, 1],
-          opacity: [1, 0.75, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 0.6,
-        }}
+        initial={{ x: logoPositions.small.x, y: logoPositions.small.y, scale: 1 }}
+        animate={smallAnim}
+        transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
         style={{ transformOrigin: "center", transformBox: "fill-box" }}
       />
     </svg>

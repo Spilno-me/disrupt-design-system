@@ -54,14 +54,15 @@ export function SearchInput({
     <div
       className={cn(
         // Base styles - matching Radix Input with inset shadow for depth
+        // Inputs use darker bg (muted-bg) as they represent "holes" - recessed areas
         'relative flex flex-1 items-center',
         isCompact ? 'h-9' : 'h-10',
-        'rounded-sm border border-default bg-surface',
+        'rounded-sm border border-default bg-muted-bg',
         'transition-[color,box-shadow]',
         // Focus state - matching Radix Input
         isFocused && !disabled && 'border-accent ring-accent/20 ring-[3px]',
         // Disabled state
-        disabled && 'pointer-events-none cursor-not-allowed opacity-50 bg-muted-bg',
+        disabled && 'pointer-events-none cursor-not-allowed opacity-50',
         className
       )}
       style={{ boxShadow: 'var(--shadow-inner-sm)' }}
