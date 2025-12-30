@@ -1,0 +1,752 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Package,
+  Plug,
+  ArrowRight,
+  ArrowDown,
+  GitBranch,
+  RefreshCw,
+  Shield,
+  Layers,
+  Layout,
+  Code2,
+  FileCode,
+  Workflow,
+  CheckCircle,
+  XCircle,
+  Zap,
+  Bot,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Integration Overview" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Integration Guide"
+  description="How to integrate the Disrupt Design System into your application. Learn the patterns, workflows, and best practices for seamless component adoption."
+  gradient="teal"
+  decorativeIcon={<Plug size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Key Principle:</strong> Never force your app's interface to match the design system.
+  Instead, create <strong>adapters</strong> or <strong>wrapper components</strong> that bridge the gap.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Integration Architecture</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="The Three-Layer Pattern"
+  description="How your application connects to the design system."
+/>
+
+{/* Architecture Diagram */}
+<div style={{
+  background: `linear-gradient(135deg, ${SLATE[50]} 0%, ${DEEP_CURRENT[50]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {/* Layer 1: Your App */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${ABYSS[300]}`,
+      boxShadow: SHADOWS.md,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: RADIUS.sm,
+          background: ABYSS[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>1</div>
+        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Your Application Layer
+        </h3>
+      </div>
+      <p style={{ margin: 0, fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginLeft: '44px' }}>
+        Your data models, hooks, and business logic. Uses wrapper components for UI.
+      </p>
+      <div style={{ marginLeft: '44px', marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        {['useAuth()', 'useNotifications()', 'MyAppHeader', 'UserProfile'].map(item => (
+          <span key={item} style={{
+            background: ABYSS[50],
+            padding: '4px 10px',
+            borderRadius: RADIUS.sm,
+            fontSize: '12px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: ABYSS[600],
+          }}>{item}</span>
+        ))}
+      </div>
+    </div>
+
+    {/* Arrow */}
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <ArrowDown size={24} color={DEEP_CURRENT[500]} />
+    </div>
+
+    {/* Layer 2: Adapter */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${DEEP_CURRENT[500]}`,
+      boxShadow: SHADOWS.md,
+      position: 'relative',
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: '-10px',
+        right: '16px',
+        background: DEEP_CURRENT[700],
+        color: PRIMITIVES.white,
+        padding: '3px 10px',
+        borderRadius: RADIUS.full,
+        fontSize: '10px',
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
+      }}>Key Layer</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: RADIUS.sm,
+          background: DEEP_CURRENT[700],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>2</div>
+        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Adapter Layer
+        </h3>
+      </div>
+      <p style={{ margin: 0, fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginLeft: '44px' }}>
+        Maps your data to design system interfaces. The <strong>only place</strong> where both systems meet.
+      </p>
+      <div style={{ marginLeft: '44px', marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        {['mapUserToHeaderUser()', 'getUnreadCount()', 'FlowAppHeader.tsx'].map(item => (
+          <span key={item} style={{
+            background: DEEP_CURRENT[50],
+            padding: '4px 10px',
+            borderRadius: RADIUS.sm,
+            fontSize: '12px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: DEEP_CURRENT[700],
+          }}>{item}</span>
+        ))}
+      </div>
+    </div>
+
+    {/* Arrow */}
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <ArrowDown size={24} color={DEEP_CURRENT[500]} />
+    </div>
+
+    {/* Layer 3: Design System */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${DUSK_REEF[300]}`,
+      boxShadow: SHADOWS.md,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: RADIUS.sm,
+          background: DUSK_REEF[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>3</div>
+        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Design System Layer
+        </h3>
+      </div>
+      <p style={{ margin: 0, fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginLeft: '44px' }}>
+        DDS components with their own interfaces. Versioned and published to npm.
+      </p>
+      <div style={{ marginLeft: '44px', marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        {['AppHeader', 'Button', 'DataTable', 'UserInfo', 'UserMenuItem'].map(item => (
+          <span key={item} style={{
+            background: DUSK_REEF[50],
+            padding: '4px 10px',
+            borderRadius: RADIUS.sm,
+            fontSize: '12px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: DUSK_REEF[600],
+          }}>{item}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Start</h2>
+
+<SectionHeader
+  icon={<Zap size={20} />}
+  title="Get Running in 5 Minutes"
+  description="Essential steps to integrate your first component."
+/>
+
+{/* Step 1 */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>1</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Install the package
+      </h4>
+      <CodeBlock code="npm install @dds/design-system" language="bash" />
+    </div>
+  </div>
+</div>
+
+{/* Step 2 */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>2</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Create an adapter function
+      </h4>
+      <CodeBlock
+        filename="src/adapters/headerAdapters.ts"
+        language="typescript"
+        code={`import type { UserInfo } from '@dds/design-system/core'
+
+export function mapUserToHeaderUser(user: MyUser): UserInfo {
+  return {
+    name: \`\${user.firstName} \${user.lastName}\`,
+    email: user.email,
+    avatarUrl: user.avatar ?? undefined,
+  }
+}`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Step 3 */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>3</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Create a wrapper component
+      </h4>
+      <CodeBlock
+        filename="src/components/app/MyAppHeader.tsx"
+        language="tsx"
+        highlightLines={[2, 10, 11]}
+        code={`// src/components/app/MyAppHeader.tsx
+import { AppHeader } from '@dds/design-system/core'
+import { useAuth } from '../hooks/useAuth'
+import { mapUserToHeaderUser } from '../adapters/headerAdapters'
+
+export function MyAppHeader() {
+  const { user } = useAuth()
+
+  return (
+    <AppHeader
+      product="flow"
+      user={mapUserToHeaderUser(user)}
+    />
+  )
+}`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Step 4 */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>4</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Use in your app
+      </h4>
+      <CodeBlock
+        filename="src/App.tsx"
+        language="tsx"
+        code={`import { MyAppHeader } from './components/app/MyAppHeader'
+
+export function App() {
+  return (
+    <div>
+      <MyAppHeader />  {/* No DDS knowledge needed here */}
+      <main>...</main>
+    </div>
+  )
+}`}
+      />
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Package Architecture</h2>
+
+<SectionHeader
+  icon={<Package size={20} />}
+  title="Modular Imports"
+  description="Import only what you need for optimal bundle size."
+/>
+
+<InfoBox variant="info">
+  <strong>Tree-shaking friendly:</strong> DDS uses subpath exports so you can import only the modules your product needs.
+  This prevents Flow-specific components from bloating Portal or Market apps.
+</InfoBox>
+
+{/* Subpath Exports Table */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Import Path</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Contents</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Use Case</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        {
+          path: '@dds/design-system',
+          contents: 'All components + utilities',
+          useCase: 'Quick prototyping (larger bundle)',
+          badge: null,
+        },
+        {
+          path: '@dds/design-system/core',
+          contents: 'Button, Card, Dialog, DataTable, utilities',
+          useCase: 'Shared UI across all products',
+          badge: 'Recommended',
+        },
+        {
+          path: '@dds/design-system/flow',
+          contents: 'MobileNav, Dashboard, Users, Dictionary, etc.',
+          useCase: 'Flow EHS mobile app only',
+          badge: 'Product-specific',
+        },
+        {
+          path: '@dds/design-system/tokens',
+          contents: 'Design tokens (JS/TS)',
+          useCase: 'Access token values in code',
+          badge: null,
+        },
+        {
+          path: '@dds/design-system/tokens.css',
+          contents: 'CSS custom properties',
+          useCase: 'CSS-only token access',
+          badge: null,
+        },
+        {
+          path: '@dds/design-system/styles',
+          contents: 'Main stylesheet bundle',
+          useCase: 'Global styles (required)',
+          badge: null,
+        },
+        {
+          path: '@dds/design-system/tailwind-preset',
+          contents: 'Tailwind v4 preset',
+          useCase: 'Configure Tailwind with DDS tokens',
+          badge: null,
+        },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <code style={{
+              background: ABYSS[50],
+              padding: '4px 8px',
+              borderRadius: RADIUS.sm,
+              fontSize: '11px',
+              fontFamily: '"JetBrains Mono", monospace',
+              color: ABYSS[600],
+            }}>{row.path}</code>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.contents}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {row.useCase}
+              {row.badge && (
+                <span style={{
+                  background: row.badge === 'Recommended' ? DEEP_CURRENT[100] : CORAL[100],
+                  color: row.badge === 'Recommended' ? DEEP_CURRENT[700] : CORAL[700],
+                  padding: '2px 8px',
+                  borderRadius: RADIUS.full,
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                }}>{row.badge}</span>
+              )}
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+{/* Code Examples */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Portal/Market App Example */}
+  <div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <CheckCircle size={16} color={DEEP_CURRENT[500]} />
+      <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Portal / Market App
+      </h4>
+    </div>
+    <CodeBlock
+      language="typescript"
+      code={`// Only core components
+import { Button, Card } from '@dds/design-system/core'
+import { cn } from '@dds/design-system/core'
+
+// No Flow code in your bundle!`}
+    />
+  </div>
+
+  {/* Flow EHS App Example */}
+  <div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+      <CheckCircle size={16} color={DEEP_CURRENT[500]} />
+      <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Flow EHS App
+      </h4>
+    </div>
+    <CodeBlock
+      language="typescript"
+      code={`// Core + Flow-specific
+import { Button } from '@dds/design-system/core'
+import { MobileNavBar } from '@dds/design-system/flow'
+import { UsersPage } from '@dds/design-system/flow'`}
+    />
+  </div>
+</div>
+
+{/* Flow Module Contents */}
+<div style={{
+  background: `linear-gradient(135deg, ${CORAL[50]} 0%, ${DUSK_REEF[50]} 100%)`,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    What's in <code style={{ background: CORAL[100], padding: '2px 6px', borderRadius: '4px' }}>@dds/design-system/flow</code>?
+  </h4>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+    {[
+      { category: 'Mobile Navigation', items: ['MobileNavButton', 'MobileNavBar', 'QuickActionButton', 'NextStepButton'] },
+      { category: 'Dashboard Widgets', items: ['KPICard', 'BreakdownCard', 'TrendingCard', 'RiskHeatmapCard'] },
+      { category: 'User Management', items: ['UsersPage', 'RolesTab', 'CreateUserDialog', 'ManageRolesDialog'] },
+      { category: 'Dictionary', items: ['DictionaryPage', 'CategoriesSidebar', 'DictionaryEntriesTable'] },
+      { category: 'Entity Templates', items: ['EntityTemplatesPage', 'ViewTemplateDialog', 'SchemaStudio'] },
+      { category: 'Locations', items: ['LocationsPage', 'LocationTree', 'LocationDetailSheet'] },
+    ].map(group => (
+      <div key={group.category}>
+        <h5 style={{ margin: '0 0 8px 0', fontSize: '12px', fontWeight: 600, color: CORAL[700], textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          {group.category}
+        </h5>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {group.items.map(item => (
+            <span key={item} style={{
+              fontSize: '12px',
+              fontFamily: '"JetBrains Mono", monospace',
+              color: DUSK_REEF[600],
+            }}>{item}</span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Explore More</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: SPACING.px.section,
+}}>
+  <NavCard
+    icon={<Layout size={24} />}
+    title="Page Implementation Guide"
+    description="How to implement page compositions, report bugs, and receive fixes."
+    href="/docs/developers-page-implementation-guide--docs"
+  />
+  <NavCard
+    icon={<Code2 size={24} />}
+    title="Adapter Patterns"
+    description="Detailed patterns for mapping data, handling events, and composing components."
+    href="/docs/developers-adapter-patterns--docs"
+  />
+  <NavCard
+    icon={<RefreshCw size={24} />}
+    title="Versioning & Updates"
+    description="How semantic versioning, Changesets, and Renovate create seamless updates."
+    href="/docs/developers-versioning-updates--docs"
+  />
+  <NavCard
+    icon={<Bot size={24} />}
+    title="Automation Setup"
+    description="Configure Renovate for auto-merge and CI/CD for safe deployments."
+    href="/docs/developers-automation-setup--docs"
+  />
+  <NavCard
+    icon={<Shield size={24} />}
+    title="Migration Guide"
+    description="Step-by-step guide for handling breaking changes between major versions."
+    href="/docs/developers-migration-guide--docs"
+  />
+  <NavCard
+    icon={<GitBranch size={24} />}
+    title="Contributor Protocol"
+    description="How integrators can fix bugs while preserving design integrity."
+    href="/docs/developers-contributor-protocol--docs"
+  />
+  <NavCard
+    icon={<Plug size={24} />}
+    title="Local Development"
+    description="Test DDS locally before publishing. npm pack, yalc, and more."
+    href="/docs/developers-local-development--docs"
+  />
+  <NavCard
+    icon={<Workflow size={24} />}
+    title="Migration Strategy"
+    description="How to migrate an existing app with its own UI to DDS."
+    href="/docs/developers-migration-strategy--docs"
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Best Practices</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Create wrapper components">
+    Isolate design system dependencies in dedicated wrapper components. The rest of your app imports your wrappers, not DDS directly.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Spread DDS imports everywhere">
+    Importing DDS components directly throughout your app creates tight coupling and makes updates painful.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Use adapter functions">
+    Create pure functions that map your data to DDS interfaces. They're easy to test, maintain, and update.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Inline data transformation">
+    Transforming data inline in JSX makes it hard to find all the places that need updating when interfaces change.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Pin to minor versions">
+    Use <code>^2.7.0</code> in package.json to auto-receive patches and features while being protected from breaking changes.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Pin to exact versions">
+    Using <code>2.7.0</code> (exact) means you miss important bug fixes and have to manually update everything.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Decision Matrix</h2>
+
+<SectionHeader
+  icon={<Workflow size={20} />}
+  title="Which Pattern to Use?"
+  description="Choose the right approach based on your integration scenario."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Scenario</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Pattern</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { scenario: 'Data shape mismatch only', pattern: 'Adapter function', example: 'mapUserToHeaderUser()' },
+        { scenario: 'Need app-specific behavior', pattern: 'Wrapper component', example: 'MyAppHeader.tsx' },
+        { scenario: 'Need framework integration', pattern: 'Render props', example: 'renderNavLink for React Router' },
+        { scenario: 'Completely different structure', pattern: 'Compose from primitives', example: 'Build with Button, Badge, etc.' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.scenario}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: DEEP_CURRENT[50],
+              color: DEEP_CURRENT[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.sm,
+              fontSize: '12px',
+              fontWeight: 500,
+            }}>{row.pattern}</span>
+          </td>
+          <td style={{ padding: '12px 16px', fontFamily: '"JetBrains Mono", monospace', color: DUSK_REEF[500], fontSize: '12px' }}>{row.example}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

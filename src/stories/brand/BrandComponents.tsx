@@ -14,6 +14,10 @@ import {
 } from 'lucide-react';
 import { HeroParticles } from './HeroParticles';
 import { Button } from '../../components/ui/button';
+import { CodeBlock } from '../foundation/DocComponents';
+
+// Re-export CodeBlock for MDX usage
+export { CodeBlock };
 
 // =============================================================================
 // STORYBOOK NAVIGATION HELPER

@@ -1,0 +1,739 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  RefreshCw,
+  GitBranch,
+  Package,
+  ArrowRight,
+  ArrowDown,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Shield,
+  Zap,
+  Bot,
+  Clock,
+  FileText,
+  GitMerge,
+  Workflow,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Versioning & Updates" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Versioning & Updates"
+  description="How semantic versioning, Changesets, and automated tools create a seamless update experience. Updates flow automatically for non-breaking changes."
+  gradient="purple"
+  decorativeIcon={<RefreshCw size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>The Goal:</strong> Design system updates should flow to your app automatically for non-breaking changes.
+  Breaking changes should be caught by TypeScript and CI before they reach production.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Semantic Versioning</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="The Versioning Contract"
+  description="How version numbers communicate the nature of changes."
+/>
+
+{/* Version Number Breakdown */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  textAlign: 'center',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '24px',
+  }}>
+    <div style={{
+      background: CORAL[500],
+      color: PRIMITIVES.white,
+      padding: '16px 24px',
+      borderRadius: RADIUS.md,
+      fontSize: '32px',
+      fontWeight: 700,
+      fontFamily: '"JetBrains Mono", monospace',
+    }}>3</div>
+    <span style={{ fontSize: '32px', color: SLATE[400] }}>.</span>
+    <div style={{
+      background: DEEP_CURRENT[500],
+      color: PRIMITIVES.white,
+      padding: '16px 24px',
+      borderRadius: RADIUS.md,
+      fontSize: '32px',
+      fontWeight: 700,
+      fontFamily: '"JetBrains Mono", monospace',
+    }}>2</div>
+    <span style={{ fontSize: '32px', color: SLATE[400] }}>.</span>
+    <div style={{
+      background: HARBOR[500],
+      color: PRIMITIVES.white,
+      padding: '16px 24px',
+      borderRadius: RADIUS.md,
+      fontSize: '32px',
+      fontWeight: 700,
+      fontFamily: '"JetBrains Mono", monospace',
+    }}>1</div>
+  </div>
+
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '40px',
+  }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: CORAL[600], marginBottom: '4px' }}>MAJOR</div>
+      <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>Breaking changes</div>
+    </div>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: DEEP_CURRENT[600], marginBottom: '4px' }}>MINOR</div>
+      <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>New features</div>
+    </div>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: HARBOR[600], marginBottom: '4px' }}>PATCH</div>
+      <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>Bug fixes</div>
+    </div>
+  </div>
+</div>
+
+{/* Change Type Matrix */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Change Type</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Version Bump</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Consumer Impact</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Adapter Changes?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { change: 'Bug fix in styling', bump: 'PATCH', bumpColor: HARBOR[500], impact: 'Auto-works', impactIcon: CheckCircle, adapter: 'No' },
+        { change: 'New optional prop added', bump: 'MINOR', bumpColor: DEEP_CURRENT[500], impact: 'Auto-works', impactIcon: CheckCircle, adapter: 'No (optional)' },
+        { change: 'Visual redesign (same API)', bump: 'MINOR', bumpColor: DEEP_CURRENT[500], impact: 'Auto-works', impactIcon: CheckCircle, adapter: 'No' },
+        { change: 'New required prop added', bump: 'MAJOR', bumpColor: CORAL[500], impact: 'Breaking', impactIcon: XCircle, adapter: 'Yes' },
+        { change: 'Prop renamed', bump: 'MAJOR', bumpColor: CORAL[500], impact: 'Breaking', impactIcon: XCircle, adapter: 'Yes' },
+        { change: 'Prop type changed', bump: 'MAJOR', bumpColor: CORAL[500], impact: 'Breaking', impactIcon: XCircle, adapter: 'Yes' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.change}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.bumpColor,
+              color: PRIMITIVES.white,
+              padding: '4px 10px',
+              borderRadius: RADIUS.sm,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.bump}</span>
+          </td>
+          <td style={{ padding: '12px 16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <row.impactIcon size={16} color={row.impact === 'Auto-works' ? HARBOR[500] : CORAL[500]} />
+              <span style={{ color: row.impact === 'Auto-works' ? HARBOR[600] : CORAL[600] }}>{row.impact}</span>
+            </div>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.adapter}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Automated Flow</h2>
+
+<SectionHeader
+  icon={<Workflow size={20} />}
+  title="Zero-Touch Update Pipeline"
+  description="How changes flow from design system to your app automatically."
+/>
+
+{/* Flow Diagram */}
+<div style={{
+  background: `linear-gradient(135deg, ${SLATE[50]} 0%, ${DUSK_REEF[50]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Timeline */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {/* Step 1: Design System */}
+    <div style={{
+      display: 'flex',
+      alignItems: 'stretch',
+      gap: '16px',
+    }}>
+      <div style={{
+        width: '80px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.full,
+          background: DUSK_REEF[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          marginBottom: '8px',
+        }}>
+          <GitMerge size={20} />
+        </div>
+        <div style={{ width: '2px', flex: 1, background: DUSK_REEF[200] }} />
+      </div>
+      <div style={{
+        flex: 1,
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+      }}>
+        <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginBottom: '4px' }}>
+          DESIGN SYSTEM REPO
+        </div>
+        <div style={{ fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px' }}>
+          Developer merges PR with changeset
+        </div>
+        <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+          Changesets action detects <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>.changeset/*.md</code> files
+        </div>
+      </div>
+    </div>
+
+    {/* Step 2: Version PR */}
+    <div style={{
+      display: 'flex',
+      alignItems: 'stretch',
+      gap: '16px',
+    }}>
+      <div style={{
+        width: '80px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.full,
+          background: DUSK_REEF[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          marginBottom: '8px',
+        }}>
+          <FileText size={20} />
+        </div>
+        <div style={{ width: '2px', flex: 1, background: DUSK_REEF[200] }} />
+      </div>
+      <div style={{
+        flex: 1,
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+      }}>
+        <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginBottom: '4px' }}>
+          GITHUB ACTIONS
+        </div>
+        <div style={{ fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px' }}>
+          Creates "Version Packages" PR
+        </div>
+        <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+          Bumps version in package.json, updates CHANGELOG.md
+        </div>
+      </div>
+    </div>
+
+    {/* Step 3: Publish */}
+    <div style={{
+      display: 'flex',
+      alignItems: 'stretch',
+      gap: '16px',
+    }}>
+      <div style={{
+        width: '80px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.full,
+          background: DUSK_REEF[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          marginBottom: '8px',
+        }}>
+          <Package size={20} />
+        </div>
+        <div style={{ width: '2px', flex: 1, background: DUSK_REEF[200] }} />
+      </div>
+      <div style={{
+        flex: 1,
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+      }}>
+        <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginBottom: '4px' }}>
+          NPM REGISTRY
+        </div>
+        <div style={{ fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px' }}>
+          Package published automatically
+        </div>
+        <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>@dds/design-system@2.8.0</code> now available
+        </div>
+      </div>
+    </div>
+
+    {/* Step 4: Renovate */}
+    <div style={{
+      display: 'flex',
+      alignItems: 'stretch',
+      gap: '16px',
+    }}>
+      <div style={{
+        width: '80px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          marginBottom: '8px',
+        }}>
+          <Bot size={20} />
+        </div>
+        <div style={{ width: '2px', flex: 1, background: DEEP_CURRENT[200] }} />
+      </div>
+      <div style={{
+        flex: 1,
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '20px',
+        border: `2px solid ${DEEP_CURRENT[500]}`,
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute',
+          top: '-10px',
+          right: '16px',
+          background: DEEP_CURRENT[700],
+          color: PRIMITIVES.white,
+          padding: '3px 10px',
+          borderRadius: RADIUS.full,
+          fontSize: '10px',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+        }}>Your App</div>
+        <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DEEP_CURRENT[500], marginBottom: '4px' }}>
+          RENOVATE BOT
+        </div>
+        <div style={{ fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px' }}>
+          Creates update PR in your app
+        </div>
+        <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+          Detects new version, creates PR with updated package.json
+        </div>
+      </div>
+    </div>
+
+    {/* Step 5: CI */}
+    <div style={{
+      display: 'flex',
+      alignItems: 'stretch',
+      gap: '16px',
+    }}>
+      <div style={{
+        width: '80px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          marginBottom: '8px',
+        }}>
+          <Shield size={20} />
+        </div>
+        <div style={{ width: '2px', flex: 1, background: DEEP_CURRENT[200] }} />
+      </div>
+      <div style={{
+        flex: 1,
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+      }}>
+        <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DEEP_CURRENT[500], marginBottom: '4px' }}>
+          CI PIPELINE
+        </div>
+        <div style={{ fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px' }}>
+          TypeScript + Tests run
+        </div>
+        <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+          Breaking changes caught here - TypeScript errors if interfaces changed
+        </div>
+      </div>
+    </div>
+
+    {/* Step 6: Auto-merge */}
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '16px',
+    }}>
+      <div style={{
+        width: '80px',
+        display: 'flex',
+        justifyContent: 'center',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.full,
+          background: HARBOR[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+        }}>
+          <CheckCircle size={20} />
+        </div>
+      </div>
+      <div style={{
+        flex: 1,
+        background: HARBOR[50],
+        borderRadius: RADIUS.lg,
+        padding: '20px',
+        border: `2px solid ${HARBOR[500]}`,
+      }}>
+        <div style={{ fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: HARBOR[700], marginBottom: '4px' }}>
+          Auto-merge! Your app updated.
+        </div>
+        <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+          Non-breaking change + CI passes = automatic merge. Zero human intervention.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Package.json Configuration</h2>
+
+<SectionHeader
+  icon={<Package size={20} />}
+  title="Version Pinning Strategies"
+  description="How to configure your dependencies for optimal update flow."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Recommended */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `2px solid ${HARBOR[500]}`,
+    position: 'relative',
+  }}>
+    <div style={{
+      position: 'absolute',
+      top: '-10px',
+      left: '16px',
+      background: HARBOR[500],
+      color: PRIMITIVES.white,
+      padding: '3px 10px',
+      borderRadius: RADIUS.full,
+      fontSize: '10px',
+      fontWeight: 600,
+      textTransform: 'uppercase',
+    }}>Recommended</div>
+    <h4 style={{ margin: '8px 0 8px 0', fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+      Caret (^)
+    </h4>
+    <div style={{
+      background: ABYSS[700],
+      borderRadius: RADIUS.sm,
+      padding: '12px',
+      fontFamily: '"JetBrains Mono", monospace',
+      fontSize: '12px',
+      color: SLATE[200],
+      marginBottom: '12px',
+    }}>
+      <code>"@dds/design-system": "^2.7.0"</code>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], lineHeight: 1.6 }}>
+      <li>Auto-receives 2.7.x, 2.8.x</li>
+      <li>Protected from 3.x breaking</li>
+      <li>Best balance of safety/freshness</li>
+    </ul>
+  </div>
+
+  {/* Conservative */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+      Tilde (~)
+    </h4>
+    <div style={{
+      background: ABYSS[700],
+      borderRadius: RADIUS.sm,
+      padding: '12px',
+      fontFamily: '"JetBrains Mono", monospace',
+      fontSize: '12px',
+      color: SLATE[200],
+      marginBottom: '12px',
+    }}>
+      <code>"@dds/design-system": "~2.7.0"</code>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], lineHeight: 1.6 }}>
+      <li>Auto-receives only 2.7.x</li>
+      <li>More conservative</li>
+      <li>Miss new features</li>
+    </ul>
+  </div>
+
+  {/* Exact */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+      Exact
+    </h4>
+    <div style={{
+      background: ABYSS[700],
+      borderRadius: RADIUS.sm,
+      padding: '12px',
+      fontFamily: '"JetBrains Mono", monospace',
+      fontSize: '12px',
+      color: SLATE[200],
+      marginBottom: '12px',
+    }}>
+      <code>"@dds/design-system": "2.7.0"</code>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], lineHeight: 1.6 }}>
+      <li>Exactly this version</li>
+      <li>No auto-updates at all</li>
+      <li>Manual bumps only</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Handling Breaking Changes</h2>
+
+<SectionHeader
+  icon={<AlertTriangle size={20} />}
+  title="When CI Fails"
+  description="What happens when a major version introduces breaking changes."
+/>
+
+{/* Breaking Change Scenario */}
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <AlertTriangle size={24} color={CORAL[600]} style={{ flexShrink: 0, marginTop: '2px' }} />
+    <div>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: CORAL[700] }}>
+        Scenario: Interface Changed
+      </h4>
+      <p style={{ margin: '0 0 16px 0', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500], lineHeight: 1.6 }}>
+        The design system changed <code>notificationCount</code> to a <code>notifications</code> object.
+        Your adapter now has a TypeScript error.
+      </p>
+      <CodeBlock
+        language="tsx"
+        highlightLines={[4, 5, 8, 9, 10, 11, 12, 13]}
+        code={`// Before (v2.x)
+<AppHeader notificationCount={count} />
+
+// After (v3.0) - TypeScript error!
+// Property 'notificationCount' does not exist on type 'AppHeaderProps'
+
+// Fix: Update your wrapper component
+<AppHeader
+  notifications={{
+    count: unreadCount,
+    onOpen: handleOpen,
+  }}
+/>`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Steps to Resolve */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Resolution Steps
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { step: '1', title: 'CI blocks the auto-merge', desc: 'TypeScript errors prevent automatic merge' },
+      { step: '2', title: 'Review the migration guide', desc: 'Check CHANGELOG.md and migration docs for v3.0' },
+      { step: '3', title: 'Update your adapter', desc: 'Change ONE file (your wrapper component)' },
+      { step: '4', title: 'Push the fix', desc: 'CI passes, PR merges' },
+    ].map(item => (
+      <div key={item.step} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[700],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '12px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{item.step}</div>
+        <div>
+          <div style={{ fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+            {item.title}
+          </div>
+          <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+            {item.desc}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Why adapters matter:</strong> Because all DDS imports are isolated in your wrapper components,
+  breaking changes only require updating ONE file, not hunting through your entire codebase.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Summary</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+}}>
+  <GuidelineCard type="do" title="Use caret versioning">
+    <code>^2.7.0</code> gives you automatic patches and features while protecting from breaking changes.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Use exact versions">
+    <code>2.7.0</code> means you miss important bug fixes and have to manually update everything.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Trust TypeScript">
+    TypeScript is your safety net. It catches interface mismatches at compile time, before production.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Disable type checking">
+    Turning off TypeScript or using <code>any</code> removes your protection against breaking changes.
+  </GuidelineCard>
+</div>

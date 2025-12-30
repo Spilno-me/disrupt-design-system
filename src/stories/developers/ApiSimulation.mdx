@@ -1,0 +1,753 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Database,
+  Server,
+  Link2,
+  ArrowRight,
+  ArrowDown,
+  Layers,
+  Code2,
+  Zap,
+  RefreshCw,
+  Search,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Users,
+  MapPin,
+  FileText,
+  ListChecks,
+  BookOpen,
+  GitBranch,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/API Simulation" />
+
+{/* Hero Header */}
+<BrandHero
+  title="API Simulation Layer"
+  description="Production-quality mock API for prototyping with REST-like services, mutable in-memory state, and realistic error simulation. Single source of truth for all entity data."
+  gradient="purple"
+  decorativeIcon={<Database size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Key Principle:</strong> All mock data lives in <code>src/api/data/seed/</code>.
+  Stories and components import from <code>@/api</code> — never define local mock data.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Architecture Overview</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Single Source of Truth Pattern"
+  description="How the API simulation layer centralizes all mock data for consistency."
+/>
+
+{/* Architecture Diagram */}
+<div style={{
+  background: `linear-gradient(135deg, ${SLATE[50]} 0%, ${DUSK_REEF[50]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {/* Layer 1: Stories & Components */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${ABYSS[300]}`,
+      boxShadow: SHADOWS.md,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: RADIUS.sm,
+          background: ABYSS[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>1</div>
+        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Consumers (Stories & Components)
+        </h3>
+      </div>
+      <p style={{ margin: 0, fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginLeft: '44px' }}>
+        Import data from <code>@/api</code>. Never define mock data locally.
+      </p>
+      <div style={{ marginLeft: '44px', marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        {['StepsPage.stories.tsx', 'IncidentsPage.stories.tsx', 'UsersPage.tsx'].map(item => (
+          <span key={item} style={{
+            background: ABYSS[50],
+            padding: '4px 10px',
+            borderRadius: RADIUS.sm,
+            fontSize: '12px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: ABYSS[600],
+          }}>{item}</span>
+        ))}
+      </div>
+    </div>
+
+    {/* Arrow */}
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <ArrowDown size={24} color={DEEP_CURRENT[500]} />
+    </div>
+
+    {/* Layer 2: API Index */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${DEEP_CURRENT[500]}`,
+      boxShadow: SHADOWS.md,
+      position: 'relative',
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: '-10px',
+        right: '16px',
+        background: DEEP_CURRENT[700],
+        color: PRIMITIVES.white,
+        padding: '3px 10px',
+        borderRadius: RADIUS.full,
+        fontSize: '10px',
+        fontWeight: 600,
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px',
+      }}>Public API</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: RADIUS.sm,
+          background: DEEP_CURRENT[700],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>2</div>
+        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          API Entry Point
+        </h3>
+      </div>
+      <p style={{ margin: 0, fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginLeft: '44px' }}>
+        <code>src/api/index.ts</code> — exports services, types, seed data, and helpers.
+      </p>
+      <div style={{ marginLeft: '44px', marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        {['seedIncidents', 'seedSteps', 'getIncidentById()', 'getStepsByIncident()'].map(item => (
+          <span key={item} style={{
+            background: DEEP_CURRENT[50],
+            padding: '4px 10px',
+            borderRadius: RADIUS.sm,
+            fontSize: '12px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: DEEP_CURRENT[700],
+          }}>{item}</span>
+        ))}
+      </div>
+    </div>
+
+    {/* Arrow */}
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <ArrowDown size={24} color={DEEP_CURRENT[500]} />
+    </div>
+
+    {/* Layer 3: Seed Data */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${DUSK_REEF[300]}`,
+      boxShadow: SHADOWS.md,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: RADIUS.sm,
+          background: DUSK_REEF[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>3</div>
+        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Seed Data Files
+        </h3>
+      </div>
+      <p style={{ margin: 0, fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginLeft: '44px' }}>
+        <code>src/api/data/seed/*.ts</code> — single source of truth for all entity data.
+      </p>
+      <div style={{ marginLeft: '44px', marginTop: '12px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        {['users.seed.ts', 'roles.seed.ts', 'locations.seed.ts', 'incidents.seed.ts', 'steps.seed.ts'].map(item => (
+          <span key={item} style={{
+            background: DUSK_REEF[50],
+            padding: '4px 10px',
+            borderRadius: RADIUS.sm,
+            fontSize: '12px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: DUSK_REEF[600],
+          }}>{item}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Start</h2>
+
+<SectionHeader
+  icon={<Zap size={20} />}
+  title="Import and Use"
+  description="Get started with API data in your stories and components."
+/>
+
+{/* Step 1 */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>1</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Import seed data from @/api
+      </h4>
+      <CodeBlock
+        language="typescript"
+        code={`import {
+  seedIncidents,
+  seedSteps,
+  seedMySteps,
+  seedTeamSteps,
+  getIncidentById,
+  getStepsByIncident,
+} from '@/api'`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Step 2 */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>2</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Use in your story or component
+      </h4>
+      <CodeBlock
+        language="typescript"
+        highlightLines={[4, 5, 6, 12]}
+        code={`// In a story
+export const Default: StoryObj = {
+  args: {
+    incidents: seedIncidents,
+    mySteps: seedMySteps,
+    teamSteps: seedTeamSteps,
+  },
+}
+
+// Navigate from step to incident
+function handleStepClick(step) {
+  const incident = getIncidentById(step.incidentDbId)
+  navigate(\`/incidents/\${incident.id}\`)
+}`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Step 3 */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>3</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Generate more data for pagination testing
+      </h4>
+      <CodeBlock
+        language="typescript"
+        code={`import { generateManyIncidents, generateManySteps } from '@/api'
+
+// Generate 100 incidents for pagination testing
+const manyIncidents = generateManyIncidents(100)
+
+// Generate 200 steps for large dataset testing
+const manySteps = generateManySteps(200)`}
+      />
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Entity Relationships</h2>
+
+<SectionHeader
+  icon={<Link2 size={20} />}
+  title="Data Navigation"
+  description="How entities connect using dual-ID pattern for display and navigation."
+/>
+
+<InfoBox variant="info">
+  <strong>Dual-ID Pattern:</strong> Steps reference incidents with TWO identifiers:
+  <br /><br />
+  • <code>incidentId</code> — Human-readable ID for display (e.g., "INC-2025-0847")<br />
+  • <code>incidentDbId</code> — Database ID for lookups (e.g., "inc-001")
+</InfoBox>
+
+{/* Relationship Diagram */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Step → Incident Relationship
+  </h4>
+  <CodeBlock
+    language="typescript"
+    highlightLines={[5, 6, 12, 13]}
+    code={`// Step data structure (from steps.seed.ts)
+const step = {
+  id: 'step-chem-1',
+  title: 'Deploy Spill Containment Barriers',
+  incidentId: 'INC-2025-0847',     // Human-readable (for UI display)
+  incidentDbId: 'inc-001',          // Database ID (for lookups)
+  // ...
+}
+
+// Incident data structure (from incidents.seed.ts)
+const incident = {
+  id: 'inc-001',                    // ← Step.incidentDbId matches this
+  incidentId: 'INC-2025-0847',      // ← Step.incidentId matches this
+  title: 'Chemical spill in storage area',
+  // ...
+}`}
+  />
+</div>
+
+{/* Navigation Examples */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Navigation Helper Functions
+  </h4>
+  <CodeBlock
+    language="typescript"
+    showLineNumbers
+    highlightLines={[8, 9, 13, 17]}
+    code={`import {
+  getIncidentById,
+  getIncidentByIncidentId,
+  getStepsByIncident,
+} from '@/api'
+
+// From step → incident (clicking a step row)
+const step = seedMySteps[0]
+const incident = getIncidentById(step.incidentDbId)
+console.log(incident.title) // "Chemical spill in storage area"
+
+// From incident → steps (showing related steps)
+const steps = getStepsByIncident('inc-001')
+console.log(steps.length) // 4 steps for this incident
+
+// By human-readable ID (from URL params)
+const incident2 = getIncidentByIncidentId('INC-2025-0847')
+console.log(incident2.id) // "inc-001"`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Available Exports</h2>
+
+<SectionHeader
+  icon={<BookOpen size={20} />}
+  title="API Reference"
+  description="All exports available from @/api"
+/>
+
+{/* Data Tables */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  overflow: 'auto',
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <FileText size={18} color={DEEP_CURRENT[500]} /> Seed Data
+  </h4>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Export</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Type</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { name: 'seedIncidents', type: 'Incident[]', desc: '12 incidents covering all severities and statuses' },
+        { name: 'seedSteps', type: 'Step[]', desc: 'All steps (mySteps + teamSteps combined)' },
+        { name: 'seedMySteps', type: 'Step[]', desc: 'Steps assigned to current user' },
+        { name: 'seedTeamSteps', type: 'Step[]', desc: 'Steps assigned to team members' },
+        { name: 'seedUsers', type: 'User[]', desc: '58 users across departments' },
+        { name: 'seedRoles', type: 'Role[]', desc: '5 roles with permissions' },
+        { name: 'seedLocations', type: 'Location[]', desc: '27 locations in hierarchy' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <code style={{
+              background: DEEP_CURRENT[50],
+              color: DEEP_CURRENT[700],
+              padding: '2px 8px',
+              borderRadius: RADIUS.sm,
+              fontSize: '12px',
+              fontFamily: '"JetBrains Mono", monospace',
+            }}>{row.name}</code>
+          </td>
+          <td style={{ padding: '12px 16px', fontFamily: '"JetBrains Mono", monospace', color: DUSK_REEF[500], fontSize: '12px' }}>{row.type}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.desc}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+{/* Helper Functions */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  overflow: 'auto',
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500], display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <Search size={18} color={DEEP_CURRENT[500]} /> Helper Functions
+  </h4>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Function</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { name: 'getIncidentById(id)', desc: 'Get incident by database ID (e.g., "inc-001")' },
+        { name: 'getIncidentByIncidentId(id)', desc: 'Get incident by human ID (e.g., "INC-2025-0847")' },
+        { name: 'getStepsByIncident(incidentDbId)', desc: 'Get all steps for an incident' },
+        { name: 'getStepsByAssignee(userId)', desc: 'Get steps assigned to a specific user' },
+        { name: 'getStepsByStatus(status)', desc: 'Filter steps by status' },
+        { name: 'getOverdueSteps()', desc: 'Get all overdue steps' },
+        { name: 'getIncidentsByStatus(status)', desc: 'Filter incidents by status' },
+        { name: 'getIncidentsBySeverity(severity)', desc: 'Filter incidents by severity' },
+        { name: 'getLocationSelectOptions()', desc: 'Get locations formatted for select inputs' },
+        { name: 'generateManyIncidents(count)', desc: 'Generate N incidents for testing' },
+        { name: 'generateManySteps(count)', desc: 'Generate N steps for testing' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <code style={{
+              background: HARBOR[50],
+              color: HARBOR[700],
+              padding: '2px 8px',
+              borderRadius: RADIUS.sm,
+              fontSize: '12px',
+              fontFamily: '"JetBrains Mono", monospace',
+            }}>{row.name}</code>
+          </td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.desc}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Verified Relationships</h2>
+
+<SectionHeader
+  icon={<CheckCircle size={20} />}
+  title="Data Integrity"
+  description="All step-to-incident relationships have been verified."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  overflow: 'auto',
+  marginBottom: SPACING.px.section,
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Incident</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Human ID</th>
+        <th style={{ padding: '12px 16px', textAlign: 'center', color: ABYSS[500], fontWeight: 600 }}>Steps</th>
+        <th style={{ padding: '12px 16px', textAlign: 'center', color: ABYSS[500], fontWeight: 600 }}>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { id: 'inc-001', human: 'INC-2025-0847', title: 'Chemical spill', steps: 4 },
+        { id: 'inc-002', human: 'INC-2025-0851', title: 'Fire alarm', steps: 3 },
+        { id: 'inc-003', human: 'INC-2025-0839', title: 'Forklift collision', steps: 3 },
+        { id: 'inc-004', human: 'INC-2025-0855', title: 'Electrical arc flash', steps: 3 },
+        { id: 'inc-005', human: 'INC-2025-0862', title: 'Slip and fall', steps: 2 },
+        { id: 'inc-006', human: 'INC-2025-0868', title: 'Crane near miss', steps: 3 },
+        { id: 'inc-007', human: 'INC-2025-0875', title: 'Minor laceration', steps: 2 },
+        { id: 'inc-008', human: 'INC-2025-0878', title: 'Damaged sign', steps: 1 },
+        { id: 'inc-011', human: 'INC-2025-0825', title: 'Hydraulic leak', steps: 4 },
+        { id: 'inc-012', human: 'INC-2025-0830', title: 'Noise level', steps: 5 },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <code style={{
+              background: SLATE[100],
+              padding: '2px 8px',
+              borderRadius: RADIUS.sm,
+              fontSize: '12px',
+              fontFamily: '"JetBrains Mono", monospace',
+            }}>{row.id}</code>
+            <span style={{ marginLeft: '8px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.title}</span>
+          </td>
+          <td style={{ padding: '12px 16px', fontFamily: '"JetBrains Mono", monospace', color: DUSK_REEF[500], fontSize: '12px' }}>{row.human}</td>
+          <td style={{ padding: '12px 16px', textAlign: 'center' }}>
+            <span style={{
+              background: DEEP_CURRENT[50],
+              color: DEEP_CURRENT[700],
+              padding: '2px 8px',
+              borderRadius: RADIUS.sm,
+              fontSize: '12px',
+              fontWeight: 600,
+            }}>{row.steps}</span>
+          </td>
+          <td style={{ padding: '12px 16px', textAlign: 'center' }}>
+            <span style={{
+              background: HARBOR[50],
+              color: HARBOR[700],
+              padding: '2px 8px',
+              borderRadius: RADIUS.sm,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>✓ Verified</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Best Practices</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Import from @/api">
+    Always import seed data and helpers from the centralized API. This ensures consistency across all stories and components.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Define local mock data">
+    Never create mock data arrays in story files. This leads to data drift and inconsistent states across the application.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Use helper functions for lookups">
+    Use <code>getIncidentById()</code> and <code>getStepsByIncident()</code> for navigation instead of filtering arrays manually.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Hardcode IDs">
+    Never hardcode incident or step IDs in components. Use the relationships defined in seed data for proper linking.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Use incidentDbId for lookups">
+    When navigating from step to incident, use <code>step.incidentDbId</code> with <code>getIncidentById()</code>.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Mix ID types">
+    Don't confuse <code>incidentId</code> (human-readable) with <code>incidentDbId</code> (database ID). They serve different purposes.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>File Structure</h2>
+
+<CodeBlock
+  language="bash"
+  code={`src/api/
+├── core/
+│   ├── types.ts         # ApiResponse<T>, PaginatedResponse, etc.
+│   ├── config.ts        # Delay/error simulation settings
+│   ├── errors.ts        # ApiError, ValidationError, NotFoundError
+│   ├── store.ts         # Zustand store for mutable state
+│   └── utils.ts         # delay(), generateId(), etc.
+├── services/
+│   ├── users.api.ts     # User CRUD operations
+│   ├── roles.api.ts     # Role CRUD operations
+│   ├── locations.api.ts # Location CRUD (hierarchical)
+│   ├── incidents.api.ts # Incident CRUD operations
+│   ├── steps.api.ts     # Step CRUD (child of incident)
+│   └── index.ts         # Combined API export
+├── data/
+│   └── seed/
+│       ├── users.seed.ts      # 58 users
+│       ├── roles.seed.ts      # 5 roles + permissions
+│       ├── locations.seed.ts  # 27 locations (tree)
+│       ├── incidents.seed.ts  # 12 incidents + helpers
+│       ├── steps.seed.ts      # 30+ steps + helpers
+│       └── index.ts           # Seed data re-exports
+├── types/
+│   ├── user.types.ts
+│   ├── incident.types.ts
+│   ├── step.types.ts
+│   └── ...
+└── index.ts              # Main entry point`}
+/>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Related Documentation</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: SPACING.px.section,
+}}>
+  <NavCard
+    icon={<Code2 size={24} />}
+    title="Adapter Patterns"
+    description="How to map API data to component interfaces."
+    href="/docs/developers-adapter-patterns--docs"
+  />
+  <NavCard
+    icon={<Layers size={24} />}
+    title="Integration Overview"
+    description="Three-layer architecture for using DDS components."
+    href="/docs/developers-integration-overview--docs"
+  />
+</div>

@@ -60,7 +60,7 @@ import { StatsCard } from '../../components/leads/StatsCard'
 // =============================================================================
 
 const meta: Meta = {
-  title: 'Flow/Dashboard Edit Mode',
+  title: 'Flow/Dashboard/EditMode',
   parameters: {
     layout: 'fullscreen',
     docs: {

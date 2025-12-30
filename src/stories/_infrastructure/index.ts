@@ -102,6 +102,7 @@ export {
   IPhoneProMaxFrame,
   // iPad component & presets
   IPadFrame,
+  IPadMobileFrame,
   IPadStandardFrame,
   IPadAirFrame,
   IPadPro11Frame,
@@ -125,6 +126,7 @@ export {
   type IPhoneMobileFrameProps,
   type IPhoneModel,
   type IPadFrameProps,
+  type IPadMobileFrameProps,
   type IPadModel,
   type AdaptiveDeviceFrameProps,
   type DeviceDetectionResult,

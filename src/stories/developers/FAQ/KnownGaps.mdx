@@ -1,0 +1,219 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { CircleDot, Clock, CheckCircle, AlertTriangle, ArrowLeft } from 'lucide-react';
+import { BrandHero, InfoBox, SectionHeader, GuidelineCard, CodeBlock, ABYSS, DEEP_CURRENT, DUSK_REEF, CORAL, HARBOR, SUNRISE, PRIMITIVES, SLATE, RADIUS, SPACING } from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/Known Gaps" />
+
+<div style={{ marginBottom: '24px' }}>
+  <a href="/docs/developers-faq-overview--docs" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    <ArrowLeft size={14} /> Back to FAQ Overview
+  </a>
+</div>
+
+<BrandHero
+  title="Known Gaps & Roadmap"
+  description="Honesty about current limitations."
+  gradient="purple"
+  decorativeIcon={<CircleDot size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="warning">
+  This section exists because we believe in transparency. Every system has gaps.
+  Hiding them doesn't make them disappear - it just surprises you later.
+</InfoBox>
+
+---
+
+## Current Known Gaps
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Gap</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Status</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Timeline</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Workaround</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { gap: 'Automated performance testing', status: 'Not implemented', statusColor: CORAL, timeline: 'Planned', timelineColor: SUNRISE, workaround: 'Consumer reports issues, DDS fixes reactively' },
+        { gap: 'Memory leak detection', status: 'Not implemented', statusColor: CORAL, timeline: 'Planned', timelineColor: SUNRISE, workaround: 'Consumer monitors production, reports to DDS' },
+        { gap: 'Animation system (Framer Motion)', status: 'Not standardized', statusColor: SUNRISE, timeline: 'Planned', timelineColor: SUNRISE, workaround: 'Consumer handles animations outside DDS pages' },
+        { gap: 'Kanban board layout', status: 'Not built', statusColor: SUNRISE, timeline: 'On-demand', timelineColor: DUSK_REEF, workaround: 'Interface-First Protocol when first needed' },
+        { gap: 'Map-based interfaces', status: 'Not built', statusColor: SUNRISE, timeline: 'On-demand', timelineColor: DUSK_REEF, workaround: 'Interface-First Protocol when first needed' },
+        { gap: 'Real-time collaboration', status: 'Not built', statusColor: SUNRISE, timeline: 'Planned', timelineColor: SUNRISE, workaround: 'Consumer builds, DDS standardizes later' },
+        { gap: 'TanStack Table alignment', status: 'Different implementation', statusColor: DEEP_CURRENT, timeline: 'N/A', timelineColor: SLATE, workaround: 'DDS DataTable replaces TanStack usage' },
+        { gap: 'Bundle size documentation', status: 'Not measured', statusColor: SUNRISE, timeline: 'Planned', timelineColor: SUNRISE, workaround: 'Tree-shaking works, no published metrics yet' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontWeight: 500 }}>{row.gap}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.statusColor[100], color: row.statusColor[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.status}</span>
+          </td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.timelineColor[100], color: row.timelineColor[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.timeline}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.workaround}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+  <div style={{ background: SUNRISE[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${SUNRISE[200]}` }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+      <Clock size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Planned (Not Started)
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Performance testing, memory profiling, animation system, bundle docs — these are on the roadmap but "}<strong>{"work has not started"}</strong>{". Timelines will be updated when work begins."}
+    </p>
+  </div>
+
+  <div style={{ background: DUSK_REEF[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${DUSK_REEF[200]}` }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DUSK_REEF[700] }}>
+      <Clock size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      On-Demand Items
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Novel patterns (Kanban, Maps) use Interface-First Protocol: DDS provides interface when first consumer needs it."}
+    </p>
+  </div>
+</div>
+
+---
+
+## What Happens When You Hit a Gap
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
+  {[
+    { step: '1', title: 'Identify', desc: 'You need something DDS doesn\'t have', color: HARBOR },
+    { step: '2', title: 'Discuss', desc: 'Talk to DDS architect - is this a gap or a consumer responsibility?', color: DEEP_CURRENT },
+    { step: '3', title: 'Decide', desc: 'Emergency Build (you build), or DDS adds to roadmap', color: SUNRISE },
+  ].map((item, idx) => (
+    <div key={idx} style={{ background: item.color[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${item.color[200]}`, textAlign: 'center' }}>
+      <div style={{ width: '32px', height: '32px', borderRadius: RADIUS.full, background: item.color[500], display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', color: PRIMITIVES.white, fontSize: '14px', fontWeight: 700 }}>{item.step}</div>
+      <div style={{ fontSize: '14px', fontWeight: 600, color: item.color[700], marginBottom: '4px' }}>{item.title}</div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Bus Factor & Self-Service Validation
+
+<div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${DEEP_CURRENT[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    "What if the architect leaves? Has anyone onboarded without hand-holding?"
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Honest answer:"}</strong>{" DDS is new. Full self-service onboarding hasn't been validated yet. No one other than the architect has used the agent-assisted workflow. Here's what "}<em>{"should"}</em>{" enable it:"}
+  </p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { point: 'Agent-assisted development is documented', desc: 'All prompts, skills, patterns in .claude/skills/*.md (not yet tested by others)' },
+      { point: 'No tribal knowledge', desc: 'Everything in code (TypeScript), Storybook (visual), CLAUDE.md (process)' },
+      { point: 'Process should be replicable', desc: 'New person + Claude + docs = same capability (theory, needs validation)' },
+      { point: 'Interface-First Protocol works without architect', desc: 'Consumer can build to existing component interfaces independently' },
+      { point: 'Comprehensive onboarding docs', desc: 'FAQ, MigrationStrategy, AdapterPatterns, BrowserCompatibility all in Storybook' },
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', padding: '12px', background: PRIMITIVES.white, borderRadius: RADIUS.md }}>
+        <CheckCircle size={16} color={HARBOR[500]} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.point}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+  <div style={{ background: HARBOR[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${HARBOR[200]}` }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      <CheckCircle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Self-Service Enabled
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>Reading DDS docs (this FAQ)</li>
+      <li>Browsing Storybook for patterns</li>
+      <li>Copy-paste from existing adapters</li>
+      <li>Using existing DDS components</li>
+      <li>Interface-First emergency builds</li>
+    </ul>
+  </div>
+
+  <div style={{ background: SUNRISE[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${SUNRISE[200]}` }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+      <AlertTriangle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Requires Architect
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>New component development</li>
+      <li>Breaking changes review</li>
+      <li>Novel pattern design</li>
+      <li>Token system modifications</li>
+      <li>Architecture decisions</li>
+    </ul>
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Bus Factor Reality:</strong> If the architect leaves AND the company doesn't backfill,
+  DDS enters maintenance-only mode. Existing components work, but no new patterns get built.
+  This is a business risk, not a technical limitation. The documentation exists for someone new to pick up.
+</InfoBox>
+
+---
+
+## Rollback & Version Pinning
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    "What if I upgrade DDS and something breaks?"
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { question: 'Can I pin to a previous version?', answer: 'Yes. All versions are published to npm. Pin in package.json: "@dds/design-system": "2.6.0"' },
+      { question: 'How long are old versions supported?', answer: 'No active support for old versions. Security patches only for current major version.' },
+      { question: 'What\'s the deprecation policy?', answer: 'MAJOR version = breaking changes. MINOR = new features, backwards compatible. PATCH = bug fixes.' },
+      { question: 'How do I rollback?', answer: 'npm install @dds/design-system@<previous-version>. Test in staging before deploying.' },
+    ].map((item, idx) => (
+      <div key={idx} style={{ padding: '12px', background: SLATE[50], borderRadius: RADIUS.md }}>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500], marginBottom: '4px' }}>{item.question}</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.answer}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Upgrade Strategy:</strong> Always test DDS upgrades in a staging environment first.
+  Run your integration tests against the new version. If something breaks that wasn't caught by
+  DDS tests, report it — that's a gap in DDS coverage we need to fix.
+</InfoBox>
+
+---
+
+## Final Word
+
+<div style={{ background: HARBOR[50], borderRadius: RADIUS.xl, padding: '24px', border: `1px solid ${HARBOR[200]}`, marginBottom: '24px' }}>
+  <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.7 }}>
+    {"DDS is not perfect. No design system is. But we're honest about limitations, have clear processes for gaps, and continuously improve based on real usage."}
+    <br /><br />
+    {"If you have questions not covered here, ask. If you find new gaps, report them. This FAQ grows with the system."}
+  </p>
+</div>
+
+---
+
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderTop: `1px solid ${SLATE[200]}` }}>
+  <a href="/docs/developers-faq-q9-engagement--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>← Q9: Engagement</a>
+  <a href="/docs/developers-faq-overview--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>Back to Overview →</a>
+</div>

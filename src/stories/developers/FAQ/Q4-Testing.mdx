@@ -1,0 +1,169 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Shield, CheckCircle, AlertTriangle, ArrowLeft } from 'lucide-react';
+import { BrandHero, InfoBox, SectionHeader, GuidelineCard, CodeBlock, ABYSS, DEEP_CURRENT, DUSK_REEF, CORAL, HARBOR, SUNRISE, PRIMITIVES, SLATE, RADIUS, SPACING } from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/Q4-Testing" />
+
+<div style={{ marginBottom: '24px' }}>
+  <a href="/docs/developers-faq-overview--docs" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    <ArrowLeft size={14} /> Back to FAQ Overview
+  </a>
+</div>
+
+<BrandHero
+  title="Q4: Who Owns Testing and Bugs?"
+  description="If I don't own the UI, who tests it? Who fixes broken tests?"
+  gradient="primary"
+  decorativeIcon={<Shield size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<div style={{ background: CORAL[50], borderRadius: RADIUS.xl, padding: '24px', border: `1px solid ${CORAL[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>The Concern</h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"If I don't own the UI, who writes the E2E tests? If DDS updates and my tests break, is that my bug or DDS's bug? Who fixes it?\""}
+  </p>
+</div>
+
+---
+
+## The Short Answer
+
+DDS owns UI testing. DDS owns UI bugs. You test your integration (API, auth, routing). Tests live in DDS repo, run against Storybook, break in DDS = fixed in DDS.
+
+---
+
+## Testing Ownership Model
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Test Type</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Owner</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Lives In</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { type: 'Unit tests (component logic)', owner: 'DDS', ownerColor: DEEP_CURRENT, lives: 'DDS repo' },
+        { type: 'Interaction tests (clicks, forms)', owner: 'DDS', ownerColor: DEEP_CURRENT, lives: 'DDS repo' },
+        { type: 'E2E tests (full flows)', owner: 'DDS', ownerColor: DEEP_CURRENT, lives: 'DDS repo' },
+        { type: 'Visual regression', owner: 'DDS', ownerColor: DEEP_CURRENT, lives: 'DDS repo' },
+        { type: 'Integration tests (API + routing)', owner: 'Consumer', ownerColor: DUSK_REEF, lives: 'Your repo' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.type}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.ownerColor[100], color: row.ownerColor[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.owner}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.lives}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+## Your Only Testing Responsibility
+
+<div style={{ background: DUSK_REEF[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${DUSK_REEF[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DUSK_REEF[700] }}>Consumer Tests: Integration Only</h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[600] }}>
+    {"You test that YOUR data appears in the DDS page. You don't test that the delete button works."}
+  </p>
+  <CodeBlock language="typescript" code={`// Your test: Does my data load into DDS page?
+test('templates page loads with real API', async () => {
+  render(<TemplatesRoute />)
+  await waitFor(() => {
+    expect(screen.getByTestId('entity-templates-page')).toBeVisible()
+  })
+  expect(screen.getByText('Your Template Name')).toBeVisible()
+})
+
+// You do NOT test:
+// - Delete button appears (DDS tests this)
+// - Dialog opens on click (DDS tests this)
+// - Form validation works (DDS tests this)`} />
+</div>
+
+---
+
+## Bug Response SLA
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>If You Find a Bug in DDS, What's the Response Time?</h4>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Severity</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Example</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Response</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Fix</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { severity: 'Critical', severityColor: CORAL, example: 'Production down, crash', response: '2-4 hours', fix: '4-8 hours' },
+        { severity: 'High', severityColor: SUNRISE, example: 'Major feature broken', response: 'Same day', fix: '1-2 days' },
+        { severity: 'Medium', severityColor: HARBOR, example: 'Workaround exists', response: '1 business day', fix: '3-5 days' },
+        { severity: 'Low', severityColor: SLATE, example: 'Cosmetic', response: '2-3 days', fix: 'Next release' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.severityColor[100], color: row.severityColor[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.severity}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.example}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontWeight: 500 }}>{row.response}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontWeight: 500 }}>{row.fix}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Honest Caveat:</strong> With a single architect, there's inherent risk. During PTO or illness, response times may be 2x. Agent-assisted development accelerates fix <em>implementation</em> (3-5x faster), but <em>awareness and triage</em> still depend on human availability.
+</InfoBox>
+
+---
+
+## What Happens With Concurrent Critical Issues?
+
+<div style={{ background: CORAL[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${CORAL[200]}`, marginBottom: '24px' }}>
+  <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: CORAL[700] }}>
+    <AlertTriangle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+    Honest Answer
+  </h5>
+  <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"If Consumer A and Consumer B both report Critical bugs at the same time, one of them waits. Priority is determined by:"}
+  </p>
+  <ol style={{ margin: 0, paddingLeft: '20px', fontSize: '12px', color: DUSK_REEF[500] }}>
+    <li>Production impact (users affected, revenue at risk)</li>
+    <li>Workaround availability (can you unblock yourself?)</li>
+    <li>Order received (first come, first served if equal)</li>
+  </ol>
+  <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: CORAL[600], fontWeight: 500 }}>
+    {"Consumer B's SLA clock pauses while Consumer A's critical is being resolved. This is a limitation of single-architect teams."}
+  </p>
+</div>
+
+---
+
+## Summary
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '24px' }}>
+  <GuidelineCard type="do" title="Test your integration">Does your data load? Does your adapter transform correctly?</GuidelineCard>
+  <GuidelineCard type="do" title="Use DDS test IDs">Test IDs are stable and documented. Use them in your integration tests.</GuidelineCard>
+  <GuidelineCard type="dont" title="Test DDS UI behavior">Don't test that buttons click or dialogs open. DDS tests that.</GuidelineCard>
+  <GuidelineCard type="dont" title="Write visual tests for DDS">DDS handles visual regression. Your screenshots would duplicate coverage.</GuidelineCard>
+</div>
+
+---
+
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderTop: `1px solid ${SLATE[200]}` }}>
+  <a href="/docs/developers-faq-q3-updates--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>← Q3: Updates</a>
+  <a href="/docs/developers-faq-q5-migration--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>Next: Q5 Migration →</a>
+</div>

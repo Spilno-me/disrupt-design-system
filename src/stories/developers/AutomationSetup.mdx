@@ -1,0 +1,514 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Bot,
+  Settings,
+  GitBranch,
+  Package,
+  Shield,
+  FileText,
+  Terminal,
+  CheckCircle,
+  Copy,
+  ArrowRight,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Automation Setup" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Automation Setup"
+  description="Configure Changesets for the design system and Renovate for consumer apps. Copy-paste configurations to enable zero-touch updates."
+  gradient="teal"
+  decorativeIcon={<Bot size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="info">
+  <strong>Two sides of automation:</strong> Changesets runs in the design system repo to manage versioning and publishing.
+  Renovate runs in consumer apps to automatically update dependencies.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Design System: Changesets</h2>
+
+<SectionHeader
+  icon={<Package size={20} />}
+  title="Automated Versioning & Publishing"
+  description="Changesets manages version bumps and changelog generation."
+/>
+
+{/* Step 1: Install */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>1</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Install Changesets
+      </h4>
+      <CodeBlock
+        language="bash"
+        code={`npm install @changesets/cli @changesets/changelog-github -D
+npx changeset init`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Step 2: Config */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>2</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Configure Changesets
+      </h4>
+      <CodeBlock
+        filename=".changeset/config.json"
+        language="json"
+        code={`{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": "@changesets/changelog-github",
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Step 3: GitHub Action */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>3</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Add Release Workflow
+      </h4>
+      <CodeBlock
+        filename=".github/workflows/release.yml"
+        language="yaml"
+        showLineNumbers
+        code={`name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency: \${{ github.workflow }}-\${{ github.ref }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: npm run release
+          version: npm run version
+          title: "chore: version packages"
+          commit: "chore: version packages"
+        env:
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: \${{ secrets.NPM_TOKEN }}`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Step 4: Package.json Scripts */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+    <div style={{
+      width: '28px',
+      height: '28px',
+      borderRadius: RADIUS.full,
+      background: DEEP_CURRENT[700],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: PRIMITIVES.white,
+      fontSize: '13px',
+      fontWeight: 700,
+      flexShrink: 0,
+    }}>4</div>
+    <div style={{ flex: 1 }}>
+      <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+        Add Package Scripts
+      </h4>
+      <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginBottom: '12px' }}>
+        Add these to your <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>package.json</code>
+      </div>
+      <CodeBlock
+        language="json"
+        code={`{
+  "scripts": {
+    "version": "changeset version && npm install --package-lock-only",
+    "release": "npm run build && changeset publish"
+  }
+}`}
+      />
+    </div>
+  </div>
+</div>
+
+{/* Developer Workflow */}
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: DEEP_CURRENT[700] }}>
+    Developer Workflow
+  </h4>
+  <CodeBlock
+    language="bash"
+    code={`# 1. Make your changes
+git checkout -b feat/new-header-feature
+
+# 2. Before committing, create a changeset
+npx changeset
+# Interactive prompt asks:
+# - Which packages changed?
+# - Is this major, minor, or patch?
+# - Summary of the change?
+
+# 3. Commit everything (including .changeset/*.md)
+git add .
+git commit -m "feat: add breadcrumbs to AppHeader"
+git push
+
+# 4. Create PR, merge to main
+# 5. Changesets Action automatically:
+#    - Creates "Version Packages" PR
+#    - When merged, publishes to npm`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Consumer App: Renovate</h2>
+
+<SectionHeader
+  icon={<Bot size={20} />}
+  title="Automated Dependency Updates"
+  description="Renovate creates PRs when design system updates are available."
+/>
+
+{/* Renovate Config */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Renovate Configuration
+  </h4>
+  <CodeBlock
+    filename="renovate.json"
+    language="json"
+    highlightLines={[11, 12, 13, 14, 15, 16]}
+    code={`{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":automergeMinor",
+    ":automergePatch"
+  ],
+  "schedule": ["after 9am and before 5pm every weekday"],
+  "packageRules": [
+    {
+      "description": "Auto-merge design system updates (non-major)",
+      "matchPackagePatterns": ["@dds/*"],
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "Design System",
+      "groupSlug": "design-system"
+    },
+    {
+      "description": "Require review for major design system updates",
+      "matchPackagePatterns": ["@dds/*"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["breaking-change", "needs-review"]
+    }
+  ]
+}`}
+  />
+</div>
+
+<InfoBox variant="tip">
+  <strong>Why Renovate over Dependabot?</strong> Renovate supports auto-merge, better grouping, schedule control,
+  and more configuration options. It's the preferred choice for design system consumers.
+</InfoBox>
+
+{/* CI Workflow */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    CI Workflow (Required for Auto-Merge)
+  </h4>
+  <CodeBlock
+    filename=".github/workflows/ci.yml"
+    language="yaml"
+    showLineNumbers
+    highlightLines={[17]}
+    code={`name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run typecheck  # Catches breaking interface changes!
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Required Secrets</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="GitHub Repository Secrets"
+  description="Tokens required for automated publishing."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Secret</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Where</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>NPM_TOKEN</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Design System repo</td>
+        <td style={{ padding: '12px 16px', color: ABYSS[500] }}>Publish packages to npm</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>GITHUB_TOKEN</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Both (auto-provided)</td>
+        <td style={{ padding: '12px 16px', color: ABYSS[500] }}>Create PRs, releases</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style={{ marginTop: '16px', fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+    <strong>To create NPM_TOKEN:</strong> Go to npmjs.com → Access Tokens → Generate New Token (Automation)
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Complete Timeline</h2>
+
+<SectionHeader
+  icon={<Terminal size={20} />}
+  title="End-to-End Flow"
+  description="What happens from code change to consumer app update."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  fontFamily: '"JetBrains Mono", monospace',
+  fontSize: '12px',
+  lineHeight: 2,
+  overflow: 'auto',
+}}>
+  <pre style={{ margin: 0 }}>{`TIME        DESIGN SYSTEM REPO              CONSUMER APP
+────────────────────────────────────────────────────────────
+
+9:00 AM     Developer opens PR with
+            component change + changeset
+
+9:30 AM     PR approved, merged to main
+
+9:31 AM     GitHub Action runs:
+            → Detects .changeset/*.md
+            → Creates "Version Packages" PR
+
+9:35 AM     Team merges Version PR
+
+9:36 AM     GitHub Action:
+            → Bumps 2.7.0 → 2.8.0
+            → Publishes to npm
+            → Creates GitHub Release
+
+9:40 AM                                     Renovate detects v2.8.0
+                                            Creates update PR
+
+9:42 AM                                     CI runs:
+                                            → TypeScript ✅
+                                            → Tests ✅
+                                            → Build ✅
+
+9:45 AM                                     Auto-merge!
+                                            App now uses v2.8.0
+
+────────────────────────────────────────────────────────────
+TOTAL TIME: ~15 minutes, ZERO human intervention`}</pre>
+</div>

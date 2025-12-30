@@ -1,0 +1,437 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Clock,
+  Layers,
+  AlertTriangle,
+  Users,
+  Zap,
+  ArrowLeft,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  GuidelineCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SLATE,
+  RADIUS,
+  SPACING,
+} from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/Q1-Delivery" />
+
+{/* Navigation */}
+<div style={{ marginBottom: '24px' }}>
+  <a
+    href="/docs/developers-faq-overview--docs"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      fontSize: '13px',
+      color: DEEP_CURRENT[600],
+      textDecoration: 'none',
+    }}
+  >
+    <ArrowLeft size={14} />
+    Back to FAQ Overview
+  </a>
+</div>
+
+{/* Hero Header */}
+<BrandHero
+  title="Q1: What If DDS Can't Deliver On Time?"
+  description="The bottleneck concern: One architect can't serve multiple teams. What happens when I'm blocked?"
+  gradient="purple"
+  decorativeIcon={<Clock size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"DDS is a single point of failure. If the architect is busy, on vacation, or backlogged, my team is blocked. We have deadlines. We can't wait.\""}
+  </p>
+</div>
+
+---
+
+## The Reality: Agent-Assisted Development
+
+DDS uses AI agent-assisted development. This changes the math - but we won't overpromise.
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Realistic Delivery Times (Including Buffer)
+  </h4>
+  <div style={{ overflow: 'auto' }}>
+    <table style={{
+      width: '100%',
+      borderCollapse: 'collapse',
+      fontSize: '13px',
+    }}>
+      <thead>
+        <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+          <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Complexity</th>
+          <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Examples</th>
+          <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Delivery</th>
+        </tr>
+      </thead>
+      <tbody>
+        {[
+          { complexity: 'Standard', examples: 'List page, Settings, Profile', delivery: '2-3 days', color: HARBOR },
+          { complexity: 'Moderate', examples: 'Multi-step wizard, Dashboard with 5 KPIs', delivery: '3-5 days', color: DEEP_CURRENT },
+          { complexity: 'Complex', examples: 'Real-time updates, Custom chart drill-downs', delivery: '~1 week', color: SUNRISE },
+          { complexity: 'Novel Pattern', examples: 'Kanban board, Map interface, Split-pane', delivery: '1-2 weeks', color: CORAL },
+        ].map((row, idx) => (
+          <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+            <td style={{ padding: '12px 16px' }}>
+              <span style={{
+                background: row.color[100],
+                color: row.color[700],
+                padding: '4px 10px',
+                borderRadius: RADIUS.full,
+                fontSize: '11px',
+                fontWeight: 600,
+              }}>{row.complexity}</span>
+            </td>
+            <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.examples}</td>
+            <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>{row.delivery}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p style={{ margin: '16px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"Delivery includes: development, all UI states, mobile + desktop, stories, basic tests. Does NOT include: your API integration, your routing, your deployment."}
+  </p>
+</div>
+
+<InfoBox variant="info">
+  <strong>Reference Point:</strong> Entity Templates module (20 components, 5 stories, full CRUD)
+  was built in ~8 hours of development time. With buffer for edge cases and review, that's 2-3 days delivery.
+</InfoBox>
+
+---
+
+## What You Get
+
+When DDS delivers a page composition, it includes:
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '12px',
+  marginBottom: '24px',
+}}>
+  {[
+    { label: 'All UI states', desc: 'Loading, empty, error, success' },
+    { label: 'Mobile + Desktop', desc: 'Responsive from day one' },
+    { label: 'Dialogs & Modals', desc: 'Create, Edit, Delete, View' },
+    { label: 'Tables & Filters', desc: 'Sorting, pagination, search' },
+    { label: 'TypeScript', desc: 'Full interfaces + validation' },
+    { label: 'Stories', desc: 'Storybook documentation' },
+  ].map((item, idx) => (
+    <div key={idx} style={{
+      background: SLATE[50],
+      padding: '12px',
+      borderRadius: RADIUS.md,
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.label}</div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## The Real Bottleneck
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+    <AlertTriangle size={20} color={SUNRISE[600]} />
+    <span style={{ fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+      The bottleneck is NOT coding. The bottleneck IS requirements clarity.
+    </span>
+  </div>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"If you come to DDS with clear specs, defined data shapes, and known user flows - DDS can deliver within days, not weeks. Vague requirements create back-and-forth delays."}
+  </p>
+</div>
+
+---
+
+## When DDS Genuinely Can't Meet Your Deadline
+
+If DDS cannot deliver before your deadline, the **Interface-First Emergency Protocol** applies:
+
+<InfoBox variant="warning">
+  <strong>Validation Status: Proposed Process</strong> — This protocol has been designed but not yet
+  validated in production. It represents our intended approach. We will update this section with
+  real examples once the first consumer goes through this flow.
+</InfoBox>
+
+<InfoBox variant="tip">
+  <strong>Key Principle:</strong> DDS is the single source of truth for UI interfaces.
+  Even in emergencies, DDS provides the interface spec first, then everyone builds to it.
+  This eliminates the "migration twice" problem.
+</InfoBox>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { step: '1', action: 'Notify', desc: 'Tell architect: "I need X by [date], DDS can\'t deliver full implementation"' },
+      { step: '2', action: 'Interface', desc: 'DDS provides component interface spec within 24-48h (props, data shapes, API contract)' },
+      { step: '3', action: 'Review', desc: 'Backend devs review interface, provide feedback if API concerns exist' },
+      { step: '4', action: 'Build', desc: 'Consumer builds to DDS interface spec; Backend builds API to same spec' },
+      { step: '5', action: 'Ship', desc: 'Consumer deploys with stub/basic implementation' },
+      { step: '6', action: 'Swap', desc: 'DDS delivers polished component (1-2 weeks) - swap is trivial since interface matches' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+      }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{item.step}</div>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.action}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Why does this work?</strong> Because you're building to DDS's interface from day one,
+  the final swap is a 1-line import change, not a rewrite. The interface contract ensures
+  compatibility. DDS delivers the polished, tested, accessible version within 1-2 weeks.
+</InfoBox>
+
+---
+
+## Why Interface-First Eliminates Migration Anxiety
+
+With the Interface-First approach:
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '16px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: CORAL[700] }}>
+      Temporary Limitations (1-2 weeks)
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>Basic styling (not polished)</li>
+      <li>Missing animations/transitions</li>
+      <li>Limited accessibility coverage</li>
+      <li>No dark mode optimization</li>
+    </ul>
+  </div>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '16px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: HARBOR[700] }}>
+      What You Keep Forever
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>✓ Same interface/API contract</li>
+      <li>✓ No rewrite when DDS delivers</li>
+      <li>✓ Backend API remains unchanged</li>
+      <li>✓ Swap = 1-line import change</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## Multiple Teams / Scaling
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    "What if 5 teams all need pages at once?"
+  </h4>
+
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{
+        padding: '8px',
+        borderRadius: RADIUS.md,
+        background: HARBOR[100],
+        flexShrink: 0,
+      }}>
+        <Users size={18} color={HARBOR[600]} />
+      </div>
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>Current Reality</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>
+          One architect, one project at a time. No queue problem exists today.
+        </div>
+      </div>
+    </div>
+
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{
+        padding: '8px',
+        borderRadius: RADIUS.md,
+        background: DEEP_CURRENT[100],
+        flexShrink: 0,
+      }}>
+        <Layers size={18} color={DEEP_CURRENT[600]} />
+      </div>
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>Compound Benefit</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>
+          Components built for Product A automatically work for Product B. DDS gets richer with each project.
+        </div>
+      </div>
+    </div>
+
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{
+        padding: '8px',
+        borderRadius: RADIUS.md,
+        background: SUNRISE[100],
+        flexShrink: 0,
+      }}>
+        <Zap size={18} color={SUNRISE[600]} />
+      </div>
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>Future Scaling</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>
+          Team scales with demand. If 5 teams create load, architect won't be alone.
+          Don't over-engineer for problems that don't exist yet.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <GuidelineCard type="do" title="Fast delivery with agents">
+    2-5 days for standard pages. Requirements clarity is the real bottleneck.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Emergency protocol exists">
+    Deadlines matter. Build yourself if needed, swap to DDS within 2 weeks.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Wait forever for DDS">
+    If DDS can't deliver, emergency protocol kicks in. You're never truly blocked.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Use emergency as standard">
+    Emergency builds create debt. Use only when genuinely needed.
+  </GuidelineCard>
+</div>
+
+---
+
+{/* Navigation */}
+<div style={{
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '16px 0',
+  borderTop: `1px solid ${SLATE[200]}`,
+}}>
+  <a
+    href="/docs/developers-faq-overview--docs"
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      fontSize: '13px',
+      color: DEEP_CURRENT[600],
+      textDecoration: 'none',
+    }}
+  >
+    <ArrowLeft size={14} />
+    Back to Overview
+  </a>
+  <a
+    href="/docs/developers-faq-q2-edge-cases--docs"
+    style={{
+      fontSize: '13px',
+      color: DEEP_CURRENT[600],
+      textDecoration: 'none',
+    }}
+  >
+    Next: Q2 Edge Cases →
+  </a>
+</div>

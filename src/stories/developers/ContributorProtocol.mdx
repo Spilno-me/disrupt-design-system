@@ -1,0 +1,651 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  GitPullRequest,
+  Shield,
+  Lock,
+  Unlock,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  FileCode,
+  Eye,
+  GitBranch,
+  GitMerge,
+  Users,
+  Paintbrush,
+  Wrench,
+  Bug,
+  ArrowRight,
+  ArrowDown,
+  Layers,
+  Code2,
+  FileText,
+  Palette,
+  Layout,
+  Zap,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Contributor Protocol" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Contributor Protocol"
+  description="How to contribute bug fixes to DDS while preserving design integrity. Clear boundaries between what you can and cannot change."
+  gradient="purple"
+  decorativeIcon={<GitPullRequest size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="warning">
+  <strong>Important:</strong> The UX/UI Architect owns design decisions. Integrators can fix bugs
+  but cannot alter visual design, component structure, or API contracts without architect approval.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Two Roles</h2>
+
+<SectionHeader
+  icon={<Users size={20} />}
+  title="Architect vs Integrator"
+  description="Clear separation of responsibilities."
+/>
+
+{/* Roles Comparison */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Architect */}
+  <div style={{
+    background: `linear-gradient(135deg, ${DEEP_CURRENT[50]} 0%, ${DUSK_REEF[50]} 100%)`,
+    borderRadius: RADIUS.xl,
+    padding: '24px',
+    border: `2px solid ${DEEP_CURRENT[500]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: RADIUS.lg,
+        background: DEEP_CURRENT[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Paintbrush size={24} color={PRIMITIVES.white} />
+      </div>
+      <div>
+        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          UX/UI Architect
+        </h3>
+        <p style={{ margin: 0, fontSize: '12px', color: DEEP_CURRENT[600] }}>Design Owner</p>
+      </div>
+    </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      {[
+        'Creates new components',
+        'Defines visual design',
+        'Sets component API/props',
+        'Approves all design changes',
+        'Owns Storybook prototypes',
+        'Reviews all PRs',
+      ].map((item, idx) => (
+        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: PRIMITIVES.white, borderRadius: RADIUS.sm }}>
+          <Lock size={14} color={DEEP_CURRENT[500]} />
+          <span style={{ fontSize: '13px', color: ABYSS[500] }}>{item}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Integrator */}
+  <div style={{
+    background: `linear-gradient(135deg, ${HARBOR[50]} 0%, ${SLATE[50]} 100%)`,
+    borderRadius: RADIUS.xl,
+    padding: '24px',
+    border: `2px solid ${HARBOR[500]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: RADIUS.lg,
+        background: HARBOR[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Wrench size={24} color={PRIMITIVES.white} />
+      </div>
+      <div>
+        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Frontend Integrator
+        </h3>
+        <p style={{ margin: 0, fontSize: '12px', color: HARBOR[600] }}>Bug Fixer</p>
+      </div>
+    </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      {[
+        'Fixes runtime bugs',
+        'Fixes TypeScript errors',
+        'Fixes accessibility issues',
+        'Adds missing null checks',
+        'Improves performance',
+        'Adds test coverage',
+      ].map((item, idx) => (
+        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: PRIMITIVES.white, borderRadius: RADIUS.sm }}>
+          <Unlock size={14} color={HARBOR[500]} />
+          <span style={{ fontSize: '13px', color: ABYSS[500] }}>{item}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>What You CAN Change</h2>
+
+<SectionHeader
+  icon={<CheckCircle size={20} />}
+  title="Allowed Bug Fixes"
+  description="These changes can be made without architect approval."
+/>
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+    {[
+      {
+        title: 'Logic Bugs',
+        examples: ['Click handler not firing', 'Wrong condition in if-statement', 'Array index out of bounds', 'Missing await on async'],
+        icon: <Bug size={20} />,
+      },
+      {
+        title: 'Null/Undefined Handling',
+        examples: ['Add optional chaining (?.)', 'Add nullish coalescing (??)', 'Add default values', 'Add early returns for edge cases'],
+        icon: <AlertTriangle size={20} />,
+      },
+      {
+        title: 'TypeScript Fixes',
+        examples: ['Fix type errors', 'Add missing type annotations', 'Fix generic constraints', 'Export missing types'],
+        icon: <FileCode size={20} />,
+      },
+      {
+        title: 'Performance Fixes',
+        examples: ['Add useMemo/useCallback', 'Fix re-render loops', 'Add key props to lists', 'Lazy load heavy components'],
+        icon: <Zap size={20} />,
+      },
+      {
+        title: 'Accessibility Fixes',
+        examples: ['Add missing aria labels', 'Fix keyboard navigation', 'Add focus management', 'Fix screen reader issues'],
+        icon: <Eye size={20} />,
+      },
+      {
+        title: 'Test Coverage',
+        examples: ['Add unit tests', 'Add edge case tests', 'Add regression tests', 'Fix flaky tests'],
+        icon: <CheckCircle size={20} />,
+      },
+    ].map((category, idx) => (
+      <div key={idx} style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '16px',
+        border: `1px solid ${HARBOR[200]}`,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+          <span style={{ color: HARBOR[600] }}>{category.icon}</span>
+          <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>{category.title}</h4>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {category.examples.map((ex, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <CheckCircle size={12} color={HARBOR[500]} />
+              <span style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{ex}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>What You CANNOT Change</h2>
+
+<SectionHeader
+  icon={<XCircle size={20} />}
+  title="Protected Areas"
+  description="These require architect approval. PRs will be blocked."
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+    {[
+      {
+        title: 'Visual Design',
+        forbidden: ['Colors, spacing, typography', 'Border radius, shadows', 'Animations, transitions', 'Layout structure'],
+        icon: <Palette size={20} />,
+      },
+      {
+        title: 'Component API',
+        forbidden: ['Adding new props', 'Removing props', 'Changing prop types', 'Changing default values'],
+        icon: <Code2 size={20} />,
+      },
+      {
+        title: 'Component Structure',
+        forbidden: ['Changing DOM hierarchy', 'Adding/removing elements', 'Changing component composition', 'Restructuring layouts'],
+        icon: <Layout size={20} />,
+      },
+      {
+        title: 'Design Tokens',
+        forbidden: ['Adding new tokens', 'Changing token values', 'Renaming tokens', 'Deleting tokens'],
+        icon: <Layers size={20} />,
+      },
+    ].map((category, idx) => (
+      <div key={idx} style={{
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '16px',
+        border: `1px solid ${CORAL[200]}`,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+          <span style={{ color: CORAL[600] }}>{category.icon}</span>
+          <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>{category.title}</h4>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {category.forbidden.map((item, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <XCircle size={12} color={CORAL[500]} />
+              <span style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Protected Files */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[300]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: CORAL[700] }}>
+    <Lock size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    Protected Files (Architect Approval Required)
+  </h4>
+  <CodeBlock
+    language="text"
+    code={`# Design Tokens - NEVER modify without architect
+src/constants/designTokens.ts
+src/styles/tokens.css
+tailwind-preset.js
+
+# Component Interfaces - Changing props = breaking change
+src/components/**/types.ts
+src/flow/**/types.ts
+
+# Stories/Prototypes - These ARE the design spec
+src/stories/**/*.stories.tsx
+src/stories/**/*.mdx
+
+# Package Exports - Affects all consumers
+src/index.ts
+src/core/index.ts
+src/flow/index.ts
+package.json (exports field)`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Bug Fix Workflow</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="Step-by-Step Process"
+  description="Fast, clear, and maintains design integrity."
+/>
+
+{/* Workflow Steps */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {[
+      { step: '1', title: 'Find the Bug', desc: 'Reproduce in Storybook first. If it reproduces = DDS bug.', color: CORAL, time: '5 min' },
+      { step: '2', title: 'Create Branch', desc: 'Branch from main: fix/issue-description', color: SUNRISE, time: '1 min' },
+      { step: '3', title: 'Make Minimal Fix', desc: 'Change ONLY what\'s needed. No refactoring. No "improvements".', color: DEEP_CURRENT, time: '10-30 min' },
+      { step: '4', title: 'Add Test', desc: 'Add a test that would have caught this bug.', color: DUSK_REEF, time: '5-10 min' },
+      { step: '5', title: 'Open PR', desc: 'Use the bug-fix template. Link to reproduction story.', color: HARBOR, time: '5 min' },
+      { step: '6', title: 'Auto-Merge', desc: 'If CI passes and no protected files changed = auto-merge.', color: HARBOR, time: 'Automatic' },
+    ].map((item, idx, arr) => (
+      <div key={idx}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '16px',
+          padding: '16px',
+          background: `${item.color[50]}`,
+          borderRadius: RADIUS.lg,
+          border: `1px solid ${item.color[200]}`,
+        }}>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: RADIUS.full,
+            background: item.color[500],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: PRIMITIVES.white,
+            fontSize: '16px',
+            fontWeight: 700,
+            flexShrink: 0,
+          }}>{item.step}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>{item.title}</h4>
+              <span style={{ fontSize: '11px', color: item.color[600], background: item.color[100], padding: '2px 8px', borderRadius: RADIUS.full }}>{item.time}</span>
+            </div>
+            <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>{item.desc}</p>
+          </div>
+        </div>
+        {idx < arr.length - 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '8px 0' }}>
+            <ArrowDown size={20} color={SLATE[300]} />
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Why This Works - Real Benefits */}
+<div style={{
+  background: `linear-gradient(135deg, ${HARBOR[50]} 0%, ${DEEP_CURRENT[50]} 100%)`,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Why Fix in DDS Instead of Locally?
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>Honest truth:</strong> A local fix might be faster short-term. But the real value is elsewhere:
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    {[
+      { title: 'Design Consistency', desc: 'All apps look identical. No drift over time. Brand stays intact.', icon: <Palette size={18} /> },
+      { title: 'Zero UI Debt', desc: 'Local fixes accumulate into spaghetti. DDS keeps UI code clean and centralized.', icon: <Layers size={18} /> },
+      { title: 'Free Upgrades', desc: 'When DDS adds dark mode, better a11y, or animations - all apps get them automatically.', icon: <Zap size={18} /> },
+      { title: 'Single Source of Truth', desc: 'Storybook IS the spec. No "Figma says X but code does Y" debates.', icon: <FileText size={18} /> },
+    ].map((item, idx) => (
+      <div key={idx} style={{ background: PRIMITIVES.white, padding: '16px', borderRadius: RADIUS.lg }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <span style={{ color: HARBOR[500], display: 'flex', alignItems: 'center' }}>{item.icon}</span>
+          <span style={{ fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>{item.title}</span>
+        </div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>PR Requirements</h2>
+
+<SectionHeader
+  icon={<GitPullRequest size={20} />}
+  title="Pull Request Checklist"
+  description="Your PR must meet these requirements."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <CodeBlock
+    filename=".github/PULL_REQUEST_TEMPLATE/bug_fix.md"
+    language="markdown"
+    code={`## Bug Fix PR
+
+### Bug Description
+<!-- What was broken? -->
+
+### Root Cause
+<!-- Why was it broken? -->
+
+### Fix
+<!-- What did you change? -->
+
+### Reproduction Story
+<!-- Link to Storybook story that shows the bug -->
+
+### Checklist
+- [ ] Fix is minimal (no unrelated changes)
+- [ ] No visual/design changes
+- [ ] No prop/API changes
+- [ ] Added test for this bug
+- [ ] Storybook still works
+- [ ] TypeScript passes
+- [ ] Lint passes
+
+### Files Changed
+<!-- List files you modified -->
+
+### Screenshots (if applicable)
+Before | After
+-------|------
+       |      `}
+  />
+</div>
+
+{/* Auto-merge Rules */}
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: HARBOR[700] }}>
+    <Zap size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    Auto-Merge Criteria
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    Your PR will auto-merge if ALL conditions are met:
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+    {[
+      'CI passes (types, lint, tests, build)',
+      'No changes to protected files',
+      'PR title starts with fix:',
+      'Uses bug_fix PR template',
+      'Less than 100 lines changed',
+      'At least one test added',
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: PRIMITIVES.white, borderRadius: RADIUS.sm }}>
+        <CheckCircle size={14} color={HARBOR[500]} />
+        <span style={{ fontSize: '12px', color: ABYSS[500] }}>{item}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Decision Tree</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="Can I Make This Change?"
+  description="Quick reference for common scenarios."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Scenario</th>
+        <th style={{ padding: '12px 16px', textAlign: 'center', color: ABYSS[500], fontWeight: 600 }}>Allowed?</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { scenario: 'Button click does nothing', allowed: true, action: 'Fix the handler logic' },
+        { scenario: 'Page crashes on empty array', allowed: true, action: 'Add null check / early return' },
+        { scenario: 'TypeScript error in component', allowed: true, action: 'Fix the type issue' },
+        { scenario: 'Missing aria-label', allowed: true, action: 'Add the accessibility attribute' },
+        { scenario: 'Slow render performance', allowed: true, action: 'Add memoization' },
+        { scenario: 'Button should be blue not green', allowed: false, action: 'Request via architect' },
+        { scenario: 'Need new prop for feature', allowed: false, action: 'Request via architect' },
+        { scenario: 'Spacing feels wrong', allowed: false, action: 'Request via architect' },
+        { scenario: 'Want to refactor component', allowed: false, action: 'Request via architect' },
+        { scenario: 'Animation should be different', allowed: false, action: 'Request via architect' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.scenario}</td>
+          <td style={{ padding: '12px 16px', textAlign: 'center' }}>
+            {row.allowed ? (
+              <CheckCircle size={18} color={HARBOR[500]} />
+            ) : (
+              <XCircle size={18} color={CORAL[500]} />
+            )}
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.action}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Make minimal changes">
+    Fix only the bug. Don't refactor. Don't improve. Don't clean up. One bug = one fix.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Scope creep">
+    "While I'm here, I'll also..." NO. Open a separate PR or request if you see other issues.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Add a regression test">
+    Every bug fix should include a test that would have caught the bug.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Skip the test">
+    "It's a simple fix" - that's exactly when bugs come back. Test it.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Link to reproduction">
+    Point to a Storybook story that shows the bug (before) and the fix (after).
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Submit without context">
+    PRs without reproduction steps take longer to review and may be rejected.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Ask if unsure">
+    Not sure if your change is allowed? Ask the architect before starting.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Assume and proceed">
+    Don't assume design changes are ok. They're not. Always ask first.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Related Documentation</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: SPACING.px.section,
+}}>
+  <NavCard
+    icon={<Layout size={24} />}
+    title="Page Implementation Guide"
+    description="How to implement pages and report bugs."
+    href="/docs/developers-page-implementation-guide--docs"
+  />
+  <NavCard
+    icon={<GitMerge size={24} />}
+    title="Versioning & Updates"
+    description="How versions work and updates flow."
+    href="/docs/developers-versioning-updates--docs"
+  />
+</div>

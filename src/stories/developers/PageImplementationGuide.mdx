@@ -1,0 +1,775 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Layout,
+  Package,
+  ArrowRight,
+  ArrowDown,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Shield,
+  Zap,
+  Bug,
+  FileText,
+  GitMerge,
+  Workflow,
+  Users,
+  Lock,
+  Unlock,
+  Database,
+  MousePointer,
+  RefreshCw,
+  MessageSquare,
+  Send,
+  Eye,
+  Code2,
+  Layers,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Page Implementation Guide" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Page Implementation Guide"
+  description="How to implement DDS page compositions in your application. Understand the ownership model, data contracts, bug reporting, and fix delivery workflow."
+  gradient="teal"
+  decorativeIcon={<Layout size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Key Principle:</strong> DDS owns the entire UI layer. You provide data and handle actions.
+  This means faster updates, consistent UX, and zero UI bugs on your side.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Ownership Model</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="Who Owns What?"
+  description="Clear boundaries between DDS and your application."
+/>
+
+{/* Ownership Diagram */}
+<div style={{
+  background: `linear-gradient(135deg, ${SLATE[50]} 0%, ${DEEP_CURRENT[50]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+    {/* DDS Owns */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${DEEP_CURRENT[500]}`,
+      boxShadow: SHADOWS.md,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.md,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Lock size={20} color={PRIMITIVES.white} />
+        </div>
+        <div>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+            DDS Owns
+          </h3>
+          <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>Locked, versioned, consistent</p>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {[
+          { icon: <Eye size={14} />, text: 'Visual design & styling' },
+          { icon: <Layout size={14} />, text: 'Component layout & structure' },
+          { icon: <Layers size={14} />, text: 'Responsive behavior' },
+          { icon: <MousePointer size={14} />, text: 'Interactions & animations' },
+          { icon: <CheckCircle size={14} />, text: 'Loading, empty & error states' },
+          { icon: <Shield size={14} />, text: 'Accessibility (a11y)' },
+        ].map((item, idx) => (
+          <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', background: DEEP_CURRENT[50], borderRadius: RADIUS.sm }}>
+            <span style={{ color: DEEP_CURRENT[600] }}>{item.icon}</span>
+            <span style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>{item.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Consumer Owns */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `2px solid ${DUSK_REEF[300]}`,
+      boxShadow: SHADOWS.md,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.md,
+          background: DUSK_REEF[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Unlock size={20} color={PRIMITIVES.white} />
+        </div>
+        <div>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+            You Own
+          </h3>
+          <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>Your domain, your control</p>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {[
+          { icon: <Database size={14} />, text: 'Data fetching & API calls' },
+          { icon: <Users size={14} />, text: 'Authentication & authorization' },
+          { icon: <Workflow size={14} />, text: 'Business logic & validation' },
+          { icon: <GitMerge size={14} />, text: 'Routing & navigation' },
+          { icon: <Code2 size={14} />, text: 'State management (global)' },
+          { icon: <Send size={14} />, text: 'Action handlers (onSave, onDelete...)' },
+        ].map((item, idx) => (
+          <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', background: DUSK_REEF[50], borderRadius: RADIUS.sm }}>
+            <span style={{ color: DUSK_REEF[600] }}>{item.icon}</span>
+            <span style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>{item.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Data Contract</h2>
+
+<SectionHeader
+  icon={<FileText size={20} />}
+  title="Props Interface = Your Contract"
+  description="Page components accept data and callbacks. Nothing more."
+/>
+
+<InfoBox variant="info">
+  <strong>Data Down, Actions Up:</strong> Pass your data as props, receive user actions as callbacks.
+  The page component handles all internal UI state (search, pagination, dialogs).
+</InfoBox>
+
+{/* Contract Example */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Example: EntityTemplatesPage Props
+  </h4>
+  <CodeBlock
+    language="typescript"
+    code={`interface EntityTemplatesPageProps {
+  // DATA IN - What to display
+  templates: EntityTemplate[]
+  isLoading?: boolean
+
+  // STATE SYNC - For URL/routing integration
+  initialCategory?: TemplateCategory | 'all'
+  onCategoryChange?: (category: TemplateCategory | 'all') => void
+
+  // ACTIONS OUT - What the user did
+  onCreateNavigate?: () => void
+  onEditNavigate?: (template: EntityTemplate) => void
+  onTemplateDelete?: (templateId: string) => Promise<void>
+  onRefresh?: () => Promise<void>
+}
+
+// NO className prop - you can't override styles
+// NO render props - you can't replace internal components
+// NO slots - the layout is fixed`}
+  />
+</div>
+
+{/* Implementation Example */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Your Implementation
+  </h4>
+  <CodeBlock
+    filename="src/routes/TemplatesRoute.tsx"
+    language="tsx"
+    highlightLines={[7, 8, 9, 10, 11, 12]}
+    code={`import { EntityTemplatesPage } from '@dds/design-system/flow'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+
+export function TemplatesRoute() {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // Your data layer
+  const { data, isLoading, refetch } = useQuery(['templates'], fetchTemplates)
+  const deleteMutation = useMutation(deleteTemplate)
+
+  return (
+    <EntityTemplatesPage
+      // DATA
+      templates={data ?? []}
+      isLoading={isLoading}
+
+      // STATE SYNC
+      initialCategory={searchParams.get('category') ?? 'all'}
+      onCategoryChange={(cat) => setSearchParams({ category: cat })}
+
+      // ACTIONS
+      onCreateNavigate={() => navigate('/templates/create')}
+      onEditNavigate={(t) => navigate(\`/templates/\${t.id}/edit\`)}
+      onTemplateDelete={(id) => deleteMutation.mutateAsync(id)}
+      onRefresh={refetch}
+    />
+  )
+}`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Bug Ownership Matrix</h2>
+
+<SectionHeader
+  icon={<Bug size={20} />}
+  title="Whose Bug Is It?"
+  description="Quick guide to determine responsibility when something breaks."
+/>
+
+{/* Bug Matrix Table */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Symptom</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Owner</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Resolution</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { symptom: 'Component renders incorrectly', owner: 'DDS', ownerColor: DEEP_CURRENT, resolution: 'Report bug, wait for patch' },
+        { symptom: 'API returns wrong data shape', owner: 'Consumer', ownerColor: DUSK_REEF, resolution: 'Fix your API or adapter' },
+        { symptom: 'Styling looks broken', owner: 'DDS', ownerColor: DEEP_CURRENT, resolution: 'Report bug, wait for patch' },
+        { symptom: 'Data not loading', owner: 'Consumer', ownerColor: DUSK_REEF, resolution: 'Check your fetch logic' },
+        { symptom: 'Click handler not firing', owner: 'Investigate', ownerColor: SUNRISE, resolution: 'Check if prop is connected' },
+        { symptom: 'Page crashes on empty array', owner: 'DDS', ownerColor: DEEP_CURRENT, resolution: 'We should handle empty state' },
+        { symptom: 'Mobile layout broken', owner: 'DDS', ownerColor: DEEP_CURRENT, resolution: 'Report bug, wait for patch' },
+        { symptom: 'Performance slow', owner: 'Investigate', ownerColor: SUNRISE, resolution: 'Profile to find bottleneck' },
+        { symptom: '"Works in Storybook"', owner: 'Data Gap', ownerColor: CORAL, resolution: 'Compare mock vs real data' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.symptom}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.ownerColor[100],
+              color: row.ownerColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.owner}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.resolution}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+{/* Common Data Issues */}
+<div style={{
+  background: `linear-gradient(135deg, ${CORAL[50]} 0%, ${SUNRISE[50]} 100%)`,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: CORAL[700] }}>
+    <AlertTriangle size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    Most Common Issue: Data Shape Mismatch
+  </h4>
+  <CodeBlock
+    language="typescript"
+    code={`// DDS expects this shape:
+interface EntityTemplate {
+  id: string          // Required!
+  name: string        // Required!
+  category: TemplateCategory  // Required!
+  createdAt: Date
+}
+
+// Your API returns:
+{
+  id: "123",
+  name: "Safety Inspection",
+  category: null,           // null instead of string
+  created_at: "2024-01-15"  // snake_case, string instead of Date
+}
+
+// Solution: Create an adapter function
+function mapApiTemplate(api: ApiTemplate): EntityTemplate {
+  return {
+    id: api.id,
+    name: api.name ?? 'Untitled',  // Handle null
+    category: api.category ?? 'custom',  // Default value
+    createdAt: new Date(api.created_at),  // Transform
+  }
+}`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Bug Reporting Workflow</h2>
+
+<SectionHeader
+  icon={<MessageSquare size={20} />}
+  title="How to Report a Bug"
+  description="The faster we can reproduce it, the faster we can fix it."
+/>
+
+{/* Bug Report Flow Diagram */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {/* Step 1 */}
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.lg,
+      padding: '20px',
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: CORAL[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+        }}>1</div>
+        <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          You Find a Bug
+        </h4>
+      </div>
+      <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500], marginLeft: '40px' }}>
+        Something doesn't look right or doesn't work as expected in the UI.
+      </p>
+    </div>
+
+    <div style={{ display: 'flex', justifyContent: 'center' }}><ArrowDown size={20} color={SLATE[400]} /></div>
+
+    {/* Step 2 */}
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.lg,
+      padding: '20px',
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: SUNRISE[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+        }}>2</div>
+        <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Gather Information
+        </h4>
+      </div>
+      <div style={{ marginLeft: '40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        {['Screenshot/Video', 'Console errors', 'Props you\'re passing', 'Sample data', 'DDS version', 'Browser/Device'].map(item => (
+          <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <CheckCircle size={12} color={HARBOR[500]} />
+            <span style={{ fontSize: '12px', color: ABYSS[500] }}>{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div style={{ display: 'flex', justifyContent: 'center' }}><ArrowDown size={20} color={SLATE[400]} /></div>
+
+    {/* Step 3 */}
+    <div style={{
+      background: DEEP_CURRENT[50],
+      borderRadius: RADIUS.lg,
+      padding: '20px',
+      border: `2px solid ${DEEP_CURRENT[300]}`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+        }}>3</div>
+        <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Report to DDS Team
+        </h4>
+      </div>
+      <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500], marginLeft: '40px' }}>
+        Submit a bug report with all gathered information. The more detail, the faster the fix.
+      </p>
+    </div>
+
+    <div style={{ display: 'flex', justifyContent: 'center' }}><ArrowDown size={20} color={SLATE[400]} /></div>
+
+    {/* Step 4 */}
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.lg,
+      padding: '20px',
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: DUSK_REEF[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+        }}>4</div>
+        <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          We Triage
+        </h4>
+      </div>
+      <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500], marginLeft: '40px' }}>
+        We try to reproduce in Storybook with your data. If reproducible = DDS bug. If not = data/integration issue.
+      </p>
+    </div>
+
+    <div style={{ display: 'flex', justifyContent: 'center' }}><ArrowDown size={20} color={SLATE[400]} /></div>
+
+    {/* Step 5 */}
+    <div style={{
+      background: HARBOR[50],
+      borderRadius: RADIUS.lg,
+      padding: '20px',
+      border: `2px solid ${HARBOR[300]}`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: HARBOR[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+        }}>5</div>
+        <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+          Fix Delivered
+        </h4>
+      </div>
+      <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500], marginLeft: '40px' }}>
+        We publish a patch release. You run <code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px' }}>npm update</code> and you're done.
+      </p>
+    </div>
+  </div>
+</div>
+
+{/* Bug Report Template */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Bug Report Template
+  </h4>
+  <CodeBlock
+    language="markdown"
+    code={`## Bug Report
+
+**Component:** EntityTemplatesPage
+**DDS Version:** 2.7.1
+**Browser/Device:** Chrome 120 / macOS
+
+### Description
+Delete button doesn't respond on mobile devices.
+
+### Steps to Reproduce
+1. Open EntityTemplatesPage on mobile
+2. Tap row menu (...)
+3. Tap "Delete"
+4. Nothing happens
+
+### Expected
+Delete confirmation dialog should appear.
+
+### Actual
+No response, no console errors.
+
+### Props I'm Passing
+\`\`\`tsx
+<EntityTemplatesPage
+  templates={templates}
+  onTemplateDelete={async (id) => {
+    await api.delete(id)
+  }}
+/>
+\`\`\`
+
+### Sample Data
+\`\`\`json
+[
+  { "id": "1", "name": "Safety Check", "category": "inspection" }
+]
+\`\`\`
+
+### Screenshot/Video
+[Attach screenshot or screen recording]`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Fix Delivery Workflow</h2>
+
+<SectionHeader
+  icon={<RefreshCw size={20} />}
+  title="How Fixes Reach You"
+  description="One fix, everyone benefits. That's the power of owned UI."
+/>
+
+{/* Fix Flow Diagram */}
+<div style={{
+  background: `linear-gradient(135deg, ${HARBOR[50]} 0%, ${DEEP_CURRENT[50]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
+    {[
+      { step: '1', label: 'Bug Fixed', sublabel: 'in DDS repo', color: CORAL },
+      { step: '2', label: 'Tests Pass', sublabel: 'CI/CD green', color: SUNRISE },
+      { step: '3', label: 'Published', sublabel: '@2.7.1', color: DEEP_CURRENT },
+      { step: '4', label: 'npm update', sublabel: 'you run', color: DUSK_REEF },
+      { step: '5', label: 'Fixed!', sublabel: 'for everyone', color: HARBOR },
+    ].map((item, idx, arr) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '4px',
+        }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: RADIUS.full,
+            background: item.color[500],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: PRIMITIVES.white,
+            fontSize: '18px',
+            fontWeight: 700,
+            boxShadow: SHADOWS.md,
+          }}>{item.step}</div>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.label}</span>
+          <span style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.sublabel}</span>
+        </div>
+        {idx < arr.length - 1 && (
+          <ArrowRight size={24} color={SLATE[400]} style={{ marginTop: '-24px' }} />
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Version Command */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Receiving Updates
+  </h4>
+  <CodeBlock
+    language="bash"
+    code={`# Check for updates
+npm outdated @dds/design-system
+
+# Update to latest patch/minor
+npm update @dds/design-system
+
+# Or with specific version
+npm install @dds/design-system@2.7.1`}
+  />
+  <InfoBox variant="tip" style={{ marginTop: '16px' }}>
+    <strong>Pro tip:</strong> Use <code>^2.7.0</code> in your package.json to automatically receive
+    patch and minor updates while being protected from breaking changes.
+  </InfoBox>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Best Practices</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Create adapter functions">
+    Transform your API data to match DDS interfaces in dedicated adapter files. Easy to test, easy to find when updating.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Inline data transformation">
+    Transforming data inside JSX makes it hard to debug and update when interfaces change.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Connect all action handlers">
+    If a button should work, make sure the corresponding `onXxx` prop is connected. Unconnected handlers = hidden buttons.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Assume handlers are optional">
+    Check the TypeScript types. Some handlers are required for full functionality (delete, edit, etc.).
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Report with sample data">
+    Include the actual data that triggers the bug. We'll add it as a test case to prevent regression.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Report without reproduction steps">
+    "It's broken" doesn't help. We need steps, data, and context to fix quickly.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Keep DDS version updated">
+    Run `npm update` regularly. Bug fixes and improvements are continuous.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Pin to exact versions">
+    Using `2.7.0` instead of `^2.7.0` means you miss critical bug fixes.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Related Documentation</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: SPACING.px.section,
+}}>
+  <NavCard
+    icon={<Code2 size={24} />}
+    title="Adapter Patterns"
+    description="Detailed patterns for mapping your data to DDS interfaces."
+    href="/docs/developers-adapter-patterns--docs"
+  />
+  <NavCard
+    icon={<RefreshCw size={24} />}
+    title="Versioning & Updates"
+    description="How semantic versioning and automated updates work."
+    href="/docs/developers-versioning-updates--docs"
+  />
+  <NavCard
+    icon={<Layers size={24} />}
+    title="Integration Overview"
+    description="The three-layer architecture and quick start guide."
+    href="/docs/developers-integration-overview--docs"
+  />
+  <NavCard
+    icon={<Package size={24} />}
+    title="Package Architecture"
+    description="Subpath exports and tree-shaking optimization."
+    href="/docs/developers-integration-overview--docs#package-architecture"
+  />
+</div>

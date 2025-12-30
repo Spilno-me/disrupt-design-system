@@ -1,0 +1,600 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Code2,
+  ArrowRight,
+  ArrowLeftRight,
+  Layers,
+  Box,
+  Boxes,
+  Puzzle,
+  FileCode,
+  TestTube,
+  CheckCircle,
+  XCircle,
+  Workflow,
+  Brackets,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Adapter Patterns" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Adapter Patterns"
+  description="Detailed patterns for mapping your application's data structures to design system interfaces. Learn the techniques that make integration seamless and maintainable."
+  gradient="primary"
+  decorativeIcon={<Code2 size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="info">
+  <strong>Core Concept:</strong> Adapters are the bridge between your app's data model and the design system's
+  expected interfaces. They live in a single location, making updates easy when either side changes.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Pattern 1: Adapter Functions</h2>
+
+<SectionHeader
+  icon={<ArrowLeftRight size={20} />}
+  title="Pure Data Transformation"
+  description="Simple functions that convert one data shape to another."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    When to Use
+  </h4>
+  <ul style={{ margin: '0 0 24px 0', paddingLeft: '20px', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], lineHeight: 1.8 }}>
+    <li>Your app's data structure differs from the component's expected props</li>
+    <li>You need to combine or derive values from multiple sources</li>
+    <li>You want easily testable, pure functions</li>
+  </ul>
+
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Example: User Data Mapping
+  </h4>
+
+  <CodeBlock
+    filename="src/adapters/headerAdapters.ts"
+    language="typescript"
+    showLineNumbers
+    highlightLines={[12, 13, 14, 15, 16, 17, 18]}
+    code={`import type { UserInfo, UserMenuItem } from '@dds/design-system/core'
+import type { AuthUser, NotificationState } from '../types'
+
+/**
+ * Maps your app's auth user to the design system's UserInfo interface.
+ *
+ * Benefits:
+ * - Single place to update when either interface changes
+ * - Pure function = easy to unit test
+ * - TypeScript catches mismatches at compile time
+ */
+export function mapAuthUserToHeaderUser(
+  authUser: AuthUser | null
+): UserInfo | undefined {
+  if (!authUser) return undefined
+
+  return {
+    name: \`\${authUser.first_name} \${authUser.last_name}\`,
+    email: authUser.email_address,
+    avatarUrl: authUser.avatar_image_url ?? undefined,
+    initials: \`\${authUser.first_name[0]}\${authUser.last_name[0]}\`.toUpperCase(),
+  }
+}
+
+/**
+ * Calculates unread notification count from your notification state.
+ */
+export function getUnreadNotificationCount(
+  notifications: NotificationState
+): number {
+  return notifications.items.filter(n => !n.read).length
+}
+
+/**
+ * Maps notification items to a display format.
+ */
+export function mapNotificationsForDisplay(
+  notifications: NotificationState['items']
+) {
+  return notifications.map(n => ({
+    id: n.id,
+    title: n.type === 'alert' ? 'Alert' : 'Message',
+    timestamp: formatRelativeTime(n.created_at),
+    isRead: n.read,
+  }))
+}`}
+  />
+
+  <InfoBox variant="tip">
+    <strong>Pro tip:</strong> Keep adapters in a dedicated <code>/adapters</code> folder. This makes it obvious
+    where to look when interfaces change.
+  </InfoBox>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Pattern 2: Wrapper Components</h2>
+
+<SectionHeader
+  icon={<Box size={20} />}
+  title="Component Isolation"
+  description="React components that wrap design system components with your app's logic."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    When to Use
+  </h4>
+  <ul style={{ margin: '0 0 24px 0', paddingLeft: '20px', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], lineHeight: 1.8 }}>
+    <li>You need to add app-specific behavior (navigation, auth, state)</li>
+    <li>Multiple adapters need to be combined</li>
+    <li>You want to hide DDS complexity from the rest of your app</li>
+  </ul>
+
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Example: App Header Wrapper
+  </h4>
+
+  <CodeBlock
+    filename="src/components/app/FlowAppHeader.tsx"
+    language="tsx"
+    showLineNumbers
+    highlightLines={[6, 7, 37, 38, 39]}
+    code={`import { useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { User, Settings, LogOut } from 'lucide-react'
+
+// Design system import (the ONLY place this happens)
+import { AppHeader, type UserMenuItem } from '@dds/design-system/core'
+
+// Your app's hooks and adapters
+import { useAuth } from '../../hooks/useAuth'
+import { useNotifications } from '../../hooks/useNotifications'
+import {
+  mapAuthUserToHeaderUser,
+  getUnreadNotificationCount
+} from '../../adapters/headerAdapters'
+import { APP_ROUTES } from '../../constants/routes'
+
+// Your app's interface (can be completely different from DDS)
+interface FlowAppHeaderProps {
+  mobileMenuContent?: React.ReactNode
+  onBrandClick?: () => void
+}
+
+/**
+ * FlowAppHeader - Your app's header component
+ *
+ * This is the ONLY place where your app meets the design system.
+ * The rest of your app imports this, not AppHeader directly.
+ */
+export function FlowAppHeader({
+  mobileMenuContent,
+  onBrandClick
+}: FlowAppHeaderProps) {
+  const navigate = useNavigate()
+  const { user, logout, isAuthenticated } = useAuth()
+  const { notifications } = useNotifications()
+  const { openPanel } = useNotificationPanel()
+
+  // === DATA TRANSFORMATION ===
+  const headerUser = mapAuthUserToHeaderUser(user)
+  const unreadCount = getUnreadNotificationCount(notifications)
+
+  // === MENU ITEMS (Your app's actions) ===
+  const menuItems: UserMenuItem[] = [
+    {
+      id: 'profile',
+      label: 'My Profile',
+      icon: <User className="w-4 h-4" />,
+      onClick: () => navigate(APP_ROUTES.PROFILE),
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: <Settings className="w-4 h-4" />,
+      onClick: () => navigate(APP_ROUTES.SETTINGS),
+    },
+    {
+      id: 'logout',
+      label: 'Sign Out',
+      icon: <LogOut className="w-4 h-4" />,
+      destructive: true,
+      separator: true,
+      onClick: logout,
+    },
+  ]
+
+  // === EVENT HANDLERS ===
+  const handleLogoClick = useCallback(() => {
+    onBrandClick?.() ?? navigate(APP_ROUTES.HOME)
+  }, [navigate, onBrandClick])
+
+  // Don't render if not authenticated
+  if (!isAuthenticated) return null
+
+  // === RENDER ===
+  return (
+    <AppHeader
+      product="flow"
+      user={headerUser}
+      menuItems={menuItems}
+      showNotifications={true}
+      notificationCount={unreadCount}
+      onNotificationClick={openPanel}
+      onLogoClick={handleLogoClick}
+      leftContent={mobileMenuContent}
+    />
+  )
+}`}
+  />
+</div>
+
+{/* Benefits Callout */}
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { title: 'Single Import Point', desc: 'Rest of app imports FlowAppHeader, not AppHeader' },
+    { title: 'Behavior Ownership', desc: 'Your app owns navigation, auth, state logic' },
+    { title: 'Easy Updates', desc: 'DDS changes? Update ONE file, not 50' },
+  ].map(item => (
+    <div key={item.title} style={{
+      background: DEEP_CURRENT[50],
+      borderRadius: RADIUS.md,
+      padding: '16px',
+      textAlign: 'center',
+    }}>
+      <div style={{ fontSize: '14px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: DEEP_CURRENT[700], marginBottom: '4px' }}>
+        {item.title}
+      </div>
+      <div style={{ fontSize: '12px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
+        {item.desc}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Pattern 3: Render Props</h2>
+
+<SectionHeader
+  icon={<Puzzle size={20} />}
+  title="Framework Integration"
+  description="Using render props for router links, custom elements, and framework-specific features."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    When to Use
+  </h4>
+  <ul style={{ margin: '0 0 24px 0', paddingLeft: '20px', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], lineHeight: 1.8 }}>
+    <li>You need to integrate with React Router, Next.js, or other routing libraries</li>
+    <li>You want to customize how child elements are rendered</li>
+    <li>The component provides render prop APIs (like <code>renderNavLink</code>)</li>
+  </ul>
+
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Example: React Router Integration
+  </h4>
+
+  <CodeBlock
+    language="tsx"
+    highlightLines={[13, 14, 15, 16, 17, 18, 19, 20, 21, 22]}
+    code={`// Using render props for React Router integration
+import { NavLink, Link } from 'react-router-dom'
+import { Header } from '@dds/design-system/core'
+
+export function SiteHeader() {
+  return (
+    <Header
+      navItems={[
+        { label: 'Home', path: '/' },
+        { label: 'Products', path: '/products' },
+        { label: 'About', path: '/about' },
+      ]}
+      // Custom render function for nav links
+      renderNavLink={(item, children) => (
+        <NavLink
+          to={item.path}
+          className={({ isActive }) =>
+            isActive ? 'nav-link active' : 'nav-link'
+          }
+        >
+          {children}
+        </NavLink>
+      )}
+      // Custom render function for contact button
+      renderContactLink={(children) => (
+        <Link to="/contact">{children}</Link>
+      )}
+    />
+  )
+}`}
+  />
+</div>
+
+<InfoBox variant="info">
+  <strong>Check the component docs:</strong> Not all DDS components support render props.
+  Look for props like <code>renderX</code>, <code>asChild</code>, or <code>component</code>.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Pattern 4: Composition from Primitives</h2>
+
+<SectionHeader
+  icon={<Boxes size={20} />}
+  title="Building Custom Components"
+  description="When the design system's organism doesn't fit, compose your own from atoms."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    When to Use
+  </h4>
+  <ul style={{ margin: '0 0 24px 0', paddingLeft: '20px', fontSize: '14px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], lineHeight: 1.8 }}>
+    <li>The existing component structure doesn't match your needs</li>
+    <li>You need a completely different layout or hierarchy</li>
+    <li>You're building a domain-specific component</li>
+  </ul>
+
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Example: Custom Profile Header
+  </h4>
+
+  <CodeBlock
+    language="tsx"
+    showLineNumbers
+    highlightLines={[4, 5, 40, 41, 42, 43, 44]}
+    code={`// Don't force-fit AppHeader for a profile page
+// Instead, compose from primitives
+
+import { Button } from '@dds/design-system/core'
+import { Badge } from '@dds/design-system/core'
+import { Mail, Phone, MessageSquare } from 'lucide-react'
+import type { UserProfile } from '../types'
+
+interface ProfileHeaderProps {
+  profile: UserProfile
+  onEmail: () => void
+  onCall: () => void
+}
+
+export function ProfileHeader({ profile, onEmail, onCall }: ProfileHeaderProps) {
+  return (
+    <div className="flex items-start gap-6 p-6 bg-surface border rounded-xl">
+      {/* Avatar */}
+      <div className="size-24 rounded-full bg-accent/10 flex items-center justify-center">
+        <span className="text-3xl font-bold text-accent">
+          {profile.initials}
+        </span>
+      </div>
+
+      {/* Info */}
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-1">
+          <h1 className="text-2xl font-bold">{profile.fullName}</h1>
+          <Badge variant={profile.isActive ? 'success' : 'secondary'}>
+            {profile.isActive ? 'Active' : 'Inactive'}
+          </Badge>
+        </div>
+        <p className="text-secondary">{profile.jobTitle}</p>
+        <p className="text-sm text-tertiary">{profile.department}</p>
+      </div>
+
+      {/* Actions - using DDS Button primitives */}
+      <div className="flex gap-2">
+        <Button variant="default" size="sm" onClick={onEmail}>
+          <Mail className="size-4" />
+          Email
+        </Button>
+        {profile.phone && (
+          <Button variant="secondary" size="sm" onClick={onCall}>
+            <Phone className="size-4" />
+            Call
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Testing Adapters</h2>
+
+<SectionHeader
+  icon={<TestTube size={20} />}
+  title="Unit Testing Your Adapters"
+  description="Adapter functions are pure and easy to test."
+/>
+
+<CodeBlock
+  filename="src/adapters/__tests__/headerAdapters.test.ts"
+  language="typescript"
+  showLineNumbers
+  code={`import { mapAuthUserToHeaderUser, getUnreadNotificationCount } from '../headerAdapters'
+
+describe('mapAuthUserToHeaderUser', () => {
+  it('maps full user correctly', () => {
+    const input = {
+      id: '123',
+      email_address: 'john@example.com',
+      first_name: 'John',
+      last_name: 'Doe',
+      avatar_image_url: 'https://example.com/avatar.jpg',
+    }
+
+    expect(mapAuthUserToHeaderUser(input)).toEqual({
+      name: 'John Doe',
+      email: 'john@example.com',
+      avatarUrl: 'https://example.com/avatar.jpg',
+      initials: 'JD',
+    })
+  })
+
+  it('returns undefined for null user', () => {
+    expect(mapAuthUserToHeaderUser(null)).toBeUndefined()
+  })
+
+  it('handles missing avatar', () => {
+    const input = {
+      id: '123',
+      email_address: 'jane@example.com',
+      first_name: 'Jane',
+      last_name: 'Smith',
+      avatar_image_url: null,
+    }
+
+    const result = mapAuthUserToHeaderUser(input)
+    expect(result?.avatarUrl).toBeUndefined()
+    expect(result?.initials).toBe('JS')
+  })
+})
+
+describe('getUnreadNotificationCount', () => {
+  it('counts unread notifications', () => {
+    const notifications = {
+      items: [
+        { id: '1', read: false },
+        { id: '2', read: true },
+        { id: '3', read: false },
+      ],
+    }
+
+    expect(getUnreadNotificationCount(notifications)).toBe(2)
+  })
+
+  it('returns 0 for empty items', () => {
+    expect(getUnreadNotificationCount({ items: [] })).toBe(0)
+  })
+})`}
+/>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>File Organization</h2>
+
+<SectionHeader
+  icon={<FileCode size={20} />}
+  title="Recommended Structure"
+  description="How to organize your adapter files and wrapper components."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: SLATE[50],
+    borderRadius: RADIUS.md,
+    padding: '20px',
+    fontFamily: '"JetBrains Mono", monospace',
+    fontSize: '13px',
+    color: ABYSS[500],
+    lineHeight: 1.8,
+  }}>
+    <pre style={{ margin: 0 }}>{`src/
+├── adapters/                    # Data transformation layer
+│   ├── __tests__/
+│   │   └── headerAdapters.test.ts
+│   ├── headerAdapters.ts        # User, notification mapping
+│   ├── tableAdapters.ts         # DataTable column mapping
+│   └── formAdapters.ts          # Form data mapping
+│
+├── components/
+│   ├── app/                     # App-specific wrappers
+│   │   ├── FlowAppHeader.tsx    # Wraps AppHeader
+│   │   ├── FlowSidebar.tsx      # Wraps AppSidebar
+│   │   └── FlowDataTable.tsx    # Wraps DataTable
+│   │
+│   └── ui/                      # Your custom components
+│       └── ProfileHeader.tsx    # Composed from primitives
+│
+└── types/
+    └── index.ts                 # Your app's type definitions`}</pre>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Summary</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+}}>
+  <GuidelineCard type="do" title="Use adapters consistently">
+    Every design system component should have a corresponding adapter or wrapper in your app.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Mix patterns randomly">
+    Pick an approach and use it consistently. Don't use adapters for some components and inline transforms for others.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Test your adapters">
+    Since adapters are pure functions, they're the perfect candidates for unit tests.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Skip TypeScript">
+    TypeScript is your safety net. It catches interface mismatches at compile time, not runtime.
+  </GuidelineCard>
+</div>

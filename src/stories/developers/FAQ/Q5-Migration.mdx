@@ -1,0 +1,244 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Layers, CheckCircle, Zap, Shield, Users, GitBranch, Clock, ArrowLeft } from 'lucide-react';
+import { BrandHero, InfoBox, SectionHeader, GuidelineCard, CodeBlock, ABYSS, DEEP_CURRENT, DUSK_REEF, CORAL, HARBOR, SUNRISE, PRIMITIVES, SLATE, RADIUS, SPACING } from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/Q5-Migration" />
+
+<div style={{ marginBottom: '24px' }}>
+  <a href="/docs/developers-faq-overview--docs" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    <ArrowLeft size={14} /> Back to FAQ Overview
+  </a>
+</div>
+
+<BrandHero
+  title="Q5: Why Throw Away Working Code?"
+  description="My code works. Why replace it with something new?"
+  gradient="teal"
+  decorativeIcon={<Layers size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<div style={{ background: CORAL[50], borderRadius: RADIUS.xl, padding: '24px', border: `1px solid ${CORAL[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>The Concern</h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"You want me to delete my working code? Code that took 6 months to build? Code that's battle-tested with real users? To replace it with your Storybook prototype that's never seen production?\""}
+  </p>
+</div>
+
+---
+
+## The Short Answer
+
+You're not "throwing away" code - you're replacing UI layer only. Your domain logic, API integrations, and business rules stay. DDS pages aren't prototypes - they're production-ready with tests, accessibility, and documented states.
+
+---
+
+## What You're Actually Replacing
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Layer</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>What Happens</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Your Work</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { layer: 'UI Components', what: 'Replaced by DDS', work: 'Deleted', color: CORAL },
+        { layer: 'Page Layout', what: 'Replaced by DDS', work: 'Deleted', color: CORAL },
+        { layer: 'Styling/CSS', what: 'Replaced by DDS tokens', work: 'Deleted', color: CORAL },
+        { layer: 'Data Fetching', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'API Integration', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'Business Logic', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'Routing', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'Authentication', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.layer}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.what}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.color[100], color: row.color[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.work}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="tip">
+  <strong>The Real Picture:</strong> You delete JSX and CSS. You keep everything else.
+  Your API calls, your hooks, your business logic - untouched.
+</InfoBox>
+
+---
+
+## DDS Pages Are Production-Ready
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    {"\"Storybook Prototype\" vs Reality"}
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"Every DDS page composition includes:"}
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+    {[
+      { item: 'TypeScript interfaces', desc: 'Full type safety, catch errors at compile time' },
+      { item: 'All UI states', desc: 'Loading, empty, error, success - not just happy path' },
+      { item: 'Storybook stories', desc: 'Visual documentation of every state' },
+      { item: 'Interaction tests', desc: 'play() functions verify clicks, forms, flows' },
+      { item: 'Mobile + Desktop', desc: 'Responsive from day one, not afterthought' },
+      { item: 'Accessibility', desc: 'ARIA labels, keyboard nav, screen reader support' },
+      { item: 'Dark mode', desc: 'Theme-aware without extra work' },
+      { item: 'Test IDs', desc: 'Documented selectors for your integration tests' },
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '12px', background: HARBOR[50], borderRadius: RADIUS.md, border: `1px solid ${HARBOR[200]}` }}>
+        <CheckCircle size={16} color={HARBOR[600]} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <div style={{ fontSize: '12px', fontWeight: 600, color: ABYSS[500] }}>{item.item}</div>
+          <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+## "Working" vs "Optimal"
+
+<div style={{ background: SUNRISE[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SUNRISE[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>
+    {"Battle-Tested Can Also Mean Battle-Scarred"}
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"6 months of production means 6 months of:"}
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: CORAL[700] }}>Accumulated Debt</h5>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Quick fixes that became permanent</li>
+        <li>Workarounds for edge cases</li>
+        <li>Inconsistent patterns across pages</li>
+        <li>"TODO: fix later" comments</li>
+        <li>CSS !important chains</li>
+      </ul>
+    </div>
+    <div>
+      <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: HARBOR[700] }}>DDS Fresh Start</h5>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Consistent patterns everywhere</li>
+        <li>Edge cases handled systematically</li>
+        <li>No accumulated workarounds</li>
+        <li>Documented design decisions</li>
+        <li>Token-based styling</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+---
+
+## The Migration Is Incremental
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Page-by-Page Replacement</h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"You don't migrate 15 pages in one sprint. You migrate one page, verify it works, then move to the next."}
+  </p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { step: '1', title: 'Pick lowest-risk page', desc: 'Settings, Profile, or simple list page' },
+      { step: '2', title: 'Write data adapter', desc: '1 file that transforms your API data to DDS interface' },
+      { step: '3', title: 'Replace route', desc: 'Old page component -> new DDS page + adapter' },
+      { step: '4', title: 'Verify in staging', desc: 'Test with real data before production' },
+      { step: '5', title: 'Deploy', desc: 'Feature flag if nervous, direct if confident' },
+      { step: '6', title: 'Delete old code', desc: 'Once stable, remove the old page component' },
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', padding: '12px', background: SLATE[50], borderRadius: RADIUS.md }}>
+        <div style={{ width: '28px', height: '28px', borderRadius: RADIUS.full, background: DEEP_CURRENT[500], display: 'flex', alignItems: 'center', justifyContent: 'center', color: PRIMITIVES.white, fontSize: '13px', fontWeight: 700, flexShrink: 0 }}>{item.step}</div>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.title}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="info">
+  <strong>Rollback Is Easy:</strong> If DDS page has issues, revert the route to use old component.
+  Your old code exists in git history. Nothing is truly "thrown away" until you're confident.
+</InfoBox>
+
+---
+
+## What You Gain
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
+  {[
+    { icon: <Zap size={20} />, title: 'Consistency', desc: 'Same patterns across all products' },
+    { icon: <Shield size={20} />, title: 'Maintenance', desc: 'DDS fixes bugs, you get updates' },
+    { icon: <Users size={20} />, title: 'Accessibility', desc: 'WCAG compliance built-in' },
+    { icon: <GitBranch size={20} />, title: 'Theming', desc: 'Dark mode, brand updates - automatic' },
+    { icon: <Clock size={20} />, title: 'Developer Time', desc: 'Focus on business logic, not buttons' },
+    { icon: <Layers size={20} />, title: 'Documentation', desc: 'Storybook shows every state' },
+  ].map((item, idx) => (
+    <div key={idx} style={{ background: HARBOR[50], borderRadius: RADIUS.lg, padding: '16px', border: `1px solid ${HARBOR[200]}`, textAlign: 'center' }}>
+      <div style={{ width: '40px', height: '40px', borderRadius: RADIUS.full, background: HARBOR[100], display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', color: HARBOR[600] }}>{item.icon}</div>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500], marginBottom: '4px' }}>{item.title}</div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## The Real Question
+
+<div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${DEEP_CURRENT[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    {"Not \"Why throw it away?\" but \"What are you maintaining?\""}
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"Every line of UI code you keep is a line you must:"}
+  </p>
+  <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', color: DUSK_REEF[500] }}>
+    <li>Update when design changes</li>
+    <li>Fix when accessibility requirements evolve</li>
+    <li>Test when dependencies update</li>
+    <li>Maintain when team members leave</li>
+    <li>Document for new hires</li>
+  </ul>
+  <p style={{ margin: '16px 0 0 0', fontSize: '13px', color: DEEP_CURRENT[600], fontWeight: 500 }}>
+    {"With DDS, that maintenance burden shifts to the design system team. Your team focuses on what makes your product unique - the business logic."}
+  </p>
+</div>
+
+---
+
+## Summary
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '24px' }}>
+  <GuidelineCard type="do" title="Replace UI layer only">Your data fetching, API calls, business logic - all stays. Only JSX and CSS changes.</GuidelineCard>
+  <GuidelineCard type="do" title="Migrate incrementally">One page at a time. Verify, deploy, repeat. No big-bang migration needed.</GuidelineCard>
+  <GuidelineCard type="dont" title="Equate 'working' with 'optimal'">6 months of production often means 6 months of accumulated workarounds.</GuidelineCard>
+  <GuidelineCard type="dont" title="Assume DDS is 'unproven'">Every page has tests, stories, and documented states. Production-ready from day one.</GuidelineCard>
+</div>
+
+<div style={{ background: SLATE[50], borderRadius: RADIUS.lg, padding: '16px 20px', border: `1px solid ${SLATE[200]}`, marginBottom: '16px' }}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Full Migration Guide:"}</strong>{" See "}<a href="/docs/developers-migration-strategy--docs" style={{ color: DEEP_CURRENT[600] }}>{"Migration Strategy"}</a>{" for the complete 5-phase approach, adapter patterns, and page-by-page replacement process."}
+  </p>
+</div>
+
+---
+
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderTop: `1px solid ${SLATE[200]}` }}>
+  <a href="/docs/developers-faq-q4-testing--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>← Q4: Testing</a>
+  <a href="/docs/developers-faq-q6-performance--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>Next: Q6 Performance →</a>
+</div>

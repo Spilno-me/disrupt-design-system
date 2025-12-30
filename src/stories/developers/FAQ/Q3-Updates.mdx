@@ -1,0 +1,185 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { GitBranch, Shield, Layers, CheckCircle, ArrowLeft } from 'lucide-react';
+import { BrandHero, InfoBox, SectionHeader, GuidelineCard, CodeBlock, ABYSS, DEEP_CURRENT, DUSK_REEF, CORAL, HARBOR, SUNRISE, PRIMITIVES, SLATE, RADIUS, SPACING } from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/Q3-Updates" />
+
+<div style={{ marginBottom: '24px' }}>
+  <a href="/docs/developers-faq-overview--docs" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    <ArrowLeft size={14} /> Back to FAQ Overview
+  </a>
+</div>
+
+<BrandHero
+  title="Q3: What If DDS Updates Break Our App?"
+  description="What happens when DDS releases a breaking change?"
+  gradient="primary"
+  decorativeIcon={<GitBranch size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<div style={{ background: CORAL[50], borderRadius: RADIUS.xl, padding: '24px', border: `1px solid ${CORAL[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>The Concern</h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"DDS releases v3.0. Half my pages break because prop names changed. Now I have to update 15 pages simultaneously. With components, I could update one at a time.\""}
+  </p>
+</div>
+
+---
+
+## The Short Answer
+
+DDS uses semantic versioning. Breaking changes only happen in MAJOR versions, TypeScript catches them at CI, and adapters isolate the impact to ONE file.
+
+---
+
+## Semantic Versioning Contract
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+    <div style={{ background: CORAL[500], color: PRIMITIVES.white, padding: '12px 20px', borderRadius: RADIUS.md, fontSize: '24px', fontWeight: 700, fontFamily: 'monospace' }}>3</div>
+    <span style={{ fontSize: '24px', color: SLATE[400] }}>.</span>
+    <div style={{ background: DEEP_CURRENT[500], color: PRIMITIVES.white, padding: '12px 20px', borderRadius: RADIUS.md, fontSize: '24px', fontWeight: 700, fontFamily: 'monospace' }}>2</div>
+    <span style={{ fontSize: '24px', color: SLATE[400] }}>.</span>
+    <div style={{ background: HARBOR[500], color: PRIMITIVES.white, padding: '12px 20px', borderRadius: RADIUS.md, fontSize: '24px', fontWeight: 700, fontFamily: 'monospace' }}>1</div>
+  </div>
+  <div style={{ display: 'flex', justifyContent: 'center', gap: '32px', fontSize: '12px' }}>
+    <div style={{ textAlign: 'center' }}><div style={{ fontWeight: 600, color: CORAL[600] }}>MAJOR</div><div style={{ color: DUSK_REEF[500] }}>Breaking</div></div>
+    <div style={{ textAlign: 'center' }}><div style={{ fontWeight: 600, color: DEEP_CURRENT[600] }}>MINOR</div><div style={{ color: DUSK_REEF[500] }}>Features</div></div>
+    <div style={{ textAlign: 'center' }}><div style={{ fontWeight: 600, color: HARBOR[600] }}>PATCH</div><div style={{ color: DUSK_REEF[500] }}>Fixes</div></div>
+  </div>
+</div>
+
+---
+
+## What Happens With Each Version Type
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Change</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Version</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Your Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { change: 'Bug fix in styling', version: 'PATCH', versionColor: HARBOR, action: 'None - auto-works' },
+        { change: 'New optional prop added', version: 'MINOR', versionColor: DEEP_CURRENT, action: 'None - auto-works' },
+        { change: 'Visual redesign (same API)', version: 'MINOR', versionColor: DEEP_CURRENT, action: 'None - auto-works' },
+        { change: 'Prop renamed', version: 'MAJOR', versionColor: CORAL, action: 'Update adapter (1 file)' },
+        { change: 'New required prop', version: 'MAJOR', versionColor: CORAL, action: 'Update adapter (1 file)' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.change}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.versionColor[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 600 }}>{row.version}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.action}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+## Your Safety Net: TypeScript + Adapters
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+  <div style={{ background: HARBOR[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${HARBOR[200]}` }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      <Shield size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      TypeScript Catches Breaks
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"If DDS changes an interface, TypeScript fails at CI before anything reaches production. You see the error, you fix it, you move on."}
+    </p>
+  </div>
+  <div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${DEEP_CURRENT[200]}` }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+      <Layers size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Adapters Isolate Impact
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"All DDS imports live in adapter files. Breaking change = update ONE file, not hunt through 15 pages."}
+    </p>
+  </div>
+</div>
+
+---
+
+## Version Pinning - Your Choice
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <CodeBlock
+    language="json"
+    code={`{
+  "dependencies": {
+    // RECOMMENDED: Auto-receive patches and features, protected from breaking
+    "@dds/design-system": "^2.7.0",
+
+    // CONSERVATIVE: Only patches, miss new features
+    "@dds/design-system": "~2.7.0",
+
+    // LOCKED: No auto-updates, manual bumps only
+    "@dds/design-system": "2.7.0"
+  }
+}`}
+  />
+</div>
+
+<InfoBox variant="tip">
+  <strong>Recommended:</strong> Use <code>^2.7.0</code> (caret). You get bug fixes and new features automatically, but stay protected from breaking changes until you explicitly upgrade to v3.
+</InfoBox>
+
+---
+
+## What About "Update 15 Pages"?
+
+<div style={{ background: SUNRISE[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SUNRISE[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>That's Not How DDS Works</h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"With traditional component libraries, you import components everywhere. Breaking change = find/replace across codebase."}
+  </p>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>With DDS page compositions + adapters:</p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    {[
+      'DDS imports live in adapter files (1-2 per page)',
+      'Your routes import YOUR adapters, not DDS directly',
+      'Breaking change = update adapter file, routes unchanged',
+      '15 pages using same adapter = 1 file to update, not 15',
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <CheckCircle size={14} color={HARBOR[500]} />
+        <span style={{ fontSize: '12px', color: ABYSS[500] }}>{item}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+## Summary
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '24px' }}>
+  <GuidelineCard type="do" title="Use caret versioning">^2.7.0 gives you patches + features, protects from breaking changes.</GuidelineCard>
+  <GuidelineCard type="do" title="Trust TypeScript">CI catches interface mismatches before production. That's your safety net.</GuidelineCard>
+  <GuidelineCard type="dont" title="Import DDS everywhere">Use adapters. Breaking changes should touch 1-2 files, not your whole codebase.</GuidelineCard>
+  <GuidelineCard type="dont" title="Skip the changelog">Major versions come with migration guides. Read them before upgrading.</GuidelineCard>
+</div>
+
+<div style={{ background: SLATE[50], borderRadius: RADIUS.lg, padding: '16px 20px', border: `1px solid ${SLATE[200]}`, marginBottom: '16px' }}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Adapter Examples:"}</strong>{" See "}<a href="/docs/developers-adapter-patterns--docs" style={{ color: DEEP_CURRENT[600] }}>{"Adapter Patterns"}</a>{" for real code examples of adapters, wrapper components, and file organization."}
+  </p>
+</div>
+
+---
+
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderTop: `1px solid ${SLATE[200]}` }}>
+  <a href="/docs/developers-faq-q2-edge-cases--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>← Q2: Edge Cases</a>
+  <a href="/docs/developers-faq-q4-testing--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>Next: Q4 Testing →</a>
+</div>

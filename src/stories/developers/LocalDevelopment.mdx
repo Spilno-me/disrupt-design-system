@@ -1,0 +1,631 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  FolderSync,
+  Terminal,
+  Package,
+  ArrowRight,
+  ArrowDown,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Zap,
+  RefreshCw,
+  Link,
+  FolderOpen,
+  Eye,
+  Play,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Local Development" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Local Development"
+  description="Test DDS in your app before publishing. Simple workflows for local integration testing."
+  gradient="teal"
+  decorativeIcon={<FolderSync size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Goal:</strong> Verify DDS components work in your app before publishing to npm.
+  Changes in DDS should reflect immediately in your app during development.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Choose Your Method</h2>
+
+<SectionHeader
+  icon={<Zap size={20} />}
+  title="Three Options"
+  description="Pick based on your needs."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    {
+      title: 'npm pack',
+      time: '2 min setup',
+      best: 'Quick verification',
+      desc: 'Build once, install locally. Good for final testing before publish.',
+      color: HARBOR,
+    },
+    {
+      title: 'yalc',
+      time: '5 min setup',
+      best: 'Active development',
+      desc: 'Hot-reload changes. Best for iterating on DDS while testing in app.',
+      color: DEEP_CURRENT,
+    },
+    {
+      title: 'Monorepo',
+      time: '30 min setup',
+      best: 'Long-term',
+      desc: 'Both projects in one repo. Best for teams working on both.',
+      color: DUSK_REEF,
+    },
+  ].map((method, idx) => (
+    <div key={idx} style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '20px',
+      border: `2px solid ${method.color[300]}`,
+    }}>
+      <div style={{
+        display: 'inline-block',
+        background: method.color[100],
+        color: method.color[700],
+        padding: '4px 10px',
+        borderRadius: RADIUS.full,
+        fontSize: '11px',
+        fontWeight: 600,
+        marginBottom: '12px',
+      }}>{method.time}</div>
+      <h3 style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: 700, color: ABYSS[500] }}>{method.title}</h3>
+      <div style={{ fontSize: '12px', color: method.color[600], marginBottom: '12px' }}>Best for: {method.best}</div>
+      <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>{method.desc}</p>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Method 1: npm pack (Recommended for Quick Testing)</h2>
+
+<SectionHeader
+  icon={<Package size={20} />}
+  title="Build and Install Locally"
+  description="Simulates exactly what npm publish would do."
+/>
+
+<InfoBox variant="info">
+  This is the most reliable method. It creates a real package tarball, just like npm publish would.
+</InfoBox>
+
+{/* Step by step */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {/* Step 1 */}
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: RADIUS.full,
+        background: HARBOR[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: PRIMITIVES.white,
+        fontSize: '13px',
+        fontWeight: 700,
+        flexShrink: 0,
+      }}>1</div>
+      <div style={{ flex: 1 }}>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+          Build DDS
+        </h4>
+        <CodeBlock
+          filename="Terminal (in DDS folder)"
+          language="bash"
+          code={`cd ~/Desktop/DDS
+npm run build`}
+        />
+      </div>
+    </div>
+
+    {/* Step 2 */}
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: RADIUS.full,
+        background: HARBOR[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: PRIMITIVES.white,
+        fontSize: '13px',
+        fontWeight: 700,
+        flexShrink: 0,
+      }}>2</div>
+      <div style={{ flex: 1 }}>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+          Create package tarball
+        </h4>
+        <CodeBlock
+          filename="Terminal (in DDS folder)"
+          language="bash"
+          code={`npm pack
+# Creates: adrozdenko-design-system-2.7.0.tgz`}
+        />
+      </div>
+    </div>
+
+    {/* Step 3 */}
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: RADIUS.full,
+        background: HARBOR[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: PRIMITIVES.white,
+        fontSize: '13px',
+        fontWeight: 700,
+        flexShrink: 0,
+      }}>3</div>
+      <div style={{ flex: 1 }}>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+          Install in your app
+        </h4>
+        <CodeBlock
+          filename="Terminal (in your app folder)"
+          language="bash"
+          code={`cd ~/Projects/my-app
+npm install ~/Desktop/DDS/adrozdenko-design-system-2.7.0.tgz`}
+        />
+      </div>
+    </div>
+
+    {/* Step 4 */}
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: RADIUS.full,
+        background: HARBOR[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: PRIMITIVES.white,
+        fontSize: '13px',
+        fontWeight: 700,
+        flexShrink: 0,
+      }}>4</div>
+      <div style={{ flex: 1 }}>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+          Test your app
+        </h4>
+        <CodeBlock
+          filename="Terminal (in your app folder)"
+          language="bash"
+          code={`npm run dev
+# DDS components are now available from local build`}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Quick script */}
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+    One-liner (after initial setup)
+  </h4>
+  <CodeBlock
+    language="bash"
+    code={`# Run from DDS folder - builds, packs, and installs in one go
+npm run build && npm pack && cd ~/Projects/my-app && npm install ~/Desktop/DDS/*.tgz`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Method 2: yalc (Best for Active Development)</h2>
+
+<SectionHeader
+  icon={<RefreshCw size={20} />}
+  title="Hot-Reload During Development"
+  description="Changes in DDS reflect in your app automatically."
+/>
+
+<InfoBox variant="tip">
+  <strong>Why yalc over npm link?</strong> npm link often breaks with React (multiple React instances).
+  yalc simulates a real install, avoiding these issues.
+</InfoBox>
+
+{/* Setup */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    One-time Setup
+  </h4>
+  <CodeBlock
+    language="bash"
+    code={`# Install yalc globally
+npm install -g yalc`}
+  />
+</div>
+
+{/* Workflow */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Development Workflow
+  </h4>
+
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {/* Step 1 */}
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: RADIUS.full,
+        background: DEEP_CURRENT[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: PRIMITIVES.white,
+        fontSize: '13px',
+        fontWeight: 700,
+        flexShrink: 0,
+      }}>1</div>
+      <div style={{ flex: 1 }}>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+          Publish DDS to local yalc store
+        </h4>
+        <CodeBlock
+          filename="Terminal (in DDS folder)"
+          language="bash"
+          code={`cd ~/Desktop/DDS
+npm run build
+yalc publish`}
+        />
+      </div>
+    </div>
+
+    {/* Step 2 */}
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: RADIUS.full,
+        background: DEEP_CURRENT[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: PRIMITIVES.white,
+        fontSize: '13px',
+        fontWeight: 700,
+        flexShrink: 0,
+      }}>2</div>
+      <div style={{ flex: 1 }}>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+          Link in your app (first time only)
+        </h4>
+        <CodeBlock
+          filename="Terminal (in your app folder)"
+          language="bash"
+          code={`cd ~/Projects/my-app
+yalc add @adrozdenko/design-system`}
+        />
+      </div>
+    </div>
+
+    {/* Step 3 */}
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div style={{
+        width: '28px',
+        height: '28px',
+        borderRadius: RADIUS.full,
+        background: DEEP_CURRENT[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: PRIMITIVES.white,
+        fontSize: '13px',
+        fontWeight: 700,
+        flexShrink: 0,
+      }}>3</div>
+      <div style={{ flex: 1 }}>
+        <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+          Push updates (after each DDS change)
+        </h4>
+        <CodeBlock
+          filename="Terminal (in DDS folder)"
+          language="bash"
+          code={`# After making changes in DDS:
+npm run build
+yalc push
+# Your app automatically gets the update`}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Watch mode */}
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    Watch Mode (Auto-push on changes)
+  </h4>
+  <CodeBlock
+    language="bash"
+    code={`# Terminal 1: DDS folder - watch and auto-push
+npm run build:watch & yalc push --watch
+
+# Terminal 2: Your app folder - dev server
+npm run dev`}
+  />
+  <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    Now changes in DDS automatically reflect in your app.
+  </p>
+</div>
+
+{/* Cleanup */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+    Cleanup (when done testing)
+  </h4>
+  <CodeBlock
+    filename="Terminal (in your app folder)"
+    language="bash"
+    code={`# Remove yalc link and restore npm version
+yalc remove @adrozdenko/design-system
+npm install`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Method 3: File Path (Simplest)</h2>
+
+<SectionHeader
+  icon={<FolderOpen size={20} />}
+  title="Direct File Reference"
+  description="Point package.json directly to local DDS."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <CodeBlock
+    filename="your-app/package.json"
+    language="json"
+    highlightLines={[3]}
+    code={`{
+  "dependencies": {
+    "@adrozdenko/design-system": "file:../DDS"
+  }
+}`}
+  />
+  <p style={{ margin: '16px 0 0 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    Then run <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm install</code> in your app.
+  </p>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Caveat:</strong> This links to source, not built output. Make sure DDS is built first,
+  or your app's bundler may struggle with the source files.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Comparison</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Method</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Setup</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Update Flow</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Best For</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { method: 'npm pack', setup: 'None', update: 'Rebuild + reinstall', best: 'Final verification' },
+        { method: 'yalc', setup: 'npm i -g yalc', update: 'yalc push', best: 'Active development' },
+        { method: 'File path', setup: 'Edit package.json', update: 'Rebuild DDS', best: 'Quick tests' },
+        { method: 'npm link', setup: 'None', update: 'Auto (but buggy)', best: 'Avoid (React issues)' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', fontWeight: 500, color: ABYSS[500] }}>{row.method}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.setup}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.update}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.best}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Use npm pack for verification">
+    Before publishing, always test with npm pack. It's the closest simulation to what consumers will get.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Use yalc for iteration">
+    When actively developing DDS alongside your app, yalc gives you the fastest feedback loop.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Use npm link">
+    npm link often causes "multiple React instances" errors. yalc avoids this by simulating a real install.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Forget to cleanup">
+    Before committing, remove yalc links and file paths. Your package.json should reference the npm version.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Troubleshooting</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {[
+      {
+        problem: '"Invalid hook call" or "Multiple React instances"',
+        solution: 'Use yalc instead of npm link. Or ensure both projects use the same React version.',
+      },
+      {
+        problem: 'Changes not reflecting',
+        solution: 'Clear your app\'s node_modules/.cache and restart the dev server.',
+      },
+      {
+        problem: 'TypeScript errors after linking',
+        solution: 'Run npm run build in DDS first. Types are generated during build.',
+      },
+      {
+        problem: 'Styles not loading',
+        solution: 'Make sure you import the stylesheet: import \'@adrozdenko/design-system/styles\'',
+      },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        padding: '16px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+        borderLeft: `4px solid ${CORAL[500]}`,
+      }}>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: CORAL[700], marginBottom: '4px' }}>
+          {item.problem}
+        </div>
+        <div style={{ fontSize: '13px', color: DUSK_REEF[500] }}>
+          {item.solution}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Related Documentation</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: SPACING.px.section,
+}}>
+  <NavCard
+    icon={<Package size={24} />}
+    title="Integration Overview"
+    description="How to integrate DDS into your application."
+    href="/docs/developers-integration-overview--docs"
+  />
+  <NavCard
+    icon={<RefreshCw size={24} />}
+    title="Versioning & Updates"
+    description="How npm versions and updates work."
+    href="/docs/developers-versioning-updates--docs"
+  />
+</div>

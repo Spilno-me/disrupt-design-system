@@ -1,0 +1,286 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  HelpCircle,
+  Clock,
+  Puzzle,
+  RefreshCw,
+  Shield,
+  Layers,
+  Gauge,
+  CircleDot,
+  ArrowRight,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SLATE,
+  RADIUS,
+  SPACING,
+} from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/Overview" />
+
+{/* Hero Header */}
+<BrandHero
+  title="FAQ for Skeptics"
+  description="Honest answers to hard questions about the DDS ownership model."
+  gradient="purple"
+  decorativeIcon={<HelpCircle size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="info">
+  These are real concerns raised by experienced developers. We don't dodge them.
+  Click any topic below to dive deep.
+</InfoBox>
+
+---
+
+## Quick Navigation
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+  gap: '16px',
+  marginBottom: '32px',
+}}>
+  {[
+    {
+      id: 'Q1',
+      title: 'Delivery Concerns',
+      question: 'What if DDS can\'t deliver on time?',
+      icon: Clock,
+      color: DEEP_CURRENT,
+      link: '/docs/developers-faq-q1-delivery--docs',
+      topics: ['Emergency Protocol', 'Time Estimates', 'Scaling'],
+    },
+    {
+      id: 'Q2',
+      title: 'Edge Cases',
+      question: 'What about features DDS doesn\'t support?',
+      icon: Puzzle,
+      color: HARBOR,
+      link: '/docs/developers-faq-q2-edge-cases--docs',
+      topics: ['Third-party Libs', 'Custom Logic', 'Animations'],
+    },
+    {
+      id: 'Q3',
+      title: 'Breaking Changes',
+      question: 'What if DDS updates break our app?',
+      icon: RefreshCw,
+      color: SUNRISE,
+      link: '/docs/developers-faq-q3-updates--docs',
+      topics: ['Semver', 'Adapter Pattern', 'Changelog'],
+    },
+    {
+      id: 'Q4',
+      title: 'Testing & SLA',
+      question: 'Who owns testing and bugs?',
+      icon: Shield,
+      color: CORAL,
+      link: '/docs/developers-faq-q4-testing--docs',
+      topics: ['Test Ownership', 'Bug Response SLA', 'Crisis Handling'],
+    },
+    {
+      id: 'Q5',
+      title: 'Migration Risk',
+      question: 'Why throw away working code?',
+      icon: Layers,
+      color: DUSK_REEF,
+      link: '/docs/developers-faq-q5-migration--docs',
+      topics: ['Incremental Adoption', 'Coexistence', 'Rollback'],
+    },
+    {
+      id: 'Q6',
+      title: 'Performance',
+      question: 'What about bundle size and performance?',
+      icon: Gauge,
+      color: ABYSS,
+      link: '/docs/developers-faq-q6-performance--docs',
+      topics: ['Tree-shaking', 'Bundle Size', 'Browser Support'],
+    },
+    {
+      id: 'Q7',
+      title: 'Quick Topics',
+      question: 'Security, customization, cost, governance?',
+      icon: Clock,
+      color: CORAL,
+      link: '/docs/developers-faq-q7-quick-topics--docs',
+      topics: ['Data Security', 'No Custom Styles', 'Free Internal'],
+    },
+    {
+      id: 'Q8',
+      title: 'DDS Fails',
+      question: 'What if DDS stops being maintained?',
+      icon: Puzzle,
+      color: SUNRISE,
+      link: '/docs/developers-faq-q8-dds-fails--docs',
+      topics: ['Exit Strategy', 'Source Ownership', 'No Lock-in'],
+    },
+    {
+      id: 'Q9',
+      title: 'Engagement',
+      question: 'How do I report issues and get support?',
+      icon: Shield,
+      color: HARBOR,
+      link: '/docs/developers-faq-q9-engagement--docs',
+      topics: ['Issue Channels', 'Design Disagreements', 'i18n'],
+    },
+    {
+      id: 'Gaps',
+      title: 'Known Gaps',
+      question: 'What doesn\'t DDS cover yet?',
+      icon: CircleDot,
+      color: SLATE,
+      link: '/docs/developers-faq-known-gaps--docs',
+      topics: ['Roadmap', 'Bus Factor', 'Rollback Strategy'],
+    },
+  ].map((item) => (
+    <a
+      key={item.id}
+      href={item.link}
+      style={{
+        display: 'block',
+        textDecoration: 'none',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.lg,
+        padding: '20px',
+        border: `1px solid ${SLATE[200]}`,
+        transition: 'all 0.2s ease',
+        cursor: 'pointer',
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.borderColor = item.color[400];
+        e.currentTarget.style.boxShadow = `0 4px 12px ${item.color[100]}`;
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.borderColor = SLATE[200];
+        e.currentTarget.style.boxShadow = 'none';
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+        <div style={{
+          padding: '12px',
+          borderRadius: RADIUS.md,
+          background: item.color[50],
+          flexShrink: 0,
+        }}>
+          <item.icon size={24} color={item.color[600]} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 700,
+              color: item.color[600],
+              background: item.color[100],
+              padding: '2px 8px',
+              borderRadius: RADIUS.full,
+            }}>{item.id}</span>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>{item.title}</span>
+          </div>
+          <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+            {item.question}
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            {item.topics.map((topic) => (
+              <span key={topic} style={{
+                fontSize: '10px',
+                color: DUSK_REEF[400],
+                background: SLATE[100],
+                padding: '2px 6px',
+                borderRadius: RADIUS.sm,
+              }}>{topic}</span>
+            ))}
+          </div>
+        </div>
+        <ArrowRight size={16} color={SLATE[400]} style={{ flexShrink: 0, marginTop: '4px' }} />
+      </div>
+    </a>
+  ))}
+</div>
+
+---
+
+## TL;DR Summary
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+    {[
+      { q: 'Can\'t deliver on time?', a: 'Interface-First Protocol (you build to our spec)' },
+      { q: 'Missing feature?', a: 'Slots for custom content, or Emergency Build' },
+      { q: 'Updates break app?', a: 'Semver + Adapter Pattern isolates DDS' },
+      { q: 'Who owns bugs?', a: 'DDS owns UI bugs. You own integration.' },
+      { q: 'Why migrate?', a: 'Don\'t migrate everything. Start with new features.' },
+      { q: 'Bundle too big?', a: 'Tree-shaking works. Import what you need.' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        padding: '12px',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+      }}>
+        <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '4px' }}>
+          {item.q}
+        </div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>
+          {item.a}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Honesty Notice:</strong> DDS is new. Some processes (like Interface-First Protocol) are
+  designed but not yet validated in production. We mark theoretical vs. proven throughout these docs.
+</InfoBox>
+
+---
+
+## Related Documentation
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: '12px',
+}}>
+  {[
+    { title: 'Migration Strategy', link: '/docs/developers-migration-strategy--docs', desc: 'Step-by-step adoption guide' },
+    { title: 'Adapter Patterns', link: '/docs/developers-adapter-patterns--docs', desc: 'Code examples for isolation' },
+    { title: 'Browser Compatibility', link: '/docs/developers-browser-compatibility--docs', desc: 'Supported browsers & workarounds' },
+  ].map((item) => (
+    <a
+      key={item.title}
+      href={item.link}
+      style={{
+        display: 'block',
+        textDecoration: 'none',
+        padding: '16px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{ fontSize: '13px', fontWeight: 600, color: DEEP_CURRENT[600], marginBottom: '4px' }}>
+        {item.title}
+      </div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>
+        {item.desc}
+      </div>
+    </a>
+  ))}
+</div>

@@ -1,0 +1,166 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Gauge, Package, Layers, AlertTriangle, ArrowLeft } from 'lucide-react';
+import { BrandHero, InfoBox, SectionHeader, GuidelineCard, CodeBlock, ABYSS, DEEP_CURRENT, DUSK_REEF, CORAL, HARBOR, SUNRISE, PRIMITIVES, SLATE, RADIUS, SPACING } from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/Q6-Performance" />
+
+<div style={{ marginBottom: '24px' }}>
+  <a href="/docs/developers-faq-overview--docs" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    <ArrowLeft size={14} /> Back to FAQ Overview
+  </a>
+</div>
+
+<BrandHero
+  title="Q6: Performance and Bundle Size"
+  description="Does DDS add bloat? Who catches memory leaks?"
+  gradient="teal"
+  decorativeIcon={<Gauge size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<div style={{ background: CORAL[50], borderRadius: RADIUS.xl, padding: '24px', border: `1px solid ${CORAL[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>The Concern</h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"If DDS ships a component with a memory leak, how do we even know until production melts? What's the bundle size impact? You testing Safari? Edge? Mobile Chrome?\""}
+  </p>
+</div>
+
+---
+
+## The Short Answer
+
+Tree-shaking works. Import what you need. Modern browsers only (no IE11). Performance testing is reactive, not proactive - DDS doesn't have automated perf benchmarks yet.
+
+---
+
+## Browser Support Matrix
+
+DDS officially supports modern browsers. No IE11.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '24px' }}>
+  {[
+    { browser: 'Safari', version: '16+', platforms: 'iOS & macOS', color: DEEP_CURRENT },
+    { browser: 'Chrome', version: '100+', platforms: 'Desktop & Android', color: HARBOR },
+    { browser: 'Firefox', version: '100+', platforms: 'Desktop', color: SUNRISE },
+    { browser: 'Edge', version: '100+', platforms: 'Chromium', color: ABYSS },
+  ].map((item, idx) => (
+    <div key={idx} style={{ background: item.color[50], borderRadius: RADIUS.lg, padding: '16px', border: `1px solid ${item.color[200]}`, textAlign: 'center' }}>
+      <div style={{ fontSize: '15px', fontWeight: 600, color: item.color[700] }}>{item.browser}</div>
+      <div style={{ fontSize: '20px', fontWeight: 700, color: item.color[600], margin: '4px 0' }}>{item.version}</div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.platforms}</div>
+    </div>
+  ))}
+</div>
+
+<InfoBox variant="warning">
+  <strong>No IE11:</strong> If your enterprise customers require IE11, DDS is not for you.
+  We use modern CSS (dvh units, backdrop-filter, CSS Grid) that IE11 cannot support.
+</InfoBox>
+
+---
+
+## Who Tests What
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Test Type</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Owner</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>How</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { type: 'Cross-browser rendering', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Chromatic visual regression on Chrome, Safari, Firefox' },
+        { type: 'iOS Safari viewport bugs', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Manual testing + documented workarounds' },
+        { type: 'Bundle size', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Tree-shaking, import only what you use' },
+        { type: 'Memory leaks in DDS', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Consumer reports issue, DDS fixes in patch' },
+        { type: 'Performance in your app', owner: 'Consumer', ownerColor: DUSK_REEF, how: 'Your profiling, your monitoring' },
+        { type: 'Memory leaks in your code', owner: 'Consumer', ownerColor: DUSK_REEF, how: 'Your responsibility' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.type}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.ownerColor[100], color: row.ownerColor[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.owner}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.how}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+## Bundle Size Philosophy
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+  <div style={{ background: HARBOR[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${HARBOR[200]}` }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+      <Package size={20} color={HARBOR[600]} />
+      <h5 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>Tree-Shaking Works</h5>
+    </div>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Import only what you use. "}<code>{'import { Button } from "@dds/design-system"'}</code>{" doesn't pull the entire library. Modern bundlers (Vite, webpack 5) handle this automatically."}
+    </p>
+  </div>
+
+  <div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${DEEP_CURRENT[200]}` }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+      <Layers size={20} color={DEEP_CURRENT[600]} />
+      <h5 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>Shared Dependencies</h5>
+    </div>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"DDS uses Radix UI primitives, react-hook-form, and standard React patterns. If you already use these, there's minimal additional overhead."}
+    </p>
+  </div>
+</div>
+
+---
+
+## The Honest Answer on Performance Testing
+
+<div style={{ background: SUNRISE[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SUNRISE[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>
+    <AlertTriangle size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    Performance Testing Is Not Automated (Yet)
+  </h4>
+  <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"DDS does NOT have automated performance benchmarks or memory leak detection today. Here's the current process:"}
+  </p>
+  <ol style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', color: DUSK_REEF[500] }}>
+    <li>Consumer notices performance issue in production</li>
+    <li>Consumer reports to DDS with reproduction steps</li>
+    <li>DDS investigates and fixes in patch release</li>
+    <li>Consumer updates DDS version</li>
+  </ol>
+  <p style={{ margin: '12px 0 0 0', fontSize: '13px', color: SUNRISE[700], fontWeight: 500 }}>
+    {"This is a known gap. Automated performance testing is on the roadmap."}
+  </p>
+</div>
+
+---
+
+## Summary
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '24px' }}>
+  <GuidelineCard type="do" title="Modern browsers only">Safari 16+, Chrome 100+, Firefox 100+, Edge 100+. Documented in BrowserCompatibility.mdx.</GuidelineCard>
+  <GuidelineCard type="do" title="Tree-shaking by default">Import only what you use. Bundle size grows with usage, not with DDS version.</GuidelineCard>
+  <GuidelineCard type="dont" title="Expect IE11 support">DDS uses modern CSS that IE11 cannot support. No polyfills planned.</GuidelineCard>
+  <GuidelineCard type="dont" title="Assume perf is auto-tested">Performance testing is reactive, not proactive. Report issues, we fix them.</GuidelineCard>
+</div>
+
+<div style={{ background: SLATE[50], borderRadius: RADIUS.lg, padding: '16px 20px', border: `1px solid ${SLATE[200]}`, marginBottom: '16px' }}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Browser Details:"}</strong>{" See "}<a href="/docs/developers-browser-compatibility--docs" style={{ color: DEEP_CURRENT[600] }}>{"Browser Compatibility"}</a>{" for known issues, workarounds, and the iOS 26 viewport bug fix."}
+  </p>
+</div>
+
+---
+
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderTop: `1px solid ${SLATE[200]}` }}>
+  <a href="/docs/developers-faq-q5-migration--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>← Q5: Migration</a>
+  <a href="/docs/developers-faq-q7-quick-topics--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>Next: Q7: Quick Topics →</a>
+</div>

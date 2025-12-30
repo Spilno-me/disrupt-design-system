@@ -67,6 +67,7 @@
  */
 
 import * as React from 'react'
+import { PortalContainerProvider } from '../../components/ui/sheet'
 
 // =============================================================================
 // SHARED STATUS BAR DEFAULTS (Single source of truth)
@@ -931,6 +932,10 @@ export const IPhoneMobileFrame: React.FC<IPhoneMobileFrameProps> = ({
   const frameColor = '#2a2a2a' // Dark titanium frame
   const bezelWidth = 10
 
+  // Ref for the screen container - used for portal containment
+  // Using state + callback ref pattern to trigger re-render when ref is set
+  const [screenContainer, setScreenContainer] = React.useState<HTMLDivElement | null>(null)
+
   const contentWidth = specs.width
   const contentHeight = specs.height
 
@@ -987,7 +992,9 @@ export const IPhoneMobileFrame: React.FC<IPhoneMobileFrameProps> = ({
           }}
         >
           {/* Screen area - clip-path ensures proper corner clipping for iframes */}
+          {/* This div serves as the portal container for Sheet/Drawer components */}
           <div
+            ref={setScreenContainer}
             className="relative overflow-hidden flex flex-col"
             style={{
               width: `${contentWidth}px`,
@@ -1045,7 +1052,9 @@ export const IPhoneMobileFrame: React.FC<IPhoneMobileFrameProps> = ({
                       height: `${iframeHeight}px`,
                     }}
                   >
-                    {children}
+                    <PortalContainerProvider container={screenContainer}>
+                      {children}
+                    </PortalContainerProvider>
                   </div>
                 )}
 
@@ -1096,7 +1105,9 @@ export const IPhoneMobileFrame: React.FC<IPhoneMobileFrameProps> = ({
                       backgroundColor: '#fff',
                     }}
                   >
-                    {children}
+                    <PortalContainerProvider container={screenContainer}>
+                      {children}
+                    </PortalContainerProvider>
                   </div>
                 )}
 
@@ -1530,6 +1541,260 @@ export const IPadFrame: React.FC<IPadFrameProps> = ({
           )}
         </div>
       </div>
+      </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// IPAD MOBILE FRAME (iframe for real CSS media query testing)
+// =============================================================================
+
+export interface IPadMobileFrameProps {
+  /** iPad model to simulate (default: "ipadPro11") */
+  model?: IPadModel
+  /** Orientation: portrait or landscape (default: "landscape") */
+  orientation?: 'portrait' | 'landscape'
+  /** Storybook story ID to embed (e.g., "flow-dashboard--default") */
+  storyId?: string
+  /** Content to render (alternative to storyId for simple content) */
+  children?: React.ReactNode
+  /** Scale factor for the frame (default: 0.5 to fit in viewport) */
+  scale?: number
+  /** Additional className for the outer container */
+  className?: string
+  /** Show Safari browser chrome (address bar + toolbar) */
+  showBrowser?: boolean
+  /** URL to display in Safari address bar */
+  browserUrl?: string
+}
+
+/**
+ * IPadMobileFrame - iPad frame with REAL viewport via iframe
+ *
+ * Uses an actual iframe to render content, making CSS media queries work correctly.
+ * The iframe has the actual device dimensions, triggering responsive breakpoints.
+ *
+ * ## Content Modes
+ * 1. **storyId** - Embeds another Storybook story in an iframe (CSS works!)
+ * 2. **children** - Renders children directly (CSS won't work, visual only)
+ *
+ * ## Orientation
+ * - `portrait` - Standard upright iPad view
+ * - `landscape` - Rotated iPad view (default, better for most dashboards)
+ *
+ * @example Native app - landscape (default)
+ * ```tsx
+ * <IPadMobileFrame
+ *   model="ipadPro11"
+ *   storyId="flow-dashboard--default"
+ * />
+ * ```
+ *
+ * @example Portrait orientation
+ * ```tsx
+ * <IPadMobileFrame
+ *   model="ipadPro11"
+ *   orientation="portrait"
+ *   storyId="flow-dashboard--default"
+ * />
+ * ```
+ *
+ * @example With Safari browser chrome
+ * ```tsx
+ * <IPadMobileFrame
+ *   model="ipadPro11"
+ *   storyId="flow-dashboard--default"
+ *   showBrowser
+ *   browserUrl="flow.disrupt.app"
+ * />
+ * ```
+ */
+export const IPadMobileFrame: React.FC<IPadMobileFrameProps> = ({
+  model = 'ipadPro11',
+  orientation = 'landscape',
+  storyId,
+  children,
+  scale = 0.5,
+  className,
+  showBrowser = false,
+  browserUrl = 'flow.disrupt.app',
+}) => {
+  const specs = IPAD_SPECS[model]
+  const frameColor = '#2a2a2a' // Dark titanium frame
+  const bezelWidth = 12 // iPads have thicker bezels
+
+  // Swap dimensions for orientation
+  const isLandscape = orientation === 'landscape'
+  const contentWidth = isLandscape ? specs.height : specs.width
+  const contentHeight = isLandscape ? specs.width : specs.height
+
+  // Safari browser chrome heights (iPad style)
+  const SAFARI_ADDRESS_BAR_HEIGHT = 50
+  const SAFARI_TOOLBAR_HEIGHT = 44
+  const safariTopHeight = showBrowser ? specs.safeAreaTop + SAFARI_ADDRESS_BAR_HEIGHT : 0
+  const safariBottomHeight = showBrowser ? SAFARI_TOOLBAR_HEIGHT + specs.safeAreaBottom : 0
+  const safariTotalHeight = safariTopHeight + safariBottomHeight
+
+  // Content (iframe) height after Safari chrome
+  const iframeHeight = showBrowser ? contentHeight - safariTotalHeight : contentHeight
+
+  // Build iframe URL for Storybook story
+  const iframeSrc = storyId
+    ? `/iframe.html?id=${storyId}&viewMode=story&shortcuts=false&singleStory=true`
+    : undefined
+
+  return (
+    <div
+      className={`relative mx-auto ${className || ''}`}
+      style={{
+        width: `${(contentWidth + bezelWidth * 2) * scale}px`,
+        height: `${(contentHeight + bezelWidth * 2) * scale}px`,
+      }}
+    >
+      {/* Scaled container */}
+      <div
+        className="overflow-hidden"
+        style={{
+          width: `${contentWidth + bezelWidth * 2}px`,
+          height: `${contentHeight + bezelWidth * 2}px`,
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+          borderRadius: `${specs.cornerRadius + 8}px`,
+        }}
+      >
+        {/* iPad outer frame (bezel) */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{
+            backgroundColor: frameColor,
+            borderRadius: `${specs.cornerRadius + 8}px`,
+            padding: `${bezelWidth}px`,
+            boxShadow: `
+              0 50px 100px -20px rgba(0, 0, 0, 0.5),
+              0 30px 60px -30px rgba(0, 0, 0, 0.4),
+              inset 0 1px 0 rgba(255,255,255,0.1),
+              inset 0 -1px 0 rgba(0,0,0,0.3)
+            `,
+          }}
+        >
+          {/* Screen area */}
+          <div
+            className="relative overflow-hidden flex flex-col"
+            style={{
+              width: `${contentWidth}px`,
+              height: `${contentHeight}px`,
+              borderRadius: `${specs.cornerRadius - 4}px`,
+              backgroundColor: '#000',
+              clipPath: `inset(0 round ${specs.cornerRadius - 4}px)`,
+            }}
+          >
+            {/* === BROWSER MODE: Safari iPadOS Chrome === */}
+            {showBrowser ? (
+              <>
+                {/* Safari top area: status bar + compact address bar */}
+                <div
+                  className="flex-shrink-0 bg-neutral-100 relative"
+                  style={{ height: `${safariTopHeight}px` }}
+                >
+                  {/* Status bar */}
+                  <div
+                    className="flex items-end px-6 pb-0.5"
+                    style={{ height: `${specs.safeAreaTop}px` }}
+                  >
+                    <StatusBar mode="light" />
+                  </div>
+                  {/* Safari compact address bar */}
+                  <SafariAddressBar url={browserUrl} isSecure={true} />
+                </div>
+
+                {/* Web content area (iframe) */}
+                {iframeSrc ? (
+                  <iframe
+                    src={iframeSrc}
+                    title="iPad Preview"
+                    className="flex-1"
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${iframeHeight}px`,
+                      border: 'none',
+                      backgroundColor: '#fff',
+                    }}
+                  />
+                ) : (
+                  <div
+                    className="flex-1 overflow-hidden bg-white"
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${iframeHeight}px`,
+                    }}
+                  >
+                    {children}
+                  </div>
+                )}
+
+                {/* Safari bottom toolbar + home indicator */}
+                <div
+                  className="flex-shrink-0 bg-neutral-50"
+                  style={{ height: `${safariBottomHeight}px` }}
+                >
+                  <SafariToolbar mode="light" />
+                  {/* Home indicator area */}
+                  {!specs.hasHomeButton && (
+                    <div
+                      className="flex items-center justify-center"
+                      style={{ height: `${specs.safeAreaBottom}px` }}
+                    >
+                      <HomeIndicator mode="light" />
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              /* === NATIVE MODE: Full screen content === */
+              <>
+                {/* Content: iframe or children */}
+                {iframeSrc ? (
+                  <iframe
+                    src={iframeSrc}
+                    title="iPad Preview"
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${contentHeight}px`,
+                      border: 'none',
+                      backgroundColor: '#fff',
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: `${contentWidth}px`,
+                      height: `${contentHeight}px`,
+                      overflow: 'hidden',
+                      backgroundColor: '#fff',
+                    }}
+                  >
+                    {children}
+                  </div>
+                )}
+
+                {/* Home indicator overlay (for non-home-button iPads) */}
+                {!specs.hasHomeButton && (
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+                    <div
+                      className="rounded-full"
+                      style={{
+                        width: '134px',
+                        height: '5px',
+                        backgroundColor: 'rgba(0,0,0,0.3)',
+                      }}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

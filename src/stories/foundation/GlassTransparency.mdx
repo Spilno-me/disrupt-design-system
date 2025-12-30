@@ -1,0 +1,622 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Layers,
+  Eye,
+  Grid3X3,
+  Droplets,
+  Sparkles,
+  ArrowDown,
+  Check,
+  X,
+  Monitor,
+  Smartphone,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/Glass Transparency Model" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Glass Transparency Model"
+  description="Depth-based transparency system for glassmorphism effects. Elements closer to the page background reveal more of the underlying blob grid, while elevated elements feel more solid and frosted."
+  gradient="primary"
+  decorativeIcon={<Grid3X3 size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="info">
+  <strong>Principle:</strong> Closer to background = more grid visible. Elevated = more solid/frosted.
+  This creates natural visual depth through transparency alone.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Transparency-Depth Relationship</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Visual Depth Through Glass"
+  description="Elements at different depth levels use varying opacity and blur to create a natural visual hierarchy."
+/>
+
+{/* Main Concept Visualization */}
+<div style={{
+  background: PRIMITIVES.cream,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Stacked Glass Cards */}
+  <div style={{
+    position: 'relative',
+    height: '320px',
+    background: `
+      linear-gradient(90deg, ${SLATE[300]} 1px, transparent 1px),
+      linear-gradient(${SLATE[300]} 1px, transparent 1px)
+    `,
+    backgroundSize: '20px 20px',
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
+  }}>
+    {/* Animated blob placeholder */}
+    <div style={{
+      position: 'absolute',
+      width: '300px',
+      height: '300px',
+      background: `radial-gradient(ellipse at center, ${DEEP_CURRENT[200]}40 0%, transparent 70%)`,
+      top: '10%',
+      left: '20%',
+      borderRadius: '50%',
+      filter: 'blur(30px)',
+    }} />
+    <div style={{
+      position: 'absolute',
+      width: '250px',
+      height: '250px',
+      background: `radial-gradient(ellipse at center, ${DUSK_REEF[200]}30 0%, transparent 70%)`,
+      top: '40%',
+      right: '15%',
+      borderRadius: '50%',
+      filter: 'blur(25px)',
+    }} />
+
+    {/* Depth 4 - Most Transparent */}
+    <div style={{
+      position: 'absolute',
+      top: '20px',
+      left: '20px',
+      width: '200px',
+      padding: SPACING.px.base,
+      background: 'rgba(255, 255, 255, 0.1)',
+      backdropFilter: 'blur(1px)',
+      WebkitBackdropFilter: 'blur(1px)',
+      borderRadius: RADIUS.md,
+      border: `1px solid rgba(255, 255, 255, 0.3)`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+        <span style={{
+          background: DEEP_CURRENT[500],
+          color: PRIMITIVES.white,
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontWeight: TYPOGRAPHY.fontWeight.bold,
+        }}>4</span>
+        <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], color: ABYSS[600], fontWeight: TYPOGRAPHY.fontWeight.medium }}>SurfaceHover</span>
+      </div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.micro }}>
+        white/10 blur-[1px]
+      </div>
+    </div>
+
+    {/* Depth 3 - Medium */}
+    <div style={{
+      position: 'absolute',
+      top: '100px',
+      left: '100px',
+      width: '220px',
+      padding: SPACING.px.base,
+      background: 'rgba(255, 255, 255, 0.2)',
+      backdropFilter: 'blur(2px)',
+      WebkitBackdropFilter: 'blur(2px)',
+      borderRadius: RADIUS.md,
+      border: `1px solid rgba(255, 255, 255, 0.3)`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+        <span style={{
+          background: DEEP_CURRENT[500],
+          color: PRIMITIVES.white,
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontWeight: TYPOGRAPHY.fontWeight.bold,
+        }}>3</span>
+        <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], color: ABYSS[600], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Surface</span>
+      </div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.micro }}>
+        white/20 blur-[2px]
+      </div>
+    </div>
+
+    {/* Depth 2 - Low Transparency */}
+    <div style={{
+      position: 'absolute',
+      top: '180px',
+      left: '180px',
+      width: '240px',
+      padding: SPACING.px.base,
+      background: 'rgba(255, 255, 255, 0.4)',
+      backdropFilter: 'blur(4px)',
+      WebkitBackdropFilter: 'blur(4px)',
+      borderRadius: RADIUS.md,
+      border: `1px solid rgba(255, 255, 255, 0.3)`,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+        <span style={{
+          background: DEEP_CURRENT[500],
+          color: PRIMITIVES.white,
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontWeight: TYPOGRAPHY.fontWeight.bold,
+        }}>2</span>
+        <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], color: ABYSS[600], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Card</span>
+      </div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.micro }}>
+        white/40 blur-[4px]
+      </div>
+    </div>
+
+    {/* Depth 1 - Most Solid */}
+    <div style={{
+      position: 'absolute',
+      top: '80px',
+      right: '40px',
+      width: '180px',
+      padding: SPACING.px.base,
+      background: 'rgba(255, 255, 255, 0.6)',
+      backdropFilter: 'blur(8px)',
+      WebkitBackdropFilter: 'blur(8px)',
+      borderRadius: RADIUS.md,
+      border: `1px solid rgba(255, 255, 255, 0.3)`,
+      boxShadow: SHADOWS.lg,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+        <span style={{
+          background: DEEP_CURRENT[500],
+          color: PRIMITIVES.white,
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          fontWeight: TYPOGRAPHY.fontWeight.bold,
+        }}>1</span>
+        <span style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], color: ABYSS[600], fontWeight: TYPOGRAPHY.fontWeight.medium }}>Elevated</span>
+      </div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: ABYSS[500], marginTop: SPACING.px.micro }}>
+        white/60 blur-[8px]
+      </div>
+    </div>
+
+    {/* Eye indicator */}
+    <div style={{
+      position: 'absolute',
+      bottom: '20px',
+      right: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      background: ABYSS[600],
+      padding: `${SPACING.px.tight} ${SPACING.px.base}`,
+      borderRadius: RADIUS.full,
+    }}>
+      <Eye size={16} color={PRIMITIVES.white} />
+      <span style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: PRIMITIVES.white }}>Viewer</span>
+    </div>
+  </div>
+
+  {/* Key Insight */}
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.comfortable,
+    textAlign: 'center',
+    marginTop: SPACING.px.comfortable,
+  }}>
+    <div style={{
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      fontFamily: TYPOGRAPHY.fontFamily.sans,
+      color: DEEP_CURRENT[700],
+    }}>
+      <strong>Formula:</strong> Both opacity and blur <em>double</em> at each depth level.
+      <br />
+      10% → 20% → 40% → 60% opacity | 1px → 2px → 4px → 8px blur
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Transparency-Depth Mapping</h2>
+
+<SectionHeader
+  icon={<Droplets size={20} />}
+  title="Glass Effect Classes"
+  description="Fixed transparency and blur values for each depth level. Copy-paste ready."
+/>
+
+{/* Depth Mapping Table */}
+<div style={{
+  background: PRIMITIVES.cream,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'separate',
+    borderSpacing: 0,
+    fontSize: TYPOGRAPHY.fontSize.sm[0],
+    fontFamily: TYPOGRAPHY.fontFamily.sans,
+    borderRadius: RADIUS.md,
+    overflow: 'hidden',
+    background: PRIMITIVES.white,
+  }}>
+    <thead>
+      <tr>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}`, width: '50px' }}>Depth</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Layer</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Background + Blur</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Border</th>
+        <th style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'left', color: ABYSS[500], fontWeight: TYPOGRAPHY.fontWeight.semibold, borderBottom: `2px solid ${SLATE[200]}` }}>Use Case</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { depth: 5, layer: 'Page', classes: 'bg-page (solid)', border: '—', useCase: 'Page background with blob' },
+        { depth: 4, layer: 'SurfaceHover', classes: 'bg-white/10 blur-[1px]', border: 'border-2 border-accent', useCase: 'Hover states, overlays' },
+        { depth: 3, layer: 'Surface', classes: 'bg-white/20 blur-[2px]', border: 'border-2 border-accent', useCase: 'Stats cards, filters, tabs' },
+        { depth: 2, layer: 'Card', classes: 'bg-surface (solid)', border: 'border border-default', useCase: 'Nested inside glass' },
+        { depth: 1, layer: 'Elevated', classes: 'bg-elevated (solid)', border: 'border border-default + shadow', useCase: 'Cards inside surface' },
+      ].map((row) => (
+        <tr key={row.depth} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, textAlign: 'center' }}>
+            <span style={{
+              background: DEEP_CURRENT[500],
+              color: PRIMITIVES.white,
+              width: '28px',
+              height: '28px',
+              borderRadius: RADIUS.full,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: TYPOGRAPHY.fontSize.sm[0],
+              fontWeight: TYPOGRAPHY.fontWeight.bold,
+            }}>
+              {row.depth}
+            </span>
+          </td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, fontWeight: TYPOGRAPHY.fontWeight.medium, color: ABYSS[500] }}>
+            {row.layer}
+          </td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}` }}>
+            <code style={{
+              background: SLATE[100],
+              padding: `${SPACING.px.micro} ${SPACING.px.tight}`,
+              borderRadius: RADIUS.xs,
+              fontSize: TYPOGRAPHY.fontSize.xs[0],
+              fontFamily: TYPOGRAPHY.fontFamily.mono,
+              color: ABYSS[600],
+            }}>
+              {row.classes}
+            </code>
+          </td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}` }}>
+            <code style={{
+              background: row.border === '—' ? 'transparent' : SLATE[100],
+              padding: row.border === '—' ? 0 : `${SPACING.px.micro} ${SPACING.px.tight}`,
+              borderRadius: RADIUS.xs,
+              fontSize: TYPOGRAPHY.fontSize.xs[0],
+              fontFamily: TYPOGRAPHY.fontFamily.mono,
+              color: row.border === '—' ? SLATE[400] : ABYSS[600],
+            }}>
+              {row.border}
+            </code>
+          </td>
+          <td style={{ padding: `${SPACING.px.compact} ${SPACING.px.base}`, color: SLATE[600], fontSize: TYPOGRAPHY.fontSize.xs[0] }}>
+            {row.useCase}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>When to Use Glass vs Solid</h2>
+
+<SectionHeader
+  icon={<Sparkles size={20} />}
+  title="Decision Guide"
+  description="Glass effects are contextual. Use them only over blob/grid backgrounds."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Glass - Use Over Blob */}
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, marginBottom: SPACING.px.base }}>
+      <Check size={20} color={DEEP_CURRENT[600]} />
+      <span style={{ fontSize: TYPOGRAPHY.fontSize.base[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: DEEP_CURRENT[700] }}>
+        Use Glass Effect
+      </span>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: DEEP_CURRENT[600], fontSize: TYPOGRAPHY.fontSize.sm[0] }}>
+      <li style={{ marginBottom: SPACING.px.micro }}>Element sits over blob/grid background</li>
+      <li style={{ marginBottom: SPACING.px.micro }}>Stats cards, quick filters, tabs</li>
+      <li style={{ marginBottom: SPACING.px.micro }}>Page action panels, headers</li>
+      <li>Interactive elements on page level</li>
+    </ul>
+  </div>
+
+  {/* Solid - Use Over Surface */}
+  <div style={{
+    background: SLATE[50],
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, marginBottom: SPACING.px.base }}>
+      <X size={20} color={SLATE[500]} />
+      <span style={{ fontSize: TYPOGRAPHY.fontSize.base[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: SLATE[700] }}>
+        Use Solid Background
+      </span>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: SLATE[600], fontSize: TYPOGRAPHY.fontSize.sm[0] }}>
+      <li style={{ marginBottom: SPACING.px.micro }}>Element sits over solid surface</li>
+      <li style={{ marginBottom: SPACING.px.micro }}>Nested cards (avoid double-frosting)</li>
+      <li style={{ marginBottom: SPACING.px.micro }}>No transparency benefit visible</li>
+      <li>Use bg-elevated, bg-surface tokens</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Code Examples</h2>
+
+<SectionHeader
+  icon={<Monitor size={20} />}
+  title="Copy-Paste Ready"
+  description="Common glass effect patterns for different UI elements."
+/>
+
+<div style={{
+  background: PRIMITIVES.cream,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Code blocks */}
+  <div style={{ display: 'flex', flexDirection: 'column', gap: SPACING.px.base }}>
+    {/* Surface card */}
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500], marginBottom: SPACING.px.micro }}>
+        Surface card (stats, filters, tabs)
+      </div>
+      <div style={{
+        background: ABYSS[800],
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.base,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: PRIMITIVES.white,
+        overflow: 'auto',
+      }}>
+        <span style={{ color: SLATE[400] }}>className=</span>
+        <span style={{ color: DEEP_CURRENT[300] }}>"bg-white/20 backdrop-blur-[2px] border-2 border-accent"</span>
+      </div>
+    </div>
+
+    {/* Colored glass - Warning */}
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500], marginBottom: SPACING.px.micro }}>
+        Colored glass - Warning (bg +20% border)
+      </div>
+      <div style={{
+        background: ABYSS[800],
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.base,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: PRIMITIVES.white,
+        overflow: 'auto',
+      }}>
+        <span style={{ color: SLATE[400] }}>className=</span>
+        <span style={{ color: DEEP_CURRENT[300] }}>"bg-warning/20 backdrop-blur-[2px] border-2 border-warning/40"</span>
+      </div>
+    </div>
+
+    {/* Colored glass - Error */}
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500], marginBottom: SPACING.px.micro }}>
+        Colored glass - Error (bg +20% border)
+      </div>
+      <div style={{
+        background: ABYSS[800],
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.base,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: PRIMITIVES.white,
+        overflow: 'auto',
+      }}>
+        <span style={{ color: SLATE[400] }}>className=</span>
+        <span style={{ color: DEEP_CURRENT[300] }}>"bg-error/20 backdrop-blur-[2px] border-2 border-error/40"</span>
+      </div>
+    </div>
+
+    {/* Solid surface - inside glass */}
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500], marginBottom: SPACING.px.micro }}>
+        Solid surface (inside glass container)
+      </div>
+      <div style={{
+        background: ABYSS[800],
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.base,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: PRIMITIVES.white,
+        overflow: 'auto',
+      }}>
+        <span style={{ color: SLATE[400] }}>className=</span>
+        <span style={{ color: DEEP_CURRENT[300] }}>"bg-surface border border-default"</span>
+      </div>
+    </div>
+
+    {/* Elevated (modals) */}
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500], marginBottom: SPACING.px.micro }}>
+        Elevated (modals, dropdowns)
+      </div>
+      <div style={{
+        background: ABYSS[800],
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.base,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        color: PRIMITIVES.white,
+        overflow: 'auto',
+      }}>
+        <span style={{ color: SLATE[400] }}>className=</span>
+        <span style={{ color: DEEP_CURRENT[300] }}>"bg-elevated border border-default shadow-lg"</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Rules</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Do: Match depth to transparency */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: DEEP_CURRENT[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <Check size={16} color={DEEP_CURRENT[700]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Match depth to transparency</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Higher elevation = more opacity. Depth 3 cards use 20%, Depth 1 modals use 60%.</div>
+    </div>
+  </div>
+
+  {/* Don't: Random transparency values */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <X size={16} color={CORAL[600]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Never use random transparency</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Avoid arbitrary values like white/35 or blur-[3px]. Use only 10/20/40/60 and 1/2/4/8.</div>
+    </div>
+  </div>
+
+  {/* Do: Use doubling formula */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: DEEP_CURRENT[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <Check size={16} color={DEEP_CURRENT[700]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Follow the doubling formula</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Both opacity and blur double at each level: 10→20→40→60% and 1→2→4→8px.</div>
+    </div>
+  </div>
+
+  {/* Don't: Glass on solid backgrounds */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <X size={16} color={CORAL[600]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Never glass on solid backgrounds</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Glass effects only make sense over blob/grid. Use solid tokens (bg-elevated) elsewhere.</div>
+    </div>
+  </div>
+
+  {/* Do: Add borders for definition */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: DEEP_CURRENT[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <Check size={16} color={DEEP_CURRENT[700]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Add teal borders for definition</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Glass cards use <code style={{ background: SLATE[100], padding: '2px 4px', borderRadius: RADIUS.xs, fontSize: TYPOGRAPHY.fontSize.xs[0] }}>border-2 border-accent</code>. Colored glass uses same color +20% opacity.</div>
+    </div>
+  </div>
+
+  {/* Don't: Double-frosting */}
+  <div style={{ display: 'flex', gap: SPACING.px.tight, alignItems: 'flex-start' }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.full, padding: SPACING.px.micro, flexShrink: 0 }}>
+      <X size={16} color={CORAL[600]} strokeWidth={3} />
+    </div>
+    <div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.micro }}>Avoid double-frosting</div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: SLATE[500] }}>Don't stack glass on glass. Nested elements should use borders only, not additional blur.</div>
+    </div>
+  </div>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Quick Reference:</strong> See the interactive demo at <code>Foundation/DepthTransparency</code> story
+  for a live visualization of all depth levels over the blob grid.
+</InfoBox>

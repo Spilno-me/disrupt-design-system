@@ -1,0 +1,3421 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  HelpCircle,
+  Clock,
+  Layers,
+  AlertTriangle,
+  Shield,
+  GitBranch,
+  Users,
+  Zap,
+  CheckCircle,
+  XCircle,
+  ArrowRight,
+  Gauge,
+  Package,
+  Globe,
+  CircleDot,
+  Smartphone,
+  Monitor,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  GuidelineCard,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SLATE,
+  RADIUS,
+  SPACING,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/FAQ" />
+
+{/* Hero Header */}
+<BrandHero
+  title="FAQ for Skeptics"
+  description="Honest answers to hard questions about the DDS ownership model."
+  gradient="purple"
+  decorativeIcon={<HelpCircle size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="info">
+  These are real concerns raised by experienced developers. We don't dodge them.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q1: What If DDS Can't Deliver On Time?</h2>
+
+<SectionHeader
+  icon={<Clock size={20} />}
+  title="The Bottleneck Concern"
+  description="One architect can't serve multiple teams. What happens when I'm blocked?"
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"DDS is a single point of failure. If the architect is busy, on vacation, or backlogged, my team is blocked. We have deadlines. We can't wait.\""}
+  </p>
+</div>
+
+### The Reality: Agent-Assisted Development
+
+DDS uses AI agent-assisted development. This changes the math - but we won't overpromise.
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Realistic Delivery Times (Including Buffer)
+  </h4>
+  <div style={{ overflow: 'auto' }}>
+    <table style={{
+      width: '100%',
+      borderCollapse: 'collapse',
+      fontSize: '13px',
+    }}>
+      <thead>
+        <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+          <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Complexity</th>
+          <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Examples</th>
+          <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Delivery</th>
+        </tr>
+      </thead>
+      <tbody>
+        {[
+          { complexity: 'Standard', examples: 'List page, Settings, Profile', delivery: '2-3 days', color: HARBOR },
+          { complexity: 'Moderate', examples: 'Multi-step wizard, Dashboard with 5 KPIs', delivery: '3-5 days', color: DEEP_CURRENT },
+          { complexity: 'Complex', examples: 'Real-time updates, Custom chart drill-downs', delivery: '~1 week', color: SUNRISE },
+          { complexity: 'Novel Pattern', examples: 'Kanban board, Map interface, Split-pane', delivery: '1-2 weeks', color: CORAL },
+        ].map((row, idx) => (
+          <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+            <td style={{ padding: '12px 16px' }}>
+              <span style={{
+                background: row.color[100],
+                color: row.color[700],
+                padding: '4px 10px',
+                borderRadius: RADIUS.full,
+                fontSize: '11px',
+                fontWeight: 600,
+              }}>{row.complexity}</span>
+            </td>
+            <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.examples}</td>
+            <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>{row.delivery}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p style={{ margin: '16px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"Delivery includes: development, all UI states, mobile + desktop, stories, basic tests. Does NOT include: your API integration, your routing, your deployment."}
+  </p>
+</div>
+
+<InfoBox variant="info">
+  <strong>Reference Point:</strong> Entity Templates module (20 components, 5 stories, full CRUD)
+  was built in ~8 hours of development time. With buffer for edge cases and review, that's 2-3 days delivery.
+</InfoBox>
+
+### What You Get
+
+When DDS delivers a page composition, it includes:
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '12px',
+  marginBottom: '24px',
+}}>
+  {[
+    { label: 'All UI states', desc: 'Loading, empty, error, success' },
+    { label: 'Mobile + Desktop', desc: 'Responsive from day one' },
+    { label: 'Dialogs & Modals', desc: 'Create, Edit, Delete, View' },
+    { label: 'Tables & Filters', desc: 'Sorting, pagination, search' },
+    { label: 'TypeScript', desc: 'Full interfaces + validation' },
+    { label: 'Stories', desc: 'Storybook documentation' },
+  ].map((item, idx) => (
+    <div key={idx} style={{
+      background: SLATE[50],
+      padding: '12px',
+      borderRadius: RADIUS.md,
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.label}</div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+### The Real Bottleneck
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+    <AlertTriangle size={20} color={SUNRISE[600]} />
+    <span style={{ fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+      The bottleneck is NOT coding. The bottleneck IS requirements clarity.
+    </span>
+  </div>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"If you come to DDS with clear specs, defined data shapes, and known user flows - DDS can deliver within days, not weeks. Vague requirements create back-and-forth delays."}
+  </p>
+</div>
+
+### When DDS Genuinely Can't Meet Your Deadline
+
+If DDS cannot deliver before your deadline, the **Interface-First Emergency Protocol** applies:
+
+<InfoBox variant="warning">
+  <strong>Validation Status: Proposed Process</strong> — This protocol has been designed but not yet
+  validated in production. It represents our intended approach. We will update this section with
+  real examples once the first consumer goes through this flow.
+</InfoBox>
+
+<InfoBox variant="tip">
+  <strong>Key Principle:</strong> DDS is the single source of truth for UI interfaces.
+  Even in emergencies, DDS provides the interface spec first, then everyone builds to it.
+  This eliminates the "migration twice" problem.
+</InfoBox>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { step: '1', action: 'Notify', desc: 'Tell architect: "I need X by [date], DDS can\'t deliver full implementation"' },
+      { step: '2', action: 'Interface', desc: 'DDS provides component interface spec within 24-48h (props, data shapes, API contract)' },
+      { step: '3', action: 'Review', desc: 'Backend devs review interface, provide feedback if API concerns exist' },
+      { step: '4', action: 'Build', desc: 'Consumer builds to DDS interface spec; Backend builds API to same spec' },
+      { step: '5', action: 'Ship', desc: 'Consumer deploys with stub/basic implementation' },
+      { step: '6', action: 'Swap', desc: 'DDS delivers polished component (1-2 weeks) - swap is trivial since interface matches' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+      }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{item.step}</div>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.action}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Why does this work?</strong> Because you're building to DDS's interface from day one,
+  the final swap is a 1-line import change, not a rewrite. The interface contract ensures
+  compatibility. DDS delivers the polished, tested, accessible version within 1-2 weeks.
+</InfoBox>
+
+### Why Interface-First Eliminates Migration Anxiety
+
+With the Interface-First approach:
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '16px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: CORAL[700] }}>
+      Temporary Limitations (1-2 weeks)
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>Basic styling (not polished)</li>
+      <li>Missing animations/transitions</li>
+      <li>Limited accessibility coverage</li>
+      <li>No dark mode optimization</li>
+    </ul>
+  </div>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '16px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: HARBOR[700] }}>
+      What You Keep Forever
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>✓ Same interface/API contract</li>
+      <li>✓ No rewrite when DDS delivers</li>
+      <li>✓ Backend API remains unchanged</li>
+      <li>✓ Swap = 1-line import change</li>
+    </ul>
+  </div>
+</div>
+
+### Multiple Teams / Scaling
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    "What if 5 teams all need pages at once?"
+  </h4>
+
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{
+        padding: '8px',
+        borderRadius: RADIUS.md,
+        background: HARBOR[100],
+        flexShrink: 0,
+      }}>
+        <Users size={18} color={HARBOR[600]} />
+      </div>
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>Current Reality</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>
+          One architect, one project at a time. No queue problem exists today.
+        </div>
+      </div>
+    </div>
+
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{
+        padding: '8px',
+        borderRadius: RADIUS.md,
+        background: DEEP_CURRENT[100],
+        flexShrink: 0,
+      }}>
+        <Layers size={18} color={DEEP_CURRENT[600]} />
+      </div>
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>Compound Benefit</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>
+          Components built for Product A automatically work for Product B. DDS gets richer with each project.
+        </div>
+      </div>
+    </div>
+
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{
+        padding: '8px',
+        borderRadius: RADIUS.md,
+        background: SUNRISE[100],
+        flexShrink: 0,
+      }}>
+        <Zap size={18} color={SUNRISE[600]} />
+      </div>
+      <div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>Future Scaling</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>
+          Team scales with demand. If 5 teams create load, architect won't be alone.
+          Don't over-engineer for problems that don't exist yet.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+### Single Point of Failure Mitigation
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    <AlertTriangle size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    Honest Acknowledgment
+  </h4>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"One architect = single point of failure. We acknowledge this risk and have concrete mitigations in place."}
+  </p>
+</div>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Mitigation</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Effort</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Risk Reduction</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { mitigation: 'Documentation Bus Factor', effort: 'Low', effortColor: HARBOR, risk: 'High', riskColor: HARBOR, desc: 'All DDS patterns documented in Storybook. Any senior dev can read stories + code.' },
+        { mitigation: 'Emergency Read Access', effort: 'Low', effortColor: HARBOR, risk: 'Medium', riskColor: DEEP_CURRENT, desc: '1-2 senior devs from consuming teams have DDS repo access for critical hotfixes.' },
+        { mitigation: 'Codebase Simplicity', effort: 'Ongoing', effortColor: SUNRISE, risk: 'High', riskColor: HARBOR, desc: 'No clever abstractions. Any React dev should understand and patch within an hour.' },
+        { mitigation: 'On-Call Rotation (Future)', effort: 'Medium', effortColor: DEEP_CURRENT, risk: 'High', riskColor: HARBOR, desc: 'When DDS has 3+ consumers, establish backup engineer for triage/patch.' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <div style={{ fontWeight: 600, color: ABYSS[500] }}>{row.mitigation}</div>
+            <div style={{ fontSize: '11px', color: DUSK_REEF[500], marginTop: '4px' }}>{row.desc}</div>
+          </td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.effortColor[100],
+              color: row.effortColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.effort}</span>
+          </td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.riskColor[100],
+              color: row.riskColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.risk}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Design Philosophy:</strong> DDS is designed to be readable, not clever. In an emergency,
+  any senior React developer can clone the repo, understand the component structure, and ship a patch.
+  The documentation exists for someone new to pick up.
+</InfoBox>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Fast delivery with agents">
+    2-5 days for standard pages. Requirements clarity is the real bottleneck.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Emergency protocol exists">
+    Deadlines matter. Build yourself if needed, swap to DDS within 2 weeks.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Wait forever for DDS">
+    If DDS can't deliver, emergency protocol kicks in. You're never truly blocked.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Use emergency as standard">
+    Emergency builds create debt. Use only when genuinely needed.
+  </GuidelineCard>
+</div>
+
+---
+
+{/* Q2 placeholder - to be completed */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q2: What About Edge Cases DDS Doesn't Support?</h2>
+
+<SectionHeader
+  icon={<AlertTriangle size={20} />}
+  title="The Flexibility Concern"
+  description="My app has unique requirements. Can DDS handle them?"
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"Our IncidentPage has a special modal that only appears when user has role X AND incident is in state Y. You're going to build that into DDS? For one client?\""}
+  </p>
+</div>
+
+### The Short Answer
+
+DDS pages are designed with configuration in mind. Components follow standards and best practices,
+covering 99% of common use cases. For truly unique requirements, we have clear patterns.
+
+### How Configuration Works
+
+DDS uses **callback presence** and **predicates** for configuration - not boolean flag explosion.
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Pattern 1: Callback Presence Controls Features
+  </h4>
+  <CodeBlock
+    language="tsx"
+    code={`// Delete feature enabled - pass the handler
+<EntityTemplatesPage
+  templates={templates}
+  onTemplateDelete={handleDelete}  // Delete button appears
+/>
+
+// Delete feature disabled - omit the handler
+<EntityTemplatesPage
+  templates={templates}
+  // No onTemplateDelete = no delete button
+/>`}
+  />
+  <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"No "}<code>{"showDeleteButton={false}"}</code>{" needed. No handler = no feature."}
+  </p>
+</div>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Pattern 2: Predicates for Per-Row Conditions
+  </h4>
+  <CodeBlock
+    language="tsx"
+    code={`// Business rule: can't delete system templates
+<EntityTemplatesPage
+  templates={templates}
+  onTemplateDelete={handleDelete}
+  canDelete={(template) => !template.isSystem}
+/>
+
+// Combine with authorization
+<EntityTemplatesPage
+  templates={templates}
+  onTemplateDelete={handleDelete}
+  canDelete={(template) => !template.isSystem && user.can('delete')}
+  canEdit={(template) => user.can('edit') && template.status !== 'locked'}
+/>`}
+  />
+  <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"You provide the RULE (business logic). DDS provides the UI (disabled state, tooltip, etc.)."}
+  </p>
+</div>
+
+### The Ownership Boundary
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Scenario</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Owner</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>How</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { scenario: '"Show delete only for non-system templates"', owner: 'Consumer', ownerColor: DUSK_REEF, how: 'Pass canDelete={(t) => !t.isSystem}' },
+        { scenario: '"Only admins can edit"', owner: 'Consumer', ownerColor: DUSK_REEF, how: 'Pass canEdit={() => user.role === "admin"}' },
+        { scenario: '"Modal for role X + state Y"', owner: 'Consumer', ownerColor: DUSK_REEF, how: 'Render modal yourself based on your business logic' },
+        { scenario: '"Delete button should be red"', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Visual design is DDS responsibility' },
+        { scenario: '"Disabled buttons should have tooltip"', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'DDS decides how to show disabled state' },
+        { scenario: '"Table should have 25 rows default"', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Sensible defaults, possibly configurable' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.scenario}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.ownerColor[100],
+              color: row.ownerColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.owner}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.how}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="tip">
+  <strong>The Line:</strong> If it's about WHO can do WHAT and WHEN = business logic = yours.
+  If it's about HOW it looks and FEELS = visual design = DDS.
+</InfoBox>
+
+### What About Truly Unique Cases?
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>
+    "I need a modal that appears only when user has role X AND incident is in state Y AND it's Tuesday"
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"That's 100% business logic. Here's how you handle it:"}
+  </p>
+  <CodeBlock
+    language="tsx"
+    code={`function IncidentsRoute() {
+  const { user } = useAuth()
+  const [showSpecialModal, setShowSpecialModal] = useState(false)
+
+  // YOUR business logic - DDS doesn't know or care about this
+  const shouldShowSpecialModal = (incident: Incident) => {
+    const isRoleX = user.role === 'X'
+    const isStateY = incident.status === 'Y'
+    const isTuesday = new Date().getDay() === 2
+    return isRoleX && isStateY && isTuesday
+  }
+
+  return (
+    <>
+      <IncidentsPage
+        incidents={incidents}
+        onIncidentClick={(incident) => {
+          if (shouldShowSpecialModal(incident)) {
+            setShowSpecialModal(true)  // Your modal, your logic
+          } else {
+            navigate(\`/incidents/\${incident.id}\`)
+          }
+        }}
+      />
+
+      {/* YOUR modal - DDS doesn't provide this */}
+      {showSpecialModal && <YourSpecialTuesdayModal />}
+    </>
+  )
+}`}
+  />
+</div>
+
+### How We Prevent DDS Bloat
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      Add to DDS if:
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>2+ products need it</li>
+      <li>It's a predicate (business rule input), not UI config</li>
+      <li>DDS can provide better/consistent UX</li>
+      <li>It follows established patterns</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: CORAL[700] }}>
+      Don't add if:
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>Only 1 product needs it</li>
+      <li>It's UI config disguised as business logic</li>
+      <li>Consumer can handle it trivially</li>
+      <li>It creates prop explosion</li>
+    </ul>
+  </div>
+</div>
+
+### Predicates vs UI Config
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+    <div>
+      <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+        <CheckCircle size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+        Predicates (Good)
+      </h5>
+      <CodeBlock
+        language="typescript"
+        code={`// Consumer provides business rule
+canDelete?: (item) => boolean
+canEdit?: (item) => boolean
+
+// DDS decides UI (disabled, hidden, tooltip)`}
+      />
+    </div>
+    <div>
+      <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: CORAL[700] }}>
+        <XCircle size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+        UI Config Flags (Bad)
+      </h5>
+      <CodeBlock
+        language="typescript"
+        code={`// Consumer dictates UI details
+showDeleteButton?: boolean
+hideEditOnMobile?: boolean
+deleteButtonColor?: string
+
+// Breaks ownership model`}
+      />
+    </div>
+  </div>
+</div>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Use predicates for conditions">
+    canEdit, canDelete - you provide the rule, DDS provides the UI.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Handle complex logic yourself">
+    "Role X + State Y + Tuesday" = your code, your modal, your problem.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Ask for UI config flags">
+    showXButton, hideYOnMobile - these break the ownership model.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Expect DDS to know your business">
+    DDS provides UI patterns. Your authorization and state logic stays with you.
+  </GuidelineCard>
+</div>
+
+---
+
+{/* Q3 placeholder */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q3: What If DDS Updates Break Our App?</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="The Version Risk Concern"
+  description="What happens when DDS releases a breaking change?"
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"DDS releases v3.0. Half my pages break because prop names changed. Now I have to update 15 pages simultaneously. With components, I could update one at a time.\""}
+  </p>
+</div>
+
+### The Short Answer
+
+DDS uses semantic versioning. Breaking changes only happen in MAJOR versions, TypeScript
+catches them at CI, and adapters isolate the impact to ONE file.
+
+### Semantic Versioning Contract
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '20px',
+  }}>
+    <div style={{
+      background: CORAL[500],
+      color: PRIMITIVES.white,
+      padding: '12px 20px',
+      borderRadius: RADIUS.md,
+      fontSize: '24px',
+      fontWeight: 700,
+      fontFamily: 'monospace',
+    }}>3</div>
+    <span style={{ fontSize: '24px', color: SLATE[400] }}>.</span>
+    <div style={{
+      background: DEEP_CURRENT[500],
+      color: PRIMITIVES.white,
+      padding: '12px 20px',
+      borderRadius: RADIUS.md,
+      fontSize: '24px',
+      fontWeight: 700,
+      fontFamily: 'monospace',
+    }}>2</div>
+    <span style={{ fontSize: '24px', color: SLATE[400] }}>.</span>
+    <div style={{
+      background: HARBOR[500],
+      color: PRIMITIVES.white,
+      padding: '12px 20px',
+      borderRadius: RADIUS.md,
+      fontSize: '24px',
+      fontWeight: 700,
+      fontFamily: 'monospace',
+    }}>1</div>
+  </div>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '32px',
+    fontSize: '12px',
+  }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontWeight: 600, color: CORAL[600] }}>MAJOR</div>
+      <div style={{ color: DUSK_REEF[500] }}>Breaking</div>
+    </div>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontWeight: 600, color: DEEP_CURRENT[600] }}>MINOR</div>
+      <div style={{ color: DUSK_REEF[500] }}>Features</div>
+    </div>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontWeight: 600, color: HARBOR[600] }}>PATCH</div>
+      <div style={{ color: DUSK_REEF[500] }}>Fixes</div>
+    </div>
+  </div>
+</div>
+
+### What Happens With Each Version Type
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Change</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Version</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Your Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { change: 'Bug fix in styling', version: 'PATCH', versionColor: HARBOR, action: 'None - auto-works' },
+        { change: 'New optional prop added', version: 'MINOR', versionColor: DEEP_CURRENT, action: 'None - auto-works' },
+        { change: 'Visual redesign (same API)', version: 'MINOR', versionColor: DEEP_CURRENT, action: 'None - auto-works' },
+        { change: 'Prop renamed', version: 'MAJOR', versionColor: CORAL, action: 'Update adapter (1 file)' },
+        { change: 'New required prop', version: 'MAJOR', versionColor: CORAL, action: 'Update adapter (1 file)' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.change}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.versionColor[500],
+              color: PRIMITIVES.white,
+              padding: '4px 10px',
+              borderRadius: RADIUS.sm,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.version}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.action}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+### Your Safety Net: TypeScript + Adapters
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      <Shield size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      TypeScript Catches Breaks
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"If DDS changes an interface, TypeScript fails at CI before anything reaches production. You see the error, you fix it, you move on."}
+    </p>
+  </div>
+
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+      <Layers size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Adapters Isolate Impact
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"All DDS imports live in adapter files. Breaking change = update ONE file, not hunt through 15 pages. The isolation is built into the architecture."}
+    </p>
+  </div>
+</div>
+
+### Version Pinning - Your Choice
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <CodeBlock
+    language="json"
+    code={`{
+  "dependencies": {
+    // RECOMMENDED: Auto-receive patches and features, protected from breaking
+    "@dds/design-system": "^2.7.0",
+
+    // CONSERVATIVE: Only patches, miss new features
+    "@dds/design-system": "~2.7.0",
+
+    // LOCKED: No auto-updates, manual bumps only
+    "@dds/design-system": "2.7.0"
+  }
+}`}
+  />
+</div>
+
+<InfoBox variant="tip">
+  <strong>Recommended:</strong> Use <code>^2.7.0</code> (caret). You get bug fixes and new features
+  automatically, but stay protected from breaking changes until you explicitly upgrade to v3.
+</InfoBox>
+
+### What About "Update 15 Pages"?
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>
+    That's Not How DDS Works
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"With traditional component libraries, you import components everywhere. Breaking change = find/replace across codebase."}
+  </p>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"With DDS page compositions + adapters:"}
+  </p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    {[
+      'DDS imports live in adapter files (1-2 per page)',
+      'Your routes import YOUR adapters, not DDS directly',
+      'Breaking change = update adapter file, routes unchanged',
+      '15 pages using same adapter = 1 file to update, not 15',
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <CheckCircle size={14} color={HARBOR[500]} />
+        <span style={{ fontSize: '12px', color: ABYSS[500] }}>{item}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+### Real Example: Adapter Isolating Breaking Change
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Scenario: DDS v2 → v3 Renames Props
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"DDS v3 changes EntityTemplatesPage props: "}<code>templates → items</code>{", "}<code>onTemplateDelete → onItemDelete</code>{", adds new required prop "}<code>entityType</code>{"."}
+  </p>
+  <CodeBlock
+    language="tsx"
+    code={`// BEFORE: DDS v2 Adapter (adapters/templates.adapter.tsx)
+<EntityTemplatesPage
+  templates={items}                    // v2 prop name
+  onTemplateDelete={handleDelete}      // v2 prop name
+/>
+
+// AFTER: DDS v3 Adapter (same file, updated)
+<EntityTemplatesPage
+  items={items}                        // v3 prop name (was: templates)
+  entityType="template"                // v3 NEW required prop
+  onItemDelete={handleDelete}          // v3 prop name (was: onTemplateDelete)
+/>`}
+  />
+</div>
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: '24px',
+}}>
+  <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+    What Changed vs What Stayed
+  </h5>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: CORAL[700], marginBottom: '8px' }}>Changed (1 file)</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>adapters/templates.adapter.tsx</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Unchanged</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>routes/templates.tsx</li>
+        <li>api/templates.ts</li>
+        <li>auth/index.ts</li>
+        <li>All other routes</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<InfoBox variant="info">
+  <strong>Full Example:</strong> See{' '}
+  <code>src/stories/developers/examples/adapter-breaking-change-example.tsx</code>{' '}
+  for complete code showing adapter pattern with TypeScript types, route integration, and handling scenarios where DDS needs data you don't currently fetch.
+</InfoBox>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <GuidelineCard type="do" title="Use caret versioning">
+    ^2.7.0 gives you patches + features, protects from breaking changes.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Trust TypeScript">
+    CI catches interface mismatches before production. That's your safety net.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Import DDS everywhere">
+    Use adapters. Breaking changes should touch 1-2 files, not your whole codebase.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Skip the changelog">
+    Major versions come with migration guides. Read them before upgrading.
+  </GuidelineCard>
+</div>
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.lg,
+  padding: '16px 20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Full details:"}</strong>{" See "}<a href="/docs/developers-versioning-updates--docs" style={{ color: DEEP_CURRENT[600] }}>{"Versioning & Updates"}</a>{" for the complete automated update pipeline, Changesets workflow, and Renovate configuration."}
+  </p>
+</div>
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.lg,
+  padding: '16px 20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Adapter Examples:"}</strong>{" See "}<a href="/docs/developers-adapter-patterns--docs" style={{ color: DEEP_CURRENT[600] }}>{"Adapter Patterns"}</a>{" for real code examples of adapters, wrapper components, and file organization. Adapters are how you isolate DDS changes to 1-2 files."}
+  </p>
+</div>
+
+---
+
+{/* Q4 placeholder */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q4: Who Owns Testing and Bugs?</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="The Ownership Concern"
+  description="If I don't own the UI, who tests it? Who fixes broken tests?"
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"If I don't own the UI, who writes the E2E tests? If DDS updates and my tests break, is that my bug or DDS's bug? Who fixes it?\""}
+  </p>
+</div>
+
+### The Short Answer
+
+DDS owns UI testing. DDS owns UI bugs. You test your integration (API, auth, routing).
+Tests live in DDS repo, run against Storybook, break in DDS = fixed in DDS.
+
+### Testing Ownership Model
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Test Type</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Owner</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Lives In</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Runs Against</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { type: 'Unit tests (component logic)', owner: 'DDS', ownerColor: DEEP_CURRENT, lives: 'DDS repo', runs: 'Jest/Vitest' },
+        { type: 'Interaction tests (clicks, forms)', owner: 'DDS', ownerColor: DEEP_CURRENT, lives: 'DDS repo', runs: 'Storybook play()' },
+        { type: 'E2E tests (full flows)', owner: 'DDS (QA)', ownerColor: DEEP_CURRENT, lives: 'DDS repo', runs: 'Playwright + Storybook' },
+        { type: 'Visual regression', owner: 'DDS', ownerColor: DEEP_CURRENT, lives: 'DDS repo', runs: 'Chromatic' },
+        { type: 'Integration tests (API + routing)', owner: 'Consumer', ownerColor: DUSK_REEF, lives: 'Your repo', runs: 'Your app' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.type}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.ownerColor[100],
+              color: row.ownerColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.owner}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.lives}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.runs}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+### Why Tests Live in DDS Repo
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      <CheckCircle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Test + Component in Same PR
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"When DDS changes a button selector, the test is updated in the same PR. No separate \"consumer tests broke\" tickets."}
+    </p>
+  </div>
+
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+      <CheckCircle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Storybook = Test Environment
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"E2E tests run against Storybook pages with mock data. No real API needed. Tests are fast, reliable, isolated."}
+    </p>
+  </div>
+</div>
+
+### Who Breaks It, Fixes It
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>If This Changes...</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Tests Break?</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Who Fixes?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { change: 'DDS button selector', breaks: 'Yes', who: 'DDS (same PR)', whoColor: DEEP_CURRENT },
+        { change: 'DDS dialog flow', breaks: 'Yes', who: 'DDS (same PR)', whoColor: DEEP_CURRENT },
+        { change: 'DDS prop interface', breaks: 'Maybe', who: 'DDS (test uses mocks)', whoColor: DEEP_CURRENT },
+        { change: 'Consumer API response', breaks: 'No', who: 'N/A (DDS uses mocks)', whoColor: HARBOR },
+        { change: 'Consumer routing', breaks: 'No', who: 'N/A (DDS tests Storybook)', whoColor: HARBOR },
+        { change: 'Consumer auth logic', breaks: 'No', who: 'N/A (DDS tests don\'t touch auth)', whoColor: HARBOR },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.change}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.breaks}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.whoColor[100],
+              color: row.whoColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.who}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+### Your Only Testing Responsibility
+
+<div style={{
+  background: DUSK_REEF[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DUSK_REEF[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DUSK_REEF[700] }}>
+    Consumer Tests: Integration Only
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[600] }}>
+    {"You test that YOUR data appears in the DDS page. You don't test that the delete button works."}
+  </p>
+  <CodeBlock
+    language="typescript"
+    code={`// Your test: Does my data load into DDS page?
+test('templates page loads with real API', async () => {
+  // This tests YOUR adapter + YOUR API, not DDS
+  render(<TemplatesRoute />)
+
+  // Wait for your data
+  await waitFor(() => {
+    expect(screen.getByTestId('entity-templates-page')).toBeVisible()
+  })
+
+  // Verify YOUR data appears
+  expect(screen.getByText('Your Template Name')).toBeVisible()
+})
+
+// You do NOT test:
+// - Delete button appears (DDS tests this)
+// - Dialog opens on click (DDS tests this)
+// - Form validation works (DDS tests this)`}
+  />
+</div>
+
+### Test IDs Are Stable
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+    <AlertTriangle size={20} color={SUNRISE[600]} />
+    <span style={{ fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+      TestID Contract
+    </span>
+  </div>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"Test IDs are documented and stable. Changing a test ID is a breaking change = MAJOR version. Your integration tests that use DDS test IDs are protected by semver."}
+  </p>
+</div>
+
+### The E2E Test Gray Zone
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    "What about E2E tests that span API + DDS + business outcomes?"
+  </h4>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"This is the honest gray zone. Tests like \"click delete, verify row disappears\" are inherently coupled to DDS implementation."}
+  </p>
+</div>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>System-Level Test Type</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Owner</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Strategy</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { type: '"Click delete, API called with correct ID"', owner: 'Consumer', ownerColor: DUSK_REEF, strategy: 'Use DDS test IDs + your API mocks' },
+        { type: '"Row disappears after delete"', owner: 'Consumer*', ownerColor: SUNRISE, strategy: 'Use DDS test IDs, accept brittleness' },
+        { type: '"Delete disabled for system templates"', owner: 'DDS', ownerColor: DEEP_CURRENT, strategy: 'DDS tests via predicates' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontSize: '12px' }}>{row.type}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.ownerColor[100],
+              color: row.ownerColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.owner}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.strategy}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p style={{ margin: '12px 0 0 0', fontSize: '11px', color: DUSK_REEF[500], fontStyle: 'italic' }}>
+    {"*Consumer-owned E2E tests that verify DOM state changes are coupled to DDS. That's unavoidable."}
+  </p>
+</div>
+
+### If DDS Breaks Your E2E Test
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { scenario: 'Selector changed without version bump?', response: 'DDS bug. Report it. We fix + hotfix publish.', color: CORAL },
+      { scenario: 'MAJOR version changed selector?', response: 'Check migration guide. Update your test.', color: SUNRISE },
+      { scenario: 'Behavior changed unexpectedly?', response: 'Was it documented? If yes = DDS bug. If no = clarify expectations.', color: DEEP_CURRENT },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: item.color[50],
+        borderRadius: RADIUS.md,
+        border: `1px solid ${item.color[200]}`,
+      }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          background: item.color[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '12px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{idx + 1}</div>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: item.color[700] }}>{item.scenario}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.response}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: '24px',
+}}>
+  <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+    Recommended E2E Pattern
+  </h5>
+  <CodeBlock
+    language="tsx"
+    code={`// ✅ Test YOUR integration, not DDS internals
+test('deleting template calls API and shows success', async () => {
+  // Mock YOUR API
+  server.use(rest.delete('/api/templates/:id', (req, res, ctx) => {
+    return res(ctx.status(200));
+  }));
+
+  render(<TemplatesRoute />);
+
+  // Use DDS test IDs (stable contract)
+  await user.click(screen.getByTestId('template-row-123-delete'));
+  await user.click(screen.getByTestId('confirm-delete-button'));
+
+  // Assert YOUR outcome (toast, redirect, etc.)
+  expect(await screen.findByText('Template deleted')).toBeVisible();
+
+  // ❌ Don't assert DDS internal state (row count, etc.)
+  // DDS tests that the row disappears - you trust it
+});`}
+  />
+</div>
+
+### DDS Testing Layers
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    How DDS Tests Components
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { layer: 'Storybook Stories', desc: 'Every state documented and visible', tool: '*.stories.tsx' },
+      { layer: 'Interaction Tests', desc: 'play() functions test clicks, forms, flows', tool: '@storybook/test' },
+      { layer: 'E2E Tests', desc: 'Full page flows tested against Storybook', tool: 'Playwright' },
+      { layer: 'Visual Regression', desc: 'Screenshot comparison catches visual bugs', tool: 'Chromatic' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        padding: '12px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+      }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '12px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{idx + 1}</div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.layer}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+        <code style={{
+          background: SLATE[100],
+          padding: '4px 8px',
+          borderRadius: RADIUS.sm,
+          fontSize: '11px',
+          color: DUSK_REEF[600],
+        }}>{item.tool}</code>
+      </div>
+    ))}
+  </div>
+</div>
+
+### Bug Response SLA
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    If You Find a Bug in DDS, What's the Response Time?
+  </h4>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Severity</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Example</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Response</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Fix/Workaround</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { severity: 'Critical', severityColor: CORAL, example: 'Production down, crash, data loss', response: '2-4 hours', fix: '4-8 hours' },
+        { severity: 'High', severityColor: SUNRISE, example: 'Major feature broken, no workaround', response: 'Same day', fix: '1-2 days' },
+        { severity: 'Medium', severityColor: HARBOR, example: 'Feature broken, workaround exists', response: '1 business day', fix: '3-5 days' },
+        { severity: 'Low', severityColor: SLATE, example: 'Cosmetic, minor visual glitch', response: '2-3 days', fix: 'Next release' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.severityColor[100],
+              color: row.severityColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.severity}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.example}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontWeight: 500 }}>{row.response}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontWeight: 500 }}>{row.fix}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Honest Caveat:</strong> With a single architect, there's inherent risk. During PTO or illness,
+  response times may be 2x. Agent-assisted development accelerates fix <em>implementation</em> (3-5x faster coding),
+  but <em>awareness and triage</em> still depend on human availability. We're honest about this limitation.
+</InfoBox>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      <CheckCircle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Why Agent-Assisted Helps
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>Bug identified → fix coded in minutes, not hours</li>
+      <li>Regression tests auto-generated</li>
+      <li>Multi-file fixes are trivial</li>
+      <li>Hotfix branch + publish: ~15 min</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: CORAL[700] }}>
+      <AlertTriangle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Current Limitation
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>Single architect = single point of failure</li>
+      <li>Coverage depends on notification channel</li>
+      <li>Weekend/holiday: next business day</li>
+      <li>Multiple critical issues: priority queue (see below)</li>
+    </ul>
+  </div>
+</div>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: CORAL[700] }}>
+    <AlertTriangle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+    What Happens With Concurrent Critical Issues?
+  </h5>
+  <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    <strong>{"Honest answer:"}</strong>{" If Consumer A and Consumer B both report Critical bugs at the same time, one of them waits. Priority is determined by:"}
+  </p>
+  <ol style={{ margin: 0, paddingLeft: '20px', fontSize: '12px', color: DUSK_REEF[500] }}>
+    <li>Production impact (users affected, revenue at risk)</li>
+    <li>Workaround availability (can you unblock yourself?)</li>
+    <li>Order received (first come, first served if equal severity)</li>
+  </ol>
+  <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: CORAL[600], fontWeight: 500 }}>
+    {"Consumer B's SLA clock pauses while Consumer A's critical is being resolved. This is a limitation of single-architect teams. We're honest about it."}
+  </p>
+</div>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <GuidelineCard type="do" title="Test your integration">
+    Does your data load? Does your adapter transform correctly? Does your routing work?
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Use DDS test IDs">
+    Test IDs are stable and documented. Use them in your integration tests.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Test DDS UI behavior">
+    Don't test that buttons click or dialogs open. DDS tests that. You'd be duplicating work.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Write visual tests for DDS">
+    DDS handles visual regression. Your screenshots would duplicate DDS coverage.
+  </GuidelineCard>
+</div>
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.lg,
+  padding: '16px 20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Test ID Reference:"}</strong>{" See "}<a href="/docs/foundation-testing-attributes--docs" style={{ color: DEEP_CURRENT[600] }}>{"Testing Attributes"}</a>{" for naming conventions and implementation patterns by component layer."}
+  </p>
+</div>
+
+---
+
+{/* Q5 */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q5: Why Should We Throw Away Working Code?</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="The Migration Risk Concern"
+  description="My code works. Why replace it with an unproven system?"
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"You want me to delete my working code? Code that took 6 months to build? Code that's battle-tested with real users? To replace it with your Storybook prototype that's never seen production?\""}
+  </p>
+</div>
+
+### The Short Answer
+
+You're not "throwing away" code - you're replacing UI layer only. Your domain logic,
+API integrations, and business rules stay. DDS pages aren't prototypes - they're
+production-ready with tests, accessibility, and documented states.
+
+### What You're Actually Replacing
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Layer</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>What Happens</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Your Work</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { layer: 'UI Components', what: 'Replaced by DDS', work: 'Deleted', color: CORAL },
+        { layer: 'Page Layout', what: 'Replaced by DDS', work: 'Deleted', color: CORAL },
+        { layer: 'Styling/CSS', what: 'Replaced by DDS tokens', work: 'Deleted', color: CORAL },
+        { layer: 'Data Fetching', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'API Integration', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'Business Logic', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'Routing', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+        { layer: 'Authentication', what: 'Stays exactly as-is', work: 'Kept', color: HARBOR },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.layer}</td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.what}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.color[100],
+              color: row.color[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.work}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="tip">
+  <strong>The Real Picture:</strong> You delete JSX and CSS. You keep everything else.
+  Your API calls, your hooks, your business logic - untouched.
+</InfoBox>
+
+### DDS Pages Are Production-Ready
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    "Storybook Prototype" vs Reality
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"Every DDS page composition includes:"}
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+    {[
+      { item: 'TypeScript interfaces', desc: 'Full type safety, catch errors at compile time' },
+      { item: 'All UI states', desc: 'Loading, empty, error, success - not just happy path' },
+      { item: 'Storybook stories', desc: 'Visual documentation of every state' },
+      { item: 'Interaction tests', desc: 'play() functions verify clicks, forms, flows' },
+      { item: 'Mobile + Desktop', desc: 'Responsive from day one, not afterthought' },
+      { item: 'Accessibility', desc: 'ARIA labels, keyboard nav, screen reader support' },
+      { item: 'Dark mode', desc: 'Theme-aware without extra work' },
+      { item: 'Test IDs', desc: 'Documented selectors for your integration tests' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '10px',
+        padding: '12px',
+        background: HARBOR[50],
+        borderRadius: RADIUS.md,
+        border: `1px solid ${HARBOR[200]}`,
+      }}>
+        <CheckCircle size={16} color={HARBOR[600]} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <div style={{ fontSize: '12px', fontWeight: 600, color: ABYSS[500] }}>{item.item}</div>
+          <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+### "Working" vs "Optimal"
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>
+    Battle-Tested Can Also Mean Battle-Scarred
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"6 months of production means 6 months of:"}
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: CORAL[700] }}>
+        Accumulated Debt
+      </h5>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Quick fixes that became permanent</li>
+        <li>Workarounds for edge cases</li>
+        <li>Inconsistent patterns across pages</li>
+        <li>"TODO: fix later" comments</li>
+        <li>CSS !important chains</li>
+      </ul>
+    </div>
+    <div>
+      <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: HARBOR[700] }}>
+        DDS Fresh Start
+      </h5>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Consistent patterns everywhere</li>
+        <li>Edge cases handled systematically</li>
+        <li>No accumulated workarounds</li>
+        <li>Documented design decisions</li>
+        <li>Token-based styling</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### What You're Actually Trading
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Maintenance Burden Transfer
+  </h4>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Your Working Code</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>DDS Equivalent</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Who Maintains It</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { yours: 'Your custom DataTable with 47 props', dds: 'DDS DataTable', who: 'DDS team', whoColor: DEEP_CURRENT },
+        { yours: 'Your accessibility fixes from that audit', dds: 'Already WCAG compliant', who: 'DDS team', whoColor: DEEP_CURRENT },
+        { yours: 'Your Safari iOS viewport hack', dds: 'Already handled', who: 'DDS team', whoColor: DEEP_CURRENT },
+        { yours: 'Your dark mode implementation', dds: 'Automatic', who: 'DDS team', whoColor: DEEP_CURRENT },
+        { yours: 'Your mobile responsive breakpoints', dds: 'Consistent across pages', who: 'DDS team', whoColor: DEEP_CURRENT },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.yours}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.dds}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.whoColor[100],
+              color: row.whoColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.who}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    The Real Question
+  </h4>
+  <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"When design says \"we're updating the table header style across all products,\" who does the work?"}
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div style={{ padding: '12px', background: CORAL[50], borderRadius: RADIUS.md }}>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: CORAL[700], marginBottom: '4px' }}>Your Code</div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>You update 15 pages, test 15 pages, deploy 15 pages</div>
+    </div>
+    <div style={{ padding: '12px', background: HARBOR[50], borderRadius: RADIUS.md }}>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '4px' }}>DDS</div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>DDS updates once, you run npm update, done</div>
+    </div>
+  </div>
+</div>
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: '24px',
+}}>
+  <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+    Your Code Handles Your Edge Cases. But Does It Handle:
+  </h5>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+    {[
+      'RTL languages?',
+      'Reduced motion preferences?',
+      'High contrast mode?',
+      'Screen readers in all states?',
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <CheckCircle size={14} color={HARBOR[600]} />
+        <span style={{ fontSize: '12px', color: ABYSS[500] }}>{item} <span style={{ color: HARBOR[600], fontWeight: 500 }}>DDS: yes</span></span>
+      </div>
+    ))}
+  </div>
+  <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"You're not trading known stability for unknown risk. You're trading narrow coverage for broad coverage."}
+  </p>
+</div>
+
+### The Migration Is Incremental
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Page-by-Page Replacement
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"You don't migrate 15 pages in one sprint. You migrate one page, verify it works, then move to the next."}
+  </p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { step: '1', title: 'Pick lowest-risk page', desc: 'Settings, Profile, or simple list page' },
+      { step: '2', title: 'Write data adapter', desc: '1 file that transforms your API data to DDS interface' },
+      { step: '3', title: 'Replace route', desc: 'Old page component -> new DDS page + adapter' },
+      { step: '4', title: 'Verify in staging', desc: 'Test with real data before production' },
+      { step: '5', title: 'Deploy', desc: 'Feature flag if nervous, direct if confident' },
+      { step: '6', title: 'Delete old code', desc: 'Once stable, remove the old page component' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+      }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '13px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{item.step}</div>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.title}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="info">
+  <strong>Rollback Is Easy:</strong> If DDS page has issues, revert the route to use old component.
+  Your old code exists in git history. Nothing is truly "thrown away" until you're confident.
+</InfoBox>
+
+### What You Gain
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '12px',
+  marginBottom: '24px',
+}}>
+  {[
+    { icon: <Zap size={20} />, title: 'Consistency', desc: 'Same patterns across all products' },
+    { icon: <Shield size={20} />, title: 'Maintenance', desc: 'DDS fixes bugs, you get updates' },
+    { icon: <Users size={20} />, title: 'Accessibility', desc: 'WCAG compliance built-in' },
+    { icon: <GitBranch size={20} />, title: 'Theming', desc: 'Dark mode, brand updates - automatic' },
+    { icon: <Clock size={20} />, title: 'Developer Time', desc: 'Focus on business logic, not buttons' },
+    { icon: <Layers size={20} />, title: 'Documentation', desc: 'Storybook shows every state' },
+  ].map((item, idx) => (
+    <div key={idx} style={{
+      background: HARBOR[50],
+      borderRadius: RADIUS.lg,
+      padding: '16px',
+      border: `1px solid ${HARBOR[200]}`,
+      textAlign: 'center',
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.full,
+        background: HARBOR[100],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto 12px',
+        color: HARBOR[600],
+      }}>{item.icon}</div>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500], marginBottom: '4px' }}>{item.title}</div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+### The Real Question
+
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    Not "Why throw it away?" but "What are you maintaining?"
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"Every line of UI code you keep is a line you must:"}
+  </p>
+  <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', color: DUSK_REEF[500] }}>
+    <li>Update when design changes</li>
+    <li>Fix when accessibility requirements evolve</li>
+    <li>Test when dependencies update</li>
+    <li>Maintain when team members leave</li>
+    <li>Document for new hires</li>
+  </ul>
+  <p style={{ margin: '16px 0 0 0', fontSize: '13px', color: DEEP_CURRENT[600], fontWeight: 500 }}>
+    {"With DDS, that maintenance burden shifts to the design system team. Your team focuses on what makes your product unique - the business logic."}
+  </p>
+</div>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <GuidelineCard type="do" title="Replace UI layer only">
+    Your data fetching, API calls, business logic - all stays. Only JSX and CSS changes.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Migrate incrementally">
+    One page at a time. Verify, deploy, repeat. No big-bang migration needed.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Equate 'working' with 'optimal'">
+    6 months of production often means 6 months of accumulated workarounds.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Assume DDS is 'unproven'">
+    Every page has tests, stories, and documented states. Production-ready from day one.
+  </GuidelineCard>
+</div>
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.lg,
+  padding: '16px 20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Full Migration Guide:"}</strong>{" See "}<a href="/docs/developers-migration-strategy--docs" style={{ color: DEEP_CURRENT[600] }}>{"Migration Strategy"}</a>{" for the complete 5-phase approach, adapter patterns, and page-by-page replacement process."}
+  </p>
+</div>
+
+---
+
+{/* Q6 */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q6: What About Performance and Bundle Size?</h2>
+
+<SectionHeader
+  icon={<Gauge size={20} />}
+  title="The Performance Concern"
+  description="Does DDS add bloat? Who catches memory leaks?"
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"If DDS ships a component with a memory leak, how do we even know until production melts? What's the bundle size impact? You testing Safari? Edge? Mobile Chrome?\""}
+  </p>
+</div>
+
+### Browser Support Matrix
+
+DDS officially supports modern browsers. No IE11.
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: '12px',
+  marginBottom: '24px',
+}}>
+  {[
+    { browser: 'Safari', version: '16+', platforms: 'iOS & macOS', color: DEEP_CURRENT },
+    { browser: 'Chrome', version: '100+', platforms: 'Desktop & Android', color: HARBOR },
+    { browser: 'Firefox', version: '100+', platforms: 'Desktop', color: SUNRISE },
+    { browser: 'Edge', version: '100+', platforms: 'Chromium', color: ABYSS },
+  ].map((item, idx) => (
+    <div key={idx} style={{
+      background: item.color[50],
+      borderRadius: RADIUS.lg,
+      padding: '16px',
+      border: `1px solid ${item.color[200]}`,
+      textAlign: 'center',
+    }}>
+      <div style={{ fontSize: '15px', fontWeight: 600, color: item.color[700] }}>{item.browser}</div>
+      <div style={{ fontSize: '20px', fontWeight: 700, color: item.color[600], margin: '4px 0' }}>{item.version}</div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.platforms}</div>
+    </div>
+  ))}
+</div>
+
+<InfoBox variant="warning">
+  <strong>No IE11:</strong> If your enterprise customers require IE11, DDS is not for you.
+  We use modern CSS (dvh units, backdrop-filter, CSS Grid) that IE11 cannot support.
+</InfoBox>
+
+### Who Tests What
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Test Type</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Owner</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>How</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { type: 'Cross-browser rendering', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Chromatic visual regression on Chrome, Safari, Firefox' },
+        { type: 'iOS Safari viewport bugs', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Manual testing + documented workarounds' },
+        { type: 'Bundle size', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Tree-shaking, import only what you use' },
+        { type: 'Memory leaks in DDS', owner: 'DDS', ownerColor: DEEP_CURRENT, how: 'Consumer reports issue, DDS fixes in patch' },
+        { type: 'Performance in your app', owner: 'Consumer', ownerColor: DUSK_REEF, how: 'Your profiling, your monitoring' },
+        { type: 'Memory leaks in your code', owner: 'Consumer', ownerColor: DUSK_REEF, how: 'Your responsibility' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.type}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.ownerColor[100],
+              color: row.ownerColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.owner}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.how}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+### Bundle Size Philosophy
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+      <Package size={20} color={HARBOR[600]} />
+      <h5 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+        Tree-Shaking Works
+      </h5>
+    </div>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Import only what you use. "}<code>{'import { Button } from "@dds/design-system"'}</code>{" doesn't pull the entire library. Modern bundlers (Vite, webpack 5) handle this automatically."}
+    </p>
+  </div>
+
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+      <Layers size={20} color={DEEP_CURRENT[600]} />
+      <h5 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+        Shared Dependencies
+      </h5>
+    </div>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"DDS uses Radix UI primitives, react-hook-form, and standard React patterns. If you already use these, there's minimal additional overhead."}
+    </p>
+  </div>
+</div>
+
+### The Honest Answer on Performance Testing
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>
+    <AlertTriangle size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    Performance Testing Is Not Automated (Yet)
+  </h4>
+  <p style={{ margin: '0 0 12px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"DDS does NOT have automated performance benchmarks or memory leak detection today. Here's the current process:"}
+  </p>
+  <ol style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', color: DUSK_REEF[500] }}>
+    <li>Consumer notices performance issue in production</li>
+    <li>Consumer reports to DDS with reproduction steps</li>
+    <li>DDS investigates and fixes in patch release</li>
+    <li>Consumer updates DDS version</li>
+  </ol>
+  <p style={{ margin: '12px 0 0 0', fontSize: '13px', color: SUNRISE[700], fontWeight: 500 }}>
+    {"This is a known gap. Automated performance testing is on the roadmap."}
+  </p>
+</div>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <GuidelineCard type="do" title="Modern browsers only">
+    Safari 16+, Chrome 100+, Firefox 100+, Edge 100+. Documented in BrowserCompatibility.mdx.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Tree-shaking by default">
+    Import only what you use. Bundle size grows with usage, not with DDS version.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Expect IE11 support">
+    DDS uses modern CSS that IE11 cannot support. No polyfills planned.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Assume perf is auto-tested">
+    Performance testing is reactive, not proactive. Report issues, we fix them.
+  </GuidelineCard>
+</div>
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.lg,
+  padding: '16px 20px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Browser Details:"}</strong>{" See "}<a href="/docs/developers-browser-compatibility--docs" style={{ color: DEEP_CURRENT[600] }}>{"Browser Compatibility"}</a>{" for known issues, workarounds, and the iOS 26 viewport bug fix."}
+  </p>
+</div>
+
+---
+
+{/* Q7 Quick Topics */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q7: Quick Topics</h2>
+
+<SectionHeader
+  icon={<Zap size={20} />}
+  title="Data Security, Customization, Cost & Governance"
+  description="Rapid-fire answers to common questions."
+/>
+
+### Data Security
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: HARBOR[700] }}>
+    <Shield size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    DDS Never Sees Your Data
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"DDS components run entirely client-side. Your data never passes through DDS infrastructure."}
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+    {[
+      { label: 'DDS receives', value: 'Nothing' },
+      { label: 'DDS stores', value: 'Nothing' },
+      { label: 'DDS logs', value: 'Nothing' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        background: PRIMITIVES.white,
+        padding: '12px',
+        borderRadius: RADIUS.md,
+        textAlign: 'center',
+      }}>
+        <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.label}</div>
+        <div style={{ fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>{item.value}</div>
+      </div>
+    ))}
+  </div>
+  <p style={{ margin: '16px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"Your API calls go directly from your app to your backend. DDS is a UI library, not a service."}
+  </p>
+</div>
+
+### Customization Escape Hatch
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    Short Answer: No
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"DDS styling is not customizable by consumers. This is intentional."}
+  </p>
+  <div style={{
+    background: PRIMITIVES.white,
+    padding: '16px',
+    borderRadius: RADIUS.md,
+    marginBottom: '16px',
+  }}>
+    <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500], marginBottom: '8px' }}>Why No Customization?</div>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Customization breaks consistency, which is the entire point of a design system. If you need a button that's 47px tall with a gradient, that's not a DDS button. Build it yourself."}
+    </p>
+  </div>
+  <InfoBox variant="tip">
+    <strong>Exception:</strong> If your customization need is shared by 2+ products, propose it to DDS.
+    We'll either add it as a variant or explain why it doesn't fit.
+  </InfoBox>
+</div>
+
+### Cost Model
+
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    DDS Is Internal Infrastructure
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"DDS is an internal Disrupt Inc initiative, not a product."}
+  </p>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+    {[
+      { label: 'Usage cost', value: 'Free' },
+      { label: 'Licensing fees', value: 'None' },
+      { label: 'Support', value: 'Included' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        background: PRIMITIVES.white,
+        padding: '12px',
+        borderRadius: RADIUS.md,
+        textAlign: 'center',
+      }}>
+        <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.label}</div>
+        <div style={{ fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>{item.value}</div>
+      </div>
+    ))}
+  </div>
+  <p style={{ margin: '16px 0 0 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+    {"This is infrastructure investment, not a product. For Disrupt teams, there are no charges."}
+  </p>
+</div>
+
+### Governance: Who Decides What Goes In?
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    DDS Architect Has Final Say
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"What enters the design system is decided by the DDS architect based on these criteria:"}
+  </p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+    {[
+      'Is it needed by 2+ products?',
+      'Does it follow established patterns?',
+      'Can DDS maintain it long-term?',
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{
+          width: '20px',
+          height: '20px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '11px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{idx + 1}</div>
+        <span style={{ fontSize: '13px', color: ABYSS[500] }}>{item}</span>
+      </div>
+    ))}
+  </div>
+  <InfoBox variant="info">
+    <strong>Escalation:</strong> If you disagree with a decision, escalate to Engineering leadership.
+    DDS is not a democracy, but it's not a dictatorship either.
+  </InfoBox>
+</div>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Trust the security model">
+    DDS is client-side only. Your data stays with you.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Propose shared needs">
+    If 2+ products need something, it's a candidate for DDS.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Expect custom styling">
+    Consistency is the point. Build one-offs yourself.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Assume cost surprises">
+    DDS is internal infrastructure. No hidden fees.
+  </GuidelineCard>
+</div>
+
+---
+
+{/* Q8 What If DDS Fails */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q8: What If DDS Fails as an Initiative?</h2>
+
+<SectionHeader
+  icon={<AlertTriangle size={20} />}
+  title="The Exit Strategy Concern"
+  description="What happens if DDS stops being maintained?"
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    The Concern
+  </h4>
+  <p style={{ margin: 0, fontSize: '14px', color: DUSK_REEF[600], fontStyle: 'italic' }}>
+    {"\"Corporate priorities shift, architect moves to another project, budget cuts happen. What's my exit strategy if I'm now dependent on DDS pages?\""}
+  </p>
+</div>
+
+### Context: DDS Is Disrupt Property
+
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: '24px',
+}}>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"DDS is built for Disrupt Inc. It's not an open-source project that might lose funding. It's internal infrastructure for our products. The design system is property of Disrupt Inc. Software, and all components used in Disrupt products will always use DDS."}
+  </p>
+</div>
+
+### Realistic Scenarios
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Scenario</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Impact</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Your Exit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { scenario: 'Architect leaves', impact: 'High short-term', impactColor: CORAL, exit: 'DDS codebase stays. Hire replacement or distribute ownership.' },
+        { scenario: 'Budget cuts', impact: 'Medium', impactColor: SUNRISE, exit: 'DDS maintenance mode. No new features, but existing pages work.' },
+        { scenario: 'Corporate pivot', impact: 'Low', impactColor: HARBOR, exit: 'If Disrupt still has web products, DDS still has value.' },
+        { scenario: 'Better solution invented', impact: 'Good problem', impactColor: DEEP_CURRENT, exit: 'Migrate incrementally, same as any tech migration.' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.scenario}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.impactColor[100],
+              color: row.impactColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.impact}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.exit}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+### Your Safety Net
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { point: 'DDS is Disrupt property', desc: 'You always have the source code' },
+      { point: 'Standard React components', desc: 'Any React dev can maintain them' },
+      { point: 'No vendor lock-in', desc: 'No SaaS dependency, no external service required' },
+      { point: 'No tribal knowledge', desc: 'Everything documented in Storybook and CLAUDE.md' },
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+        <CheckCircle size={16} color={HARBOR[600]} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: HARBOR[700] }}>{item.point}:</span>{' '}
+          <span style={{ fontSize: '13px', color: DUSK_REEF[500] }}>{item.desc}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+    <AlertTriangle size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+    The Honest Answer
+  </h5>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"If DDS stops being maintained, you're in the same position as any team whose shared library lost its maintainer. You fork it, own it, or migrate away. But that's true of ANY dependency. At least with DDS, it's your company's code."}
+  </p>
+</div>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Trust the safety net">
+    Source code stays with Disrupt. No external dependencies.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Plan for personnel change">
+    Documentation exists for someone new to pick up DDS.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Expect abandonment">
+    DDS is core infrastructure, not a side project.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Over-worry about exit">
+    Same risk exists with any shared library. DDS is actually lower risk.
+  </GuidelineCard>
+</div>
+
+---
+
+{/* Q9 How to Engage */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Q9: How Do I Engage with DDS?</h2>
+
+<SectionHeader
+  icon={<Users size={20} />}
+  title="Communication, Issue Reporting & Feedback"
+  description="Practical details for working with the DDS team."
+/>
+
+### Reporting Issues
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Issue Reporting Channels
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { severity: 'Critical', severityColor: CORAL, channel: 'Slack DM to architect + #dds-support', desc: 'Production down, blocking release' },
+      { severity: 'High', severityColor: SUNRISE, channel: '#dds-support Slack channel', desc: 'Feature broken, need response today' },
+      { severity: 'Medium/Low', severityColor: HARBOR, channel: 'GitHub Issue in DDS repo', desc: 'Bug report, feature request, improvement' },
+      { severity: 'Questions', severityColor: DEEP_CURRENT, channel: '#dds-support Slack channel', desc: 'Usage questions, pattern advice' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        padding: '12px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+      }}>
+        <span style={{
+          background: item.severityColor[100],
+          color: item.severityColor[700],
+          padding: '4px 10px',
+          borderRadius: RADIUS.full,
+          fontSize: '11px',
+          fontWeight: 600,
+          minWidth: '70px',
+          textAlign: 'center',
+        }}>{item.severity}</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.channel}</div>
+          <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Good Bug Report:</strong> Include DDS version, browser, reproduction steps, expected vs actual behavior,
+  and screenshots/videos if visual. The more context, the faster the fix.
+</InfoBox>
+
+### Design Disagreements
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    "My PM says the button should be bigger. DDS says no."
+  </h4>
+  <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>
+    {"Design disagreements happen. Here's the escalation path that doesn't require going to Engineering leadership for font-size arguments."}
+  </p>
+</div>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { step: '1', title: 'Discuss with DDS', desc: 'Explain the use case. Often there\'s a DDS-approved pattern that achieves your goal.', color: HARBOR },
+      { step: '2', title: 'Check if shared need', desc: 'Would 2+ products benefit? If yes, DDS considers adding a variant.', color: DEEP_CURRENT },
+      { step: '3', title: 'Design review (if needed)', desc: 'For significant visual changes, loop in Product Design team for alignment.', color: SUNRISE },
+      { step: '4', title: 'Accept or build yourself', desc: 'If DDS says no and you still need it, build it outside DDS. Don\'t force DDS to break consistency.', color: CORAL },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: item.color[50],
+        borderRadius: RADIUS.md,
+        border: `1px solid ${item.color[200]}`,
+      }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.full,
+          background: item.color[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: PRIMITIVES.white,
+          fontSize: '12px',
+          fontWeight: 700,
+          flexShrink: 0,
+        }}>{item.step}</div>
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: item.color[700] }}>{item.title}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>The Hard Truth:</strong> Consistency > individual preference. If your request would make DDS
+  inconsistent across products, the answer is no. Build one-offs yourself, don't compromise the system.
+</InfoBox>
+
+### Influencing the Roadmap
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    How Consumer Needs Become DDS Features
+  </h4>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+    {[
+      { title: 'Request', desc: 'File GitHub issue or discuss in #dds-support', icon: '1' },
+      { title: 'Triage', desc: 'Architect evaluates: shared need? fits patterns? maintainable?', icon: '2' },
+      { title: 'Prioritize', desc: 'Multi-consumer needs get priority. Single-consumer = lower priority or declined.', icon: '3' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        background: HARBOR[50],
+        borderRadius: RADIUS.lg,
+        padding: '16px',
+        border: `1px solid ${HARBOR[200]}`,
+        textAlign: 'center',
+      }}>
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: RADIUS.full,
+          background: HARBOR[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: '0 auto 12px',
+          color: PRIMITIVES.white,
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>{item.icon}</div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: HARBOR[700], marginBottom: '4px' }}>{item.title}</div>
+        <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: '24px',
+}}>
+  <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    What Gets Prioritized
+  </h5>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '4px' }}>High Priority</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Multiple consumers need it</li>
+        <li>Blocks production release</li>
+        <li>Security/accessibility fix</li>
+        <li>Bug affecting all users</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: CORAL[700], marginBottom: '4px' }}>Lower Priority</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Single consumer nice-to-have</li>
+        <li>Visual preference (not broken)</li>
+        <li>Edge case optimization</li>
+        <li>Already has workaround</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### Internationalization (i18n) Support
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Current i18n Capabilities
+  </h4>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Feature</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Status</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { feature: 'RTL Layout Support', status: 'Built-in', statusColor: HARBOR, notes: 'CSS logical properties used throughout. dir="rtl" works.' },
+        { feature: 'String Externalization', status: 'Consumer-owned', statusColor: DEEP_CURRENT, notes: 'DDS accepts translated strings as props. You provide the translations.' },
+        { feature: 'Date/Number Formatting', status: 'Consumer-owned', statusColor: DEEP_CURRENT, notes: 'Pass formatted strings to DDS. Use your i18n library (react-intl, i18next).' },
+        { feature: 'Pluralization', status: 'Consumer-owned', statusColor: DEEP_CURRENT, notes: 'Handle in your code, pass result to DDS.' },
+        { feature: 'Built-in Translations', status: 'Not provided', statusColor: SUNRISE, notes: 'DDS has no built-in strings to translate. All text comes from you.' },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.feature}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.statusColor[100],
+              color: row.statusColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.status}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.notes}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="info">
+  <strong>i18n Philosophy:</strong> DDS is a presentation layer. It renders what you give it.
+  All text, dates, numbers, and formatting are your responsibility. DDS ensures the layout works
+  in RTL mode and that components accept any string content.
+</InfoBox>
+
+### Summary
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Use the right channel">
+    Critical = Slack DM. Normal = #dds-support. Feature requests = GitHub Issue.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Propose shared needs">
+    Multi-consumer requests get prioritized. Rally other teams if you want something built.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Force design exceptions">
+    Consistency is the point. Build one-offs yourself, don't compromise DDS patterns.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Expect DDS to translate">
+    DDS renders your content. Translations are your responsibility.
+  </GuidelineCard>
+</div>
+
+---
+
+{/* Known Gaps */}
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Known Gaps & Roadmap</h2>
+
+<SectionHeader
+  icon={<CircleDot size={20} />}
+  title="What DDS Doesn't Cover (Yet)"
+  description="Honesty about current limitations."
+/>
+
+<InfoBox variant="warning">
+  This section exists because we believe in transparency. Every system has gaps.
+  Hiding them doesn't make them disappear - it just surprises you later.
+</InfoBox>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'auto',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Gap</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Status</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Timeline</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Workaround</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        {
+          gap: 'Automated performance testing',
+          status: 'Not implemented',
+          statusColor: CORAL,
+          timeline: 'Planned',
+          timelineColor: SUNRISE,
+          workaround: 'Consumer reports issues, DDS fixes reactively',
+        },
+        {
+          gap: 'Memory leak detection',
+          status: 'Not implemented',
+          statusColor: CORAL,
+          timeline: 'Planned',
+          timelineColor: SUNRISE,
+          workaround: 'Consumer monitors production, reports to DDS',
+        },
+        {
+          gap: 'Animation system (Framer Motion)',
+          status: 'Not standardized',
+          statusColor: SUNRISE,
+          timeline: 'Planned',
+          timelineColor: SUNRISE,
+          workaround: 'Consumer handles animations outside DDS pages',
+        },
+        {
+          gap: 'Kanban board layout',
+          status: 'Not built',
+          statusColor: SUNRISE,
+          timeline: 'On-demand',
+          timelineColor: DUSK_REEF,
+          workaround: 'Interface-First Protocol when first needed',
+        },
+        {
+          gap: 'Map-based interfaces',
+          status: 'Not built',
+          statusColor: SUNRISE,
+          timeline: 'On-demand',
+          timelineColor: DUSK_REEF,
+          workaround: 'Interface-First Protocol when first needed',
+        },
+        {
+          gap: 'Real-time collaboration',
+          status: 'Not built',
+          statusColor: SUNRISE,
+          timeline: 'Planned',
+          timelineColor: SUNRISE,
+          workaround: 'Consumer builds, DDS standardizes later',
+        },
+        {
+          gap: 'TanStack Table alignment',
+          status: 'Different implementation',
+          statusColor: DEEP_CURRENT,
+          timeline: 'N/A',
+          timelineColor: SLATE,
+          workaround: 'DDS DataTable replaces TanStack usage',
+        },
+        {
+          gap: 'Bundle size documentation',
+          status: 'Not measured',
+          statusColor: SUNRISE,
+          timeline: 'Planned',
+          timelineColor: SUNRISE,
+          workaround: 'Tree-shaking works, no published metrics yet',
+        },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontWeight: 500 }}>{row.gap}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.statusColor[100],
+              color: row.statusColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.status}</span>
+          </td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{
+              background: row.timelineColor[100],
+              color: row.timelineColor[700],
+              padding: '4px 10px',
+              borderRadius: RADIUS.full,
+              fontSize: '11px',
+              fontWeight: 600,
+            }}>{row.timeline}</span>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>{row.workaround}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: SUNRISE[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SUNRISE[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+      <Clock size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Planned (Not Started)
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Performance testing, memory profiling, animation system, bundle docs — these are on the roadmap but "}<strong>{"work has not started"}</strong>{". Timelines will be updated when work begins."}
+    </p>
+  </div>
+
+  <div style={{
+    background: DUSK_REEF[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${DUSK_REEF[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DUSK_REEF[700] }}>
+      <Clock size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      On-Demand Items
+    </h5>
+    <p style={{ margin: 0, fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Novel patterns (Kanban, Maps) use Interface-First Protocol: DDS provides interface when first consumer needs it."}
+    </p>
+  </div>
+</div>
+
+### What Happens When You Hit a Gap
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  {[
+    {
+      step: '1',
+      title: 'Identify',
+      desc: 'You need something DDS doesn\'t have',
+      color: HARBOR,
+    },
+    {
+      step: '2',
+      title: 'Discuss',
+      desc: 'Talk to DDS architect - is this a gap or a consumer responsibility?',
+      color: DEEP_CURRENT,
+    },
+    {
+      step: '3',
+      title: 'Decide',
+      desc: 'Emergency Build (you build), or DDS adds to roadmap',
+      color: SUNRISE,
+    },
+  ].map((item, idx) => (
+    <div key={idx} style={{
+      background: item.color[50],
+      borderRadius: RADIUS.lg,
+      padding: '20px',
+      border: `1px solid ${item.color[200]}`,
+      textAlign: 'center',
+    }}>
+      <div style={{
+        width: '32px',
+        height: '32px',
+        borderRadius: RADIUS.full,
+        background: item.color[500],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto 12px',
+        color: PRIMITIVES.white,
+        fontSize: '14px',
+        fontWeight: 700,
+      }}>{item.step}</div>
+      <div style={{ fontSize: '14px', fontWeight: 600, color: item.color[700], marginBottom: '4px' }}>{item.title}</div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+### Bus Factor & Self-Service Validation
+
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    "What if the architect leaves? Has anyone onboarded without hand-holding?"
+  </h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[500] }}>
+    <strong>{"Honest answer:"}</strong>{" DDS is new. Full self-service onboarding hasn't been validated yet. No one other than the architect has used the agent-assisted workflow. Here's what "}<em>{"should"}</em>{" enable it:"}
+  </p>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { point: 'Agent-assisted development is documented', desc: 'All prompts, skills, patterns in .claude/skills/*.md (not yet tested by others)' },
+      { point: 'No tribal knowledge', desc: 'Everything in code (TypeScript), Storybook (visual), CLAUDE.md (process)' },
+      { point: 'Process should be replicable', desc: 'New person + Claude + docs = same capability (theory, needs validation)' },
+      { point: 'Interface-First Protocol works without architect', desc: 'Consumer can build to existing component interfaces independently' },
+      { point: 'Comprehensive onboarding docs', desc: 'FAQ, MigrationStrategy, AdapterPatterns, BrowserCompatibility all in Storybook' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+      }}>
+        <CheckCircle size={16} color={HARBOR[500]} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.point}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.desc}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '16px',
+  marginBottom: '24px',
+}}>
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${HARBOR[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      <CheckCircle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Self-Service Enabled
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>Reading DDS docs (this FAQ)</li>
+      <li>Browsing Storybook for patterns</li>
+      <li>Copy-paste from existing adapters</li>
+      <li>Using existing DDS components</li>
+      <li>Interface-First emergency builds</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: SUNRISE[50],
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SUNRISE[200]}`,
+  }}>
+    <h5 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: SUNRISE[700] }}>
+      <AlertTriangle size={16} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+      Requires Architect
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <li>New component development</li>
+      <li>Breaking changes review</li>
+      <li>Novel pattern design</li>
+      <li>Token system modifications</li>
+      <li>Architecture decisions</li>
+    </ul>
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Bus Factor Reality:</strong> If the architect leaves AND the company doesn't backfill,
+  DDS enters maintenance-only mode. Existing components work, but no new patterns get built.
+  This is a business risk, not a technical limitation. The documentation exists for someone new to pick up.
+</InfoBox>
+
+### Rollback & Version Pinning
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    "What if I upgrade DDS and something breaks?"
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { question: 'Can I pin to a previous version?', answer: 'Yes. All versions are published to npm. Pin in package.json: "@dds/design-system": "2.6.0"' },
+      { question: 'How long are old versions supported?', answer: 'No active support for old versions. Security patches only for current major version.' },
+      { question: 'What\'s the deprecation policy?', answer: 'MAJOR version = breaking changes. MINOR = new features, backwards compatible. PATCH = bug fixes.' },
+      { question: 'How do I rollback?', answer: 'npm install @dds/design-system@<previous-version>. Test in staging before deploying.' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        padding: '12px',
+        background: SLATE[50],
+        borderRadius: RADIUS.md,
+      }}>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500], marginBottom: '4px' }}>{item.question}</div>
+        <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.answer}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Upgrade Strategy:</strong> Always test DDS upgrades in a staging environment first.
+  Run your integration tests against the new version. If something breaks that wasn't caught by
+  DDS tests, report it — that's a gap in DDS coverage we need to fix.
+</InfoBox>
+
+### Final Word
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.7 }}>
+    {"DDS is not perfect. No design system is. But we're honest about limitations, have clear processes for gaps, and continuously improve based on real usage."}
+    <br /><br />
+    {"If you have questions not covered here, ask. If you find new gaps, report them. This FAQ grows with the system."}
+  </p>
+</div>

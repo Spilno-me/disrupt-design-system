@@ -1,0 +1,692 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Globe,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Smartphone,
+  Monitor,
+  Bug,
+  Wrench,
+  Calendar,
+  ExternalLink,
+  Shield,
+  Layers,
+  Eye,
+  Keyboard,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Browser Compatibility" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Browser Compatibility"
+  description="Track browser-specific bugs, behaviors, and workarounds. A living reference for Safari, Chrome, Firefox, and mobile browser quirks that affect the design system."
+  gradient="purple"
+  decorativeIcon={<Globe size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="warning">
+  <strong>Living Document:</strong> This page is continuously updated as new browser bugs are discovered
+  and workarounds are implemented. Check the "Last Updated" date for each issue.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Browser Support Matrix</h2>
+
+<SectionHeader
+  icon={<Monitor size={20} />}
+  title="Officially Supported Browsers"
+  description="Browsers we actively test and maintain compatibility for."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Safari */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.sm,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.md,
+        background: `linear-gradient(135deg, #5AC8FA 0%, #007AFF 100%)`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '20px',
+      }}>🧭</div>
+      <div>
+        <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: ABYSS[600] }}>Safari</h4>
+        <span style={{ fontSize: '12px', color: DUSK_REEF[500] }}>iOS & macOS</span>
+      </div>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500] }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: `1px solid ${SLATE[100]}` }}>
+        <span>iOS Safari</span>
+        <span style={{ fontWeight: 600 }}>16+</span>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
+        <span>macOS Safari</span>
+        <span style={{ fontWeight: 600 }}>16+</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Chrome */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.sm,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.md,
+        background: `linear-gradient(135deg, #4285F4 0%, #EA4335 50%, #FBBC05 100%)`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '20px',
+      }}>🌐</div>
+      <div>
+        <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: ABYSS[600] }}>Chrome</h4>
+        <span style={{ fontSize: '12px', color: DUSK_REEF[500] }}>Desktop & Mobile</span>
+      </div>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500] }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: `1px solid ${SLATE[100]}` }}>
+        <span>Desktop</span>
+        <span style={{ fontWeight: 600 }}>100+</span>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
+        <span>Android</span>
+        <span style={{ fontWeight: 600 }}>100+</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Firefox */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.sm,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.md,
+        background: `linear-gradient(135deg, #FF7139 0%, #E66000 100%)`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '20px',
+      }}>🦊</div>
+      <div>
+        <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: ABYSS[600] }}>Firefox</h4>
+        <span style={{ fontSize: '12px', color: DUSK_REEF[500] }}>Desktop</span>
+      </div>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500] }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: `1px solid ${SLATE[100]}` }}>
+        <span>Desktop</span>
+        <span style={{ fontWeight: 600 }}>100+</span>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
+        <span>Mobile</span>
+        <span style={{ fontWeight: 600, color: DUSK_REEF[500] }}>Best effort</span>
+      </div>
+    </div>
+  </div>
+
+  {/* Edge */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.lg,
+    padding: '20px',
+    border: `1px solid ${SLATE[200]}`,
+    boxShadow: SHADOWS.sm,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: RADIUS.md,
+        background: `linear-gradient(135deg, #0078D4 0%, #00BCF2 100%)`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '20px',
+      }}>🌊</div>
+      <div>
+        <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: ABYSS[600] }}>Edge</h4>
+        <span style={{ fontSize: '12px', color: DUSK_REEF[500] }}>Chromium</span>
+      </div>
+    </div>
+    <div style={{ fontSize: '13px', color: ABYSS[500] }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
+        <span>Desktop</span>
+        <span style={{ fontWeight: 600 }}>100+</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Known Issues & Workarounds</h2>
+
+{/* iOS 26 Safari Viewport Bug */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  border: `2px solid ${CORAL[300]}`,
+  marginBottom: '24px',
+  overflow: 'hidden',
+}}>
+  {/* Header */}
+  <div style={{
+    background: `linear-gradient(135deg, ${CORAL[500]} 0%, ${CORAL[700]} 100%)`,
+    padding: '16px 24px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <Smartphone size={24} color={PRIMITIVES.white} />
+      <div>
+        <h3 style={{ margin: 0, color: PRIMITIVES.white, fontSize: '18px', fontWeight: 600 }}>
+          iOS 26 Safari "Liquid Glass" Viewport Bug
+        </h3>
+        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px' }}>
+          Safari 26.x • iOS 26+ • Critical
+        </span>
+      </div>
+    </div>
+    <div style={{
+      background: 'rgba(255,255,255,0.2)',
+      borderRadius: RADIUS.full,
+      padding: '4px 12px',
+      fontSize: '12px',
+      fontWeight: 600,
+      color: PRIMITIVES.white,
+    }}>
+      FIXED IN DDS
+    </div>
+  </div>
+
+  {/* Content */}
+  <div style={{ padding: '24px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '20px' }}>
+      <div>
+        <h4 style={{ margin: '0 0 8px', fontSize: '14px', fontWeight: 600, color: ABYSS[600], display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Bug size={16} color={CORAL[500]} /> The Problem
+        </h4>
+        <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.6 }}>
+          iOS 26 introduced Apple's "Liquid Glass" design with <strong>translucent, floating browser chrome</strong> that overlays web content.
+          This causes:
+        </p>
+        <ul style={{ margin: '8px 0 0', paddingLeft: '20px', fontSize: '13px', color: ABYSS[500], lineHeight: 1.8 }}>
+          <li><code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>position: fixed</code> elements clipped between status bar and address bar</li>
+          <li>Modal backdrops show gaps at top/bottom where browser chrome overlays</li>
+          <li><code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>vh</code> units now static (always = <code>window.outerHeight</code>)</li>
+          <li><code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>visualViewport.height</code> bug after keyboard dismissal (~24px offset)</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style={{ margin: '0 0 8px', fontSize: '14px', fontWeight: 600, color: ABYSS[600], display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Wrench size={16} color={HARBOR[500]} /> DDS Solution
+        </h4>
+        <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.6 }}>
+          DDS v2.7.0+ includes automatic fixes:
+        </p>
+        <ul style={{ margin: '8px 0 0', paddingLeft: '20px', fontSize: '13px', color: ABYSS[500], lineHeight: 1.8 }}>
+          <li>Dialog & Sheet overlays use <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>min-h-dvh</code></li>
+          <li>Safe-area utilities: <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>pt-safe</code>, <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>pb-safe</code></li>
+          <li>Dynamic viewport units: <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>h-dvh</code>, <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>min-h-dvh</code></li>
+          <li><code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>useVisualViewportFix</code> hook for keyboard bug</li>
+        </ul>
+      </div>
+    </div>
+
+    {/* Affected Devices */}
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.lg,
+      padding: '16px',
+      marginBottom: '16px',
+    }}>
+      <h4 style={{ margin: '0 0 8px', fontSize: '13px', fontWeight: 600, color: ABYSS[600] }}>
+        Affected Devices
+      </h4>
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        <span style={{ background: CORAL[100], color: CORAL[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '12px', fontWeight: 500 }}>
+          iPhone 12 and older
+        </span>
+        <span style={{ background: CORAL[100], color: CORAL[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '12px', fontWeight: 500 }}>
+          iOS 26 Simulator
+        </span>
+        <span style={{ background: HARBOR[100], color: HARBOR[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '12px', fontWeight: 500 }}>
+          iPhone 16 Pro Max - NOT affected
+        </span>
+      </div>
+    </div>
+
+    {/* Code Example */}
+    <div style={{ marginBottom: '16px' }}>
+      <h4 style={{ margin: '0 0 8px', fontSize: '13px', fontWeight: 600, color: ABYSS[600] }}>
+        Usage Example
+      </h4>
+      <CodeBlock
+        language="tsx"
+        code={`// For keyboard viewport bug workaround
+import { useVisualViewportFix } from '@dds/design-system'
+
+function App() {
+  useVisualViewportFix() // Sets --viewport-offset CSS variable
+  return <div>...</div>
+}
+
+// In CSS, compensate for the offset:
+.fixed-bottom-element {
+  bottom: calc(0px + var(--viewport-offset, 0px));
+}`}
+      />
+    </div>
+
+    {/* References */}
+    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', fontSize: '12px' }}>
+      <a href="https://developer.apple.com/documentation/safari-release-notes/safari-26-release-notes" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: DEEP_CURRENT[700], textDecoration: 'none' }}>
+        <ExternalLink size={12} /> Safari 26 Release Notes
+      </a>
+      <a href="https://developer.apple.com/forums/thread/800125" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: DEEP_CURRENT[700], textDecoration: 'none' }}>
+        <ExternalLink size={12} /> Apple Developer Forums
+      </a>
+      <a href="https://github.com/adobe/react-spectrum/pull/8888" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: DEEP_CURRENT[700], textDecoration: 'none' }}>
+        <ExternalLink size={12} /> React Spectrum Fix
+      </a>
+      <span style={{ color: SLATE[500] }}>• Last updated: December 2025</span>
+    </div>
+  </div>
+</div>
+
+{/* Safari 100vh Issue */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'hidden',
+}}>
+  {/* Header */}
+  <div style={{
+    background: `linear-gradient(135deg, ${DEEP_CURRENT[400]} 0%, ${DEEP_CURRENT[600]} 100%)`,
+    padding: '16px 24px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <Eye size={24} color={PRIMITIVES.white} />
+      <div>
+        <h3 style={{ margin: 0, color: PRIMITIVES.white, fontSize: '18px', fontWeight: 600 }}>
+          Safari 100vh Address Bar Issue (Legacy)
+        </h3>
+        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px' }}>
+          Safari 15-25 • iOS & macOS • Medium
+        </span>
+      </div>
+    </div>
+    <div style={{
+      background: 'rgba(255,255,255,0.2)',
+      borderRadius: RADIUS.full,
+      padding: '4px 12px',
+      fontSize: '12px',
+      fontWeight: 600,
+      color: PRIMITIVES.white,
+    }}>
+      FIXED IN DDS
+    </div>
+  </div>
+
+  {/* Content */}
+  <div style={{ padding: '24px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '20px' }}>
+      <div>
+        <h4 style={{ margin: '0 0 8px', fontSize: '14px', fontWeight: 600, color: ABYSS[600], display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Bug size={16} color={CORAL[500]} /> The Problem
+        </h4>
+        <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.6 }}>
+          On iOS Safari, <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>100vh</code> included
+          the area behind the address bar, causing content to be cut off when the address bar was visible.
+        </p>
+      </div>
+      <div>
+        <h4 style={{ margin: '0 0 8px', fontSize: '14px', fontWeight: 600, color: ABYSS[600], display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Wrench size={16} color={HARBOR[500]} /> DDS Solution
+        </h4>
+        <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.6 }}>
+          Use dynamic viewport units instead of <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>vh</code>:
+        </p>
+        <ul style={{ margin: '8px 0 0', paddingLeft: '20px', fontSize: '13px', color: ABYSS[500], lineHeight: 1.8 }}>
+          <li><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px' }}>dvh</code> - Dynamic (changes with address bar)</li>
+          <li><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px' }}>svh</code> - Small (address bar visible)</li>
+          <li><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px' }}>lvh</code> - Large (address bar hidden)</li>
+        </ul>
+      </div>
+    </div>
+    <span style={{ color: SLATE[500], fontSize: '12px' }}>• Last updated: December 2025</span>
+  </div>
+</div>
+
+{/* Chrome Backdrop Filter Issue */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+  overflow: 'hidden',
+}}>
+  {/* Header */}
+  <div style={{
+    background: `linear-gradient(135deg, ${ABYSS[400]} 0%, ${ABYSS[600]} 100%)`,
+    padding: '16px 24px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <Layers size={24} color={PRIMITIVES.white} />
+      <div>
+        <h3 style={{ margin: 0, color: PRIMITIVES.white, fontSize: '18px', fontWeight: 600 }}>
+          Chrome Backdrop-Filter Stacking Context
+        </h3>
+        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px' }}>
+          Chrome • All versions • Low
+        </span>
+      </div>
+    </div>
+    <div style={{
+      background: 'rgba(255,255,255,0.2)',
+      borderRadius: RADIUS.full,
+      padding: '4px 12px',
+      fontSize: '12px',
+      fontWeight: 600,
+      color: PRIMITIVES.white,
+    }}>
+      WORKAROUND
+    </div>
+  </div>
+
+  {/* Content */}
+  <div style={{ padding: '24px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '20px' }}>
+      <div>
+        <h4 style={{ margin: '0 0 8px', fontSize: '14px', fontWeight: 600, color: ABYSS[600], display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Bug size={16} color={CORAL[500]} /> The Problem
+        </h4>
+        <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.6 }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>backdrop-filter</code> creates
+          a new stacking context, which can cause z-index issues with nested elements.
+        </p>
+      </div>
+      <div>
+        <h4 style={{ margin: '0 0 8px', fontSize: '14px', fontWeight: 600, color: ABYSS[600], display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Wrench size={16} color={HARBOR[500]} /> Workaround
+        </h4>
+        <p style={{ margin: 0, fontSize: '14px', color: ABYSS[500], lineHeight: 1.6 }}>
+          Use <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>isolation: isolate</code> on
+          parent containers to control stacking context boundaries.
+        </p>
+      </div>
+    </div>
+    <span style={{ color: SLATE[500], fontSize: '12px' }}>• Last updated: December 2025</span>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>CSS Utilities Reference</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="iOS 26 Safe-Area Utilities"
+  description="Tailwind utilities for handling safe areas and dynamic viewports."
+/>
+
+<div style={{
+  background: SLATE[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+    {/* Safe Area Padding */}
+    <div>
+      <h4 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, color: ABYSS[600] }}>
+        Safe Area Padding
+      </h4>
+      <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, overflow: 'hidden', border: `1px solid ${SLATE[200]}` }}>
+        <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: SLATE[100] }}>
+              <th style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 600, color: ABYSS[600] }}>Class</th>
+              <th style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 600, color: ABYSS[600] }}>CSS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>pt-safe</code></td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>padding-top: env(safe-area-inset-top)</td>
+            </tr>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>pb-safe</code></td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>padding-bottom: env(safe-area-inset-bottom)</td>
+            </tr>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>pl-safe</code></td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>padding-left: env(safe-area-inset-left)</td>
+            </tr>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>pr-safe</code></td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>padding-right: env(safe-area-inset-right)</td>
+            </tr>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>p-safe</code></td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>All safe-area insets</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {/* Dynamic Viewport */}
+    <div>
+      <h4 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 600, color: ABYSS[600] }}>
+        Dynamic Viewport Height
+      </h4>
+      <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, overflow: 'hidden', border: `1px solid ${SLATE[200]}` }}>
+        <table style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: SLATE[100] }}>
+              <th style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 600, color: ABYSS[600] }}>Class</th>
+              <th style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 600, color: ABYSS[600] }}>Unit</th>
+              <th style={{ textAlign: 'left', padding: '8px 12px', fontWeight: 600, color: ABYSS[600] }}>Behavior</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>h-dvh</code></td>
+              <td style={{ padding: '8px 12px', fontWeight: 500 }}>dvh</td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>Changes with URL bar</td>
+            </tr>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>h-svh</code></td>
+              <td style={{ padding: '8px 12px', fontWeight: 500 }}>svh</td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>URL bar visible</td>
+            </tr>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>h-lvh</code></td>
+              <td style={{ padding: '8px 12px', fontWeight: 500 }}>lvh</td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>URL bar hidden</td>
+            </tr>
+            <tr style={{ borderTop: `1px solid ${SLATE[100]}` }}>
+              <td style={{ padding: '8px 12px' }}><code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>min-h-dvh</code></td>
+              <td style={{ padding: '8px 12px', fontWeight: 500 }}>dvh</td>
+              <td style={{ padding: '8px 12px', color: DUSK_REEF[500] }}>min-height variant</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Testing Checklist</h2>
+
+<SectionHeader
+  icon={<CheckCircle size={20} />}
+  title="Browser Testing Protocol"
+  description="Steps to verify cross-browser compatibility before release."
+/>
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: SPACING.px.section }}>
+  <GuidelineCard
+    icon={<Smartphone size={20} />}
+    title="iOS Safari Testing"
+    items={[
+      'Test on iOS 26 Simulator',
+      'Test modals/sheets for backdrop gaps',
+      'Test keyboard open → dismiss → check layout',
+      'Test on iPhone 12 (viewport bug affected)',
+      'Verify safe-area insets on notched devices',
+    ]}
+    variant="do"
+  />
+  <GuidelineCard
+    icon={<Monitor size={20} />}
+    title="Desktop Testing"
+    items={[
+      'Test Chrome, Firefox, Safari, Edge',
+      'Test backdrop-filter blur effects',
+      'Test z-index stacking in modals',
+      'Verify glassmorphism renders correctly',
+      'Test responsive breakpoints',
+    ]}
+    variant="do"
+  />
+  <GuidelineCard
+    icon={<Keyboard size={20} />}
+    title="Input Testing"
+    items={[
+      'Test virtual keyboard interactions',
+      'Verify input focus scrolls correctly',
+      'Test fixed elements during keyboard open',
+      'Check viewport resize handling',
+      'Test form submission on mobile',
+    ]}
+    variant="do"
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Reporting New Issues</h2>
+
+<InfoBox variant="info">
+  <strong>Found a browser bug?</strong> Follow these steps to report it:
+  <ol style={{ marginTop: '12px', paddingLeft: '20px' }}>
+    <li>Identify the browser, version, and platform (e.g., "Safari 26.1, iOS 26, iPhone 14")</li>
+    <li>Create a minimal reproduction in Storybook or CodeSandbox</li>
+    <li>Document the expected vs actual behavior</li>
+    <li>Check if there's an existing workaround</li>
+    <li>File a bug report with the browser vendor if needed</li>
+    <li>Update this documentation with the issue and workaround</li>
+  </ol>
+</InfoBox>
+
+<div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '16px' }}>
+  <a href="https://bugs.webkit.org/" target="_blank" rel="noopener noreferrer" style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '10px 16px',
+    background: SLATE[100],
+    borderRadius: RADIUS.lg,
+    color: ABYSS[600],
+    textDecoration: 'none',
+    fontSize: '14px',
+    fontWeight: 500,
+  }}>
+    <ExternalLink size={16} /> WebKit Bug Tracker (Safari)
+  </a>
+  <a href="https://bugs.chromium.org/" target="_blank" rel="noopener noreferrer" style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '10px 16px',
+    background: SLATE[100],
+    borderRadius: RADIUS.lg,
+    color: ABYSS[600],
+    textDecoration: 'none',
+    fontSize: '14px',
+    fontWeight: 500,
+  }}>
+    <ExternalLink size={16} /> Chromium Bug Tracker (Chrome)
+  </a>
+  <a href="https://bugzilla.mozilla.org/" target="_blank" rel="noopener noreferrer" style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '10px 16px',
+    background: SLATE[100],
+    borderRadius: RADIUS.lg,
+    color: ABYSS[600],
+    textDecoration: 'none',
+    fontSize: '14px',
+    fontWeight: 500,
+  }}>
+    <ExternalLink size={16} /> Mozilla Bugzilla (Firefox)
+  </a>
+</div>

@@ -1,0 +1,635 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  ArrowRightLeft,
+  Layers,
+  ArrowRight,
+  ArrowDown,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Workflow,
+  Box,
+  Boxes,
+  GitBranch,
+  Eye,
+  Target,
+  Footprints,
+  Shield,
+  Zap,
+  Clock,
+  Database,
+  Layout,
+  Component,
+  FileText,
+  Repeat,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  NavCard,
+  StoryLink,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/Migration Strategy" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Migration Strategy"
+  description="How to migrate an existing app to DDS. Page-by-page replacement with full UI ownership."
+  gradient="purple"
+  decorativeIcon={<ArrowRightLeft size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="warning">
+  <strong>Core Principle:</strong> DDS owns the entire UI layer. Migration means replacing
+  full pages, not mixing DDS components into your existing layout.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Migration Rule</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="All or Nothing Per Page"
+  description="No mixing. No halfway. Each page is either yours or DDS."
+/>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `2px solid ${CORAL[400]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+    What Migration Is NOT
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { wrong: 'Replace Button first, then Card, then Table...', why: 'This puts DDS components inside your layout. You own the page, not DDS.' },
+      { wrong: 'Gradually swap components over weeks', why: 'During this time, you have mixed ownership. Who owns bugs? Unclear.' },
+      { wrong: 'Use DDS primitives in my page structure', why: 'DDS owns layout. You cannot insert DDS into your layout.' },
+      { wrong: 'Wrap DDS Button in my MyButton interface', why: 'Your page still owns the layout. DDS is just a styling library at that point.' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+      }}>
+        <XCircle size={18} color={CORAL[500]} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: CORAL[700] }}>{item.wrong}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.why}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `2px solid ${HARBOR[400]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: HARBOR[700] }}>
+    What Migration IS
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { right: 'Replace entire pages at once', why: 'TemplatesPage is either your code or DDS. Never both.' },
+      { right: 'DDS page receives data, returns UI', why: 'Your route renders <EntityTemplatesPage />, not your own JSX with DDS sprinkled in.' },
+      { right: 'Old pages and new pages coexist', why: 'Route A = your old page. Route B = DDS page. Clean separation.' },
+      { right: 'Delete old page code when done', why: 'No gradual replacement. When a page is migrated, old code is deleted.' },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        padding: '12px',
+        background: PRIMITIVES.white,
+        borderRadius: RADIUS.md,
+      }}>
+        <CheckCircle size={18} color={HARBOR[500]} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: HARBOR[700] }}>{item.right}</div>
+          <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item.why}</div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Migration Process</h2>
+
+<SectionHeader
+  icon={<Repeat size={20} />}
+  title="Page-by-Page Replacement"
+  description="Pick a page. Replace it completely. Repeat."
+/>
+
+{/* Process diagram */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    {[
+      { phase: '1', title: 'Create Data Adapters', desc: 'Transform your API data to DDS interfaces. Test against Storybook mocks apply validation', color: HARBOR },
+      { phase: '2', title: 'Pick One Page', desc: 'Start with a simple, self-contained page. Templates, Users, Settings - something bounded.', color: DEEP_CURRENT },
+      { phase: '3', title: 'Replace Entire Page', desc: 'Remove all your JSX. Render the DDS page composition. Pass data + handlers.', color: DUSK_REEF },
+      { phase: '4', title: 'Delete Old Code', desc: 'Delete the old page component, its styles, its subcomponents. No gradual deprecation.', color: SUNRISE },
+      { phase: '5', title: 'Repeat for Next Page', desc: 'Pick the next page. Same process. Until all pages are DDS.', color: CORAL },
+    ].map((item, idx, arr) => (
+      <div key={idx}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '16px',
+          padding: '16px',
+          background: item.color[50],
+          borderRadius: RADIUS.lg,
+          border: `1px solid ${item.color[200]}`,
+        }}>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: RADIUS.full,
+            background: item.color[500],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: PRIMITIVES.white,
+            fontSize: '16px',
+            fontWeight: 700,
+            flexShrink: 0,
+          }}>{item.phase}</div>
+          <div>
+            <h4 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>{item.title}</h4>
+            <p style={{ margin: 0, fontSize: '13px', color: DUSK_REEF[500] }}>{item.desc}</p>
+          </div>
+        </div>
+        {idx < arr.length - 1 && (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '8px 0' }}>
+            <ArrowDown size={20} color={SLATE[300]} />
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Step 1: Create Data Adapters</h2>
+
+<SectionHeader
+  icon={<Database size={20} />}
+  title="Transform Your Data"
+  description="Before any UI work, ensure your data fits DDS interfaces."
+/>
+
+<InfoBox variant="info">
+  <strong>Why adapters first?</strong> DDS page compositions expect data in specific shapes.
+  Create adapters, test them against Storybook, then you're ready to replace pages.
+</InfoBox>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Adapter Function
+  </h4>
+  <CodeBlock
+    filename="src/adapters/templateAdapters.ts"
+    language="typescript"
+    code={`import type { EntityTemplate, TemplateCategory } from '@dds/design-system/flow'
+
+// Your API response type
+interface ApiTemplate {
+  template_id: string
+  template_name: string
+  template_category: string | null
+  created_date: string
+  is_system_template: boolean
+}
+
+// Transform API -> DDS
+export function toEntityTemplate(api: ApiTemplate): EntityTemplate {
+  return {
+    id: api.template_id,
+    name: api.template_name,
+    category: mapCategory(api.template_category),
+    createdAt: new Date(api.created_date),
+    isSystem: api.is_system_template,
+  }
+}
+
+function mapCategory(apiCategory: string | null): TemplateCategory {
+  const map: Record<string, TemplateCategory> = {
+    'incident_report': 'incident',
+    'safety_inspection': 'inspection',
+    'audit_checklist': 'audit',
+  }
+  return map[apiCategory ?? ''] ?? 'custom'
+}`}
+  />
+</div>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>
+    Hook That Uses Adapter
+  </h4>
+  <CodeBlock
+    filename="src/hooks/useTemplatesForDDS.ts"
+    language="typescript"
+    code={`import { toEntityTemplate } from '../adapters/templateAdapters'
+import { useTemplates } from './useTemplates' // Your existing hook
+
+export function useTemplatesForDDS() {
+  const { data, isLoading, error, refetch } = useTemplates()
+
+  return {
+    templates: (data ?? []).map(toEntityTemplate),
+    isLoading,
+    error,
+    refetch,
+  }
+}`}
+  />
+</div>
+
+<div style={{
+  background: HARBOR[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${HARBOR[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+    Validate Before Proceeding
+  </h4>
+  <CodeBlock
+    language="typescript"
+    code={`// Temporarily log transformed data
+const { templates } = useTemplatesForDDS()
+console.log('Transformed:', templates)
+
+// Compare with Storybook mock data
+// Shapes must match exactly before you replace any pages`}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Step 2-3: Replace Entire Page</h2>
+
+<SectionHeader
+  icon={<Layout size={20} />}
+  title="Full Page Replacement"
+  description="Remove your page. Insert DDS page. No gradual migration."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '24px',
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: CORAL[700] }}>
+      Before: Your Page (Delete This)
+    </h4>
+    <CodeBlock
+      language="tsx"
+      code={`function TemplatesPage() {
+  const { templates } = useTemplates()
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('all')
+  const [page, setPage] = useState(1)
+  // ... 200 lines of UI logic
+
+  return (
+    <div className="my-layout">
+      <MyHeader />
+      <MySidebar />
+      <MyTable data={templates} />
+      <MyPagination />
+    </div>
+  )
+}`}
+    />
+    <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: CORAL[600] }}>
+      This entire file gets deleted.
+    </p>
+  </div>
+
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `2px solid ${HARBOR[400]}`,
+  }}>
+    <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, color: HARBOR[700] }}>
+      After: DDS Page (Replace With This)
+    </h4>
+    <CodeBlock
+      language="tsx"
+      code={`import { EntityTemplatesPage } from '@dds/design-system/flow'
+import { useTemplatesForDDS } from '../hooks/useTemplatesForDDS'
+
+function TemplatesPage() {
+  const { templates, isLoading, refetch } = useTemplatesForDDS()
+  const navigate = useNavigate()
+  const deleteMutation = useDeleteTemplate()
+
+  return (
+    <EntityTemplatesPage
+      templates={templates}
+      isLoading={isLoading}
+      onCreateNavigate={() => navigate('/templates/create')}
+      onEditNavigate={(t) => navigate(\`/templates/\${t.id}/edit\`)}
+      onTemplateDelete={(id) => deleteMutation.mutateAsync(id)}
+      onRefresh={refetch}
+    />
+  )
+}`}
+    />
+    <p style={{ margin: '12px 0 0 0', fontSize: '12px', color: HARBOR[600] }}>
+      DDS owns everything. You provide data + handlers only.
+    </p>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>During Migration: Two Worlds</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Old Pages and New Pages Coexist"
+  description="But they never mix. Each page is 100% one or the other."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.xl,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '24px',
+}}>
+  <CodeBlock
+    filename="src/routes/index.tsx"
+    language="tsx"
+    code={`// During migration, your router has both:
+
+// OLD PAGES (your code, not yet migrated)
+<Route path="/dashboard" element={<YourDashboardPage />} />
+<Route path="/reports" element={<YourReportsPage />} />
+
+// NEW PAGES (DDS, fully migrated)
+<Route path="/templates" element={<TemplatesPageDDS />} />
+<Route path="/users" element={<UsersPageDDS />} />
+
+// Each route is 100% one world or the other
+// Never DDS components inside your pages
+// Never your components inside DDS pages`}
+  />
+</div>
+
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '20px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>
+    Migration Progress Tracking
+  </h4>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+    {[
+      { page: 'Templates', status: 'DDS', color: HARBOR },
+      { page: 'Users', status: 'DDS', color: HARBOR },
+      { page: 'Dashboard', status: 'Old', color: SLATE },
+      { page: 'Reports', status: 'Old', color: SLATE },
+    ].map((item, idx) => (
+      <div key={idx} style={{
+        background: PRIMITIVES.white,
+        padding: '12px',
+        borderRadius: RADIUS.md,
+        textAlign: 'center',
+        border: `2px solid ${item.color[300]}`,
+      }}>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>{item.page}</div>
+        <div style={{
+          fontSize: '11px',
+          marginTop: '4px',
+          padding: '2px 8px',
+          borderRadius: RADIUS.full,
+          background: item.color[100],
+          color: item.color[700],
+          display: 'inline-block',
+        }}>{item.status}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>What If DDS Doesn't Have My Page?</h2>
+
+<SectionHeader
+  icon={<AlertTriangle size={20} />}
+  title="Missing Page Compositions"
+  description="If DDS doesn't have the page you need, it needs to be built in DDS first."
+/>
+
+<div style={{
+  background: SUNRISE[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SUNRISE[200]}`,
+  marginBottom: '24px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: SUNRISE[700] }}>
+    The Process
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    {[
+      'You need a page that DDS doesn\'t have yet (e.g., ReportsPage)',
+      'Request it from the DDS architect (Andrii)',
+      'DDS architect creates the page composition with Storybook prototype',
+      'Once published, you can migrate that page',
+      'You NEVER build the page yourself using DDS primitives',
+    ].map((item, idx) => (
+      <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+        <span style={{ color: SUNRISE[600], fontWeight: 600, minWidth: '20px' }}>{idx + 1}.</span>
+        <span style={{ fontSize: '13px', color: DUSK_REEF[500] }}>{item}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Important:</strong> You cannot build pages using DDS components.
+  Pages must be created in DDS by the architect, then consumed by you as complete compositions.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Migration Checklist</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    {[
+      { phase: 'Before Starting', items: [
+        'List all pages in your app',
+        'Identify which DDS page compositions exist for your pages',
+        'Request missing page compositions from architect',
+      ]},
+      { phase: 'For Each Page', items: [
+        'Create data adapter for that page\'s data',
+        'Test adapter output against Storybook mock data',
+        'Replace entire page with DDS composition',
+        'Delete old page component and its dependencies',
+        'Remove old CSS/styles for that page',
+      ]},
+      { phase: 'After All Pages', items: [
+        'Delete all old component files',
+        'Delete old styling system',
+        'Remove unused adapter code',
+        'Update routing to remove any temporary paths',
+      ]},
+    ].map((section, idx) => (
+      <div key={idx} style={{ padding: '16px', background: SLATE[50], borderRadius: RADIUS.md }}>
+        <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: DEEP_CURRENT[600] }}>{section.phase}</h5>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {section.items.map((item, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '16px', height: '16px', border: `1px solid ${SLATE[300]}`, borderRadius: '3px' }} />
+              <span style={{ fontSize: '12px', color: DUSK_REEF[500] }}>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '16px',
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Replace entire pages">
+    Each page is either 100% your code or 100% DDS. Never mixed.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Create adapters first">
+    Transform your data before any UI work. Validate against Storybook.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Delete old code immediately">
+    When a page is migrated, delete the old page, its components, its styles.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Request missing pages">
+    If DDS doesn't have your page, request it from the architect.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Mix DDS into your layout">
+    Never use DDS components inside your existing pages. That's not migration.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Build pages from DDS primitives">
+    You don't assemble pages from DDS atoms. You use complete page compositions.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Gradual component replacement">
+    Don't replace Button, then Card, then Table. Replace the whole page at once.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Keep parallel implementations">
+    Don't maintain old and new versions of the same page. It's one or the other.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Related Documentation</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  marginBottom: SPACING.px.section,
+}}>
+  <NavCard
+    icon={<Database size={24} />}
+    title="Adapter Patterns"
+    description="Detailed patterns for data transformation."
+    href="/docs/developers-adapter-patterns--docs"
+  />
+  <NavCard
+    icon={<Layout size={24} />}
+    title="Page Implementation Guide"
+    description="How to implement DDS page compositions."
+    href="/docs/developers-page-implementation-guide--docs"
+  />
+</div>

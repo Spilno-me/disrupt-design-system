@@ -4,6 +4,7 @@
  */
 import React, { useState } from 'react';
 import { Check, Copy, ArrowRight } from 'lucide-react';
+import { Highlight, themes } from 'prism-react-renderer';
 import {
   ABYSS,
   DEEP_CURRENT,
@@ -891,15 +892,50 @@ export const RadiusShowcase: React.FC<RadiusShowcaseProps> = ({
 );
 
 // =============================================================================
-// CODE BLOCK
+// CODE BLOCK (with syntax highlighting via prism-react-renderer)
 // =============================================================================
 
 interface CodeBlockProps {
+  /** The code to display */
   code: string;
+  /** Language for syntax highlighting (tsx, typescript, javascript, bash, json, css) */
   language?: string;
+  /** Optional filename to show in header */
+  filename?: string;
+  /** Show line numbers */
+  showLineNumbers?: boolean;
+  /** Lines to highlight (e.g., [1, 3, 5] or '1,3,5-7') */
+  highlightLines?: number[] | string;
 }
 
-export const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'tsx' }) => {
+/**
+ * CodeBlock - Beautiful code display with syntax highlighting
+ *
+ * Features:
+ * - Syntax highlighting via prism-react-renderer
+ * - Copy to clipboard
+ * - Optional line numbers
+ * - Line highlighting
+ * - Filename display
+ *
+ * Usage:
+ * ```jsx
+ * <CodeBlock
+ *   code={`const x = 1;`}
+ *   language="typescript"
+ *   filename="example.ts"
+ *   showLineNumbers
+ *   highlightLines={[2, 3]}
+ * />
+ * ```
+ */
+export const CodeBlock: React.FC<CodeBlockProps> = ({
+  code,
+  language = 'tsx',
+  filename,
+  showLineNumbers = false,
+  highlightLines,
+}) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -908,78 +944,199 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({ code, language = 'tsx' }) 
     setTimeout(() => setCopied(false), 1500);
   };
 
+  // Parse highlight lines from string or array
+  const getHighlightedLines = (): Set<number> => {
+    if (!highlightLines) return new Set();
+    if (Array.isArray(highlightLines)) return new Set(highlightLines);
+
+    const lines = new Set<number>();
+    const parts = highlightLines.split(',');
+    for (const part of parts) {
+      if (part.includes('-')) {
+        const [start, end] = part.split('-').map(Number);
+        for (let i = start; i <= end; i++) lines.add(i);
+      } else {
+        lines.add(Number(part));
+      }
+    }
+    return lines;
+  };
+
+  const highlightedLines = getHighlightedLines();
+
+  // Custom theme based on DDS tokens
+  const customTheme = {
+    plain: {
+      color: SLATE[200],
+      backgroundColor: ABYSS[700],
+    },
+    styles: [
+      { types: ['comment', 'prolog', 'doctype', 'cdata'], style: { color: SLATE[500], fontStyle: 'italic' as const } },
+      { types: ['namespace'], style: { opacity: 0.7 } },
+      { types: ['string', 'attr-value'], style: { color: HARBOR[400] } },
+      { types: ['punctuation', 'operator'], style: { color: SLATE[400] } },
+      { types: ['entity', 'url', 'symbol', 'number', 'boolean', 'variable', 'constant', 'property', 'regex', 'inserted'], style: { color: CORAL[400] } },
+      { types: ['atrule', 'keyword', 'attr-name', 'selector'], style: { color: DUSK_REEF[400] } },
+      { types: ['function', 'deleted', 'tag'], style: { color: DEEP_CURRENT[400] } },
+      { types: ['function-variable'], style: { color: DEEP_CURRENT[300] } },
+      { types: ['tag', 'selector', 'keyword'], style: { color: WAVE[400] } },
+      { types: ['class-name', 'maybe-class-name'], style: { color: SUNRISE[400] } },
+      { types: ['builtin'], style: { color: ORANGE[400] } },
+      { types: ['char'], style: { color: HARBOR[300] } },
+    ],
+  };
+
   return (
     <div
       style={{
         position: 'relative',
-        background: ABYSS[700],
-        borderRadius: RADIUS.md,
+        borderRadius: RADIUS.lg,
         overflow: 'hidden',
         marginBottom: '24px',
+        boxShadow: SHADOWS.md,
+        border: `1px solid ${ABYSS[600]}`,
       }}
     >
+      {/* Header */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '8px 16px',
+          padding: '10px 16px',
           background: ABYSS[800],
           borderBottom: `1px solid ${ABYSS[600]}`,
         }}
       >
-        <span
-          style={{
-            fontSize: '11px',
-            fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-            color: SLATE[400],
-            textTransform: 'uppercase',
-          }}
-        >
-          {language}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Traffic lights decoration */}
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: CORAL[500], opacity: 0.8 }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: SUNRISE[500], opacity: 0.8 }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: HARBOR[500], opacity: 0.8 }} />
+          </div>
+          {filename ? (
+            <span
+              style={{
+                fontSize: '12px',
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+                color: SLATE[300],
+              }}
+            >
+              {filename}
+            </span>
+          ) : (
+            <span
+              style={{
+                fontSize: '10px',
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+                color: SLATE[500],
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+              }}
+            >
+              {language}
+            </span>
+          )}
+        </div>
         <button
           onClick={handleCopy}
           style={{
-            background: 'transparent',
-            border: 'none',
+            background: copied ? HARBOR[600] : 'transparent',
+            border: `1px solid ${copied ? HARBOR[500] : ABYSS[500]}`,
             cursor: 'pointer',
-            padding: '4px 8px',
-            borderRadius: '4px',
+            padding: '5px 10px',
+            borderRadius: RADIUS.sm,
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
-            color: SLATE[400],
+            gap: '6px',
+            color: copied ? PRIMITIVES.white : SLATE[400],
             fontSize: '11px',
             fontFamily: styles.fontFamily,
             transition: 'all 150ms ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = ABYSS[600];
-            e.currentTarget.style.color = PRIMITIVES.white;
+            if (!copied) {
+              e.currentTarget.style.background = ABYSS[600];
+              e.currentTarget.style.borderColor = ABYSS[400];
+              e.currentTarget.style.color = PRIMITIVES.white;
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'transparent';
-            e.currentTarget.style.color = SLATE[400];
+            if (!copied) {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.borderColor = ABYSS[500];
+              e.currentTarget.style.color = SLATE[400];
+            }
           }}
         >
           {copied ? <Check size={12} /> : <Copy size={12} />}
           {copied ? 'Copied!' : 'Copy'}
         </button>
       </div>
-      <pre
-        style={{
-          margin: 0,
-          padding: '16px',
-          overflow: 'auto',
-          fontSize: '13px',
-          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-          color: SLATE[300],
-          lineHeight: 1.6,
-        }}
-      >
-        <code>{code}</code>
-      </pre>
+
+      {/* Code with syntax highlighting */}
+      <Highlight theme={customTheme} code={code.trim()} language={language as any}>
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre
+            className={className}
+            style={{
+              ...style,
+              margin: 0,
+              padding: '16px',
+              overflow: 'auto',
+              fontSize: '13px',
+              fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+              lineHeight: 1.7,
+              tabSize: 2,
+            }}
+          >
+            {tokens.map((line, i) => {
+              const lineNumber = i + 1;
+              const isHighlighted = highlightedLines.has(lineNumber);
+              const lineProps = getLineProps({ line });
+
+              return (
+                <div
+                  key={i}
+                  {...lineProps}
+                  style={{
+                    ...lineProps.style,
+                    display: 'flex',
+                    background: isHighlighted ? `${DEEP_CURRENT[500]}25` : 'transparent',
+                    marginLeft: '-16px',
+                    marginRight: '-16px',
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                    borderLeft: isHighlighted ? `3px solid ${DEEP_CURRENT[500]}` : '3px solid transparent',
+                  }}
+                >
+                  {showLineNumbers && (
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        width: '2em',
+                        textAlign: 'right',
+                        paddingRight: '16px',
+                        color: isHighlighted ? DEEP_CURRENT[400] : SLATE[600],
+                        userSelect: 'none',
+                        fontSize: '12px',
+                      }}
+                    >
+                      {lineNumber}
+                    </span>
+                  )}
+                  <span>
+                    {line.map((token, key) => (
+                      <span key={key} {...getTokenProps({ token })} />
+                    ))}
+                  </span>
+                </div>
+              );
+            })}
+          </pre>
+        )}
+      </Highlight>
     </div>
   );
 };
