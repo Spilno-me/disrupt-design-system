@@ -3,7 +3,18 @@
 import * as React from 'react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
+
 import { cn } from '../../lib/utils'
+
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Chevron icon size in Tailwind class format */
+const ICON_SIZE_CLASS = 'w-5 h-5'
+
+/** Animation duration for chevron rotation (in ms) */
+const CHEVRON_ROTATION_DURATION_MS = 200
 
 // =============================================================================
 // TYPES
@@ -18,18 +29,16 @@ export interface AccordionItem {
   answer: string
 }
 
-export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AccordionProps {
   /** Array of accordion items */
   items: AccordionItem[]
   /** Index of initially open item (null for all closed) */
   defaultOpenIndex?: number | null
   /** Allow multiple items to be open simultaneously */
   allowMultiple?: boolean
+  /** Additional CSS classes */
+  className?: string
 }
-
-// =============================================================================
-// ACCORDION ITEM COMPONENT
-// =============================================================================
 
 interface AccordionItemComponentProps {
   item: AccordionItem
@@ -37,6 +46,27 @@ interface AccordionItemComponentProps {
   isLast?: boolean
 }
 
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+
+/**
+ * Generates a unique value for an accordion item.
+ * Uses item.id if provided, otherwise falls back to index-based ID.
+ */
+function getItemValue(index: number, item: AccordionItem): string {
+  return item.id || `accordion-item-${index}`
+}
+
+// =============================================================================
+// COMPONENTS
+// =============================================================================
+
+/**
+ * AccordionItemComponent - Internal sub-component for rendering individual accordion items.
+ *
+ * @internal Not exported - use the main Accordion component.
+ */
 const AccordionItemComponent = React.forwardRef<
   HTMLDivElement,
   AccordionItemComponentProps
@@ -65,9 +95,12 @@ const AccordionItemComponent = React.forwardRef<
           </span>
           <ChevronDown
             className={cn(
-              'w-5 h-5 flex-shrink-0 transition-transform duration-200 text-secondary',
+              ICON_SIZE_CLASS,
+              'flex-shrink-0 text-secondary',
+              'transition-transform',
               'group-data-[state=open]:rotate-180'
             )}
+            style={{ transitionDuration: `${CHEVRON_ROTATION_DURATION_MS}ms` }}
           />
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Header>
@@ -79,7 +112,7 @@ const AccordionItemComponent = React.forwardRef<
           'data-[state=closed]:animate-accordion-up'
         )}
       >
-        <div className="rounded-sm p-4 mb-4 bg-accent/5">
+        <div className="rounded-sm p-4 mb-4 bg-accent-bg">
           <p className="font-sans text-sm leading-relaxed text-primary">
             {item.answer}
           </p>
@@ -90,17 +123,14 @@ const AccordionItemComponent = React.forwardRef<
 })
 AccordionItemComponent.displayName = "AccordionItemComponent"
 
-// =============================================================================
-// MAIN ACCORDION COMPONENT
-// =============================================================================
-
 /**
- * Accordion - MOLECULE
+ * Accordion - Expandable/collapsible content component.
  *
- * An expandable/collapsible content component built on Radix UI Accordion primitive.
- * Ideal for FAQs, progressive disclosure, and organizing related content sections.
+ * Built on Radix UI Accordion primitive. Ideal for FAQs, progressive disclosure,
+ * and organizing related content sections.
  *
- * @component
+ * @component MOLECULE
+ *
  * @example
  * ```tsx
  * // Basic FAQ with one item open
@@ -154,42 +184,17 @@ AccordionItemComponent.displayName = "AccordionItemComponent"
  *
  * @see {@link https://www.radix-ui.com/docs/primitives/components/accordion} Radix UI Accordion
  */
-export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
-  ({ items, defaultOpenIndex = null, allowMultiple = false, className, ..._props }, _ref) => {
-    // Generate unique values for each item
-    const getItemValue = (index: number, item: AccordionItem) =>
-      item.id || `accordion-item-${index}`
+function Accordion({ items, defaultOpenIndex = null, allowMultiple = false, className }: AccordionProps) {
+  // Determine default value based on defaultOpenIndex
+  const computedDefaultValue = defaultOpenIndex !== null && defaultOpenIndex >= 0
+    ? getItemValue(defaultOpenIndex, items[defaultOpenIndex])
+    : undefined
 
-    // Determine default value based on defaultOpenIndex
-    const defaultValue = defaultOpenIndex !== null && defaultOpenIndex >= 0
-      ? getItemValue(defaultOpenIndex, items[defaultOpenIndex])
-      : undefined
-
-    if (allowMultiple) {
-      return (
-        <AccordionPrimitive.Root
-          type="multiple"
-          defaultValue={defaultValue ? [defaultValue] : undefined}
-          className={cn('', className)}
-          data-slot="accordion"
-        >
-          {items.map((item, index) => (
-            <AccordionItemComponent
-              key={getItemValue(index, item)}
-              item={item}
-              value={getItemValue(index, item)}
-              isLast={index === items.length - 1}
-            />
-          ))}
-        </AccordionPrimitive.Root>
-      )
-    }
-
+  if (allowMultiple) {
     return (
       <AccordionPrimitive.Root
-        type="single"
-        collapsible
-        defaultValue={defaultValue}
+        type="multiple"
+        defaultValue={computedDefaultValue ? [computedDefaultValue] : undefined}
         className={cn('', className)}
         data-slot="accordion"
       >
@@ -204,24 +209,52 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
       </AccordionPrimitive.Root>
     )
   }
-)
+
+  return (
+    <AccordionPrimitive.Root
+      type="single"
+      collapsible
+      defaultValue={computedDefaultValue}
+      className={cn('', className)}
+      data-slot="accordion"
+    >
+      {items.map((item, index) => (
+        <AccordionItemComponent
+          key={getItemValue(index, item)}
+          item={item}
+          value={getItemValue(index, item)}
+          isLast={index === items.length - 1}
+        />
+      ))}
+    </AccordionPrimitive.Root>
+  )
+}
 Accordion.displayName = "Accordion"
 
 // =============================================================================
 // PRIMITIVE EXPORTS (for custom compositions)
 // =============================================================================
 
-export const AccordionRoot = AccordionPrimitive.Root
+const AccordionRoot = AccordionPrimitive.Root
 AccordionRoot.displayName = "AccordionRoot"
 
-export const AccordionItemPrimitive = AccordionPrimitive.Item
+const AccordionItemPrimitive = AccordionPrimitive.Item
 AccordionItemPrimitive.displayName = "AccordionItemPrimitive"
 
-export const AccordionTrigger = AccordionPrimitive.Trigger
+const AccordionTrigger = AccordionPrimitive.Trigger
 AccordionTrigger.displayName = "AccordionTrigger"
 
-export const AccordionContent = AccordionPrimitive.Content
+const AccordionContent = AccordionPrimitive.Content
 AccordionContent.displayName = "AccordionContent"
 
-export const AccordionHeader = AccordionPrimitive.Header
+const AccordionHeader = AccordionPrimitive.Header
 AccordionHeader.displayName = "AccordionHeader"
+
+export {
+  Accordion,
+  AccordionRoot,
+  AccordionItemPrimitive,
+  AccordionTrigger,
+  AccordionContent,
+  AccordionHeader,
+}

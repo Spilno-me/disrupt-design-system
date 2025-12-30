@@ -44,8 +44,8 @@ const tabsTriggerVariants = cva(
         // Accent - Text only, background handled by sliding indicator
         // Uses rounded-md (12px) to match nested corner formula with TabsList
         // px-2 (8px) for balanced spacing with vertical (~6px)
-        // Dark mode: override text-inverse to stay white on dark teal background
-        accent: "relative z-10 h-8 flex-1 gap-2 rounded-md px-2 text-sm text-primary transition-colors duration-200 data-[state=active]:font-medium data-[state=active]:text-inverse dark:data-[state=active]:text-white",
+        // Both states use data selectors for equal specificity - active wins by order
+        accent: "relative z-10 h-8 flex-1 gap-2 rounded-md px-2 text-sm transition-colors duration-200 data-[state=inactive]:text-primary data-[state=active]:text-white data-[state=active]:font-medium",
       },
     },
     defaultVariants: {

@@ -5,9 +5,20 @@ import { cn } from "../../../lib/utils"
 import { SeverityIndicator, type SeverityLevel } from "../SeverityIndicator"
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Default gap between indicator and label */
+const INDICATOR_LABEL_GAP = "gap-2"
+
+/** Default text size for severity labels */
+const LABEL_TEXT_SIZE = "text-sm"
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
+/** Configuration for a single severity level */
 export interface SeverityConfig {
   /** Severity level for the indicator */
   level: SeverityLevel
@@ -15,66 +26,77 @@ export interface SeverityConfig {
   label: string
 }
 
+/** Maps string values to severity configurations */
 export type SeverityMapping<T extends string = string> = Record<T, SeverityConfig>
 
-export interface DataTableSeverityProps<T extends string = string> {
+/** Props for the DataTableSeverity component */
+export interface DataTableSeverityProps<T extends string = string>
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
   /** Priority/severity value */
   value: T
   /** Mapping of values to severity configurations */
   mapping: SeverityMapping<T>
   /** Size of the severity indicator */
-  size?: 'sm' | 'md'
-  /** Additional className */
-  className?: string
+  size?: "sm" | "md"
   /** Whether to show the label (default: true) */
   showLabel?: boolean
 }
 
 // =============================================================================
-// COMMON SEVERITY MAPPINGS (Presets for convenience)
+// PRESET MAPPINGS
 // =============================================================================
 
 /** Standard priority mapping (critical → none) */
-export const PRIORITY_SEVERITY_MAP: SeverityMapping<'critical' | 'high' | 'medium' | 'low' | 'none'> = {
-  critical: { level: 'critical', label: 'Critical' },
-  high: { level: 'high', label: 'High' },
-  medium: { level: 'medium', label: 'Medium' },
-  low: { level: 'low', label: 'Low' },
-  none: { level: 'none', label: 'None' },
+export const PRIORITY_SEVERITY_MAP: SeverityMapping<
+  "critical" | "high" | "medium" | "low" | "none"
+> = {
+  critical: { level: "critical", label: "Critical" },
+  high: { level: "high", label: "High" },
+  medium: { level: "medium", label: "Medium" },
+  low: { level: "low", label: "Low" },
+  none: { level: "none", label: "None" },
 }
 
 /** Lead priority mapping (hot/warm/cold terminology) */
-export const LEAD_TEMPERATURE_SEVERITY_MAP: SeverityMapping<'hot' | 'warm' | 'cold'> = {
-  hot: { level: 'critical', label: 'Hot' },
-  warm: { level: 'medium', label: 'Warm' },
-  cold: { level: 'low', label: 'Cold' },
+export const LEAD_TEMPERATURE_SEVERITY_MAP: SeverityMapping<
+  "hot" | "warm" | "cold"
+> = {
+  hot: { level: "critical", label: "Hot" },
+  warm: { level: "medium", label: "Warm" },
+  cold: { level: "low", label: "Cold" },
 }
 
 /** Lead priority mapping (high/medium/low terminology) */
-export const LEAD_PRIORITY_SEVERITY_MAP: SeverityMapping<'high' | 'medium' | 'low'> = {
-  high: { level: 'high', label: 'High' },
-  medium: { level: 'medium', label: 'Medium' },
-  low: { level: 'low', label: 'Low' },
+export const LEAD_PRIORITY_SEVERITY_MAP: SeverityMapping<
+  "high" | "medium" | "low"
+> = {
+  high: { level: "high", label: "High" },
+  medium: { level: "medium", label: "Medium" },
+  low: { level: "low", label: "Low" },
 }
 
 /** Incident severity mapping */
-export const INCIDENT_SEVERITY_MAP: SeverityMapping<'critical' | 'major' | 'minor' | 'trivial'> = {
-  critical: { level: 'critical', label: 'Critical' },
-  major: { level: 'high', label: 'Major' },
-  minor: { level: 'medium', label: 'Minor' },
-  trivial: { level: 'low', label: 'Trivial' },
+export const INCIDENT_SEVERITY_MAP: SeverityMapping<
+  "critical" | "major" | "minor" | "trivial"
+> = {
+  critical: { level: "critical", label: "Critical" },
+  major: { level: "high", label: "Major" },
+  minor: { level: "medium", label: "Minor" },
+  trivial: { level: "low", label: "Trivial" },
 }
 
 /** Task urgency mapping */
-export const URGENCY_SEVERITY_MAP: SeverityMapping<'urgent' | 'high' | 'normal' | 'low'> = {
-  urgent: { level: 'critical', label: 'Urgent' },
-  high: { level: 'high', label: 'High' },
-  normal: { level: 'medium', label: 'Normal' },
-  low: { level: 'low', label: 'Low' },
+export const URGENCY_SEVERITY_MAP: SeverityMapping<
+  "urgent" | "high" | "normal" | "low"
+> = {
+  urgent: { level: "critical", label: "Urgent" },
+  high: { level: "high", label: "High" },
+  normal: { level: "medium", label: "Normal" },
+  low: { level: "low", label: "Low" },
 }
 
 // =============================================================================
-// FONT WEIGHT MAPPING
+// HELPER FUNCTIONS
 // =============================================================================
 
 /**
@@ -84,15 +106,59 @@ export const URGENCY_SEVERITY_MAP: SeverityMapping<'urgent' | 'high' | 'normal' 
  * Scale: Bold (700) → SemiBold (600) → Medium (500) → Regular (400) → Light (300)
  */
 const SEVERITY_FONT_WEIGHT: Record<SeverityLevel, string> = {
-  critical: 'font-bold',      // 700 - Maximum urgency
-  high: 'font-semibold',      // 600 - High urgency
-  medium: 'font-medium',      // 500 - Moderate
-  low: 'font-normal',         // 400 - Low priority
-  none: 'font-light',         // 300 - Minimal emphasis
+  critical: "font-bold", // 700 - Maximum urgency
+  high: "font-semibold", // 600 - High urgency
+  medium: "font-medium", // 500 - Moderate
+  low: "font-normal", // 400 - Low priority
+  none: "font-light", // 300 - Minimal emphasis
+}
+
+/**
+ * Gets the appropriate font weight class for a severity level.
+ *
+ * @param level - The severity level
+ * @returns Tailwind font weight class
+ */
+function getSeverityFontWeight(level: SeverityLevel): string {
+  return SEVERITY_FONT_WEIGHT[level]
 }
 
 // =============================================================================
-// COMPONENT
+// INTERNAL COMPONENTS
+// =============================================================================
+
+/** Props for the SeverityLabel internal component */
+interface SeverityLabelProps {
+  /** Text to display */
+  label: string
+  /** Font weight class based on severity */
+  fontWeight: string
+  /** Whether this is a fallback (unknown value) */
+  isFallback?: boolean
+}
+
+/**
+ * SeverityLabel - Displays the text label with appropriate styling.
+ *
+ * @component ATOM
+ * @internal
+ */
+function SeverityLabel({
+  label,
+  fontWeight,
+  isFallback = false,
+}: SeverityLabelProps) {
+  const textClass = isFallback ? "text-muted" : "text-primary"
+
+  return (
+    <span className={cn(textClass, LABEL_TEXT_SIZE, fontWeight)}>{label}</span>
+  )
+}
+
+SeverityLabel.displayName = "SeverityLabel"
+
+// =============================================================================
+// MAIN COMPONENT
 // =============================================================================
 
 /**
@@ -114,7 +180,7 @@ const SEVERITY_FONT_WEIGHT: Record<SeverityLevel, string> = {
  * <DataTableSeverity value="critical" mapping={PRIORITY_SEVERITY_MAP} />
  *
  * // Lead priority
- * <DataTableSeverity value="hot" mapping={LEAD_PRIORITY_SEVERITY_MAP} />
+ * <DataTableSeverity value="hot" mapping={LEAD_TEMPERATURE_SEVERITY_MAP} />
  *
  * // Custom mapping
  * const customMap = {
@@ -138,42 +204,55 @@ const SEVERITY_FONT_WEIGHT: Record<SeverityLevel, string> = {
 export function DataTableSeverity<T extends string = string>({
   value,
   mapping,
-  size = 'sm',
+  size = "sm",
   className,
   showLabel = true,
+  ...props
 }: DataTableSeverityProps<T>) {
   const config = mapping[value]
 
   // Fallback if value not in mapping
   if (!config) {
-    console.warn(`DataTableSeverity: Unknown value "${value}" not found in mapping`)
+    console.warn(
+      `DataTableSeverity: Unknown value "${value}" not found in mapping`
+    )
     return (
-      <span className={cn("inline-flex items-center gap-2", className)}>
+      <span
+        data-slot="data-table-severity"
+        className={cn("inline-flex items-center", INDICATOR_LABEL_GAP, className)}
+        {...props}
+      >
         <SeverityIndicator level="none" size={size} />
         {showLabel && (
-          <span className="text-muted text-sm font-light">
-            {value}
-          </span>
+          <SeverityLabel
+            label={value}
+            fontWeight="font-light"
+            isFallback
+          />
         )}
       </span>
     )
   }
 
   const { level, label } = config
-  const fontWeight = SEVERITY_FONT_WEIGHT[level]
+  const fontWeight = getSeverityFontWeight(level)
 
   return (
-    <span className={cn("inline-flex items-center gap-2", className)}>
+    <span
+      data-slot="data-table-severity"
+      className={cn("inline-flex items-center", INDICATOR_LABEL_GAP, className)}
+      {...props}
+    >
       <SeverityIndicator level={level} size={size} />
-      {showLabel && (
-        <span className={cn("text-primary text-sm", fontWeight)}>
-          {label}
-        </span>
-      )}
+      {showLabel && <SeverityLabel label={label} fontWeight={fontWeight} />}
     </span>
   )
 }
 
 DataTableSeverity.displayName = "DataTableSeverity"
+
+// =============================================================================
+// EXPORTS
+// =============================================================================
 
 export default DataTableSeverity

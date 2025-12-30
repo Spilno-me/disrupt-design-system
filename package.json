@@ -1,6 +1,6 @@
 {
   "name": "@adrozdenko/design-system",
-  "version": "2.8.1",
+  "version": "2.9.0",
   "description": "Disrupt Design System - Unified design language and component library",
   "type": "module",
   "main": "./dist/index.js",

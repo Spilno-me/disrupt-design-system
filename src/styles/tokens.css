@@ -1,20 +1,223 @@
 /**
  * Disrupt Design System - CSS Design Tokens
  *
- * ⚠️ AUTO-GENERATED - DO NOT EDIT MANUALLY
+ * AUTO-GENERATED - DO NOT EDIT MANUALLY
  * Generated from: src/constants/designTokens.ts
  * To update: Edit designTokens.ts, then run: npm run generate-tokens
  *
- * Last generated: 2025-12-30T01:44:10.516Z
+ * Last generated: 2025-12-30T14:01:56.674Z
  */
 
-/* This file is intentionally minimal - full token definitions in styles.css */
-/* We only define the focus ring here to be auto-synced from designTokens.ts */
+/* =============================================================================
+ * CSS Custom Properties (required by DDS components)
+ * Import this file in your consumer project BEFORE design-system.css
+ * ============================================================================= */
 
 :root {
-  --ring: oklch(0.647 0.145 205.36);  /* Synced from ALIAS.border.focus = #08A4BD */
+  /* --- Focus ring --- */
+  --ring: oklch(0.647 0.145 205.36);
+
+  /* --- Brand Colors --- */
+  --color-dark: #2D3142;
+  --color-teal: #056271;
+  --color-teal-light: #66CFE1;
+  --color-cream: #FBFBF3;
+
+  /* --- Text Colors --- */
+  --color-primary: #2D3142;
+  --color-secondary: #5E4F7E;
+  --color-tertiary: #7F6F9F;
+  --color-muted: #5E4F7E;
+  --color-emphasis: #474F5F;
+  --color-disabled: #9F93B7;
+  --color-inverse: #FFFFFF;
+  --color-link: #08A4BD;
+  --color-link-hover: #068397;
+  --color-text-accent: #056271;
+
+  /* --- Background Colors --- */
+  --color-page: #F0EDE6;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #E6F7FA;
+  --color-surface-active: #D4F2F6;
+  --color-elevated: #FFFEF9;
+  --color-muted-bg: #EFEDF3;
+  --color-inverse-bg: #2D3142;
+  --color-inverse-subtle: #1D1F2A;
+  --color-accent-bg: #E6F7FA;
+  --color-accent-strong: #068397;
+  --color-accent-dark: #03424B;
+
+  /* --- Border Colors --- */
+  --color-default: #E5E2DB;
+  --color-slate: #E5E2DB;
+  --color-subtle: #D1D3D7;
+  --color-strong: #757B87;
+  --color-focus: #08A4BD;
+  --color-accent: #08A4BD;
+
+  /* --- Status Colors --- */
+  --color-error: #F70D1A;
+  --color-error-light: #FEF2F2;
+  --color-error-muted: #FEE2E2;
+  --color-error-strong: #B91C1C;
+  --color-success: #22C55E;
+  --color-success-light: #F0FDF4;
+  --color-success-muted: #DCFCE7;
+  --color-success-strong: #15803D;
+  --color-success-dark: #166534;
+  --color-warning: #EAB308;
+  --color-warning-light: #FFFBEB;
+  --color-warning-muted: #FEF3C7;
+  --color-warning-dark: #92400E;
+  --color-warning-strong: #92400E;
+  --color-info: #3B82F6;
+  --color-info-light: #EFF6FF;
+  --color-info-muted: #DBEAFE;
+
+  /* --- Feature Colors --- */
+  --color-featureBlue: #3B82F6;
+  --color-featureRed: #EF4444;
+  --color-featureYellow: #EAB308;
+  --color-featureGreen: #22C55E;
+  --color-circleBlue: #3B82F6;
+  --color-circleRed: #EF4444;
+  --color-circleYellow: #EAB308;
+  --color-circleGreen: #22C55E;
+
+  /* --- Purple Shades --- */
+  --color-light-purple: #EFEDF3;
+  --color-dark-purple: #5E4F7E;
+
+  /* --- Aging/Urgent --- */
+  --color-aging: #F97316;
+  --color-aging-dark: #7C2D12;
+
+  /* --- Shadcn/UI Required Variables --- */
+  --background: #F0EDE6;
+  --foreground: #2D3142;
+  --border: #E5E2DB;
+
+  /* --- Brand Palette (for primitives) --- */
+  --brand-coral-600: #DC2626;
+  --brand-coral-800: #991B1B;
+  --brand-harbor-800: #166534;
+  --brand-deep-current-700: #056271;
 }
 
 .dark {
-  --ring: oklch(0.730 0.135 205.36);  /* 1 step lighter for dark mode visibility = #33BFD7 */
+  --ring: oklch(0.730 0.135 205.36);
+
+  /* --- Text Colors (dark mode) --- */
+  --color-primary: #FFFEF9;
+  --color-secondary: #E5E2DB;
+  --color-tertiary: #D5D2CB;
+  --color-muted: #E5E2DB;
+  --color-emphasis: #FAF8F3;
+  --color-disabled: #474F5F;
+  --color-inverse: #2D3142;
+  --color-text-accent: #66CFE1;
+
+  /* --- Background Colors (dark mode) --- */
+  --color-page: #0C0D12;
+  --color-surface: #1D1F2A;
+  --color-surface-hover: #252836;
+  --color-elevated: #2D3142;
+  --color-muted-bg: #14161E;
+  --color-inverse-bg: #FAF8F3;
+  --color-accent-bg: #14161E;
+
+  /* --- Border Colors (dark mode) --- */
+  --color-default: #474F5F;
+  --color-slate: #474F5F;
+  --color-subtle: #252836;
+  --color-strong: #757B87;
+
+  /* --- Shadcn/UI Required Variables (dark mode) --- */
+  --background: #0C0D12;
+  --foreground: #FFFEF9;
+  --border: #474F5F;
 }
+
+/* =============================================================================
+ * Utility Classes (for components that use CVA variants)
+ * These classes reference the CSS variables above
+ * ============================================================================= */
+
+/* Background utilities */
+.bg-page { background-color: var(--color-page); }
+.bg-surface { background-color: var(--color-surface); }
+.bg-elevated { background-color: var(--color-elevated); }
+.bg-muted { background-color: var(--color-muted-bg); }
+.bg-inverse-bg { background-color: var(--color-inverse-bg); }
+.bg-muted-bg { background-color: var(--color-muted-bg); }
+.bg-accent-strong { background-color: var(--color-accent-strong); }
+
+/* Text utilities */
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.text-muted { color: var(--color-muted); }
+.text-inverse { color: var(--color-inverse); }
+.text-accent { color: var(--color-text-accent); }
+
+/* Border utilities */
+.border-default { border-color: var(--color-default); }
+.border-subtle { border-color: var(--color-subtle); }
+
+/* Status utilities */
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+.text-info { color: var(--color-info); }
+.bg-success { background-color: var(--color-success); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-error { background-color: var(--color-error); }
+.bg-info { background-color: var(--color-info); }
+.bg-error-strong { background-color: var(--color-error-strong); }
+
+/* Hover variants */
+.hover\:bg-inverse-bg\/90:hover { background-color: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent); }
+.hover\:bg-muted-bg\/80:hover { background-color: color-mix(in srgb, var(--color-muted-bg) 80%, transparent); }
+.hover\:bg-accent-strong\/90:hover { background-color: color-mix(in srgb, var(--color-accent-strong) 90%, transparent); }
+.hover\:bg-error-strong\/90:hover { background-color: color-mix(in srgb, var(--color-error-strong) 90%, transparent); }
+.hover\:bg-page:hover { background-color: var(--color-page); }
+
+/* Focus utilities */
+.focus-visible\:ring-accent\/30:focus-visible {
+  --tw-ring-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  box-shadow: var(--tw-ring-inset, ) 0 0 0 3px var(--tw-ring-color);
+}
+.focus-visible\:border-accent:focus-visible { border-color: var(--color-accent); }
+
+/* Text on status (always white for colored backgrounds) */
+.text-on-status { color: #FFFFFF; }
+
+
+/* =============================================================================
+ * Essential Tailwind Utilities (missing from library build)
+ * These are needed because Tailwind v4 doesn't preserve them in library mode
+ * Plain CSS (not @layer) ensures these override Tailwind's base reset
+ * ============================================================================= */
+
+/* Border width */
+.border { border-width: 1px; }
+.border-0 { border-width: 0px; }
+.border-2 { border-width: 2px; }
+.border-t { border-top-width: 1px; }
+.border-b { border-bottom-width: 1px; }
+.border-l { border-left-width: 1px; }
+.border-r { border-right-width: 1px; }
+
+/* Border radius */
+.rounded { border-radius: 0.25rem; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-full { border-radius: 9999px; }
+
+/* Box shadow */
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.shadow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+.shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }

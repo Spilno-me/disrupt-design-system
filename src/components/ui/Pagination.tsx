@@ -20,6 +20,37 @@ import {
 } from "./select"
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Default maximum number of page buttons to show */
+const DEFAULT_MAX_PAGE_BUTTONS = 7
+
+/** Default page size options for the selector dropdown */
+const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100]
+
+/** Touch-friendly button size for mobile (44px meets WCAG touch target guidelines) */
+const MOBILE_TOUCH_TARGET_CLASS = "h-11 w-11"
+const MOBILE_TOUCH_TARGET_WIDE_CLASS = "h-11 w-10"
+
+/** Desktop button size (36px standard interactive) */
+const DESKTOP_BUTTON_SIZE_CLASS = "h-9 w-9"
+
+/** Icon sizes for responsive layouts */
+const MOBILE_ICON_SIZE_CLASS = "h-5 w-5"
+const DESKTOP_ICON_SIZE_CLASS = "h-4 w-4"
+
+/** Page size selector trigger dimensions */
+const PAGE_SIZE_TRIGGER_WIDTH = "w-[70px]"
+const PAGE_SIZE_TRIGGER_HEIGHT = "h-9"
+
+/** Hover background for nav buttons - uses accent background semantic token */
+const NAV_BUTTON_HOVER_BG = "hover:bg-accent-bg"
+
+/** Current page shadow for inset pressed appearance */
+const CURRENT_PAGE_SHADOW = "inset_0_2px_4px_rgba(0,0,0,0.2)"
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
@@ -55,11 +86,13 @@ export interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 // =============================================================================
-// PAGINATION COMPONENT
+// COMPONENT
 // =============================================================================
 
 /**
- * Pagination - A comprehensive pagination component (MOLECULE)
+ * Pagination - A comprehensive pagination component for navigating through data.
+ *
+ * @component MOLECULE
  *
  * Features:
  * - Page number buttons with smart ellipsis
@@ -116,11 +149,11 @@ export function Pagination({
   pageSize,
   onPageChange,
   onPageSizeChange,
-  pageSizeOptions = [10, 25, 50, 100],
+  pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
   showPageSizeSelector = true,
   showResultsText = true,
   showFirstLastButtons = true,
-  maxPageButtons = 7,
+  maxPageButtons = DEFAULT_MAX_PAGE_BUTTONS,
   loading = false,
   className,
   compact: _compact = false,
@@ -250,11 +283,12 @@ export function Pagination({
               disabled={currentPage === 1 || loading}
               aria-label="Go to first page"
               className={cn(
-                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
+                DESKTOP_BUTTON_SIZE_CLASS,
+                NAV_BUTTON_HOVER_BG,
                 isRowLayout ? "flex" : "hidden @md:flex"
               )}
             >
-              <ChevronsLeft className="h-4 w-4" />
+              <ChevronsLeft className={DESKTOP_ICON_SIZE_CLASS} />
             </Button>
           )}
 
@@ -267,11 +301,16 @@ export function Pagination({
             disabled={currentPage === 1 || loading}
             aria-label="Go to previous page"
             className={cn(
-              "hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
-              isRowLayout ? "h-9 w-9" : "h-11 w-11 @md:h-9 @md:w-9"
+              NAV_BUTTON_HOVER_BG,
+              isRowLayout
+                ? DESKTOP_BUTTON_SIZE_CLASS
+                : `${MOBILE_TOUCH_TARGET_CLASS} @md:${DESKTOP_BUTTON_SIZE_CLASS}`
             )}
           >
-            <ChevronLeft className={isRowLayout ? "h-4 w-4" : "h-5 w-5 @md:h-4 @md:w-4"} />
+            <ChevronLeft className={isRowLayout
+              ? DESKTOP_ICON_SIZE_CLASS
+              : `${MOBILE_ICON_SIZE_CLASS} @md:${DESKTOP_ICON_SIZE_CLASS}`}
+            />
           </Button>
 
           {/* Page numbers - 44px touch targets on mobile */}
@@ -283,11 +322,13 @@ export function Pagination({
                     key={page}
                     className={cn(
                       "flex items-center justify-center text-secondary",
-                      isRowLayout ? "h-9 w-9" : "h-11 w-6 @md:h-9 @md:w-9"
+                      isRowLayout
+                        ? DESKTOP_BUTTON_SIZE_CLASS
+                        : `h-11 w-6 @md:${DESKTOP_BUTTON_SIZE_CLASS}`
                     )}
                     aria-hidden="true"
                   >
-                    <MoreHorizontal className="h-4 w-4" />
+                    <MoreHorizontal className={DESKTOP_ICON_SIZE_CLASS} />
                   </span>
                 )
               }
@@ -306,9 +347,11 @@ export function Pagination({
                   aria-current={isCurrentPage ? "page" : undefined}
                   className={cn(
                     "font-medium transition-shadow duration-200",
-                    isRowLayout ? "h-9 w-9 text-sm" : "h-11 w-10 @md:h-9 @md:w-9 text-base @md:text-sm",
-                    isCurrentPage && "[--pg-shadow:inset_0_2px_4px_rgba(0,0,0,0.2)] hover:[--pg-shadow:none] cursor-default",
-                    !isCurrentPage && "hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]"
+                    isRowLayout
+                      ? `${DESKTOP_BUTTON_SIZE_CLASS} text-sm`
+                      : `${MOBILE_TOUCH_TARGET_WIDE_CLASS} @md:${DESKTOP_BUTTON_SIZE_CLASS} text-base @md:text-sm`,
+                    isCurrentPage && `[--pg-shadow:${CURRENT_PAGE_SHADOW}] hover:[--pg-shadow:none] cursor-default`,
+                    !isCurrentPage && NAV_BUTTON_HOVER_BG
                   )}
                   style={isCurrentPage ? {
                     boxShadow: 'var(--pg-shadow)'
@@ -329,11 +372,16 @@ export function Pagination({
             disabled={currentPage === totalPages || loading}
             aria-label="Go to next page"
             className={cn(
-              "hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
-              isRowLayout ? "h-9 w-9" : "h-11 w-11 @md:h-9 @md:w-9"
+              NAV_BUTTON_HOVER_BG,
+              isRowLayout
+                ? DESKTOP_BUTTON_SIZE_CLASS
+                : `${MOBILE_TOUCH_TARGET_CLASS} @md:${DESKTOP_BUTTON_SIZE_CLASS}`
             )}
           >
-            <ChevronRight className={isRowLayout ? "h-4 w-4" : "h-5 w-5 @md:h-4 @md:w-4"} />
+            <ChevronRight className={isRowLayout
+              ? DESKTOP_ICON_SIZE_CLASS
+              : `${MOBILE_ICON_SIZE_CLASS} @md:${DESKTOP_ICON_SIZE_CLASS}`}
+            />
           </Button>
 
           {/* Last page button - hidden on mobile */}
@@ -346,11 +394,12 @@ export function Pagination({
               disabled={currentPage === totalPages || loading}
               aria-label="Go to last page"
               className={cn(
-                "h-9 w-9 hover:bg-[var(--brand-deep-current-100)] dark:hover:bg-[var(--brand-deep-current-800)]",
+                DESKTOP_BUTTON_SIZE_CLASS,
+                NAV_BUTTON_HOVER_BG,
                 isRowLayout ? "flex" : "hidden @md:flex"
               )}
             >
-              <ChevronsRight className="h-4 w-4" />
+              <ChevronsRight className={DESKTOP_ICON_SIZE_CLASS} />
             </Button>
           )}
         </nav>
@@ -368,7 +417,14 @@ export function Pagination({
             onValueChange={(value) => onPageSizeChange(parseInt(value, 10))}
             disabled={loading}
           >
-            <SelectTrigger className="w-[70px] h-9 text-sm bg-linen border-default" aria-label="Rows per page">
+            <SelectTrigger
+              className={cn(
+                PAGE_SIZE_TRIGGER_WIDTH,
+                PAGE_SIZE_TRIGGER_HEIGHT,
+                "text-sm bg-linen border-default"
+              )}
+              aria-label="Rows per page"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

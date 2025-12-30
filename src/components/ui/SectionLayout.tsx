@@ -1,64 +1,154 @@
-import { ReactNode, useState, useRef, useEffect } from 'react'
+import { forwardRef, useState, useRef, useEffect, type ReactNode } from 'react'
 import { SkeletonImage } from './Skeleton'
 import { GridBlobBackground } from './GridBlobCanvas'
 import { ResponsiveImage } from './ResponsiveImage'
+import { SectionHeading } from './SectionHeading'
 import { cn } from '../../lib/utils'
 
-// =============================================================================
-// SECTION WRAPPER
-// =============================================================================
+// ============== CONSTANTS ==============
 
-interface SectionWrapperProps {
+/** Default blob scale factor for GridBlobBackground */
+const DEFAULT_BLOB_SCALE = 1.5
+
+/** Data slot identifier for SectionWrapper */
+const SECTION_WRAPPER_DATA_SLOT = 'section-wrapper'
+
+// ============== TYPES ==============
+
+/** Background color variants for SectionWrapper */
+export type SectionWrapperBackground = 'white' | 'cream'
+
+/** Header theme variants - determines header text color when section is in view */
+export type SectionWrapperHeaderTheme = 'dark' | 'light'
+
+/**
+ * Props for the SectionWrapper component
+ */
+export interface SectionWrapperProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {
+  /** Child content to render within the section */
   children: ReactNode
   /** Background color variant */
-  background?: 'white' | 'cream'
+  background?: SectionWrapperBackground
   /** Show grid blob background animation */
   showBlob?: boolean
-  /** Blob scale (default 1.5) */
+  /** Blob scale factor (default: 1.5) */
   blobScale?: number
   /** Data attribute for section identification */
   dataElement?: string
   /** Header theme when this section is active: 'dark' = light bg (dark text), 'light' = dark bg (white text) */
-  headerTheme?: 'dark' | 'light'
-  className?: string
+  headerTheme?: SectionWrapperHeaderTheme
+}
+
+// ============== HELPER FUNCTIONS ==============
+
+/**
+ * Returns the Tailwind background class for a given background variant.
+ */
+function getBackgroundClass(background: SectionWrapperBackground): string {
+  return background === 'cream' ? 'bg-page' : 'bg-surface'
 }
 
 /**
- * Consistent section wrapper with background color, padding, borders, and optional blob.
- * Replaces repeated section element patterns across components.
+ * Determines the header theme based on background color.
+ * Light backgrounds get dark theme (dark text), dark backgrounds get light theme.
  */
-export function SectionWrapper({
-  children,
-  background = 'white',
-  showBlob = false,
-  blobScale = 1.5,
-  dataElement,
-  headerTheme,
-  className = '',
-}: SectionWrapperProps) {
-  const bgClass = background === 'cream' ? 'bg-page' : 'bg-surface'
-  const needsRelative = showBlob ? 'relative' : ''
-
-  // Auto-detect header theme based on background if not specified
-  const autoTheme = background === 'white' || background === 'cream' ? 'dark' : 'light'
-  const finalHeaderTheme = headerTheme || autoTheme
-
-  return (
-    <section
-      className={cn(
-        bgClass,
-        needsRelative,
-        'py-8 sm:py-12 lg:py-16 border-y-dashed-figma overflow-hidden',
-        className
-      )}
-      data-element={dataElement}
-      data-header-theme={finalHeaderTheme}
-    >
-      {showBlob && <GridBlobBackground scale={blobScale} />}
-      {children}
-    </section>
-  )
+function resolveHeaderTheme(
+  background: SectionWrapperBackground,
+  explicitTheme?: SectionWrapperHeaderTheme
+): SectionWrapperHeaderTheme {
+  if (explicitTheme) return explicitTheme
+  return background === 'white' || background === 'cream' ? 'dark' : 'light'
 }
+
+// ============== COMPONENTS ==============
+
+/**
+ * SectionWrapper - Semantic section container with consistent styling.
+ *
+ * Provides a consistent wrapper for page sections with background colors,
+ * responsive vertical padding, dashed borders, and optional animated blob background.
+ * Auto-detects header theme based on background for scroll-spy integrations.
+ *
+ * @component MOLECULE
+ *
+ * @example
+ * ```tsx
+ * // Basic white background section
+ * <SectionWrapper>
+ *   <SectionContainer>
+ *     <h2>Section Title</h2>
+ *     <p>Content...</p>
+ *   </SectionContainer>
+ * </SectionWrapper>
+ *
+ * // Cream background with blob animation
+ * <SectionWrapper background="cream" showBlob blobScale={2}>
+ *   <SectionContainer className="relative z-[1]">
+ *     <h2>Featured Section</h2>
+ *   </SectionContainer>
+ * </SectionWrapper>
+ *
+ * // With explicit header theme for scroll-spy
+ * <SectionWrapper
+ *   dataElement="features"
+ *   headerTheme="dark"
+ * >
+ *   <SectionContainer>...</SectionContainer>
+ * </SectionWrapper>
+ * ```
+ *
+ * @testing
+ * - `data-slot="section-wrapper"` - Root section element
+ * - `data-element` - Custom identifier for scroll-spy/analytics
+ * - `data-header-theme` - Current header theme ('dark' | 'light')
+ *
+ * @accessibility
+ * - Uses semantic `<section>` element for proper document outline
+ * - Blob background is decorative and doesn't interfere with content
+ *
+ * @see SectionContainer for inner content wrapper with max-width
+ * @see ContentSection for pre-composed two-column layout pattern
+ */
+export const SectionWrapper = forwardRef<HTMLElement, SectionWrapperProps>(
+  function SectionWrapper(
+    {
+      children,
+      background = 'white',
+      showBlob = false,
+      blobScale = DEFAULT_BLOB_SCALE,
+      dataElement,
+      headerTheme,
+      className,
+      ...props
+    },
+    ref
+  ) {
+    const bgClass = getBackgroundClass(background)
+    const finalHeaderTheme = resolveHeaderTheme(background, headerTheme)
+
+    return (
+      <section
+        ref={ref}
+        data-slot={SECTION_WRAPPER_DATA_SLOT}
+        data-element={dataElement}
+        data-header-theme={finalHeaderTheme}
+        className={cn(
+          bgClass,
+          showBlob && 'relative',
+          'py-8 sm:py-12 lg:py-16 border-y-dashed-figma overflow-hidden',
+          className
+        )}
+        {...props}
+      >
+        {showBlob && <GridBlobBackground scale={blobScale} />}
+        {children}
+      </section>
+    )
+  }
+)
+
+SectionWrapper.displayName = 'SectionWrapper'
 
 // =============================================================================
 // SECTION CONTAINER
@@ -323,57 +413,10 @@ export function SectionImage({
 }
 
 // =============================================================================
-// SECTION HEADING
+// SECTION HEADING (Re-exported from dedicated module)
 // =============================================================================
 
-interface SectionHeadingProps {
-  /** Main heading text */
-  title: string
-  /** Subheading text (teal color) */
-  subtitle?: string
-  /** Whether to show separator line after subtitle */
-  showSeparator?: boolean
-  /** Center align the heading group */
-  centered?: boolean
-  /** Hide separator on mobile */
-  hideSeparatorOnMobile?: boolean
-  className?: string
-}
-
-/**
- * Section heading group with title, subtitle, and optional separator.
- * Provides consistent typography and spacing.
- */
-export function SectionHeading({
-  title,
-  subtitle,
-  showSeparator = true,
-  centered = false,
-  hideSeparatorOnMobile = true,
-  className = '',
-}: SectionHeadingProps) {
-  // Left-aligned on mobile, optionally centered on desktop
-  const alignClass = centered ? 'lg:items-center lg:text-center' : ''
-  const separatorClass = hideSeparatorOnMobile ? 'hidden sm:block' : ''
-
-  return (
-    <div className={`flex flex-col ${alignClass} ${className}`}>
-      <h2 className="text-2xl sm:text-3xl lg:text-3xl font-display font-bold text-primary leading-[1.2] mb-2">
-        {title}
-      </h2>
-      {subtitle && (
-        <div className="lg:w-fit mb-4">
-          <p className="text-sm sm:text-base lg:text-lg font-display font-medium text-secondary">
-            {subtitle}
-          </p>
-          {showSeparator && (
-            <div className={`separator-dashed mt-4 w-full ${separatorClass}`} />
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
+export { SectionHeading, type SectionHeadingProps } from './SectionHeading'
 
 // =============================================================================
 // COLUMN

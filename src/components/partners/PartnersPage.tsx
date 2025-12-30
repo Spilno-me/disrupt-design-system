@@ -10,221 +10,27 @@ import {
   Building2,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
+
+// Extracted modules
+import { PARTNER_FILTER_GROUPS } from "./constants"
+import type { Partner, PartnerStatus, PartnerTier, PartnersPageProps } from "./types"
+import { MOCK_PARTNERS } from "./data"
+import { TierBadge, PartnerId } from "./components"
+import { formatDate } from "./utils"
+
+// UI components
 import { Button } from "../ui/button"
 import { DataTable, type ColumnDef } from "../ui/DataTable"
 import { Pagination } from "../ui/Pagination"
 import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
-import type { FilterGroup, FilterState } from "../shared/SearchFilter/types"
+import type { FilterState } from "../shared/SearchFilter/types"
 import { EditPartnerDialog, PartnerFormData } from "./EditPartnerDialog"
 import { DeletePartnerDialog } from "./DeletePartnerDialog"
 import { DataTableStatusDot, DataTableActions, PARTNER_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
 
-// =============================================================================
-// FILTER CONFIGURATION
-// =============================================================================
-
-const PARTNER_FILTER_GROUPS: FilterGroup[] = [
-  {
-    key: "status",
-    label: "Status",
-    options: [
-      { id: "active", label: "Active" },
-      { id: "inactive", label: "Inactive" },
-      { id: "pending", label: "Pending" },
-    ],
-  },
-  {
-    key: "tier",
-    label: "Tier",
-    options: [
-      { id: "Standard", label: "Standard" },
-      { id: "Premium", label: "Premium" },
-      { id: "Enterprise", label: "Enterprise" },
-    ],
-  },
-]
-
-
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export type PartnerStatus = "active" | "inactive" | "pending"
-export type PartnerTier = "Standard" | "Premium" | "Enterprise"
-
-export interface Partner {
-  /** Unique identifier */
-  id: string
-  /** Company/organization name */
-  name: string
-  /** Partner ID (displayed as truncated) */
-  partnerId: string
-  /** Primary contact name */
-  contactName: string
-  /** Primary contact email */
-  contactEmail: string
-  /** Partner tier level */
-  tier: PartnerTier
-  /** Current status */
-  status: PartnerStatus
-  /** Date created */
-  createdAt: Date
-}
-
-export interface PartnersPageProps {
-  /** Initial partners data */
-  partners?: Partner[]
-  /** Callback when "Add Partner" is clicked (if not provided, uses built-in dialog) */
-  onAddPartner?: () => void
-  /** Callback when view/edit action is clicked (if not provided, uses built-in dialog) */
-  onViewPartner?: (partner: Partner) => void
-  /** Callback when edit form is submitted */
-  onEditPartner?: (partner: Partner, data: PartnerFormData) => void | Promise<void>
-  /** Callback when create form is submitted */
-  onCreatePartner?: (data: PartnerFormData) => void | Promise<void>
-  /** Callback when users action is clicked */
-  onManageUsers?: (partner: Partner) => void
-  /** Callback when delete action is clicked (if not provided, uses built-in dialog) */
-  onDeletePartner?: (partner: Partner) => void
-  /** Callback when delete is confirmed */
-  onConfirmDelete?: (partner: Partner) => void | Promise<void>
-  /** Loading state */
-  loading?: boolean
-  /** Additional className for the container */
-  className?: string
-}
-
-// =============================================================================
-// MOCK DATA
-// =============================================================================
-
-export const MOCK_PARTNERS: Partner[] = [
-  {
-    id: "1",
-    name: "Drax Industries",
-    partnerId: "DRX-2024-001",
-    contactName: "Jane Smith",
-    contactEmail: "jane.smith@drax.com",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-01-15"),
-  },
-  {
-    id: "2",
-    name: "WWE",
-    partnerId: "WWE-2024-002",
-    contactName: "John Cena",
-    contactEmail: "j.cena@wwe.com",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-02-20"),
-  },
-  {
-    id: "3",
-    name: "QuadroCorp",
-    partnerId: "QDC-2024-003",
-    contactName: "Maria Garcia",
-    contactEmail: "m.garcia@quadrocorp.io",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-03-10"),
-  },
-  {
-    id: "4",
-    name: "Syncra Group",
-    partnerId: "SYN-2024-004",
-    contactName: "Alex Johnson",
-    contactEmail: "alex.j@syncra.group",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-04-05"),
-  },
-  {
-    id: "5",
-    name: "FosoComp",
-    partnerId: "FSC-2024-005",
-    contactName: "Sarah Lee",
-    contactEmail: "s.lee@fosocomp.com",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-05-12"),
-  },
-  {
-    id: "6",
-    name: "Global Consulting Group",
-    partnerId: "GCG-2024-006",
-    contactName: "Michael Brown",
-    contactEmail: "m.brown@gcg.com",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-06-18"),
-  },
-  {
-    id: "7",
-    name: "TechIntegrators Inc.",
-    partnerId: "TII-2024-007",
-    contactName: "Emily Davis",
-    contactEmail: "e.davis@techintegrators.io",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-07-22"),
-  },
-  {
-    id: "8",
-    name: "ADMIN - Direct Sales",
-    partnerId: "ADM-2024-008",
-    contactName: "Admin User",
-    contactEmail: "admin@internal.com",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-08-01"),
-  },
-  {
-    id: "9",
-    name: "Industrial Solutions LLC",
-    partnerId: "ISL-2024-009",
-    contactName: "Robert Wilson",
-    contactEmail: "r.wilson@industrialsolutions.com",
-    tier: "Standard",
-    status: "active",
-    createdAt: new Date("2024-09-14"),
-  },
-]
-
-// =============================================================================
-// HELPER COMPONENTS
-// =============================================================================
-
-/** Tier badge with outline styling - fixed contrast */
-function TierBadge({ tier }: { tier: PartnerTier }) {
-  const tierConfig: Record<PartnerTier, { label: string; className: string }> = {
-    Standard: { label: "Standard", className: "border-success text-primary bg-success-light" },
-    Premium: { label: "Premium", className: "border-accent text-primary bg-accent-bg" },
-    Enterprise: { label: "Enterprise", className: "border-default text-primary bg-muted-bg" },
-  }
-
-  const config = tierConfig[tier]
-
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border",
-        config.className
-      )}
-    >
-      {config.label}
-    </span>
-  )
-}
-
-/** Truncated partner ID display */
-function PartnerId({ id }: { id: string }) {
-  // Show first 8 characters + ellipsis if longer
-  const truncated = id.length > 12 ? `${id.slice(0, 12)}...` : id
-  return (
-    <span className="text-xs text-muted font-mono">{truncated}</span>
-  )
-}
+// Re-export types for external consumers
+export type { PartnerStatus, PartnerTier, Partner, PartnersPageProps }
+export { MOCK_PARTNERS }
 
 // =============================================================================
 // MAIN COMPONENT
@@ -239,16 +45,6 @@ function PartnerId({ id }: { id: string }) {
  * - Data table with partner information
  * - Action buttons for view, manage users, and delete
  * - Pagination
- *
- * @example
- * ```tsx
- * <PartnersPage
- *   partners={partners}
- *   onAddPartner={() => openAddModal()}
- *   onViewPartner={(partner) => navigate(`/partners/${partner.id}`)}
- *   onDeletePartner={(partner) => confirmDelete(partner)}
- * />
- * ```
  */
 export function PartnersPage({
   partners = MOCK_PARTNERS,
@@ -281,15 +77,6 @@ export function PartnersPage({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [partnerToDelete, setPartnerToDelete] = useState<Partner | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
-
-  // Format date helper
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-    })
-  }
 
   // Filter partners based on search and filters
   const filteredPartners = useMemo(() => {
@@ -329,10 +116,8 @@ export function PartnersPage({
   // Handle view/edit partner click
   const handleViewPartnerClick = React.useCallback((partner: Partner) => {
     if (onViewPartner) {
-      // Use external handler if provided
       onViewPartner(partner)
     } else {
-      // Use built-in dialog with delay to prevent focus conflicts
       setSelectedPartner(partner)
       setDialogMode("edit")
       setTimeout(() => setEditDialogOpen(true), 150)
@@ -342,10 +127,8 @@ export function PartnersPage({
   // Handle add partner click
   const handleAddPartnerClick = React.useCallback(() => {
     if (onAddPartner) {
-      // Use external handler if provided
       onAddPartner()
     } else {
-      // Use built-in dialog
       setSelectedPartner(null)
       setDialogMode("create")
       setEditDialogOpen(true)
@@ -370,10 +153,8 @@ export function PartnersPage({
   // Handle delete partner click
   const handleDeletePartnerClick = React.useCallback((partner: Partner) => {
     if (onDeletePartner) {
-      // Use external handler if provided
       onDeletePartner(partner)
     } else {
-      // Use built-in dialog with delay to prevent focus conflicts
       setPartnerToDelete(partner)
       setTimeout(() => setDeleteDialogOpen(true), 150)
     }
@@ -415,7 +196,7 @@ export function PartnersPage({
     },
   ]
 
-  // Column definitions - using CSS property values for DataTable API (not hardcoded styling)
+  // Column definitions
   /* eslint-disable no-restricted-syntax */
   const columns: ColumnDef<Partner>[] = [
     {

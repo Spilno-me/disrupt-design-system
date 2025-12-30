@@ -1,7 +1,10 @@
 /**
  * BottomNav - Mobile bottom navigation bar with "More" menu.
  *
- * **Component Type:** MOLECULE (composed of multiple atoms + Sheet/Button)
+ * Displays primary navigation items in a fixed bottom bar on mobile devices.
+ * Additional items overflow into a slide-up sheet accessed via "More" button.
+ *
+ * @component MOLECULE
  *
  * @example
  * ```tsx
@@ -27,8 +30,13 @@
  *
  * **Testing:**
  * - Component accepts `data-testid` via props spread
- * - Auto-generates data-slot="bottom-nav" for the nav element
- * - Sub-components have data-slot="bottom-nav-tab", "bottom-nav-more", "bottom-nav-sheet"
+ * - data-slot="bottom-nav" for the nav element
+ * - data-slot="bottom-nav-tab" for each tab button
+ * - data-slot="bottom-nav-more" for the More button
+ * - data-slot="bottom-nav-sheet" for the sheet content
+ * - data-slot="bottom-nav-sheet-item" for sheet navigation items
+ * - data-slot="bottom-nav-sheet-group" for expandable groups
+ * - data-slot="bottom-nav-help" for help button
  *
  * **Accessibility:**
  * - nav has aria-label="Bottom navigation"
@@ -45,6 +53,28 @@ import { cn } from '../../lib/utils'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from './sheet'
 import { Button } from './button'
 import { NavItem, NavIcon, NavBadge, isGroupActive } from './navigation'
+
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Height of the bottom navigation bar in pixels */
+const NAV_HEIGHT_PX = 64
+
+/** Height of sheet navigation items in pixels */
+const SHEET_ITEM_HEIGHT_PX = 56
+
+/** Height of nested sheet items in pixels */
+const SHEET_NESTED_ITEM_HEIGHT_PX = 52
+
+/** Default number of visible items in bottom bar */
+const DEFAULT_MAX_VISIBLE_ITEMS = 3
+
+/** Default label for the More button */
+const DEFAULT_MORE_LABEL = 'More'
+
+/** Font size for tab labels */
+const TAB_LABEL_FONT_SIZE = 'text-[11px]'
 
 // =============================================================================
 // TYPES
@@ -71,27 +101,77 @@ export interface BottomNavProps extends React.HTMLAttributes<HTMLElement> {
   embedded?: boolean
 }
 
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-
-const NAV_HEIGHT = 64
-const ITEM_HEIGHT = 56
-const NESTED_ITEM_HEIGHT = 52
-
-// =============================================================================
-// SUB-COMPONENTS
-// =============================================================================
-
-function BottomNavTab({
-  item,
-  isActive,
-  onClick,
-}: {
+/** Props for the BottomNavTab sub-component */
+interface BottomNavTabProps {
   item: NavItem
   isActive: boolean
   onClick: () => void
-}) {
+}
+
+/** Props for the MoreTab sub-component */
+interface MoreTabProps {
+  isActive: boolean
+  onClick: () => void
+  label?: string
+  hasActiveChild?: boolean
+}
+
+/** Props for the SheetNavItem sub-component */
+interface SheetNavItemProps {
+  item: NavItem
+  isActive: boolean
+  onClick: () => void
+  isNested?: boolean
+}
+
+/** Props for the SheetNavGroup sub-component */
+interface SheetNavGroupProps {
+  item: NavItem
+  activeItemId?: string
+  onNavigate: (item: NavItem) => void
+  onClose: () => void
+}
+
+/** Props for the SheetHelpItem sub-component */
+interface SheetHelpItemProps {
+  onClick?: () => void
+}
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+
+/**
+ * Get tab label styles based on active state.
+ */
+function getTabLabelStyles(isActive: boolean): string {
+  return cn(
+    TAB_LABEL_FONT_SIZE,
+    'leading-tight',
+    isActive ? 'font-semibold text-primary' : 'font-medium text-primary'
+  )
+}
+
+/**
+ * Get sheet item height style object.
+ */
+function getSheetItemHeight(isNested: boolean): React.CSSProperties {
+  const height = isNested ? SHEET_NESTED_ITEM_HEIGHT_PX : SHEET_ITEM_HEIGHT_PX
+  return { height, minHeight: height }
+}
+
+// =============================================================================
+// COMPONENTS
+// =============================================================================
+
+/**
+ * Individual tab button in the bottom navigation bar.
+ */
+const BottomNavTab = React.memo(function BottomNavTab({
+  item,
+  isActive,
+  onClick,
+}: BottomNavTabProps) {
   return (
     <button
       data-slot="bottom-nav-tab"
@@ -109,30 +189,22 @@ function BottomNavTab({
         <NavIcon icon={item.icon} isActive={isActive} size="md" />
         {item.badge !== undefined && <NavBadge badge={item.badge} size="sm" />}
       </div>
-      <span
-        className={cn(
-          'text-[11px] leading-tight',
-          isActive ? 'font-semibold text-primary' : 'font-medium text-primary'
-        )}
-      >
-        {item.label}
-      </span>
+      <span className={getTabLabelStyles(isActive)}>{item.label}</span>
     </button>
   )
-}
+})
+BottomNavTab.displayName = 'BottomNavTab'
 
-function MoreTab({
+/**
+ * "More" button that opens the overflow sheet.
+ */
+const MoreTab = React.memo(function MoreTab({
   isActive,
   onClick,
-  label = 'More',
+  label = DEFAULT_MORE_LABEL,
   hasActiveChild,
-}: {
-  isActive: boolean
-  onClick: () => void
-  label?: string
-  hasActiveChild?: boolean
-}) {
-  const showActive = isActive || hasActiveChild
+}: MoreTabProps) {
+  const showActive = isActive || Boolean(hasActiveChild)
 
   return (
     <button
@@ -146,34 +218,27 @@ function MoreTab({
       aria-label="Open more navigation options"
     >
       <MoreHorizontal
-        className={cn('w-6 h-6', showActive ? 'text-primary' : 'text-primary')}
+        className="w-6 h-6 text-primary"
         strokeWidth={showActive ? 2 : 1.5}
       />
-      <span
-        className={cn(
-          'text-[11px] leading-tight',
-          showActive ? 'font-semibold text-primary' : 'font-medium text-primary'
-        )}
-      >
-        {label}
-      </span>
+      <span className={getTabLabelStyles(showActive)}>{label}</span>
     </button>
   )
-}
+})
+MoreTab.displayName = 'MoreTab'
 
-function SheetNavItem({
+/**
+ * Navigation item displayed inside the overflow sheet.
+ */
+const SheetNavItem = React.memo(function SheetNavItem({
   item,
   isActive,
   onClick,
   isNested = false,
-}: {
-  item: NavItem
-  isActive: boolean
-  onClick: () => void
-  isNested?: boolean
-}) {
+}: SheetNavItemProps) {
   return (
     <button
+      data-slot="bottom-nav-sheet-item"
       onClick={onClick}
       disabled={item.disabled}
       className={cn(
@@ -185,14 +250,10 @@ function SheetNavItem({
         item.disabled && 'opacity-50 cursor-not-allowed',
         isNested ? 'pl-14' : 'pl-5'
       )}
-      style={{
-        height: isNested ? NESTED_ITEM_HEIGHT : ITEM_HEIGHT,
-        minHeight: isNested ? NESTED_ITEM_HEIGHT : ITEM_HEIGHT,
-      }}
+      style={getSheetItemHeight(isNested)}
       aria-current={isActive ? 'page' : undefined}
     >
       <NavIcon icon={item.icon} isActive={isActive} badge={item.badge} size="md" />
-
       <span
         className={cn(
           'flex-1 text-left text-base',
@@ -203,29 +264,31 @@ function SheetNavItem({
       </span>
     </button>
   )
-}
+})
+SheetNavItem.displayName = 'SheetNavItem'
 
+/**
+ * Expandable navigation group in the overflow sheet.
+ */
 function SheetNavGroup({
   item,
   activeItemId,
   onNavigate,
   onClose,
-}: {
-  item: NavItem
-  activeItemId?: string
-  onNavigate: (item: NavItem) => void
-  onClose: () => void
-}) {
-  const [isExpanded, setIsExpanded] = useState(() => isGroupActive(item, activeItemId))
+}: SheetNavGroupProps) {
   const groupActive = isGroupActive(item, activeItemId)
+  const [isExpanded, setIsExpanded] = useState(() => groupActive)
 
-  const handleChildClick = (child: NavItem) => {
-    onNavigate(child)
-    onClose()
-  }
+  const handleChildClick = useCallback(
+    (child: NavItem) => {
+      onNavigate(child)
+      onClose()
+    },
+    [onNavigate, onClose]
+  )
 
   return (
-    <div>
+    <div data-slot="bottom-nav-sheet-group">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
@@ -235,10 +298,9 @@ function SheetNavGroup({
           groupActive && 'bg-surface-active',
           !groupActive && 'hover:bg-muted-bg'
         )}
-        style={{ height: ITEM_HEIGHT, minHeight: ITEM_HEIGHT }}
+        style={getSheetItemHeight(false)}
       >
         <NavIcon icon={item.icon} isActive={groupActive} size="md" />
-
         <span
           className={cn(
             'flex-1 text-left text-base',
@@ -247,9 +309,11 @@ function SheetNavGroup({
         >
           {item.label}
         </span>
-
         <ChevronRight
-          className={cn('w-5 h-5 text-secondary transition-transform duration-200', isExpanded && 'rotate-90')}
+          className={cn(
+            'w-5 h-5 text-secondary transition-transform duration-200',
+            isExpanded && 'rotate-90'
+          )}
         />
       </button>
 
@@ -272,37 +336,44 @@ function SheetNavGroup({
     </div>
   )
 }
+SheetNavGroup.displayName = 'SheetNavGroup'
 
-function SheetHelpItem({ onClick }: { onClick?: () => void }) {
+/**
+ * Help item displayed at the bottom of the overflow sheet.
+ */
+const SheetHelpItem = React.memo(function SheetHelpItem({ onClick }: SheetHelpItemProps) {
   return (
     <button
+      data-slot="bottom-nav-help"
       onClick={onClick}
       className={cn(
         'relative w-full flex items-center gap-3 px-5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset',
         'hover:bg-muted-bg active:bg-surface-active transition-colors'
       )}
-      style={{ height: ITEM_HEIGHT, minHeight: ITEM_HEIGHT }}
+      style={getSheetItemHeight(false)}
     >
       <NavIcon icon={<CircleHelp />} size="md" />
       <span className="flex-1 text-left text-base font-medium text-primary">Get Help</span>
     </button>
   )
-}
+})
+SheetHelpItem.displayName = 'SheetHelpItem'
 
-// =============================================================================
-// MAIN COMPONENT
-// =============================================================================
-
+/**
+ * BottomNav - Mobile bottom navigation bar with overflow menu.
+ *
+ * @component MOLECULE
+ */
 export function BottomNav({
   items,
   activeItemId,
   onNavigate,
-  maxVisibleItems = 3,
+  maxVisibleItems = DEFAULT_MAX_VISIBLE_ITEMS,
   className,
   showHelpItem = true,
   onHelpClick,
-  moreLabel = 'More',
+  moreLabel = DEFAULT_MORE_LABEL,
   forceVisible = false,
   embedded = false,
   ...props
@@ -345,7 +416,7 @@ export function BottomNav({
           !forceVisible && !embedded && 'md:hidden',
           className
         )}
-        style={{ height: NAV_HEIGHT }}
+        style={{ height: NAV_HEIGHT_PX }}
         aria-label="Bottom navigation"
         {...props}
       >
@@ -369,7 +440,12 @@ export function BottomNav({
       </nav>
 
       <Sheet open={moreSheetOpen} onOpenChange={setMoreSheetOpen}>
-        <SheetContent side="bottom" hideCloseButton className="rounded-t-2xl px-0 pb-8 max-h-[85vh]">
+        <SheetContent
+          data-slot="bottom-nav-sheet"
+          side="bottom"
+          hideCloseButton
+          className="rounded-t-2xl px-0 pb-8 max-h-[85vh]"
+        >
           <div className="flex justify-center pt-3 pb-2">
             <div className="w-10 h-1 rounded-full bg-muted" />
           </div>
@@ -426,8 +502,11 @@ export function BottomNav({
     </>
   )
 }
-
 BottomNav.displayName = 'BottomNav'
+
+// =============================================================================
+// EXPORTS
+// =============================================================================
 
 export default BottomNav
 export type { NavItem as BottomNavItem }

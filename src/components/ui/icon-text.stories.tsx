@@ -160,7 +160,7 @@ export const OpticalAdjustmentComparison: Story = {
 
 export const InContext: Story = {
   render: () => (
-    <div className="bg-white rounded-lg border border-default p-6 max-w-md">
+    <div className="bg-surface rounded-lg border border-default p-6 max-w-md">
       <IconText
         icon={<Info />}
         as="h2"

@@ -18,12 +18,30 @@ import {
 import { MoreHorizontal } from "lucide-react"
 import { cn } from "../../../lib/utils"
 
-// =============================================================================
-// TYPES
-// =============================================================================
+// ============== CONSTANTS ==============
 
-export type ActionVariant = 'default' | 'destructive' | 'ghost' | 'accent'
+/** Default number of visible actions before overflow menu */
+const DEFAULT_MAX_VISIBLE = 3
 
+/** Icon size class for action buttons */
+const ICON_SIZE_CLASS = "h-4 w-4"
+
+/** Icon size class for dropdown menu items */
+const MENU_ICON_SIZE_CLASS = "mr-2 h-4 w-4"
+
+/** Data slot identifier for testing */
+const DATA_SLOT = "data-table-actions"
+
+// ============== TYPES ==============
+
+/**
+ * Action button variant - determines styling
+ */
+export type ActionVariant = "default" | "destructive" | "ghost" | "accent"
+
+/**
+ * Single action item configuration
+ */
 export interface ActionItem<T = unknown> {
   /** Unique identifier for the action */
   id: string
@@ -47,7 +65,11 @@ export interface ActionItem<T = unknown> {
   loading?: boolean
 }
 
-export interface DataTableActionsProps<T = unknown> {
+/**
+ * Props for DataTableActions component
+ */
+export interface DataTableActionsProps<T = unknown>
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onClick"> {
   /** Array of action items */
   actions: ActionItem<T>[]
   /** Current row data */
@@ -57,37 +79,37 @@ export interface DataTableActionsProps<T = unknown> {
   /** Maximum number of visible buttons (rest go to overflow menu) */
   maxVisible?: number
   /** Alignment of action buttons */
-  align?: 'left' | 'center' | 'right'
+  align?: "left" | "center" | "right"
   /** Layout mode */
-  layout?: 'horizontal' | 'vertical'
+  layout?: "horizontal" | "vertical"
   /** Button size */
-  size?: 'sm' | 'default' | 'lg' | 'icon'
-  /** Additional className */
-  className?: string
+  size?: "sm" | "default" | "lg" | "icon"
   /** Show labels on visible buttons (desktop) */
   showLabels?: boolean
   /** Tooltip provider - set to false if already wrapped */
   provideTooltip?: boolean
 }
 
-// =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
+// ============== HELPERS ==============
 
 /**
  * Check if user has required permission
+ *
+ * @param user - User object containing role/roles/isAdmin
+ * @param requires - Required permission(s)
+ * @returns True if user has permission
  */
 function hasPermission(user: unknown, requires?: string | string[]): boolean {
   if (!requires) return true
-  if (!user || typeof user !== 'object') return false
+  if (!user || typeof user !== "object") return false
 
   const permissions = Array.isArray(requires) ? requires : [requires]
   const userObj = user as Record<string, unknown>
 
   // Check user.role
   const userRole = userObj.role
-  if (userRole && typeof userRole === 'string') {
-    if (permissions.some(p => userRole.toLowerCase() === p.toLowerCase())) {
+  if (userRole && typeof userRole === "string") {
+    if (permissions.some((p) => userRole.toLowerCase() === p.toLowerCase())) {
       return true
     }
   }
@@ -95,15 +117,15 @@ function hasPermission(user: unknown, requires?: string | string[]): boolean {
   // Check user.roles array
   const userRoles = userObj.roles
   if (Array.isArray(userRoles)) {
-    return permissions.some(p =>
-      userRoles.some((r: unknown) =>
-        typeof r === 'string' && r.toLowerCase() === p.toLowerCase()
+    return permissions.some((p) =>
+      userRoles.some(
+        (r: unknown) => typeof r === "string" && r.toLowerCase() === p.toLowerCase()
       )
     )
   }
 
   // Check user.isAdmin flag
-  if (permissions.includes('admin') && userObj.isAdmin === true) {
+  if (permissions.includes("admin") && userObj.isAdmin === true) {
     return true
   }
 
@@ -111,19 +133,22 @@ function hasPermission(user: unknown, requires?: string | string[]): boolean {
 }
 
 /**
- * Check if action should be shown
+ * Check if action should be shown based on permissions and visibility rules
+ *
+ * @param action - Action configuration
+ * @param row - Current row data
+ * @param user - User context
+ * @returns True if action should be visible
  */
 function shouldShowAction<T>(
   action: ActionItem<T>,
   row: T,
   user?: unknown
 ): boolean {
-  // Check permission requirement
   if (action.requires && !hasPermission(user, action.requires)) {
     return false
   }
 
-  // Check custom visibility function
   if (action.showWhen && !action.showWhen(row, user)) {
     return false
   }
@@ -133,16 +158,18 @@ function shouldShowAction<T>(
 
 /**
  * Get disabled state for action
+ *
+ * @param action - Action configuration
+ * @param row - Current row data
+ * @returns True if action is disabled
  */
 function isActionDisabled<T>(action: ActionItem<T>, row: T): boolean {
   if (action.loading) return true
-  if (typeof action.disabled === 'function') return action.disabled(row)
+  if (typeof action.disabled === "function") return action.disabled(row)
   return action.disabled ?? false
 }
 
-// =============================================================================
-// COMPONENT
-// =============================================================================
+// ============== COMPONENTS ==============
 
 /**
  * DataTableActions - Standardized action buttons for data tables
@@ -154,6 +181,8 @@ function isActionDisabled<T>(action: ActionItem<T>, row: T): boolean {
  * - Built-in tooltips
  * - Confirmation dialogs
  * - Mobile-optimized layouts
+ *
+ * @component ATOM
  *
  * @example
  * ```tsx
@@ -175,17 +204,18 @@ export function DataTableActions<T = unknown>({
   actions,
   row,
   user,
-  maxVisible = 3,
-  align = 'right',
-  layout = 'horizontal',
-  size = 'icon',
+  maxVisible = DEFAULT_MAX_VISIBLE,
+  align = "right",
+  layout = "horizontal",
+  size = "icon",
   className,
   showLabels = false,
   provideTooltip = true,
+  ...props
 }: DataTableActionsProps<T>) {
   // Filter actions based on visibility and permissions
   const visibleActions = React.useMemo(
-    () => actions.filter(action => shouldShowAction(action, row, user)),
+    () => actions.filter((action) => shouldShowAction(action, row, user)),
     [actions, row, user]
   )
 
@@ -194,81 +224,115 @@ export function DataTableActions<T = unknown>({
   const overflowActions = visibleActions.slice(maxVisible)
 
   // Handle action click with optional confirmation
-  const handleActionClick = async (action: ActionItem<T>, event: React.MouseEvent) => {
-    event.stopPropagation() // Prevent row click
+  const handleActionClick = React.useCallback(
+    async (action: ActionItem<T>, event: React.MouseEvent) => {
+      event.stopPropagation()
 
-    // Handle confirmation
-    if (action.confirm) {
-      const message = typeof action.confirm === 'string'
-        ? action.confirm
-        : `Are you sure you want to ${action.label.toLowerCase()}?`
+      if (action.confirm) {
+        const message =
+          typeof action.confirm === "string"
+            ? action.confirm
+            : `Are you sure you want to ${action.label.toLowerCase()}?`
 
-      if (!window.confirm(message)) {
-        return
+        if (!window.confirm(message)) {
+          return
+        }
       }
-    }
 
-    // Execute action
-    await action.onClick(row, event)
-  }
+      await action.onClick(row, event)
+    },
+    [row]
+  )
 
-  // Render single action button
-  const renderActionButton = (action: ActionItem<T>, showLabel = showLabels) => {
-    const Icon = action.icon
-    const disabled = isActionDisabled(action, row)
-    const buttonVariant = action.variant || 'ghost'
+  // Render single action button with optional tooltip
+  const renderActionButton = React.useCallback(
+    (action: ActionItem<T>, showLabel = showLabels) => {
+      const Icon = action.icon
+      const disabled = isActionDisabled(action, row)
+      const buttonVariant = action.variant || "ghost"
 
-    const button = (
-      <Button
-        onClick={(e) => handleActionClick(action, e)}
-        variant={buttonVariant}
-        size={showLabel ? 'sm' : size}
-        disabled={disabled}
-        className={cn(showLabel && "justify-start")}
-      >
-        {Icon && <Icon className={cn("h-4 w-4", showLabel && "mr-2")} />}
-        {showLabel && action.label}
-      </Button>
-    )
-
-    // Wrap in tooltip only for icon-only buttons on desktop
-    if (!showLabel && provideTooltip) {
-      return (
-        <Tooltip key={action.id}>
-          <TooltipTrigger asChild>
-            {button}
-          </TooltipTrigger>
-          <TooltipContent>
-            {action.label}
-          </TooltipContent>
-        </Tooltip>
+      const button = (
+        <Button
+          onClick={(e) => handleActionClick(action, e)}
+          variant={buttonVariant}
+          size={showLabel ? "sm" : size}
+          disabled={disabled}
+          className={cn(showLabel && "justify-start")}
+        >
+          {Icon && <Icon className={cn(ICON_SIZE_CLASS, showLabel && "mr-2")} />}
+          {showLabel && action.label}
+        </Button>
       )
-    }
 
-    return <div key={action.id}>{button}</div>
-  }
+      if (!showLabel && provideTooltip) {
+        return (
+          <Tooltip key={action.id}>
+            <TooltipTrigger asChild>{button}</TooltipTrigger>
+            <TooltipContent>{action.label}</TooltipContent>
+          </Tooltip>
+        )
+      }
+
+      return <div key={action.id}>{button}</div>
+    },
+    [row, size, showLabels, provideTooltip, handleActionClick]
+  )
+
+  // Render overflow menu item
+  const renderOverflowItem = React.useCallback(
+    (action: ActionItem<T>, index: number) => {
+      const Icon = action.icon
+      const disabled = isActionDisabled(action, row)
+      const isDangerous = action.variant === "destructive"
+
+      return (
+        <React.Fragment key={action.id}>
+          {isDangerous && index > 0 && <DropdownMenuSeparator />}
+          <DropdownMenuItem
+            onClick={(e) => {
+              e.stopPropagation()
+              handleActionClick(action, e as unknown as React.MouseEvent)
+            }}
+            disabled={disabled}
+            className={cn(
+              isDangerous && "text-error focus:text-error focus:bg-error/10"
+            )}
+          >
+            {Icon && <Icon className={MENU_ICON_SIZE_CLASS} />}
+            {action.label}
+          </DropdownMenuItem>
+        </React.Fragment>
+      )
+    },
+    [row, handleActionClick]
+  )
 
   // No actions to show
   if (visibleActions.length === 0) {
     return null
   }
 
-  // Render actions
+  // Build alignment classes
+  const alignmentClass = cn(
+    align === "left" && "justify-start",
+    align === "center" && "justify-center",
+    align === "right" && "justify-end"
+  )
+
+  // Build layout classes
+  const layoutClass = cn(
+    layout === "horizontal" ? "gap-1" : "flex-col gap-2 w-full"
+  )
+
+  // Render actions content
   const actionsContent = (
     <div
-      className={cn(
-        "flex items-center",
-        layout === 'horizontal' ? "gap-1" : "flex-col gap-2 w-full",
-        align === 'left' && "justify-start",
-        align === 'center' && "justify-center",
-        align === 'right' && "justify-end",
-        className
-      )}
+      data-slot={DATA_SLOT}
+      className={cn("flex items-center", layoutClass, alignmentClass, className)}
+      {...props}
     >
-      {/* Primary visible actions */}
-      {primaryActions.map(action => renderActionButton(action))}
+      {primaryActions.map((action) => renderActionButton(action))}
 
-      {/* Overflow menu for additional actions */}
       {overflowActions.length > 0 && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -277,43 +341,17 @@ export function DataTableActions<T = unknown>({
               size={size}
               onClick={(e) => e.stopPropagation()}
             >
-              <MoreHorizontal className="h-4 w-4" />
+              <MoreHorizontal className={ICON_SIZE_CLASS} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-            {overflowActions.map((action, index) => {
-              const Icon = action.icon
-              const disabled = isActionDisabled(action, row)
-              const isDangerous = action.variant === 'destructive'
-
-              return (
-                <React.Fragment key={action.id}>
-                  {/* Add separator before destructive actions */}
-                  {isDangerous && index > 0 && <DropdownMenuSeparator />}
-
-                  <DropdownMenuItem
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleActionClick(action, e as unknown as React.MouseEvent)
-                    }}
-                    disabled={disabled}
-                    className={cn(
-                      isDangerous && "text-error focus:text-error focus:bg-error/10"
-                    )}
-                  >
-                    {Icon && <Icon className="mr-2 h-4 w-4" />}
-                    {action.label}
-                  </DropdownMenuItem>
-                </React.Fragment>
-              )
-            })}
+            {overflowActions.map((action, index) => renderOverflowItem(action, index))}
           </DropdownMenuContent>
         </DropdownMenu>
       )}
     </div>
   )
 
-  // Wrap in TooltipProvider if needed
   if (provideTooltip) {
     return <TooltipProvider>{actionsContent}</TooltipProvider>
   }

@@ -2,16 +2,42 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { motion, useAnimation } from 'motion/react'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import { ALIAS } from '../../constants/designTokens'
+import { cn } from '../../lib/utils'
 import './AnimatedLogo.css'
+
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Duration for click animation lock to prevent rapid re-clicks (in ms) */
+const CLICK_ANIMATION_LOCK_MS = 550
+
+/** Duration for pixel burst animation phase (in seconds) */
+const BURST_ANIMATION_DURATION_SECONDS = 0.15
+
+/** Duration for pixel hold phase between burst and return (in ms) */
+const HOLD_DURATION_MS = 50
+
+/** Spring animation configuration for pixel return */
+const SPRING_CONFIG = {
+  stiffness: 300,
+  damping: 12,
+  mass: 0.8,
+} as const
+
+/** Cubic bezier easing for burst animation (outExpo-like) */
+const BURST_EASING: [number, number, number, number] = [0.33, 1, 0.68, 1]
 
 // =============================================================================
 // TYPES & INTERFACES
 // =============================================================================
 
-export interface AnimatedLogoProps {
-  className?: string
+export interface AnimatedLogoProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
+  /** Handler called when logo is clicked */
   onClick?: () => void
+  /** Alt text for accessibility */
   alt?: string
+  /** Whether to show the "Software Inc." tagline */
   showTagline?: boolean
   /** Color mode: 'dark' for dark text on light bg, 'light' for light text on dark bg */
   colorMode?: 'dark' | 'light'
@@ -37,8 +63,14 @@ interface PixelConfig {
   }
 }
 
+interface AnimatedPixelProps {
+  config: PixelConfig
+  isAnimating: boolean
+  darkColor?: string
+}
+
 // =============================================================================
-// CONSTANTS
+// PIXEL CONFIGURATIONS
 // =============================================================================
 
 const PIXEL_CONFIGS: PixelConfig[] = [
@@ -120,12 +152,11 @@ const PIXEL_CONFIGS: PixelConfig[] = [
 // ANIMATED PIXEL COMPONENT
 // =============================================================================
 
-interface AnimatedPixelProps {
-  config: PixelConfig
-  isAnimating: boolean
-  darkColor?: string
-}
-
+/**
+ * AnimatedPixel - Internal component for rendering individual animated pixel shapes.
+ *
+ * @internal Not exported - used only by AnimatedLogo.
+ */
 function AnimatedPixel({ config, isAnimating, darkColor = ALIAS.text.primary }: AnimatedPixelProps) {
   const controls = useAnimation()
   const fill = config.color === 'red' ? ALIAS.status.error : darkColor
@@ -149,13 +180,13 @@ function AnimatedPixel({ config, isAnimating, darkColor = ALIAS.text.primary }: 
           scale,
           transition: {
             type: 'tween',
-            duration: 0.15,
-            ease: [0.33, 1, 0.68, 1],
+            duration: BURST_ANIMATION_DURATION_SECONDS,
+            ease: BURST_EASING,
           },
         })
 
         // Phase 2: HOLD
-        await new Promise(resolve => setTimeout(resolve, 50))
+        await new Promise(resolve => setTimeout(resolve, HOLD_DURATION_MS))
 
         // Phase 3: SPRING BACK
         await controls.start({
@@ -165,9 +196,7 @@ function AnimatedPixel({ config, isAnimating, darkColor = ALIAS.text.primary }: 
           scale: 1,
           transition: {
             type: 'spring',
-            stiffness: 300,
-            damping: 12,
-            mass: 0.8,
+            ...SPRING_CONFIG,
           },
         })
       }, delay)
@@ -203,17 +232,59 @@ function AnimatedPixel({ config, isAnimating, darkColor = ALIAS.text.primary }: 
 
   return <motion.path {...motionProps} d={config.d} fill={fill} />
 }
+AnimatedPixel.displayName = 'AnimatedPixel'
 
 // =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
-export function AnimatedLogo({
-  className = '',
+/**
+ * AnimatedLogo - Disrupt brand logo with interactive pixel burst animation.
+ *
+ * Features animated pixel elements that burst outward on hover/click,
+ * creating an engaging visual effect that reinforces the "disrupt" brand theme.
+ *
+ * @component ATOM
+ *
+ * @example
+ * ```tsx
+ * // Basic usage with click handler
+ * <AnimatedLogo onClick={() => navigate('/')} />
+ *
+ * // Dark background (light text mode)
+ * <AnimatedLogo colorMode="light" />
+ *
+ * // Without tagline
+ * <AnimatedLogo showTagline={false} />
+ *
+ * // With custom styling
+ * <AnimatedLogo className="w-48" alt="Navigate home" />
+ * ```
+ *
+ * **Animation Behavior:**
+ * - Hover: Pixels burst outward and spring back
+ * - Click: Same animation with 550ms debounce lock
+ * - Mobile: Animation disabled for performance
+ *
+ * **Design System Compliance:**
+ * - Uses ALIAS.text.primary / ALIAS.text.inverse for text colors
+ * - Uses ALIAS.text.secondary / ALIAS.text.inverse for tagline
+ * - Uses ALIAS.status.error for brand red "D" shape
+ *
+ * **Accessibility:**
+ * - role="img" for semantic meaning
+ * - aria-label from alt prop
+ * - Cursor pointer indicates interactivity
+ *
+ * @see {@link https://www.framer.com/motion/} Framer Motion for animation system
+ */
+function AnimatedLogo({
+  className,
   onClick,
   alt = 'Disrupt Logo',
   showTagline = true,
   colorMode = 'dark',
+  ...props
 }: AnimatedLogoProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isClickAnimating, setIsClickAnimating] = useState(false)
@@ -233,21 +304,23 @@ export function AnimatedLogo({
     setTimeout(() => {
       setIsClickAnimating(false)
       clickLockRef.current = false
-    }, 550)
+    }, CLICK_ANIMATION_LOCK_MS)
   }, [onClick])
 
   const isAnimating = isHovered || isClickAnimating
 
   return (
     <div
-      className={`animated-logo-container ${className}`}
+      className={cn('animated-logo-container', className)}
       style={{ overflow: 'visible' }}
+      data-slot="animated-logo"
       data-cursor-repel="true"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
       role="img"
       aria-label={alt}
+      {...props}
     >
       <svg
         width="178"
@@ -257,6 +330,7 @@ export function AnimatedLogo({
         xmlns="http://www.w3.org/2000/svg"
         className="animated-logo"
         style={{ overflow: 'visible' }}
+        aria-hidden="true"
       >
         {/* Tagline: Software Inc. */}
         {showTagline && (
@@ -361,3 +435,6 @@ export function AnimatedLogo({
     </div>
   )
 }
+AnimatedLogo.displayName = 'AnimatedLogo'
+
+export { AnimatedLogo }

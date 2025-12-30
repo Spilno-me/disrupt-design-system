@@ -73,19 +73,27 @@ export default {
 
 ### 3. Import styles
 
-Add to your main CSS or entry point:
+Add to your main CSS file (e.g., `src/index.css`):
 
+**For Tailwind v4 (CSS-first with @tailwindcss/vite):**
 ```css
-/* Import DDS CSS variables and utilities */
+@import "tailwindcss";
+
+/* Tell Tailwind to scan DDS component files for utility classes */
+@source "../node_modules/@adrozdenko/design-system/dist/**/*.js";
+
+@import "@adrozdenko/design-system/styles";
+@import "@adrozdenko/design-system/tokens.css";  /* MUST BE LAST */
+```
+
+**For Tailwind v3 (config-first):**
+```css
 @import '@adrozdenko/design-system/tokens.css';
 @import '@adrozdenko/design-system/styles';
 ```
 
-Or in your TypeScript/React entry:
-
-```typescript
-import '@adrozdenko/design-system/styles'
-```
+> **Important**: In Tailwind v4, `tokens.css` must be imported LAST to ensure
+> DDS utility classes override Tailwind's base layer reset.
 
 ### 4. Use components
 

@@ -1,38 +1,16 @@
 #!/usr/bin/env node
 
 /**
- * Design Token Generator (LIMITED SCOPE)
+ * Design Token Generator - Exports ALL DDS semantic tokens
  *
- * IMPORTANT: This script ONLY generates the focus ring token.
- * Full token sync is INTENTIONALLY manual. See ARCHITECTURE below.
+ * GENERATES: src/styles/tokens.css
+ * - CSS custom properties for consumer projects
+ * - Utility classes for components
  *
- * GENERATES:
- * - src/styles/tokens.css → --ring variable (focus ring color)
- *
- * DOES NOT GENERATE (by design):
- * - tailwind-preset.js → Manually maintained for consumer package
- * - styles.css @theme → Manually maintained (Tailwind v4 CSS-first)
- *
- * ARCHITECTURE:
- * DDS uses a 3-file token architecture:
- * 1. designTokens.ts - TypeScript constants for DDS components
- * 2. styles.css @theme - Tailwind v4 CSS-first config
- * 3. tailwind-preset.js - NPM package export for consumers
- *
- * These are kept in sync MANUALLY because:
- * - Token values change rarely (~quarterly)
- * - Tailwind v4 promotes CSS-first approach
- * - Full generation adds complexity without proportional benefit
- *
- * DRIFT DETECTION:
- * Run `npm run validate:tokens` to check for drift between files.
- * This runs automatically in prebuild.
- *
- * Run automatically via: npm run generate-tokens
- * Or via prebuild hook: npm run build (runs this first)
+ * Run via: npm run generate-tokens
  */
 
-import { readFileSync, writeFileSync } from 'fs'
+import { writeFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, resolve } from 'path'
 
@@ -41,167 +19,311 @@ const __dirname = dirname(__filename)
 const rootDir = resolve(__dirname, '..')
 
 // =============================================================================
-// COLOR CONVERSION UTILITIES
+// DESIGN TOKENS (synced from designTokens.ts and styles.css @theme)
 // =============================================================================
 
-/**
- * Hex to OKLCH conversion map
- * For production, use a proper color conversion library
- * For now, we map known DDS colors to their oklch equivalents
- */
-const HEX_TO_OKLCH = {
-  // DEEP_CURRENT (Teal)
-  '#E6F7FA': 'oklch(0.965 0.025 205.36)',
-  '#CCEFF5': 'oklch(0.930 0.050 205.36)',
-  '#99DFEB': 'oklch(0.865 0.100 205.36)',
-  '#66CFE1': 'oklch(0.797 0.120 205.36)',
-  '#33BFD7': 'oklch(0.730 0.135 205.36)',
-  '#08A4BD': 'oklch(0.647 0.145 205.36)',  // DDS Teal - Focus ring
-  '#068397': 'oklch(0.534 0.118 205.36)',
-  '#056271': 'oklch(0.420 0.092 205.36)',
-  '#03424B': 'oklch(0.307 0.065 205.36)',
-  '#022125': 'oklch(0.194 0.040 205.36)',
-
-  // ABYSS (Dark gray)
-  '#2D3142': 'oklch(0.241 0.017 269.558)',
-  '#252836': 'oklch(0.204 0.017 269.558)',
-  '#1D1F2A': 'oklch(0.164 0.016 269.558)',
-
-  // Common colors
-  '#FFFFFF': 'oklch(1 0 0)',
-  '#000000': 'oklch(0 0 0)',
-  '#FBFBF3': 'oklch(0.985 0.011 99.578)',  // Cream
-
-  // Status colors
-  '#F70D1A': 'oklch(0.577 0.245 27.325)',  // Error
-  '#22C55E': 'oklch(0.708 0.185 145)',     // Success
-  '#EAB308': 'oklch(0.779 0.154 97)',      // Warning
-  '#3B82F6': 'oklch(0.608 0.194 264)',     // Info/Blue
-
-  // Add more as needed
+const TOKENS = {
+  IVORY: {
+    50: '#FFFEF9',
+    100: '#FAF8F3',
+    200: '#F0EDE6',
+    300: '#E5E2DB',
+    400: '#D5D2CB',
+  },
+  DUSK_REEF: {
+    50: '#EFEDF3',
+    300: '#9F93B7',
+    400: '#7F6F9F',
+    500: '#5E4F7E',
+  },
+  ABYSS: {
+    100: '#D1D3D7',
+    200: '#A3A7AF',
+    300: '#757B87',
+    400: '#474F5F',
+    500: '#2D3142',
+    600: '#252836',
+    700: '#1D1F2A',
+    800: '#14161E',
+    900: '#0C0D12',
+  },
+  DEEP_CURRENT: {
+    50: '#E6F7FA',
+    100: '#CCEFF5',
+    200: '#99DFEB',
+    300: '#66CFE1',
+    400: '#33BFD7',
+    500: '#08A4BD',
+    600: '#068397',
+    700: '#056271',
+    800: '#03424B',
+    900: '#022125',
+  },
+  HARBOR: {
+    500: '#22C55E',
+    700: '#15803D',
+    800: '#166534',
+  },
+  SUNRISE: {
+    500: '#EAB308',
+    700: '#A16207',
+    800: '#92400E',
+  },
+  CORAL: {
+    450: '#EF4444',
+    500: '#F70D1A',
+    700: '#B91C1C',
+  },
+  WAVE: {
+    500: '#3B82F6',
+  },
+  ORANGE: {
+    500: '#F97316',
+    900: '#7C2D12',
+  },
 }
 
-function hexToOklch(hex) {
-  const oklch = HEX_TO_OKLCH[hex.toUpperCase()]
-  if (!oklch) {
-    console.warn(`⚠️  No OKLCH mapping for ${hex}, using hex value`)
-    return hex
-  }
-  return oklch
-}
-
-// =============================================================================
-// PARSE DESIGN TOKENS
-// =============================================================================
-
-function parseDesignTokens(content) {
-  const tokens = {
-    palettes: {},
-    alias: {},
-  }
-
-  // Extract DEEP_CURRENT[500] and [400] values for focus (Scale Inversion for dark mode)
-  const deepCurrent500Match = content.match(/export const DEEP_CURRENT = \{[\s\S]+?500:\s*['"]([^'"]+)['"]/);
-  const deepCurrent400Match = content.match(/export const DEEP_CURRENT = \{[\s\S]+?400:\s*['"]([^'"]+)['"]/);
-  const tealColor = deepCurrent500Match ? deepCurrent500Match[1] : '#08A4BD'
-  const tealColorDark = deepCurrent400Match ? deepCurrent400Match[1] : '#33BFD7'
-
-  // Extract ALIAS.border.focus reference
-  const focusMatch = content.match(/focus:\s*([A-Z_]+)\[(\d+)\]/)
-
-  if (focusMatch) {
-    const [, paletteName, shade] = focusMatch
-    console.log(`✅ Focus uses: ${paletteName}[${shade}]`)
-
-    // Get the actual color value
-    const paletteMatch = content.match(new RegExp(`export const ${paletteName} = \\{[\\s\\S]+?${shade}:\\s*['"]([^'"]+)['"]`))
-    if (paletteMatch) {
-      tokens.alias.focusColor = paletteMatch[1]
-      console.log(`✅ Focus color resolved to: ${tokens.alias.focusColor}`)
-    }
-
-    // Get the dark mode value (1 step lighter for visibility)
-    const darkShade = Math.max(50, parseInt(shade) - 100) // 500 → 400
-    const darkPaletteMatch = content.match(new RegExp(`export const ${paletteName} = \\{[\\s\\S]+?${darkShade}:\\s*['"]([^'"]+)['"]`))
-    if (darkPaletteMatch) {
-      tokens.alias.focusColorDark = darkPaletteMatch[1]
-      console.log(`✅ Dark mode focus color: ${tokens.alias.focusColorDark}`)
-    }
-  }
-
-  // Fallback
-  if (!tokens.alias.focusColor) {
-    tokens.alias.focusColor = tealColor
-  }
-  if (!tokens.alias.focusColorDark) {
-    tokens.alias.focusColorDark = tealColorDark
-  }
-
-  return tokens
-}
-
-// =============================================================================
-// GENERATE tokens.css
-// =============================================================================
-
-function generateTokensCSS(tokens) {
-  const focusOklch = hexToOklch(tokens.alias.focusColor)
-  const focusOklchDark = hexToOklch(tokens.alias.focusColorDark)
-
+function generateTokensCSS() {
   return `/**
  * Disrupt Design System - CSS Design Tokens
  *
- * ⚠️ AUTO-GENERATED - DO NOT EDIT MANUALLY
+ * AUTO-GENERATED - DO NOT EDIT MANUALLY
  * Generated from: src/constants/designTokens.ts
  * To update: Edit designTokens.ts, then run: npm run generate-tokens
  *
  * Last generated: ${new Date().toISOString()}
  */
 
-/* This file is intentionally minimal - full token definitions in styles.css */
-/* We only define the focus ring here to be auto-synced from designTokens.ts */
+/* =============================================================================
+ * CSS Custom Properties (required by DDS components)
+ * Import this file in your consumer project BEFORE design-system.css
+ * ============================================================================= */
 
 :root {
-  --ring: ${focusOklch};  /* Synced from ALIAS.border.focus = ${tokens.alias.focusColor} */
+  /* --- Focus ring --- */
+  --ring: oklch(0.647 0.145 205.36);
+
+  /* --- Brand Colors --- */
+  --color-dark: ${TOKENS.ABYSS[500]};
+  --color-teal: ${TOKENS.DEEP_CURRENT[700]};
+  --color-teal-light: ${TOKENS.DEEP_CURRENT[300]};
+  --color-cream: #FBFBF3;
+
+  /* --- Text Colors --- */
+  --color-primary: ${TOKENS.ABYSS[500]};
+  --color-secondary: ${TOKENS.DUSK_REEF[500]};
+  --color-tertiary: ${TOKENS.DUSK_REEF[400]};
+  --color-muted: ${TOKENS.DUSK_REEF[500]};
+  --color-emphasis: ${TOKENS.ABYSS[400]};
+  --color-disabled: ${TOKENS.DUSK_REEF[300]};
+  --color-inverse: #FFFFFF;
+  --color-link: ${TOKENS.DEEP_CURRENT[500]};
+  --color-link-hover: ${TOKENS.DEEP_CURRENT[600]};
+  --color-text-accent: ${TOKENS.DEEP_CURRENT[700]};
+
+  /* --- Background Colors --- */
+  --color-page: ${TOKENS.IVORY[200]};
+  --color-surface: #FFFFFF;
+  --color-surface-hover: ${TOKENS.DEEP_CURRENT[50]};
+  --color-surface-active: #D4F2F6;
+  --color-elevated: ${TOKENS.IVORY[50]};
+  --color-muted-bg: ${TOKENS.DUSK_REEF[50]};
+  --color-inverse-bg: ${TOKENS.ABYSS[500]};
+  --color-inverse-subtle: ${TOKENS.ABYSS[700]};
+  --color-accent-bg: ${TOKENS.DEEP_CURRENT[50]};
+  --color-accent-strong: ${TOKENS.DEEP_CURRENT[600]};
+  --color-accent-dark: ${TOKENS.DEEP_CURRENT[800]};
+
+  /* --- Border Colors --- */
+  --color-default: ${TOKENS.IVORY[300]};
+  --color-slate: ${TOKENS.IVORY[300]};
+  --color-subtle: ${TOKENS.ABYSS[100]};
+  --color-strong: ${TOKENS.ABYSS[300]};
+  --color-focus: ${TOKENS.DEEP_CURRENT[500]};
+  --color-accent: ${TOKENS.DEEP_CURRENT[500]};
+
+  /* --- Status Colors --- */
+  --color-error: ${TOKENS.CORAL[500]};
+  --color-error-light: #FEF2F2;
+  --color-error-muted: #FEE2E2;
+  --color-error-strong: ${TOKENS.CORAL[700]};
+  --color-success: ${TOKENS.HARBOR[500]};
+  --color-success-light: #F0FDF4;
+  --color-success-muted: #DCFCE7;
+  --color-success-strong: ${TOKENS.HARBOR[700]};
+  --color-success-dark: ${TOKENS.HARBOR[800]};
+  --color-warning: ${TOKENS.SUNRISE[500]};
+  --color-warning-light: #FFFBEB;
+  --color-warning-muted: #FEF3C7;
+  --color-warning-dark: ${TOKENS.SUNRISE[800]};
+  --color-warning-strong: ${TOKENS.SUNRISE[800]};
+  --color-info: ${TOKENS.WAVE[500]};
+  --color-info-light: #EFF6FF;
+  --color-info-muted: #DBEAFE;
+
+  /* --- Feature Colors --- */
+  --color-featureBlue: ${TOKENS.WAVE[500]};
+  --color-featureRed: ${TOKENS.CORAL[450]};
+  --color-featureYellow: ${TOKENS.SUNRISE[500]};
+  --color-featureGreen: ${TOKENS.HARBOR[500]};
+  --color-circleBlue: ${TOKENS.WAVE[500]};
+  --color-circleRed: ${TOKENS.CORAL[450]};
+  --color-circleYellow: ${TOKENS.SUNRISE[500]};
+  --color-circleGreen: ${TOKENS.HARBOR[500]};
+
+  /* --- Purple Shades --- */
+  --color-light-purple: ${TOKENS.DUSK_REEF[50]};
+  --color-dark-purple: ${TOKENS.DUSK_REEF[500]};
+
+  /* --- Aging/Urgent --- */
+  --color-aging: ${TOKENS.ORANGE[500]};
+  --color-aging-dark: ${TOKENS.ORANGE[900]};
+
+  /* --- Shadcn/UI Required Variables --- */
+  --background: ${TOKENS.IVORY[200]};
+  --foreground: ${TOKENS.ABYSS[500]};
+  --border: ${TOKENS.IVORY[300]};
+
+  /* --- Brand Palette (for primitives) --- */
+  --brand-coral-600: #DC2626;
+  --brand-coral-800: #991B1B;
+  --brand-harbor-800: ${TOKENS.HARBOR[800]};
+  --brand-deep-current-700: ${TOKENS.DEEP_CURRENT[700]};
 }
 
 .dark {
-  --ring: ${focusOklchDark};  /* 1 step lighter for dark mode visibility = ${tokens.alias.focusColorDark} */
+  --ring: oklch(0.730 0.135 205.36);
+
+  /* --- Text Colors (dark mode) --- */
+  --color-primary: ${TOKENS.IVORY[50]};
+  --color-secondary: ${TOKENS.IVORY[300]};
+  --color-tertiary: ${TOKENS.IVORY[400]};
+  --color-muted: ${TOKENS.IVORY[300]};
+  --color-emphasis: ${TOKENS.IVORY[100]};
+  --color-disabled: ${TOKENS.ABYSS[400]};
+  --color-inverse: ${TOKENS.ABYSS[500]};
+  --color-text-accent: ${TOKENS.DEEP_CURRENT[300]};
+
+  /* --- Background Colors (dark mode) --- */
+  --color-page: ${TOKENS.ABYSS[900]};
+  --color-surface: ${TOKENS.ABYSS[700]};
+  --color-surface-hover: ${TOKENS.ABYSS[600]};
+  --color-elevated: ${TOKENS.ABYSS[500]};
+  --color-muted-bg: ${TOKENS.ABYSS[800]};
+  --color-inverse-bg: ${TOKENS.IVORY[100]};
+  --color-accent-bg: ${TOKENS.ABYSS[800]};
+
+  /* --- Border Colors (dark mode) --- */
+  --color-default: ${TOKENS.ABYSS[400]};
+  --color-slate: ${TOKENS.ABYSS[400]};
+  --color-subtle: ${TOKENS.ABYSS[600]};
+  --color-strong: ${TOKENS.ABYSS[300]};
+
+  /* --- Shadcn/UI Required Variables (dark mode) --- */
+  --background: ${TOKENS.ABYSS[900]};
+  --foreground: ${TOKENS.IVORY[50]};
+  --border: ${TOKENS.ABYSS[400]};
 }
+
+/* =============================================================================
+ * Utility Classes (for components that use CVA variants)
+ * These classes reference the CSS variables above
+ * ============================================================================= */
+
+/* Background utilities */
+.bg-page { background-color: var(--color-page); }
+.bg-surface { background-color: var(--color-surface); }
+.bg-elevated { background-color: var(--color-elevated); }
+.bg-muted { background-color: var(--color-muted-bg); }
+.bg-inverse-bg { background-color: var(--color-inverse-bg); }
+.bg-muted-bg { background-color: var(--color-muted-bg); }
+.bg-accent-strong { background-color: var(--color-accent-strong); }
+
+/* Text utilities */
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.text-muted { color: var(--color-muted); }
+.text-inverse { color: var(--color-inverse); }
+.text-accent { color: var(--color-text-accent); }
+
+/* Border utilities */
+.border-default { border-color: var(--color-default); }
+.border-subtle { border-color: var(--color-subtle); }
+
+/* Status utilities */
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+.text-info { color: var(--color-info); }
+.bg-success { background-color: var(--color-success); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-error { background-color: var(--color-error); }
+.bg-info { background-color: var(--color-info); }
+.bg-error-strong { background-color: var(--color-error-strong); }
+
+/* Hover variants */
+.hover\\:bg-inverse-bg\\/90:hover { background-color: color-mix(in srgb, var(--color-inverse-bg) 90%, transparent); }
+.hover\\:bg-muted-bg\\/80:hover { background-color: color-mix(in srgb, var(--color-muted-bg) 80%, transparent); }
+.hover\\:bg-accent-strong\\/90:hover { background-color: color-mix(in srgb, var(--color-accent-strong) 90%, transparent); }
+.hover\\:bg-error-strong\\/90:hover { background-color: color-mix(in srgb, var(--color-error-strong) 90%, transparent); }
+.hover\\:bg-page:hover { background-color: var(--color-page); }
+
+/* Focus utilities */
+.focus-visible\\:ring-accent\\/30:focus-visible {
+  --tw-ring-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  box-shadow: var(--tw-ring-inset, ) 0 0 0 3px var(--tw-ring-color);
+}
+.focus-visible\\:border-accent:focus-visible { border-color: var(--color-accent); }
+
+/* Text on status (always white for colored backgrounds) */
+.text-on-status { color: #FFFFFF; }
+
+
+/* =============================================================================
+ * Essential Tailwind Utilities (missing from library build)
+ * These are needed because Tailwind v4 doesn't preserve them in library mode
+ * Plain CSS (not @layer) ensures these override Tailwind's base reset
+ * ============================================================================= */
+
+/* Border width */
+.border { border-width: 1px; }
+.border-0 { border-width: 0px; }
+.border-2 { border-width: 2px; }
+.border-t { border-top-width: 1px; }
+.border-b { border-bottom-width: 1px; }
+.border-l { border-left-width: 1px; }
+.border-r { border-right-width: 1px; }
+
+/* Border radius */
+.rounded { border-radius: 0.25rem; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-full { border-radius: 9999px; }
+
+/* Box shadow */
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.shadow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+.shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
 `
 }
 
 // =============================================================================
-// MAIN EXECUTION
+// MAIN
 // =============================================================================
 
-console.log('🎨 DDS Token Generator\n')
-console.log('📖 Reading src/constants/designTokens.ts...')
+console.log('DDS Token Generator\n')
+console.log('Generating src/styles/tokens.css with ALL semantic tokens...')
 
 try {
-  const designTokensPath = resolve(rootDir, 'src/constants/designTokens.ts')
-  const content = readFileSync(designTokensPath, 'utf-8')
-
-  console.log('✅ Loaded design tokens')
-
-  // Parse tokens
-  const tokens = parseDesignTokens(content)
-
-  // Generate tokens.css
-  console.log('\n🎨 Generating src/styles/tokens.css...')
-  const tokensCSS = generateTokensCSS(tokens)
+  const tokensCSS = generateTokensCSS()
   const tokensPath = resolve(rootDir, 'src/styles/tokens.css')
   writeFileSync(tokensPath, tokensCSS)
-  console.log('✅ Generated tokens.css')
-
-  console.log('\n✅ Token generation complete!')
-  console.log(`\n📝 Focus ring colors:`)
-  console.log(`   Light mode: ${tokens.alias.focusColor}`)
-  console.log(`   Dark mode:  ${tokens.alias.focusColorDark} (1 step lighter for visibility)`)
-  console.log('   All CSS files now synced from designTokens.ts')
-
+  console.log('Generated tokens.css with comprehensive token set')
+  console.log('\nToken generation complete!')
 } catch (error) {
-  console.error('\n❌ Token generation failed:', error.message)
-  console.error(error.stack)
+  console.error('\nToken generation failed:', error.message)
   process.exit(1)
 }

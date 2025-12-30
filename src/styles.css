@@ -196,6 +196,10 @@
 
   /* Group-hover variants for NextStepButton */
   .group-hover\:text-on-status:is(:where(.group):hover *) { color: #FFFFFF; }
+
+  /* NextStepButton hover text - uses data-slot for higher specificity (0,3,0 vs 0,1,0) */
+  .group:hover [data-slot="next-step-button-label"],
+  .group:hover [data-slot="next-step-button-icon"] { color: #FFFFFF; }
   .group-hover\:bg-error:is(:where(.group):hover *) { background-color: var(--color-error); }
   .group-hover\:bg-aging:is(:where(.group):hover *) { background-color: var(--color-aging); }
   .group-hover\:bg-aging-dark:is(:where(.group):hover *) { background-color: var(--color-aging-dark); }

@@ -4,6 +4,31 @@ import { cn } from '../../lib/utils'
 import { ALIAS } from '../../constants/designTokens'
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Default URL for Disrupt website */
+const DISRUPT_URL = 'https://disruptinc.io/'
+
+/** Heartbeat animation duration in seconds */
+const HEARTBEAT_DURATION_SECONDS = 1.2
+
+/** Delay between heartbeat cycles in seconds */
+const HEARTBEAT_REPEAT_DELAY_SECONDS = 0.5
+
+/** Heart icon size classes by size variant */
+const HEART_SIZE_CLASSES = {
+  sm: 'w-3.5 h-3.5',
+  md: 'w-5 h-5',
+} as const
+
+/** Keyframe times for realistic lub-dub heartbeat pattern */
+const HEARTBEAT_KEYFRAME_TIMES = [0, 0.15, 0.3, 0.45, 0.6]
+
+/** Scale values for heartbeat animation (lub-dub pattern) */
+const HEARTBEAT_SCALE_VALUES = [1, 1.2, 1, 1.15, 1]
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
@@ -18,10 +43,22 @@ export interface MadeWithLoveProps {
   href?: string
 }
 
+type HeartSize = keyof typeof HEART_SIZE_CLASSES
+
+interface BeatingHeartProps {
+  color: string
+  size?: HeartSize
+}
+
 // =============================================================================
-// DISRUPT FULL LOGO (D icon + "isrupt" text, no tagline)
+// SUB-COMPONENTS
 // =============================================================================
 
+/**
+ * DisruptFullLogo - SVG logo with D icon and "isrupt" text.
+ *
+ * @internal Not exported - used only within MadeWithLove component.
+ */
 function DisruptFullLogo({ textColor }: { textColor: string }) {
   return (
     <svg
@@ -31,6 +68,7 @@ function DisruptFullLogo({ textColor }: { textColor: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="flex-shrink-0"
+      aria-hidden="true"
     >
       {/* Main D shape - RED */}
       <path
@@ -125,54 +163,51 @@ function DisruptFullLogo({ textColor }: { textColor: string }) {
     </svg>
   )
 }
+DisruptFullLogo.displayName = 'DisruptFullLogo'
 
-// =============================================================================
-// BEATING HEART COMPONENT
-// =============================================================================
-
-function BeatingHeart({ color, size = 'md' }: { color: string; size?: 'sm' | 'md' }) {
-  const sizeClass = size === 'sm' ? 'w-3.5 h-3.5' : 'w-5 h-5'
-
+/**
+ * BeatingHeart - Animated heart icon with realistic lub-dub pattern.
+ *
+ * @internal Not exported - used only within MadeWithLove component.
+ */
+function BeatingHeart({ color, size = 'md' }: BeatingHeartProps) {
   return (
     <motion.div
       className="inline-flex items-center justify-center"
       animate={{
-        scale: [1, 1.2, 1, 1.15, 1],
+        scale: HEARTBEAT_SCALE_VALUES,
       }}
       transition={{
-        duration: 1.2,
+        duration: HEARTBEAT_DURATION_SECONDS,
         repeat: Infinity,
-        repeatDelay: 0.5,
+        repeatDelay: HEARTBEAT_REPEAT_DELAY_SECONDS,
         ease: 'easeInOut',
-        times: [0, 0.15, 0.3, 0.45, 0.6],
+        times: HEARTBEAT_KEYFRAME_TIMES,
       }}
     >
       <Heart
-        className={sizeClass}
+        className={HEART_SIZE_CLASSES[size]}
         fill={color}
         color={color}
         strokeWidth={0}
+        aria-hidden="true"
       />
     </motion.div>
   )
 }
+BeatingHeart.displayName = 'BeatingHeart'
 
 // =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
-/** Default URL for Disrupt website */
-const DISRUPT_URL = 'https://disruptinc.io/'
-
 /**
- * MadeWithLove - A footer badge with a beating heart and full Disrupt logo
+ * MadeWithLove - A footer badge with a beating heart and full Disrupt logo.
  *
- * Features:
- * - Realistic double-beat heartbeat animation (lub-dub pattern)
- * - Full Disrupt logo with text (no tagline)
- * - Properly aligned text and logo baseline
- * - Supports light/dark color modes
- * - Links to Disrupt website by default
+ * Displays "Made with ❤️ by Disrupt" branding badge. Features a realistic
+ * double-beat heartbeat animation (lub-dub pattern) that mimics a real heart.
+ *
+ * @component ATOM
  *
  * @example
  * ```tsx
@@ -188,6 +223,25 @@ const DISRUPT_URL = 'https://disruptinc.io/'
  * // With click handler (overrides link)
  * <MadeWithLove onClick={() => console.log('clicked')} />
  * ```
+ *
+ * **Features:**
+ * - Realistic double-beat heartbeat animation (lub-dub pattern)
+ * - Full Disrupt logo with text (no tagline)
+ * - Properly aligned text and logo baseline
+ * - Supports light/dark color modes
+ * - Links to Disrupt website by default
+ * - Keyboard accessible when used with onClick
+ *
+ * **Testing:**
+ * - `data-slot="made-with-love"` - Root container
+ * - Supports `data-testid` via className override
+ *
+ * **Accessibility:**
+ * - External link includes `rel="noopener noreferrer"`
+ * - Button mode supports keyboard navigation (Enter key)
+ * - Decorative SVG and heart icons are aria-hidden
+ *
+ * @see {@link https://disruptinc.io/} Disrupt Inc website
  */
 export function MadeWithLove({
   className,
@@ -221,8 +275,10 @@ export function MadeWithLove({
   if (onClick) {
     return (
       <div
+        data-slot="made-with-love"
         className={cn(
-          'inline-flex items-center gap-2 select-none cursor-pointer hover:opacity-80 transition-opacity',
+          'inline-flex items-center gap-2 select-none cursor-pointer',
+          'hover:opacity-80 transition-opacity',
           className
         )}
         onClick={onClick}
@@ -238,11 +294,13 @@ export function MadeWithLove({
   // Default: render as a link to Disrupt website
   return (
     <a
+      data-slot="made-with-love"
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center gap-2 select-none hover:opacity-80 transition-opacity no-underline',
+        'inline-flex items-center gap-2 select-none',
+        'hover:opacity-80 transition-opacity no-underline',
         className
       )}
     >
@@ -250,5 +308,6 @@ export function MadeWithLove({
     </a>
   )
 }
+MadeWithLove.displayName = 'MadeWithLove'
 
 export default MadeWithLove

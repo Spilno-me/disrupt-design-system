@@ -7,11 +7,23 @@ import {
   Key,
   Trash2,
   Users,
-  User,
   ArrowLeft,
   Search,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
+
+// Extracted modules
+import type {
+  LoginAccount,
+  LoginAccountStatus,
+  PartnerLoginAccountsPageProps,
+  CreateLoginAccountData,
+} from "./types"
+import { MOCK_LOGIN_ACCOUNTS } from "./data"
+import { UserAvatar } from "./components"
+import { formatDate } from "./utils"
+
+// UI components
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { DataTable, type ColumnDef } from "../ui/DataTable"
@@ -21,84 +33,9 @@ import { CreateLoginAccountDialog } from "./CreateLoginAccountDialog"
 import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
 import { DataTableStatusDot, DataTableActions, LOGIN_ACCOUNT_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
 
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export type LoginAccountStatus = "active" | "inactive" | "pending"
-
-export interface LoginAccount {
-  /** Unique identifier */
-  id: string
-  /** First name */
-  firstName: string
-  /** Last name */
-  lastName: string
-  /** Email address */
-  email: string
-  /** Current status */
-  status: LoginAccountStatus
-  /** Date created */
-  createdAt: Date
-}
-
-export interface PartnerLoginAccountsPageProps {
-  /** Partner name for display */
-  partnerName?: string
-  /** Partner ID for reference */
-  partnerId?: string
-  /** Initial login accounts data */
-  loginAccounts?: LoginAccount[]
-  /** Callback when "Back to Partners" is clicked */
-  onBackClick?: () => void
-  /** Callback when "Add Login Account" is clicked (if not provided, uses built-in dialog) */
-  onAddLoginAccount?: () => void
-  /** Callback when create form is submitted */
-  onCreateLoginAccount?: (data: CreateLoginAccountData) => void | Promise<void>
-  /** Callback when reset password is clicked */
-  onResetPassword?: (account: LoginAccount, mode: "generate" | "custom", customPassword?: string) => void | Promise<void>
-  /** Callback when delete is confirmed */
-  onDeleteLoginAccount?: (account: LoginAccount) => void | Promise<void>
-  /** Loading state */
-  loading?: boolean
-  /** Additional className for the container */
-  className?: string
-}
-
-export interface CreateLoginAccountData {
-  email: string
-  firstName: string
-  lastName: string
-}
-
-// =============================================================================
-// MOCK DATA
-// =============================================================================
-
-export const MOCK_LOGIN_ACCOUNTS: LoginAccount[] = [
-  {
-    id: "1",
-    firstName: "James",
-    lastName: "Smith",
-    email: "james@draxindustries.com.au",
-    status: "active",
-    createdAt: new Date("2024-08-15"),
-  },
-]
-
-
-// =============================================================================
-// HELPER COMPONENTS
-// =============================================================================
-
-/** User avatar with icon - fixed contrast */
-function UserAvatar() {
-  return (
-    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-bg">
-      <User className="h-4 w-4 text-primary" />
-    </div>
-  )
-}
+// Re-export types for external consumers
+export type { LoginAccountStatus, LoginAccount, PartnerLoginAccountsPageProps, CreateLoginAccountData }
+export { MOCK_LOGIN_ACCOUNTS }
 
 // =============================================================================
 // MAIN COMPONENT
@@ -115,18 +52,6 @@ function UserAvatar() {
  * - Data table with login account information
  * - Action buttons for reset password and delete
  * - Pagination
- *
- * @example
- * ```tsx
- * <PartnerLoginAccountsPage
- *   partnerName="Drax Industries"
- *   partnerId="DRX-2024-001"
- *   loginAccounts={accounts}
- *   onBackClick={() => navigate('/partners')}
- *   onResetPassword={(account, mode, password) => handleReset(account, mode, password)}
- *   onDeleteLoginAccount={(account) => handleDelete(account)}
- * />
- * ```
  */
 export function PartnerLoginAccountsPage({
   partnerName: _partnerName = "Drax Industries",
@@ -158,15 +83,6 @@ export function PartnerLoginAccountsPage({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [accountToDelete, setAccountToDelete] = useState<LoginAccount | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
-
-  // Format date helper
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-    })
-  }
 
   // Filter accounts based on search
   const filteredAccounts = useMemo(() => {
@@ -268,7 +184,7 @@ export function PartnerLoginAccountsPage({
     },
   ]
 
-  // Column definitions - using CSS property values for DataTable API (not hardcoded styling)
+  // Column definitions
   /* eslint-disable no-restricted-syntax */
   const columns: ColumnDef<LoginAccount>[] = [
     {

@@ -105,9 +105,44 @@ import {
 } from './navigation'
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Sidebar width when collapsed (px) */
+const COLLAPSED_WIDTH = 63
+
+/** Sidebar width when expanded (px) */
+const EXPANDED_WIDTH = 255
+
+/** Animation duration for expand/collapse (seconds) */
+const TRANSITION_DURATION = 0.25
+
+/** Delay before expanding on hover (ms) */
+const HOVER_EXPAND_DELAY = 150
+
+/** Height of each navigation item (px) */
+const _NAV_ITEM_HEIGHT = 41
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
+/** Position coordinates for nav item sliding indicator */
+interface NavItemPosition {
+  top: number
+  left: number
+  width: number
+  height: number
+}
+
+/** Context type for tracking nav item positions */
+interface NavItemRegistryContextType {
+  registerItem: (id: string, element: HTMLElement | null) => void
+  getPosition: (id: string) => NavItemPosition | null
+  activeItemId?: string
+}
+
+/** Props for the AppSidebar component */
 export interface AppSidebarProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onNavigate' | 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'> {
   /** Which product app this sidebar is for */
   product: ProductType
@@ -135,42 +170,7 @@ export interface AppSidebarProps extends Omit<React.HTMLAttributes<HTMLElement>,
   animatedIndicator?: boolean
 }
 
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-
-const COLLAPSED_WIDTH = 63
-const EXPANDED_WIDTH = 255
-const TRANSITION_DURATION = 0.25
-const HOVER_EXPAND_DELAY = 150
-const NAV_ITEM_HEIGHT = 41
-
-// Context for tracking nav item positions
-interface NavItemPosition {
-  top: number
-  left: number
-  width: number
-  height: number
-}
-
-interface NavItemRegistryContextType {
-  registerItem: (id: string, element: HTMLElement | null) => void
-  getPosition: (id: string) => NavItemPosition | null
-  activeItemId?: string
-}
-
-const NavItemRegistryContext = createContext<NavItemRegistryContextType | null>(null)
-
-function useNavItemRegistry() {
-  const context = useContext(NavItemRegistryContext)
-  if (!context) throw new Error('useNavItemRegistry must be used within NavItemRegistryProvider')
-  return context
-}
-
-// =============================================================================
-// SUB-COMPONENTS
-// =============================================================================
-
+/** Props for the NavItemButton sub-component */
 interface NavItemButtonProps {
   item: NavItem
   isActive: boolean
@@ -181,7 +181,58 @@ interface NavItemButtonProps {
   animatedIndicator?: boolean
 }
 
-function NavItemButton({ item, isActive, collapsed, onClick, isNested = false, animatedIndicator = true }: NavItemButtonProps) {
+/** Props for the NavGroup sub-component */
+interface NavGroupProps {
+  item: NavItem
+  activeItemId?: string
+  collapsed: boolean
+  onNavigate: (item: NavItem) => void
+  expandedGroups: Set<string>
+  toggleGroup: (id: string) => void
+  animatedIndicator?: boolean
+}
+
+/** Props for the HelpItem sub-component */
+interface HelpItemProps {
+  collapsed: boolean
+  onClick?: () => void
+}
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+
+/** Context for tracking nav item positions for sliding indicator */
+const NavItemRegistryContext = createContext<NavItemRegistryContextType | null>(null)
+
+/**
+ * Hook to access the nav item registry context.
+ * @throws Error if used outside NavItemRegistryProvider
+ */
+function _useNavItemRegistry(): NavItemRegistryContextType {
+  const context = useContext(NavItemRegistryContext)
+  if (!context) {
+    throw new Error('useNavItemRegistry must be used within NavItemRegistryProvider')
+  }
+  return context
+}
+
+// =============================================================================
+// COMPONENTS
+// =============================================================================
+
+/**
+ * NavItemButton - Individual navigation item button.
+ * Renders a single nav item with icon, label, and active state.
+ */
+function NavItemButton({
+  item,
+  isActive,
+  collapsed,
+  onClick,
+  isNested = false,
+  animatedIndicator = true,
+}: NavItemButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const registry = useContext(NavItemRegistryContext)
 
@@ -208,7 +259,6 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false, a
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
         !item.disabled && 'hover:bg-surface-hover',
         item.disabled && 'opacity-50 cursor-not-allowed',
-        // When collapsed, center icon; when expanded, use gap and padding for label
         collapsed ? 'justify-center' : 'gap-2 px-3',
         isNested && !collapsed && 'pl-8',
         showActiveBackground && 'bg-surface-active'
@@ -240,16 +290,10 @@ function NavItemButton({ item, isActive, collapsed, onClick, isNested = false, a
 }
 NavItemButton.displayName = 'AppSidebar.NavItemButton'
 
-interface NavGroupProps {
-  item: NavItem
-  activeItemId?: string
-  collapsed: boolean
-  onNavigate: (item: NavItem) => void
-  expandedGroups: Set<string>
-  toggleGroup: (id: string) => void
-  animatedIndicator?: boolean
-}
-
+/**
+ * NavGroup - Collapsible navigation group with children.
+ * Renders a group header with expandable children items.
+ */
 function NavGroup({
   item,
   activeItemId,
@@ -278,7 +322,6 @@ function NavGroup({
             'relative z-[1] w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
             'hover:bg-surface-hover',
-            // When collapsed, center icon; when expanded, use gap and padding for label
             collapsed ? 'justify-center' : 'gap-2 px-3'
           )}
           onClick={(e) => {
@@ -342,7 +385,11 @@ function NavGroup({
 }
 NavGroup.displayName = 'AppSidebar.NavGroup'
 
-function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => void }) {
+/**
+ * HelpItem - Help button displayed at the bottom of the sidebar.
+ * Provides access to help/support functionality.
+ */
+function HelpItem({ collapsed, onClick }: HelpItemProps) {
   return (
     <button
       type="button"
@@ -354,7 +401,6 @@ function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => 
         'relative w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
         'hover:bg-surface-hover',
-        // When collapsed, center icon; when expanded, use gap and padding for label
         collapsed ? 'justify-center' : 'gap-2 px-3'
       )}
       data-slot="help-item"
@@ -371,10 +417,12 @@ function HelpItem({ collapsed, onClick }: { collapsed: boolean; onClick?: () => 
 }
 HelpItem.displayName = 'AppSidebar.HelpItem'
 
-// =============================================================================
-// MAIN COMPONENT
-// =============================================================================
-
+/**
+ * AppSidebar - Main sidebar navigation component.
+ *
+ * Provides collapsible navigation with support for nested groups,
+ * animated active state indicator, and responsive behavior.
+ */
 export function AppSidebar({
   product,
   items,
@@ -586,7 +634,10 @@ export function AppSidebar({
       />
 
       {/* Gradient border on right edge */}
-      <div className="absolute right-0 top-0 bottom-[100px] w-px pointer-events-none bg-gradient-to-b from-surface via-default to-transparent" data-slot="border" />
+      <div
+        className="absolute right-0 top-0 bottom-[100px] w-px pointer-events-none bg-gradient-to-b from-surface via-default to-transparent"
+        data-slot="border"
+      />
 
       {/* Navigation items */}
       <NavItemRegistryContext.Provider value={registryValue}>
@@ -604,16 +655,20 @@ export function AppSidebar({
                 top: indicatorStyle.top,
                 left: indicatorStyle.left,
                 width: indicatorStyle.width,
-                height: indicatorStyle.height
+                height: indicatorStyle.height,
               }}
-              transition={shouldAnimateIndicator ? {
-                type: 'spring',
-                stiffness: 500,
-                damping: 35,
-                mass: 1
-              } : {
-                duration: 0
-              }}
+              transition={
+                shouldAnimateIndicator
+                  ? {
+                      type: 'spring',
+                      stiffness: 500,
+                      damping: 35,
+                      mass: 1,
+                    }
+                  : {
+                      duration: 0,
+                    }
+              }
               data-slot="active-indicator"
             />
           )}
@@ -643,23 +698,29 @@ export function AppSidebar({
                 onClick={() => handleNavigate(item)}
                 animatedIndicator={animatedIndicator}
               />
-          )
-        })}
+            )
+          })}
         </div>
       </NavItemRegistryContext.Provider>
 
       {/* Help item at bottom - floats over transparent area */}
       {showHelpItem && (
         <div className="relative py-3" data-slot="help-section">
-          <div className="h-px mb-3 bg-gradient-to-r from-transparent via-default/50 to-transparent" data-slot="separator" />
+          <div
+            className="h-px mb-3 bg-gradient-to-r from-transparent via-default/50 to-transparent"
+            data-slot="separator"
+          />
           <HelpItem collapsed={collapsed} onClick={onHelpClick} />
         </div>
       )}
     </motion.nav>
   )
 }
-
 AppSidebar.displayName = 'AppSidebar'
+
+// =============================================================================
+// EXPORTS
+// =============================================================================
 
 export default AppSidebar
 export type { NavItem, ProductType }

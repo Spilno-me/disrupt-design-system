@@ -1,51 +1,141 @@
+"use client"
+
 /**
- * IncidentManagementTable - Complete incident management data table
- *
- * A fully-featured table for managing EHS incidents with:
- * - Priority-based row borders
- * - Severity indicators
- * - Status badges
- * - Age tracking with overdue alerts
- * - Bulk actions
- * - Mobile responsive card view with pagination
- * - Touch-friendly 44px targets on mobile (Fitts' Law)
+ * @file IncidentManagementTable.tsx
+ * @description Complete incident management data table with responsive design
  */
 
-import * as React from 'react'
-import { useState } from 'react'
-import { Pencil, Trash2, Rocket } from 'lucide-react'
-import { DataTable, type ColumnDef, type RowPriority } from '../DataTable'
-import { DataTableSeverity } from './DataTableSeverity'
-import { DataTableMobileCard } from './DataTableMobileCard'
-import { IncidentStatusBadge, type IncidentStatus, type IncidentSeverity } from './IncidentStatusBadge'
-import { CopyableId } from './CopyableId'
-import { TruncatedText } from './TruncatedText'
-import { ActionTile } from '../ActionTile'
-import { Tooltip, TooltipTrigger, TooltipContent } from '../tooltip'
-import { Pagination } from '../Pagination'
-import { NextStepButton, type NextStepSeverity } from '../../../flow/components/next-step-button'
-import { cn } from '../../../lib/utils'
-import { formatAge, getAgingStyles } from '../../../lib/date-utils'
-import { useIsMobile } from '../../../hooks/useIsMobile'
+import * as React from "react"
+import { useState, useCallback, useMemo } from "react"
+import { Pencil, Trash2, Rocket } from "lucide-react"
+import { DataTable, type ColumnDef, type RowPriority } from "../DataTable"
+import { DataTableSeverity } from "./DataTableSeverity"
+import { DataTableMobileCard } from "./DataTableMobileCard"
+import {
+  IncidentStatusBadge,
+  type IncidentStatus,
+  type IncidentSeverity,
+} from "./IncidentStatusBadge"
+import { CopyableId } from "./CopyableId"
+import { TruncatedText } from "./TruncatedText"
+import { ActionTile } from "../ActionTile"
+import { Tooltip, TooltipTrigger, TooltipContent } from "../tooltip"
+import { Pagination } from "../Pagination"
+import {
+  NextStepButton,
+  type NextStepSeverity,
+} from "../../../flow/components/next-step-button"
+import { cn } from "../../../lib/utils"
+import { formatAge, getAgingStyles } from "../../../lib/date-utils"
+import { useIsMobile } from "../../../hooks/useIsMobile"
 
-// =============================================================================
-// TYPES
-// =============================================================================
+// ============== CONSTANTS ==============
 
+/** Data slot attribute for testing */
+const DATA_SLOT = "incident-management-table"
+
+/** Column widths for fixed-width columns */
+const COLUMN_WIDTHS = {
+  id: "190px",
+  location: "220px",
+  reporter: "140px",
+  status: "145px",
+  severity: "115px",
+  age: "100px",
+  actions: "155px",
+} as const
+
+/** Severity level to display configuration mapping */
+const SEVERITY_DISPLAY_MAP = {
+  critical: { level: "critical" as const, label: "Critical" },
+  high: { level: "high" as const, label: "High" },
+  medium: { level: "medium" as const, label: "Medium" },
+  low: { level: "low" as const, label: "Low" },
+  none: { level: "none" as const, label: "None" },
+} as const
+
+/** Severity sort order for column sorting (higher = more severe) */
+const SEVERITY_SORT_ORDER: Record<IncidentSeverity, number> = {
+  critical: 5,
+  high: 4,
+  medium: 3,
+  low: 2,
+  none: 1,
+}
+
+/** Priority-based left border styles for rows */
+const PRIORITY_BORDER_CLASSES: Record<string, string> = {
+  critical: "border-l-4 border-l-error",
+  high: "border-l-4 border-l-aging",
+  medium: "border-l-4 border-l-warning",
+  low: "border-l-4 border-l-success",
+  none: "border-l-4 border-l-info",
+  draft: "border-l-4 border-l-secondary border-dashed",
+}
+
+/** Legend item configuration */
+const LEGEND_ITEMS = [
+  { color: "bg-error", label: "Critical" },
+  { color: "bg-aging", label: "High" },
+  { color: "bg-warning", label: "Medium" },
+  { color: "bg-success", label: "Low" },
+  { color: "bg-info", label: "None" },
+] as const
+
+/** Draft legend item (special case with dashed border) */
+const DRAFT_LEGEND_STYLES = "border border-dashed border-default bg-muted-bg"
+
+/** Legend text styling */
+const LEGEND_TEXT_SIZE = "text-xs"
+
+/** Legend color swatch size */
+const LEGEND_SWATCH_SIZE = "w-3 h-3"
+
+/** Legend swatch border radius */
+const LEGEND_SWATCH_RADIUS = "rounded-sm"
+
+/** Mobile card gap */
+const MOBILE_CARD_GAP = "gap-3"
+
+/** Tooltip offset from trigger */
+const TOOLTIP_OFFSET_PX = 4
+
+/** Icon size class for action buttons */
+const ACTION_ICON_SIZE = "size-4"
+
+// ============== TYPES ==============
+
+/**
+ * Incident data structure for table rows
+ */
 export interface Incident {
+  /** Unique internal identifier */
   id: string
+  /** Human-readable incident ID (e.g., INC-XXXX) */
   incidentId: string
+  /** Incident title/summary */
   title: string
+  /** Location where incident occurred */
   location: string
+  /** Name of person who reported the incident */
   reporter: string
+  /** Row priority for border styling */
   priority: RowPriority
+  /** Incident severity level */
   severity: IncidentSeverity
+  /** Current workflow status */
   status: IncidentStatus
+  /** Number of days since incident was created */
   ageDays: number
+  /** Whether the incident is past its due date */
   overdue?: boolean
 }
 
-export interface IncidentManagementTableProps {
+/**
+ * Props for IncidentManagementTable component
+ */
+export interface IncidentManagementTableProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "onSubmit"> {
   /** Incident data to display */
   data: Incident[]
   /** Callback when navigating to a location */
@@ -68,9 +158,6 @@ export interface IncidentManagementTableProps {
   hideLegend?: boolean
   /** Hide the bulk actions panel */
   hideBulkActions?: boolean
-  /** Additional CSS classes */
-  className?: string
-  // Pagination props
   /** Enable pagination footer inside table */
   pagination?: boolean
   /** Current page (1-indexed) */
@@ -87,50 +174,357 @@ export interface IncidentManagementTableProps {
   pageSizeOptions?: number[]
 }
 
-// =============================================================================
-// CONSTANTS
-// =============================================================================
+// ============== DEFENSIVE VALIDATION ==============
 
-// Column widths for fixed-width columns (DataTable uses CSS width values)
-const COLUMN_WIDTHS = {
-  id: '190px',       // INC-XXXXXXXXXXXX + copy button + padding
-  location: '220px', // Typical location names
-  reporter: '140px', // Typical names
-  status: '145px',   // Status badges + border padding
-  severity: '115px', // Severity indicator + label (e.g., "Critical")
-  age: '100px',      // Age badge
-  actions: '155px',  // Draft rows: 3 × 32px buttons (≤3 = visible per UX rule)
-} as const
+/** Valid severity values */
+const VALID_SEVERITIES: IncidentSeverity[] = ["critical", "high", "medium", "low", "none"]
 
-const INCIDENT_TABLE_SEVERITY_MAP = {
-  critical: { level: 'critical' as const, label: 'Critical' },
-  high: { level: 'high' as const, label: 'High' },
-  medium: { level: 'medium' as const, label: 'Medium' },
-  low: { level: 'low' as const, label: 'Low' },
-  none: { level: 'none' as const, label: 'None' },
+/** Valid status values */
+const VALID_STATUSES: IncidentStatus[] = ["draft", "reported", "investigation", "review", "closed"]
+
+/** Valid priority values */
+const VALID_PRIORITIES: RowPriority[] = ["critical", "high", "medium", "low", "none", "draft"]
+
+/**
+ * 🛡️ DEFENSIVE: Validates if a severity value is valid
+ * Protects against adapter returning wrong types (e.g., numbers instead of strings)
+ */
+function isValidSeverity(value: unknown): value is IncidentSeverity {
+  return typeof value === "string" && VALID_SEVERITIES.includes(value as IncidentSeverity)
 }
 
-const SEVERITY_SORT_ORDER: Record<IncidentSeverity, number> = {
-  critical: 5,
-  high: 4,
-  medium: 3,
-  low: 2,
-  none: 1,
+/**
+ * 🛡️ DEFENSIVE: Validates if a status value is valid
+ */
+function isValidStatus(value: unknown): value is IncidentStatus {
+  return typeof value === "string" && VALID_STATUSES.includes(value as IncidentStatus)
 }
 
-const PRIORITY_BORDER_MAP: Record<string, string> = {
-  critical: 'border-l-4 border-l-error',
-  high: 'border-l-4 border-l-aging',
-  medium: 'border-l-4 border-l-warning',
-  low: 'border-l-4 border-l-success',
-  none: 'border-l-4 border-l-info',
-  draft: 'border-l-4 border-l-secondary border-dashed',
+/**
+ * 🛡️ DEFENSIVE: Validates if a priority value is valid
+ */
+function isValidPriority(value: unknown): value is RowPriority {
+  return typeof value === "string" && VALID_PRIORITIES.includes(value as RowPriority)
 }
 
-// =============================================================================
-// COMPONENT
-// =============================================================================
+/**
+ * 🛡️ DEFENSIVE: Validates if a string value is valid (not [object Object])
+ */
+function isValidString(value: unknown): value is string {
+  return typeof value === "string" && !value.includes("[object")
+}
 
+/**
+ * 🛡️ DEFENSIVE: Validates if age is a valid number
+ */
+function isValidAge(value: unknown): value is number {
+  return typeof value === "number" && !Number.isNaN(value) && Number.isFinite(value)
+}
+
+// ============== HELPER FUNCTIONS ==============
+
+/**
+ * Maps row priority to NextStepButton severity
+ * 🛡️ DEFENSIVE: Returns safe default if priority is invalid
+ */
+function mapPriorityToNextStepSeverity(priority: RowPriority): NextStepSeverity {
+  if (!isValidPriority(priority)) return "medium" // Safe default
+  if (priority === "critical") return "critical"
+  if (priority === "high") return "high"
+  if (priority === "medium") return "medium"
+  if (priority === "low") return "low"
+  return "none"
+}
+
+/**
+ * Gets the CSS class for priority-based row border
+ * 🛡️ DEFENSIVE: Returns empty string if priority is invalid
+ */
+function getPriorityBorderClass(priority: RowPriority): string {
+  if (!isValidPriority(priority)) return ""
+  return priority ? PRIORITY_BORDER_CLASSES[priority] || "" : ""
+}
+
+// ============== SUB-COMPONENTS ==============
+
+/**
+ * Data error indicator for invalid values
+ * Shows a clear error state so consumers know their adapter needs fixing
+ * @internal
+ */
+interface DataErrorProps {
+  value: unknown
+  field: string
+}
+
+function DataError({ value, field }: DataErrorProps) {
+  const displayValue = typeof value === "object" ? "[object]" : String(value)
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded border border-error bg-error-tint text-error text-xs font-mono"
+      title={`Invalid ${field}: "${displayValue}" - Check your data adapter`}
+    >
+      <span className="w-2 h-2 rounded-full bg-error animate-pulse" />
+      {displayValue}
+    </span>
+  )
+}
+DataError.displayName = "DataError"
+
+/**
+ * Legend showing priority color indicators
+ * @internal
+ */
+function PriorityLegend() {
+  return (
+    <div className={cn("flex flex-wrap gap-4", LEGEND_TEXT_SIZE)}>
+      {LEGEND_ITEMS.map((item) => (
+        <span key={item.label} className="inline-flex items-center gap-2">
+          <span
+            className={cn(LEGEND_SWATCH_SIZE, LEGEND_SWATCH_RADIUS, item.color)}
+          />
+          {item.label}
+        </span>
+      ))}
+      <span className="inline-flex items-center gap-2">
+        <span
+          className={cn(
+            LEGEND_SWATCH_SIZE,
+            LEGEND_SWATCH_RADIUS,
+            DRAFT_LEGEND_STYLES
+          )}
+        />
+        Draft
+      </span>
+    </div>
+  )
+}
+PriorityLegend.displayName = "PriorityLegend"
+
+/**
+ * Props for BulkActionsPanel component
+ */
+interface BulkActionsPanelProps {
+  bulkActionsMode: boolean
+  selectedCount: number
+  onToggleMode: () => void
+  onBulkDelete: () => void
+}
+
+/**
+ * Panel for bulk action controls
+ * @internal
+ */
+function BulkActionsPanel({
+  bulkActionsMode,
+  selectedCount,
+  onToggleMode,
+  onBulkDelete,
+}: BulkActionsPanelProps) {
+  return (
+    <div className="flex items-center justify-between">
+      <button
+        type="button"
+        onClick={onToggleMode}
+        className={cn(
+          "px-3 py-1.5 text-sm font-medium rounded-md border transition-colors",
+          bulkActionsMode
+            ? "bg-primary text-on-primary border-primary"
+            : "bg-transparent text-secondary border-default hover:bg-muted-bg"
+        )}
+      >
+        {bulkActionsMode ? "Exit Bulk Actions" : "Bulk Actions"}
+      </button>
+
+      {bulkActionsMode && selectedCount > 0 && (
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-secondary">{selectedCount} selected</span>
+          <button
+            type="button"
+            onClick={onBulkDelete}
+            className="px-3 py-1.5 text-sm font-medium rounded-md bg-error text-on-status hover:bg-error/90 transition-colors"
+          >
+            Delete Selected
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+BulkActionsPanel.displayName = "BulkActionsPanel"
+
+/**
+ * Props for DraftActions component
+ */
+interface DraftActionsProps {
+  incidentId: string
+  onSubmit?: (id: string) => void
+  onEdit?: (id: string) => void
+  onDelete?: (id: string) => void
+  stopPropagation?: boolean
+}
+
+/**
+ * Action buttons for draft incidents (≤3 actions = visible per UX rule)
+ * @internal
+ */
+function DraftActions({
+  incidentId,
+  onSubmit,
+  onEdit,
+  onDelete,
+  stopPropagation = false,
+}: DraftActionsProps) {
+  const handleClick = (
+    e: React.MouseEvent,
+    callback?: (id: string) => void
+  ) => {
+    if (stopPropagation) e.stopPropagation()
+    callback?.(incidentId)
+  }
+
+  return (
+    <div className="flex items-center gap-1">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="success"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => handleClick(e, onSubmit)}
+            aria-label="Submit incident"
+          >
+            <Rocket className={ACTION_ICON_SIZE} />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={TOOLTIP_OFFSET_PX}>
+          Submit incident
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="info"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => handleClick(e, onEdit)}
+            aria-label="Edit incident"
+          >
+            <Pencil className={ACTION_ICON_SIZE} />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={TOOLTIP_OFFSET_PX}>
+          Edit incident
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="destructive"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => handleClick(e, onDelete)}
+            aria-label="Delete incident"
+          >
+            <Trash2 className={ACTION_ICON_SIZE} />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={TOOLTIP_OFFSET_PX}>
+          Delete draft
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  )
+}
+DraftActions.displayName = "DraftActions"
+
+/**
+ * Props for AgeBadge component
+ */
+interface AgeBadgeProps {
+  ageDays: number
+  overdue?: boolean
+}
+
+/**
+ * Age display with overdue styling
+ * 🛡️ DEFENSIVE: Handles NaN/invalid ages from broken adapters
+ * @internal
+ */
+function AgeBadge({ ageDays, overdue }: AgeBadgeProps) {
+  // 🛡️ DEFENSIVE: Check for invalid age values
+  if (!isValidAge(ageDays)) {
+    return <DataError value={ageDays} field="ageDays" />
+  }
+
+  const label = formatAge(ageDays)
+
+  if (overdue) {
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error text-on-status text-xs font-bold tabular-nums overdue-pulse">
+        {label}
+      </span>
+    )
+  }
+
+  return (
+    <span className={cn("text-sm tabular-nums", getAgingStyles(ageDays))}>
+      {label}
+    </span>
+  )
+}
+AgeBadge.displayName = "AgeBadge"
+
+// ============== COMPONENTS ==============
+
+/**
+ * IncidentManagementTable - Complete incident management data table
+ *
+ * @component MOLECULE
+ * @category Data Display
+ *
+ * A fully-featured table for managing EHS incidents with:
+ * - Priority-based row borders (color-coded left border)
+ * - Severity indicators with sort support
+ * - Status badges showing workflow state
+ * - Age tracking with overdue alerts (pulsing badge)
+ * - Bulk actions for batch operations
+ * - Mobile responsive card view with pagination
+ * - Touch-friendly 44px targets on mobile (Fitts' Law)
+ *
+ * @example Basic Usage
+ * ```tsx
+ * <IncidentManagementTable
+ *   data={incidents}
+ *   onNextStep={(id) => handleNextStep(id)}
+ *   onEdit={(id) => navigateToEdit(id)}
+ * />
+ * ```
+ *
+ * @example With Pagination
+ * ```tsx
+ * <IncidentManagementTable
+ *   data={incidents}
+ *   pagination
+ *   currentPage={page}
+ *   totalItems={totalCount}
+ *   pageSize={10}
+ *   onPageChange={setPage}
+ *   onBulkDelete={handleBulkDelete}
+ * />
+ * ```
+ *
+ * @testing
+ * - `data-slot="incident-management-table"` - Root container
+ * - Uses DataTable data-slots internally for table testing
+ * - Uses DataTableMobileCard data-slots for mobile testing
+ *
+ * @accessibility
+ * - All action buttons have aria-labels
+ * - Tooltips provide additional context
+ * - Keyboard navigation supported via DataTable
+ * - Mobile cards support tap interaction
+ */
 export function IncidentManagementTable({
   data,
   onLocationClick,
@@ -144,7 +538,6 @@ export function IncidentManagementTable({
   hideLegend = false,
   hideBulkActions = false,
   className,
-  // Pagination props
   pagination = false,
   currentPage,
   totalItems,
@@ -152,379 +545,290 @@ export function IncidentManagementTable({
   onPageChange,
   onPageSizeChange,
   pageSizeOptions,
+  ...props
 }: IncidentManagementTableProps) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set())
   const [sortColumn, setSortColumn] = useState<string | null>(null)
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(null)
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc" | null>(null)
   const [bulkActionsMode, setBulkActionsMode] = useState(false)
   const isMobile = useIsMobile()
 
-  const handleLocationClick = (location: string) => {
-    if (onLocationClick) {
-      onLocationClick(location)
-    }
-  }
+  // Handlers with useCallback for stable references
+  const handleLocationClick = useCallback(
+    (location: string) => onLocationClick?.(location),
+    [onLocationClick]
+  )
 
-  const handleReporterClick = (reporter: string) => {
-    if (onReporterClick) {
-      onReporterClick(reporter)
-    }
-  }
+  const handleReporterClick = useCallback(
+    (reporter: string) => onReporterClick?.(reporter),
+    [onReporterClick]
+  )
 
-  const incidentColumns: ColumnDef<Incident>[] = [
-    {
-      id: 'incidentId',
-      header: 'ID',
-      accessor: (row) => <CopyableId id={row.incidentId} />,
-      sortable: true,
-      sortValue: (row) => row.incidentId,
-      width: COLUMN_WIDTHS.id,
-      cellClassName: 'whitespace-nowrap',
+  const handleToggleBulkMode = useCallback(() => {
+    setBulkActionsMode((prev) => {
+      if (prev) setSelectedRows(new Set())
+      return !prev
+    })
+  }, [])
+
+  const handleBulkDelete = useCallback(() => {
+    if (onBulkDelete && selectedRows.size > 0) {
+      onBulkDelete([...selectedRows])
+    }
+  }, [onBulkDelete, selectedRows])
+
+  const handleSortChange = useCallback(
+    (column: string, direction: "asc" | "desc" | null) => {
+      setSortColumn(direction ? column : null)
+      setSortDirection(direction)
     },
-    {
-      id: 'title',
-      header: 'Title',
-      accessor: (row) => (
-        <TruncatedText className="font-medium">{row.title}</TruncatedText>
-      ),
-      sortable: true,
-      sortValue: (row) => row.title.toLowerCase(),
-      // FLEXIBLE COLUMN: No width = takes ALL remaining space after fixed columns
-      cellClassName: 'overflow-hidden',
-    },
-    {
-      id: 'location',
-      header: 'Location',
-      accessor: (row) => (
-        <button
-          type="button"
-          onClick={() => handleLocationClick(row.location)}
-          className="text-link hover:text-link-hover hover:underline transition-colors text-left"
-        >
-          {row.location}
-        </button>
-      ),
-      sortable: true,
-      sortValue: (row) => row.location.toLowerCase(),
-      width: COLUMN_WIDTHS.location,
-      cellClassName: 'whitespace-nowrap',
-    },
-    {
-      id: 'reporter',
-      header: 'Reporter',
-      accessor: (row) => (
-        <button
-          type="button"
-          onClick={() => handleReporterClick(row.reporter)}
-          className="text-link hover:text-link-hover hover:underline transition-colors text-left"
-        >
-          {row.reporter}
-        </button>
-      ),
-      sortable: true,
-      sortValue: (row) => row.reporter.toLowerCase(),
-      width: COLUMN_WIDTHS.reporter,
-      cellClassName: 'whitespace-nowrap',
-    },
-    {
-      id: 'status',
-      header: 'Status',
-      accessor: (row) => <IncidentStatusBadge status={row.status} severity={row.severity} />,
-      sortable: true,
-      sortValue: (row) => row.status,
-      width: COLUMN_WIDTHS.status,
-      cellClassName: 'whitespace-nowrap',
-      align: 'left',
-    },
-    {
-      id: 'severity',
-      header: 'Severity',
-      accessor: (row) => (
-        <DataTableSeverity
-          value={row.severity}
-          mapping={INCIDENT_TABLE_SEVERITY_MAP}
-          size="sm"
-          showLabel
+    []
+  )
+
+  // Column definitions
+  const incidentColumns: ColumnDef<Incident>[] = useMemo(
+    () => [
+      {
+        id: "incidentId",
+        header: "ID",
+        accessor: (row) => <CopyableId id={row.incidentId} />,
+        sortable: true,
+        sortValue: (row) => row.incidentId,
+        width: COLUMN_WIDTHS.id,
+        cellClassName: "whitespace-nowrap",
+      },
+      {
+        id: "title",
+        header: "Title",
+        accessor: (row) => (
+          <TruncatedText className="font-medium">{row.title}</TruncatedText>
+        ),
+        sortable: true,
+        sortValue: (row) => row.title.toLowerCase(),
+        cellClassName: "overflow-hidden",
+      },
+      {
+        id: "location",
+        header: "Location",
+        accessor: (row) => (
+          <button
+            type="button"
+            onClick={() => handleLocationClick(row.location)}
+            className="text-link hover:text-link-hover hover:underline transition-colors text-left"
+          >
+            {row.location}
+          </button>
+        ),
+        sortable: true,
+        sortValue: (row) => row.location.toLowerCase(),
+        width: COLUMN_WIDTHS.location,
+        cellClassName: "whitespace-nowrap",
+      },
+      {
+        id: "reporter",
+        header: "Reporter",
+        accessor: (row) => {
+          // 🛡️ DEFENSIVE: Handle [object Object] or invalid reporter values
+          if (!isValidString(row.reporter)) {
+            return <DataError value={row.reporter} field="reporter" />
+          }
+          return (
+            <button
+              type="button"
+              onClick={() => handleReporterClick(row.reporter)}
+              className="text-link hover:text-link-hover hover:underline transition-colors text-left"
+            >
+              {row.reporter}
+            </button>
+          )
+        },
+        sortable: true,
+        sortValue: (row) => isValidString(row.reporter) ? row.reporter.toLowerCase() : "",
+        width: COLUMN_WIDTHS.reporter,
+        cellClassName: "whitespace-nowrap",
+      },
+      {
+        id: "status",
+        header: "Status",
+        accessor: (row) => {
+          // 🛡️ DEFENSIVE: Handle invalid status values
+          if (!isValidStatus(row.status)) {
+            return <DataError value={row.status} field="status" />
+          }
+          return (
+            <IncidentStatusBadge status={row.status} severity={row.severity} />
+          )
+        },
+        sortable: true,
+        sortValue: (row) => isValidStatus(row.status) ? row.status : "",
+        width: COLUMN_WIDTHS.status,
+        cellClassName: "whitespace-nowrap",
+        align: "left",
+      },
+      {
+        id: "severity",
+        header: "Severity",
+        accessor: (row) => {
+          // 🛡️ DEFENSIVE: Handle invalid severity values (e.g., numbers)
+          if (!isValidSeverity(row.severity)) {
+            return <DataError value={row.severity} field="severity" />
+          }
+          return (
+            <DataTableSeverity
+              value={row.severity}
+              mapping={SEVERITY_DISPLAY_MAP}
+              size="sm"
+              showLabel
+            />
+          )
+        },
+        sortable: true,
+        sortValue: (row) => isValidSeverity(row.severity) ? SEVERITY_SORT_ORDER[row.severity] : 0,
+        width: COLUMN_WIDTHS.severity,
+        cellClassName: "whitespace-nowrap",
+        align: "left",
+      },
+      {
+        id: "age",
+        header: "Age",
+        accessor: (row) => <AgeBadge ageDays={row.ageDays} overdue={row.overdue} />,
+        sortable: true,
+        sortValue: (row) => row.ageDays,
+        width: COLUMN_WIDTHS.age,
+        cellClassName: "whitespace-nowrap",
+        align: "center",
+        headerClassName: "text-center",
+      },
+      {
+        id: "actions",
+        header: "Actions",
+        accessor: (row) => {
+          if (row.status === "draft") {
+            return (
+              <DraftActions
+                incidentId={row.id}
+                onSubmit={onSubmit}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            )
+          }
+          return (
+            <NextStepButton
+              severity={mapPriorityToNextStepSeverity(row.priority)}
+              size="sm"
+              onClick={() => onNextStep?.(row.id)}
+            />
+          )
+        },
+        width: COLUMN_WIDTHS.actions,
+        cellClassName: "whitespace-nowrap pr-4",
+        align: "left",
+        headerClassName: "pr-4",
+      },
+    ],
+    [handleLocationClick, handleReporterClick, onSubmit, onEdit, onDelete, onNextStep]
+  )
+
+  // Mobile card renderer
+  const renderMobileCard = useCallback(
+    (incident: Incident) => {
+      const mobileActions =
+        incident.status === "draft" ? (
+          <div className="flex items-center justify-end gap-2">
+            <DraftActions
+              incidentId={incident.id}
+              onSubmit={onSubmit}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              stopPropagation
+            />
+          </div>
+        ) : (
+          <div className="flex justify-end">
+            <NextStepButton
+              severity={mapPriorityToNextStepSeverity(incident.priority)}
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation()
+                onNextStep?.(incident.id)
+              }}
+            />
+          </div>
+        )
+
+      return (
+        <DataTableMobileCard
+          key={incident.id}
+          title={incident.title}
+          subtitle={incident.incidentId}
+          status={
+            isValidStatus(incident.status) ? (
+              <IncidentStatusBadge
+                status={incident.status}
+                severity={incident.severity}
+              />
+            ) : <DataError value={incident.status} field="status" />
+          }
+          fields={[
+            { label: "Location", value: incident.location },
+            {
+              label: "Reporter",
+              value: isValidString(incident.reporter)
+                ? incident.reporter
+                : <DataError value={incident.reporter} field="reporter" />
+            },
+            {
+              label: "Severity",
+              value: isValidSeverity(incident.severity) ? (
+                <DataTableSeverity
+                  value={incident.severity}
+                  mapping={SEVERITY_DISPLAY_MAP}
+                  size="sm"
+                  showLabel
+                />
+              ) : <DataError value={incident.severity} field="severity" />,
+            },
+            {
+              label: "Age",
+              value: (
+                <AgeBadge ageDays={incident.ageDays} overdue={incident.overdue} />
+              ),
+            },
+          ]}
+          actions={mobileActions}
+          className={getPriorityBorderClass(incident.priority)}
+          onTap={() => onIncidentClick?.(incident.id)}
+          showChevron={false}
         />
-      ),
-      sortable: true,
-      sortValue: (row) => SEVERITY_SORT_ORDER[row.severity],
-      width: COLUMN_WIDTHS.severity,
-      cellClassName: 'whitespace-nowrap',
-      align: 'left',
+      )
     },
-    {
-      id: 'age',
-      header: 'Age',
-      accessor: (row) => {
-        const label = formatAge(row.ageDays)
-
-        if (row.overdue) {
-          return (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error text-on-status text-xs font-bold tabular-nums overdue-pulse">
-              {label}
-            </span>
-          )
-        }
-
-        return (
-          <span className={`text-sm tabular-nums ${getAgingStyles(row.ageDays)}`}>{label}</span>
-        )
-      },
-      sortable: true,
-      sortValue: (row) => row.ageDays,
-      width: COLUMN_WIDTHS.age,
-      cellClassName: 'whitespace-nowrap',
-      align: 'center',
-      headerClassName: 'text-center',
-    },
-    {
-      id: 'actions',
-      header: 'Actions',
-      accessor: (row) => {
-        const getSeverity = (priority: RowPriority): NextStepSeverity => {
-          if (priority === 'critical') return 'critical'
-          if (priority === 'high') return 'high'
-          if (priority === 'medium') return 'medium'
-          if (priority === 'low') return 'low'
-          return 'none'
-        }
-
-        // Draft incidents: ≤3 actions = visible buttons (UX Action Overflow Rule)
-        if (row.status === 'draft') {
-          return (
-            <div className="flex items-center gap-1">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ActionTile
-                    variant="success"
-                    appearance="filled"
-                    size="xs"
-                    onClick={() => { if (onSubmit) onSubmit(row.id) }}
-                    aria-label="Submit incident"
-                  >
-                    <Rocket className="size-4" />
-                  </ActionTile>
-                </TooltipTrigger>
-                <TooltipContent side="top" sideOffset={4}>Submit incident</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ActionTile
-                    variant="info"
-                    appearance="filled"
-                    size="xs"
-                    onClick={() => { if (onEdit) onEdit(row.id) }}
-                    aria-label="Edit incident"
-                  >
-                    <Pencil className="size-4" />
-                  </ActionTile>
-                </TooltipTrigger>
-                <TooltipContent side="top" sideOffset={4}>Edit incident</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <ActionTile
-                    variant="destructive"
-                    appearance="filled"
-                    size="xs"
-                    onClick={() => { if (onDelete) onDelete(row.id) }}
-                    aria-label="Delete incident"
-                  >
-                    <Trash2 className="size-4" />
-                  </ActionTile>
-                </TooltipTrigger>
-                <TooltipContent side="top" sideOffset={4}>Delete draft</TooltipContent>
-              </Tooltip>
-            </div>
-          )
-        }
-
-        return (
-          <NextStepButton
-            severity={getSeverity(row.priority)}
-            size="sm"
-            onClick={() => {
-              if (onNextStep) {
-                onNextStep(row.id)
-              }
-            }}
-          />
-        )
-      },
-      width: COLUMN_WIDTHS.actions,
-      cellClassName: 'whitespace-nowrap pr-4',
-      align: 'left',
-      headerClassName: 'pr-4',
-    },
-  ]
-
-  const getPriorityBorderClass = (priority: RowPriority) => {
-    return priority ? PRIORITY_BORDER_MAP[priority] || '' : ''
-  }
+    [onSubmit, onEdit, onDelete, onNextStep, onIncidentClick]
+  )
 
   return (
-    <div className={cn('space-y-4', className)}>
+    <div
+      className={cn("space-y-4", className)}
+      data-slot={DATA_SLOT}
+      {...props}
+    >
       {/* Legend */}
-      {!hideLegend && (
-        <div className="flex flex-wrap gap-4 text-xs">
-          <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-error" /> Critical
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-aging" /> High
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-warning" /> Medium
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-success" /> Low
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm bg-info" /> None
-          </span>
-          <span className="inline-flex items-center gap-2">
-            <span className="w-3 h-3 rounded-sm border border-dashed border-default bg-muted-bg" /> Draft
-          </span>
-        </div>
-      )}
+      {!hideLegend && <PriorityLegend />}
 
       {/* Bulk Actions Panel - hidden on mobile */}
       {!hideBulkActions && !isMobile && (
-        <div className="flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => {
-              setBulkActionsMode(!bulkActionsMode)
-              if (bulkActionsMode) setSelectedRows(new Set())
-            }}
-            className={cn(
-              'px-3 py-1.5 text-sm font-medium rounded-md border transition-colors',
-              bulkActionsMode
-                ? 'bg-primary text-on-primary border-primary'
-                : 'bg-transparent text-secondary border-default hover:bg-muted-bg'
-            )}
-          >
-            {bulkActionsMode ? 'Exit Bulk Actions' : 'Bulk Actions'}
-          </button>
-
-          {bulkActionsMode && selectedRows.size > 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-secondary">{selectedRows.size} selected</span>
-              <button
-                type="button"
-                onClick={() => {
-                  const ids = [...selectedRows]
-                  if (onBulkDelete) {
-                    onBulkDelete(ids)
-                  }
-                }}
-                className="px-3 py-1.5 text-sm font-medium rounded-md bg-error text-on-status hover:bg-error/90 transition-colors"
-              >
-                Delete Selected
-              </button>
-            </div>
-          )}
-        </div>
+        <BulkActionsPanel
+          bulkActionsMode={bulkActionsMode}
+          selectedCount={selectedRows.size}
+          onToggleMode={handleToggleBulkMode}
+          onBulkDelete={handleBulkDelete}
+        />
       )}
 
       {/* Mobile Card View */}
       {isMobile ? (
-        <div className="flex flex-col gap-3">
-          {data.map((incident) => {
-            // Build actions for mobile - same as desktop table
-            const getSeverity = (priority: RowPriority): NextStepSeverity => {
-              if (priority === 'critical') return 'critical'
-              if (priority === 'high') return 'high'
-              if (priority === 'medium') return 'medium'
-              if (priority === 'low') return 'low'
-              return 'none'
-            }
-
-            // Draft incidents: ≤3 actions = visible buttons (UX Action Overflow Rule)
-            const mobileActions = incident.status === 'draft' ? (
-              <div className="flex items-center justify-end gap-2">
-                <ActionTile
-                  variant="success"
-                  appearance="filled"
-                  size="xs"
-                  onClick={(e) => { e.stopPropagation(); if (onSubmit) onSubmit(incident.id) }}
-                  aria-label="Submit incident"
-                >
-                  <Rocket className="size-4" />
-                </ActionTile>
-                <ActionTile
-                  variant="info"
-                  appearance="filled"
-                  size="xs"
-                  onClick={(e) => { e.stopPropagation(); if (onEdit) onEdit(incident.id) }}
-                  aria-label="Edit incident"
-                >
-                  <Pencil className="size-4" />
-                </ActionTile>
-                <ActionTile
-                  variant="destructive"
-                  appearance="filled"
-                  size="xs"
-                  onClick={(e) => { e.stopPropagation(); if (onDelete) onDelete(incident.id) }}
-                  aria-label="Delete incident"
-                >
-                  <Trash2 className="size-4" />
-                </ActionTile>
-              </div>
-            ) : (
-              <div className="flex justify-end">
-                <NextStepButton
-                  severity={getSeverity(incident.priority)}
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    if (onNextStep) onNextStep(incident.id)
-                  }}
-                />
-              </div>
-            )
-
-            return (
-              <DataTableMobileCard
-                key={incident.id}
-                title={incident.title}
-                subtitle={incident.incidentId}
-                status={<IncidentStatusBadge status={incident.status} severity={incident.severity} />}
-                fields={[
-                  { label: 'Location', value: incident.location },
-                  { label: 'Reporter', value: incident.reporter },
-                  {
-                    label: 'Severity',
-                    value: (
-                      <DataTableSeverity
-                        value={incident.severity}
-                        mapping={INCIDENT_TABLE_SEVERITY_MAP}
-                        size="sm"
-                        showLabel
-                      />
-                    ),
-                  },
-                  {
-                    label: 'Age',
-                    value: incident.overdue ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error text-on-status text-xs font-bold">
-                        {formatAge(incident.ageDays)}
-                      </span>
-                    ) : (
-                      <span className={`text-sm tabular-nums ${getAgingStyles(incident.ageDays)}`}>
-                        {formatAge(incident.ageDays)}
-                      </span>
-                    ),
-                  },
-                ]}
-                actions={mobileActions}
-                className={getPriorityBorderClass(incident.priority)}
-                onTap={() => { if (onIncidentClick) onIncidentClick(incident.id) }}
-                showChevron={false}
-              />
-            )
-          })}
+        <div className={cn("flex flex-col", MOBILE_CARD_GAP)}>
+          {data.map(renderMobileCard)}
 
           {/* Mobile Pagination */}
           {pagination && totalItems && pageSize && currentPage && onPageChange && (
@@ -551,15 +855,11 @@ export function IncidentManagementTable({
           selectedRows={selectedRows}
           sortColumn={sortColumn}
           sortDirection={sortDirection}
-          onSortChange={(column, direction) => {
-            setSortColumn(direction ? column : null)
-            setSortDirection(direction)
-          }}
+          onSortChange={handleSortChange}
           onSelectionChange={setSelectedRows}
           hoverable
           bordered
-          getRowPriority={(row) => row.priority}
-          // Pagination props
+          getRowPriority={(row) => isValidPriority(row.priority) ? row.priority : "none"}
           pagination={pagination}
           currentPage={currentPage}
           totalItems={totalItems}
@@ -572,5 +872,8 @@ export function IncidentManagementTable({
     </div>
   )
 }
+IncidentManagementTable.displayName = "IncidentManagementTable"
+
+// ============== EXPORTS ==============
 
 export default IncidentManagementTable

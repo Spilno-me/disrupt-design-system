@@ -5,9 +5,41 @@ import { MadeWithLove } from './MadeWithLove'
 import { ALIAS } from '../../constants/designTokens'
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Footer height in pixels - compact mobile version (8 * 4px grid) */
+const FOOTER_HEIGHT_COMPACT_PX = 32
+
+/** Mobile scale factor for MadeWithLove logo */
+const MOBILE_LOGO_SCALE = 0.5
+
+/** Wave animation tile width for seamless scrolling */
+const WAVE_TILE_WIDTH_PX = 1600
+
+/** Wave animation total width (4× tile for seamless loop) */
+const WAVE_ANIMATION_WIDTH_PX = 6400
+
+/** Wave SVG height in pixels */
+const WAVE_SVG_HEIGHT_PX = 40
+
+/** Wave animation duration in seconds */
+const WAVE_ANIMATION_DURATION_S = 40
+
+/** Wave opacity (0-100 scale for CSS class) */
+const WAVE_OPACITY_PERCENT = 30
+
+/** Wave SVG stroke width */
+const WAVE_STROKE_WIDTH_PX = 4
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
+/**
+ * AppFooter component props
+ * @extends React.HTMLAttributes<HTMLElement> - Supports all standard HTML footer attributes
+ */
 export interface AppFooterProps extends React.HTMLAttributes<HTMLElement> {
   /** Color mode for MadeWithLove component: 'auto' (default) detects from theme */
   colorMode?: 'dark' | 'light' | 'auto'
@@ -18,88 +50,204 @@ export interface AppFooterProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 // =============================================================================
-// WAVE PATTERN BACKGROUND (matches header - animated ocean wave)
+// HELPER FUNCTIONS
 // =============================================================================
 
 /**
- * Animated wave pattern with glass background (matches AppHeader style)
+ * Checks if dark mode is enabled by inspecting document classes.
+ * Supports both html and body class detection for Storybook compatibility.
+ */
+function checkDarkModeEnabled(): boolean {
+  return document.documentElement.classList.contains('dark') ||
+         document.body.classList.contains('dark')
+}
+
+/**
+ * Creates a MutationObserver to watch for dark mode class changes.
+ * @param callback - Function to call when dark mode changes
+ * @returns Cleanup function to disconnect observer
+ */
+function createDarkModeObserver(callback: () => void): () => void {
+  const observer = new MutationObserver(callback)
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+  return () => observer.disconnect()
+}
+
+/**
+ * Returns wave gradient colors based on dark mode state.
+ * @param isDarkMode - Current dark mode state
+ */
+function getWaveGradientColors(isDarkMode: boolean): { start: string; end: string } {
+  return {
+    start: isDarkMode ? ALIAS.wave.dark.start : ALIAS.wave.light.start,
+    end: isDarkMode ? ALIAS.wave.dark.end : ALIAS.wave.light.end,
+  }
+}
+
+/**
+ * Returns glass background style for wave pattern.
+ * @param isDarkMode - Current dark mode state
+ */
+function getGlassBackground(isDarkMode: boolean): string {
+  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba opacity for glass effect */
+  return isDarkMode
+    ? 'linear-gradient(0deg, rgba(20, 22, 30, 0.85) 0%, rgba(29, 31, 42, 0.7) 100%)'
+    : 'rgba(255, 255, 255, 0.15)'
+  /* eslint-enable no-restricted-syntax */
+}
+
+/**
+ * Generates SVG data URI for wave pattern.
+ * @param gradientStart - Start color for gradient
+ * @param gradientEnd - End color for gradient
+ */
+function generateWaveSvgDataUri(gradientStart: string, gradientEnd: string): string {
+  const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="${WAVE_TILE_WIDTH_PX}" height="${WAVE_SVG_HEIGHT_PX}" viewBox="0 0 ${WAVE_TILE_WIDTH_PX} ${WAVE_SVG_HEIGHT_PX}" preserveAspectRatio="none"><defs><linearGradient id="fwg" x1="0%" x2="100%" y1="0%" y2="0%"><stop stop-color="${gradientStart}" offset="0%"/><stop stop-color="${gradientEnd}" offset="50%"/><stop stop-color="${gradientStart}" offset="100%"/></linearGradient></defs><path fill="none" stroke="url(#fwg)" stroke-width="${WAVE_STROKE_WIDTH_PX}" stroke-linecap="round" d="M0 8 c200 0 300 24 400 24 c100 0 200-24 400-24 c200 0 300 24 400 24 c100 0 200-24 400-24"/></svg>`
+  return `data:image/svg+xml,${encodeURIComponent(svgContent)}`
+}
+
+/**
+ * Gets the current year for copyright display.
+ */
+function getCurrentYear(): number {
+  return new Date().getFullYear()
+}
+
+// =============================================================================
+// SUB-COMPONENTS
+// =============================================================================
+
+/**
+ * CSS keyframes for wave animation.
+ * @component ATOM
+ */
+function WaveKeyframes() {
+  return (
+    <style>{`
+      @keyframes footer-wave-scroll {
+        0% { transform: translateX(0) translateZ(0); }
+        100% { transform: translateX(-${WAVE_TILE_WIDTH_PX}px) translateZ(0); }
+      }
+    `}</style>
+  )
+}
+WaveKeyframes.displayName = 'WaveKeyframes'
+
+/**
+ * Glass background layer for wave pattern.
+ * @component ATOM
+ */
+function WaveGlassBackground({ isDarkMode }: { isDarkMode: boolean }) {
+  return (
+    <div
+      className="absolute inset-0 z-0"
+      data-slot="wave-glass"
+      style={{
+        background: getGlassBackground(isDarkMode),
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+      }}
+    />
+  )
+}
+WaveGlassBackground.displayName = 'WaveGlassBackground'
+
+/**
+ * Single animated wave layer.
+ * @component ATOM
+ */
+function WaveLayer({ waveSvg }: { waveSvg: string }) {
+  return (
+    <div
+      className={`absolute left-0 h-[${WAVE_SVG_HEIGHT_PX}px] opacity-${WAVE_OPACITY_PERCENT}`}
+      data-slot="wave-layer"
+      style={{
+         
+        width: `${WAVE_ANIMATION_WIDTH_PX}px`,
+        backgroundImage: `url("${waveSvg}")`,
+        backgroundRepeat: 'repeat-x',
+        backgroundSize: `${WAVE_TILE_WIDTH_PX}px ${WAVE_SVG_HEIGHT_PX}px`,
+        animation: `footer-wave-scroll ${WAVE_ANIMATION_DURATION_S}s linear infinite`,
+      }}
+    />
+  )
+}
+WaveLayer.displayName = 'WaveLayer'
+
+/**
+ * Animated wave pattern with glass background (matches AppHeader style).
  *
  * Features:
  * - Glass blur background layer
  * - Single stroke-only wave line
  * - Wave contained within footer bounds
+ *
+ * @component ATOM
  */
 function WavePattern() {
-  // Detect dark mode for color adaptation
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
-    const checkDarkMode = () => {
-      const isDark = document.documentElement.classList.contains('dark') ||
-                     document.body.classList.contains('dark')
-      setIsDarkMode(isDark)
-    }
-    checkDarkMode()
-
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-
-    return () => observer.disconnect()
+    const updateDarkMode = () => setIsDarkMode(checkDarkModeEnabled())
+    updateDarkMode()
+    return createDarkModeObserver(updateDarkMode)
   }, [])
 
-  // Color adaptation for wave gradient using ALIAS tokens
-  const gradientStart = isDarkMode ? ALIAS.wave.dark.start : ALIAS.wave.light.start
-  const gradientEnd = isDarkMode ? ALIAS.wave.dark.end : ALIAS.wave.light.end
-
-  // Glass background (matching AppHeader WavePattern exactly)
-  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba opacity for glass effect */
-  const glassBackground = isDarkMode
-    ? 'linear-gradient(0deg, rgba(20, 22, 30, 0.85) 0%, rgba(29, 31, 42, 0.7) 100%)'
-    : 'rgba(255, 255, 255, 0.15)'
-  /* eslint-enable no-restricted-syntax */
-
-  // Wave SVG - stroke only, contained within 40px height
-  // Path oscillates from y=8 to y=32 (amplitude 24px), stroke 4px stays within bounds
-  const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="40" viewBox="0 0 1600 40" preserveAspectRatio="none"><defs><linearGradient id="fwg" x1="0%" x2="100%" y1="0%" y2="0%"><stop stop-color="${gradientStart}" offset="0%"/><stop stop-color="${gradientEnd}" offset="50%"/><stop stop-color="${gradientStart}" offset="100%"/></linearGradient></defs><path fill="none" stroke="url(#fwg)" stroke-width="4" stroke-linecap="round" d="M0 8 c200 0 300 24 400 24 c100 0 200-24 400-24 c200 0 300 24 400 24 c100 0 200-24 400-24"/></svg>`)}`
+  const { start, end } = getWaveGradientColors(isDarkMode)
+  const waveSvg = generateWaveSvgDataUri(start, end)
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* CSS keyframes for wave animation */}
-      <style>{`
-        @keyframes footer-wave-scroll {
-          0% { transform: translateX(0) translateZ(0); }
-          100% { transform: translateX(-1600px) translateZ(0); }
-        }
-      `}</style>
-
-      {/* Glass background layer - matches AppHeader WavePattern exactly */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: glassBackground,
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-        }}
-      />
-
-      {/* Single wave line - subtle, almost not there */}
-      <div className="absolute inset-0 z-10 flex items-center opacity-30">
-        <div
-          className="absolute left-0 h-[40px]"
-          style={{
-            // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
-            width: '6400px',
-            backgroundImage: `url("${waveSvg}")`,
-            backgroundRepeat: 'repeat-x',
-            backgroundSize: '1600px 40px',
-            animation: 'footer-wave-scroll 40s linear infinite',
-          }}
-        />
+    <div
+      className="absolute inset-0 pointer-events-none overflow-hidden"
+      data-slot="wave-pattern"
+    >
+      <WaveKeyframes />
+      <WaveGlassBackground isDarkMode={isDarkMode} />
+      <div className="absolute inset-0 z-10 flex items-center">
+        <WaveLayer waveSvg={waveSvg} />
       </div>
     </div>
   )
 }
+WavePattern.displayName = 'WavePattern'
+
+/**
+ * Gradient border on top edge of footer.
+ * @component ATOM
+ */
+function FooterBorder() {
+  return (
+    <div
+      className="absolute top-0 left-0 right-0 h-px pointer-events-none bg-gradient-to-r from-transparent via-default to-transparent z-20"
+      data-slot="footer-border"
+    />
+  )
+}
+FooterBorder.displayName = 'FooterBorder'
+
+/**
+ * Copyright text with year.
+ * @component ATOM
+ */
+function CopyrightText({
+  compactOnMobile,
+}: {
+  compactOnMobile: boolean
+}) {
+  return (
+    <p
+      className={cn(
+        'font-medium text-secondary',
+        compactOnMobile ? 'text-[10px] md:text-xs' : 'text-xs'
+      )}
+      data-slot="copyright"
+    >
+      © {getCurrentYear()} Disrupt Software Inc. All Rights reserved.
+    </p>
+  )
+}
+CopyrightText.displayName = 'CopyrightText'
 
 // =============================================================================
 // COMPONENT
@@ -108,49 +256,72 @@ function WavePattern() {
 /**
  * AppFooter - Simple in-app footer with MadeWithLove branding
  *
- * **Component Type:** MOLECULE (contains MadeWithLove atom)
+ * @component MOLECULE (contains MadeWithLove atom)
  *
- * Features:
+ * A footer component that provides consistent branding across Disrupt products.
+ * Features animated wave pattern background matching AppHeader style.
+ *
+ * ## Features
  * - Responsive design: compact on mobile, full on desktop
  * - Wave pattern background (matches AppHeader)
  * - MadeWithLove logo on left, copyright text on right
  * - Automatic current year display
  *
- * @example
+ * ## Usage Examples
+ *
+ * ### Default (auto-detects theme)
  * ```tsx
- * // Default (dark mode)
  * <AppFooter />
- *
- * // Light mode (on dark background)
- * <AppFooter colorMode="light" />
- *
- * // Full size on mobile (no compact mode)
- * <AppFooter compactOnMobile={false} />
- *
- * // Wave-only: transparent background, no border, wave + content visible
- * <AppFooter variant="wave-only" />
- *
- * // With custom data-testid
- * <AppFooter data-testid="custom-footer" />
  * ```
  *
- * **Props:**
- * - `colorMode`: 'dark' (default) for light backgrounds, 'light' for dark backgrounds
- * - `compactOnMobile`: true (default) scales down on mobile, false keeps full size
- * - `variant`: 'default' shows full footer, 'wave-only' removes background/border (transparent)
- * - Standard HTML attributes (className, style, etc.)
+ * ### Light mode (on dark background)
+ * ```tsx
+ * <AppFooter colorMode="light" />
+ * ```
  *
- * **Testing:**
- * - Use `data-testid` prop for testing (auto-applies to root element)
- * - Component has `data-slot="footer"` for structural queries
+ * ### Full size on mobile (no compact mode)
+ * ```tsx
+ * <AppFooter compactOnMobile={false} />
+ * ```
  *
- * **Accessibility:**
+ * ### Wave-only variant
+ * ```tsx
+ * <AppFooter variant="wave-only" />
+ * ```
+ *
+ * ### With custom className
+ * ```tsx
+ * <AppFooter className="custom-class" />
+ * ```
+ *
+ * ## Testing
+ * Use these data-slot attributes for testing:
+ * - `data-slot="footer"` - Main footer container
+ * - `data-slot="wave-pattern"` - Wave background container
+ * - `data-slot="wave-glass"` - Glass backdrop layer
+ * - `data-slot="wave-layer"` - Animated wave element
+ * - `data-slot="footer-border"` - Top gradient border
+ * - `data-slot="footer-content"` - Content wrapper
+ * - `data-slot="copyright"` - Copyright text
+ *
+ * ## Accessibility
  * - Uses semantic `<footer>` element
- * - Copyright text uses `text-secondary` (8.7:1 contrast) for readability even at small sizes
+ * - Copyright text uses `text-secondary` (8.7:1 contrast) for readability
  * - Wave pattern background is decorative (pointer-events-none)
  *
- * @component
- * @testId Auto-generated from data-testid prop (MOLECULE pattern)
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <AppFooter />
+ *
+ * // With all options
+ * <AppFooter
+ *   colorMode="auto"
+ *   compactOnMobile={true}
+ *   variant="default"
+ *   className="my-custom-class"
+ * />
+ * ```
  */
 export function AppFooter({
   colorMode = 'auto',
@@ -159,32 +330,12 @@ export function AppFooter({
   variant = 'default',
   ...props
 }: AppFooterProps) {
-  const currentYear = new Date().getFullYear()
-
-  // Auto-detect dark mode from document class
-  // Check both html and body for Storybook compatibility (Storybook applies to body)
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
-    const checkDarkMode = () => {
-      const isDark = document.documentElement.classList.contains('dark') ||
-                     document.body.classList.contains('dark')
-      setIsDarkMode(isDark)
-    }
-    checkDarkMode()
-
-    // Watch for changes on both html and body
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
-
-    return () => observer.disconnect()
+    const updateDarkMode = () => setIsDarkMode(checkDarkModeEnabled())
+    updateDarkMode()
+    return createDarkModeObserver(updateDarkMode)
   }, [])
 
   // Determine effective color mode for MadeWithLove
@@ -201,9 +352,9 @@ export function AppFooter({
     <footer
       className={cn(
         'relative flex items-center justify-between overflow-hidden',
-        // No border class - gradient border is rendered separately
-        // Mobile: compact height (32px = 8 * 4px grid), Desktop: normal height
-        compactOnMobile ? 'h-8 md:h-auto md:py-3 px-4 md:px-6' : 'px-6 py-3',
+        compactOnMobile
+          ? `h-${FOOTER_HEIGHT_COMPACT_PX / 4} md:h-auto md:py-3 px-4 md:px-6`
+          : 'px-6 py-3',
         className
       )}
       data-slot="footer"
@@ -212,28 +363,22 @@ export function AppFooter({
       {/* Wave pattern background (matches header) */}
       <WavePattern />
 
-      {/* Gradient border on top edge - matches AppHeader style (always visible) */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px pointer-events-none bg-gradient-to-r from-transparent via-default to-transparent z-20"
-        data-slot="footer-border"
-      />
+      {/* Gradient border on top edge */}
+      <FooterBorder />
 
       {/* Content wrapper - z-20 to be ABOVE wave line (z-10) */}
-      <div className="relative z-20 flex items-center justify-between w-full">
+      <div
+        className="relative z-20 flex items-center justify-between w-full"
+        data-slot="footer-content"
+      >
         {/* Left: MadeWithLove */}
         <MadeWithLove
           colorMode={effectiveColorMode}
-          className={compactOnMobile ? 'scale-[0.5] origin-left md:scale-100' : ''}
+          className={compactOnMobile ? `scale-[${MOBILE_LOGO_SCALE}] origin-left md:scale-100` : ''}
         />
 
-        {/* Right: Copyright text (both mobile and desktop) */}
-        {/* Using text-secondary (8.7:1) instead of text-muted (~4.5:1) for 10px text */}
-        <p className={cn(
-          'font-medium text-secondary',
-          compactOnMobile ? 'text-[10px] md:text-xs' : 'text-xs'
-        )}>
-          © {currentYear} Disrupt Software Inc. All Rights reserved.
-        </p>
+        {/* Right: Copyright text */}
+        <CopyrightText compactOnMobile={compactOnMobile} />
       </div>
     </footer>
   )
@@ -241,4 +386,9 @@ export function AppFooter({
 
 AppFooter.displayName = 'AppFooter'
 
+// =============================================================================
+// EXPORTS
+// =============================================================================
+
 export default AppFooter
+export { WavePattern, FooterBorder, CopyrightText }

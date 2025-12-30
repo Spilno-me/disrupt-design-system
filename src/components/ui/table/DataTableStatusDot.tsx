@@ -4,11 +4,43 @@ import * as React from "react"
 import { cn } from "../../../lib/utils"
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Dot size classes mapped by size variant */
+const DOT_SIZE_CLASSES = {
+  sm: 'w-2 h-2',
+  md: 'w-2.5 h-2.5',
+  lg: 'w-3 h-3',
+} as const
+
+/** Text size classes mapped by size variant */
+const TEXT_SIZE_CLASSES = {
+  sm: 'text-xs',
+  md: 'text-sm',
+  lg: 'text-sm',
+} as const
+
+/** Gap between dot and label */
+const DOT_LABEL_GAP = 'gap-2'
+
+/** Base dot styles applied to all variants */
+const DOT_BASE_STYLES = 'rounded-full flex-shrink-0'
+
+/** Base container styles */
+const CONTAINER_BASE_STYLES = 'inline-flex items-center whitespace-nowrap'
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
+/** Available dot color variants */
 export type DotVariant = 'default' | 'secondary' | 'destructive' | 'success' | 'warning' | 'info'
 
+/** Size options for the status dot */
+export type DotSize = 'sm' | 'md' | 'lg'
+
+/** Configuration for a single status */
 export interface DotStatusConfig {
   /** Dot color variant */
   variant: DotVariant
@@ -16,26 +48,28 @@ export interface DotStatusConfig {
   label?: string
 }
 
+/** Mapping of status values to their configurations */
 export type DotStatusMapping<T extends string = string> = Record<T, DotStatusConfig>
 
-export interface DataTableStatusDotProps<T extends string = string> {
-  /** Status value */
+/** Props for the DataTableStatusDot component */
+export interface DataTableStatusDotProps<T extends string = string>
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
+  /** Status value to display */
   status: T
   /** Mapping of status values to configurations */
   mapping: DotStatusMapping<T>
-  /** Size of the dot */
-  size?: 'sm' | 'md' | 'lg'
-  /** Additional className */
-  className?: string
+  /** Size of the dot and text */
+  size?: DotSize
   /** Whether to show the label (default: true) */
   showLabel?: boolean
 }
 
 // =============================================================================
-// DOT VARIANT STYLES
+// VARIANT STYLES
 // =============================================================================
 
-const dotVariantStyles: Record<DotVariant, string> = {
+/** Dot background color by variant - uses semantic status tokens */
+const DOT_VARIANT_STYLES: Record<DotVariant, string> = {
   default: 'bg-muted',
   secondary: 'bg-secondary',
   destructive: 'bg-error',
@@ -44,20 +78,8 @@ const dotVariantStyles: Record<DotVariant, string> = {
   info: 'bg-info',
 }
 
-const dotSizes: Record<'sm' | 'md' | 'lg', string> = {
-  sm: 'w-2 h-2',
-  md: 'w-2.5 h-2.5',
-  lg: 'w-3 h-3',
-}
-
-const textSizes: Record<'sm' | 'md' | 'lg', string> = {
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-sm',
-}
-
 // =============================================================================
-// COMMON STATUS MAPPINGS (Presets for convenience)
+// PRESET MAPPINGS
 // =============================================================================
 
 /** Standard active/inactive status mapping */
@@ -128,15 +150,15 @@ export const TENANT_REQUEST_DOT_STATUS_MAP: DotStatusMapping<'pending_review' | 
 }
 
 // =============================================================================
-// COMPONENT
+// COMPONENTS
 // =============================================================================
 
 /**
- * DataTableStatusDot - Compact status indicator with colored dot and label
+ * DataTableStatusDot - Compact status indicator with colored dot and label.
  *
- * A minimal, accessible status indicator that combines a colored dot
- * with a text label. Recommended as the standard for status display
- * in data tables for optimal balance of visual clarity and compactness.
+ * A minimal, accessible status indicator that combines a colored dot with
+ * a text label. Designed as the standard for status display in data tables
+ * for optimal balance of visual clarity and compactness.
  *
  * @component ATOM
  * @category Data Display
@@ -162,6 +184,7 @@ export const TENANT_REQUEST_DOT_STATUS_MAP: DotStatusMapping<'pending_review' | 
  * - Color is supplemented with text label for colorblind users
  * - Uses semantic color tokens for consistent meaning
  * - When showLabel=false, includes aria-label for screen readers
+ * - role="status" for live region announcements
  */
 export function DataTableStatusDot<T extends string = string>({
   status,
@@ -169,25 +192,26 @@ export function DataTableStatusDot<T extends string = string>({
   size = 'md',
   className,
   showLabel = true,
+  ...props
 }: DataTableStatusDotProps<T>) {
   const config = mapping[status]
 
-  // Fallback if status not in mapping
+  // Fallback for unknown status
   if (!config) {
-    console.warn(`DataTableStatusDot: Unknown status "${status}" not found in mapping`)
     return (
-      <span className={cn("inline-flex items-center gap-2 whitespace-nowrap", className)}>
+      <span
+        data-slot="data-table-status-dot"
+        role="status"
+        className={cn(CONTAINER_BASE_STYLES, DOT_LABEL_GAP, className)}
+        {...props}
+      >
         <span
-          className={cn(
-            "rounded-full flex-shrink-0",
-            dotVariantStyles.default,
-            dotSizes[size]
-          )}
+          className={cn(DOT_BASE_STYLES, DOT_VARIANT_STYLES.default, DOT_SIZE_CLASSES[size])}
           aria-hidden={showLabel}
           aria-label={showLabel ? undefined : String(status)}
         />
         {showLabel && (
-          <span className={cn("text-muted", textSizes[size])}>
+          <span className={cn("text-muted", TEXT_SIZE_CLASSES[size])}>
             {status}
           </span>
         )}
@@ -199,18 +223,19 @@ export function DataTableStatusDot<T extends string = string>({
   const displayLabel = label || status
 
   return (
-    <span className={cn("inline-flex items-center gap-2 whitespace-nowrap", className)}>
+    <span
+      data-slot="data-table-status-dot"
+      role="status"
+      className={cn(CONTAINER_BASE_STYLES, DOT_LABEL_GAP, className)}
+      {...props}
+    >
       <span
-        className={cn(
-          "rounded-full flex-shrink-0",
-          dotVariantStyles[variant],
-          dotSizes[size]
-        )}
+        className={cn(DOT_BASE_STYLES, DOT_VARIANT_STYLES[variant], DOT_SIZE_CLASSES[size])}
         aria-hidden={showLabel}
         aria-label={showLabel ? undefined : displayLabel}
       />
       {showLabel && (
-        <span className={cn("text-primary", textSizes[size])}>
+        <span className={cn("text-primary", TEXT_SIZE_CLASSES[size])}>
           {displayLabel}
         </span>
       )}
@@ -219,5 +244,9 @@ export function DataTableStatusDot<T extends string = string>({
 }
 
 DataTableStatusDot.displayName = "DataTableStatusDot"
+
+// =============================================================================
+// EXPORTS
+// =============================================================================
 
 export default DataTableStatusDot

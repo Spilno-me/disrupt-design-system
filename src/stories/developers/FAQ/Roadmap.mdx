@@ -1,0 +1,565 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Target,
+  CheckCircle,
+  Clock,
+  AlertTriangle,
+  Users,
+  Gauge,
+  Shield,
+  Layers,
+  GitBranch,
+  ArrowLeft,
+  ArrowRight,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  GuidelineCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SUNRISE,
+  PRIMITIVES,
+  SLATE,
+  RADIUS,
+  SPACING,
+} from '../../brand/BrandComponents';
+
+<Meta title="Developers/FAQ/12 Roadmap" />
+
+<div style={{ marginBottom: '24px' }}>
+  <a href="?path=/docs/developers-faq-11-known-gaps--docs" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    <ArrowLeft size={14} /> Back to Known Gaps
+  </a>
+</div>
+
+<BrandHero
+  title="DDS Maturity Roadmap"
+  description="Concrete improvements to address skeptic concerns. Prioritized by risk and impact."
+  gradient="teal"
+  decorativeIcon={<Target size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="info">
+  This roadmap was created in response to real skeptical questions about DDS.
+  Each improvement directly addresses a documented concern. We track progress honestly.
+</InfoBox>
+
+---
+
+## Priority Legend
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '24px' }}>
+  {[
+    { label: 'P0 - Critical', desc: 'Blocks adoption, high risk', color: CORAL },
+    { label: 'P1 - High', desc: 'Significant gap, needed soon', color: SUNRISE },
+    { label: 'P2 - Medium', desc: 'Important but has workaround', color: HARBOR },
+    { label: 'P3 - Low', desc: 'Nice to have, polish', color: SLATE },
+  ].map((item, idx) => (
+    <div key={idx} style={{ background: item.color[50], borderRadius: RADIUS.md, padding: '12px', border: `1px solid ${item.color[200]}`, textAlign: 'center' }}>
+      <div style={{ fontSize: '12px', fontWeight: 700, color: item.color[700] }}>{item.label}</div>
+      <div style={{ fontSize: '10px', color: DUSK_REEF[500], marginTop: '4px' }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Phase 1: Validation & Trust Building
+
+<div style={{ background: CORAL[50], borderRadius: RADIUS.lg, padding: '4px 16px 4px 16px', border: `1px solid ${CORAL[200]}`, marginBottom: '16px' }}>
+  <p style={{ fontSize: '13px', fontWeight: 600, color: CORAL[700], margin: '12px 0' }}>
+    Goal: Prove the model works with real consumers before scaling
+  </p>
+</div>
+
+### R1: First Production Consumer Validation
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: CORAL[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P0</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Ship DDS pages to production with real consumer</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "How many products are currently using DDS page compositions in production?"
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>1 production app using 3+ DDS page compositions</li>
+        <li>Real users interacting with DDS pages daily</li>
+        <li>Production metrics: error rates, load times</li>
+        <li>Consumer feedback documented</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>0 DDS-caused production incidents in 30 days</li>
+        <li>Consumer team confirms "would use again"</li>
+        <li>Adapter pattern validated in real codebase</li>
+        <li>Case study published in this documentation</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### R2: Interface-First Protocol Validation
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: CORAL[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P0</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Run Interface-First Protocol with real deadline pressure</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "Interface-First Emergency Protocol is designed but not yet validated in production."
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>1 real emergency scenario executed end-to-end</li>
+        <li>Consumer builds to DDS interface spec</li>
+        <li>DDS delivers polished version within 2 weeks</li>
+        <li>Swap is verified as "1-line import change"</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Consumer met their deadline</li>
+        <li>Swap took &lt;30 minutes of consumer time</li>
+        <li>No interface mismatches discovered during swap</li>
+        <li>Process documented with real timeline</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### R3: Independent Onboarding Test
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: CORAL[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P0</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Validate self-service onboarding without architect</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "No one other than the architect has used the agent-assisted workflow."
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>1 developer onboards using only documentation</li>
+        <li>Successfully integrates 1 DDS page composition</li>
+        <li>Documents questions/blockers encountered</li>
+        <li>Provides improvement feedback</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Onboarding completed in &lt;4 hours</li>
+        <li>&lt;3 questions required architect involvement</li>
+        <li>Working adapter code without architect review</li>
+        <li>Gaps identified added to documentation</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+---
+
+## Phase 2: Reliability & Performance
+
+<div style={{ background: SUNRISE[50], borderRadius: RADIUS.lg, padding: '4px 16px 4px 16px', border: `1px solid ${SUNRISE[200]}`, marginBottom: '16px' }}>
+  <p style={{ fontSize: '13px', fontWeight: 600, color: SUNRISE[700], margin: '12px 0' }}>
+    Goal: Proactive quality assurance, not reactive firefighting
+  </p>
+</div>
+
+### R4: Automated Performance Testing
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: SUNRISE[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P1</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>CI pipeline catches performance regressions before release</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "So I'm the canary in the coal mine for memory leaks?"
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Lighthouse CI for Core Web Vitals</li>
+        <li>Bundle size tracking with alerts on regression</li>
+        <li>Memory leak detection for common patterns</li>
+        <li>Performance baseline for each component</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>CI blocks PRs that regress Lighthouse &gt;5%</li>
+        <li>Bundle size delta shown in PR comments</li>
+        <li>Zero memory leaks shipped in 3 consecutive releases</li>
+        <li>Published performance benchmarks in docs</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### R5: Bundle Size Documentation
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: SUNRISE[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P1</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Transparent bundle impact for every component</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "What's the bundle size impact? Tree-shaking works, no published metrics yet."
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Per-component gzipped size in Storybook docs</li>
+        <li>"Import cost" shown for page compositions</li>
+        <li>Comparison vs. building from scratch</li>
+        <li>Tree-shaking verification tests</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Every component shows bundle size in docs</li>
+        <li>Automated alerts if component exceeds 50KB</li>
+        <li>Consumer can predict bundle impact before adopting</li>
+        <li>Quarterly bundle size report published</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### R6: SLA Dashboard & Transparency
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: SUNRISE[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P1</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Public SLA tracking and queue visibility</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "What's the queue depth historically? If I'm Consumer B, my SLA clock pauses - but my production users don't pause."
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Public status page showing current queue</li>
+        <li>Historical SLA adherence metrics</li>
+        <li>Average response/fix times by severity</li>
+        <li>Architect availability calendar</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Consumers can see queue before submitting issues</li>
+        <li>SLA adherence &gt;90% over rolling 30 days</li>
+        <li>PTO/unavailability communicated 1 week ahead</li>
+        <li>Monthly SLA report shared with stakeholders</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+---
+
+## Phase 3: Scalability & Resilience
+
+<div style={{ background: HARBOR[50], borderRadius: RADIUS.lg, padding: '4px 16px 4px 16px', border: `1px solid ${HARBOR[200]}`, marginBottom: '16px' }}>
+  <p style={{ fontSize: '13px', fontWeight: 600, color: HARBOR[700], margin: '12px 0' }}>
+    Goal: Reduce single-point-of-failure risk, enable team growth
+  </p>
+</div>
+
+### R7: Bus Factor Mitigation
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: HARBOR[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P2</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Second person can maintain DDS independently</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "What if the architect leaves? Has anyone onboarded without hand-holding?"
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Backup maintainer identified and trained</li>
+        <li>All processes documented (not just code)</li>
+        <li>Agent-assisted workflow validated by second person</li>
+        <li>Emergency contact protocol for architect unavailability</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Backup ships 1 component independently</li>
+        <li>Backup handles 1 critical bug without architect</li>
+        <li>2-week architect absence doesn't block consumers</li>
+        <li>Knowledge transfer documented and tested</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### R8: Concurrent Request Handling
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: HARBOR[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P2</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Handle multiple teams without blocking</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "What if 5 teams all need pages at once? How does delivery time look when context-switching?"
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Request intake process with visibility</li>
+        <li>Prioritization criteria documented</li>
+        <li>Interface-First as standard for overflow</li>
+        <li>Agent parallelization for independent requests</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>3+ concurrent requests handled without SLA miss</li>
+        <li>Consumer wait time &lt;2 days for queue position</li>
+        <li>Clear communication when blocked</li>
+        <li>Context-switch overhead measured and optimized</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+---
+
+## Phase 4: Feature Completeness
+
+<div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.lg, padding: '4px 16px 4px 16px', border: `1px solid ${DEEP_CURRENT[200]}`, marginBottom: '16px' }}>
+  <p style={{ fontSize: '13px', fontWeight: 600, color: DEEP_CURRENT[700], margin: '12px 0' }}>
+    Goal: Close known feature gaps, expand pattern coverage
+  </p>
+</div>
+
+### R9: Animation System
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: DEEP_CURRENT[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P2</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Standardized animation patterns</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Gap:</strong> Animation system (Framer Motion) not standardized. Consumer handles animations outside DDS.
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Animation token system (duration, easing)</li>
+        <li>Transition presets for common patterns</li>
+        <li>Documented animation guidelines</li>
+        <li>Optional Framer Motion integration</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Consumers can add animations without custom CSS</li>
+        <li>Animation tokens in designTokens.ts</li>
+        <li>3+ animation presets in Storybook</li>
+        <li>No performance regression from animations</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### R10: Accessibility Override Pattern
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: DEEP_CURRENT[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P2</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Legitimate customization for accessibility needs</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "What if my users need larger touch targets than DDS provides? Do I build my own button just to increase padding?"
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Accessibility override API (touch target, font size)</li>
+        <li>High-contrast mode support</li>
+        <li>Reduced-motion preference handling</li>
+        <li>Screen reader optimization patterns</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Touch targets can be increased via prop/token</li>
+        <li>WCAG AAA achievable without custom code</li>
+        <li>Accessibility overrides don't break visual consistency</li>
+        <li>Documented in accessibility guidelines</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+### R11: DataTable vs TanStack Documentation
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px' }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+    <span style={{ background: SLATE[500], color: PRIMITIVES.white, padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 700 }}>P3</span>
+    <span style={{ fontSize: '15px', fontWeight: 600, color: ABYSS[500] }}>Clear comparison and migration path</span>
+  </div>
+
+  <div style={{ fontSize: '13px', color: DUSK_REEF[600], marginBottom: '16px' }}>
+    <strong>Skeptic Question:</strong> "Why reinvent TanStack Table? What features does DDS DataTable lack?"
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Deliverables</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Feature comparison matrix: DataTable vs TanStack</li>
+        <li>Migration guide from TanStack to DDS</li>
+        <li>Document intentional feature differences</li>
+        <li>When to use TanStack (if ever) guidance</li>
+      </ul>
+    </div>
+    <div>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: HARBOR[700], marginBottom: '8px' }}>Validation Criteria</div>
+      <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: DUSK_REEF[500] }}>
+        <li>Consumer can make informed choice</li>
+        <li>No "hidden" missing features discovered post-adoption</li>
+        <li>Clear recommendation in documentation</li>
+        <li>Migration example in Storybook</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+---
+
+## Tracking Progress
+
+<div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${SLATE[200]}`, marginBottom: '24px', overflow: 'auto' }}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>ID</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Item</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Priority</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { id: 'R1', item: 'First Production Consumer', priority: 'P0', priorityColor: CORAL, status: 'Not Started', statusColor: SLATE },
+        { id: 'R2', item: 'Interface-First Validation', priority: 'P0', priorityColor: CORAL, status: 'Not Started', statusColor: SLATE },
+        { id: 'R3', item: 'Independent Onboarding Test', priority: 'P0', priorityColor: CORAL, status: 'Not Started', statusColor: SLATE },
+        { id: 'R4', item: 'Automated Performance Testing', priority: 'P1', priorityColor: SUNRISE, status: 'Not Started', statusColor: SLATE },
+        { id: 'R5', item: 'Bundle Size Documentation', priority: 'P1', priorityColor: SUNRISE, status: 'Not Started', statusColor: SLATE },
+        { id: 'R6', item: 'SLA Dashboard', priority: 'P1', priorityColor: SUNRISE, status: 'Not Started', statusColor: SLATE },
+        { id: 'R7', item: 'Bus Factor Mitigation', priority: 'P2', priorityColor: HARBOR, status: 'Not Started', statusColor: SLATE },
+        { id: 'R8', item: 'Concurrent Request Handling', priority: 'P2', priorityColor: HARBOR, status: 'Not Started', statusColor: SLATE },
+        { id: 'R9', item: 'Animation System', priority: 'P2', priorityColor: DEEP_CURRENT, status: 'Not Started', statusColor: SLATE },
+        { id: 'R10', item: 'Accessibility Override Pattern', priority: 'P2', priorityColor: DEEP_CURRENT, status: 'Not Started', statusColor: SLATE },
+        { id: 'R11', item: 'DataTable vs TanStack Docs', priority: 'P3', priorityColor: SLATE, status: 'Not Started', statusColor: SLATE },
+      ].map((row, idx) => (
+        <tr key={idx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px', fontFamily: 'monospace', fontWeight: 600, color: ABYSS[500] }}>{row.id}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500] }}>{row.item}</td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.priorityColor[100], color: row.priorityColor[700], padding: '4px 10px', borderRadius: RADIUS.sm, fontSize: '11px', fontWeight: 600 }}>{row.priority}</span>
+          </td>
+          <td style={{ padding: '12px 16px' }}>
+            <span style={{ background: row.statusColor[100], color: row.statusColor[700], padding: '4px 10px', borderRadius: RADIUS.full, fontSize: '11px', fontWeight: 600 }}>{row.status}</span>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Honesty:</strong> All items show "Not Started" because this roadmap was just created.
+  Status will be updated as work progresses. This section will never lie about progress.
+</InfoBox>
+
+---
+
+## How This Roadmap Gets Updated
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
+  {[
+    { title: 'Monthly Review', desc: 'Status updates on all items, new gaps added', icon: Clock },
+    { title: 'Consumer Feedback', desc: 'New skeptic questions become roadmap items', icon: Users },
+    { title: 'Validation Events', desc: 'When criteria met, status changes to "Complete"', icon: CheckCircle },
+  ].map((item, idx) => (
+    <div key={idx} style={{ background: HARBOR[50], borderRadius: RADIUS.lg, padding: '20px', border: `1px solid ${HARBOR[200]}`, textAlign: 'center' }}>
+      <div style={{ width: '40px', height: '40px', borderRadius: RADIUS.full, background: HARBOR[100], display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px', color: HARBOR[600] }}>
+        <item.icon size={20} />
+      </div>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: HARBOR[700], marginBottom: '4px' }}>{item.title}</div>
+      <div style={{ fontSize: '11px', color: DUSK_REEF[500] }}>{item.desc}</div>
+    </div>
+  ))}
+</div>
+
+---
+
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderTop: `1px solid ${SLATE[200]}` }}>
+  <a href="?path=/docs/developers-faq-11-known-gaps--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    <ArrowLeft size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+    Known Gaps
+  </a>
+  <a href="?path=/docs/developers-faq-01-overview--docs" style={{ fontSize: '13px', color: DEEP_CURRENT[600], textDecoration: 'none' }}>
+    Back to FAQ Overview
+    <ArrowRight size={14} style={{ marginLeft: '6px', verticalAlign: 'middle' }} />
+  </a>
+</div>

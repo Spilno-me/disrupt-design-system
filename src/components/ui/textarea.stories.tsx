@@ -64,12 +64,23 @@ export const AllStates: Story = {
 
       <div>
         <h4 className="text-sm font-semibold text-primary mb-4">Error State (aria-invalid)</h4>
+        <label htmlFor="error-textarea" className="text-sm font-medium text-primary mb-1.5 block">
+          Description <span className="text-error">*</span>
+        </label>
         <Textarea
+          id="error-textarea"
           placeholder="Invalid input"
           aria-invalid="true"
+          aria-describedby="error-message"
           rows={3}
           defaultValue="Error state example"
         />
+        <p id="error-message" className="text-sm text-error mt-1.5">
+          This field is required
+        </p>
+        <p className="text-xs text-secondary mt-2">
+          Error indication: red border + ring glow + error message below. Text stays readable.
+        </p>
       </div>
 
       <div>

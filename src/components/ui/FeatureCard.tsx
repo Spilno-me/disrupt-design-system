@@ -3,15 +3,64 @@ import { motion, useMotionValue, useSpring, animate } from 'motion/react'
 import { ElectricLucideIcon, IconName } from './ElectricLucideIcon'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
-// Hook to detect tablet (between mobile and desktop)
-function useIsTablet() {
+// =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Outer ring SVG radius in viewBox units */
+const OUTER_RING_RADIUS = 58
+
+/** Dash/gap size for dashed ring (circumference ÷ 40 segments) */
+const DASH_GAP_SIZE = 9.11
+
+/** Spin velocity in degrees per second when animation is active */
+const SPIN_VELOCITY_DEG_PER_SEC = 120
+
+/** Spring animation configuration for smooth acceleration/deceleration */
+const SPRING_CONFIG = { damping: 20, stiffness: 100 }
+
+/** Duration per card in sequence animation (ms) */
+const SEQUENCE_ANIMATION_DURATION_MS = 1000
+
+/** Maximum height for description container when expanded (px) */
+const DESCRIPTION_MAX_HEIGHT_PX = 160
+
+/** Description slide offset when hidden (px) */
+const DESCRIPTION_SLIDE_OFFSET_PX = -20
+
+/** Animation duration for description reveal (seconds) */
+const DESCRIPTION_ANIMATION_DURATION_SEC = 0.4
+
+/** Custom easing curve for bouncy description animation (cubic bezier) */
+const DESCRIPTION_EASING: [number, number, number, number] = [0.34, 1.56, 0.64, 1]
+
+/** Tablet breakpoint range: min width (px) */
+const TABLET_MIN_WIDTH_PX = 640
+
+/** Tablet breakpoint range: max width (px, exclusive) */
+const TABLET_MAX_WIDTH_PX = 1024
+
+/** Icon scale multiplier when animation is active */
+const ICON_ACTIVE_SCALE = 1.1
+
+/** Icon scale transition duration (seconds) */
+const ICON_SCALE_DURATION_SEC = 0.3
+
+// =============================================================================
+// HOOKS
+// =============================================================================
+
+/**
+ * Detects tablet viewport (between mobile and desktop breakpoints).
+ * Tablet range: 640px to 1023px (sm to lg Tailwind breakpoints).
+ */
+function useIsTablet(): boolean {
   const [isTablet, setIsTablet] = useState(false)
 
   useEffect(() => {
     const checkTablet = () => {
       const width = window.innerWidth
-      // Tablet: 640px to 1023px (sm to lg breakpoint)
-      setIsTablet(width >= 640 && width < 1024)
+      setIsTablet(width >= TABLET_MIN_WIDTH_PX && width < TABLET_MAX_WIDTH_PX)
     }
 
     checkTablet()
@@ -23,39 +72,27 @@ function useIsTablet() {
 }
 
 // =============================================================================
-// CONSTANTS
-// =============================================================================
-
-const OUTER_RADIUS = 58
-// Circumference = 2 * π * 58 ≈ 364.42, divided by 40 segments for even dashes
-const DASH_GAP_SIZE = 9.11
-
-// Animation config
-const SPIN_VELOCITY = 120 // degrees per second when active
-const SPRING_CONFIG = { damping: 20, stiffness: 100 } // for smooth start/stop
-
-// =============================================================================
 // TYPES
 // =============================================================================
 
-export interface FeatureCardProps {
+export interface FeatureCardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Lucide icon name for the electric effect */
   iconName: IconName
-  /** Background color for the circle */
+  /** Background color for the circle (CSS color value) */
   circleColor: string
-  /** Card title */
+  /** Card title displayed below the icon */
   title: string
-  /** Card description - use ReactNode for rich text */
+  /** Card description - supports ReactNode for rich text formatting */
   description: React.ReactNode
   /** External control: is this card currently animating in the sequence */
   isSequenceActive?: boolean
   /** External control: has this card completed its sequence animation */
   hasCompletedSequence?: boolean
-  /** Callback when sequence animation should complete */
+  /** Callback fired when sequence animation completes */
   onSequenceComplete?: () => void
-  /** External control: is this card tapped active (for tablet) */
+  /** External control: is this card in tapped-active state (tablet only) */
   isTappedActive?: boolean
-  /** Callback when card is tapped (for tablet) */
+  /** Callback fired when card is tapped (tablet only) */
   onTap?: () => void
 }
 
@@ -64,15 +101,52 @@ export interface FeatureCardProps {
 // =============================================================================
 
 /**
- * Feature card with animated rotating dashed border.
- * Supports both hover interaction and external sequence animation control.
+ * FeatureCard - Animated feature showcase card with rotating dashed border.
  *
- * Animation behavior:
- * - On scroll: Cards animate one by one via isSequenceActive prop
- * - After sequence: Text stays visible (hasCompletedSequence)
- * - On hover: Spin + electric effect re-triggers, text stays in place
+ * Displays a feature with an animated icon, rotating border ring, and reveal
+ * animation for description text. Supports both hover interactions and
+ * external sequence animation control for coordinated animations.
+ *
+ * @component ATOM
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <FeatureCard
+ *   iconName="Zap"
+ *   circleColor="#08A4BD"
+ *   title="Fast Performance"
+ *   description="Lightning-fast load times"
+ * />
+ *
+ * // With sequence animation control
+ * <FeatureCard
+ *   iconName="Shield"
+ *   circleColor="#5E4F7E"
+ *   title="Secure"
+ *   description="Enterprise-grade security"
+ *   isSequenceActive={activeIndex === 0}
+ *   hasCompletedSequence={completedCards.has(0)}
+ *   onSequenceComplete={() => setActiveIndex(1)}
+ * />
+ * ```
+ *
+ * **Animation Behavior:**
+ * - Scroll sequence: Cards animate one-by-one via `isSequenceActive` prop
+ * - After sequence: Description stays visible (`hasCompletedSequence`)
+ * - Hover (desktop): Re-triggers spin + electric effect
+ * - Tap (tablet): Toggles active state via `onTap` callback
+ *
+ * **Responsive:**
+ * - Mobile: Description always visible, no animations
+ * - Tablet: Tap to activate animation
+ * - Desktop: Hover to activate animation
+ *
+ * **Testing:**
+ * - `data-slot="feature-card"` - Root container
+ * - `data-cursor-repel="true"` - Icon container (for cursor effects)
  */
-export function FeatureCard({
+function FeatureCard({
   iconName,
   circleColor,
   title,
@@ -82,6 +156,8 @@ export function FeatureCard({
   onSequenceComplete,
   isTappedActive = false,
   onTap,
+  className,
+  ...props
 }: FeatureCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const isMobile = useIsMobile()
@@ -115,7 +191,7 @@ export function FeatureCard({
       // Notify parent when this card's animation duration is complete
       const timer = setTimeout(() => {
         onSequenceComplete?.()
-      }, 1000) // Animation duration per card
+      }, SEQUENCE_ANIMATION_DURATION_MS)
 
       return () => clearTimeout(timer)
     }
@@ -131,7 +207,7 @@ export function FeatureCard({
       // Start continuous rotation
       const currentRotation = rotation.get()
       animationRef.current = animate(rotation, currentRotation + 360000, {
-        duration: 360000 / SPIN_VELOCITY,
+        duration: 360000 / SPIN_VELOCITY_DEG_PER_SEC,
         ease: 'linear',
         repeat: Infinity,
       })
@@ -169,10 +245,12 @@ export function FeatureCard({
 
   return (
     <div
-      className="flex flex-col items-center text-center gap-4 sm:gap-6 cursor-pointer"
+      data-slot="feature-card"
+      className={`flex flex-col items-center text-center gap-4 sm:gap-6 cursor-pointer ${className || ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleCardClick}
+      {...props}
     >
       {/* Icon with colored circle and dashed outer ring */}
       <div className="relative w-24 h-24 sm:w-[120px] sm:h-[120px]" data-cursor-repel="true">
@@ -185,7 +263,7 @@ export function FeatureCard({
           <circle
             cx="60"
             cy="60"
-            r={OUTER_RADIUS}
+            r={OUTER_RING_RADIUS}
             fill="none"
             stroke={circleColor}
             strokeWidth="2"
@@ -200,8 +278,8 @@ export function FeatureCard({
         >
           <motion.div
             className="overflow-visible"
-            animate={{ scale: isSpinActive ? 1.1 : 1 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            animate={{ scale: isSpinActive ? ICON_ACTIVE_SCALE : 1 }}
+            transition={{ duration: ICON_SCALE_DURATION_SEC, ease: 'easeOut' }}
           >
             <ElectricLucideIcon
               name={iconName}
@@ -222,23 +300,23 @@ export function FeatureCard({
         className="overflow-hidden"
         initial={false}
         animate={{
-          maxHeight: isTextVisible ? 160 : 0,
+          maxHeight: isTextVisible ? DESCRIPTION_MAX_HEIGHT_PX : 0,
           opacity: isTextVisible ? 1 : 0,
         }}
         transition={{
-          duration: 0.4,
-          ease: [0.34, 1.56, 0.64, 1],
+          duration: DESCRIPTION_ANIMATION_DURATION_SEC,
+          ease: DESCRIPTION_EASING,
         }}
       >
         <motion.p
           className="text-muted leading-relaxed text-sm sm:text-base max-w-[280px]"
           initial={false}
           animate={{
-            y: isTextVisible ? 0 : -20,
+            y: isTextVisible ? 0 : DESCRIPTION_SLIDE_OFFSET_PX,
           }}
           transition={{
-            duration: 0.4,
-            ease: [0.34, 1.56, 0.64, 1],
+            duration: DESCRIPTION_ANIMATION_DURATION_SEC,
+            ease: DESCRIPTION_EASING,
           }}
         >
           {description}
@@ -247,3 +325,6 @@ export function FeatureCard({
     </div>
   )
 }
+FeatureCard.displayName = "FeatureCard"
+
+export { FeatureCard }

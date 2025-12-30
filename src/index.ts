@@ -125,6 +125,7 @@ export {
   DataTableBadge,
   DataTableActions,
   DataTableMobileCard,
+  IncidentManagementTable,
   ACTIVE_STATUS_MAP,
   WORKFLOW_STATUS_MAP,
   REQUEST_STATUS_MAP,
@@ -138,6 +139,8 @@ export type {
   ActionVariant,
   DataTableMobileCardProps,
   MobileCardField,
+  IncidentManagementTableProps,
+  Incident as IncidentManagementTableIncident,
 } from './components/ui/table'
 export { SectionWrapper, SectionHeading, SectionContainer, ContentSection, TwoColumnLayout, Column } from './components/ui/SectionLayout'
 export {

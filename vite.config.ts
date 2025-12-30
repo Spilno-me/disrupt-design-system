@@ -20,6 +20,13 @@ function copyCSSFilesPlugin() {
       )
       console.log('✓ Copied tokens.css to dist/styles/')
 
+      // Copy styles.css (main Tailwind v4 theme with all DDS tokens)
+      copyFileSync(
+        resolve(__dirname, 'src/styles.css'),
+        resolve(tokensDir, 'theme.css')
+      )
+      console.log('✓ Copied styles.css to dist/styles/theme.css')
+
       // Copy HeroParticles.css
       const uiDir = resolve(__dirname, 'dist/components/ui')
       if (!existsSync(uiDir)) {

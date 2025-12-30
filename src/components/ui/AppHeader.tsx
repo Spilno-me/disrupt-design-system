@@ -16,6 +16,52 @@ import {
 } from './dropdown-menu'
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Header height in pixels - matches Figma spec */
+const HEADER_HEIGHT_PX = 55
+
+/** Icon size for menu item icons */
+const MENU_ICON_SIZE = 'w-4 h-4'
+
+/** Icon button dimensions */
+const ICON_BUTTON_SIZE = 'w-[38px] h-[38px]'
+
+/** Notification bell icon dimensions */
+const BELL_ICON_SIZE = 'w-5 h-5'
+
+/** Maximum notification count before showing "99+" */
+const MAX_NOTIFICATION_DISPLAY = 99
+
+/** Wave animation tile width for seamless scrolling */
+const WAVE_TILE_WIDTH_PX = 1600
+
+/** Wave animation total width (4× tile for seamless loop) */
+const WAVE_ANIMATION_WIDTH_PX = 6400
+
+/** Wave SVG height in pixels */
+const WAVE_SVG_HEIGHT_PX = 55
+
+/** Primary wave animation duration in seconds */
+const WAVE_PRIMARY_DURATION_S = 35
+
+/** Secondary wave animation duration in seconds */
+const WAVE_SECONDARY_DURATION_S = 40
+
+/** Secondary wave delay offset in seconds */
+const WAVE_SECONDARY_DELAY_S = -5
+
+/** Wave swell animation duration in seconds */
+const WAVE_SWELL_DURATION_S = 8
+
+/** Logo container minimum width */
+const LOGO_CONTAINER_MIN_WIDTH = 'min-w-[219px]'
+
+/** Logo image height */
+const LOGO_HEIGHT = 'h-[32px]'
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
@@ -59,8 +105,8 @@ export interface UserInfo {
   initials?: string
 }
 
-/** Main AppHeader props */
-export interface AppHeaderProps {
+/** Main AppHeader props - extends HTMLAttributes for proper HTML element support */
+export interface AppHeaderProps extends React.HTMLAttributes<HTMLElement> {
   /** Which product app this header is for */
   product: ProductType
   /** Optional tagline override (defaults to product tagline) */
@@ -81,8 +127,6 @@ export interface AppHeaderProps {
   colorMode?: 'dark' | 'light' | 'auto'
   /** Callback when logo is clicked */
   onLogoClick?: () => void
-  /** Additional className for styling */
-  className?: string
   /** Whether to show the wave pattern background */
   showWavePattern?: boolean
   /** Disable dropdown portal for Storybook testing */
@@ -91,10 +135,7 @@ export interface AppHeaderProps {
   leftContent?: React.ReactNode
 }
 
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-
+/** Product configurations with logo paths and taglines */
 const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   flow: {
     logoLight: LOGOS.flow.light,
@@ -113,54 +154,84 @@ const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   },
 }
 
+/** Default menu items for user dropdown */
 const DEFAULT_MENU_ITEMS: UserMenuItem[] = [
-  { id: 'profile', label: 'Profile', icon: <User className="w-4 h-4" /> },
-  { id: 'settings', label: 'Settings', icon: <Settings className="w-4 h-4" /> },
-  { id: 'logout', label: 'Log out', icon: <LogOut className="w-4 h-4" />, destructive: true, separator: true },
+  { id: 'profile', label: 'Profile', icon: <User className={MENU_ICON_SIZE} /> },
+  { id: 'settings', label: 'Settings', icon: <Settings className={MENU_ICON_SIZE} /> },
+  { id: 'logout', label: 'Log out', icon: <LogOut className={MENU_ICON_SIZE} />, destructive: true, separator: true },
 ]
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+
+/**
+ * Checks if dark mode is enabled by inspecting document classes.
+ * Supports both html and body class detection for Storybook compatibility.
+ * Returns false during SSR when document is not available.
+ */
+function checkDarkModeEnabled(): boolean {
+  if (typeof document === 'undefined') return false
+  return document.documentElement.classList.contains('dark') ||
+         document.body.classList.contains('dark')
+}
+
+/**
+ * Creates a MutationObserver to watch for dark mode class changes.
+ * @param callback - Function to call when dark mode changes
+ * @returns Cleanup function to disconnect observer
+ */
+function createDarkModeObserver(callback: () => void): () => void {
+  const observer = new MutationObserver(callback)
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+  return () => observer.disconnect()
+}
+
+/**
+ * Generates SVG data URI for wave pattern with given color.
+ * @param color - Hex color for wave stroke
+ */
+function generateWaveSvgDataUri(color: string): string {
+  return `data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${WAVE_TILE_WIDTH_PX}" height="${WAVE_SVG_HEIGHT_PX}" viewBox="0 0 ${WAVE_TILE_WIDTH_PX} ${WAVE_SVG_HEIGHT_PX}" preserveAspectRatio="none"><path fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round" d="M0 10 c200 0 300 35 400 35 c100 0 200-35 400-35 c200 0 300 35 400 35 c100 0 200-35 400-35"/></svg>`
+  )}`
+}
+
+/**
+ * Formats notification count for display, capping at MAX_NOTIFICATION_DISPLAY.
+ * @param count - Raw notification count
+ */
+function formatNotificationCount(count: number): string {
+  return count > MAX_NOTIFICATION_DISPLAY ? `${MAX_NOTIFICATION_DISPLAY}+` : count.toString()
+}
+
+/**
+ * Generates user initials from name or existing initials.
+ * @param user - User info object
+ */
+function getUserInitials(user?: UserInfo): string {
+  if (user?.initials) return user.initials
+  if (user?.name) {
+    return user.name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase()
+  }
+  return '?'
+}
 
 // =============================================================================
 // SUB-COMPONENTS
 // =============================================================================
 
 /**
- * Animated ocean wave pattern background
- *
- * Features dual-layer animated waves that scroll horizontally
- * with a subtle swell effect for depth. Adapted from CodePen
- * ocean wave technique to fit the header height.
- *
- * Animation specs:
- * - Wave scrolls left continuously (7s cycle)
- * - Second wave has offset timing + vertical swell
- * - Colors adapt to light/dark mode using ELECTRIC_CYAN tokens
+ * Glass background layer for wave pattern.
+ * @component ATOM
  */
-function WavePattern() {
-  // Detect dark mode
-  const [isDarkMode, setIsDarkMode] = useState(false)
-
-  useEffect(() => {
-    const checkDarkMode = () => {
-      const isDark = document.documentElement.classList.contains('dark') ||
-                     document.body.classList.contains('dark')
-      setIsDarkMode(isDark)
-    }
-    checkDarkMode()
-
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
-
-    return () => observer.disconnect()
-  }, [])
-
-  // Teal color from DEEP_CURRENT palette
-  const teal = DEEP_CURRENT[400] // #33BFD7
-
-  // Wave SVG with teal color
-  const waveSvg = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="55" viewBox="0 0 1600 55" preserveAspectRatio="none"><path fill="none" stroke="${teal}" stroke-width="5" stroke-linecap="round" d="M0 10 c200 0 300 35 400 35 c100 0 200-35 400-35 c200 0 300 35 400 35 c100 0 200-35 400-35"/></svg>`)}`
-
-  // Glass styles for light and dark modes
+function WaveGlassBackground({ isDarkMode }: { isDarkMode: boolean }) {
   /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba opacity for glass effect */
   const glassBackground = isDarkMode
     ? 'linear-gradient(180deg, rgba(29, 31, 42, 0.7) 0%, rgba(20, 22, 30, 0.85) 100%)'
@@ -169,65 +240,136 @@ function WavePattern() {
 
   return (
     <div
-      className="absolute inset-0 pointer-events-none overflow-hidden"
-      data-slot="wave-pattern"
-    >
-      {/* CSS keyframes for wave animation */}
-      <style>{`
-        @keyframes header-wave-scroll {
-          0% { transform: translateX(0) translateZ(0); }
-          100% { transform: translateX(-1600px) translateZ(0); }
-        }
-        @keyframes header-wave-swell {
-          0%, 100% { transform: translateY(3px) translateZ(0); }
-          50% { transform: translateY(-3px) translateZ(0); }
-        }
-      `}</style>
+      className="absolute inset-0 z-0"
+      data-slot="wave-glass"
+      style={{
+        background: glassBackground,
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+      }}
+    />
+  )
+}
+WaveGlassBackground.displayName = 'WaveGlassBackground'
 
-      {/* Glass background layer - see-through with blur */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          background: glassBackground,
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-        }}
-      />
+/**
+ * Single animated wave layer.
+ * @component ATOM
+ */
+function WaveLayer({
+  waveSvg,
+  opacity,
+  animation,
+}: {
+  waveSvg: string
+  opacity: string
+  animation: string
+}) {
+  return (
+    <div
+      className={`absolute top-0 left-0 h-[${WAVE_SVG_HEIGHT_PX}px] ${opacity}`}
+      data-slot="wave-layer"
+      style={{
+         
+        width: `${WAVE_ANIMATION_WIDTH_PX}px`,
+        backgroundImage: `url("${waveSvg}")`,
+        backgroundRepeat: 'repeat-x',
+        backgroundSize: `${WAVE_TILE_WIDTH_PX}px ${WAVE_SVG_HEIGHT_PX}px`,
+        animation,
+      }}
+    />
+  )
+}
+WaveLayer.displayName = 'WaveLayer'
 
-      {/* Wave lines layer - ON TOP of glass, stays crisp */}
+/**
+ * CSS keyframes for wave animations.
+ * @component ATOM
+ */
+function WaveKeyframes() {
+  return (
+    <style>{`
+      @keyframes header-wave-scroll {
+        0% { transform: translateX(0) translateZ(0); }
+        100% { transform: translateX(-${WAVE_TILE_WIDTH_PX}px) translateZ(0); }
+      }
+      @keyframes header-wave-swell {
+        0%, 100% { transform: translateY(3px) translateZ(0); }
+        50% { transform: translateY(-3px) translateZ(0); }
+      }
+    `}</style>
+  )
+}
+WaveKeyframes.displayName = 'WaveKeyframes'
+
+/**
+ * Animated ocean wave pattern background.
+ *
+ * Features dual-layer animated waves with glassmorphism backdrop.
+ * Colors adapt to light/dark mode using DEEP_CURRENT tokens.
+ *
+ * @component ATOM
+ */
+function WavePattern() {
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const updateDarkMode = () => setIsDarkMode(checkDarkModeEnabled())
+    updateDarkMode()
+    return createDarkModeObserver(updateDarkMode)
+  }, [])
+
+  const waveSvg = generateWaveSvgDataUri(DEEP_CURRENT[400])
+  const primaryAnimation = `header-wave-scroll ${WAVE_PRIMARY_DURATION_S}s linear infinite`
+  const secondaryAnimation = `header-wave-scroll ${WAVE_SECONDARY_DURATION_S}s linear ${WAVE_SECONDARY_DELAY_S}s infinite, header-wave-swell ${WAVE_SWELL_DURATION_S}s ease-in-out infinite`
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" data-slot="wave-pattern">
+      <WaveKeyframes />
+      <WaveGlassBackground isDarkMode={isDarkMode} />
       <div className="absolute inset-0 z-10">
-        {/* First wave - teal */}
-        <div
-          className="absolute top-0 left-0 h-[55px] opacity-50"
-          style={{
-            // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
-            width: '6400px',
-            backgroundImage: `url("${waveSvg}")`,
-            backgroundRepeat: 'repeat-x',
-            backgroundSize: '1600px 55px',
-            animation: 'header-wave-scroll 35s linear infinite',
-          }}
-        />
-
-        {/* Second wave - teal with offset for depth */}
-        <div
-          className="absolute top-0 left-0 h-[55px] opacity-40"
-          style={{
-            // eslint-disable-next-line no-restricted-syntax -- Animation width: 4× tile width (1600px) for seamless scroll
-            width: '6400px',
-            backgroundImage: `url("${waveSvg}")`,
-            backgroundRepeat: 'repeat-x',
-            backgroundSize: '1600px 55px',
-            animation: 'header-wave-scroll 40s linear -5s infinite, header-wave-swell 8s ease-in-out infinite',
-          }}
-        />
+        <WaveLayer waveSvg={waveSvg} opacity="opacity-50" animation={primaryAnimation} />
+        <WaveLayer waveSvg={waveSvg} opacity="opacity-40" animation={secondaryAnimation} />
       </div>
     </div>
   )
 }
 WavePattern.displayName = 'WavePattern'
 
-/** Logo container with product branding - Figma node 685:8840 */
+/**
+ * Returns glassmorphism styles based on dark mode state.
+ * @param isDarkMode - Current dark mode state
+ */
+function getLogoGlassStyles(isDarkMode: boolean): React.CSSProperties {
+  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba and composite shadows */
+  if (isDarkMode) {
+    return {
+      background: 'linear-gradient(180deg, rgba(29, 31, 42, 0.85) 0%, rgba(20, 22, 30, 0.9) 100%)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.4)',
+      border: '1px solid rgba(255, 255, 255, 0.06)',
+    }
+  }
+  return {
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
+    backdropFilter: 'blur(6px)',
+    WebkitBackdropFilter: 'blur(6px)',
+    boxShadow: `${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.12)`,
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+  }
+  /* eslint-enable no-restricted-syntax */
+}
+
+/**
+ * Logo container with product branding.
+ *
+ * Displays product logo with glassmorphism styling and tagline.
+ * Auto-detects dark mode for appropriate logo variant.
+ *
+ * @component ATOM
+ * @figma 685:8840
+ */
 function LogoContainer({
   product,
   tagline,
@@ -239,85 +381,38 @@ function LogoContainer({
   colorMode?: 'dark' | 'light' | 'auto'
   onClick?: () => void
 }) {
-  // Auto-detect dark mode from document class
-  // Check both html and body for Storybook compatibility (Storybook applies to body)
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
-    // Check initial state - look for dark class on both html and body
-    const checkDarkMode = () => {
-      const isDark = document.documentElement.classList.contains('dark') ||
-                     document.body.classList.contains('dark')
-      setIsDarkMode(isDark)
-    }
-    checkDarkMode()
-
-    // Watch for changes on both html and body
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    })
-
-    return () => observer.disconnect()
+    const updateDarkMode = () => setIsDarkMode(checkDarkModeEnabled())
+    updateDarkMode()
+    return createDarkModeObserver(updateDarkMode)
   }, [])
 
   const config = PRODUCT_CONFIGS[product]
-
-  // Determine logo: auto-detect if colorMode not specified or 'auto'
   const effectiveColorMode = colorMode === 'auto' || !colorMode
-    ? (isDarkMode ? 'light' : 'dark')  // dark bg needs light logo
+    ? (isDarkMode ? 'light' : 'dark')
     : colorMode
-
   const logoSrc = effectiveColorMode === 'dark' ? config.logoDark : config.logoLight
   const displayTagline = tagline ?? config.tagline
-
-  // Glass styles for light and dark modes
-  // Glassmorphism requires specific rgba values and composite shadows for the glass effect
-  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba and composite shadows */
-  const glassStyles = isDarkMode
-    ? {
-        // Dark glass: semi-transparent dark with subtle light edge
-        background: 'linear-gradient(180deg, rgba(29, 31, 42, 0.85) 0%, rgba(20, 22, 30, 0.9) 100%)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        // Top highlight + ambient shadow for depth
-        boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.4)',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-      }
-    : {
-        // Light glass: light blur, more transparent to let light through
-        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
-        // Combined shadows: subtle ambient + bottom drop shadow
-        boxShadow: `${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.12)`,
-        border: '1px solid rgba(255, 255, 255, 0.15)',
-      }
-  /* eslint-enable no-restricted-syntax */
 
   return (
     <div
       className={cn(
-        'flex items-center gap-3 h-14 min-w-[219px] pl-4 pr-3 cursor-pointer rounded-r-full',
+        'flex items-center gap-3 h-14 pl-4 pr-3 cursor-pointer rounded-r-full',
+        LOGO_CONTAINER_MIN_WIDTH,
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
-      style={glassStyles}
+      style={getLogoGlassStyles(isDarkMode)}
       data-slot="logo-container"
     >
       <img
         src={logoSrc}
         alt={`${product} logo`}
-        className="h-[32px] w-auto object-contain"
+        className={cn(LOGO_HEIGHT, 'w-auto object-contain')}
       />
-      <span
-        className="text-xs font-medium whitespace-nowrap text-accent"
-      >
+      <span className="text-xs font-medium whitespace-nowrap text-accent">
         {displayTagline}
       </span>
     </div>
@@ -325,39 +420,56 @@ function LogoContainer({
 }
 LogoContainer.displayName = 'LogoContainer'
 
-/** Notification badge showing count - Figma: 20x20px with 8px radius */
+/**
+ * Notification badge showing count.
+ *
+ * Displays notification count with 99+ cap. Uses error color for visibility.
+ *
+ * @component ATOM
+ * @figma 20x20px with 8px radius
+ */
 function NotificationBadge({ count }: { count: number }) {
-  const displayCount = count > 99 ? '99+' : count.toString()
-
   return (
     <div
       className="absolute -top-2 -right-2.5 min-w-5 h-5 px-1.5 flex items-center justify-center font-medium text-[11px] leading-none z-10 bg-error text-inverse rounded-sm border-2 border-surface"
       data-slot="notification-badge"
     >
-      {displayCount}
+      {formatNotificationCount(count)}
     </div>
   )
 }
 NotificationBadge.displayName = 'NotificationBadge'
 
 /**
- * IconButton - Subtle hover effect for icon-only buttons (notifications, settings, etc.)
- * Different from CTA buttons - uses soft background fade instead of electric glass border
+ * Props for IconButton component.
  */
 interface IconButtonProps {
+  /** Button content (typically an icon) */
   children: React.ReactNode
+  /** Click handler */
   onClick?: () => void
+  /** Additional CSS classes */
   className?: string
+  /** Accessible label for screen readers */
   'aria-label'?: string
+  /** Visual variant */
   variant?: 'default' | 'ghost'
 }
 
+/**
+ * IconButton - Subtle hover effect for icon-only buttons.
+ *
+ * Different from CTA buttons - uses soft background fade
+ * instead of electric glass border effect.
+ *
+ * @component ATOM
+ */
 function IconButton({
   children,
   onClick,
   className,
   'aria-label': ariaLabel,
-  variant = 'default'
+  variant = 'default',
 }: IconButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
 
@@ -374,7 +486,6 @@ function IconButton({
       whileTap={{ scale: 0.95 }}
       data-slot="icon-button"
     >
-      {/* Soft background on hover - uses CSS variables for dark mode support */}
       <motion.div
         className={cn(
           "absolute inset-0 rounded-md",
@@ -392,14 +503,20 @@ function IconButton({
             : 'var(--alias-overlay-light)',
         }}
       />
-      {/* Content */}
       <div className="relative z-[1]">{children}</div>
     </motion.button>
   )
 }
 IconButton.displayName = 'IconButton'
 
-/** Notification bell with optional badge */
+/**
+ * Notification bell with optional badge.
+ *
+ * Displays a bell icon with optional count badge. Uses IconButton
+ * for hover effects and accessibility.
+ *
+ * @component MOLECULE
+ */
 function NotificationBell({
   count = 0,
   onClick,
@@ -410,14 +527,11 @@ function NotificationBell({
   return (
     <IconButton
       onClick={onClick}
-      className="w-[38px] h-[38px]"
+      className={ICON_BUTTON_SIZE}
       aria-label={`Notifications${count > 0 ? ` (${count} unread)` : ''}`}
     >
       <div className="relative flex items-center justify-center" data-slot="notification-bell">
-        <Bell
-          className="w-5 h-5 text-primary"
-          strokeWidth={1.5}
-        />
+        <Bell className={cn(BELL_ICON_SIZE, 'text-primary')} strokeWidth={1.5} />
         {count > 0 && <NotificationBadge count={count} />}
       </div>
     </IconButton>
@@ -425,7 +539,21 @@ function NotificationBell({
 }
 NotificationBell.displayName = 'NotificationBell'
 
-/** User avatar with image or initials fallback */
+/** Avatar size variants with corresponding dimensions */
+const AVATAR_SIZE_MAP = {
+  sm: 'w-6 h-6 text-[10px]',   // 24px - small contexts
+  md: 'w-8 h-8 text-xs',       // 32px - header avatar (Figma)
+  lg: 'w-10 h-10 text-sm',     // 40px - dropdown header
+} as const
+
+/**
+ * User avatar with image or initials fallback.
+ *
+ * Displays user's avatar image or generates initials from name.
+ * Supports three size variants for different contexts.
+ *
+ * @component ATOM
+ */
 function UserAvatar({
   user,
   size = 'md',
@@ -433,20 +561,14 @@ function UserAvatar({
   user?: UserInfo
   size?: 'sm' | 'md' | 'lg'
 }) {
-  const sizeMap = {
-    sm: 'w-6 h-6 text-[10px]',      // 24px - small contexts
-    md: 'w-8 h-8 text-xs',           // 32px - header avatar (Figma)
-    lg: 'w-10 h-10 text-sm',         // 40px - dropdown header
-  }
-
-  const initials = user?.initials || user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || '?'
+  const initials = getUserInitials(user)
 
   return (
     <div
       className={cn(
         'flex items-center justify-center overflow-hidden flex-shrink-0 rounded-full text-secondary',
         user?.avatarUrl ? 'bg-transparent' : 'bg-muted-bg',
-        sizeMap[size]
+        AVATAR_SIZE_MAP[size]
       )}
       data-slot="user-avatar"
     >
@@ -464,7 +586,20 @@ function UserAvatar({
 }
 UserAvatar.displayName = 'UserAvatar'
 
-/** User dropdown menu */
+/** Minimum width for dropdown menu */
+const USER_MENU_MIN_WIDTH = 'min-w-[200px]'
+
+/** Dropdown menu side offset */
+const DROPDOWN_SIDE_OFFSET = 8
+
+/**
+ * User dropdown menu.
+ *
+ * Displays user avatar as trigger with dropdown containing
+ * user info header and customizable menu items.
+ *
+ * @component MOLECULE
+ */
 function UserMenu({
   user,
   menuItems = DEFAULT_MENU_ITEMS,
@@ -494,32 +629,21 @@ function UserMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        sideOffset={8}
+        sideOffset={DROPDOWN_SIDE_OFFSET}
         {...(disablePortal ? { container: undefined } : {})}
-        className="min-w-[200px]"
-        style={{
-          boxShadow: SHADOWS.md,
-        }}
+        className={USER_MENU_MIN_WIDTH}
+        style={{ boxShadow: SHADOWS.md }}
         data-slot="user-menu-content"
       >
-        {/* User info header */}
         {user && (
           <>
             <DropdownMenuLabel className="px-3 py-2">
               <div className="flex items-center gap-3">
                 <UserAvatar user={user} size="lg" />
                 <div className="flex flex-col">
-                  <span
-                    className="font-medium text-sm text-primary"
-                  >
-                    {user.name}
-                  </span>
+                  <span className="font-medium text-sm text-primary">{user.name}</span>
                   {user.email && (
-                    <span
-                      className="text-xs text-secondary"
-                    >
-                      {user.email}
-                    </span>
+                    <span className="text-xs text-secondary">{user.email}</span>
                   )}
                 </div>
               </div>
@@ -528,7 +652,6 @@ function UserMenu({
           </>
         )}
 
-        {/* Menu items */}
         {menuItems.map((item) => (
           <React.Fragment key={item.id}>
             {item.separator && <DropdownMenuSeparator />}
@@ -672,35 +795,27 @@ export function AppHeader({
   showWavePattern = true,
   disablePortal = false,
   leftContent,
+  ...props
 }: AppHeaderProps) {
   return (
     <header
       className={cn(
-        'relative z-20 flex items-center justify-between w-full h-[55px]',
+        'relative z-20 flex items-center justify-between w-full',
+        `h-[${HEADER_HEIGHT_PX}px]`,
         className
       )}
-      // Header height defined via className for consistency
       data-slot="app-header"
+      {...props}
     >
-      {/* Wave Pattern Background */}
       {showWavePattern && <WavePattern />}
 
-      {/* Gradient border on bottom edge - matches AppSidebar style */}
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none bg-gradient-to-r from-transparent via-default to-transparent z-20"
         data-slot="header-border"
       />
 
-      {/* Left Side: Mobile menu + Logo - z-20 to be ABOVE wave lines (z-10) */}
       <div className="relative z-20 flex items-center">
-        {/* Mobile hamburger menu (optional) */}
-        {leftContent && (
-          <div className="pl-2">
-            {leftContent}
-          </div>
-        )}
-
-        {/* Logo Container */}
+        {leftContent && <div className="pl-2">{leftContent}</div>}
         <LogoContainer
           product={product}
           colorMode={colorMode}
@@ -708,20 +823,16 @@ export function AppHeader({
         />
       </div>
 
-      {/* Actions (Right) - z-20 to be ABOVE wave lines (z-10) */}
       <div
         className="relative z-20 flex items-center gap-4 pr-4"
         data-slot="header-actions"
       >
-        {/* Notifications */}
         {showNotifications && (
           <NotificationBell
             count={notificationCount}
             onClick={onNotificationClick}
           />
         )}
-
-        {/* User Avatar + Menu */}
         {user && (
           <UserMenu
             user={user}

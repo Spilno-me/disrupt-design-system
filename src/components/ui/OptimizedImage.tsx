@@ -5,32 +5,96 @@ import { SHADOWS } from '../../constants/designTokens'
 import { ResponsivePicture, type ResponsiveImageSets } from './ResponsivePicture'
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Intersection observer root margin for lazy loading pre-fetch */
+const INTERSECTION_ROOT_MARGIN = '200px'
+
+/** Intersection observer threshold for visibility detection */
+const INTERSECTION_THRESHOLD = 0.01
+
+/** Tailwind class for fade-in transition duration */
+const FADE_TRANSITION_CLASS = 'duration-500'
+
+/** Fallback message shown when image fails to load */
+const IMAGE_UNAVAILABLE_MESSAGE = 'Image unavailable'
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
-interface OptimizedImageProps {
+/** Supported aspect ratios for image containers */
+type AspectRatio = 'square' | '4/3' | '16/9' | 'auto'
+
+interface OptimizedImageProps extends React.ComponentProps<'div'> {
   /** Responsive image sources */
   sources: ResponsiveImageSets
   /** Alt text for accessibility */
   alt: string
-  /** Additional CSS classes */
-  className?: string
   /** Priority loading (above-the-fold images) */
   priority?: boolean
   /** Aspect ratio for skeleton placeholder */
-  aspectRatio?: 'square' | '4/3' | '16/9' | 'auto'
+  aspectRatio?: AspectRatio
   /** Apply shadow styling */
   withShadow?: boolean
+}
+
+interface SimpleOptimizedImageProps extends React.ComponentProps<'div'> {
+  /** Original image source */
+  src: string
+  /** Alt text */
+  alt: string
+  /** Priority loading */
+  priority?: boolean
+  /** Aspect ratio */
+  aspectRatio?: AspectRatio
+  /** Apply shadow */
+  withShadow?: boolean
+}
+
+interface ImageErrorFallbackProps extends React.ComponentProps<'div'> {
+  /** Aspect ratio for fallback container */
+  aspectRatio: AspectRatio
+  /** Apply shadow styling */
+  withShadow?: boolean
+}
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+
+/**
+ * Returns Tailwind class for aspect ratio
+ */
+function getAspectRatioClass(aspectRatio: AspectRatio): string {
+  switch (aspectRatio) {
+    case 'square':
+      return 'aspect-square'
+    case '4/3':
+      return 'aspect-[4/3]'
+    case '16/9':
+      return 'aspect-video'
+    default:
+      return ''
+  }
 }
 
 // =============================================================================
 // HOOKS
 // =============================================================================
 
+/**
+ * Custom hook for lazy loading with Intersection Observer
+ *
+ * @param ref - Reference to the element to observe
+ * @param enabled - Whether lazy loading is enabled (false = immediate visibility)
+ * @returns Boolean indicating if element is in view
+ */
 function useIntersectionObserver(
   ref: React.RefObject<HTMLElement | null>,
   enabled: boolean
-) {
+): boolean {
   const [isInView, setIsInView] = useState(!enabled)
 
   useEffect(() => {
@@ -45,7 +109,10 @@ function useIntersectionObserver(
           }
         })
       },
-      { rootMargin: '200px', threshold: 0.01 }
+      {
+        rootMargin: INTERSECTION_ROOT_MARGIN,
+        threshold: INTERSECTION_THRESHOLD,
+      }
     )
 
     observer.observe(ref.current)
@@ -56,53 +123,80 @@ function useIntersectionObserver(
 }
 
 // =============================================================================
-// SHARED COMPONENTS
+// COMPONENTS
 // =============================================================================
 
+/**
+ * ImageErrorFallback - Fallback UI when image fails to load
+ *
+ * @component ATOM
+ *
+ * @description
+ * Displays a placeholder with error message when image cannot be loaded.
+ * Maintains aspect ratio consistency with the expected image.
+ */
 function ImageErrorFallback({
   aspectRatio,
   className,
   withShadow,
-}: {
-  aspectRatio: OptimizedImageProps['aspectRatio']
-  className?: string
-  withShadow?: boolean
-}) {
+  ...props
+}: ImageErrorFallbackProps) {
   return (
     <div
+      data-slot="image-error-fallback"
       className={cn(
-        'w-full rounded-lg bg-muted/20 flex items-center justify-center',
-        aspectRatio === 'square' && 'aspect-square',
-        aspectRatio === '4/3' && 'aspect-[4/3]',
-        aspectRatio === '16/9' && 'aspect-video',
+        'w-full rounded-lg bg-surface-muted flex items-center justify-center',
+        getAspectRatioClass(aspectRatio),
         className
       )}
       style={withShadow ? { boxShadow: SHADOWS.image } : undefined}
+      {...props}
     >
-      <span className="text-muted text-sm">Image unavailable</span>
+      <span className="text-tertiary text-sm">{IMAGE_UNAVAILABLE_MESSAGE}</span>
     </div>
   )
 }
 
-// =============================================================================
-// OPTIMIZED IMAGE COMPONENT
-// =============================================================================
+ImageErrorFallback.displayName = 'ImageErrorFallback'
 
 /**
+ * OptimizedImage - Performance-optimized responsive image component
+ *
+ * @component MOLECULE
+ *
+ * @description
  * Optimized image component with:
  * - Lazy loading with Intersection Observer
  * - WebP/AVIF format support with fallbacks
  * - Responsive srcset for mobile/tablet/desktop
  * - Skeleton loading placeholder
  * - Smooth fade-in animation
+ *
+ * @example
+ * ```tsx
+ * <OptimizedImage
+ *   sources={heroImageSources}
+ *   alt="Hero banner"
+ *   priority={true}
+ *   aspectRatio="16/9"
+ * />
+ * ```
+ *
+ * @testid
+ * - `data-slot="optimized-image"` - Root container
+ *
+ * @accessibility
+ * - Alt text required for screen readers
+ * - Lazy loading respects prefers-reduced-motion (browser native)
  */
-export function OptimizedImage({
+function OptimizedImage({
   sources,
   alt,
-  className = '',
+  className,
   priority = false,
   aspectRatio = '4/3',
   withShadow = true,
+  ...props
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
@@ -123,8 +217,10 @@ export function OptimizedImage({
   return (
     <div
       ref={containerRef}
+      data-slot="optimized-image"
       className={cn('relative overflow-hidden rounded-lg', className)}
       style={withShadow ? { boxShadow: SHADOWS.image } : undefined}
+      {...props}
     >
       {!isLoaded && (
         <SkeletonImage
@@ -142,7 +238,8 @@ export function OptimizedImage({
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
           className={cn(
-            'transition-opacity duration-500',
+            'transition-opacity',
+            FADE_TRANSITION_CLASS,
             isLoaded ? 'opacity-100' : 'opacity-0'
           )}
         />
@@ -151,36 +248,40 @@ export function OptimizedImage({
   )
 }
 
-// =============================================================================
-// SIMPLE OPTIMIZED IMAGE (for images without multiple sizes)
-// =============================================================================
-
-interface SimpleOptimizedImageProps {
-  /** Original image source */
-  src: string
-  /** Alt text */
-  alt: string
-  /** Additional CSS classes */
-  className?: string
-  /** Priority loading */
-  priority?: boolean
-  /** Aspect ratio */
-  aspectRatio?: 'square' | '4/3' | '16/9' | 'auto'
-  /** Apply shadow */
-  withShadow?: boolean
-}
+OptimizedImage.displayName = 'OptimizedImage'
 
 /**
+ * SimpleOptimizedImage - Optimized image for single-source images
+ *
+ * @component MOLECULE
+ *
+ * @description
  * Simpler optimized image for images without pre-generated responsive versions.
  * Still includes lazy loading and skeleton placeholder.
+ *
+ * @example
+ * ```tsx
+ * <SimpleOptimizedImage
+ *   src="/images/logo.png"
+ *   alt="Company logo"
+ *   aspectRatio="square"
+ * />
+ * ```
+ *
+ * @testid
+ * - `data-slot="simple-optimized-image"` - Root container
+ *
+ * @accessibility
+ * - Alt text required for screen readers
  */
-export function SimpleOptimizedImage({
+function SimpleOptimizedImage({
   src,
   alt,
-  className = '',
+  className,
   priority = false,
   aspectRatio = '4/3',
   withShadow = true,
+  ...props
 }: SimpleOptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
@@ -201,8 +302,10 @@ export function SimpleOptimizedImage({
   return (
     <div
       ref={containerRef}
+      data-slot="simple-optimized-image"
       className={cn('relative overflow-hidden rounded-lg', className)}
       style={withShadow ? { boxShadow: SHADOWS.image } : undefined}
+      {...props}
     >
       {!isLoaded && (
         <SkeletonImage
@@ -220,7 +323,8 @@ export function SimpleOptimizedImage({
           onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
           className={cn(
-            'w-full h-auto object-cover transition-opacity duration-500',
+            'w-full h-auto object-cover transition-opacity',
+            FADE_TRANSITION_CLASS,
             isLoaded ? 'opacity-100' : 'opacity-0'
           )}
         />
@@ -228,3 +332,12 @@ export function SimpleOptimizedImage({
     </div>
   )
 }
+
+SimpleOptimizedImage.displayName = 'SimpleOptimizedImage'
+
+// =============================================================================
+// EXPORTS
+// =============================================================================
+
+export { OptimizedImage, SimpleOptimizedImage, ImageErrorFallback }
+export type { OptimizedImageProps, SimpleOptimizedImageProps, AspectRatio }

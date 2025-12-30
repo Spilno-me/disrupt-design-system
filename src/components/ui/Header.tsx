@@ -8,6 +8,40 @@ import { SHADOWS } from '../../constants/designTokens'
 import { useHeaderContrast } from '../../hooks/useHeaderContrast'
 
 // =============================================================================
+// CONSTANTS
+// =============================================================================
+
+/** Nav item height class */
+const NAV_ITEM_HEIGHT = 'h-9'
+
+/** Nav item padding class */
+const NAV_ITEM_PADDING = 'px-4 py-2'
+
+/** Nav item border radius class */
+const NAV_BORDER_RADIUS = 'rounded-[12px]'
+
+/** Mobile nav item border radius class */
+const MOBILE_BORDER_RADIUS = 'rounded-[8px]'
+
+/** Header z-index class */
+const HEADER_Z_INDEX = 'z-50'
+
+/** Header backdrop blur class */
+const HEADER_BLUR = 'backdrop-blur-[10px]'
+
+/** Logo height class */
+const LOGO_HEIGHT = 'h-[54px]'
+
+/** Logo width class */
+const LOGO_WIDTH = 'w-[178px]'
+
+/** Max content width class */
+const MAX_CONTENT_WIDTH = 'max-w-[1440px]'
+
+/** Data slot identifier for header root */
+const DATA_SLOT = 'header'
+
+// =============================================================================
 // TYPES
 // =============================================================================
 
@@ -99,7 +133,10 @@ export function Header({
       href={item.path}
       onClick={(e) => onNavItemClick?.(item, e)}
       className={cn(
-        'h-9 px-4 py-2 rounded-[12px] text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer',
+        NAV_ITEM_HEIGHT,
+        NAV_ITEM_PADDING,
+        NAV_BORDER_RADIUS,
+        'text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer',
         navTextColor,
         !item.isActive && 'hover:bg-surface/10'
       )}
@@ -120,21 +157,24 @@ export function Header({
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 backdrop-blur-[10px] bg-surface/70 border-b border-accent',
+        'fixed top-0 left-0 right-0',
+        HEADER_Z_INDEX,
+        HEADER_BLUR,
+        'bg-surface/70 border-b border-accent',
         className
       )}
       style={{ boxShadow: SHADOWS.header }}
-      data-element="main-header"
+      data-slot={DATA_SLOT}
     >
       <nav
         className={cn('flex items-center gap-4 py-4 px-4 sm:px-6', navClassName)}
-        data-element="header-nav"
+        data-slot="header-nav"
       >
-        <div className="w-full max-w-[1440px] mx-auto flex items-center justify-between gap-4">
+        <div className={cn('w-full', MAX_CONTENT_WIDTH, 'mx-auto flex items-center justify-between gap-4')}>
           {/* Logo */}
-          <div className="flex items-center overflow-visible" data-element="header-logo">
+          <div className="flex items-center overflow-visible" data-slot="header-logo">
             <AnimatedLogo
-              className="h-[54px] w-[178px] cursor-pointer overflow-visible"
+              className={cn(LOGO_HEIGHT, LOGO_WIDTH, 'cursor-pointer overflow-visible')}
               onClick={onLogoClick}
               alt={logoAlt}
               colorMode={effectiveColorMode}
@@ -156,7 +196,10 @@ export function Header({
                     item,
                     <span
                       className={cn(
-                        'h-9 px-4 py-2 rounded-[12px] text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer',
+                        NAV_ITEM_HEIGHT,
+                        NAV_ITEM_PADDING,
+                        NAV_BORDER_RADIUS,
+                        'text-sm font-sans font-medium leading-[1.43] transition-colors flex items-center justify-center gap-2 cursor-pointer',
                         navTextColor,
                         !item.isActive && 'hover:bg-surface/10'
                       )}
@@ -192,7 +235,9 @@ export function Header({
                       item,
                       <span
                         className={cn(
-                          'px-4 py-3 rounded-[8px] text-base font-medium cursor-pointer block w-full',
+                          'px-4 py-3',
+                          MOBILE_BORDER_RADIUS,
+                          'text-base font-medium cursor-pointer block w-full',
                           item.isActive
                             ? 'bg-accent/10 text-accent'
                             : 'text-primary hover:bg-surface/10'
@@ -209,7 +254,7 @@ export function Header({
               {showContactButton && (
                 <ElectricButtonWrapper className="w-full">
                   {contactLinkRenderer(
-                    <span className="w-full h-11 px-4 py-2 rounded-[12px] text-base font-medium cursor-pointer bg-inverse-bg text-inverse flex items-center justify-center">
+                    <span className={cn('w-full h-11', NAV_ITEM_PADDING, NAV_BORDER_RADIUS, 'text-base font-medium cursor-pointer bg-inverse-bg text-inverse flex items-center justify-center')}>
                       {contactButtonText}
                     </span>
                   )}
@@ -222,5 +267,6 @@ export function Header({
     </header>
   )
 }
+Header.displayName = 'Header'
 
 export default Header

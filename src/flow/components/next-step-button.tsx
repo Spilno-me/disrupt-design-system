@@ -53,35 +53,35 @@ const severityClasses: Record<
     border: 'border-error',
     text: 'text-error',
     hoverBg: 'group-hover:bg-error',
-    hoverText: 'group-hover:text-on-status',
+    hoverText: '', // Handled by data-slot selector in CSS for higher specificity
   },
   high: {
     // Light: aging-dark = ORANGE[600] (5.18:1) | Dark: aging = ORANGE[400] (5.85:1)
     border: 'border-aging-dark dark:border-aging',
     text: 'text-aging-dark dark:text-aging',
     hoverBg: 'group-hover:bg-aging-dark dark:group-hover:bg-aging',
-    hoverText: 'group-hover:text-on-status',
+    hoverText: '', // Handled by data-slot selector in CSS for higher specificity
   },
   medium: {
     // Light: warning-dark = SUNRISE[700] (4.92:1) | Dark: warning = SUNRISE[400] (8.54:1)
     border: 'border-warning-dark dark:border-warning',
     text: 'text-warning-dark dark:text-warning',
     hoverBg: 'group-hover:bg-warning-dark dark:group-hover:bg-warning',
-    hoverText: 'group-hover:text-on-status',
+    hoverText: '', // Handled by data-slot selector in CSS for higher specificity
   },
   low: {
     // Light: success-strong = HARBOR[700] (5.02:1) | Dark: success = HARBOR[400] (7.19:1)
     border: 'border-success-strong dark:border-success',
     text: 'text-success-strong dark:text-success',
     hoverBg: 'group-hover:bg-success-strong dark:group-hover:bg-success',
-    hoverText: 'group-hover:text-on-status',
+    hoverText: '', // Handled by data-slot selector in CSS for higher specificity
   },
   none: {
     // Light: teal = DEEP_CURRENT[700] (7.02:1) | Dark: accent-strong = DEEP_CURRENT[400] (5.50:1)
     border: 'border-teal dark:border-accent-strong',
     text: 'text-teal dark:text-accent-strong',
     hoverBg: 'group-hover:bg-teal dark:group-hover:bg-accent-strong',
-    hoverText: 'group-hover:text-on-status',
+    hoverText: '', // Handled by data-slot selector in CSS for higher specificity
   },
 }
 
