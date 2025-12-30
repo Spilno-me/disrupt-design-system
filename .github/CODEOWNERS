@@ -1,0 +1,67 @@
+# =============================================================================
+# DDS CODEOWNERS - Design System Governance
+# =============================================================================
+#
+# This file defines who must approve changes to different parts of the codebase.
+#
+# OWNER:
+#   @adrozdenko - Andrii Drozdenko, UX/UI Architect (Design Owner)
+#
+# Integrators (frontend devs) can modify non-protected files after passing CI.
+# =============================================================================
+
+# =============================================================================
+# DEFAULT: All files require architect review
+# =============================================================================
+# This ensures nothing slips through without proper oversight.
+
+*                                          @adrozdenko
+
+# =============================================================================
+# PROTECTED: Design Tokens (Architect approval REQUIRED)
+# =============================================================================
+# These define the visual language - colors, spacing, typography, etc.
+# Changes here affect EVERY component across ALL products.
+
+src/constants/designTokens.ts              @adrozdenko
+src/styles/tokens.css                      @adrozdenko
+src/styles.css                             @adrozdenko
+tailwind-preset.js                         @adrozdenko
+
+# =============================================================================
+# PROTECTED: Component Interfaces (Architect approval REQUIRED)
+# =============================================================================
+# Props are the API contract with consumers.
+# Adding/removing/changing props = breaking change potential.
+
+src/components/**/types.ts                 @adrozdenko
+src/flow/**/types.ts                       @adrozdenko
+
+# =============================================================================
+# PROTECTED: Package Exports (Architect approval REQUIRED)
+# =============================================================================
+# These define what consumers can import.
+# Changes here can break all downstream apps.
+
+src/index.ts                               @adrozdenko
+src/core/index.ts                          @adrozdenko
+src/flow/index.ts                          @adrozdenko
+package.json                               @adrozdenko
+
+# =============================================================================
+# PROTECTED: Stories & Documentation (Architect approval REQUIRED)
+# =============================================================================
+# Stories ARE the design specification.
+# They define how components should look and behave.
+
+src/stories/**/*.stories.tsx               @adrozdenko
+src/stories/**/*.mdx                       @adrozdenko
+
+# =============================================================================
+# PROTECTED: Design Rules & Configuration (Architect approval REQUIRED)
+# =============================================================================
+# These files define how the design system works.
+
+.claude/*.json                             @adrozdenko
+.claude/*.md                               @adrozdenko
+CLAUDE.md                                  @adrozdenko
