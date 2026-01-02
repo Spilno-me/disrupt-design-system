@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "dds": {
+      "command": "node",
+      "args": ["./mcp/dist/index.js"],
+      "description": "Disrupt Design System MCP - Component, token, and color guidance for AI assistants"
+    }
+  }
+}
