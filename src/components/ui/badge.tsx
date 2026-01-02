@@ -13,6 +13,7 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
+        // Solid variants (original)
         default:
           "border-transparent bg-inverse-bg text-inverse dark:text-primary [a&]:hover:bg-inverse-bg/90",
         secondary:
@@ -27,6 +28,26 @@ const badgeVariants = cva(
           "border-transparent bg-warning-tint text-warning-dark dark:bg-warning-tint dark:text-white [a&]:hover:bg-warning/90",
         info:
           "border-transparent bg-info text-primary [a&]:hover:bg-info/90",
+        // Border-only variants (EMEX pattern for status/priority badges)
+        "border-success":
+          "bg-transparent border-success text-success [a&]:hover:bg-success/10",
+        "border-warning":
+          "bg-transparent border-warning text-warning-dark dark:text-warning [a&]:hover:bg-warning/10",
+        "border-info":
+          "bg-transparent border-info text-info [a&]:hover:bg-info/10",
+        "border-destructive":
+          "bg-transparent border-destructive text-destructive [a&]:hover:bg-destructive/10",
+        "border-secondary":
+          "bg-transparent border-default text-secondary [a&]:hover:bg-muted-bg/50",
+        // Priority/Severity border variants (semantic aliases)
+        "border-low":
+          "bg-transparent border-success text-success [a&]:hover:bg-success/10",
+        "border-medium":
+          "bg-transparent border-warning text-warning-dark dark:text-warning [a&]:hover:bg-warning/10",
+        "border-high":
+          "bg-transparent border-warning text-warning-dark dark:text-warning [a&]:hover:bg-warning/10",
+        "border-critical":
+          "bg-transparent border-destructive text-destructive [a&]:hover:bg-destructive/10",
       },
       shape: {
         default: "rounded-sm",
