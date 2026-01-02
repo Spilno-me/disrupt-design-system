@@ -89,14 +89,14 @@ export function CreateLoginAccountDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" data-testid="partners-create-login-account-dialog">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-primary">
+          <DialogTitle className="text-lg font-semibold text-primary" data-testid="partners-create-login-account-dialog-title">
             Create Login Account
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 pt-2">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 pt-2" data-testid="partners-create-login-account-dialog-form">
           {/* Email Field */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm text-primary">
@@ -159,6 +159,7 @@ export function CreateLoginAccountDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
+              data-testid="partners-create-login-account-dialog-cancel-btn"
             >
               Cancel
             </Button>
@@ -166,6 +167,7 @@ export function CreateLoginAccountDialog({
               type="submit"
               variant="accent"
               disabled={isSubmitting}
+              data-testid="partners-create-login-account-dialog-submit-btn"
             >
               {isSubmitting ? "Creating..." : "Create Account"}
             </Button>

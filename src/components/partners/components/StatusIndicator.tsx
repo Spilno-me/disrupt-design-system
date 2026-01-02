@@ -10,6 +10,8 @@ import type { NetworkPartnerStatus } from "../types"
 interface StatusIndicatorProps {
   /** Status value to display */
   status: NetworkPartnerStatus
+  /** Optional test ID for automated testing */
+  "data-testid"?: string
 }
 
 const STATUS_CONFIG: Record<NetworkPartnerStatus, { label: string; dotClass: string }> = {
@@ -21,7 +23,7 @@ const STATUS_CONFIG: Record<NetworkPartnerStatus, { label: string; dotClass: str
 /**
  * StatusIndicator - Renders a colored dot with tooltip showing status label
  */
-export function StatusIndicator({ status }: StatusIndicatorProps) {
+export function StatusIndicator({ status, "data-testid": testId }: StatusIndicatorProps) {
   const { label, dotClass } = STATUS_CONFIG[status]
 
   return (
@@ -33,6 +35,7 @@ export function StatusIndicator({ status }: StatusIndicatorProps) {
             dotClass
           )}
           aria-label={label}
+          data-testid={testId}
         />
       </TooltipTrigger>
       <TooltipContent side="top" sideOffset={4}>

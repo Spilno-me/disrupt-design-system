@@ -29,10 +29,20 @@ import { PartnerMetricsCard } from "./PartnerMetricsCard"
 import { expandedContentVariants } from "../constants"
 import { BASE_PADDING_PX, INDENT_PADDING_PX } from "../constants"
 import type {
-  PartnerRowProps,
-  PartnerRowWrapperProps,
+  PartnerRowProps as BasePartnerRowProps,
+  PartnerRowWrapperProps as BasePartnerRowWrapperProps,
   NetworkPartner
 } from "../types"
+
+interface PartnerRowProps extends BasePartnerRowProps {
+  /** Optional test ID for automated testing */
+  "data-testid"?: string
+}
+
+interface PartnerRowWrapperProps extends BasePartnerRowWrapperProps {
+  /** Optional test ID for automated testing */
+  "data-testid"?: string
+}
 
 /**
  * Formats a number as currency string
@@ -52,13 +62,14 @@ export function PartnerRow({
   onEdit,
   onAddSubPartner,
   onDelete,
+  "data-testid": testId,
 }: PartnerRowProps) {
   const hasSubPartners = partner.subPartners && partner.subPartners.length > 0
   const indentPadding = depth * INDENT_PADDING_PX
   const canExpand = partner.isMasterPartner
 
   return (
-    <div className="group">
+    <div className="group" data-testid={testId}>
       {/* Main row */}
       <div
         className={cn(

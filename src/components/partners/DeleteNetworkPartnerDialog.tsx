@@ -53,13 +53,13 @@ export function DeleteNetworkPartnerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" data-testid="partners-delete-network-partner-dialog">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-error-light">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-error-light" data-testid="partners-delete-network-partner-dialog-icon">
               <AlertTriangle className="h-5 w-5 text-error" />
             </div>
-            <DialogTitle className="text-lg font-semibold text-primary">
+            <DialogTitle className="text-lg font-semibold text-primary" data-testid="partners-delete-network-partner-dialog-title">
               Delete Partner
             </DialogTitle>
           </div>
@@ -71,12 +71,12 @@ export function DeleteNetworkPartnerDialog({
         </DialogHeader>
 
         {/* Partner details - use rounded-md (12px) for nested corners hierarchy */}
-        <div className="rounded-md border border-default bg-muted-bg/50 p-4 space-y-2">
+        <div className="rounded-md border border-default bg-surface p-4 space-y-2" data-testid="partners-delete-network-partner-dialog-details">
           <div className="flex items-center gap-3 mb-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-info-light">
               <Building2 className="h-4 w-4 text-info" />
             </div>
-            <span className="font-medium text-primary">{partner.companyName}</span>
+            <span className="font-medium text-primary" data-testid="partners-delete-network-partner-dialog-company-name">{partner.companyName}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted">Contact</span>
@@ -121,6 +121,7 @@ export function DeleteNetworkPartnerDialog({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isDeleting}
+            data-testid="partners-delete-network-partner-dialog-cancel-btn"
           >
             Cancel
           </Button>
@@ -129,6 +130,7 @@ export function DeleteNetworkPartnerDialog({
             variant="destructive"
             onClick={handleConfirm}
             disabled={isDeleting}
+            data-testid="partners-delete-network-partner-dialog-confirm-btn"
           >
             {isDeleting ? "Deleting..." : "Delete Partner"}
           </Button>

@@ -28,6 +28,8 @@ export interface DeleteLoginAccountDialogProps {
   onConfirm: (account: LoginAccount) => void | Promise<void>
   /** Whether the delete is currently in progress */
   isDeleting?: boolean
+  /** Optional test ID for automated testing */
+  "data-testid"?: string
 }
 
 // =============================================================================
@@ -56,6 +58,7 @@ export function DeleteLoginAccountDialog({
   account,
   onConfirm,
   isDeleting = false,
+  "data-testid": testId = "partners-delete-login-account-dialog",
 }: DeleteLoginAccountDialogProps) {
   const handleConfirm = async () => {
     if (account) {
@@ -69,7 +72,7 @@ export function DeleteLoginAccountDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" data-testid={testId}>
         <DialogHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-error-light">
@@ -87,18 +90,21 @@ export function DeleteLoginAccountDialog({
         </DialogHeader>
 
         {/* Account details */}
-        <div className="rounded-lg border border-default bg-muted-bg/50 p-4 space-y-2">
+        <div
+          className="rounded-lg border border-default bg-surface p-4 space-y-2"
+          data-testid={`${testId}-account-details`}
+        >
           <div className="flex justify-between text-sm">
             <span className="text-muted">Name</span>
-            <span className="text-primary">{fullName}</span>
+            <span className="text-primary" data-testid={`${testId}-account-name`}>{fullName}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted">Email</span>
-            <span className="text-primary">{account.email}</span>
+            <span className="text-primary" data-testid={`${testId}-account-email`}>{account.email}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted">Status</span>
-            <span className="text-primary capitalize">{account.status}</span>
+            <span className="text-primary capitalize" data-testid={`${testId}-account-status`}>{account.status}</span>
           </div>
         </div>
 
@@ -108,6 +114,7 @@ export function DeleteLoginAccountDialog({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isDeleting}
+            data-testid={`${testId}-cancel-button`}
           >
             Cancel
           </Button>
@@ -116,6 +123,7 @@ export function DeleteLoginAccountDialog({
             variant="destructive"
             onClick={handleConfirm}
             disabled={isDeleting}
+            data-testid={`${testId}-confirm-button`}
           >
             {isDeleting ? "Deleting..." : "Delete Account"}
           </Button>

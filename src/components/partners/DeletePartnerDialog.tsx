@@ -67,13 +67,13 @@ export function DeletePartnerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" data-testid="partners-delete-partner-dialog">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-error-light">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-error-light" data-testid="partners-delete-partner-dialog-icon">
               <AlertTriangle className="h-5 w-5 text-error" />
             </div>
-            <DialogTitle className="text-lg font-semibold text-primary">
+            <DialogTitle className="text-lg font-semibold text-primary" data-testid="partners-delete-partner-dialog-title">
               Delete Partner
             </DialogTitle>
           </div>
@@ -85,10 +85,10 @@ export function DeletePartnerDialog({
         </DialogHeader>
 
         {/* Partner details - use rounded-md (12px) for nested corners hierarchy */}
-        <div className="rounded-md border border-default bg-muted-bg/50 p-4 space-y-2">
+        <div className="rounded-md border border-default bg-surface p-4 space-y-2" data-testid="partners-delete-partner-dialog-details">
           <div className="flex justify-between text-sm">
             <span className="text-muted">Partner ID</span>
-            <span className="font-mono text-primary">{partner.partnerId}</span>
+            <span className="font-mono text-primary" data-testid="partners-delete-partner-dialog-partner-id">{partner.partnerId}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted">Contact</span>
@@ -110,6 +110,7 @@ export function DeletePartnerDialog({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isDeleting}
+            data-testid="partners-delete-partner-dialog-cancel-btn"
           >
             Cancel
           </Button>
@@ -118,6 +119,7 @@ export function DeletePartnerDialog({
             variant="destructive"
             onClick={handleConfirm}
             disabled={isDeleting}
+            data-testid="partners-delete-partner-dialog-confirm-btn"
           >
             {isDeleting ? "Deleting..." : "Delete Partner"}
           </Button>

@@ -16,7 +16,12 @@ import {
   INDENT_PADDING_PX,
   METRICS_CARD_INDENT_PX
 } from "../constants"
-import type { PartnerMetricsCardProps } from "../types"
+import type { PartnerMetricsCardProps as BasePartnerMetricsCardProps } from "../types"
+
+interface PartnerMetricsCardProps extends BasePartnerMetricsCardProps {
+  /** Optional test ID for automated testing */
+  "data-testid"?: string
+}
 
 /**
  * Formats a number as currency string
@@ -43,7 +48,7 @@ function formatMetricsSummary(
  * Hybrid UX: Shows expanded by default, but can be collapsed independently.
  * Follows Gestalt proximity principle for clear parent-child relationships.
  */
-export function PartnerMetricsCard({ metrics, depth = 0 }: PartnerMetricsCardProps) {
+export function PartnerMetricsCard({ metrics, depth = 0, "data-testid": testId }: PartnerMetricsCardProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const indentPadding = depth * INDENT_PADDING_PX
   const totalPadding = BASE_PADDING_PX + indentPadding + METRICS_CARD_INDENT_PX
@@ -52,6 +57,7 @@ export function PartnerMetricsCard({ metrics, depth = 0 }: PartnerMetricsCardPro
     <div
       className="px-4 py-2 border-b border-default"
       style={{ paddingLeft: `${totalPadding}px` }}
+      data-testid={testId}
     >
       <div className={cn(
         "rounded-md border border-default bg-muted-bg/30 transition-all",

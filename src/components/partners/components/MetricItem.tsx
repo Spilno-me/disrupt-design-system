@@ -14,6 +14,8 @@ interface MetricItemProps {
   value: string | number
   /** Color variant for the value */
   variant?: MetricVariant
+  /** Optional test ID for automated testing */
+  "data-testid"?: string
 }
 
 const VARIANT_COLORS: Record<MetricVariant, string> = {
@@ -30,9 +32,10 @@ export function MetricItem({
   label,
   value,
   variant = "default",
+  "data-testid": testId,
 }: MetricItemProps) {
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex flex-col gap-0.5" data-testid={testId}>
       <span className="text-xs text-muted">{label}</span>
       <span className={cn("text-sm font-semibold", VARIANT_COLORS[variant])}>
         {value}

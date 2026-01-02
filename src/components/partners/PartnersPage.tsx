@@ -27,6 +27,8 @@ import type { FilterState } from "../shared/SearchFilter/types"
 import { EditPartnerDialog, PartnerFormData } from "./EditPartnerDialog"
 import { DeletePartnerDialog } from "./DeletePartnerDialog"
 import { DataTableStatusDot, DataTableActions, PARTNER_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
+import { GridBlobBackground } from "../ui/GridBlobCanvas"
+import { PageActionPanel } from "../ui/PageActionPanel"
 
 // Re-export types for external consumers
 export type { PartnerStatus, PartnerTier, Partner, PartnersPageProps }
@@ -270,83 +272,103 @@ export function PartnersPage({
   /* eslint-enable no-restricted-syntax */
 
   return (
-    <div className={cn("flex flex-col gap-6", className)}>
-      {/* Header Section */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-primary">Partners</h1>
-          <p className="text-muted mt-1">
-            Manage partner organizations and relationships
-          </p>
-        </div>
-        <Button
-          variant="accent"
-          onClick={handleAddPartnerClick}
-          className="self-start sm:self-auto"
-        >
-          <Plus className="h-4 w-4" />
-          Add Partner
-        </Button>
-      </div>
+    <main
+      data-slot="partners-page"
+      data-testid="partners-page"
+      className={cn("relative min-h-screen bg-page overflow-hidden", className)}
+    >
+      {/* Animated grid blob background */}
+      <GridBlobBackground scale={1.2} blobCount={2} />
 
-      {/* Search and Filter Bar */}
-      <SearchFilter
-        placeholder="Search partners..."
-        value={searchQuery}
-        onChange={(value) => {
-          setSearchQuery(value)
-          setCurrentPage(1)
-        }}
-        filterGroups={PARTNER_FILTER_GROUPS}
-        filters={filters}
-        onFiltersChange={handleFiltersChange}
-      />
-
-      {/* Data Table */}
-      <DataTable
-        data={paginatedPartners}
-        columns={columns}
-        getRowId={(row) => row.id}
-        loading={loading}
-        hoverable
-        bordered
-        emptyState={
-          <div className="flex flex-col items-center py-8">
-            <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
-              <Building2 className="h-8 w-8 text-muted" />
-            </div>
-            <h3 className="text-lg font-semibold text-primary mb-2">
-              {searchQuery || filters.status.length > 0 || filters.tier.length > 0
-                ? "No partners found"
-                : "No partners yet"}
-            </h3>
-            <p className="text-muted text-sm max-w-sm text-center">
-              {searchQuery || filters.status.length > 0 || filters.tier.length > 0
-                ? "No partners match your search criteria. Try adjusting your filters."
-                : "Get started by adding your first partner organization."}
-            </p>
-          </div>
-        }
-      />
-
-      {/* Pagination */}
-      {filteredPartners.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalItems={filteredPartners.length}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={(size) => {
-            setPageSize(size)
-            setCurrentPage(1)
-          }}
-          showPageSizeSelector={false}
-          showFirstLastButtons={false}
-          resultsTextFormat={(start, end, total) =>
-            `Showing ${start} to ${end} of ${total} results`
+      {/* Content layer - above background */}
+      <div className="relative z-10 flex flex-col gap-6 p-4 md:p-6">
+        {/* Page Action Panel - replaces manual header */}
+        <PageActionPanel
+          icon={<Building2 className="w-6 h-6 md:w-8 md:h-8" />}
+          iconClassName="text-accent"
+          title="Partners"
+          subtitle="Manage partner organizations and relationships"
+          primaryAction={
+            <Button
+              variant="accent"
+              size="sm"
+              onClick={handleAddPartnerClick}
+              data-testid="partners-add-button"
+            >
+              <Plus className="h-4 w-4" />
+              Add Partner
+            </Button>
           }
         />
-      )}
+
+        {/* Glass container for main content */}
+        <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
+          <div className="flex flex-col gap-4 p-4 md:p-6">
+            {/* Search and Filter Bar */}
+            <SearchFilter
+              placeholder="Search partners..."
+              value={searchQuery}
+              onChange={(value) => {
+                setSearchQuery(value)
+                setCurrentPage(1)
+              }}
+              filterGroups={PARTNER_FILTER_GROUPS}
+              filters={filters}
+              onFiltersChange={handleFiltersChange}
+              className="bg-surface border border-default rounded-lg"
+              data-testid="partners-search-filter"
+            />
+
+            {/* Data Table */}
+            <DataTable
+              data={paginatedPartners}
+              columns={columns}
+              getRowId={(row) => row.id}
+              loading={loading}
+              hoverable
+              bordered
+              data-testid="partners-table"
+              emptyState={
+                <div className="flex flex-col items-center py-8">
+                  <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
+                    <Building2 className="h-8 w-8 text-muted" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-primary mb-2">
+                    {searchQuery || filters.status.length > 0 || filters.tier.length > 0
+                      ? "No partners found"
+                      : "No partners yet"}
+                  </h3>
+                  <p className="text-muted text-sm max-w-sm text-center">
+                    {searchQuery || filters.status.length > 0 || filters.tier.length > 0
+                      ? "No partners match your search criteria. Try adjusting your filters."
+                      : "Get started by adding your first partner organization."}
+                  </p>
+                </div>
+              }
+            />
+          </div>
+        </section>
+
+        {/* Pagination - outside glass container */}
+        {filteredPartners.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={filteredPartners.length}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={(size) => {
+              setPageSize(size)
+              setCurrentPage(1)
+            }}
+            showPageSizeSelector={false}
+            showFirstLastButtons={false}
+            resultsTextFormat={(start, end, total) =>
+              `Showing ${start} to ${end} of ${total} results`
+            }
+            data-testid="partners-pagination"
+          />
+        )}
+      </div>
 
       {/* Edit/Create Partner Dialog */}
       <EditPartnerDialog
@@ -366,7 +388,7 @@ export function PartnersPage({
         onConfirm={handleDeleteConfirm}
         isDeleting={isDeleting}
       />
-    </div>
+    </main>
   )
 }
 

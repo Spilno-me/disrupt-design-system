@@ -7,6 +7,7 @@ import {
   Key,
   Trash2,
   Users,
+  User,
   ArrowLeft,
   Search,
 } from "lucide-react"
@@ -20,8 +21,8 @@ import type {
   CreateLoginAccountData,
 } from "./types"
 import { MOCK_LOGIN_ACCOUNTS } from "./data"
-import { UserAvatar } from "./components"
 import { formatDate } from "./utils"
+import { Avatar, AvatarFallback } from "../ui/avatar"
 
 // UI components
 import { Button } from "../ui/button"
@@ -32,6 +33,8 @@ import { ResetPasswordDialog } from "./ResetPasswordDialog"
 import { CreateLoginAccountDialog } from "./CreateLoginAccountDialog"
 import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
 import { DataTableStatusDot, DataTableActions, LOGIN_ACCOUNT_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
+import { GridBlobBackground } from "../ui/GridBlobCanvas"
+import { PageActionPanel } from "../ui/PageActionPanel"
 
 // Re-export types for external consumers
 export type { LoginAccountStatus, LoginAccount, PartnerLoginAccountsPageProps, CreateLoginAccountData }
@@ -194,7 +197,11 @@ export function PartnerLoginAccountsPage({
       sortValue: (row) => `${row.firstName} ${row.lastName}`,
       accessor: (row) => (
         <div className="flex items-center gap-3">
-          <UserAvatar />
+          <Avatar size="sm">
+            <AvatarFallback size="sm">
+              <User className="h-4 w-4" />
+            </AvatarFallback>
+          </Avatar>
           <div className="flex flex-col">
             <span className="font-medium text-primary">
               {row.firstName} {row.lastName}
@@ -239,98 +246,113 @@ export function PartnerLoginAccountsPage({
   /* eslint-enable no-restricted-syntax */
 
   return (
-    <div className={cn("flex flex-col gap-6", className)}>
-      {/* Back Link */}
-      <button
-        onClick={onBackClick}
-        className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors self-start"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Partners
-      </button>
+    <main
+      data-slot="partner-accounts-page"
+      data-testid="partner-accounts-page"
+      className={cn("relative min-h-screen bg-page overflow-hidden", className)}
+    >
+      {/* Animated grid blob background */}
+      <GridBlobBackground scale={1.2} blobCount={2} />
 
-      {/* Header Section */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted-bg">
-            <Users className="h-6 w-6 text-muted" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-primary">Partner Login Accounts</h1>
-            <p className="text-muted mt-1">
-              {activeCount} active login{activeCount !== 1 ? "s" : ""} for this partner
-            </p>
-          </div>
-        </div>
-        <Button
-          variant="accent"
-          onClick={handleAddLoginAccountClick}
-          className="self-start sm:self-auto"
+      {/* Content layer - above background */}
+      <div className="relative z-10 flex flex-col gap-6 p-4 md:p-6">
+        {/* Back Link */}
+        <button
+          onClick={onBackClick}
+          className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors self-start"
+          data-testid="partner-accounts-back-button"
         >
-          <Plus className="h-4 w-4" />
-          Add Login Account
-        </Button>
-      </div>
+          <ArrowLeft className="h-4 w-4" />
+          Back to Partners
+        </button>
 
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
-        <Input
-          placeholder="Search login accounts by name or email..."
-          value={searchQuery}
-          onChange={(e) => {
-            setSearchQuery(e.target.value)
-            setCurrentPage(1)
-          }}
-          className="pl-10"
-        />
-      </div>
-
-      {/* Data Table */}
-      <DataTable
-        data={paginatedAccounts}
-        columns={columns}
-        getRowId={(row) => row.id}
-        loading={loading}
-        hoverable
-        bordered
-        emptyState={
-          <div className="flex flex-col items-center py-8">
-            <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
-              <Users className="h-8 w-8 text-muted" />
-            </div>
-            <h3 className="text-lg font-semibold text-primary mb-2">
-              {searchQuery
-                ? "No login accounts found"
-                : "No login accounts yet"}
-            </h3>
-            <p className="text-muted text-sm max-w-sm text-center">
-              {searchQuery
-                ? "No accounts match your search criteria. Try adjusting your search."
-                : "Get started by adding your first login account for this partner."}
-            </p>
-          </div>
-        }
-      />
-
-      {/* Pagination */}
-      {filteredAccounts.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalItems={filteredAccounts.length}
-          pageSize={pageSize}
-          onPageChange={setCurrentPage}
-          onPageSizeChange={(size) => {
-            setPageSize(size)
-            setCurrentPage(1)
-          }}
-          showPageSizeSelector={false}
-          showFirstLastButtons={false}
-          resultsTextFormat={(start, end, total) =>
-            `Showing ${start} to ${end} of ${total} results`
+        {/* Page Action Panel - replaces manual header */}
+        <PageActionPanel
+          icon={<Users className="w-6 h-6 md:w-8 md:h-8" />}
+          iconClassName="text-accent"
+          title="Partner Login Accounts"
+          subtitle={`${activeCount} active login${activeCount !== 1 ? "s" : ""} for this partner`}
+          primaryAction={
+            <Button
+              variant="accent"
+              size="sm"
+              onClick={handleAddLoginAccountClick}
+              data-testid="partner-accounts-add-button"
+            >
+              <Plus className="h-4 w-4" />
+              Add Login Account
+            </Button>
           }
         />
-      )}
+
+        {/* Glass container for main content */}
+        <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
+          <div className="flex flex-col gap-4 p-4 md:p-6">
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none z-10" />
+              <Input
+                placeholder="Search login accounts by name or email..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  setCurrentPage(1)
+                }}
+                className="pl-10 bg-surface border border-default rounded-lg"
+                data-testid="partner-accounts-search-input"
+              />
+            </div>
+
+            {/* Data Table */}
+            <DataTable
+              data={paginatedAccounts}
+              columns={columns}
+              getRowId={(row) => row.id}
+              loading={loading}
+              hoverable
+              bordered
+              data-testid="partner-accounts-table"
+              emptyState={
+                <div className="flex flex-col items-center py-8">
+                  <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
+                    <Users className="h-8 w-8 text-muted" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-primary mb-2">
+                    {searchQuery
+                      ? "No login accounts found"
+                      : "No login accounts yet"}
+                  </h3>
+                  <p className="text-muted text-sm max-w-sm text-center">
+                    {searchQuery
+                      ? "No accounts match your search criteria. Try adjusting your search."
+                      : "Get started by adding your first login account for this partner."}
+                  </p>
+                </div>
+              }
+            />
+          </div>
+        </section>
+
+        {/* Pagination - outside glass container */}
+        {filteredAccounts.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalItems={filteredAccounts.length}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={(size) => {
+              setPageSize(size)
+              setCurrentPage(1)
+            }}
+            showPageSizeSelector={false}
+            showFirstLastButtons={false}
+            resultsTextFormat={(start, end, total) =>
+              `Showing ${start} to ${end} of ${total} results`
+            }
+            data-testid="partner-accounts-pagination"
+          />
+        )}
+      </div>
 
       {/* Create Login Account Dialog */}
       <CreateLoginAccountDialog
@@ -357,7 +379,7 @@ export function PartnerLoginAccountsPage({
         onConfirm={handleDeleteConfirm}
         isDeleting={isDeleting}
       />
-    </div>
+    </main>
   )
 }
 

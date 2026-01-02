@@ -5,9 +5,12 @@ import type { Partner } from '../../components/partners/PartnersPage'
 import { MOCK_PARTNERS } from '../../components/partners/PartnersPage'
 import type { Invoice } from '../../components/partners/invoices/types'
 import { formatCurrency } from '../../components/partners/invoices/types'
+import type { NotificationSettings } from '../../components/partners/SettingsPage'
 import {
   PAGE_META,
   pageDescription,
+  IPhoneMobileFrame,
+  IPadMobileFrame,
 } from '../_infrastructure'
 
 // =============================================================================
@@ -263,6 +266,72 @@ const invoicesStats = {
   totalRevenue: { value: formatCurrency(mockInvoices.filter((i) => i.status === 'paid').reduce((sum, i) => sum + i.total, 0)), trend: '+15%', trendDirection: 'up' as const },
 }
 
+// Shared props for Mobile/Tablet frame stories (render component directly for proper corner clipping)
+const defaultPartnerPortalProps = {
+  user: {
+    name: 'John Partner',
+    email: 'john@partnercompany.com',
+  },
+  leads: sampleLeads,
+  partners: extendedPartners,
+  invoices: mockInvoices,
+  stats: {
+    leads: leadsStats,
+    invoices: invoicesStats,
+  },
+  badges: {
+    leads: 6,
+    'tenant-requests': 3,
+    invoices: mockInvoices.filter(i => i.status === 'draft').length,
+    partners: 9,
+  },
+  notificationCount: 4,
+  leadPartners: [
+    { id: '1', name: 'Acme Partners' },
+    { id: '2', name: 'Global Solutions' },
+  ],
+  onLeadClick: (lead: Lead) => console.log('Lead clicked:', lead),
+  onLeadAction: (lead: Lead, action: string) => console.log('Lead action:', action, lead),
+  onCreateLead: (data: { companyName: string }) => alert(`Lead created for: ${data.companyName}`),
+  onEditPartner: (partner: Partner, data: { companyName: string }) => alert(`Partner ${data.companyName} updated`),
+  onCreatePartner: (data: { companyName: string }) => alert(`Partner ${data.companyName} created`),
+  onManageUsers: (partner: Partner) => alert(`Managing users for: ${partner.name}`),
+  onDeletePartner: (partner: Partner) => alert(`Partner ${partner.name} deleted`),
+  onInvoiceClick: (invoice: Invoice) => console.log('Invoice clicked:', invoice),
+  onInvoiceAction: (invoice: Invoice, action: string) => {
+    console.log('Invoice action:', action, invoice)
+    if (action === 'mark_sent') {
+      alert(`Invoice ${invoice.invoiceNumber} marked as sent`)
+    }
+  },
+  onProvisioningComplete: (data: { companyName: string }) => alert(`Tenant "${data.companyName}" configuration complete!`),
+  onSaveProfile: (profile: { firstName: string; lastName: string }) => alert(`Profile saved for ${profile.firstName} ${profile.lastName}`),
+  onSaveCompany: (company: { name: string }) => alert(`Company "${company.name}" information saved`),
+  onSaveNotifications: (notifications: NotificationSettings) => {
+    const enabled = Object.entries(notifications).filter(([, v]) => v).map(([k]) => k)
+    alert(`Notification preferences saved. Enabled: ${enabled.length} settings`)
+  },
+  onChangePassword: () => alert('Password changed successfully!'),
+  onChangeAvatar: (file: File) => alert(`Avatar "${file.name}" uploaded!`),
+  onArticleClick: (article: { title: string }) => alert(`Opening article: ${article.title}`),
+  onContactSupport: () => alert('Opening support chat...'),
+  onHelpSearch: (query: string) => alert(`Searching help for: "${query}"`),
+  commissionPercentage: 15,
+  onCalculatePricing: (input: unknown, breakdown: unknown) => {
+    console.log('Pricing calculated:', { input, breakdown })
+  },
+  onGenerateQuote: (input: { companySize: string; tier: string }, breakdown: { total: number; partnerCommission: number }) => {
+    alert(`Quote Generated!\n\nCompany: ${input.companySize}\nTier: ${input.tier}\nTotal: $${breakdown.total.toLocaleString()}/year\nYour Commission: $${breakdown.partnerCommission.toLocaleString()}`)
+  },
+  onMenuItemClick: (item: { id: string }) => {
+    if (item.id === 'logout') {
+      alert('Logging out...')
+    } else {
+      console.log('Menu item clicked:', item.id)
+    }
+  },
+}
+
 // =============================================================================
 // STORIES
 // =============================================================================
@@ -346,25 +415,50 @@ export const Default: Story = {
 }
 
 /**
- * Mobile viewport - shows bottom navigation and responsive layouts
+ * Mobile viewport - shows bottom navigation and responsive layouts in an iPhone frame.
+ * Uses iframe for real CSS media query support.
  */
 export const Mobile: Story = {
-  ...Default,
+  render: () => (
+    <div className="flex justify-center p-8 bg-page min-h-screen overflow-auto">
+      <IPhoneMobileFrame
+        model="iphone16promax"
+        storyId="partner-complete-app--default"
+        scale={1}
+      />
+    </div>
+  ),
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story: 'Partner Portal in iPhone 16 Pro Max frame with real responsive CSS via iframe.',
+      },
     },
   },
 }
 
 /**
- * Tablet viewport
+ * Tablet viewport - shows the Partner Portal in an iPad Pro 11" frame.
+ * Uses iframe for real CSS media query support.
  */
 export const Tablet: Story = {
-  ...Default,
+  render: () => (
+    <div className="flex justify-center p-8 bg-page min-h-screen overflow-auto">
+      <IPadMobileFrame
+        model="ipadPro11"
+        orientation="landscape"
+        storyId="partner-complete-app--default"
+        scale={1}
+      />
+    </div>
+  ),
   parameters: {
-    viewport: {
-      defaultViewport: 'tablet',
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story: 'Partner Portal in iPad Pro 11" frame (landscape) with real responsive CSS via iframe.',
+      },
     },
   },
 }

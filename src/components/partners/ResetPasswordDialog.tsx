@@ -69,7 +69,7 @@ const RadioGroupItem = React.forwardRef<
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <Circle className="h-2 w-2 fill-white text-white" />
+        <Circle className="h-2 w-2 fill-current text-inverse" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )
@@ -131,9 +131,9 @@ export function ResetPasswordDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md" data-testid="partners-reset-password-dialog">
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold text-primary">
+          <DialogTitle className="text-lg font-semibold text-primary" data-testid="partners-reset-password-dialog-title">
             Reset Password
           </DialogTitle>
           <p className="text-sm text-muted pt-2">
@@ -145,15 +145,15 @@ export function ResetPasswordDialog({
 
         {/* Radio Options */}
         <div className="py-4">
-          <RadioGroup value={mode} onValueChange={(value: string) => setMode(value as "generate" | "custom")}>
+          <RadioGroup value={mode} onValueChange={(value: string) => setMode(value as "generate" | "custom")} data-testid="partners-reset-password-dialog-mode-group">
             <div className="flex items-center space-x-3">
-              <RadioGroupItem value="generate" id="generate" />
+              <RadioGroupItem value="generate" id="generate" data-testid="partners-reset-password-dialog-generate-option" />
               <Label htmlFor="generate" className="text-sm text-primary cursor-pointer font-normal">
                 Generate secure password automatically
               </Label>
             </div>
             <div className="flex items-center space-x-3">
-              <RadioGroupItem value="custom" id="custom" />
+              <RadioGroupItem value="custom" id="custom" data-testid="partners-reset-password-dialog-custom-option" />
               <Label htmlFor="custom" className="text-sm text-primary cursor-pointer font-normal">
                 Set custom password manually
               </Label>
@@ -169,6 +169,7 @@ export function ResetPasswordDialog({
                 value={customPassword}
                 onChange={(e) => setCustomPassword(e.target.value)}
                 className="w-full"
+                data-testid="partners-reset-password-dialog-custom-input"
               />
             </div>
           )}
@@ -188,6 +189,7 @@ export function ResetPasswordDialog({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isResetting}
+            data-testid="partners-reset-password-dialog-cancel-btn"
           >
             Cancel
           </Button>
@@ -196,6 +198,7 @@ export function ResetPasswordDialog({
             variant="accent"
             onClick={handleConfirm}
             disabled={isResetting || (mode === "custom" && !customPassword.trim())}
+            data-testid="partners-reset-password-dialog-submit-btn"
           >
             {isResetting
               ? "Resetting..."

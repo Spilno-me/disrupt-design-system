@@ -181,14 +181,14 @@ export function EditNetworkPartnerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="partners-edit-network-partner-dialog">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-primary">
+          <DialogTitle className="text-xl font-semibold text-primary" data-testid="partners-edit-network-partner-dialog-title">
             {dialogTitle}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6" data-testid="partners-edit-network-partner-dialog-form">
           {/* Company Information Section */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-primary">Company Information</h3>
@@ -430,6 +430,7 @@ export function EditNetworkPartnerDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
+              data-testid="partners-edit-network-partner-dialog-cancel-btn"
             >
               Cancel
             </Button>
@@ -437,6 +438,7 @@ export function EditNetworkPartnerDialog({
               type="submit"
               variant="accent"
               disabled={isSubmitting}
+              data-testid="partners-edit-network-partner-dialog-submit-btn"
             >
               {isSubmitting
                 ? "Saving..."

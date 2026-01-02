@@ -9,6 +9,8 @@ import type { PartnerTier } from "../types"
 interface TierBadgeProps {
   /** Partner tier level */
   tier: PartnerTier
+  /** Optional test ID for automated testing */
+  "data-testid"?: string
 }
 
 const TIER_CONFIG: Record<PartnerTier, { label: string; className: string }> = {
@@ -29,7 +31,7 @@ const TIER_CONFIG: Record<PartnerTier, { label: string; className: string }> = {
 /**
  * TierBadge - Renders a styled badge showing partner tier level
  */
-export function TierBadge({ tier }: TierBadgeProps) {
+export function TierBadge({ tier, "data-testid": testId }: TierBadgeProps) {
   const config = TIER_CONFIG[tier]
 
   return (
@@ -38,6 +40,7 @@ export function TierBadge({ tier }: TierBadgeProps) {
         "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border",
         config.className
       )}
+      data-testid={testId}
     >
       {config.label}
     </span>
