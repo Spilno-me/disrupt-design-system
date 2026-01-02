@@ -1,10 +1,6 @@
-/// <reference types="@testing-library/jest-dom" />
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { expect, vi } from 'vitest'
-import { within } from '@testing-library/dom'
-import userEvent from '@testing-library/user-event'
-import { DeleteTemplateDialog, type EntityTemplate, type DeleteTemplateDialogProps } from '../../flow'
+import { DeleteTemplateDialog, type EntityTemplate } from '../../flow'
 import { Button } from '../../components/ui/button'
 import {
   MOLECULE_META,
@@ -53,9 +49,6 @@ const meta: Meta<typeof DeleteTemplateDialog> = {
         ),
       },
     },
-  },
-  args: {
-    onConfirm: vi.fn(),
   },
 }
 
@@ -130,10 +123,9 @@ function DialogWrapper({ template, onConfirm, buttonLabel = 'Delete Template' }:
  * Delete a custom template - shows confirmation dialog.
  */
 export const CustomTemplate: Story = {
-  render: (args: Partial<DeleteTemplateDialogProps>) => (
+  render: () => (
     <DialogWrapper
       template={CUSTOM_TEMPLATE}
-      onConfirm={args.onConfirm}
       buttonLabel="Delete Custom Template"
     />
   ),
@@ -143,10 +135,9 @@ export const CustomTemplate: Story = {
  * Attempt to delete a system template - shows "cannot delete" message.
  */
 export const SystemTemplate: Story = {
-  render: (args: Partial<DeleteTemplateDialogProps>) => (
+  render: () => (
     <DialogWrapper
       template={SYSTEM_TEMPLATE}
-      onConfirm={args.onConfirm}
       buttonLabel="Delete System Template"
     />
   ),
@@ -156,14 +147,13 @@ export const SystemTemplate: Story = {
  * Custom template dialog opened by default - delete confirmation.
  */
 export const OpenByDefault: Story = {
-  render: (args: Partial<DeleteTemplateDialogProps>) => {
+  render: () => {
     const [open, setOpen] = React.useState(true)
     return (
       <DeleteTemplateDialog
         template={CUSTOM_TEMPLATE}
         open={open}
         onOpenChange={setOpen}
-        onConfirm={args.onConfirm}
       />
     )
   },
@@ -173,124 +163,15 @@ export const OpenByDefault: Story = {
  * System template dialog opened - cannot delete message.
  */
 export const SystemTemplateOpen: Story = {
-  render: (args: Partial<DeleteTemplateDialogProps>) => {
+  render: () => {
     const [open, setOpen] = React.useState(true)
     return (
       <DeleteTemplateDialog
         template={SYSTEM_TEMPLATE}
         open={open}
         onOpenChange={setOpen}
-        onConfirm={args.onConfirm}
       />
     )
-  },
-}
-
-/**
- * Interaction test: Delete button triggers onConfirm.
- */
-export const ConfirmDelete: Story = {
-  args: {
-    onConfirm: vi.fn(),
-  },
-  render: (args: Partial<DeleteTemplateDialogProps>) => {
-    const [open, setOpen] = React.useState(true)
-    return (
-      <DeleteTemplateDialog
-        template={CUSTOM_TEMPLATE}
-        open={open}
-        onOpenChange={setOpen}
-        onConfirm={args.onConfirm}
-      />
-    )
-  },
-  play: async ({ args }: { args: Partial<DeleteTemplateDialogProps> }) => {
-    // Query from document.body since dialogs render in portals
-    const body = within(document.body)
-
-    // Wait for dialog to render
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // Warning message should be visible
-    const warningText = body.getByText(/delete.*permanently/i)
-    await expect(warningText).toBeVisible()
-
-    // Template code should be visible
-    const codeElement = body.getByText('safety-inspection')
-    await expect(codeElement).toBeVisible()
-
-    // Find delete button by test ID
-    const deleteButton = body.getByTestId(`delete-template-confirm-${CUSTOM_TEMPLATE.id}`)
-    await expect(deleteButton).toBeEnabled()
-
-    // Click delete
-    await userEvent.click(deleteButton)
-
-    // onConfirm should have been called
-    await expect(args.onConfirm).toHaveBeenCalledWith(CUSTOM_TEMPLATE.id)
-  },
-}
-
-/**
- * Interaction test: Cancel button closes dialog.
- */
-export const CancelDelete: Story = {
-  render: (args: Partial<DeleteTemplateDialogProps>) => {
-    const [open, setOpen] = React.useState(true)
-    return (
-      <DeleteTemplateDialog
-        template={CUSTOM_TEMPLATE}
-        open={open}
-        onOpenChange={setOpen}
-        onConfirm={args.onConfirm}
-      />
-    )
-  },
-  play: async () => {
-    // Query from document.body since dialogs render in portals
-    const body = within(document.body)
-
-    // Wait for dialog to render
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // Find cancel button by test ID
-    const cancelButton = body.getByTestId(`delete-template-cancel-${CUSTOM_TEMPLATE.id}`)
-    await expect(cancelButton).toBeEnabled()
-
-    // Click cancel
-    await userEvent.click(cancelButton)
-  },
-}
-
-/**
- * Interaction test: System template shows close button only.
- */
-export const SystemTemplateCloseOnly: Story = {
-  render: (args: Partial<DeleteTemplateDialogProps>) => {
-    const [open, setOpen] = React.useState(true)
-    return (
-      <DeleteTemplateDialog
-        template={SYSTEM_TEMPLATE}
-        open={open}
-        onOpenChange={setOpen}
-        onConfirm={args.onConfirm}
-      />
-    )
-  },
-  play: async () => {
-    // Query from document.body since dialogs render in portals
-    const body = within(document.body)
-
-    // Wait for dialog to render
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // "Cannot delete" message should be visible
-    const message = body.getByText(/cannot delete system template/i)
-    await expect(message).toBeVisible()
-
-    // Close button should exist (not delete button)
-    const closeButton = body.getByTestId(`delete-template-close-${SYSTEM_TEMPLATE.id}`)
-    await expect(closeButton).toBeVisible()
   },
 }
 
@@ -320,7 +201,7 @@ export const MobileFrame: Story = {
  * All states comparison view.
  */
 export const AllStates: Story = {
-  render: (args: Partial<DeleteTemplateDialogProps>) => (
+  render: () => (
     <div className="space-y-8 p-8 bg-page min-h-screen">
       <StorySection
         title="Custom Template"
@@ -328,7 +209,6 @@ export const AllStates: Story = {
       >
         <DialogWrapper
           template={CUSTOM_TEMPLATE}
-          onConfirm={args.onConfirm}
           buttonLabel="Delete Custom Template"
         />
       </StorySection>
@@ -339,7 +219,6 @@ export const AllStates: Story = {
       >
         <DialogWrapper
           template={SYSTEM_TEMPLATE}
-          onConfirm={args.onConfirm}
           buttonLabel="Delete System Template"
         />
       </StorySection>

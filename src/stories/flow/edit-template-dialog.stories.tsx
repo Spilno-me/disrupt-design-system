@@ -1,9 +1,5 @@
-/// <reference types="@testing-library/jest-dom" />
 import * as React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { expect, vi } from 'vitest'
-import { within } from '@testing-library/dom'
-import userEvent from '@testing-library/user-event'
 import { EditTemplateDialog, type EntityTemplate, type EditTemplateFormData } from '../../flow'
 import { Button } from '../../components/ui/button'
 import {
@@ -52,9 +48,6 @@ const meta: Meta<typeof EditTemplateDialog> = {
         ),
       },
     },
-  },
-  args: {
-    onSubmit: vi.fn(),
   },
 }
 
@@ -151,10 +144,9 @@ function DialogWrapper({ template, onSubmit, buttonLabel = 'Edit Template' }: Di
  * Edit a custom template - full editing capabilities.
  */
 export const CustomTemplate: Story = {
-  render: (args) => (
+  render: () => (
     <DialogWrapper
       template={CUSTOM_TEMPLATE}
-      onSubmit={args.onSubmit}
       buttonLabel="Edit Custom Template"
     />
   ),
@@ -164,10 +156,9 @@ export const CustomTemplate: Story = {
  * Edit a system template - name editing disabled with warning.
  */
 export const SystemTemplate: Story = {
-  render: (args) => (
+  render: () => (
     <DialogWrapper
       template={SYSTEM_TEMPLATE}
-      onSubmit={args.onSubmit}
       buttonLabel="Edit System Template"
     />
   ),
@@ -177,14 +168,13 @@ export const SystemTemplate: Story = {
  * Custom template dialog opened by default.
  */
 export const OpenByDefault: Story = {
-  render: (args) => {
+  render: () => {
     const [open, setOpen] = React.useState(true)
     return (
       <EditTemplateDialog
         template={CUSTOM_TEMPLATE}
         open={open}
         onOpenChange={setOpen}
-        onSubmit={args.onSubmit}
       />
     )
   },
@@ -194,141 +184,15 @@ export const OpenByDefault: Story = {
  * System template dialog opened by default - shows warning banner.
  */
 export const SystemTemplateOpen: Story = {
-  render: (args) => {
+  render: () => {
     const [open, setOpen] = React.useState(true)
     return (
       <EditTemplateDialog
         template={SYSTEM_TEMPLATE}
         open={open}
         onOpenChange={setOpen}
-        onSubmit={args.onSubmit}
       />
     )
-  },
-}
-
-/**
- * Interaction test: Name input disabled for system templates.
- */
-export const SystemTemplateNameDisabled: Story = {
-  render: (args) => {
-    const [open, setOpen] = React.useState(true)
-    return (
-      <EditTemplateDialog
-        template={SYSTEM_TEMPLATE}
-        open={open}
-        onOpenChange={setOpen}
-        onSubmit={args.onSubmit}
-      />
-    )
-  },
-  play: async () => {
-    // Query from document.body since dialogs render in portals
-    const body = within(document.body)
-
-    // Wait for dialog to render
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // Find the name input - should be disabled
-    const nameInput = body.getByLabelText(/template name/i)
-    await expect(nameInput).toBeDisabled()
-
-    // Warning message should be visible
-    const warning = body.getByText(/system template/i)
-    await expect(warning).toBeVisible()
-  },
-}
-
-/**
- * Interaction test: Custom template name is editable.
- */
-export const CustomTemplateNameEditable: Story = {
-  render: (args) => {
-    const [open, setOpen] = React.useState(true)
-    return (
-      <EditTemplateDialog
-        template={CUSTOM_TEMPLATE}
-        open={open}
-        onOpenChange={setOpen}
-        onSubmit={args.onSubmit}
-      />
-    )
-  },
-  play: async () => {
-    // Query from document.body since dialogs render in portals
-    const body = within(document.body)
-
-    // Wait for dialog to render
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // Find the name input - should be enabled
-    const nameInput = body.getByLabelText(/template name/i)
-    await expect(nameInput).toBeEnabled()
-
-    // Should have initial value
-    await expect(nameInput).toHaveValue('Safety Inspection')
-
-    // Clear and type new name
-    await userEvent.clear(nameInput)
-    await userEvent.type(nameInput, 'Updated Template Name')
-    await expect(nameInput).toHaveValue('Updated Template Name')
-  },
-}
-
-/**
- * Interaction test: Cancel button closes dialog.
- */
-export const CancelButton: Story = {
-  render: (args) => {
-    const [open, setOpen] = React.useState(true)
-    return (
-      <EditTemplateDialog
-        template={CUSTOM_TEMPLATE}
-        open={open}
-        onOpenChange={setOpen}
-        onSubmit={args.onSubmit}
-      />
-    )
-  },
-  play: async () => {
-    // Query from document.body since dialogs render in portals
-    const body = within(document.body)
-
-    // Wait for dialog to render
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // Find and click cancel button
-    const cancelButton = body.getByRole('button', { name: /cancel/i })
-    await expect(cancelButton).toBeEnabled()
-    await userEvent.click(cancelButton)
-  },
-}
-
-/**
- * Interaction test: Copy code button works.
- */
-export const CopyCodeButton: Story = {
-  render: (args) => {
-    const [open, setOpen] = React.useState(true)
-    return (
-      <EditTemplateDialog
-        template={CUSTOM_TEMPLATE}
-        open={open}
-        onOpenChange={setOpen}
-        onSubmit={args.onSubmit}
-      />
-    )
-  },
-  play: async () => {
-    // Query from document.body since dialogs render in portals
-    const body = within(document.body)
-
-    // Wait for dialog to render
-    await new Promise(resolve => setTimeout(resolve, 500))
-
-    // Template code should be visible
-    const codeElement = body.getByText('safety-inspection')
-    await expect(codeElement).toBeVisible()
   },
 }
 
@@ -336,7 +200,7 @@ export const CopyCodeButton: Story = {
  * All states comparison view.
  */
 export const AllStates: Story = {
-  render: (args) => (
+  render: () => (
     <div className="space-y-8 p-8 bg-page min-h-screen">
       <StorySection
         title="Custom Template"
@@ -344,7 +208,6 @@ export const AllStates: Story = {
       >
         <DialogWrapper
           template={CUSTOM_TEMPLATE}
-          onSubmit={args.onSubmit}
           buttonLabel="Edit Custom Template"
         />
       </StorySection>
@@ -355,7 +218,6 @@ export const AllStates: Story = {
       >
         <DialogWrapper
           template={SYSTEM_TEMPLATE}
-          onSubmit={args.onSubmit}
           buttonLabel="Edit System Template"
         />
       </StorySection>

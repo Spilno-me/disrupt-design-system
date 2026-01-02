@@ -27,6 +27,7 @@ import {
   Shield,
   ClipboardCheck,
   Download,
+  Package,
   // EHS Analytics Dashboard icons
   Sparkles,
   ClipboardList,
@@ -161,6 +162,14 @@ import {
   EntityTemplatesPage,
   type EntityTemplate,
 } from '../../flow/components/entity-templates'
+import {
+  ModulesPage,
+  type ModuleItem,
+} from '../../flow/components/modules'
+import {
+  mockModules,
+  fullPermissions as moduleFullPermissions,
+} from '../../flow/data/mockModules'
 import {
   DirectoryPage,
   UserProfilePage,
@@ -1192,6 +1201,45 @@ const flowNavItems = [
         icon: <Files className="w-5 h-5" />,
         component: <EntityTemplatesPageDemo />,
       },
+      {
+        id: 'modules',
+        label: 'Modules',
+        icon: <Package className="w-5 h-5" />,
+        component: (
+          <FlowPageContent>
+          <ModulesPage
+            modules={mockModules}
+            permissions={moduleFullPermissions}
+            title="Modules"
+            description="Manage system modules and entity templates"
+            onOpenModule={(m) => {
+              console.log('Opening module:', m)
+              alert(`Opening module: ${m.name}`)
+            }}
+            onEditModule={(m) => {
+              console.log('Editing module:', m)
+              alert(`Editing module: ${m.name}`)
+            }}
+            onToggleModuleStatus={(m) => {
+              console.log('Toggling module status:', m)
+              alert(`Toggling ${m.name} from ${m.status}`)
+            }}
+            onCreateEntity={(m) => {
+              console.log('Creating entity for module:', m)
+              alert(`Creating new ${m.primaryEntityTemplate?.name} for ${m.name}`)
+            }}
+            onAddModule={() => {
+              console.log('Add module clicked')
+              alert('Add Module clicked')
+            }}
+            onRefresh={() => {
+              console.log('Refreshing modules')
+              alert('Refreshing modules...')
+            }}
+          />
+          </FlowPageContent>
+        ),
+      },
     ],
   },
 ]
@@ -1285,6 +1333,7 @@ const moreMenuItems: MoreMenuItem[] = [
   { id: 'dictionaries', label: 'Dictionaries', icon: <BookOpen className="w-5 h-5" /> },
   { id: 'locations', label: 'Locations', icon: <MapPin className="w-5 h-5" /> },
   { id: 'templates', label: 'Entity Templates', icon: <Files className="w-5 h-5" /> },
+  { id: 'modules', label: 'Modules', icon: <Package className="w-5 h-5" /> },
 ]
 
 // =============================================================================
