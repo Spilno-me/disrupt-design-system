@@ -1,0 +1,608 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Cpu,
+  Wrench,
+  CheckCircle,
+  XCircle,
+  ArrowRight,
+  Palette,
+  Component,
+  Search,
+  ShieldCheck,
+  BookOpen,
+  Zap,
+  Settings,
+  Terminal,
+  Code,
+  Layers,
+  Target,
+  Workflow,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Developers/MCP Server" />
+
+{/* Hero Header */}
+<BrandHero
+  title="@dds/mcp Server"
+  description="Model Context Protocol server that enables AI assistants to follow DDS rules precisely when building components or integrating them into applications."
+  gradient="teal"
+  decorativeIcon={<Cpu size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>AI-Powered Design System Enforcement.</strong> MCP transforms passive documentation 
+  into active enforcement—AI assistants query DDS rules at the moment of creation.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>What is MCP?</h2>
+
+<SectionHeader
+  icon={<Cpu size={20} />}
+  title="Model Context Protocol"
+  description="Anthropic's standard for AI-tool integration."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, marginBottom: SPACING.px.base }}>
+      <div style={{
+        width: SPACING.px.comfortable,
+        height: SPACING.px.comfortable,
+        borderRadius: RADIUS.xs,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: DEEP_CURRENT[700],
+      }}>
+        <XCircle size={14} />
+      </div>
+      <h3 style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.base[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500] }}>
+        Without MCP
+      </h3>
+    </div>
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+    }}>
+      <div style={{ color: SLATE[500], marginBottom: SPACING.px.tight }}>AI suggests:</div>
+      <div style={{ color: '#dc2626' }}>className="bg-blue-500 text-white"</div>
+      <div style={{ color: SLATE[400], fontSize: '11px', marginTop: SPACING.px.tight }}>❌ Violates DDS token rules</div>
+    </div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, marginBottom: SPACING.px.base }}>
+      <div style={{
+        width: SPACING.px.comfortable,
+        height: SPACING.px.comfortable,
+        borderRadius: RADIUS.xs,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: DEEP_CURRENT[700],
+      }}>
+        <CheckCircle size={14} />
+      </div>
+      <h3 style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.base[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500] }}>
+        With MCP
+      </h3>
+    </div>
+    <div style={{
+      background: SLATE[50],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+    }}>
+      <div style={{ color: SLATE[500], marginBottom: SPACING.px.tight }}>AI queries → validates → suggests:</div>
+      <div style={{ color: DEEP_CURRENT[600] }}>className="bg-accent text-inverse"</div>
+      <div style={{ color: SLATE[400], fontSize: '11px', marginTop: SPACING.px.tight }}>✅ DDS semantic tokens</div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Available Tools</h2>
+
+<SectionHeader
+  icon={<Wrench size={20} />}
+  title="Phase 1 Tools (Current)"
+  description="6 tools for component lookup, token validation, and design guidance."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { name: 'get_component', icon: <Component size={20} />, desc: 'Component metadata (variants, status, path)', example: 'get_component({name: "Button"})' },
+    { name: 'search_components', icon: <Search size={20} />, desc: 'Search by name, type, or status', example: 'search_components({type: "ATOM"})' },
+    { name: 'get_design_tokens', icon: <Palette size={20} />, desc: 'Token values for colors, shadows, radius', example: 'get_design_tokens({category: "shadows"})' },
+    { name: 'get_color_guidance', icon: <Layers size={20} />, desc: 'Color rules for background types', example: 'get_color_guidance({category: "dark_backgrounds"})' },
+    { name: 'check_token_usage', icon: <ShieldCheck size={20} />, desc: 'Validate if token is DDS-compliant', example: 'check_token_usage({token: "bg-blue-500"})' },
+    { name: 'get_design_philosophy', icon: <BookOpen size={20} />, desc: 'Wu Wei principles and rules', example: 'get_design_philosophy({})' },
+  ].map((tool) => (
+    <div
+      key={tool.name}
+      style={{
+        background: PRIMITIVES.softLinen,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.cardGap,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        width: '36px',
+        height: '36px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.compact,
+        color: DEEP_CURRENT[600],
+      }}>
+        {tool.icon}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: DEEP_CURRENT[600],
+        marginBottom: SPACING.px.micro,
+      }}>
+        {tool.name}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: DUSK_REEF[500],
+        marginBottom: SPACING.px.tight,
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+      }}>
+        {tool.desc}
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+        background: SLATE[50],
+        padding: SPACING.px.tight,
+        borderRadius: RADIUS.xs,
+      }}>
+        {tool.example}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Configuration</h2>
+
+<SectionHeader
+  icon={<Settings size={20} />}
+  title="Setup for Claude Code"
+  description="Two files to configure MCP in your project."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, marginBottom: SPACING.px.base }}>
+      <Terminal size={16} color={DEEP_CURRENT[600]} />
+      <h4 style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500] }}>
+        .mcp.json (project root)
+      </h4>
+    </div>
+    <div style={{
+      background: ABYSS[600],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: '12px',
+      color: SLATE[200],
+      lineHeight: 1.6,
+    }}>
+      <pre style={{ margin: 0 }}>{`{
+  "mcpServers": {
+    "dds": {
+      "command": "node",
+      "args": ["./mcp/dist/index.js"]
+    }
+  }
+}`}</pre>
+    </div>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.tight, marginBottom: SPACING.px.base }}>
+      <Settings size={16} color={DEEP_CURRENT[600]} />
+      <h4 style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500] }}>
+        .claude/settings.local.json
+      </h4>
+    </div>
+    <div style={{
+      background: ABYSS[600],
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.base,
+      fontFamily: TYPOGRAPHY.fontFamily.mono,
+      fontSize: '12px',
+      color: SLATE[200],
+      lineHeight: 1.6,
+    }}>
+      <pre style={{ margin: 0 }}>{`{
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "dds"
+  ]
+}`}</pre>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Use Cases</h2>
+
+<SectionHeader
+  icon={<Target size={20} />}
+  title="Two Primary Scenarios"
+  description="MCP serves both internal development and consumer integration."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: DEEP_CURRENT[50],
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{
+      width: '48px',
+      height: '48px',
+      borderRadius: RADIUS.md,
+      background: DEEP_CURRENT[100],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: SPACING.px.base,
+      color: DEEP_CURRENT[700],
+    }}>
+      <Code size={24} />
+    </div>
+    <h3 style={{
+      margin: `0 0 ${SPACING.px.tight} 0`,
+      fontSize: TYPOGRAPHY.fontSize.base[0],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      color: DEEP_CURRENT[700],
+    }}>
+      DDS Component Development
+    </h3>
+    <p style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      color: DUSK_REEF[600],
+      lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+    }}>
+      Building new components within the design system.
+    </p>
+    <ul style={{
+      margin: 0,
+      paddingLeft: SPACING.px.cardGap,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      color: ABYSS[500],
+      lineHeight: TYPOGRAPHY.lineHeight.loose,
+    }}>
+      <li>Correct token usage validated</li>
+      <li>Component patterns enforced</li>
+      <li>Storybook patterns applied</li>
+      <li>Testing patterns followed</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: DUSK_REEF[50],
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${DUSK_REEF[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{
+      width: '48px',
+      height: '48px',
+      borderRadius: RADIUS.md,
+      background: DUSK_REEF[100],
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: SPACING.px.base,
+      color: DUSK_REEF[700],
+    }}>
+      <Zap size={24} />
+    </div>
+    <h3 style={{
+      margin: `0 0 ${SPACING.px.tight} 0`,
+      fontSize: TYPOGRAPHY.fontSize.base[0],
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      color: DUSK_REEF[700],
+    }}>
+      Consumer App Integration
+    </h3>
+    <p style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.sm[0],
+      color: DUSK_REEF[600],
+      lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+    }}>
+      Using DDS components in real applications.
+    </p>
+    <ul style={{
+      margin: 0,
+      paddingLeft: SPACING.px.cardGap,
+      fontSize: TYPOGRAPHY.fontSize.xs[0],
+      color: ABYSS[500],
+      lineHeight: TYPOGRAPHY.lineHeight.loose,
+    }}>
+      <li>Component suggestions</li>
+      <li>Correct import paths</li>
+      <li>Semantic token guidance</li>
+      <li>Accessibility compliance</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Roadmap</h2>
+
+<SectionHeader
+  icon={<Workflow size={20} />}
+  title="Development Phases"
+  description="Progressive expansion of MCP capabilities."
+/>
+
+<div style={{
+  display: 'flex',
+  flexDirection: 'column',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { phase: 'Phase 1', status: 'COMPLETE', color: DEEP_CURRENT[500], bg: DEEP_CURRENT[50], title: 'Foundation', desc: '6 tools: component lookup, token validation, color guidance', tools: 'get_component, search_components, get_design_tokens, get_color_guidance, check_token_usage, get_design_philosophy' },
+    { phase: 'Phase 2', status: 'NEXT', color: DUSK_REEF[500], bg: DUSK_REEF[50], title: 'Validation & Patterns', desc: 'Proactive rule enforcement during development', tools: 'check_contrast, get_storybook_patterns, get_component_workflow, get_testing_patterns' },
+    { phase: 'Phase 3', status: 'FUTURE', color: ABYSS[400], bg: ABYSS[50], title: 'Consumer Integration', desc: 'Help developers using DDS in their apps', tools: 'suggest_component, get_usage_example, check_composition, get_accessibility_rules' },
+    { phase: 'Phase 4', status: 'FUTURE', color: SLATE[400], bg: SLATE[50], title: 'Full Compliance Audit', desc: 'Audit entire files/projects for DDS compliance', tools: 'audit_file, audit_tokens, suggest_fixes' },
+    { phase: 'Phase 5', status: 'FUTURE', color: SLATE[400], bg: SLATE[50], title: 'Code Generation', desc: 'Generate DDS-compliant code from descriptions', tools: 'generate_component_scaffold, generate_story_file' },
+  ].map((item) => (
+    <div
+      key={item.phase}
+      style={{
+        display: 'flex',
+        alignItems: 'stretch',
+        borderRadius: RADIUS.md,
+        overflow: 'hidden',
+        boxShadow: SHADOWS.sm,
+      }}
+    >
+      <div style={{
+        minWidth: '120px',
+        background: item.bg,
+        padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{
+          fontSize: TYPOGRAPHY.fontSize.sm[0],
+          fontWeight: TYPOGRAPHY.fontWeight.bold,
+          color: item.color,
+          marginBottom: SPACING.px.micro,
+        }}>
+          {item.phase}
+        </div>
+        <div style={{
+          fontSize: '10px',
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          color: item.status === 'COMPLETE' ? DEEP_CURRENT[600] : item.status === 'NEXT' ? DUSK_REEF[600] : SLATE[500],
+          background: item.status === 'COMPLETE' ? DEEP_CURRENT[100] : item.status === 'NEXT' ? DUSK_REEF[100] : SLATE[100],
+          padding: `2px ${SPACING.px.tight}`,
+          borderRadius: RADIUS.xs,
+        }}>
+          {item.status}
+        </div>
+      </div>
+      <div style={{
+        flex: 1,
+        background: PRIMITIVES.softLinen,
+        padding: `${SPACING.px.base} ${SPACING.px.cardGap}`,
+      }}>
+        <div style={{
+          fontSize: TYPOGRAPHY.fontSize.sm[0],
+          fontWeight: TYPOGRAPHY.fontWeight.semibold,
+          color: ABYSS[500],
+          marginBottom: SPACING.px.micro,
+        }}>
+          {item.title}
+        </div>
+        <div style={{
+          fontSize: TYPOGRAPHY.fontSize.xs[0],
+          color: DUSK_REEF[500],
+          marginBottom: SPACING.px.tight,
+        }}>
+          {item.desc}
+        </div>
+        <div style={{
+          fontSize: '11px',
+          fontFamily: TYPOGRAPHY.fontFamily.mono,
+          color: SLATE[500],
+        }}>
+          {item.tools}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Testing the Server</h2>
+
+<SectionHeader
+  icon={<Terminal size={20} />}
+  title="Manual Testing Commands"
+  description="Verify the MCP server is working correctly."
+/>
+
+<div style={{
+  background: ABYSS[600],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  overflow: 'auto',
+}}>
+  <pre style={{
+    margin: 0,
+    fontFamily: TYPOGRAPHY.fontFamily.mono,
+    fontSize: '12px',
+    lineHeight: 1.8,
+    color: SLATE[200],
+  }}>
+{`# Navigate to MCP directory
+cd mcp
+
+# List all available tools
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | node dist/index.js
+
+# Get component info
+echo '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_component","arguments":{"name":"Button"}}}' | node dist/index.js
+
+# Check if a token is valid
+echo '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"check_token_usage","arguments":{"token":"bg-blue-500"}}}' | node dist/index.js
+
+# Get shadow tokens
+echo '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"get_design_tokens","arguments":{"category":"shadows"}}}' | node dist/index.js`}
+  </pre>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Key Benefits</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Always Up-to-Date">
+    MCP reads from .claude/ files at runtime. No stale documentation—always current with the latest DDS rules.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Consistent Enforcement">
+    Same rules for all developers. Whether building components or integrating them, AI follows identical guidelines.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Wu Wei Philosophy">
+    Rules come to developers at the moment of creation. No need to memorize—AI guides toward correct patterns.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Scalable Knowledge">
+    One MCP server serves unlimited developers. Add tools once, everyone benefits immediately.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Architecture</h2>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    fontFamily: TYPOGRAPHY.fontFamily.mono,
+    fontSize: '13px',
+    lineHeight: 1.8,
+    color: ABYSS[500],
+  }}>
+    <pre style={{ margin: 0 }}>{`mcp/
+├── src/
+│   └── index.ts          # Main server with all tools
+├── dist/                 # Compiled output
+├── package.json          # Dependencies (@modelcontextprotocol/sdk, zod)
+├── tsconfig.json         # TypeScript config
+├── README.md             # Full documentation
+└── ROADMAP.md            # Development roadmap
+
+Data Sources (read at runtime):
+├── .claude/agent-context.json    # Components, tokens, philosophy
+├── .claude/color-matrix.json     # Color usage rules
+└── .claude/contrast-matrix.json  # WCAG contrast (Phase 2)`}</pre>
+  </div>
+</div>

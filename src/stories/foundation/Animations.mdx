@@ -1,386 +1,304 @@
 {/* @jsxRuntime automatic */}
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
-import { Sparkles, Clock, Loader2, Check, Play } from 'lucide-react';
+import { Sparkles, Clock, Zap, Timer } from 'lucide-react';
 import {
   BrandHero,
   InfoBox,
-  ABYSS,
-  DEEP_CURRENT,
-  DUSK_REEF,
   PRIMITIVES,
-  SHADOWS,
-  RADIUS,
-  SLATE,
   SPACING,
 } from '../brand/BrandComponents';
 import { CodeBlock } from './DocComponents';
-import { Button } from '../../components/ui/button';
-import { Skeleton, SkeletonImage, SkeletonText } from '../../components/ui/Skeleton';
-import { ExecutingAnimation } from '../../components/ui/ExecutingAnimation';
-import { TRANSITIONS } from '../../constants/designTokens';
+import {
+  ProductiveShortDemo,
+  ProductiveMediumDemo,
+  ProductiveLongDemo,
+  ExpressiveShortDemo,
+  ExpressiveLongDemo,
+  EnterEasingDemo,
+  ExitEasingDemo,
+  TransitionEasingDemo,
+  EmphasizeEasingDemo,
+  DelayDemo,
+  KeyframePopDemo,
+  KeyframeSlideDemo,
+  KeyframeAttentionDemo,
+  ReducedMotionDemo,
+} from './AnimationDemos';
 
 <Meta title="Foundation/Design Tokens/Animations" />
 
-{/* Hero Header */}
 <BrandHero
-  title="Animations & Loading States"
-  description="DDS provides a suite of animated components for loading states and micro-interactions. Use these components consistently across your application."
+  title="Motion & Animation"
+  description="A semantic motion token system inspired by Vibe Design System. Productive animations for functional feedback, Expressive animations for delightful emphasis."
   gradient="purple"
   decorativeIcon={<Sparkles size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="tip">
-  <strong>Use DDS components:</strong> Always import loading and animation components from the design system.
-  Don't create custom loaders or skeleton implementations.
+  <strong>Vibe-inspired approach:</strong> Motion tokens are categorized by intent, not just speed.
+  <strong>Productive</strong> = functional, immediate. <strong>Expressive</strong> = delightful, emphasizing.
 </InfoBox>
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Loading Components</h2>
+---
 
-### ExecutingAnimation (Primary Loader)
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Duration Tokens</h2>
 
-The orbital three-dot loader used for primary loading states like form submissions, page loads, and async operations.
+### Productive Durations (70ms - 150ms)
 
-<div style={{
-  display: 'flex',
-  gap: '48px',
-  marginBottom: '32px',
-  alignItems: 'center',
-  flexWrap: 'wrap',
-}}>
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '32px',
-    border: `1px solid ${SLATE[200]}`,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '16px',
-  }}>
-    <ExecutingAnimation className="w-24 h-24" variant="light" />
-    <span style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
-      <span>Light variant (default)</span>
-    </span>
-  </div>
+Quick, functional animations for user-initiated interactions. Use for micro-feedback that shouldn't delay the user.
 
-  <div style={{
-    background: ABYSS[500],
-    borderRadius: RADIUS.lg,
-    padding: '32px',
-    border: `1px solid ${ABYSS[400]}`,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '16px',
-  }}>
-    <ExecutingAnimation className="w-24 h-24" variant="dark" />
-    <span style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: SLATE[300] }}>
-      <span>Dark variant</span>
-    </span>
-  </div>
-</div>
+<ProductiveShortDemo />
 
-<CodeBlock
-  language="tsx"
-  code={`import { ExecutingAnimation } from '@adrozdenko/design-system'
+<ProductiveMediumDemo />
 
-// Default (light background)
-<ExecutingAnimation className="w-24 h-24" />
+<ProductiveLongDemo />
 
-// Dark background
-<ExecutingAnimation className="w-24 h-24" variant="dark" />
+### Expressive Durations (250ms - 400ms)
 
-// Smaller size for inline loading
-<ExecutingAnimation className="w-8 h-8" />`}
-/>
+Deliberate, emphasizing animations for system-initiated content. Use for moments that deserve attention.
 
-### Skeleton Components
+<ExpressiveShortDemo />
 
-Use skeletons to indicate content is loading while maintaining layout structure.
+<ExpressiveLongDemo />
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: '24px',
-  marginBottom: '32px',
-}}>
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
-      <span>Skeleton (basic)</span>
-    </div>
-    <Skeleton className="w-full h-10 mb-3" />
-    <Skeleton className="w-3/4 h-10" />
-  </div>
+---
 
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
-      <span>SkeletonImage</span>
-    </div>
-    <SkeletonImage aspectRatio="16/9" />
-  </div>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Easing Curves</h2>
 
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
-      <span>SkeletonText</span>
-    </div>
-    <SkeletonText lines={4} />
-  </div>
-</div>
+### Enter Easing
+
+Elements appearing on screen - **fast start, slow end** (decelerate into place).
+
+<EnterEasingDemo />
+
+### Exit Easing
+
+Elements leaving the screen - **slow start, fast end** (accelerate away).
+
+<ExitEasingDemo />
+
+### Transition Easing
+
+On-screen state changes - **smooth both ways** (morphing in place).
+
+<TransitionEasingDemo />
+
+### Emphasize Easing
+
+Attention-grabbing with **subtle overshoot** (bounce effect). Use sparingly!
+
+<EmphasizeEasingDemo />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Delay Tokens</h2>
+
+### Staggered Animations
+
+Create cascading effects that guide the eye naturally.
+
+<DelayDemo />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage in Code</h2>
+
+### CSS Usage
 
 <CodeBlock
-  language="tsx"
-  code={`import { Skeleton, SkeletonImage, SkeletonText } from '@adrozdenko/design-system'
+  code={`/* Button hover - productive short */
+.button {
+  transition:
+    background-color var(--motion-duration-productive-short) var(--motion-easing-transition),
+    transform var(--motion-duration-productive-short) var(--motion-easing-transition);
+}
 
-// Basic skeleton
-<Skeleton className="w-[200px] h-[20px]" />
+/* Modal enter - expressive short with enter easing */
+.modal-enter {
+  animation: slideIn var(--motion-duration-expressive-short) var(--motion-easing-enter);
+}
 
-// Image placeholder with aspect ratio
-<SkeletonImage aspectRatio="16/9" />
-<SkeletonImage aspectRatio="square" />
-<SkeletonImage aspectRatio="4/3" />
+/* Modal exit - expressive short with exit easing */
+.modal-exit {
+  animation: slideOut var(--motion-duration-expressive-short) var(--motion-easing-exit);
+}
 
-// Text paragraph skeleton
-<SkeletonText lines={3} />
-
-// Card skeleton example
-<div className="p-4 border rounded-lg">
-  <SkeletonImage aspectRatio="16/9" className="mb-4" />
-  <Skeleton className="w-3/4 h-6 mb-2" />
-  <SkeletonText lines={2} />
-</div>`}
+/* Staggered list items */
+.list-item:nth-child(1) { animation-delay: calc(var(--motion-delay-short) * 0); }
+.list-item:nth-child(2) { animation-delay: calc(var(--motion-delay-short) * 1); }
+.list-item:nth-child(3) { animation-delay: calc(var(--motion-delay-short) * 2); }`}
+  language="css"
 />
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Transition Tokens</h2>
+### Framer Motion Usage
 
-Use these tokens for custom transitions when DDS components don't cover your use case.
+<CodeBlock
+  code={`import { MOTION } from '@adrozdenko/design-system'
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(4, 1fr)',
-  gap: '16px',
-  marginBottom: '32px',
-}}>
-  {[
-    { name: 'Fast', value: TRANSITIONS.duration.fast, usage: 'Micro-interactions, hover' },
-    { name: 'Normal', value: TRANSITIONS.duration.normal, usage: 'Standard transitions' },
-    { name: 'Smooth', value: TRANSITIONS.duration.smooth, usage: 'Larger elements' },
-    { name: 'Slow', value: TRANSITIONS.duration.slow, usage: 'Page transitions' },
-  ].map((item) => (
-    <div
-      key={item.name}
-      style={{
-        background: PRIMITIVES.softLinen,
-        borderRadius: RADIUS.lg,
-        padding: '20px',
-        border: `1px solid ${SLATE[200]}`,
-      }}
-    >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        marginBottom: '8px',
-      }}>
-        <Clock size={14} color={DEEP_CURRENT[500]} />
-        <span style={{
-          fontSize: '13px',
-          fontWeight: 600,
-          fontFamily: '"Fixel", sans-serif',
-          color: ABYSS[500],
-        }}>
-          {item.name}
-        </span>
-      </div>
-      <div style={{
-        fontSize: '20px',
-        fontWeight: 700,
-        fontFamily: '"JetBrains Mono", monospace',
-        color: DEEP_CURRENT[500],
-        marginBottom: '4px',
-      }}>
-        <span>{item.value}</span>
-      </div>
-      <div style={{
-        fontSize: '11px',
-        fontFamily: '"Fixel", sans-serif',
-        color: DUSK_REEF[500],
-      }}>
-        <span>{item.usage}</span>
-      </div>
-    </div>
-  ))}
-</div>
+// Enter animation
+const enterVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.25, // expressiveShort in seconds
+      ease: MOTION.easing.enterArray, // [0, 0, 0.35, 1]
+    }
+  }
+}
 
-### Easing Functions
+// Exit animation
+const exitVariants = {
+  exit: {
+    opacity: 0,
+    y: -10,
+    transition: {
+      duration: 0.15, // productiveLong in seconds
+      ease: MOTION.easing.exitArray, // [0.4, 0, 1, 1]
+    }
+  }
+}
 
-<div
-  id="easing-demo-container"
-  style={{
-    background: PRIMITIVES.softLinen,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-    marginBottom: '32px',
-  }}
->
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '16px',
-  }}>
-    <div style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-    }}>
-      <span>Compare easing functions</span>
-    </div>
-    <Button
-      variant="accent"
-      size="sm"
-      onClick={() => {
-        const bars = document.querySelectorAll('[data-easing-bar]');
-        bars.forEach(bar => { bar.style.width = '0%'; });
-        setTimeout(() => {
-          bars.forEach(bar => { bar.style.width = '100%'; });
-        }, 100);
-      }}
-    >
-      <Play size={14} className="mr-1" />
-      <span>Play</span>
-    </Button>
-  </div>
+// Attention animation (emphasize)
+const bounceVariants = {
+  attention: {
+    scale: [1, 1.05, 1],
+    transition: {
+      duration: 0.25,
+      ease: MOTION.easing.emphasizeArray, // [0, 0, 0.2, 1.4]
+    }
+  }
+}`}
+  language="tsx"
+/>
 
-  {[
-    { name: 'ease-out', timing: TRANSITIONS.timing.easeOut, desc: 'Recommended for UI', highlight: true },
-    { name: 'ease', timing: TRANSITIONS.timing.ease, desc: 'General purpose' },
-    { name: 'ease-in', timing: TRANSITIONS.timing.easeIn, desc: 'Elements exiting' },
-    { name: 'ease-in-out', timing: TRANSITIONS.timing.easeInOut, desc: 'Looping animations' },
-  ].map((item) => (
-    <div key={item.name} style={{ marginBottom: '12px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-        <code style={{
-          width: '90px',
-          fontSize: '12px',
-          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-          color: item.highlight ? DEEP_CURRENT[600] : DUSK_REEF[500],
-          fontWeight: item.highlight ? 600 : 400,
-        }}>{item.name}</code>
-        <span style={{
-          fontSize: '11px',
-          color: item.highlight ? DEEP_CURRENT[600] : SLATE[500],
-          fontFamily: '"Fixel", sans-serif',
-          fontWeight: item.highlight ? 500 : 400,
-        }}>{item.desc}</span>
-      </div>
-      <div style={{
-        background: SLATE[100],
-        borderRadius: RADIUS.xs,
-        height: '24px',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div
-          data-easing-bar
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: '0%',
-            background: item.highlight ? DEEP_CURRENT[500] : DUSK_REEF[400],
-            borderRadius: RADIUS.xs,
-            transition: `width 1000ms ${item.timing}`,
-          }}
-        />
-      </div>
-    </div>
-  ))}
-</div>
+---
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Guidelines</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  marginBottom: '32px',
-}}>
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-      marginBottom: '16px',
-    }}>
-      <span>When to use each loader</span>
-    </div>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500] }}>
-      <div><strong style={{ color: ABYSS[500] }}>ExecutingAnimation:</strong> Form submissions, auth flows, page transitions, async operations</div>
-      <div><strong style={{ color: ABYSS[500] }}>Skeleton:</strong> Content loading, data fetching, lazy-loaded components, list placeholders</div>
-    </div>
-  </div>
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `--motion-duration-productive-short` | 70ms | Hover states, micro-feedback |
+| `--motion-duration-productive-medium` | 100ms | Toggles, checkboxes |
+| `--motion-duration-productive-long` | 150ms | Tooltips, small reveals |
+| `--motion-duration-expressive-short` | 250ms | Modals, cards, panels |
+| `--motion-duration-expressive-long` | 400ms | Page transitions, heroes |
+| `--motion-easing-enter` | cubic-bezier(0, 0, 0.35, 1) | Elements appearing |
+| `--motion-easing-exit` | cubic-bezier(0.4, 0, 1, 1) | Elements leaving |
+| `--motion-easing-transition` | cubic-bezier(0.4, 0, 0.2, 1) | State changes |
+| `--motion-easing-emphasize` | cubic-bezier(0, 0, 0.2, 1.4) | Attention (use sparingly) |
+| `--motion-delay-short` | 50ms | Quick stagger |
+| `--motion-delay-normal` | 100ms | Standard delay |
+| `--motion-delay-long` | 200ms | Pronounced stagger |
 
-  <div style={{
-    background: PRIMITIVES.white,
-    borderRadius: RADIUS.lg,
-    padding: '24px',
-    border: `1px solid ${SLATE[200]}`,
-  }}>
-    <div style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      fontFamily: '"Fixel", sans-serif',
-      color: ABYSS[500],
-      marginBottom: '16px',
-    }}>
-      <span>Import from DDS</span>
-    </div>
-    <div style={{
-      background: ABYSS[700],
-      borderRadius: RADIUS.md,
-      padding: '16px',
-      fontFamily: '"JetBrains Mono", monospace',
-      fontSize: '12px',
-      color: SLATE[300],
-      lineHeight: 1.6,
-    }}>
-      <div style={{ color: DUSK_REEF[300] }}>// Loading components</div>
-      <div><span style={{ color: '#C586C0' }}>import</span> {'{'}</div>
-      <div style={{ paddingLeft: '16px' }}>ExecutingAnimation,</div>
-      <div style={{ paddingLeft: '16px' }}>Skeleton,</div>
-      <div style={{ paddingLeft: '16px' }}>SkeletonImage,</div>
-      <div style={{ paddingLeft: '16px' }}>SkeletonText,</div>
-      <div>{'}'} <span style={{ color: '#C586C0' }}>from</span> <span style={{ color: '#CE9178' }}>'@adrozdenko/design-system'</span></div>
-    </div>
-  </div>
-</div>
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Keyframe Animations</h2>
+
+<InfoBox variant="tip">
+  <strong>Absorbed from Vibe Design System:</strong> Pre-built keyframe animations for common UI patterns.
+  Import from <code>@dds/design-system/styles/motion.css</code> or use the TypeScript constants from <code>MOTION_KEYFRAMES</code>.
+</InfoBox>
+
+### Pop Animations (Scale-based)
+
+Use for modals, tooltips, popovers, cards - elements that appear "on top" of the UI.
+
+<KeyframePopDemo />
+
+| Keyframe | Effect | Duration | Use Case |
+|----------|--------|----------|----------|
+| `dds-pop-in` | Scale 0.8 → 1 with fade | 250ms | Standard modal/tooltip entry |
+| `dds-pop-out` | Scale 1 → 0.8 with fade | 150ms | Modal/tooltip exit |
+| `dds-pop-elastic` | Bouncy overshoot | 400ms | Playful, attention-grabbing |
+| `dds-pop-elastic-bold` | More pronounced bounce | 500ms | High emphasis (use sparingly) |
+
+### Slide Animations (Position-based)
+
+Use for toasts, drawers, panels, notifications - elements that slide in from edges.
+
+<KeyframeSlideDemo />
+
+| Keyframe | Effect | Duration | Use Case |
+|----------|--------|----------|----------|
+| `dds-slide-in-up` | From bottom | 250ms | Toasts, bottom sheets |
+| `dds-slide-in-down` | From top | 250ms | Dropdowns, notifications |
+| `dds-slide-in-left` | From left | 250ms | Side panels, drawers |
+| `dds-slide-in-right` | From right | 250ms | Side panels, drawers |
+| `dds-slide-in-up-elastic` | Bouncy from bottom | 400ms | Playful toasts |
+
+### Attention Animations (Emphasis)
+
+Use sparingly for drawing user attention to important elements.
+
+<KeyframeAttentionDemo />
+
+| Keyframe | Effect | Use Case |
+|----------|--------|----------|
+| `dds-pulse` | Gentle scale pulse | New notifications, badges |
+| `dds-shake` | Horizontal shake | Form errors, invalid input |
+| `dds-bounce` | Vertical bounce | CTAs, important buttons |
+| `dds-wiggle` | Subtle rotation | Playful attention |
+| `dds-spin` | Continuous rotation | Loading indicators |
+| `dds-spin-in` | Rotation + scale entry | Success checkmarks |
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Accessibility</h2>
 
 <InfoBox variant="warning">
-  <strong>Don't create custom loaders.</strong> Always use the DDS animation components to maintain consistency.
-  If you need a new animation pattern, propose it for the design system.
+  <strong>WCAG 2.1 Requirement:</strong> Always respect <code>prefers-reduced-motion</code> for users with vestibular disorders.
 </InfoBox>
+
+<ReducedMotionDemo />
+
+### Reduced Motion Support
+
+DDS includes automatic reduced motion support. When users have "Reduce motion" enabled in their OS settings, all animations are instantly completed:
+
+<CodeBlock
+  code={`/* Automatically included in motion.css */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}`}
+  language="css"
+/>
+
+### Manual Reduced Motion Handling
+
+For custom animations, check the preference programmatically:
+
+<CodeBlock
+  code={`// React hook for reduced motion
+const prefersReducedMotion = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches;
+
+// Framer Motion respects this automatically
+<motion.div
+  animate={{ opacity: 1, y: 0 }}
+  transition={{
+    duration: prefersReducedMotion ? 0 : 0.25,
+    ease: MOTION.easing.enterArray,
+  }}
+/>`}
+  language="tsx"
+/>
+
+### Animation Guidelines for Accessibility
+
+| Do | Don't |
+|----|-------|
+| Keep animations under 5 seconds | Use infinite loops without user control |
+| Provide pause/stop controls for long animations | Flash content more than 3 times per second |
+| Use motion to enhance, not replace, information | Rely solely on motion to convey meaning |
+| Test with reduced motion enabled | Assume all users can perceive motion |

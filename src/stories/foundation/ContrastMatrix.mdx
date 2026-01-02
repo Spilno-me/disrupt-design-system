@@ -1,0 +1,307 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Eye } from 'lucide-react';
+import { BrandHero, InfoBox } from '../brand/BrandComponents';
+import {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  WAVE,
+  SUNRISE,
+  HARBOR,
+  ORANGE,
+  SLATE,
+  LINEN,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SPACING,
+  TYPOGRAPHY,
+} from '../../constants/designTokens';
+
+{/* Import the contrast matrix data - this is the source of truth */}
+import contrastData from '../../../.claude/contrast-matrix.json';
+
+export const COLOR_SCALES = {
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  WAVE,
+  SUNRISE,
+  HARBOR,
+  ORANGE,
+  SLATE,
+  LINEN,
+};
+
+{/* Helper to resolve token name to hex value */}
+export const resolveToken = (token) => {
+  if (token.startsWith('PRIMITIVES.')) {
+    const key = token.replace('PRIMITIVES.', '');
+    return PRIMITIVES[key] || SLATE[500];
+  }
+  const match = token.match(/^(\w+)\[(\d+)\]$/);
+  if (match) {
+    const [, scaleName, shade] = match;
+    const scale = COLOR_SCALES[scaleName];
+    if (scale && scale[shade]) return scale[shade];
+  }
+  return SLATE[500];
+};
+
+{/* Check if color is light */}
+export const isLight = (hex) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 150;
+};
+
+{/* Get badge colors for WCAG level */}
+export const getBadge = (level) => {
+  if (level === 'AAA') return { bg: HARBOR[100], text: HARBOR[700], label: 'AAA' };
+  if (level === 'AA') return { bg: DEEP_CURRENT[100], text: DEEP_CURRENT[700], label: 'AA' };
+  if (level === 'AA-large') return { bg: SUNRISE[100], text: SUNRISE[700], label: 'AA-lg' };
+  return { bg: CORAL[100], text: CORAL[700], label: 'FAIL' };
+};
+
+{/* Foreground Sample Component */}
+export const FgSample = ({ bgHex, fg }) => {
+  const fgHex = resolveToken(fg.foreground);
+  const labelColor = isLight(bgHex) ? ABYSS[600] : SLATE[300];
+  const badge = getBadge(fg.level);
+  return (
+    <div style={{ padding: SPACING.px.tight }}>
+      <div style={{ color: fgHex, fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.medium, fontFamily: TYPOGRAPHY.fontFamily.sans }}>
+        Sample Text
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
+        <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '10px', color: labelColor }}>{fg.foreground}</span>
+        <span style={{ background: badge.bg, color: badge.text, padding: '2px 6px', borderRadius: RADIUS.xs, fontSize: '9px', fontWeight: 700, fontFamily: TYPOGRAPHY.fontFamily.mono }}>
+          {badge.label} {fg.ratio.toFixed(1)}:1
+        </span>
+      </div>
+    </div>
+  );
+};
+
+{/* Background Row Component */}
+export const BgRow = ({ token, limit = 5, minLevel = 'AA' }) => {
+  const bgHex = resolveToken(token);
+  const textColor = isLight(bgHex) ? ABYSS[700] : PRIMITIVES.white;
+  const levelOrder = ['FAIL', 'AA-large', 'AA', 'AAA'];
+  const minIdx = levelOrder.indexOf(minLevel);
+  const foregrounds = (contrastData.byBackground[token] || [])
+    .filter(fg => levelOrder.indexOf(fg.level) >= minIdx)
+    .slice(0, limit);
+  if (foregrounds.length === 0) return null;
+  return (
+    <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, overflow: 'hidden', border: `1px solid ${SLATE[200]}`, boxShadow: SHADOWS.sm, marginBottom: SPACING.px.base }}>
+      <div style={{ background: bgHex, padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '13px', fontWeight: 600, color: textColor }}>{token}</span>
+        <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '11px', color: textColor, opacity: 0.7 }}>{bgHex}</span>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', background: bgHex }}>
+        {foregrounds.map(fg => <FgSample key={fg.foreground} bgHex={bgHex} fg={fg} />)}
+      </div>
+    </div>
+  );
+};
+
+<Meta title="Foundation/Accessibility/Contrast Matrix" />
+
+<BrandHero
+  title="Contrast Matrix"
+  description="WCAG-compliant color combinations for accessible text and UI elements across all DDS backgrounds."
+  gradient="teal"
+  decorativeIcon={<Eye size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Dynamic Data:</strong> This page reads from <code>.claude/contrast-matrix.json</code> and uses design tokens directly.
+  When you run <code>npm run sync:colors</code>, this page auto-updates. All colors render from tokens, not hardcoded values.
+</InfoBox>
+
+---
+
+## WCAG Requirements
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: SPACING.px.base, marginBottom: SPACING.px.section }}>
+  <div style={{ background: HARBOR[50], borderRadius: RADIUS.md, padding: SPACING.px.comfortable, border: `1px solid ${HARBOR[200]}`, textAlign: 'center' }}>
+    <div style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: TYPOGRAPHY.fontSize.xl[0], fontWeight: TYPOGRAPHY.fontWeight.bold, color: HARBOR[700], marginBottom: SPACING.px.tight }}>AAA</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], color: ABYSS[500], fontFamily: TYPOGRAPHY.fontFamily.sans }}>≥7:1 ratio</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: DUSK_REEF[500], fontFamily: TYPOGRAPHY.fontFamily.sans }}>Enhanced contrast</div>
+  </div>
+  <div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.md, padding: SPACING.px.comfortable, border: `1px solid ${DEEP_CURRENT[200]}`, textAlign: 'center' }}>
+    <div style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: TYPOGRAPHY.fontSize.xl[0], fontWeight: TYPOGRAPHY.fontWeight.bold, color: DEEP_CURRENT[700], marginBottom: SPACING.px.tight }}>AA</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], color: ABYSS[500], fontFamily: TYPOGRAPHY.fontFamily.sans }}>≥4.5:1 ratio</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: DUSK_REEF[500], fontFamily: TYPOGRAPHY.fontFamily.sans }}>Normal text minimum</div>
+  </div>
+  <div style={{ background: SUNRISE[50], borderRadius: RADIUS.md, padding: SPACING.px.comfortable, border: `1px solid ${SUNRISE[200]}`, textAlign: 'center' }}>
+    <div style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: TYPOGRAPHY.fontSize.xl[0], fontWeight: TYPOGRAPHY.fontWeight.bold, color: SUNRISE[700], marginBottom: SPACING.px.tight }}>AA-lg</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], color: ABYSS[500], fontFamily: TYPOGRAPHY.fontFamily.sans }}>≥3:1 ratio</div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs[0], color: DUSK_REEF[500], fontFamily: TYPOGRAPHY.fontFamily.sans }}>Large text & UI only</div>
+  </div>
+</div>
+
+<div style={{ background: SLATE[50], borderRadius: RADIUS.md, padding: SPACING.px.base, marginBottom: SPACING.px.spacious, border: `1px solid ${SLATE[200]}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px', fontFamily: TYPOGRAPHY.fontFamily.sans, color: DUSK_REEF[500] }}>
+  <span><strong style={{ color: ABYSS[500] }}>{contrastData._meta.deduplicatedCount}</strong> color combinations</span>
+  <span>Source: <code style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '12px', background: PRIMITIVES.white, padding: '2px 6px', borderRadius: RADIUS.xs }}>{contrastData._meta.source}</code></span>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Page Backgrounds (Light Mode)</h2>
+
+### PRIMITIVES.white
+<BgRow token="PRIMITIVES.white" />
+
+### PRIMITIVES.cream
+<BgRow token="PRIMITIVES.cream" />
+
+### PRIMITIVES.softLinen
+<BgRow token="PRIMITIVES.softLinen" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Card & Surface Backgrounds (Light Mode)</h2>
+
+<InfoBox variant="tip">
+  <strong>Depth Model:</strong> Closer = Lighter. These backgrounds are used for cards, panels, and elevated elements.
+  See <a href="?path=/docs/foundation-depth-layering-model--docs">Depth Layering</a> for the full system.
+</InfoBox>
+
+### ABYSS[50] — Elevated/Card
+<BgRow token="ABYSS[50]" />
+
+### SLATE[50] — Surface Light
+<BgRow token="SLATE[50]" />
+
+### SLATE[100] — Surface
+<BgRow token="SLATE[100]" />
+
+### LINEN[50] — Warm Surface
+<BgRow token="LINEN[50]" />
+
+### DUSK_REEF[50] — Muted Surface
+<BgRow token="DUSK_REEF[50]" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Status Alert Backgrounds</h2>
+
+<InfoBox variant="info">
+  <strong>Usage:</strong> These light tints are used as backgrounds for alerts, notifications, badges, and status indicators.
+</InfoBox>
+
+### CORAL[50] — Error Light
+<BgRow token="CORAL[50]" />
+
+### CORAL[100] — Error Medium
+<BgRow token="CORAL[100]" />
+
+### HARBOR[50] — Success Light
+<BgRow token="HARBOR[50]" />
+
+### HARBOR[100] — Success Medium
+<BgRow token="HARBOR[100]" />
+
+### SUNRISE[50] — Warning Light
+<BgRow token="SUNRISE[50]" />
+
+### SUNRISE[100] — Warning Medium
+<BgRow token="SUNRISE[100]" />
+
+### WAVE[50] — Info Light
+<BgRow token="WAVE[50]" />
+
+### WAVE[100] — Info Medium
+<BgRow token="WAVE[100]" />
+
+### DEEP_CURRENT[50] — Accent Light
+<BgRow token="DEEP_CURRENT[50]" />
+
+### DEEP_CURRENT[100] — Accent Medium
+<BgRow token="DEEP_CURRENT[100]" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Dark Mode Depth Layers</h2>
+
+<InfoBox variant="tip">
+  <strong>Dark Mode Depth:</strong> In dark mode, elevated = lighter shades of ABYSS. These are the card/surface backgrounds for dark themes.
+</InfoBox>
+
+### ABYSS[500] — Elevated/Card (Dark Mode)
+<BgRow token="ABYSS[500]" />
+
+### ABYSS[600] — Surface Hover (Dark Mode)
+<BgRow token="ABYSS[600]" />
+
+### ABYSS[700] — Surface (Dark Mode)
+<BgRow token="ABYSS[700]" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Page Backgrounds (Dark Mode)</h2>
+
+### ABYSS[900]
+<BgRow token="ABYSS[900]" />
+
+### ABYSS[800]
+<BgRow token="ABYSS[800]" />
+
+### ABYSS[700]
+<BgRow token="ABYSS[700]" />
+
+### DEEP_CURRENT[900]
+<BgRow token="DEEP_CURRENT[900]" />
+
+### DEEP_CURRENT[800]
+<BgRow token="DEEP_CURRENT[800]" />
+
+### DUSK_REEF[900]
+<BgRow token="DUSK_REEF[900]" />
+
+### DUSK_REEF[800]
+<BgRow token="DUSK_REEF[800]" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Accent Backgrounds</h2>
+
+### DEEP_CURRENT[500] (Primary Accent)
+<BgRow token="DEEP_CURRENT[500]" minLevel="AA-large" />
+
+### CORAL[500] (Error/Danger)
+<BgRow token="CORAL[500]" minLevel="AA-large" />
+
+### HARBOR[500] (Success)
+<BgRow token="HARBOR[500]" minLevel="AA-large" />
+
+### SUNRISE[500] (Warning)
+<BgRow token="SUNRISE[500]" minLevel="AA-large" />
+
+---
+
+## MCP Tools for Contrast Checking
+
+Use these MCP tools to check contrast programmatically:
+
+```bash
+# Check contrast between two colors
+mcp__dds__check_contrast({background: "ABYSS[900]", foreground: "PRIMITIVES.white"})
+
+# Find accessible colors for a background
+mcp__dds__get_accessible_colors({background: "PRIMITIVES.white", minLevel: "AAA", limit: 5})
+
+# List available color tokens
+mcp__dds__list_color_tokens({filter: "ABYSS"})
+```
+
+<InfoBox variant="info">
+  <strong>Auto-Update:</strong> Run <code>npm run sync:colors</code> to regenerate <code>.claude/contrast-matrix.json</code> from <code>src/constants/designTokens.ts</code>. This page will automatically reflect any token changes.
+</InfoBox>

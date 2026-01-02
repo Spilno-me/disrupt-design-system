@@ -1,0 +1,1487 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import React from 'react';
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  PenTool,
+  Users,
+  MessageCircle,
+  Heart,
+  Zap,
+  Target,
+  BookOpen,
+  CheckCircle,
+  XCircle,
+  Lightbulb,
+  Shield,
+  Sparkles,
+  Volume2,
+  Sliders,
+  Award,
+  AlertTriangle,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  SLATE,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SPACING,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/UX Writing Handbook" />
+
+{/* Hero Header */}
+<BrandHero
+  title="UX Writing Handbook"
+  description="Guidelines for crafting clear, consistent, and human-centered copy across the Disrupt Design System. Words shape experiences."
+  gradient="purple"
+  decorativeIcon={<PenTool size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+{/* Navigation */}
+<div style={{
+  display: 'flex',
+  gap: '12px',
+  marginBottom: SPACING.px.section,
+  flexWrap: 'wrap',
+}}>
+  {[
+    { label: 'Principles', anchor: '#principles' },
+    { label: 'Personality', anchor: '#personality' },
+    { label: 'Voice', anchor: '#voice' },
+    { label: 'Tone', anchor: '#tone' },
+    { label: 'Golden Rules', anchor: '#golden-rules' },
+    { label: 'UI Patterns', anchor: '#ui-patterns' },
+  ].map((item) => (
+    <a
+      key={item.anchor}
+      href={item.anchor}
+      style={{
+        padding: '8px 16px',
+        borderRadius: RADIUS.full,
+        background: SLATE[100],
+        color: ABYSS[500],
+        fontSize: '13px',
+        fontWeight: 500,
+        fontFamily: '"Fixel", sans-serif',
+        textDecoration: 'none',
+        transition: 'all 0.2s ease',
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.background = DEEP_CURRENT[500];
+        e.currentTarget.style.color = PRIMITIVES.white;
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.background = SLATE[100];
+        e.currentTarget.style.color = ABYSS[500];
+      }}
+    >
+      {item.label}
+    </a>
+  ))}
+</div>
+
+{/* ============================================================================= */}
+{/* PRINCIPLES SECTION */}
+{/* ============================================================================= */}
+
+<div id="principles" style={{ marginBottom: SPACING.px.section }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '8px',
+  }}>
+    Principles
+  </h2>
+  <p style={{
+    fontSize: '15px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    marginBottom: SPACING.px.sectionHeadingBottom,
+    maxWidth: '720px',
+  }}>
+    Our mission is to empower organizations with intuitive tools that simplify complex operations.
+    Every word we write should serve this mission.
+  </p>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '20px',
+    marginBottom: '24px',
+  }}>
+    {/* Clarity */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `1px solid ${SLATE[200]}`,
+      boxShadow: SHADOWS.sm,
+    }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: RADIUS.lg,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '16px',
+      }}>
+        <Target size={24} color={DEEP_CURRENT[500]} strokeWidth={2} />
+      </div>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        Clarity
+      </h3>
+      <p style={{
+        margin: 0,
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.6,
+      }}>
+        <strong>Simple language</strong> — Use words that everyone understands. Replace jargon with plain alternatives. If a technical term is necessary, explain it.<br/><br/>
+        <strong>Concision</strong> — Keep messages short and direct. Remove unnecessary words. Every word should earn its place.
+      </p>
+    </div>
+
+    {/* Consistency */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `1px solid ${SLATE[200]}`,
+      boxShadow: SHADOWS.sm,
+    }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: RADIUS.lg,
+        background: DUSK_REEF[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '16px',
+      }}>
+        <Zap size={24} color={DUSK_REEF[500]} strokeWidth={2} />
+      </div>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        Consistency
+      </h3>
+      <p style={{
+        margin: 0,
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.6,
+      }}>
+        <strong>Terminology</strong> — Use approved, consistent terms across all features and products. One concept = one word.<br/><br/>
+        <strong>Formatting</strong> — Apply consistent patterns for similar messages (errors, confirmations, empty states) throughout the system.
+      </p>
+    </div>
+
+    {/* Accessibility */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      padding: '24px',
+      border: `1px solid ${SLATE[200]}`,
+      boxShadow: SHADOWS.sm,
+    }}>
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: RADIUS.lg,
+        background: HARBOR[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '16px',
+      }}>
+        <Users size={24} color={HARBOR[500]} strokeWidth={2} />
+      </div>
+      <h3 style={{
+        margin: '0 0 8px 0',
+        fontSize: '16px',
+        fontWeight: 600,
+        fontFamily: '"Fixel", sans-serif',
+        color: ABYSS[500],
+      }}>
+        Accessibility
+      </h3>
+      <p style={{
+        margin: 0,
+        fontSize: '13px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.6,
+      }}>
+        <strong>Inclusive language</strong> — Write respectfully for diverse audiences. Use gender-neutral terms and avoid exclusive language.<br/><br/>
+        <strong>Readability</strong> — Write short sentences with familiar words. Aim for an 8th-grade reading level.
+      </p>
+    </div>
+  </div>
+</div>
+
+{/* ============================================================================= */}
+{/* PERSONALITY SECTION */}
+{/* ============================================================================= */}
+
+<div id="personality" style={{ marginBottom: SPACING.px.section }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '8px',
+  }}>
+    Personality
+  </h2>
+  <p style={{
+    fontSize: '15px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    marginBottom: SPACING.px.sectionHeadingBottom,
+    maxWidth: '720px',
+  }}>
+    If Disrupt were a person, it would be a <strong>trusted expert partner</strong> — knowledgeable but approachable, confident but not arrogant.
+  </p>
+
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '20px',
+    marginBottom: '24px',
+  }}>
+    {/* Expert and Reliable */}
+    <div style={{
+      background: `linear-gradient(135deg, ${ABYSS[50]} 0%, ${SLATE[50]} 100%)`,
+      borderRadius: RADIUS.xl,
+      padding: '32px',
+      border: `1px solid ${ABYSS[100]}`,
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        marginBottom: '16px',
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.lg,
+          background: ABYSS[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Shield size={20} color={PRIMITIVES.white} strokeWidth={2} />
+        </div>
+        <h3 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Expert & Reliable
+        </h3>
+      </div>
+      <p style={{
+        margin: 0,
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.7,
+      }}>
+        We're an approachable partner with deep knowledge. We know what we're doing, and we communicate with reassuring confidence.
+        We own our mistakes and show how we'll fix them.
+      </p>
+      <div style={{
+        marginTop: '20px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px',
+      }}>
+        {['Knowledgeable', 'Confident', 'Accountable', 'Trustworthy'].map((trait) => (
+          <span key={trait} style={{
+            padding: '4px 12px',
+            borderRadius: RADIUS.full,
+            background: ABYSS[100],
+            color: ABYSS[600],
+            fontSize: '12px',
+            fontWeight: 500,
+            fontFamily: '"Fixel", sans-serif',
+          }}>
+            {trait}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    {/* Proactive and Supportive */}
+    <div style={{
+      background: `linear-gradient(135deg, ${DEEP_CURRENT[50]} 0%, ${SLATE[50]} 100%)`,
+      borderRadius: RADIUS.xl,
+      padding: '32px',
+      border: `1px solid ${DEEP_CURRENT[100]}`,
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        marginBottom: '16px',
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: RADIUS.lg,
+          background: DEEP_CURRENT[500],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Sparkles size={20} color={PRIMITIVES.white} strokeWidth={2} />
+        </div>
+        <h3 style={{
+          margin: 0,
+          fontSize: '18px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Proactive & Supportive
+        </h3>
+      </div>
+      <p style={{
+        margin: 0,
+        fontSize: '14px',
+        fontFamily: '"Fixel", sans-serif',
+        color: DUSK_REEF[500],
+        lineHeight: 1.7,
+      }}>
+        We go out of our way to help users, so they can trust us completely.
+        We anticipate their needs and provide thoughtful solutions before they even ask.
+      </p>
+      <div style={{
+        marginTop: '20px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px',
+      }}>
+        {['Helpful', 'Anticipatory', 'Thoughtful', 'Empowering'].map((trait) => (
+          <span key={trait} style={{
+            padding: '4px 12px',
+            borderRadius: RADIUS.full,
+            background: DEEP_CURRENT[100],
+            color: DEEP_CURRENT[700],
+            fontSize: '12px',
+            fontWeight: 500,
+            fontFamily: '"Fixel", sans-serif',
+          }}>
+            {trait}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* ============================================================================= */}
+{/* VOICE SECTION */}
+{/* ============================================================================= */}
+
+<div id="voice" style={{ marginBottom: SPACING.px.section }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '8px',
+  }}>
+    Voice
+  </h2>
+  <p style={{
+    fontSize: '15px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    marginBottom: SPACING.px.sectionHeadingBottom,
+    maxWidth: '720px',
+  }}>
+    Our voice is the consistent foundation of how we communicate.
+    It's the style and emotional approach we <strong>always</strong> use while writing.
+  </p>
+
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.xl,
+    border: `1px solid ${SLATE[200]}`,
+    overflow: 'hidden',
+    marginBottom: '24px',
+  }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+    }}>
+      {/* Empathetic and Conversational */}
+      <div style={{
+        padding: '32px',
+        borderRight: `1px solid ${SLATE[200]}`,
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '16px',
+        }}>
+          <MessageCircle size={24} color={DUSK_REEF[500]} strokeWidth={2} />
+          <h3 style={{
+            margin: 0,
+            fontSize: '16px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            Empathetic & Conversational
+          </h3>
+        </div>
+        <p style={{
+          margin: '0 0 16px 0',
+          fontSize: '14px',
+          fontFamily: '"Fixel", sans-serif',
+          color: DUSK_REEF[500],
+          lineHeight: 1.6,
+        }}>
+          Our voice is "human to human". We speak with users honestly and directly to develop an emotional connection with them.
+        </p>
+        <div style={{
+          background: SLATE[50],
+          borderRadius: RADIUS.md,
+          padding: '16px',
+        }}>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: DEEP_CURRENT[600],
+            marginBottom: '8px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}>
+            Example
+          </div>
+          <p style={{
+            margin: 0,
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+            fontStyle: 'italic',
+          }}>
+            "Looks like this report is taking longer than expected. We're on it — you'll get an email when it's ready."
+          </p>
+        </div>
+      </div>
+
+      {/* Positive and Professional */}
+      <div style={{
+        padding: '32px',
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '16px',
+        }}>
+          <Award size={24} color={HARBOR[500]} strokeWidth={2} />
+          <h3 style={{
+            margin: 0,
+            fontSize: '16px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            Positive & Professional
+          </h3>
+        </div>
+        <p style={{
+          margin: '0 0 16px 0',
+          fontSize: '14px',
+          fontFamily: '"Fixel", sans-serif',
+          color: DUSK_REEF[500],
+          lineHeight: 1.6,
+        }}>
+          We use affirmative language to motivate users. We encourage them to get the most out of our products, and we support them in doing their best work.
+        </p>
+        <div style={{
+          background: SLATE[50],
+          borderRadius: RADIUS.md,
+          padding: '16px',
+        }}>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: DEEP_CURRENT[600],
+            marginBottom: '8px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+          }}>
+            Example
+          </div>
+          <p style={{
+            margin: 0,
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+            fontStyle: 'italic',
+          }}>
+            "Great choice! This workflow will save your team about 4 hours per week."
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* ============================================================================= */}
+{/* TONE SECTION */}
+{/* ============================================================================= */}
+
+<div id="tone" style={{ marginBottom: SPACING.px.section }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '8px',
+  }}>
+    Tone
+  </h2>
+  <p style={{
+    fontSize: '15px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    marginBottom: SPACING.px.sectionHeadingBottom,
+    maxWidth: '720px',
+  }}>
+    While our voice is consistent, our tone exists on a spectrum.
+    It's emotionally nuanced and adapts to different situations.
+  </p>
+
+  {/* Tone Spectrum */}
+  <div style={{
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.xl,
+    padding: '32px',
+    border: `1px solid ${SLATE[200]}`,
+    marginBottom: '24px',
+  }}>
+    {/* Spectrum Bar */}
+    <div style={{
+      position: 'relative',
+      marginBottom: '32px',
+    }}>
+      <div style={{
+        height: '8px',
+        borderRadius: RADIUS.full,
+        background: `linear-gradient(90deg, ${HARBOR[400]} 0%, ${DEEP_CURRENT[500]} 50%, ${ABYSS[500]} 100%)`,
+      }} />
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginTop: '12px',
+      }}>
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: HARBOR[600],
+        }}>
+          Light & Engaging
+        </span>
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Professional & Reliable
+        </span>
+      </div>
+    </div>
+
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '24px',
+    }}>
+      {/* Light & Engaging */}
+      <div style={{
+        background: HARBOR[50],
+        borderRadius: RADIUS.lg,
+        padding: '24px',
+        border: `1px solid ${HARBOR[200]}`,
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '12px',
+        }}>
+          <Sparkles size={18} color={HARBOR[600]} strokeWidth={2} />
+          <h4 style={{
+            margin: 0,
+            fontSize: '14px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            Light & Engaging
+          </h4>
+        </div>
+        <p style={{
+          margin: '0 0 12px 0',
+          fontSize: '13px',
+          fontFamily: '"Fixel", sans-serif',
+          color: DUSK_REEF[500],
+          lineHeight: 1.5,
+        }}>
+          Use when the message is simple and there's an opportunity to delight users.
+        </p>
+        <div style={{
+          fontSize: '12px',
+          fontFamily: '"Fixel", sans-serif',
+          color: HARBOR[700],
+          fontWeight: 500,
+        }}>
+          Best for: New features, empty states, onboarding, success messages
+        </div>
+      </div>
+
+      {/* Professional & Reliable */}
+      <div style={{
+        background: ABYSS[50],
+        borderRadius: RADIUS.lg,
+        padding: '24px',
+        border: `1px solid ${ABYSS[100]}`,
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '12px',
+        }}>
+          <Shield size={18} color={ABYSS[500]} strokeWidth={2} />
+          <h4 style={{
+            margin: 0,
+            fontSize: '14px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            Professional & Reliable
+          </h4>
+        </div>
+        <p style={{
+          margin: '0 0 12px 0',
+          fontSize: '13px',
+          fontFamily: '"Fixel", sans-serif',
+          color: DUSK_REEF[500],
+          lineHeight: 1.5,
+        }}>
+          Use when the top priority is to reassure users that they're in good hands.
+        </p>
+        <div style={{
+          fontSize: '12px',
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[600],
+          fontWeight: 500,
+        }}>
+          Best for: Errors, payments, security, legal, data handling
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Tone Matrix */}
+  <div style={{
+    background: SLATE[50],
+    borderRadius: RADIUS.lg,
+    padding: '24px',
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{
+      margin: '0 0 16px 0',
+      fontSize: '14px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      Tone by Context
+    </h4>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gap: '1px',
+      background: SLATE[200],
+      borderRadius: RADIUS.md,
+      overflow: 'hidden',
+    }}>
+      {/* Header Row */}
+      {['Context', 'Tone', 'Energy', 'Example'].map((header) => (
+        <div key={header} style={{
+          background: ABYSS[500],
+          padding: '12px 16px',
+          fontSize: '12px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: PRIMITIVES.white,
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        }}>
+          {header}
+        </div>
+      ))}
+
+      {/* Data Rows */}
+      {[
+        { context: 'Success', tone: 'Celebratory', energy: 'High', example: '"You did it! Project created."' },
+        { context: 'Empty State', tone: 'Encouraging', energy: 'Medium', example: '"No items yet. Create your first one?"' },
+        { context: 'Loading', tone: 'Reassuring', energy: 'Low', example: '"Getting everything ready..."' },
+        { context: 'Error', tone: 'Calm & Clear', energy: 'Neutral', example: '"Something went wrong. Try again."' },
+        { context: 'Warning', tone: 'Cautious', energy: 'Medium', example: '"This action cannot be undone."' },
+        { context: 'Security', tone: 'Serious', energy: 'Low', example: '"Your session has expired."' },
+      ].map((row, i) => (
+        <React.Fragment key={row.context}>
+          <div style={{
+            background: i % 2 === 0 ? PRIMITIVES.white : SLATE[50],
+            padding: '12px 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+            fontWeight: 500,
+          }}>
+            {row.context}
+          </div>
+          <div style={{
+            background: i % 2 === 0 ? PRIMITIVES.white : SLATE[50],
+            padding: '12px 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+          }}>
+            {row.tone}
+          </div>
+          <div style={{
+            background: i % 2 === 0 ? PRIMITIVES.white : SLATE[50],
+            padding: '12px 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+          }}>
+            {row.energy}
+          </div>
+          <div style={{
+            background: i % 2 === 0 ? PRIMITIVES.white : SLATE[50],
+            padding: '12px 16px',
+            fontSize: '13px',
+            fontFamily: '"JetBrains Mono", monospace',
+            color: DEEP_CURRENT[600],
+            fontStyle: 'italic',
+          }}>
+            {row.example}
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  </div>
+</div>
+
+{/* ============================================================================= */}
+{/* GOLDEN RULES SECTION */}
+{/* ============================================================================= */}
+
+<div id="golden-rules" style={{ marginBottom: SPACING.px.section }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '8px',
+  }}>
+    Golden Rules
+  </h2>
+  <p style={{
+    fontSize: '15px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    marginBottom: SPACING.px.sectionHeadingBottom,
+    maxWidth: '720px',
+  }}>
+    If our voice and tone are <em>how</em> we write, then our values are <em>why</em> we write that way.
+    These golden rules help us write consistently every time.
+  </p>
+
+  {/* Values */}
+  <div style={{
+    marginBottom: '32px',
+  }}>
+    <h3 style={{
+      margin: '0 0 16px 0',
+      fontSize: '16px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: ABYSS[500],
+    }}>
+      UX Writing Values
+    </h3>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '16px',
+    }}>
+      {[
+        {
+          icon: <Users size={20} />,
+          title: 'We work for the users',
+          desc: 'They don\'t work for us. Write copy that\'s simple, intuitive, and relevant.',
+          color: DEEP_CURRENT,
+        },
+        {
+          icon: <Zap size={20} />,
+          title: 'Stay consistent',
+          desc: 'Use consistent terminology across all features and products.',
+          color: DUSK_REEF,
+        },
+        {
+          icon: <Heart size={20} />,
+          title: 'Keep it stress-free',
+          desc: 'Never manipulate or guilt users, even for profitable actions.',
+          color: CORAL,
+        },
+        {
+          icon: <Lightbulb size={20} />,
+          title: 'Gradual complexity',
+          desc: 'Introduce new features one step at a time. Learning takes time.',
+          color: HARBOR,
+        },
+        {
+          icon: <MessageCircle size={20} />,
+          title: 'Kind over clever',
+          desc: 'Never use passive-aggressive or offensive language.',
+          color: ABYSS,
+        },
+        {
+          icon: <BookOpen size={20} />,
+          title: 'Write for all readers',
+          desc: 'Use clear language without jargon or narrow cultural references.',
+          color: DEEP_CURRENT,
+        },
+      ].map((value) => (
+        <div key={value.title} style={{
+          background: PRIMITIVES.white,
+          borderRadius: RADIUS.lg,
+          padding: '20px',
+          border: `1px solid ${SLATE[200]}`,
+        }}>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: RADIUS.md,
+            background: value.color[50],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '12px',
+            color: value.color[500],
+          }}>
+            {value.icon}
+          </div>
+          <h4 style={{
+            margin: '0 0 6px 0',
+            fontSize: '14px',
+            fontWeight: 600,
+            fontFamily: '"Fixel", sans-serif',
+            color: ABYSS[500],
+          }}>
+            {value.title}
+          </h4>
+          <p style={{
+            margin: 0,
+            fontSize: '12px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.5,
+          }}>
+            {value.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Practical Rules */}
+  <div style={{
+    background: ABYSS[500],
+    borderRadius: RADIUS.xl,
+    padding: '32px',
+  }}>
+    <h3 style={{
+      margin: '0 0 20px 0',
+      fontSize: '16px',
+      fontWeight: 600,
+      fontFamily: '"Fixel", sans-serif',
+      color: PRIMITIVES.white,
+    }}>
+      Practical Rules
+    </h3>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gap: '16px',
+    }}>
+      {[
+        { rule: 'Bottom line first', desc: 'Start every message with the most important information.' },
+        { rule: 'Give full context', desc: 'Provide enough context so users know exactly where they are.' },
+        { rule: 'User\'s point of view', desc: 'Focus on what users want to do and what they stand to gain.' },
+        { rule: 'One CTA', desc: 'Present only one call-to-action at a time. Easier decisions.' },
+        { rule: 'Specific CTAs', desc: 'Ensure CTAs respond directly to the header or question.' },
+        { rule: 'Cut the fluff', desc: 'Write briefly and to the point. Every word must earn its place.' },
+      ].map((item) => (
+        <div key={item.rule} style={{
+          display: 'flex',
+          gap: '12px',
+        }}>
+          <div style={{
+            width: '24px',
+            height: '24px',
+            borderRadius: RADIUS.full,
+            background: DEEP_CURRENT[500],
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            marginTop: '2px',
+          }}>
+            <CheckCircle size={14} color={PRIMITIVES.white} strokeWidth={2.5} />
+          </div>
+          <div>
+            <div style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: PRIMITIVES.white,
+              marginBottom: '4px',
+            }}>
+              {item.rule}
+            </div>
+            <div style={{
+              fontSize: '13px',
+              fontFamily: '"Fixel", sans-serif',
+              color: SLATE[300],
+              lineHeight: 1.4,
+            }}>
+              {item.desc}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+{/* ============================================================================= */}
+{/* UI PATTERNS SECTION */}
+{/* ============================================================================= */}
+
+<div id="ui-patterns" style={{ marginBottom: SPACING.px.section }}>
+  <h2 style={{
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: ABYSS[500],
+    marginBottom: '8px',
+  }}>
+    UI Writing Patterns
+  </h2>
+  <p style={{
+    fontSize: '15px',
+    fontFamily: '"Fixel", sans-serif',
+    color: DUSK_REEF[500],
+    marginBottom: SPACING.px.sectionHeadingBottom,
+    maxWidth: '720px',
+  }}>
+    Specific guidance for common UI elements. Follow these patterns for consistency across the system.
+  </p>
+
+  {/* Do/Don't Examples */}
+  <div style={{
+    display: 'grid',
+    gap: '20px',
+  }}>
+    {/* Buttons */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      border: `1px solid ${SLATE[200]}`,
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '16px 20px',
+        borderBottom: `1px solid ${SLATE[200]}`,
+        background: SLATE[50],
+      }}>
+        <h4 style={{
+          margin: 0,
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Buttons & CTAs
+        </h4>
+      </div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+      }}>
+        <div style={{
+          padding: '20px',
+          borderRight: `1px solid ${SLATE[200]}`,
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <CheckCircle size={16} color={HARBOR[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: HARBOR[600],
+              textTransform: 'uppercase',
+            }}>
+              Do
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Use action verbs: "Save", "Create", "Delete"</li>
+            <li>Be specific: "Save Changes" not just "Save"</li>
+            <li>Match button to dialog title: "Delete item?" → "Delete"</li>
+            <li>Keep under 3 words when possible</li>
+          </ul>
+        </div>
+        <div style={{
+          padding: '20px',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <XCircle size={16} color={CORAL[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: CORAL[600],
+              textTransform: 'uppercase',
+            }}>
+              Don't
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Vague labels: "OK", "Yes", "No", "Submit"</li>
+            <li>Redundant words: "Click here to save"</li>
+            <li>Full sentences: "I want to delete this"</li>
+            <li>ALL CAPS (except for emphasis)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {/* Error Messages */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      border: `1px solid ${SLATE[200]}`,
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '16px 20px',
+        borderBottom: `1px solid ${SLATE[200]}`,
+        background: SLATE[50],
+      }}>
+        <h4 style={{
+          margin: 0,
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Error Messages
+        </h4>
+      </div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+      }}>
+        <div style={{
+          padding: '20px',
+          borderRight: `1px solid ${SLATE[200]}`,
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <CheckCircle size={16} color={HARBOR[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: HARBOR[600],
+              textTransform: 'uppercase',
+            }}>
+              Do
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Explain what happened in plain language</li>
+            <li>Offer a solution: "Try again" or "Contact support"</li>
+            <li>Take responsibility: "We couldn't save..."</li>
+            <li>Be specific: "Password must be 8+ characters"</li>
+          </ul>
+        </div>
+        <div style={{
+          padding: '20px',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <XCircle size={16} color={CORAL[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: CORAL[600],
+              textTransform: 'uppercase',
+            }}>
+              Don't
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Blame the user: "You entered invalid data"</li>
+            <li>Use technical jargon: "Error 500", "Null reference"</li>
+            <li>Be vague: "Something went wrong"</li>
+            <li>Use negative tone: "Failed!", "Invalid!"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {/* Empty States */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      border: `1px solid ${SLATE[200]}`,
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '16px 20px',
+        borderBottom: `1px solid ${SLATE[200]}`,
+        background: SLATE[50],
+      }}>
+        <h4 style={{
+          margin: 0,
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Empty States
+        </h4>
+      </div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+      }}>
+        <div style={{
+          padding: '20px',
+          borderRight: `1px solid ${SLATE[200]}`,
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <CheckCircle size={16} color={HARBOR[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: HARBOR[600],
+              textTransform: 'uppercase',
+            }}>
+              Do
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Explain why the area is empty</li>
+            <li>Provide a clear action: "Create your first project"</li>
+            <li>Be encouraging and positive</li>
+            <li>Use illustrations when appropriate</li>
+          </ul>
+        </div>
+        <div style={{
+          padding: '20px',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <XCircle size={16} color={CORAL[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: CORAL[600],
+              textTransform: 'uppercase',
+            }}>
+              Don't
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Just say "No data" or "Empty"</li>
+            <li>Leave users without guidance</li>
+            <li>Use technical terms like "0 records found"</li>
+            <li>Make users feel like something is broken</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {/* Form Labels & Hints */}
+    <div style={{
+      background: PRIMITIVES.white,
+      borderRadius: RADIUS.lg,
+      border: `1px solid ${SLATE[200]}`,
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        padding: '16px 20px',
+        borderBottom: `1px solid ${SLATE[200]}`,
+        background: SLATE[50],
+      }}>
+        <h4 style={{
+          margin: 0,
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: ABYSS[500],
+        }}>
+          Form Labels & Helper Text
+        </h4>
+      </div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+      }}>
+        <div style={{
+          padding: '20px',
+          borderRight: `1px solid ${SLATE[200]}`,
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <CheckCircle size={16} color={HARBOR[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: HARBOR[600],
+              textTransform: 'uppercase',
+            }}>
+              Do
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Use sentence case for labels: "Email address"</li>
+            <li>Provide helpful examples: "e.g., john@company.com"</li>
+            <li>Explain requirements upfront: "8+ characters"</li>
+            <li>Use placeholder text sparingly</li>
+          </ul>
+        </div>
+        <div style={{
+          padding: '20px',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '12px',
+          }}>
+            <XCircle size={16} color={CORAL[500]} strokeWidth={2.5} />
+            <span style={{
+              fontSize: '12px',
+              fontWeight: 600,
+              fontFamily: '"Fixel", sans-serif',
+              color: CORAL[600],
+              textTransform: 'uppercase',
+            }}>
+              Don't
+            </span>
+          </div>
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 16px',
+            fontSize: '13px',
+            fontFamily: '"Fixel", sans-serif',
+            color: DUSK_REEF[500],
+            lineHeight: 1.8,
+          }}>
+            <li>Use placeholder as the only label</li>
+            <li>ALL CAPS labels: "EMAIL ADDRESS"</li>
+            <li>Asterisks without explanation: "Name *"</li>
+            <li>Repeat the label in helper text</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Quick Reference Card */}
+<div style={{
+  background: `linear-gradient(135deg, ${DUSK_REEF[500]} 0%, ${ABYSS[600]} 100%)`,
+  borderRadius: RADIUS.xl,
+  padding: '32px',
+  marginTop: SPACING.px.section,
+}}>
+  <h3 style={{
+    margin: '0 0 20px 0',
+    fontSize: '18px',
+    fontWeight: 600,
+    fontFamily: '"Pilat Extended", sans-serif',
+    color: PRIMITIVES.white,
+  }}>
+    Quick Checklist
+  </h3>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '24px',
+  }}>
+    {[
+      { question: 'Is it clear?', check: 'Could a new user understand this?' },
+      { question: 'Is it concise?', check: 'Can I remove any words?' },
+      { question: 'Is it helpful?', check: 'Does it guide the user forward?' },
+      { question: 'Is it consistent?', check: 'Does it match existing patterns?' },
+      { question: 'Is it kind?', check: 'Would I want to read this?' },
+      { question: 'Is it accessible?', check: 'Is it free of jargon and bias?' },
+    ].map((item) => (
+      <div key={item.question}>
+        <div style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          fontFamily: '"Fixel", sans-serif',
+          color: PRIMITIVES.white,
+          marginBottom: '4px',
+        }}>
+          {item.question}
+        </div>
+        <div style={{
+          fontSize: '12px',
+          fontFamily: '"Fixel", sans-serif',
+          color: SLATE[200],
+        }}>
+          {item.check}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

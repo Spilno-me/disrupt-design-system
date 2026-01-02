@@ -133,6 +133,38 @@ export {
 } from './device-frames'
 
 // =============================================================================
+// DOCUMENTATION COMPONENTS (MDX blocks inspired by Vibe Design System)
+// =============================================================================
+
+export {
+  // Live Do/Don't with rendered components
+  ComponentRules,
+  // Navigation links to related docs
+  RelatedComponents,
+  // Status banners
+  AlphaWarning,
+  DeprecatedWarning,
+  StableNotice,
+  FrozenNotice,
+  // DDS constraint enforcement
+  CompositionGuide,
+  // MDX heading replacements (for preview.ts mapping)
+  ComponentName,
+  SectionName,
+  SubsectionName,
+  SubSubsectionName,
+  // Types
+  type ComponentRulesProps,
+  type RelatedComponentsProps,
+  type AlphaWarningProps,
+  type DeprecatedWarningProps,
+  type StableNoticeProps,
+  type FrozenNoticeProps,
+  type CompositionGuideProps,
+  type HeadingProps,
+} from './documentation'
+
+// =============================================================================
 // STORY TEMPLATES (copy-paste starters)
 // =============================================================================
 
