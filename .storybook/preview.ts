@@ -3,6 +3,12 @@ import { withThemeByClassName } from '@storybook/addon-themes'
 import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from 'storybook/viewport'
 import { create } from 'storybook/theming'
 import { STORYBOOK_BACKGROUNDS } from '../src/stories/_infrastructure/backgrounds'
+import {
+  ComponentName,
+  SectionName,
+  SubsectionName,
+  SubSubsectionName,
+} from '../src/stories/_infrastructure/documentation'
 import '../src/styles.css'
 
 // Import JetBrains Mono font for code blocks
@@ -93,6 +99,13 @@ const preview: Preview = {
       container: undefined,
       canvas: {
         sourceState: 'shown',
+      },
+      // Automatic MDX heading mapping for consistent DDS styling
+      components: {
+        h1: ComponentName,
+        h2: SectionName,
+        h3: SubsectionName,
+        h4: SubSubsectionName,
       },
     },
     layout: 'fullscreen',

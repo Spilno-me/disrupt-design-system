@@ -41,6 +41,11 @@ export { PricingConnector } from './components/ui/pricing-connector'
 export { Input } from './components/ui/input'
 export { Textarea } from './components/ui/textarea'
 export { Checkbox } from './components/ui/checkbox'
+
+// Switch - Toggle switch component
+export { Switch } from './components/ui/switch'
+export type { SwitchProps } from './components/ui/switch'
+
 export {
   Select,
   SelectContent,
@@ -80,6 +85,9 @@ export type {
   LocationTreeProps,
 } from './components/ui/location-picker'
 
+// Avatar - User profile image with fallback
+export { Avatar, AvatarImage, AvatarFallback, avatarVariants } from './components/ui/avatar'
+
 export { Separator } from './components/ui/separator'
 export { Skeleton, SkeletonImage, SkeletonText } from './components/ui/Skeleton'
 export { Slider } from './components/ui/Slider'
@@ -112,6 +120,10 @@ export {
   AccordionHeader,
 } from './components/ui/Accordion'
 export type { AccordionProps, AccordionItem } from './components/ui/Accordion'
+
+// Collapsible - Expandable content container
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './components/ui/collapsible'
+
 export { LinkedInButton } from './components/ui/LinkedInButton'
 export type { LinkedInButtonProps } from './components/ui/LinkedInButton'
 export { ScrollableTableWrapper } from './components/ui/ScrollableTableWrapper'
@@ -119,6 +131,26 @@ export { DataTable } from './components/ui/DataTable'
 export type { DataTableProps, ColumnDef, SortDirection, RowPriority } from './components/ui/DataTable'
 export { Pagination } from './components/ui/Pagination'
 export type { PaginationProps } from './components/ui/Pagination'
+
+// RowActions - Smart action column component
+export { RowActions } from './components/ui/RowActions'
+export type { RowActionsProps, RowAction } from './components/ui/RowActions'
+
+// StepIndicator - Multi-step progress indicator
+export { StepIndicator } from './components/ui/StepIndicator'
+export type { StepIndicatorProps, Step as StepIndicatorStep } from './components/ui/StepIndicator'
+
+// TruncatedId - Truncated ID display with copy
+export { TruncatedId } from './components/ui/TruncatedId'
+export type { TruncatedIdProps } from './components/ui/TruncatedId'
+
+// CopyButton - Copy to clipboard button
+export { CopyButton } from './components/ui/CopyButton'
+export type { CopyButtonProps } from './components/ui/CopyButton'
+
+// FloorPlanUploader - Floor plan image uploader
+export { FloorPlanUploader } from './components/ui/floor-plan-uploader'
+export type { FloorPlanUploaderProps, FloorPlanUploadItem } from './components/ui/floor-plan-uploader'
 
 // Data Table unified system - composable components
 export {
@@ -130,6 +162,34 @@ export {
   WORKFLOW_STATUS_MAP,
   REQUEST_STATUS_MAP,
   PARTNER_STATUS_MAP,
+  // Status dot indicators
+  DataTableStatusDot,
+  ACTIVE_DOT_STATUS_MAP,
+  PARTNER_DOT_STATUS_MAP,
+  WORKFLOW_DOT_STATUS_MAP,
+  REQUEST_DOT_STATUS_MAP,
+  LEAD_DOT_STATUS_MAP,
+  INVOICE_DOT_STATUS_MAP,
+  LOGIN_ACCOUNT_DOT_STATUS_MAP,
+  TENANT_REQUEST_DOT_STATUS_MAP,
+  // Severity indicators
+  DataTableSeverity,
+  PRIORITY_SEVERITY_MAP,
+  LEAD_PRIORITY_SEVERITY_MAP,
+  LEAD_TEMPERATURE_SEVERITY_MAP,
+  INCIDENT_SEVERITY_MAP,
+  URGENCY_SEVERITY_MAP,
+  // Legacy table cell components
+  StatusBadge,
+  COMMON_STATUS_CONFIG,
+  LEAD_STATUS_CONFIG,
+  INVOICE_STATUS_CONFIG,
+  REQUEST_STATUS_CONFIG,
+  EmailLink,
+  ScoreBadge,
+  IncidentStatusBadge,
+  CopyableId,
+  TruncatedText,
 } from './components/ui/table'
 export type {
   DataTableBadgeProps,
@@ -141,6 +201,25 @@ export type {
   MobileCardField,
   IncidentManagementTableProps,
   Incident as IncidentManagementTableIncident,
+  // Status dot types
+  DataTableStatusDotProps,
+  DotStatusMapping,
+  DotStatusConfig,
+  DotVariant,
+  // Severity types
+  DataTableSeverityProps,
+  SeverityMapping,
+  SeverityConfig,
+  // Legacy table cell types
+  StatusBadgeProps,
+  StatusConfig,
+  EmailLinkProps,
+  ScoreBadgeProps,
+  IncidentStatusBadgeProps,
+  IncidentStatus as TableIncidentStatus,
+  IncidentSeverity as TableIncidentSeverity,
+  CopyableIdProps,
+  TruncatedTextProps,
 } from './components/ui/table'
 export { SectionWrapper, SectionHeading, SectionContainer, ContentSection, TwoColumnLayout, Column } from './components/ui/SectionLayout'
 export {
@@ -166,6 +245,10 @@ export {
   SheetDescription,
 } from './components/ui/sheet'
 export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from './components/ui/tooltip'
+
+// Tipseen - Guided onboarding tooltip for feature discovery
+export { Tipseen, useTipseenContext } from './components/ui/Tipseen'
+export type { TipseenProps, TipseenPosition, TipseenColor, TipseenContextValue } from './components/ui/Tipseen'
 
 // Toast notifications - Sonner-based with DDS styling
 export { Toaster, toast } from './components/ui/sonner'
@@ -224,6 +307,11 @@ export type {
 } from './components/ui/ResponsiveActionMenu'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs'
 export type { TabsProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/ui/tabs'
+
+// ToggleGroup - Set of toggle buttons
+export { ToggleGroup, ToggleGroupItem, toggleGroupVariants, toggleGroupItemVariants } from './components/ui/toggle-group'
+export type { ToggleGroupProps, ToggleGroupItemProps } from './components/ui/toggle-group'
+
 export { Label } from './components/ui/label'
 export { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from './components/ui/form'
 export { AnimatedLogo } from './components/ui/AnimatedLogo'
@@ -368,8 +456,34 @@ export type { Invoice, InvoiceStatus, InvoiceAction, LineItem, LineItemType, Pay
 export { formatCurrency, formatDate, getPaymentTermsLabel, getDaysUntilDue, isInvoiceOverdue } from './components/partners/invoices/types'
 
 // Export auth components
-export { LoginPage, LoginForm } from './components/auth'
-export type { LoginPageProps, LoginFormProps, LoginFormValues } from './components/auth'
+export {
+  LoginPage,
+  LoginForm,
+  AuthLayout,
+  AuthCard,
+  SocialLoginButtons,
+  ForgotPasswordForm,
+  ForgotPasswordDialog,
+  ResetPasswordForm,
+  SetInitialPasswordForm,
+} from './components/auth'
+export type {
+  LoginPageProps,
+  LoginFormProps,
+  LoginFormValues,
+  AuthLayoutProps,
+  AuthCardProps,
+  SocialLoginButtonsProps,
+  SocialProvider,
+  ForgotPasswordFormProps,
+  ForgotPasswordFormValues,
+  ForgotPasswordDialogProps,
+  ResetPasswordFormProps,
+  ResetPasswordFormValues,
+  SetInitialPasswordFormProps,
+  SetInitialPasswordFormValues,
+  ProductType as AuthProductType,
+} from './components/auth'
 export { ExecutingAnimation } from './components/ui/ExecutingAnimation'
 export type { ExecutingAnimationProps, ColorVariant } from './components/ui/ExecutingAnimation'
 
@@ -417,6 +531,19 @@ export { RejectRequestDialog } from './components/provisioning/RejectRequestDial
 export type { RejectRequestDialogProps } from './components/provisioning/RejectRequestDialog'
 export { DeleteRequestDialog as DeleteTenantRequestDialog } from './components/provisioning/DeleteRequestDialog'
 export type { DeleteRequestDialogProps as DeleteTenantRequestDialogProps } from './components/provisioning/DeleteRequestDialog'
+
+// Wizard primitives (generic wizard components)
+export { Wizard, useWizard, WizardContent } from './components/provisioning'
+export type { WizardProps, WizardStepDefinition, WizardContentProps } from './components/provisioning'
+
+export { WizardStepper, CompactStepper } from './components/provisioning'
+export type { WizardStepperProps, CompactStepperProps } from './components/provisioning'
+
+export { WizardStep, WizardStepHeader, WizardStepSection } from './components/provisioning'
+export type { WizardStepProps, WizardStepHeaderProps, WizardStepSectionProps } from './components/provisioning'
+
+export { WizardNavigation, WizardFooter } from './components/provisioning'
+export type { WizardNavigationProps, WizardFooterProps } from './components/provisioning'
 
 // Export SearchFilter (Shared component - universal search & filter)
 export { SearchFilter } from './components/shared/SearchFilter/SearchFilter'
@@ -521,6 +648,12 @@ export { useHeroTitleRotation } from './hooks/useHeroTitleRotation'
 export { useHeaderContrast, useContrastColor } from './hooks/useHeaderContrast'
 // iOS 26 Safari visual viewport bug fix
 export { useVisualViewportFix, isIOS26ViewportBugAffected } from './hooks/useVisualViewportFix'
+
+// iOS Safari scroll lock for modals/overlays
+export { useIOSScrollLock, isIOS } from './hooks/useIOSScrollLock'
+export type { UseIOSScrollLockOptions, UseIOSScrollLockReturn } from './hooks/useIOSScrollLock'
+export { ScrollLockContainer } from './components/ui/ScrollLockContainer'
+export type { ScrollLockContainerProps } from './components/ui/ScrollLockContainer'
 
 // Export visualization components
 export { DependencyGraph } from './components/visualization/DependencyGraph'

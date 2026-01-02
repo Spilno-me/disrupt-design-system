@@ -214,30 +214,88 @@ function generateColorMatrix(tokens, contentHash) {
 
 // Generate contrast matrix with all ratios
 function generateContrastMatrix(tokens, contentHash) {
-  const matrix = {
-    _contentHash: contentHash,
-    _source: 'src/constants/designTokens.ts',
-    _note: 'AUTO-GENERATED - Do not edit. Run npm run sync:colors',
-    wcagRequirements: { 'AA-normal-text': '4.5:1', 'AA-large-text': '3.0:1', 'AAA-normal-text': '7.0:1' },
-    combinations: []
-  }
+  // Generate all combinations
+  const allCombinations = []
+  const seen = new Set()
 
   for (const bg of tokens.backgrounds) {
     for (const fg of tokens.foregrounds) {
       const ratio = getContrastRatio(bg.hex, fg.hex)
       const level = wcagLevel(ratio)
-      matrix.combinations.push({
-        background: bg.token,
-        foreground: fg.token,
-        ratio: parseFloat(ratio.toFixed(2)),
-        level,
-        pass: level !== 'FAIL'
-      })
+
+      // Create canonical key (sorted pair) to detect duplicates
+      const pair = [bg.token, fg.token].sort().join('|')
+
+      if (!seen.has(pair)) {
+        seen.add(pair)
+        allCombinations.push({
+          background: bg.token,
+          foreground: fg.token,
+          ratio: parseFloat(ratio.toFixed(2)),
+          level,
+          pass: level !== 'FAIL'
+        })
+      }
     }
   }
 
-  matrix.combinations.sort((a, b) => b.ratio - a.ratio)
-  return matrix
+  // Sort by ratio descending (best contrast first)
+  allCombinations.sort((a, b) => b.ratio - a.ratio)
+
+  // Build indexed structures for O(1) lookups
+  const byBackground = {}
+  const byForeground = {}
+
+  for (const combo of allCombinations) {
+    // By background
+    if (!byBackground[combo.background]) {
+      byBackground[combo.background] = []
+    }
+    byBackground[combo.background].push({
+      foreground: combo.foreground,
+      ratio: combo.ratio,
+      level: combo.level,
+      pass: combo.pass
+    })
+
+    // By foreground
+    if (!byForeground[combo.foreground]) {
+      byForeground[combo.foreground] = []
+    }
+    byForeground[combo.foreground].push({
+      background: combo.background,
+      ratio: combo.ratio,
+      level: combo.level,
+      pass: combo.pass
+    })
+  }
+
+  // Sort each index by ratio descending
+  for (const bg of Object.keys(byBackground)) {
+    byBackground[bg].sort((a, b) => b.ratio - a.ratio)
+  }
+  for (const fg of Object.keys(byForeground)) {
+    byForeground[fg].sort((a, b) => b.ratio - a.ratio)
+  }
+
+  return {
+    _meta: {
+      generated: new Date().toISOString(),
+      contentHash,
+      source: 'src/constants/designTokens.ts',
+      note: 'AUTO-GENERATED - Do not edit. Run npm run sync:colors',
+      originalCount: tokens.backgrounds.length * tokens.foregrounds.length,
+      deduplicatedCount: allCombinations.length
+    },
+    wcagRequirements: {
+      'AA-normal-text': 4.5,
+      'AA-large-text': 3.0,
+      'AAA-normal-text': 7.0
+    },
+    byBackground,
+    byForeground,
+    combinations: allCombinations
+  }
 }
 
 // Generate TOON format for color-matrix
@@ -287,8 +345,8 @@ function generateContrastToon(contrastMatrix) {
 
   // Metadata as nested object
   lines.push('_meta:')
-  lines.push(`  contentHash: ${contrastMatrix._contentHash}`)
-  lines.push(`  source: ${contrastMatrix._source}`)
+  lines.push(`  contentHash: ${contrastMatrix._meta.contentHash}`)
+  lines.push(`  source: ${contrastMatrix._meta.source}`)
   lines.push('  note: AUTO-GENERATED - Do not edit. Run npm run sync:colors')
   lines.push('')
 
@@ -299,7 +357,8 @@ function generateContrastToon(contrastMatrix) {
   }
   lines.push('')
 
-  // Combinations as TOON table
+  // Combinations as TOON table (for human-readable format)
+  // Note: MCP tools use contrast-matrix.json with byBackground/byForeground indexes
   const combos = contrastMatrix.combinations
   lines.push(`combinations[${combos.length}]{background,foreground,ratio,level,pass}:`)
 
