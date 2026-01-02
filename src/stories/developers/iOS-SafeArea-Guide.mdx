@@ -1,0 +1,737 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { IPhoneFrame, IPHONE_SPECS } from '../_infrastructure';
+import { Home, Bell, Settings, Menu, User, Search } from 'lucide-react';
+
+<Meta title="Developers/iOS Safe Area Guide" />
+
+# iOS Safe Area & Dynamic Island Design Guide
+
+This guide covers best practices for designing UI that respects iOS safe areas, particularly the **Dynamic Island** introduced with iPhone 14 Pro. Updated for **iOS 26 / Safari 26** (WWDC25).
+
+---
+
+## What's New in iOS 26 / Safari 26
+
+<div className="p-4 bg-info/10 border border-info/30 rounded-lg my-6">
+  <h4 className="font-semibold text-info mb-2">PWA Breaking Change</h4>
+  <p className="text-sm text-secondary mb-3">
+    <strong>Every website added to the Home Screen now opens as a web app by default.</strong> Previously, only sites with a Web App Manifest or <code>apple-mobile-web-app-capable</code> meta tag opened edge-to-edge. Now ALL sites do.
+  </p>
+  <p className="text-sm text-secondary">
+    This makes safe area handling <strong>more critical than ever</strong> — your site may be displayed edge-to-edge without you explicitly opting in.
+  </p>
+</div>
+
+### Safari 26 Liquid Glass Design
+
+<div className="p-4 bg-info/10 border border-info/30 rounded-lg my-4">
+  <h4 className="font-semibold text-info mb-2">New: Transparent Toolbars</h4>
+  <p className="text-sm text-secondary">
+    Safari's address bar and toolbars now use Apple's <strong>Liquid Glass</strong> aesthetic — semi-transparent with content visible underneath.
+    This means your content is visible <em>through</em> the browser chrome, making safe area handling even more important.
+  </p>
+</div>
+
+| Feature | Description |
+|---------|-------------|
+| **Liquid Glass** | Transparent floating toolbars with rounded corners |
+| **3 Layout Options** | Compact (new default), Bottom, Top |
+| **Content Shows Through** | Web content visible behind toolbar as you scroll |
+| `anchor()` | Position elements relative to other elements |
+| `contrast-color()` | Auto black/white for optimal contrast |
+| `text-wrap: pretty` | Improved text wrapping |
+
+### Safe Area API Status
+
+**No changes** — the `env()` variables remain the standard approach:
+- `env(safe-area-inset-top)` — Still **59pt** for Dynamic Island
+- `env(safe-area-inset-bottom)` — Still **34pt** for home indicator
+- `viewport-fit=cover` — Still required for edge-to-edge
+
+<div className="p-3 bg-warning/10 border border-warning/30 rounded-lg my-4 text-sm">
+  <strong>Liquid Glass Impact:</strong> Since users can now see your content behind Safari's transparent toolbar, ensure your bottom navigation
+  and content don't look cluttered when overlapping with Safari's controls.
+</div>
+
+---
+
+## Visual Comparison: Safe Area Handling
+
+<div className="flex flex-col lg:flex-row gap-8 items-start justify-center my-8">
+  {/* INCORRECT - No safe area padding */}
+  <div className="flex flex-col items-center">
+    <div className="text-center mb-3">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-error/10 text-error border border-error/30">
+        ❌ Incorrect
+      </span>
+    </div>
+    <IPhoneFrame model="iphone16promax" scale={0.55}>
+      <div className="h-full bg-white relative">
+        {/* Header WITHOUT safe area - content hidden behind Dynamic Island */}
+        <header className="absolute top-0 left-0 right-0 bg-accent text-inverse">
+          <div className="h-14 flex items-center justify-between px-4">
+            <Menu className="w-6 h-6" />
+            <span className="font-semibold">My App</span>
+            <Bell className="w-6 h-6" />
+          </div>
+        </header>
+        {/* Content */}
+        <div className="pt-14 px-4">
+          <div className="mt-4 p-4 bg-muted-bg rounded-lg">
+            <p className="text-sm text-secondary">Header content is hidden behind the Dynamic Island!</p>
+          </div>
+        </div>
+        {/* Bottom nav WITHOUT safe area */}
+        <nav className="absolute bottom-0 left-0 right-0 bg-surface border-t border-default">
+          <div className="h-16 flex items-center justify-around">
+            <Home className="w-6 h-6 text-accent" />
+            <Search className="w-6 h-6 text-muted" />
+            <User className="w-6 h-6 text-muted" />
+            <Settings className="w-6 h-6 text-muted" />
+          </div>
+        </nav>
+      </div>
+    </IPhoneFrame>
+    <p className="text-xs text-error mt-3 text-center max-w-[200px]">
+      Header starts at top:0 — logo and nav items hidden behind Dynamic Island
+    </p>
+  </div>
+
+  {/* CORRECT - With safe area padding */}
+  <div className="flex flex-col items-center">
+    <div className="text-center mb-3">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-success/10 text-success border border-success/30">
+        ✅ Correct
+      </span>
+    </div>
+    <IPhoneFrame model="iphone16promax" scale={0.55}>
+      <div className="h-full bg-white relative">
+        {/* Header WITH safe area - 59pt padding top */}
+        <header className="absolute top-0 left-0 right-0 bg-accent text-inverse" style={{ paddingTop: '59px' }}>
+          <div className="h-14 flex items-center justify-between px-4">
+            <Menu className="w-6 h-6" />
+            <span className="font-semibold">My App</span>
+            <Bell className="w-6 h-6" />
+          </div>
+        </header>
+        {/* Content with proper offset */}
+        <div style={{ paddingTop: 'calc(59px + 56px)' }} className="px-4">
+          <div className="mt-4 p-4 bg-success/10 rounded-lg border border-success/30">
+            <p className="text-sm text-success">All content visible and accessible!</p>
+          </div>
+        </div>
+        {/* Bottom nav WITH safe area - 34pt padding bottom */}
+        <nav className="absolute bottom-0 left-0 right-0 bg-surface border-t border-default" style={{ paddingBottom: '34px' }}>
+          <div className="h-16 flex items-center justify-around">
+            <Home className="w-6 h-6 text-accent" />
+            <Search className="w-6 h-6 text-muted" />
+            <User className="w-6 h-6 text-muted" />
+            <Settings className="w-6 h-6 text-muted" />
+          </div>
+        </nav>
+      </div>
+    </IPhoneFrame>
+    <p className="text-xs text-success mt-3 text-center max-w-[200px]">
+      Header respects 59pt safe area — Dynamic Island floats naturally above content
+    </p>
+  </div>
+</div>
+
+---
+
+## Device Safe Area Specifications
+
+Modern iPhones have different safe area requirements based on their sensor housing (notch vs Dynamic Island):
+
+| Device Generation | Top Safe Area | Bottom Safe Area | Sensor Type |
+|-------------------|---------------|------------------|-------------|
+| iPhone 14 Pro / 15 / 16 series | **59pt** | 34pt | Dynamic Island |
+| iPhone X - 13 series | 44-47pt | 34pt | Notch |
+| iPhone 6 - 8 / SE | 20pt | 0pt | None (Home button) |
+
+### Dynamic Island Dimensions
+
+The Dynamic Island pill itself measures:
+- **Width:** 126pt (378px @3x)
+- **Height:** 37pt (111px @3x)
+- **Position:** Centered horizontally, 11pt from top edge
+
+---
+
+## Layout Anatomy
+
+<div className="flex flex-col lg:flex-row gap-8 items-start justify-center my-8">
+  {/* Correct implementation */}
+  <div className="flex flex-col items-center">
+    <div className="text-center mb-3">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-success/10 text-success border border-success/30">
+        ✅ Correct: Header bg extends to top
+      </span>
+    </div>
+    <IPhoneFrame model="iphone16promax" scale={0.5}>
+      <div className="h-full bg-white relative text-xs">
+        {/* Header with bg extending into safe area, content below */}
+        <div className="absolute top-0 left-0 right-0 bg-accent" style={{ paddingTop: '59px' }}>
+          <div className="h-14 flex items-center justify-between px-4 text-inverse">
+            <Menu className="w-5 h-5" />
+            <span className="font-semibold text-sm">My App</span>
+            <Bell className="w-5 h-5" />
+          </div>
+        </div>
+
+        {/* Annotation for safe area */}
+        <div className="absolute top-0 left-0 right-0 border-b-2 border-dashed border-inverse/30" style={{ height: '59px' }}>
+          <div className="absolute bottom-1 right-2 text-inverse/70 font-mono text-[9px]">
+            pt-safe (59pt)
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="absolute left-0 right-0 bg-surface" style={{ top: '115px', bottom: '84px' }}>
+          <div className="p-4">
+            <div className="p-3 bg-success/10 rounded-lg border border-success/30">
+              <p className="text-[10px] text-success">Header bg fills safe area, content below it</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom nav with bg extending into safe area */}
+        <div className="absolute bottom-0 left-0 right-0 bg-surface border-t border-default" style={{ paddingBottom: '34px' }}>
+          <div className="h-14 flex items-center justify-around">
+            <Home className="w-5 h-5 text-accent" />
+            <Search className="w-5 h-5 text-muted" />
+            <User className="w-5 h-5 text-muted" />
+            <Settings className="w-5 h-5 text-muted" />
+          </div>
+        </div>
+      </div>
+    </IPhoneFrame>
+    <p className="text-xs text-success mt-3 text-center max-w-[200px]">
+      Background color fills safe area, content starts below
+    </p>
+  </div>
+
+  {/* Zone diagram */}
+  <div className="flex flex-col items-center">
+    <div className="text-center mb-3">
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-info/10 text-info border border-info/30">
+        Zone Diagram
+      </span>
+    </div>
+    <IPhoneFrame model="iphone16promax" scale={0.5}>
+      <div className="h-full bg-white relative text-xs">
+        {/* Safe area top - shows as padding zone */}
+        <div className="absolute top-0 left-0 right-0 bg-accent/30 border-b-2 border-error border-dashed" style={{ height: '59px' }}>
+          <div className="h-full flex items-center justify-center">
+            <span className="text-[9px] font-mono text-accent">SAFE AREA (bg only)</span>
+          </div>
+        </div>
+
+        {/* Header content zone */}
+        <div className="absolute left-0 right-0 bg-accent/60" style={{ top: '59px', height: '56px' }}>
+          <div className="h-full flex items-center justify-center text-inverse font-medium text-[10px]">
+            HEADER CONTENT
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="absolute left-0 right-0 bg-info/20" style={{ top: '115px', bottom: '84px' }}>
+          <div className="h-full flex items-center justify-center text-info font-medium text-[10px]">
+            SCROLLABLE CONTENT
+          </div>
+        </div>
+
+        {/* Bottom nav content zone */}
+        <div className="absolute left-0 right-0 bg-surface border-t border-default" style={{ bottom: '34px', height: '50px' }}>
+          <div className="h-full flex items-center justify-center text-accent font-medium text-[10px]">
+            NAV CONTENT
+          </div>
+        </div>
+
+        {/* Safe area bottom */}
+        <div className="absolute bottom-0 left-0 right-0 bg-surface/80 border-t-2 border-error border-dashed" style={{ height: '34px' }}>
+          <div className="h-full flex items-center justify-center">
+            <span className="text-[9px] font-mono text-muted">SAFE AREA (bg only)</span>
+          </div>
+        </div>
+      </div>
+    </IPhoneFrame>
+    <p className="text-xs text-info mt-3 text-center max-w-[200px]">
+      Safe areas = background extends, content does not
+    </p>
+  </div>
+</div>
+
+<div className="p-4 bg-warning/10 border border-warning/30 rounded-lg my-6">
+  <h4 className="font-semibold text-warning mb-2">Key Concept</h4>
+  <p className="text-sm text-secondary">
+    The safe area is <strong>NOT empty space</strong>. Your header's <code>background-color</code> should extend into it,
+    but your header's <code>content</code> (logo, buttons) should start below it. Use <code>pt-safe</code> for padding, not margin.
+  </p>
+</div>
+
+---
+
+## Real App Example: Flow EHS
+
+Here's how safe areas work in a real app — the Flow EHS mobile interface:
+
+<div className="flex flex-col items-center my-8">
+  <IPhoneFrame model="iphone16promax" scale={0.6}>
+    <div className="h-full bg-surface relative overflow-hidden">
+      {/* ===== HEADER WITH SAFE AREA ===== */}
+      <header className="absolute top-0 left-0 right-0 z-20" style={{ paddingTop: '59px' }}>
+        {/* Header bg extends into safe area */}
+        <div className="absolute inset-0 top-0 bg-gradient-to-r from-surface via-surface to-cream" style={{ height: 'calc(100% + 59px)', top: '-59px' }} />
+
+        {/* Header content - BELOW safe area */}
+        <div className="relative h-14 flex items-center justify-between px-4">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center">
+              <span className="text-accent font-bold text-sm">flo</span>
+              <svg viewBox="0 0 24 12" className="w-6 h-3 text-accent" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M0 6 Q6 0 12 6 Q18 12 24 6" />
+              </svg>
+            </div>
+            <span className="text-xs text-success font-medium">Environmental Compliance</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <div className="w-5 h-5 rounded-full border border-default flex items-center justify-center">
+                <Bell className="w-3 h-3 text-secondary" />
+              </div>
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-error text-inverse text-[8px] font-bold rounded-full flex items-center justify-center">4</span>
+            </div>
+            <div className="w-7 h-7 rounded-full bg-muted-bg flex items-center justify-center text-xs font-medium text-secondary">SC</div>
+          </div>
+        </div>
+      </header>
+
+      {/* ===== SCROLLABLE CONTENT ===== */}
+      <main className="absolute left-0 right-0 overflow-auto px-4" style={{ top: '115px', bottom: '84px' }}>
+        {/* Welcome Card */}
+        <div className="bg-cream rounded-xl p-3 mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 text-secondary">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3h10a2 2 0 012 2v2H3V5a2 2 0 012-2zm-2 6h14v6a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+            </div>
+            <span className="text-xs font-medium text-primary">Welcome to you...</span>
+          </div>
+          <div className="flex items-center gap-1 text-secondary text-xs">
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+            <span>Customize Dashboard</span>
+          </div>
+        </div>
+
+        {/* Act Now Section */}
+        <div className="mb-4">
+          <div className="flex items-start gap-2 mb-3">
+            <div className="p-1.5 rounded-lg bg-accent/10 text-accent">
+              <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
+            </div>
+            <div>
+              <h2 className="text-sm font-semibold text-primary">Act Now</h2>
+              <p className="text-[10px] text-secondary">Items requiring your immediate attention</p>
+            </div>
+          </div>
+
+          {/* Priority Card */}
+          <div className="bg-white rounded-xl p-3 shadow-sm border border-default/50">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-accent" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
+                <span className="text-xs font-semibold text-primary">My Priority</span>
+              </div>
+              <span className="text-[10px] text-secondary">6 items</span>
+            </div>
+
+            {/* Status badges */}
+            <div className="flex gap-1.5 mb-2.5">
+              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-error/10 text-error">2 overdue</span>
+              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-warning/10 text-warning-dark">2 due today</span>
+              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-error/10 text-error">1 critical</span>
+            </div>
+
+            {/* Task list */}
+            <div className="space-y-2">
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-error mt-1.5 shrink-0" />
+                <div>
+                  <p className="text-[10px] text-primary">Complete incident investigation - INC-2024-0847</p>
+                  <p className="text-[9px] text-secondary">Dec 20</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-warning mt-1.5 shrink-0" />
+                <div>
+                  <p className="text-[10px] text-primary">Review corrective action plan</p>
+                  <p className="text-[9px] text-secondary">Today</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-error mt-1.5 shrink-0" />
+                <p className="text-[10px] text-primary">Chemical spill response assessment</p>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-warning mt-1.5 shrink-0" />
+                <p className="text-[10px] text-primary">Safety training follow-up</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* ===== BOTTOM NAV WITH SAFE AREA ===== */}
+      <nav className="absolute bottom-0 left-0 right-0 z-20 bg-white/90 backdrop-blur-sm border-t border-default" style={{ paddingBottom: '34px' }}>
+        <div className="h-14 flex items-center justify-around">
+          <div className="flex flex-col items-center gap-0.5">
+            <div className="w-9 h-9 rounded-xl bg-muted-bg flex items-center justify-center">
+              <svg className="w-4 h-4 text-accent" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3h10a2 2 0 012 2v2H3V5a2 2 0 012-2zm-2 6h14v6a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+            </div>
+            <span className="text-[8px] font-medium text-accent">My Flow</span>
+          </div>
+          <div className="flex flex-col items-center gap-0.5">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center">
+              <svg className="w-4 h-4 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/></svg>
+            </div>
+            <span className="text-[8px] text-secondary">Steps</span>
+          </div>
+          {/* Quick Action - centered */}
+          <div className="flex flex-col items-center gap-0.5 -mt-3">
+            <div className="w-12 h-12 rounded-2xl bg-error shadow-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-inverse" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"/></svg>
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-0.5">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center">
+              <svg className="w-4 h-4 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"/></svg>
+            </div>
+            <span className="text-[8px] text-secondary">Incidents</span>
+          </div>
+          <div className="flex flex-col items-center gap-0.5">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center">
+              <svg className="w-4 h-4 text-secondary" viewBox="0 0 20 20" fill="currentColor"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/></svg>
+            </div>
+            <span className="text-[8px] text-secondary">More</span>
+          </div>
+        </div>
+      </nav>
+
+      {/* ANNOTATION OVERLAYS */}
+      {/* Top safe area indicator */}
+      <div className="absolute top-0 left-0 right-0 border-b-2 border-dashed border-success/50 pointer-events-none z-30" style={{ height: '59px' }}>
+        <div className="absolute bottom-1 right-2 text-success font-mono text-[8px] bg-success/10 px-1 rounded">
+          pt-safe (59pt)
+        </div>
+      </div>
+
+      {/* Bottom safe area indicator */}
+      <div className="absolute bottom-0 left-0 right-0 border-t-2 border-dashed border-success/50 pointer-events-none z-30" style={{ height: '34px' }}>
+        <div className="absolute top-1 right-2 text-success font-mono text-[8px] bg-success/10 px-1 rounded">
+          pb-safe (34pt)
+        </div>
+      </div>
+    </div>
+  </IPhoneFrame>
+
+  <div className="mt-4 max-w-md">
+    <p className="text-sm text-secondary text-center mb-3">
+      Flow EHS app with proper safe area handling. Note how:
+    </p>
+    <ul className="text-xs text-secondary space-y-1 list-disc list-inside">
+      <li><strong>Header background</strong> extends to the top edge (into safe area)</li>
+      <li><strong>Header content</strong> (logo, bells, avatar) starts below the 59pt safe area</li>
+      <li><strong>Bottom nav background</strong> extends to the bottom edge</li>
+      <li><strong>Nav buttons</strong> sit above the 34pt home indicator zone</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## CSS Implementation
+
+### 1. Enable Safe Area Insets
+
+First, add `viewport-fit=cover` to your viewport meta tag:
+
+```html
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>
+```
+
+### 2. Use CSS `env()` Variables
+
+iOS Safari exposes safe area values through CSS environment variables:
+
+```css
+/* Available environment variables */
+env(safe-area-inset-top)    /* 59pt on Dynamic Island devices */
+env(safe-area-inset-right)  /* Usually 0 */
+env(safe-area-inset-bottom) /* 34pt on Face ID devices */
+env(safe-area-inset-left)   /* Usually 0 */
+```
+
+### 3. Apply to Your Layout
+
+```css
+/* App shell - full height with safe areas */
+.app-shell {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height */
+  padding-top: env(safe-area-inset-top, 0);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Fixed header */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: env(safe-area-inset-top, 0);
+  /* Header content starts AFTER the safe area */
+}
+
+/* Fixed bottom navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+```
+
+---
+
+## Tailwind CSS Implementation
+
+### Extend Your Config
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      padding: {
+        'safe-top': 'env(safe-area-inset-top, 0)',
+        'safe-bottom': 'env(safe-area-inset-bottom, 0)',
+        'safe-left': 'env(safe-area-inset-left, 0)',
+        'safe-right': 'env(safe-area-inset-right, 0)',
+      },
+      margin: {
+        'safe-top': 'env(safe-area-inset-top, 0)',
+        'safe-bottom': 'env(safe-area-inset-bottom, 0)',
+      },
+    },
+  },
+}
+```
+
+### Usage in Components
+
+```tsx
+// App header with safe area
+<header className="fixed top-0 inset-x-0 pt-safe-top bg-surface">
+  <div className="h-14 flex items-center px-4">
+    {/* Header content */}
+  </div>
+</header>
+
+// Bottom navigation with safe area
+<nav className="fixed bottom-0 inset-x-0 pb-safe-bottom bg-surface">
+  <div className="h-16 flex items-center justify-around">
+    {/* Nav items */}
+  </div>
+</nav>
+
+// Main content with both safe areas
+<main className="pt-safe-top pb-safe-bottom min-h-screen">
+  {/* Page content */}
+</main>
+```
+
+---
+
+## DDS Implementation (AppLayoutShell)
+
+Our design system already handles safe areas in `AppLayoutShell`. Here's how it works:
+
+```tsx
+// From src/templates/layout/AppLayoutShell.tsx
+
+// Header wrapper - pt-safe adds safe area padding
+<div className="fixed top-0 left-0 right-0 z-30 pt-safe">
+  <AppHeader product={product} ... />
+</div>
+
+// Footer wrapper - pb-safe for iPad/tablet safe areas
+<div className="hidden md:fixed md:bottom-0 ... md:pb-safe">
+  <AppFooter ... />
+</div>
+
+// Mobile bottom nav - inside safe area automatically
+<div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+  {customMobileNav || <BottomNav ... />}
+</div>
+```
+
+### Pre-defined Utilities in DDS
+
+```css
+/* From src/styles.css */
+.pt-safe { padding-top: env(safe-area-inset-top); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+```
+
+### Using with IPhoneFrame
+
+When rendering inside `IPhoneFrame` for documentation, the frame already includes the status bar chrome. Your content should:
+
+```tsx
+// ❌ WRONG - Content starts at top of frame, behind status bar
+<IPhoneFrame model="iphone16promax">
+  <header className="absolute top-0 ...">My App</header>
+</IPhoneFrame>
+
+// ✅ CORRECT - Add safe area padding to header
+<IPhoneFrame model="iphone16promax">
+  <header className="absolute top-0 pt-safe ...">My App</header>
+</IPhoneFrame>
+
+// ✅ BEST - Use AppLayoutShell which handles it automatically
+<IPhoneFrame model="iphone16promax">
+  <AppLayoutShell product="flow" navItems={...}>
+    {content}
+  </AppLayoutShell>
+</IPhoneFrame>
+```
+
+---
+
+## React Component Pattern
+
+```tsx
+/**
+ * SafeAreaView - Wrapper that respects iOS safe areas
+ */
+export function SafeAreaView({
+  children,
+  edges = ['top', 'bottom'],
+  className,
+}: {
+  children: React.ReactNode
+  edges?: ('top' | 'bottom' | 'left' | 'right')[]
+  className?: string
+}) {
+  const paddingClasses = [
+    edges.includes('top') && 'pt-[env(safe-area-inset-top)]',
+    edges.includes('bottom') && 'pb-[env(safe-area-inset-bottom)]',
+    edges.includes('left') && 'pl-[env(safe-area-inset-left)]',
+    edges.includes('right') && 'pr-[env(safe-area-inset-right)]',
+  ].filter(Boolean).join(' ')
+
+  return (
+    <div className={cn(paddingClasses, className)}>
+      {children}
+    </div>
+  )
+}
+```
+
+---
+
+## Apple's Design Principles
+
+From the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/layout):
+
+<div className="grid grid-cols-2 gap-4 my-6">
+  <div className="p-4 bg-surface border border-default rounded-lg">
+    <h4 className="font-semibold text-success mb-2">✅ Do</h4>
+    <ul className="text-sm text-secondary space-y-2 list-disc list-inside">
+      <li>Respect the safe area insets</li>
+      <li>Let content flow naturally below the Dynamic Island</li>
+      <li>Use system-provided safe area values</li>
+      <li>Test on actual devices</li>
+    </ul>
+  </div>
+  <div className="p-4 bg-surface border border-default rounded-lg">
+    <h4 className="font-semibold text-error mb-2">❌ Don't</h4>
+    <ul className="text-sm text-secondary space-y-2 list-disc list-inside">
+      <li>Place interactive elements under the Dynamic Island</li>
+      <li>Try to hide or mask the sensor housing</li>
+      <li>Use black bars to "fill" the area</li>
+      <li>Call attention to the cutout with special styling</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## Device Frame Specifications
+
+Our design system's `IPhoneFrame` component uses these accurate specifications:
+
+```tsx
+// From device-frames.tsx
+const IPHONE_SPECS = {
+  iphone16promax: {
+    name: 'iPhone 16 Pro Max',
+    width: 440,
+    height: 956,
+    cornerRadius: 55,
+    safeAreaTop: 59,      // ← Dynamic Island safe area
+    safeAreaBottom: 34,   // ← Home indicator safe area
+    hasDynamicIsland: true,
+  },
+  iphone15promax: {
+    name: 'iPhone 15 Pro Max',
+    width: 430,
+    height: 932,
+    cornerRadius: 55,
+    safeAreaTop: 59,
+    safeAreaBottom: 34,
+    hasDynamicIsland: true,
+  },
+  // ... other models
+}
+```
+
+---
+
+## Testing Checklist
+
+Before shipping your mobile UI:
+
+- [ ] Content visible below Dynamic Island on iPhone 14 Pro+
+- [ ] Bottom navigation accessible above home indicator
+- [ ] Landscape orientation handles notch/island on sides
+- [ ] Fallback works on older devices (iPhone 8, SE)
+- [ ] PWA/standalone mode respects safe areas
+- [ ] Scrolling content doesn't get stuck behind safe areas
+- [ ] **iOS 26**: Test site added to Home Screen (now opens as web app by default)
+
+---
+
+## Resources
+
+### Safari 26 / iOS 26 (WWDC25)
+- [News from WWDC25: WebKit in Safari 26 beta](https://webkit.org/blog/16993/news-from-wwdc25-web-technology-coming-this-fall-in-safari-26-beta/)
+- [WebKit Features in Safari 26.0](https://webkit.org/blog/17333/webkit-features-in-safari-26-0/)
+
+### Apple Guidelines
+- [Apple Human Interface Guidelines - Layout](https://developer.apple.com/design/human-interface-guidelines/layout)
+- [Positioning Content Relative to Safe Area](https://developer.apple.com/documentation/uikit/positioning-content-relative-to-the-safe-area)
+
+### Web Development
+- [CSS env() Safe Area Insets - MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/env)
+- [Designing Websites for iPhone X - WebKit](https://webkit.org/blog/7929/designing-websites-for-iphone-x/)
+- [iPhone Screen Sizes Reference](https://useyourloaf.com/blog/iphone-14-screen-sizes/)
+
+### Design Resources
+- [Figma iOS Safe Area Guide](https://www.figma.com/community/file/988392183086784844)

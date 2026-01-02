@@ -1,0 +1,419 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import { useState } from 'react';
+import { IPhoneFrame, IPHONE_SPECS, StorySection } from '../_infrastructure';
+import { Button } from '../../components/ui/button';
+import { ScrollLockContainer } from '../../components/ui/ScrollLockContainer';
+import {
+  Layers,
+  X,
+  Menu,
+  ShoppingCart,
+  ChevronRight,
+  Home,
+  Search,
+  User,
+} from 'lucide-react';
+
+<Meta title="Developers/iOS Scroll Lock Guide" />
+
+# iOS Safari Scroll Lock Guide
+
+Prevent body scroll leaking through modals and overlays on iOS Safari. Implementation of the proven **StripeArmy technique** for complete scroll isolation.
+
+---
+
+## The Problem
+
+<div className="p-4 bg-warning/10 border border-warning/30 rounded-lg my-6">
+  <h4 className="font-semibold text-warning mb-2">iOS Safari Scroll Leaking</h4>
+  <p className="text-sm text-secondary mb-3">
+    iOS Safari allows scroll events to propagate through overlays due to "rubber band" scrolling.
+    Standard CSS solutions like <code>overflow: hidden</code> don't work reliably.
+  </p>
+  <p className="text-sm text-secondary">
+    Even <code>overscroll-behavior: none</code> wasn't fully supported on iOS until recently, and still requires additional tricks to work properly.
+  </p>
+</div>
+
+### Without vs With Scroll Lock
+
+<div className="grid md:grid-cols-2 gap-6 my-6">
+  <div className="p-4 bg-error/10 border border-error/30 rounded-lg">
+    <h4 className="font-semibold text-error mb-2">❌ Without Scroll Lock</h4>
+    <ul className="text-sm text-secondary space-y-2 list-disc list-inside">
+      <li><strong>Rubber band scrolling</strong> propagates through overlays</li>
+      <li>Body scrolls even when modal is open</li>
+      <li>Address bar expansion causes layout shifts</li>
+      <li><code>overflow: hidden</code> on body doesn't work</li>
+      <li>Users can scroll away from modal content</li>
+    </ul>
+  </div>
+  <div className="p-4 bg-success/10 border border-success/30 rounded-lg">
+    <h4 className="font-semibold text-success mb-2">✅ With Scroll Lock</h4>
+    <ul className="text-sm text-secondary space-y-2 list-disc list-inside">
+      <li>Complete scroll isolation — no leaking</li>
+      <li>Proper viewport height calculation</li>
+      <li>Smooth open/close transitions</li>
+      <li>Works across all iOS versions</li>
+      <li>Scroll position preserved when closing</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## The Solution: Multi-Layer Scroll Isolation
+
+A 4-layer DOM structure that captures and contains all scroll events:
+
+```
+isl-holder (fixed, covers viewport)
+└── isl-scroller (scrollable, overscroll-behavior: none)
+    └── isl-scroller-inner (height: 100% + 1px)
+        └── isl-scroller-content (sticky, height: 100% - 1px)
+```
+
+| Layer | Purpose | Key Trick |
+|-------|---------|-----------|
+| `isl-holder` | Fixed container covering viewport | `height: min(var(--isl-vh) * 100, 100%)` |
+| `isl-scroller` | Captures scroll events | `overscroll-behavior: none` + hidden scrollbar |
+| `isl-scroller-inner` | Forces scrollability | `height: calc(100% + 1px)` — the famous +1px trick |
+| `isl-scroller-content` | Holds your content | `position: sticky` eliminates 1px jitter |
+
+<div className="p-4 bg-info/10 border border-info/30 rounded-lg my-6">
+  <h4 className="font-semibold text-info mb-2">Why the +1px Trick Works</h4>
+  <p className="text-sm text-secondary">
+    iOS needs to "think" there's scrollable content to properly capture scroll events.
+    Without the +1px, scroll propagates to the body. The <code>position: sticky</code> on the content
+    layer compensates for this +1px on non-iOS devices, eliminating jitter.
+  </p>
+</div>
+
+---
+
+## Quick Start
+
+Three ways to implement iOS scroll lock in your project:
+
+### Option 1: ScrollLockContainer (Recommended)
+
+```tsx
+import { ScrollLockContainer } from '@anthropic/dds-design-system'
+
+function MyModal({ isOpen, onClose, children }) {
+  return (
+    <ScrollLockContainer isOpen={isOpen} overlay blur>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="bg-surface rounded-xl p-6 max-w-md shadow-2xl">
+          <button onClick={onClose}>
+            <X className="w-5 h-5" />
+          </button>
+          {children}
+        </div>
+      </div>
+    </ScrollLockContainer>
+  )
+}
+```
+
+### Option 2: useIOSScrollLock Hook
+
+For more control, use the hook directly with your own markup:
+
+```tsx
+import { useIOSScrollLock } from '@anthropic/dds-design-system'
+
+function CustomOverlay({ isOpen }) {
+  const { containerRef, isIOSDevice } = useIOSScrollLock(isOpen)
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn('isl-holder', isOpen && 'isl-holder--open')}
+    >
+      <div className="isl-scroller">
+        <div className="isl-scroller-inner">
+          <div className="isl-scroller-content">
+            {/* Your content */}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+### Option 3: CSS-Only (No React)
+
+```html
+<div class="isl-holder isl-holder--open isl-holder--overlay">
+  <div class="isl-scroller">
+    <div class="isl-scroller-inner">
+      <div class="isl-scroller-content">
+        <!-- Your modal content -->
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+```js
+// Set iOS viewport height on load and resize
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+if (isIOS) {
+  const setHeight = () => {
+    document.documentElement.style.setProperty(
+      '--isl-vh',
+      window.innerHeight * 0.01 + 'px'
+    );
+  };
+  setHeight();
+  window.addEventListener('resize', setHeight);
+}
+```
+
+---
+
+## Interactive Demo
+
+export function ScrollLockDemo() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col lg:flex-row gap-8 items-start justify-center my-8">
+      {/* iPhone with demo app */}
+      <IPhoneFrame model="iphone16promax" scale={0.55}>
+        <div className="h-full bg-surface relative overflow-hidden">
+          {/* Header */}
+          <header className="absolute top-0 left-0 right-0 bg-surface border-b border-default z-10" style={{ paddingTop: '59px' }}>
+            <div className="h-14 flex items-center justify-between px-4">
+              <button onClick={() => setIsMenuOpen(true)} className="p-2 -ml-2 rounded-lg hover:bg-muted-bg">
+                <Menu className="w-5 h-5 text-primary" />
+              </button>
+              <span className="font-semibold text-primary">Demo App</span>
+              <button onClick={() => setIsDrawerOpen(true)} className="p-2 -mr-2 rounded-lg hover:bg-muted-bg relative">
+                <ShoppingCart className="w-5 h-5 text-primary" />
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-error text-inverse text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+              </button>
+            </div>
+          </header>
+
+          {/* Scrollable content */}
+          <main className="absolute left-0 right-0 overflow-auto px-4" style={{ top: '115px', bottom: '84px' }}>
+            <div className="space-y-4 py-4">
+              <h2 className="text-lg font-semibold text-primary">Scroll Lock Demo</h2>
+              <p className="text-sm text-secondary">
+                Try opening a modal, then scrolling. The body won't scroll on iOS Safari.
+              </p>
+
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="w-full bg-accent text-inverse py-3 px-4 rounded-xl font-medium"
+              >
+                Open Modal
+              </button>
+
+              <button
+                onClick={() => setIsDrawerOpen(true)}
+                className="w-full bg-surface border border-default text-primary py-3 px-4 rounded-xl font-medium"
+              >
+                Open Drawer
+              </button>
+
+              {/* Dummy content for scrolling */}
+              {Array.from({ length: 10 }, (_, i) => (
+                <div key={i} className="p-4 bg-muted-bg rounded-lg">
+                  <p className="text-sm text-secondary">
+                    Scrollable content item {i + 1}. Try scrolling with a modal open.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </main>
+
+          {/* Bottom nav placeholder */}
+          <nav className="absolute bottom-0 left-0 right-0 bg-surface border-t border-default" style={{ paddingBottom: '34px' }}>
+            <div className="h-14 flex items-center justify-around text-muted">
+              <Home className="w-5 h-5" />
+              <Search className="w-5 h-5" />
+              <User className="w-5 h-5" />
+            </div>
+          </nav>
+
+          {/* MODAL with scroll lock */}
+          <ScrollLockContainer isOpen={isModalOpen} overlay blur>
+            <div className="fixed inset-0 flex items-center justify-center p-6">
+              <div className="bg-elevated rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-primary">Modal Title</h3>
+                  <button onClick={() => setIsModalOpen(false)} className="p-1 rounded-lg hover:bg-muted-bg">
+                    <X className="w-5 h-5 text-muted" />
+                  </button>
+                </div>
+                <p className="text-sm text-secondary mb-4">
+                  Try scrolling while this modal is open. On iOS Safari,
+                  the body behind won't scroll!
+                </p>
+                <div className="max-h-32 overflow-y-auto bg-muted-bg rounded-lg p-3 mb-4">
+                  <p className="text-xs text-muted">
+                    This area scrolls independently. The scroll is contained
+                    within the modal, not leaking to the body.
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span key={i} className="block mt-2">More scrollable content...</span>
+                    ))}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="w-full bg-accent text-inverse py-2 rounded-lg font-medium"
+                >
+                  Close Modal
+                </button>
+              </div>
+            </div>
+          </ScrollLockContainer>
+
+          {/* DRAWER with scroll lock */}
+          <ScrollLockContainer isOpen={isDrawerOpen}>
+            <div
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setIsDrawerOpen(false)}
+            />
+            <div className={`fixed top-0 right-0 bottom-0 w-72 bg-elevated shadow-2xl transform transition-transform duration-300 ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+              <div className="p-4 border-b border-default flex items-center justify-between" style={{ paddingTop: 'calc(59px + 16px)' }}>
+                <h3 className="font-semibold text-primary">Cart (3)</h3>
+                <button onClick={() => setIsDrawerOpen(false)} className="p-1 rounded-lg hover:bg-muted-bg">
+                  <X className="w-5 h-5 text-muted" />
+                </button>
+              </div>
+              <div className="p-4 space-y-3">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="flex gap-3 p-3 bg-muted-bg rounded-lg">
+                    <div className="w-12 h-12 bg-accent/20 rounded-lg" />
+                    <div>
+                      <p className="text-sm font-medium text-primary">Product {i}</p>
+                      <p className="text-xs text-secondary">$29.99</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollLockContainer>
+
+          {/* MENU with scroll lock */}
+          <ScrollLockContainer isOpen={isMenuOpen} overlay>
+            <div
+              className="fixed inset-0"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            <div className={`fixed top-0 left-0 bottom-0 w-64 bg-elevated shadow-2xl transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+              <div className="p-4 border-b border-default" style={{ paddingTop: 'calc(59px + 16px)' }}>
+                <h3 className="font-semibold text-primary">Menu</h3>
+              </div>
+              <nav className="p-2">
+                {['Home', 'Products', 'About', 'Contact', 'Settings'].map(item => (
+                  <button
+                    key={item}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-muted-bg text-primary"
+                  >
+                    <span>{item}</span>
+                    <ChevronRight className="w-4 h-4 text-muted" />
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </ScrollLockContainer>
+        </div>
+      </IPhoneFrame>
+
+      {/* Instructions */}
+      <div className="p-4 bg-surface border border-default rounded-lg max-w-xs">
+        <h3 className="font-semibold text-primary mb-4">Try It Out</h3>
+        <ol className="text-sm text-secondary space-y-2 list-decimal list-inside mb-6">
+          <li>Open the modal, drawer, or menu</li>
+          <li>Try scrolling up/down while overlay is open</li>
+          <li>On iOS Safari, the body won't scroll</li>
+          <li>The scroll position is preserved when closing</li>
+        </ol>
+        <div className="p-3 bg-info/10 border border-info/30 rounded-lg">
+          <h4 className="font-semibold text-info text-sm mb-1">Testing on Real Device</h4>
+          <p className="text-xs text-secondary">
+            For the best testing experience, view this page on an actual iPhone
+            in Safari. The iOS simulator doesn't fully replicate the rubber-band
+            scrolling behavior.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+<ScrollLockDemo />
+
+---
+
+## API Reference
+
+### ScrollLockContainer Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `isOpen` | boolean | required | Whether the scroll lock is active |
+| `overlay` | boolean | false | Show semi-transparent backdrop |
+| `blur` | boolean | false | Apply backdrop blur effect |
+| `noTransition` | boolean | false | Disable fade animation |
+| `zIndex` | 50 \| 60 \| 70 \| 80 | 50 | Z-index layer for nested modals |
+| `children` | ReactNode | required | Content of the container |
+| `contentClassName` | string | — | Additional classes for content wrapper |
+
+### useIOSScrollLock Hook
+
+```ts
+const {
+  containerRef,  // RefObject<HTMLDivElement> - Attach to container
+  isLocked,      // boolean - Current lock state
+  lock,          // () => void - Manually lock
+  unlock,        // () => void - Manually unlock
+  isIOSDevice,   // boolean - Whether device is iOS
+} = useIOSScrollLock({
+  isLocked: boolean,           // Whether scroll lock is active
+  applyIOSFix?: boolean,       // Apply iOS viewport height fix (default: true)
+  preventBodyScroll?: boolean, // Add body scroll prevention (default: true)
+  onLockChange?: (locked: boolean) => void,
+  debug?: boolean,             // Enable debug logging
+})
+```
+
+---
+
+## CSS Classes Reference
+
+| Class | Description |
+|-------|-------------|
+| `.isl-holder` | Base container class (required) |
+| `.isl-holder--open` | Open state — visible and interactive |
+| `.isl-holder--overlay` | Semi-transparent backdrop (50% black) |
+| `.isl-holder--blur` | Backdrop blur effect (4px) |
+| `.isl-holder--contents` | Pass-through mode (display: contents) |
+| `.isl-holder--no-transition` | Instant open/close |
+| `.isl-holder--z-60/70/80` | Higher z-index for nested modals |
+
+---
+
+## Resources
+
+### Reference Implementation
+
+- [react-ios-scroll-lock](https://www.npmjs.com/package/react-ios-scroll-lock) — Original NPM package
+- [Apple-style Demo](https://stripearmy.github.io/ios-scroll-lock-demo/) — Interactive demo
+- [Scrollable Modal Demo](https://stripearmy.github.io/ios-scroll-lock-demo/scrollable.html)
+
+### Related DDS Guides
+
+- [iOS Safe Area Guide](/docs/developers-ios-safe-area-guide--docs) — Dynamic Island & safe areas
+- [overscroll-behavior (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) — CSS documentation

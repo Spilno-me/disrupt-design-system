@@ -22,3 +22,11 @@ export {
   isIOS26ViewportBugAffected,
   type default as UseVisualViewportFix,
 } from './useVisualViewportFix'
+
+// iOS Safari scroll lock for modals/overlays
+export {
+  useIOSScrollLock,
+  isIOS,
+  type UseIOSScrollLockOptions,
+  type UseIOSScrollLockReturn,
+} from './useIOSScrollLock'
