@@ -849,39 +849,439 @@ export const BREAKPOINTS = {
 } as const
 
 // =============================================================================
-// TRANSITIONS
+// MOTION TOKENS (Inspired by Vibe Design System)
+// Two categories: Productive (functional) and Expressive (delightful)
 // =============================================================================
 
-export const TRANSITIONS = {
-  duration: {
-    fast: '150ms',
-    normal: '200ms',
-    smooth: '300ms',
-    slow: '500ms',
-  },
-  timing: {
-    ease: 'ease',
-    easeIn: 'ease-in',
-    easeOut: 'ease-out',
-    easeInOut: 'ease-in-out',
+/**
+ * Motion duration tokens - semantic timing for animations
+ * - Productive: Quick, functional interactions (70-150ms)
+ * - Expressive: Emphasizing, delightful animations (250-400ms)
+ */
+export const MOTION_DURATION = {
+  // Productive - fast, functional animations
+  productiveShort: '70ms',    // Micro-interactions, hover states
+  productiveMedium: '100ms',  // Toggles, checkboxes, small buttons
+  productiveLong: '150ms',    // Small transitions, tooltips appearing
+
+  // Expressive - longer, emphasizing animations
+  expressiveShort: '250ms',   // Cards, modals, medium elements
+  expressiveLong: '400ms',    // Page transitions, hero animations
+
+  // Legacy aliases (for backwards compatibility)
+  fast: '150ms',
+  normal: '250ms',
+  smooth: '300ms',
+  slow: '400ms',
+} as const
+
+/**
+ * Motion easing tokens - cubic-bezier curves for different purposes
+ * - Enter: Elements appearing (ease-out style)
+ * - Exit: Elements leaving (ease-in style)
+ * - Transition: State changes on screen
+ * - Emphasize: Attention-grabbing with subtle overshoot
+ */
+export const MOTION_EASING = {
+  // Semantic easing curves
+  enter: 'cubic-bezier(0, 0, 0.35, 1)',        // Elements appearing - fast start, slow end
+  exit: 'cubic-bezier(0.4, 0, 1, 1)',          // Elements leaving - slow start, fast end
+  transition: 'cubic-bezier(0.4, 0, 0.2, 1)',  // On-screen state changes
+  emphasize: 'cubic-bezier(0, 0, 0.2, 1.4)',   // Attention/bounce (subtle overshoot)
+
+  // Framer Motion compatible arrays
+  enterArray: [0, 0, 0.35, 1] as const,
+  exitArray: [0.4, 0, 1, 1] as const,
+  transitionArray: [0.4, 0, 0.2, 1] as const,
+  emphasizeArray: [0, 0, 0.2, 1.4] as const,
+
+  // Legacy/generic (for backwards compatibility)
+  ease: 'ease',
+  easeIn: 'ease-in',
+  easeOut: 'ease-out',
+  easeInOut: 'ease-in-out',
+} as const
+
+/**
+ * Motion delay tokens - stagger and sequence timing
+ */
+export const MOTION_DELAY = {
+  none: '0ms',
+  short: '50ms',    // Quick stagger between items
+  normal: '100ms',  // Standard delay
+  long: '200ms',    // Pronounced stagger
+} as const
+
+/**
+ * Combined MOTION export - unified motion token system
+ */
+export const MOTION = {
+  duration: MOTION_DURATION,
+  easing: MOTION_EASING,
+  delay: MOTION_DELAY,
+
+  // CSS variable references (for use in Tailwind/CSS)
+  cssVars: {
+    duration: {
+      productiveShort: 'var(--motion-duration-productive-short)',
+      productiveMedium: 'var(--motion-duration-productive-medium)',
+      productiveLong: 'var(--motion-duration-productive-long)',
+      expressiveShort: 'var(--motion-duration-expressive-short)',
+      expressiveLong: 'var(--motion-duration-expressive-long)',
+    },
+    easing: {
+      enter: 'var(--motion-easing-enter)',
+      exit: 'var(--motion-easing-exit)',
+      transition: 'var(--motion-easing-transition)',
+      emphasize: 'var(--motion-easing-emphasize)',
+    },
+    delay: {
+      short: 'var(--motion-delay-short)',
+      normal: 'var(--motion-delay-normal)',
+      long: 'var(--motion-delay-long)',
+    },
   },
 } as const
 
 // =============================================================================
-// ANIMATION
+// MOTION KEYFRAMES (Pre-built animation patterns)
+// Absorbed from Vibe Design System - ready-to-use keyframe animations
+// =============================================================================
+
+/**
+ * Pre-built keyframe animations for common UI patterns
+ * Usage: Apply these as CSS @keyframes or use the cssString in style tags
+ */
+export const MOTION_KEYFRAMES = {
+  // --- POP ANIMATIONS (Scale-based entries) ---
+
+  /** Simple pop-in: scale 0.8 → 1 with fade */
+  popIn: {
+    name: 'dds-pop-in',
+    keyframes: {
+      '0%': { transform: 'scale(0.8)', opacity: '0' },
+      '70%': { opacity: '1' },
+      '100%': { transform: 'scale(1)' },
+    },
+    cssString: `@keyframes dds-pop-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  70% { opacity: 1; }
+  100% { transform: scale(1); }
+}`,
+  },
+
+  /** Pop-out: reverse of pop-in */
+  popOut: {
+    name: 'dds-pop-out',
+    keyframes: {
+      '0%': { transform: 'scale(1)', opacity: '1' },
+      '30%': { opacity: '1' },
+      '100%': { transform: 'scale(0.8)', opacity: '0' },
+    },
+    cssString: `@keyframes dds-pop-out {
+  0% { transform: scale(1); opacity: 1; }
+  30% { opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0; }
+}`,
+  },
+
+  /** Elastic pop: bouncy overshoot 1.1 → 0.95 → 1.05 → 1 */
+  popElastic: {
+    name: 'dds-pop-elastic',
+    keyframes: {
+      '0%': { transform: 'scale(0.8)', opacity: '0' },
+      '40%': { transform: 'scale(1.1)', opacity: '1' },
+      '65%': { transform: 'scale(0.95)' },
+      '85%': { transform: 'scale(1.05)' },
+      '100%': { transform: 'scale(1)' },
+    },
+    cssString: `@keyframes dds-pop-elastic {
+  0% { transform: scale(0.8); opacity: 0; }
+  40% { transform: scale(1.1); opacity: 1; }
+  65% { transform: scale(0.95); }
+  85% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}`,
+  },
+
+  /** Bold elastic: more pronounced bounce */
+  popElasticBold: {
+    name: 'dds-pop-elastic-bold',
+    keyframes: {
+      '0%': { transform: 'scale(0.6)', opacity: '0' },
+      '35%': { transform: 'scale(1.15)', opacity: '1' },
+      '55%': { transform: 'scale(0.9)' },
+      '75%': { transform: 'scale(1.08)' },
+      '90%': { transform: 'scale(0.98)' },
+      '100%': { transform: 'scale(1)' },
+    },
+    cssString: `@keyframes dds-pop-elastic-bold {
+  0% { transform: scale(0.6); opacity: 0; }
+  35% { transform: scale(1.15); opacity: 1; }
+  55% { transform: scale(0.9); }
+  75% { transform: scale(1.08); }
+  90% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}`,
+  },
+
+  // --- SLIDE ANIMATIONS (Position-based entries) ---
+
+  /** Slide in from bottom */
+  slideInUp: {
+    name: 'dds-slide-in-up',
+    keyframes: {
+      '0%': { transform: 'translateY(16px)', opacity: '0' },
+      '100%': { transform: 'translateY(0)', opacity: '1' },
+    },
+    cssString: `@keyframes dds-slide-in-up {
+  0% { transform: translateY(16px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}`,
+  },
+
+  /** Slide in from top */
+  slideInDown: {
+    name: 'dds-slide-in-down',
+    keyframes: {
+      '0%': { transform: 'translateY(-16px)', opacity: '0' },
+      '100%': { transform: 'translateY(0)', opacity: '1' },
+    },
+    cssString: `@keyframes dds-slide-in-down {
+  0% { transform: translateY(-16px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}`,
+  },
+
+  /** Slide in from left */
+  slideInLeft: {
+    name: 'dds-slide-in-left',
+    keyframes: {
+      '0%': { transform: 'translateX(-16px)', opacity: '0' },
+      '100%': { transform: 'translateX(0)', opacity: '1' },
+    },
+    cssString: `@keyframes dds-slide-in-left {
+  0% { transform: translateX(-16px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}`,
+  },
+
+  /** Slide in from right */
+  slideInRight: {
+    name: 'dds-slide-in-right',
+    keyframes: {
+      '0%': { transform: 'translateX(16px)', opacity: '0' },
+      '100%': { transform: 'translateX(0)', opacity: '1' },
+    },
+    cssString: `@keyframes dds-slide-in-right {
+  0% { transform: translateX(16px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}`,
+  },
+
+  /** Slide out to bottom */
+  slideOutDown: {
+    name: 'dds-slide-out-down',
+    keyframes: {
+      '0%': { transform: 'translateY(0)', opacity: '1' },
+      '100%': { transform: 'translateY(16px)', opacity: '0' },
+    },
+    cssString: `@keyframes dds-slide-out-down {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(16px); opacity: 0; }
+}`,
+  },
+
+  /** Slide out to top */
+  slideOutUp: {
+    name: 'dds-slide-out-up',
+    keyframes: {
+      '0%': { transform: 'translateY(0)', opacity: '1' },
+      '100%': { transform: 'translateY(-16px)', opacity: '0' },
+    },
+    cssString: `@keyframes dds-slide-out-up {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-16px); opacity: 0; }
+}`,
+  },
+
+  /** Elastic slide in from bottom */
+  slideInUpElastic: {
+    name: 'dds-slide-in-up-elastic',
+    keyframes: {
+      '0%': { transform: 'translateY(24px)', opacity: '0' },
+      '50%': { transform: 'translateY(-4px)', opacity: '1' },
+      '75%': { transform: 'translateY(2px)' },
+      '100%': { transform: 'translateY(0)' },
+    },
+    cssString: `@keyframes dds-slide-in-up-elastic {
+  0% { transform: translateY(24px); opacity: 0; }
+  50% { transform: translateY(-4px); opacity: 1; }
+  75% { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}`,
+  },
+
+  // --- SPIN ANIMATIONS (Rotation-based) ---
+
+  /** Spin in with emphasis - rotation + scale */
+  spinIn: {
+    name: 'dds-spin-in',
+    keyframes: {
+      '0%': { transform: 'rotate(-180deg) scale(0)', opacity: '0' },
+      '60%': { transform: 'rotate(15deg) scale(1.1)', opacity: '1' },
+      '100%': { transform: 'rotate(0) scale(1)' },
+    },
+    cssString: `@keyframes dds-spin-in {
+  0% { transform: rotate(-180deg) scale(0); opacity: 0; }
+  60% { transform: rotate(15deg) scale(1.1); opacity: 1; }
+  100% { transform: rotate(0) scale(1); }
+}`,
+  },
+
+  /** Continuous spin - loading indicators */
+  spin: {
+    name: 'dds-spin',
+    keyframes: {
+      '0%': { transform: 'rotate(0deg)' },
+      '100%': { transform: 'rotate(360deg)' },
+    },
+    cssString: `@keyframes dds-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}`,
+  },
+
+  // --- FADE ANIMATIONS (Opacity-based) ---
+
+  /** Simple fade in */
+  fadeIn: {
+    name: 'dds-fade-in',
+    keyframes: {
+      '0%': { opacity: '0' },
+      '100%': { opacity: '1' },
+    },
+    cssString: `@keyframes dds-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}`,
+  },
+
+  /** Simple fade out */
+  fadeOut: {
+    name: 'dds-fade-out',
+    keyframes: {
+      '0%': { opacity: '1' },
+      '100%': { opacity: '0' },
+    },
+    cssString: `@keyframes dds-fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}`,
+  },
+
+  // --- ATTENTION/EMPHASIS ANIMATIONS ---
+
+  /** Pulse - gentle scale pulse for attention */
+  pulse: {
+    name: 'dds-pulse',
+    keyframes: {
+      '0%': { transform: 'scale(1)' },
+      '50%': { transform: 'scale(1.05)' },
+      '100%': { transform: 'scale(1)' },
+    },
+    cssString: `@keyframes dds-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}`,
+  },
+
+  /** Shake - horizontal shake for errors */
+  shake: {
+    name: 'dds-shake',
+    keyframes: {
+      '0%, 100%': { transform: 'translateX(0)' },
+      '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-4px)' },
+      '20%, 40%, 60%, 80%': { transform: 'translateX(4px)' },
+    },
+    cssString: `@keyframes dds-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}`,
+  },
+
+  /** Bounce - vertical bounce for attention */
+  bounce: {
+    name: 'dds-bounce',
+    keyframes: {
+      '0%, 100%': { transform: 'translateY(0)' },
+      '50%': { transform: 'translateY(-8px)' },
+    },
+    cssString: `@keyframes dds-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}`,
+  },
+
+  /** Wiggle - subtle rotation for playful attention */
+  wiggle: {
+    name: 'dds-wiggle',
+    keyframes: {
+      '0%, 100%': { transform: 'rotate(0deg)' },
+      '25%': { transform: 'rotate(-3deg)' },
+      '75%': { transform: 'rotate(3deg)' },
+    },
+    cssString: `@keyframes dds-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}`,
+  },
+} as const
+
+/**
+ * CSS string containing all keyframe definitions
+ * Inject this into a <style> tag or CSS file to make all animations available
+ */
+export const MOTION_KEYFRAMES_CSS = Object.values(MOTION_KEYFRAMES)
+  .map(k => k.cssString)
+  .join('\n\n')
+
+// Legacy TRANSITIONS export (deprecated - use MOTION instead)
+/** @deprecated Use MOTION.duration and MOTION.easing instead */
+export const TRANSITIONS = {
+  duration: MOTION_DURATION,
+  timing: {
+    ease: MOTION_EASING.ease,
+    easeIn: MOTION_EASING.easeIn,
+    easeOut: MOTION_EASING.easeOut,
+    easeInOut: MOTION_EASING.easeInOut,
+  },
+} as const
+
+// =============================================================================
+// ANIMATION (Component-specific animation settings)
 // =============================================================================
 
 export const ANIMATION = {
+  // Framer Motion durations (in seconds)
   duration: {
-    INSTANT: 0.1,
-    FAST: 0.2,
-    NORMAL: 0.3,
-    SMOOTH: 0.4,
-    SLOW: 0.5,
+    INSTANT: 0.07,   // Maps to productiveShort
+    FAST: 0.1,       // Maps to productiveMedium
+    NORMAL: 0.15,    // Maps to productiveLong
+    SMOOTH: 0.25,    // Maps to expressiveShort
+    SLOW: 0.4,       // Maps to expressiveLong
     SCROLL: 0.8,
     SCROLL_LONG: 1.4,
   },
   easing: {
+    ENTER: MOTION_EASING.enterArray,
+    EXIT: MOTION_EASING.exitArray,
+    TRANSITION: MOTION_EASING.transitionArray,
+    EMPHASIZE: MOTION_EASING.emphasizeArray,
+    // Legacy
     EASE_OUT: [0.4, 0, 0.1, 1] as const,
     EASE_IN_OUT: 'easeInOut' as const,
     SPRING_CAROUSEL: [0.32, 0.72, 0, 1] as const,

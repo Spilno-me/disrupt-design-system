@@ -96,6 +96,155 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 
+  /* =============================================================================
+   * iOS SCROLL LOCK SYSTEM
+   * Prevents body scroll behind modals/overlays on iOS Safari.
+   * Uses the "StripeArmy" technique with overscroll-behavior + 1px trick.
+   * @see https://www.npmjs.com/package/react-ios-scroll-lock
+   * @see https://stripearmy.github.io/ios-scroll-lock-demo/
+   * ============================================================================= */
+
+  /* CSS Custom Properties for iOS Scroll Lock */
+  :root {
+    --isl-vh: 1%;
+    --isl-bg: transparent;
+    --isl-display: block;
+    --isl-inner-display: flex;
+    --isl-opacity: 0;
+    --isl-transition: opacity;
+    --isl-transition-duration: 0.2s;
+    --isl-transition-easing: ease-in-out;
+    --isl-transition-delay: var(--isl-transition-duration);
+    --isl-z-index: -1;
+  }
+
+  /**
+   * isl-holder: The outermost container
+   * - Fixed position covering entire viewport
+   * - Uses min() to handle iOS viewport height issues
+   * - Starts hidden (z-index: -1, opacity: 0)
+   */
+  .isl-holder {
+    display: var(--isl-display);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: min(calc(var(--isl-vh) * 100), 100%);
+    background-color: var(--isl-bg);
+    overflow: hidden;
+    transition:
+      var(--isl-transition) var(--isl-transition-duration) var(--isl-transition-easing),
+      z-index 0s linear var(--isl-transition-delay);
+    opacity: var(--isl-opacity);
+    z-index: var(--isl-z-index);
+  }
+
+  /* Disable pointer events when closed */
+  .isl-holder:not(.isl-holder--open),
+  .isl-holder:not(.isl-holder--open) * {
+    pointer-events: none;
+  }
+
+  /* Open state - visible and interactive */
+  .isl-holder--open {
+    --isl-transition-delay: 0s;
+    --isl-opacity: 1;
+    --isl-z-index: 50;
+  }
+
+  /* Contents mode - renders as "display: contents" for pass-through */
+  .isl-holder--contents {
+    --isl-display: contents;
+    --isl-inner-display: contents;
+  }
+
+  .isl-holder--contents,
+  .isl-holder--contents * {
+    pointer-events: auto;
+  }
+
+  /**
+   * isl-scroller: The scroll capture layer
+   * - Full size of parent
+   * - Scrollable with overscroll-behavior: none
+   * - Hidden scrollbar for aesthetics
+   */
+  .isl-scroller {
+    display: var(--isl-display);
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .isl-scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  /**
+   * isl-scroller-inner: The +1px height trick
+   * - Height is 100% + 1px to ensure scrollability
+   * - This prevents iOS rubber-banding from propagating
+   */
+  .isl-scroller-inner {
+    display: var(--isl-inner-display);
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-direction: column;
+    height: calc(100% + 1px);
+    min-height: calc(100% + 1px);
+  }
+
+  /**
+   * isl-scroller-content: The actual content container
+   * - Position sticky to top and bottom
+   * - Height is 100% - 1px to compensate for parent's +1px
+   * - This eliminates the 1px scroll jitter on non-iOS devices
+   */
+  .isl-scroller-content {
+    display: var(--isl-inner-display);
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-direction: column;
+    position: sticky;
+    width: 100%;
+    height: calc(100% - 1px);
+    top: 0;
+    bottom: 0;
+  }
+
+  /* Variant with background overlay */
+  .isl-holder--overlay {
+    --isl-bg: rgba(0, 0, 0, 0.5);
+  }
+
+  /* Dark mode overlay */
+  .dark .isl-holder--overlay,
+  .isl-holder--overlay:is(.dark *) {
+    --isl-bg: rgba(0, 0, 0, 0.7);
+  }
+
+  /* Blur backdrop variant */
+  .isl-holder--blur {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  /* No transition variant (for instant open/close) */
+  .isl-holder--no-transition {
+    --isl-transition-duration: 0s;
+    --isl-transition-delay: 0s;
+  }
+
+  /* Higher z-index variants for nested modals */
+  .isl-holder--z-60.isl-holder--open { --isl-z-index: 60; }
+  .isl-holder--z-70.isl-holder--open { --isl-z-index: 70; }
+  .isl-holder--z-80.isl-holder--open { --isl-z-index: 80; }
+
   /* Button variant classes - these are used dynamically by CVA */
   .bg-inverse-bg { background-color: var(--color-inverse-bg); }
   .bg-muted-bg { background-color: var(--color-muted-bg); }
@@ -133,10 +282,17 @@
   .bg-warning-dark { background-color: var(--color-warning-dark); }
 
   /* Aging (urgent) severity variants */
+  .text-aging { color: var(--color-aging); }
+  .border-aging { border-color: var(--color-aging); }
+  .bg-aging { background-color: var(--color-aging); }
   .text-aging-dark { color: var(--color-aging-dark); }
   .border-aging-dark { border-color: var(--color-aging-dark); }
   .bg-aging-dark { background-color: var(--color-aging-dark); }
 
+  /* Success severity variants */
+  .text-success { color: var(--color-success); }
+  .border-success { border-color: var(--color-success); }
+  .bg-success { background-color: var(--color-success); }
   /* Success strong severity variants */
   .text-success-strong { color: var(--color-success-strong); }
   .border-success-strong { border-color: var(--color-success-strong); }
