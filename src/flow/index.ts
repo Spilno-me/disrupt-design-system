@@ -67,6 +67,71 @@ export type {
   PlaceholderTabProps,
 } from '../components/incidents'
 
+// Incident Reporting Flow & Wizard
+export {
+  IncidentReportingFlow,
+  IncidentWizard,
+  EditIncidentFlow,
+  IncidentActionMenu,
+  DeleteIncidentDialog,
+  SubmitIncidentDialog,
+  IncidentManagementTableWithDialogs,
+  // Wizard constants
+  INCIDENT_CATEGORIES,
+  SEVERITY_LEVELS,
+  INCIDENT_WIZARD_STEPS,
+  DEFAULT_FORM_DATA,
+  // Additional detail components
+  WorkflowsSection,
+  FormSubmissionViewer,
+  FormSubmissionsSection,
+  FORM_TYPE_LABELS,
+  INCIDENT_ROLE_LABELS,
+} from '../components/incidents'
+
+export type {
+  IncidentReportingFlowProps,
+  IncidentActionMenuProps,
+  DeleteIncidentDialogProps,
+  IncidentToDelete,
+  SubmitIncidentDialogProps,
+  IncidentToSubmit,
+  EditIncidentFlowProps,
+  IncidentToEdit,
+  IncidentManagementTableWithDialogsProps,
+  // Wizard types
+  IncidentFormData,
+  IncidentCategory,
+  SeverityLevel as WizardSeverityLevel,
+  LocationOption,
+  // Additional detail types
+  EvidenceDocument,
+  DocumentUserContext,
+  DocumentType,
+  DocumentVisibility,
+  IncidentRole,
+  DocumentsEvidenceSectionProps,
+  DetailedWorkflow,
+  WorkflowStep,
+  WorkflowStepAttachment,
+  WorkflowStage,
+  WorkflowStatus,
+  WorkflowStepStatus,
+  WorkflowsSectionProps,
+  FormFieldType,
+  FormField,
+  FormSection,
+  FormSubmissionData,
+  FormSubmissionViewerProps,
+  FormType,
+  ExtendedFormSubmission,
+  FormSubmissionsSectionProps,
+} from '../components/incidents'
+
+// Incidents Page - Full incidents management
+export { IncidentsPage } from '../components/incidents'
+export type { IncidentsPageProps } from '../components/incidents'
+
 // Steps Page - View and manage incident steps/tasks
 export {
   StepsPage,
@@ -432,3 +497,192 @@ export type {
   ComplianceBadgeProps,
   ExpirationIndicatorProps,
 } from './components/training'
+
+// Modules Management - Admin configuration for Flow modules
+export {
+  ModuleCard,
+  ModuleStatusBadge,
+  ModulesGrid,
+  ModulesPage,
+  ModuleConfigSheet,
+  CreateEntitySheet,
+  MODULE_STATUS_CONFIG,
+  getModuleIcon,
+  getModuleColors,
+  formatRelativeDate,
+  formatShortDate,
+  isValidModuleStatus,
+  VALID_MODULE_STATUSES,
+} from './components/modules'
+
+export type {
+  ModuleItem,
+  EntityTemplateInfo,
+  ModulePermissions,
+  ModuleCardProps,
+  ModuleStatusBadgeProps,
+  ModulesGridProps,
+  ModulesFilterState,
+  ModulesPageProps,
+  FormTemplateOption,
+  ModuleConfigData,
+  ModuleConfigSheetProps,
+  CreateEntitySheetProps,
+  ModuleStatus,
+  ModuleStatusConfig,
+} from './components/modules'
+
+// Corrective Actions - CAPA management for incidents and audits
+export {
+  // Display atoms
+  CorrectiveActionStatusBadge,
+  PriorityIndicator,
+  DueDateDisplay,
+  // List components
+  CorrectiveActionCard,
+  CorrectiveActionsGrid,
+  CorrectiveActionsPage,
+  // Detail components
+  CorrectiveActionHeader,
+  CorrectiveActionTimeline,
+  CorrectiveActionSidebar,
+  CorrectiveActionDetailsPage,
+  // Form dialogs
+  ExtensionRequestDialog,
+  ClosureApprovalDialog,
+  CompletionFormDialog,
+  CreateCorrectiveActionSheet,
+  // Helpers
+  STATUS_CONFIG as CA_STATUS_CONFIG,
+  PRIORITY_CONFIG as CA_PRIORITY_CONFIG,
+  EFFECTIVENESS_CONFIG,
+  TIMELINE_EVENT_CONFIG,
+  VALID_STATUSES as CA_VALID_STATUSES,
+  VALID_PRIORITIES as CA_VALID_PRIORITIES,
+  parseDate as caParseDate,
+  formatDate as caFormatDate,
+  formatDateTime as caFormatDateTime,
+  formatRelativeDate as caFormatRelativeDate,
+  getDueDateState,
+  getDaysUntilDue,
+  isValidStatus as caIsValidStatus,
+  isValidPriority as caIsValidPriority,
+  canTransitionTo,
+  sortByPriority,
+  sortByDueDate,
+  isOverdue,
+  getUserDisplayName,
+  getUserInitials,
+} from './components/corrective-actions'
+
+export type {
+  // Core types
+  CorrectiveActionStatus,
+  CorrectiveActionPriority,
+  EffectivenessAssessment,
+  ActionType,
+  // Reference types
+  UserReference,
+  LocationReference as CALocationReference,
+  DepartmentReference,
+  DictionaryReference,
+  EvidenceFile,
+  // Main entity
+  CorrectiveAction,
+  // Component props
+  CorrectiveActionPermissions,
+  CorrectiveActionFilterState,
+  // Timeline
+  TimelineEventType,
+  TimelineEvent,
+  // Props types
+  CorrectiveActionStatusBadgeProps,
+  PriorityIndicatorProps,
+  DueDateDisplayProps,
+  CorrectiveActionCardProps,
+  CorrectiveActionsGridProps,
+  CorrectiveActionsPageProps,
+  CorrectiveActionHeaderProps,
+  CorrectiveActionTimelineProps,
+  CorrectiveActionSidebarProps,
+  CorrectiveActionDetailsPageProps,
+  // Form data types
+  ExtensionRequestDialogProps,
+  ExtensionRequestData,
+  ClosureApprovalDialogProps,
+  ClosureApprovalData,
+  ClosureRejectionData,
+  CompletionFormDialogProps,
+  CompletionFormData,
+  CreateCorrectiveActionSheetProps,
+  CreateCorrectiveActionData,
+  // Helper types
+  StatusConfig as CAStatusConfig,
+  PriorityConfig as CAPriorityConfig,
+  EffectivenessConfig,
+  DueDateState,
+} from './components/corrective-actions'
+
+// Form Builder - Drag-and-drop form building
+export {
+  FormBuilder,
+  FormBuilderProvider,
+  useFormBuilder,
+  useFormBuilderStore,
+  // Palette components
+  ComponentPalette,
+  PaletteItem,
+  // Canvas components
+  FormCanvas,
+  CanvasField,
+  // Properties components
+  PropertiesPanel,
+  FieldPropertiesPanel,
+  ValidationRulesEditor,
+  ConditionalVisibility,
+  // Constants
+  FIELD_BLUEPRINTS,
+  FIELD_CATEGORIES,
+  FORM_BUILDER_LIMITS,
+  VALIDATION_RULES,
+} from './components/form-builder'
+
+export type {
+  // Schema types
+  ISchema,
+  SchemaProperty,
+  ValidationRule,
+  ConditionalReaction,
+  SchemaHistoryEntry as FormBuilderSchemaHistoryEntry,
+  FormMetadata,
+  // Blueprint types
+  FieldBlueprint,
+  FieldCategory,
+  DragState,
+  DropTarget,
+  // Validation types
+  ValidationRuleType,
+  ValidationRuleConfig,
+  ValidationRuleDefinition,
+  // Conditional types
+  VisibilityCondition,
+  VisibilityAction,
+  ConditionalVisibilityRule,
+  ParentFieldOption,
+  // Store types
+  FormBuilderState,
+  FormBuilderActions,
+  ActiveTab as FormBuilderActiveTab,
+  // Context type
+  FormBuilderContextValue,
+} from './components/form-builder'
+
+// Advanced Form Builder - Enhanced EHS form building with repeating sections,
+// advanced conditional logic, scoring fields, and multi-page support
+export {
+  AdvancedFormBuilder,
+} from './components/advanced-form-builder'
+
+export type {
+  AdvancedFormBuilderProps,
+} from './components/advanced-form-builder'
