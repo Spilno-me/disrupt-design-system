@@ -1,0 +1,642 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Layout,
+  Eye,
+  EyeOff,
+  Layers,
+  Repeat2,
+  Calculator,
+  GitBranch,
+  CheckCircle,
+  ArrowRight,
+  Plus,
+  Trash2,
+  GripVertical,
+  Settings,
+  Code2,
+  Play,
+  Ban,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  HARBOR,
+  CORAL,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+} from '../../brand/BrandComponents';
+
+<Meta title="Flow/Advanced Form Builder/Documentation" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Advanced Form Builder"
+  description="A powerful drag-and-drop form builder with section grouping, repeating fields, calculated values, and advanced conditional logic. Build complex EHS forms visually."
+  gradient="teal"
+  decorativeIcon={<Layout size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Formily JSON Schema:</strong> The form builder generates Formily-compatible JSON schemas
+  with <code>x-component</code>, <code>x-component-props</code>, and <code>x-reactions</code> for
+  seamless integration with your form rendering engine.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Features Overview</h2>
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '32px' }}>
+  <FeatureCard
+    icon={<Eye size={20} />}
+    title="Preview Mode"
+    description="Toggle between edit and live preview to see exactly how your form will render"
+    color={HARBOR[500]}
+  />
+  <FeatureCard
+    icon={<Layers size={20} />}
+    title="Section Grouping"
+    description="Organize fields into collapsible sections with custom headers"
+    color={DEEP_CURRENT[500]}
+  />
+  <FeatureCard
+    icon={<Repeat2 size={20} />}
+    title="Repeating Sections"
+    description="Dynamic arrays for collecting multiple items like witnesses or inspections"
+    color={CORAL[500]}
+  />
+  <FeatureCard
+    icon={<Calculator size={20} />}
+    title="Calculated Fields"
+    description="Formula-based fields that auto-compute from other field values"
+    color={ABYSS[500]}
+  />
+  <FeatureCard
+    icon={<GitBranch size={20} />}
+    title="Conditional Logic"
+    description="Show, hide, or disable fields based on complex AND/OR conditions"
+    color={HARBOR[600]}
+  />
+  <FeatureCard
+    icon={<Code2 size={20} />}
+    title="JSON Editor"
+    description="Direct schema editing with syntax highlighting and validation"
+    color={SLATE[600]}
+  />
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>1. Preview Mode</h2>
+
+<SectionHeader
+  icon={<Eye size={20} />}
+  title="Live Form Preview"
+  description="Toggle between designer and preview modes to see your form as users will experience it."
+/>
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
+  <GuidelineCard
+    type="do"
+    title="Preview Mode Features"
+    items={[
+      'See the exact form layout users will see',
+      'Test field interactions and validation',
+      'Verify conditional visibility logic',
+      'Check calculated field formulas',
+    ]}
+  />
+  <GuidelineCard
+    type="dont"
+    title="Preview Limitations"
+    items={[
+      'Preview does not submit data',
+      'No backend validation in preview',
+      'API-connected fields show mock data',
+      'File uploads are simulated',
+    ]}
+  />
+</div>
+
+<InfoBox variant="info">
+  <strong>How to Use:</strong> Click the <Eye size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /> "Preview"
+  toggle in the form builder header to switch modes. Click again to return to the designer.
+</InfoBox>
+
+### Schema Output
+
+When preview mode renders a form, it uses the same JSON schema that will be exported:
+
+<CodeBlock code={`{
+  "type": "object",
+  "properties": {
+    "incident_date": {
+      "type": "string",
+      "title": "Incident Date",
+      "x-component": "DatePicker",
+      "x-decorator": "FormItem"
+    }
+  }
+}`} language="json" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>2. Section Grouping (FormSection)</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Organize Fields into Sections"
+  description="Group related fields under collapsible section headers for better form organization."
+/>
+
+<InfoBox variant="tip">
+  <strong>Use Case:</strong> Long forms become overwhelming. Sections let users focus on one category
+  at a time (e.g., "Incident Details", "Location Information", "Corrective Actions").
+</InfoBox>
+
+### Adding a Section
+
+1. Drag the **"Section"** component from the **Layout** category in the palette
+2. Configure the section title in the properties panel
+3. Drag fields into the section's drop zone
+4. Sections can be nested for sub-groupings
+
+### Schema Structure
+
+<CodeBlock code={`{
+  "incident_details": {
+    "type": "object",
+    "title": "Incident Details",
+    "x-component": "FormSection",
+    "x-component-props": {
+      "collapsible": true,
+      "defaultCollapsed": false
+    },
+    "properties": {
+      "incident_date": {
+        "type": "string",
+        "title": "Date",
+        "x-component": "DatePicker"
+      },
+      "description": {
+        "type": "string",
+        "title": "Description",
+        "x-component": "TextArea"
+      }
+    }
+  }
+}`} language="json" />
+
+### Section Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `collapsible` | boolean | `true` | Allow users to collapse/expand |
+| `defaultCollapsed` | boolean | `false` | Start collapsed |
+| `title` | string | Required | Section header text |
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>3. Repeating Sections (ArrayField)</h2>
+
+<SectionHeader
+  icon={<Repeat2 size={20} />}
+  title="Dynamic Item Collections"
+  description="Allow users to add multiple instances of a field group, like witnesses or inspection items."
+/>
+
+<InfoBox variant="warning">
+  <strong>Performance Note:</strong> Limit repeating sections to a reasonable max (e.g., 10-20 items).
+  Very large arrays can impact form rendering performance.
+</InfoBox>
+
+### Common Use Cases
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
+  <div style={{ padding: '16px', background: SLATE[50], borderRadius: RADIUS.md, border: `1px solid ${SLATE[200]}` }}>
+    <strong style={{ color: HARBOR[600] }}>Incident Reports</strong>
+    <p style={{ fontSize: '14px', marginTop: '8px', color: SLATE[600] }}>Collect multiple witness statements with name, role, and account</p>
+  </div>
+  <div style={{ padding: '16px', background: SLATE[50], borderRadius: RADIUS.md, border: `1px solid ${SLATE[200]}` }}>
+    <strong style={{ color: CORAL[600] }}>PPE Inspections</strong>
+    <p style={{ fontSize: '14px', marginTop: '8px', color: SLATE[600] }}>Check multiple workers' equipment with pass/fail for each item</p>
+  </div>
+  <div style={{ padding: '16px', background: SLATE[50], borderRadius: RADIUS.md, border: `1px solid ${SLATE[200]}` }}>
+    <strong style={{ color: DEEP_CURRENT[600] }}>Equipment Audits</strong>
+    <p style={{ fontSize: '14px', marginTop: '8px', color: SLATE[600] }}>Record findings for multiple pieces of equipment</p>
+  </div>
+</div>
+
+### Adding a Repeating Section
+
+1. Drag the **"Repeating Section"** component from the **Layout** category
+2. Configure the section title (e.g., "Witnesses")
+3. Define the item template by adding fields inside
+4. Set min/max items in properties panel
+
+### Schema Structure
+
+<CodeBlock code={`{
+  "witnesses": {
+    "type": "array",
+    "title": "Witnesses",
+    "x-component": "ArrayField",
+    "x-component-props": {
+      "minItems": 0,
+      "maxItems": 10
+    },
+    "items": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Witness Name",
+          "x-component": "Input"
+        },
+        "role": {
+          "type": "string",
+          "title": "Role",
+          "x-component": "Select",
+          "enum": [
+            { "label": "Direct Witness", "value": "direct" },
+            { "label": "Supervisor", "value": "supervisor" },
+            { "label": "First Responder", "value": "first_responder" }
+          ]
+        },
+        "statement": {
+          "type": "string",
+          "title": "Statement",
+          "x-component": "TextArea"
+        }
+      }
+    }
+  }
+}`} language="json" />
+
+### ArrayField Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `minItems` | number | `0` | Minimum required items |
+| `maxItems` | number | `10` | Maximum allowed items |
+| `items` | object | Required | Template schema for each item |
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>4. Calculated Fields</h2>
+
+<SectionHeader
+  icon={<Calculator size={20} />}
+  title="Formula-Based Values"
+  description="Auto-calculate values from other fields using mathematical expressions."
+/>
+
+<InfoBox variant="tip">
+  <strong>Risk Matrix Example:</strong> Calculate risk score from <code>likelihood * severity</code>
+  where both are 1-5 scale values, producing a 1-25 risk rating.
+</InfoBox>
+
+### Creating a Calculated Field
+
+1. Drag the **"Calculated"** component from the **Basic Form Fields** category
+2. In the properties panel, configure:
+   - **Formula**: The mathematical expression (e.g., `likelihood * severity`)
+   - **Source Fields**: Comma-separated list of fields used (e.g., `likelihood, severity`)
+   - **Result Type**: `number` or `string`
+   - **Decimal Places**: Precision for numeric results
+
+### Supported Formula Operations
+
+| Operation | Syntax | Example |
+|-----------|--------|---------|
+| Addition | `+` | `a + b` |
+| Subtraction | `-` | `a - b` |
+| Multiplication | `*` | `likelihood * severity` |
+| Division | `/` | `total / count` |
+| Parentheses | `()` | `(a + b) * c` |
+
+### Schema Structure
+
+<CodeBlock code={`{
+  "risk_score": {
+    "type": "number",
+    "title": "Risk Score",
+    "x-component": "CalculatedField",
+    "x-decorator": "FormItem",
+    "x-component-props": {
+      "formula": "likelihood * severity",
+      "sourceFields": ["likelihood", "severity"],
+      "resultType": "number",
+      "decimalPlaces": 0
+    }
+  }
+}`} language="json" />
+
+### Formula Preview
+
+The form builder shows a live preview of calculated fields:
+
+<div style={{
+  padding: '16px',
+  background: SLATE[100],
+  borderRadius: RADIUS.md,
+  fontFamily: 'monospace',
+  fontSize: '14px',
+  marginBottom: '16px'
+}}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+    <Calculator size={16} color={HARBOR[600]} />
+    <strong>Risk Score</strong>
+  </div>
+  <div style={{ color: SLATE[600] }}>Formula: <code>likelihood * severity</code></div>
+  <div style={{ color: SLATE[500], fontSize: '12px' }}>Sources: likelihood, severity</div>
+  <div style={{ marginTop: '8px', padding: '8px', background: PRIMITIVES.white, borderRadius: RADIUS.sm }}>
+    Preview: <strong style={{ color: HARBOR[600] }}>15.00</strong>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>5. Conditional Visibility</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="Simple Conditional Logic"
+  description="Show, hide, or disable fields based on another field's value."
+/>
+
+### Basic Conditions
+
+The simple conditional visibility panel supports these conditions:
+
+| Condition | Description | Needs Value |
+|-----------|-------------|-------------|
+| `hasValue` | Field has any value | No |
+| `isEmpty` | Field is empty/null | No |
+| `equals` | Field equals specific value | Yes |
+| `notEquals` | Field does not equal value | Yes |
+
+### Actions
+
+| Action | Effect |
+|--------|--------|
+| <Eye size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /> **Show** | Display field when condition is true |
+| <EyeOff size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /> **Hide** | Hide field when condition is true |
+| <Ban size={14} style={{ display: 'inline', verticalAlign: 'middle' }} /> **Disable** | Disable field when condition is true |
+
+### Example: Show "Other" Text Field
+
+When user selects "Other" from a dropdown, show a text field for details:
+
+<CodeBlock code={`{
+  "incident_type": {
+    "type": "string",
+    "title": "Incident Type",
+    "x-component": "Select",
+    "enum": [
+      { "label": "Slip/Trip/Fall", "value": "fall" },
+      { "label": "Equipment Failure", "value": "equipment" },
+      { "label": "Other", "value": "other" }
+    ]
+  },
+  "other_description": {
+    "type": "string",
+    "title": "Please describe",
+    "x-component": "TextArea",
+    "x-reactions": {
+      "dependencies": ["incident_type"],
+      "fulfill": {
+        "state": {
+          "visible": "{{$deps[0] === 'other'}}"
+        }
+      },
+      "_conditionalVisibility": {
+        "parentField": "incident_type",
+        "condition": "equals",
+        "targetValue": "other",
+        "action": "show"
+      }
+    }
+  }
+}`} language="json" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>6. Advanced Conditional Logic</h2>
+
+<SectionHeader
+  icon={<GitBranch size={20} />}
+  title="AND/OR Condition Groups"
+  description="Build complex conditional rules with multiple conditions and logical operators."
+/>
+
+<InfoBox variant="info">
+  <strong>When to Use:</strong> Use advanced conditional logic when you need multiple conditions
+  (e.g., "Show if severity is HIGH AND likelihood is greater than 3") or alternative conditions
+  (e.g., "Show if type is 'injury' OR type is 'near_miss'").
+</InfoBox>
+
+### Condition Groups
+
+The advanced editor allows:
+
+- **Multiple conditions per group** combined with AND or OR
+- **Multiple groups** combined with AND or OR
+- **Extended operators**: `greaterThan`, `lessThan`, `contains`
+
+### Extended Condition Operators
+
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `greaterThan` | Numeric comparison | `severity > 3` |
+| `lessThan` | Numeric comparison | `likelihood < 2` |
+| `contains` | String contains substring | `description contains "chemical"` |
+
+### Visual Editor
+
+<div style={{
+  padding: '16px',
+  background: SLATE[50],
+  borderRadius: RADIUS.lg,
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px'
+}}>
+  <div style={{ fontWeight: 600, marginBottom: '12px', color: ABYSS[700] }}>
+    Advanced Conditions
+  </div>
+
+  {/* Group 1 */}
+  <div style={{
+    padding: '12px',
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
+    border: `1px solid ${ABYSS[200]}`,
+    marginBottom: '8px'
+  }}>
+    <div style={{ fontSize: '12px', fontWeight: 500, color: ABYSS[600], marginBottom: '8px' }}>
+      Condition Group 1 (AND)
+    </div>
+    <div style={{ fontSize: '13px', color: SLATE[700] }}>
+      • "severity" <strong>equals</strong> "high"<br/>
+      <span style={{ color: ABYSS[500], fontSize: '11px' }}>AND</span><br/>
+      • "likelihood" <strong>greaterThan</strong> 3
+    </div>
+  </div>
+
+  <div style={{ textAlign: 'center', padding: '4px', color: HARBOR[600], fontWeight: 600, fontSize: '12px' }}>
+    OR
+  </div>
+
+  {/* Group 2 */}
+  <div style={{
+    padding: '12px',
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
+    border: `1px solid ${ABYSS[200]}`,
+    marginBottom: '12px'
+  }}>
+    <div style={{ fontSize: '12px', fontWeight: 500, color: ABYSS[600], marginBottom: '8px' }}>
+      Condition Group 2 (AND)
+    </div>
+    <div style={{ fontSize: '13px', color: SLATE[700] }}>
+      • "incident_type" <strong>equals</strong> "fatality"
+    </div>
+  </div>
+
+  <div style={{ fontSize: '12px', color: SLATE[600], fontStyle: 'italic' }}>
+    <strong>Logic:</strong> IF (severity = "high" AND likelihood > 3) OR (incident_type = "fatality") THEN SHOW
+  </div>
+</div>
+
+### Schema Output
+
+<CodeBlock code={`{
+  "escalation_notes": {
+    "type": "string",
+    "title": "Escalation Notes",
+    "x-component": "TextArea",
+    "x-reactions": {
+      "dependencies": ["severity", "likelihood", "incident_type"],
+      "fulfill": {
+        "state": {
+          "visible": "{{(($deps[0] === 'high') && ($deps[1] > 3)) || ($deps[2] === 'fatality')}}"
+        }
+      },
+      "_advancedConditional": {
+        "enabled": true,
+        "groups": [
+          {
+            "id": "group1",
+            "operator": "AND",
+            "conditions": [
+              { "id": "c1", "parentField": "severity", "condition": "equals", "targetValue": "high" },
+              { "id": "c2", "parentField": "likelihood", "condition": "greaterThan", "targetValue": 3 }
+            ]
+          },
+          {
+            "id": "group2",
+            "operator": "AND",
+            "conditions": [
+              { "id": "c3", "parentField": "incident_type", "condition": "equals", "targetValue": "fatality" }
+            ]
+          }
+        ],
+        "groupOperator": "OR",
+        "action": "show"
+      }
+    }
+  }
+}`} language="json" />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Field Types Reference</h2>
+
+### Basic Form Fields (10 types)
+
+| Field | Component | Description |
+|-------|-----------|-------------|
+| Label | `FormText` | Static text/instructions |
+| Text Input | `Input` | Single-line text |
+| Text Area | `TextArea` | Multi-line text |
+| Number | `NumberPicker` | Numeric input with validation |
+| Select | `Select` | Dropdown selection |
+| Radio Group | `RadioGroup` | Single choice from options |
+| Checkbox | `Checkbox` | Boolean toggle |
+| Date Picker | `DatePicker` | Date selection |
+| File Upload | `Upload` | File attachments |
+| **Calculated** | `CalculatedField` | Formula-based value |
+
+### Layout Components (2 types)
+
+| Field | Component | Description |
+|-------|-----------|-------------|
+| Section | `FormSection` | Collapsible field group |
+| Repeating Section | `ArrayField` | Dynamic item array |
+
+### Business Entity Fields (7 types)
+
+| Field | Component | Description |
+|-------|-----------|-------------|
+| Location | `LocationSelect` | Location picker |
+| User | `UserSelect` | Single user selection |
+| Users (Multi) | `UserMultiSelect` | Multiple users |
+| Role User | `RoleFilteredUserSelect` | Users filtered by role |
+| Asset | `AssetSelect` | Asset picker |
+| Vehicle | `VehicleSelect` | Vehicle picker |
+| Entity | `EntitySelect` | Generic entity lookup |
+
+### Dictionary Fields (2 types)
+
+| Field | Component | Description |
+|-------|-----------|-------------|
+| Dictionary | `DictionarySelect` | Dictionary lookup |
+| Cascading Dict | `CascadingDictionarySelect` | Parent-child dictionaries |
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Stories & Examples</h2>
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+  <div style={{ padding: '16px', background: HARBOR[50], borderRadius: RADIUS.md, border: `1px solid ${HARBOR[200]}` }}>
+    <strong>Basic Form Builder</strong>
+    <p style={{ fontSize: '14px', color: SLATE[600], margin: '8px 0' }}>Default empty form builder</p>
+    <code style={{ fontSize: '12px' }}>Default story</code>
+  </div>
+  <div style={{ padding: '16px', background: DEEP_CURRENT[50], borderRadius: RADIUS.md, border: `1px solid ${DEEP_CURRENT[200]}` }}>
+    <strong>Incident Report</strong>
+    <p style={{ fontSize: '14px', color: SLATE[600], margin: '8px 0' }}>Pre-populated incident form</p>
+    <code style={{ fontSize: '12px' }}>WithIncidentReportSchema</code>
+  </div>
+  <div style={{ padding: '16px', background: CORAL[50], borderRadius: RADIUS.md, border: `1px solid ${CORAL[200]}` }}>
+    <strong>Site Audit with Sections</strong>
+    <p style={{ fontSize: '14px', color: SLATE[600], margin: '8px 0' }}>FormSection grouping demo</p>
+    <code style={{ fontSize: '12px' }}>SiteAuditWithSections</code>
+  </div>
+  <div style={{ padding: '16px', background: ABYSS[50], borderRadius: RADIUS.md, border: `1px solid ${ABYSS[200]}` }}>
+    <strong>Incident with Witnesses</strong>
+    <p style={{ fontSize: '14px', color: SLATE[600], margin: '8px 0' }}>ArrayField repeating demo</p>
+    <code style={{ fontSize: '12px' }}>IncidentWithWitnesses</code>
+  </div>
+  <div style={{ padding: '16px', background: HARBOR[50], borderRadius: RADIUS.md, border: `1px solid ${HARBOR[200]}` }}>
+    <strong>PPE Inspection</strong>
+    <p style={{ fontSize: '14px', color: SLATE[600], margin: '8px 0' }}>Multiple repeating sections</p>
+    <code style={{ fontSize: '12px' }}>PPEInspection</code>
+  </div>
+  <div style={{ padding: '16px', background: SLATE[100], borderRadius: RADIUS.md, border: `1px solid ${SLATE[300]}` }}>
+    <strong>Risk Matrix Calculated</strong>
+    <p style={{ fontSize: '14px', color: SLATE[600], margin: '8px 0' }}>Calculated field formula demo</p>
+    <code style={{ fontSize: '12px' }}>RiskMatrixCalculated</code>
+  </div>
+</div>
