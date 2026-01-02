@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { MessageSquare, ClipboardList } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { Card, CardContent } from '../ui/card'
+import { AppCard, AppCardContent } from '../ui/app-card'
 
 // =============================================================================
 // TYPES
@@ -71,7 +71,7 @@ function MethodCard({
       <h3 className="text-lg font-semibold text-primary mb-2">{title}</h3>
 
       {/* Description */}
-      <p className="text-sm text-emphasis text-center mb-4">{description}</p>
+      <p className="text-sm text-secondary text-center mb-4">{description}</p>
 
       {/* Badge */}
       <span
@@ -121,14 +121,14 @@ export function ProvisioningMethodSelector({
 
   return (
     <div className={cn('flex items-center justify-center min-h-[calc(100vh-200px)]', className)}>
-      <Card className="max-w-2xl w-full border border-default" shadow="lg">
-        <CardContent className="p-8">
+      <AppCard className="max-w-2xl w-full" shadow="lg">
+        <AppCardContent className="p-8">
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-primary mb-2">
             Create New Tenant
           </h2>
-          <p className="text-emphasis">
+          <p className="text-secondary">
             Choose how you&apos;d like to proceed
           </p>
         </div>
@@ -161,8 +161,8 @@ export function ProvisioningMethodSelector({
             onClick={() => handleMethodClick('wizard')}
           />
         </div>
-        </CardContent>
-      </Card>
+        </AppCardContent>
+      </AppCard>
     </div>
   )
 }

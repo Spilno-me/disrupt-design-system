@@ -1,9 +1,5 @@
 "use client"
 
-/* eslint-disable no-restricted-syntax */
-// This component requires specific color shades from color ramps (DEEP_CURRENT, WAVE, CORAL, SLATE)
-// for chat UI styling that are not available in ALIAS tokens
-
 import * as React from "react"
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
@@ -26,14 +22,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog"
-import {
-  DEEP_CURRENT,
-  WAVE,
-  CORAL,
-  SLATE,
-  ALIAS,
-  RADIUS,
-} from "../../constants/designTokens"
 import { AgentLogo } from "../shared/AgentLogo"
 import {
   ArrowLeft,
@@ -216,19 +204,24 @@ interface ChatBubbleProps {
 }
 
 function ChatBubble({ children, variant = "assistant" }: ChatBubbleProps) {
-  const bgColor = variant === "tip" ? DEEP_CURRENT[50] : variant === "summary" ? CORAL[50] : WAVE[50]
-  const borderColor = variant === "tip" ? DEEP_CURRENT[200] : variant === "summary" ? CORAL[200] : "transparent"
+  // Dark mode: Use neutral abyss backgrounds instead of saturated colors
+  const bubbleClasses = variant === "tip"
+    ? "bg-info-light dark:bg-muted-bg border border-info/30 dark:border-accent/30"
+    : variant === "summary"
+      ? "bg-error-light dark:bg-muted-bg border border-error/30 dark:border-error/30"
+      : "bg-info-light dark:bg-muted-bg"
+
   const icon = variant === "tip" ? (
-    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: DEEP_CURRENT[100] }}>
-      <Lightbulb className="w-4 h-4" style={{ color: DEEP_CURRENT[600] }} />
+    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-info-muted dark:bg-muted-bg">
+      <Lightbulb className="w-4 h-4 text-accent" />
     </div>
   ) : variant === "summary" ? (
-    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: CORAL[100] }}>
-      <User className="w-4 h-4" style={{ color: CORAL[600] }} />
+    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-error-muted dark:bg-muted-bg">
+      <User className="w-4 h-4 text-error" />
     </div>
   ) : (
     <div className="relative w-8 h-8">
-      <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: WAVE[50] }}>
+      <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden bg-info-light dark:bg-muted-bg">
         <AgentLogo className="w-5 h-5" variant="light" />
       </div>
     </div>
@@ -243,13 +236,10 @@ function ChatBubble({ children, variant = "assistant" }: ChatBubbleProps) {
     >
       <div className="flex-shrink-0">{icon}</div>
       <div
-        className="px-4 py-3 text-sm leading-relaxed"
-        style={{
-          backgroundColor: bgColor,
-          border: borderColor !== "transparent" ? `1px solid ${borderColor}` : undefined,
-          borderRadius: `${RADIUS.md} ${RADIUS.md} ${RADIUS.md} ${RADIUS.xs}`,
-          color: ALIAS.text.primary,
-        }}
+        className={cn(
+          "px-4 py-3 text-sm leading-relaxed text-primary rounded-xl rounded-bl-sm",
+          bubbleClasses
+        )}
       >
         {children}
       </div>
@@ -301,7 +291,7 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
     if (config.type === "select" && config.options) {
       return (
         <div key={field} className="space-y-1.5">
-          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <Label className="text-xs font-medium text-secondary">{config.label}</Label>
           <Select value={value} onValueChange={(v) => onChange(field, v)}>
             <SelectTrigger className={cn("h-10", error && "border-error")}>
               <SelectValue placeholder={config.placeholder} />
@@ -312,7 +302,7 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
               ))}
             </SelectContent>
           </Select>
-          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+          {error && <p className="text-xs text-error">{error}</p>}
         </div>
       )
     }
@@ -320,7 +310,7 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
     if (config.type === "radio" && config.options) {
       return (
         <div key={field} className="space-y-2">
-          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <Label className="text-xs font-medium text-secondary">{config.label}</Label>
           <div className="flex flex-wrap gap-2">
             {config.options.map((opt) => (
               <button
@@ -328,24 +318,17 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
                 type="button"
                 onClick={() => onChange(field, opt)}
                 className={cn(
-                  "px-3 py-2 text-sm font-medium transition-all",
+                  "px-3 py-2 text-sm font-medium transition-all rounded-sm border",
                   value === opt
-                    ? "ring-2 ring-offset-1"
-                    : "hover:bg-surface-hover"
+                    ? "bg-info-light dark:bg-muted-bg text-accent border-accent/50 ring-2 ring-accent ring-offset-1"
+                    : "bg-surface text-primary border-default hover:bg-surface-hover"
                 )}
-                style={{
-                  backgroundColor: value === opt ? DEEP_CURRENT[50] : ALIAS.background.surface,
-                  color: value === opt ? DEEP_CURRENT[700] : ALIAS.text.primary,
-                  border: `1px solid ${value === opt ? DEEP_CURRENT[300] : SLATE[200]}`,
-                  borderRadius: RADIUS.sm,
-                  boxShadow: value === opt ? `0 0 0 2px ${DEEP_CURRENT[500]}` : undefined,
-                }}
               >
                 {opt}
               </button>
             ))}
           </div>
-          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+          {error && <p className="text-xs text-error">{error}</p>}
         </div>
       )
     }
@@ -358,7 +341,7 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
       }
       return (
         <div key={field} className="space-y-2">
-          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <Label className="text-xs font-medium text-secondary">{config.label}</Label>
           <div className="grid gap-2">
             {config.options.map((opt) => (
               <button
@@ -366,25 +349,21 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
                 type="button"
                 onClick={() => onChange(field, opt)}
                 className={cn(
-                  "p-3 text-left transition-all flex items-center justify-between",
-                  value === opt && "ring-2 ring-offset-1"
+                  "p-3 text-left transition-all flex items-center justify-between rounded-md border",
+                  value === opt
+                    ? "bg-info-light dark:bg-muted-bg border-accent/50 ring-2 ring-accent ring-offset-1"
+                    : "bg-surface border-default hover:bg-surface-hover"
                 )}
-                style={{
-                  backgroundColor: value === opt ? DEEP_CURRENT[50] : ALIAS.background.surface,
-                  border: `1px solid ${value === opt ? DEEP_CURRENT[300] : SLATE[200]}`,
-                  borderRadius: RADIUS.md,
-                  boxShadow: value === opt ? `0 0 0 2px ${DEEP_CURRENT[500]}` : undefined,
-                }}
               >
                 <div>
-                  <div className="font-medium text-sm" style={{ color: ALIAS.text.primary }}>{opt}</div>
-                  <div className="text-xs" style={{ color: ALIAS.text.secondary }}>{planDetails[opt]?.desc}</div>
+                  <div className="font-medium text-sm text-primary">{opt}</div>
+                  <div className="text-xs text-secondary">{planDetails[opt]?.desc}</div>
                 </div>
-                <div className="text-sm font-semibold" style={{ color: DEEP_CURRENT[600] }}>{planDetails[opt]?.price}</div>
+                <div className="text-sm font-semibold text-accent">{planDetails[opt]?.price}</div>
               </button>
             ))}
           </div>
-          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+          {error && <p className="text-xs text-error">{error}</p>}
         </div>
       )
     }
@@ -392,7 +371,7 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
     if (config.type === "cycle" && config.options) {
       return (
         <div key={field} className="space-y-2">
-          <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+          <Label className="text-xs font-medium text-secondary">{config.label}</Label>
           <div className="flex gap-2">
             {config.options.map((opt) => (
               <button
@@ -400,29 +379,24 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
                 type="button"
                 onClick={() => onChange(field, opt)}
                 className={cn(
-                  "flex-1 px-4 py-3 text-sm font-medium transition-all",
-                  value === opt && "ring-2 ring-offset-1"
+                  "flex-1 px-4 py-3 text-sm font-medium transition-all rounded-md border",
+                  value === opt
+                    ? "bg-info-light dark:bg-muted-bg text-accent border-accent/50 ring-2 ring-accent ring-offset-1"
+                    : "bg-surface text-primary border-default hover:bg-surface-hover"
                 )}
-                style={{
-                  backgroundColor: value === opt ? DEEP_CURRENT[50] : ALIAS.background.surface,
-                  color: value === opt ? DEEP_CURRENT[700] : ALIAS.text.primary,
-                  border: `1px solid ${value === opt ? DEEP_CURRENT[300] : SLATE[200]}`,
-                  borderRadius: RADIUS.md,
-                  boxShadow: value === opt ? `0 0 0 2px ${DEEP_CURRENT[500]}` : undefined,
-                }}
               >
                 {opt}
               </button>
             ))}
           </div>
-          {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+          {error && <p className="text-xs text-error">{error}</p>}
         </div>
       )
     }
 
     return (
       <div key={field} className="space-y-1.5">
-        <Label className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>{config.label}</Label>
+        <Label className="text-xs font-medium text-secondary">{config.label}</Label>
         <Input
           type={config.type}
           value={value}
@@ -430,7 +404,7 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
           placeholder={config.placeholder}
           className={cn("h-10", error && "border-error")}
         />
-        {error && <p className="text-xs" style={{ color: CORAL[500] }}>{error}</p>}
+        {error && <p className="text-xs text-error">{error}</p>}
       </div>
     )
   }
@@ -442,22 +416,11 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
       className="ml-11"
     >
       <form onSubmit={handleSubmit}>
-        <div
-          className="overflow-hidden"
-          style={{
-            backgroundColor: ALIAS.background.surface,
-            border: `1px solid ${SLATE[200]}`,
-            borderRadius: RADIUS.lg,
-            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-          }}
-        >
+        <div className="overflow-hidden bg-surface border border-default rounded-lg shadow-sm">
           {/* Header */}
-          <div
-            className="px-4 py-3 flex items-center gap-2"
-            style={{ backgroundColor: DEEP_CURRENT[50], borderBottom: `1px solid ${SLATE[200]}` }}
-          >
-            <span style={{ color: DEEP_CURRENT[600] }}>{section.icon}</span>
-            <span className="text-sm font-semibold" style={{ color: DEEP_CURRENT[700] }}>
+          <div className="px-4 py-3 flex items-center gap-2 bg-info-light dark:bg-muted-bg border-b border-default">
+            <span className="text-accent">{section.icon}</span>
+            <span className="text-sm font-semibold text-accent">
               {section.title}
             </span>
           </div>
@@ -471,12 +434,8 @@ function FormCard({ section, data, onChange, onSubmit, errors }: FormCardProps) 
           <div className="px-4 pb-4">
             <Button
               type="submit"
+              variant="accent"
               className="w-full font-medium"
-              style={{
-                backgroundColor: DEEP_CURRENT[500],
-                color: ALIAS.background.surface,
-                borderRadius: RADIUS.md,
-              }}
             >
               Continue
               <ChevronRight className="w-4 h-4 ml-1" />
@@ -546,22 +505,11 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
       animate={{ opacity: 1, y: 0 }}
       className="ml-11"
     >
-      <div
-        className="overflow-hidden"
-        style={{
-          backgroundColor: ALIAS.background.surface,
-          border: `1px solid ${SLATE[200]}`,
-          borderRadius: RADIUS.lg,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-        }}
-      >
+      <div className="overflow-hidden bg-surface border border-default rounded-lg shadow-sm">
         {/* Header */}
-        <div
-          className="px-4 py-3 flex items-center gap-2"
-          style={{ backgroundColor: DEEP_CURRENT[50], borderBottom: `1px solid ${SLATE[200]}` }}
-        >
-          <Check className="w-4 h-4" style={{ color: DEEP_CURRENT[600] }} />
-          <span className="text-sm font-semibold" style={{ color: DEEP_CURRENT[700] }}>
+        <div className="px-4 py-3 flex items-center gap-2 bg-info-light dark:bg-muted-bg border-b border-default">
+          <Check className="w-4 h-4 text-accent" />
+          <span className="text-sm font-semibold text-accent">
             Review Tenant Details
           </span>
         </div>
@@ -572,15 +520,14 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
             <div key={section.id} className="group">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span style={{ color: DEEP_CURRENT[500] }}>{section.icon}</span>
-                  <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: ALIAS.brand.primary }}>
+                  <span className="text-accent">{section.icon}</span>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-accent">
                     {section.title}
                   </span>
                 </div>
                 <button
                   onClick={() => onEdit(section.id)}
-                  className="opacity-0 group-hover:opacity-100 p-1.5 rounded transition-all hover:bg-surface-hover"
-                  style={{ color: DEEP_CURRENT[500] }}
+                  className="opacity-0 group-hover:opacity-100 p-1.5 rounded transition-all hover:bg-surface-hover text-accent"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                 </button>
@@ -588,8 +535,8 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
               <div className="space-y-1 ml-6">
                 {section.items.map((item) => (
                   <div key={item.label} className="flex items-center gap-2">
-                    <span className="text-xs" style={{ color: ALIAS.text.secondary }}>{item.label}:</span>
-                    <span className="text-sm font-medium" style={{ color: ALIAS.text.primary }}>{item.value || "—"}</span>
+                    <span className="text-xs text-secondary">{item.label}:</span>
+                    <span className="text-sm font-medium text-primary">{item.value || "—"}</span>
                   </div>
                 ))}
               </div>
@@ -602,12 +549,8 @@ function ReviewScreen({ data, onEdit, onConfirm, isSubmitting }: ReviewScreenPro
           <Button
             onClick={onConfirm}
             disabled={isSubmitting}
+            variant="accent"
             className="w-full font-medium"
-            style={{
-              backgroundColor: DEEP_CURRENT[500],
-              color: ALIAS.background.surface,
-              borderRadius: RADIUS.md,
-            }}
           >
             {isSubmitting ? (
               <>
@@ -638,28 +581,18 @@ function SuccessCard({ data }: SuccessCardProps) {
       animate={{ opacity: 1, scale: 1 }}
       className="ml-11"
     >
-      <div
-        className="p-4 flex items-start gap-3"
-        style={{
-          backgroundColor: DEEP_CURRENT[50],
-          border: `1px solid ${DEEP_CURRENT[200]}`,
-          borderRadius: RADIUS.lg,
-        }}
-      >
-        <div
-          className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: DEEP_CURRENT[500] }}
-        >
+      <div className="p-4 flex items-start gap-3 bg-success-light dark:bg-muted-bg border border-success/30 rounded-lg">
+        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-success">
           <Check className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h3 className="font-semibold" style={{ color: DEEP_CURRENT[700] }}>
+          <h3 className="font-semibold text-success">
             Tenant Created Successfully!
           </h3>
-          <p className="text-sm mt-1" style={{ color: ALIAS.text.primary }}>
+          <p className="text-sm mt-1 text-primary">
             <strong>{data.companyName}</strong> has been provisioned with the <strong>{data.pricingTier}</strong> plan.
           </p>
-          <p className="text-xs mt-2" style={{ color: ALIAS.text.secondary }}>
+          <p className="text-xs mt-2 text-secondary">
             A welcome email has been sent to {data.contactEmail}
           </p>
         </div>
@@ -677,19 +610,18 @@ function ProgressBar({ currentSection, totalSections }: ProgressBarProps) {
   const percentage = Math.round(((currentSection) / totalSections) * 100)
 
   return (
-    <div className="px-4 py-2" style={{ backgroundColor: DEEP_CURRENT[50], borderBottom: `1px solid ${SLATE[200]}` }}>
+    <div className="px-4 py-2 bg-info-light dark:bg-muted-bg border-b border-default">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-semibold" style={{ color: DEEP_CURRENT[700] }}>
+        <span className="text-xs font-semibold text-accent">
           Section {currentSection} of {totalSections}
         </span>
-        <span className="text-xs font-medium" style={{ color: DEEP_CURRENT[500] }}>
+        <span className="text-xs font-medium text-accent">
           {percentage}%
         </span>
       </div>
-      <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: DEEP_CURRENT[100] }}>
+      <div className="h-1.5 rounded-full overflow-hidden bg-info-muted dark:bg-muted-bg">
         <motion.div
-          className="h-full rounded-full"
-          style={{ backgroundColor: DEEP_CURRENT[500] }}
+          className="h-full rounded-full bg-accent"
           initial={{ width: 0 }}
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 0.3, ease: "easeOut" }}
@@ -938,40 +870,38 @@ export function TenantProvisioningChat({
   return (
     <>
       <div
-        className={cn("h-full w-full flex flex-col overflow-hidden", className)}
-        style={{ backgroundColor: ALIAS.background.surface }}
+        className={cn("h-full w-full flex flex-col overflow-hidden bg-surface", className)}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3" style={{ backgroundColor: ALIAS.background.surface, borderBottom: `1px solid ${SLATE[200]}` }}>
+        <div className="flex items-center justify-between px-4 py-3 bg-surface border-b border-default">
           <div className="flex items-center gap-3">
             {onCancel && (
-              <button onClick={handleBack} className="p-1.5 rounded-lg transition-colors hover:bg-surface-hover" title="Exit">
-                <ArrowLeft className="w-4 h-4" style={{ color: SLATE[500] }} />
+              <button onClick={handleBack} className="p-1.5 rounded-lg transition-colors hover:bg-surface-hover text-muted" title="Exit">
+                <ArrowLeft className="w-4 h-4" />
               </button>
             )}
             <div className="relative w-10 h-10">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: WAVE[50] }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden bg-info-light dark:bg-muted-bg">
                 <AgentLogo className="w-7 h-7" state={agentState} variant="light" />
               </div>
               <motion.svg
-                className="absolute -inset-0.5 w-11 h-11"
+                className="absolute -inset-0.5 w-11 h-11 text-accent/50 dark:text-accent/30"
                 viewBox="0 0 44 44"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               >
-                <circle cx="22" cy="22" r="21" fill="none" stroke={DEEP_CURRENT[300]} strokeWidth="1" strokeDasharray="3 2" />
+                <circle cx="22" cy="22" r="21" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 2" />
               </motion.svg>
             </div>
             <div>
-              <h3 className="font-semibold text-sm" style={{ color: ALIAS.text.primary }}>Tenant Setup Assistant</h3>
-              <p className="text-xs" style={{ color: DEEP_CURRENT[500] }}>{getStatusText()}</p>
+              <h3 className="font-semibold text-sm text-primary">Tenant Setup Assistant</h3>
+              <p className="text-xs text-accent dark:text-info">{getStatusText()}</p>
             </div>
           </div>
           {onSaveProgress && currentSectionIndex > 0 && !isComplete && (
             <button
               onClick={() => setShowExitDialog(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors hover:bg-surface-hover"
-              style={{ color: SLATE[600] }}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors hover:bg-surface-hover text-secondary"
             >
               <Save className="w-3.5 h-3.5" />
               Save & Exit
@@ -1046,7 +976,7 @@ export function TenantProvisioningChat({
               <div className="relative w-6 h-6">
                 <AgentLogo className="w-6 h-6" state={agentState} variant="light" />
               </div>
-              <span className="text-xs font-medium" style={{ color: ALIAS.text.secondary }}>
+              <span className="text-xs font-medium text-secondary">
                 {agentState === "executing" ? "Creating tenant..." : "Processing..."}
               </span>
             </motion.div>

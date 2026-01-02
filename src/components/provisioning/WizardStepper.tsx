@@ -24,14 +24,15 @@ export function WizardStepper({
   const { steps, currentStep, completedSteps, canGoToStep, goToStep } = useWizard()
 
   return (
-    <div
+    <nav
+      aria-label="Wizard progress"
       className={cn(
         'w-full',
         orientation === 'horizontal' ? 'px-4 py-6' : 'px-6 py-4',
         className
       )}
     >
-      <div
+      <ol
         className={cn(
           'flex',
           orientation === 'horizontal'
@@ -44,11 +45,12 @@ export function WizardStepper({
           const isCurrent = index === currentStep
           const isClickable = clickable && canGoToStep(index)
           const isUpcoming = index > currentStep && !completedSteps.has(index)
+          const stepStatus = isCompleted ? 'completed' : isCurrent ? 'current' : 'upcoming'
 
           return (
             <React.Fragment key={step.id}>
               {/* Step Item */}
-              <div
+              <li
                 className={cn(
                   'flex items-center gap-3',
                   orientation === 'vertical' && 'flex-1',
@@ -57,6 +59,8 @@ export function WizardStepper({
                 onClick={isClickable ? () => goToStep(index) : undefined}
                 role={isClickable ? 'button' : undefined}
                 tabIndex={isClickable ? 0 : undefined}
+                aria-current={isCurrent ? 'step' : undefined}
+                aria-label={`Step ${index + 1}: ${step.label}, ${stepStatus}`}
                 onKeyDown={
                   isClickable
                     ? (e) => {
@@ -104,7 +108,7 @@ export function WizardStepper({
                 >
                   {step.label}
                 </span>
-              </div>
+              </li>
 
               {/* Connector Line (between steps) */}
               {index < steps.length - 1 && orientation === 'horizontal' && (
@@ -129,8 +133,8 @@ export function WizardStepper({
             </React.Fragment>
           )
         })}
-      </div>
-    </div>
+      </ol>
+    </nav>
   )
 }
 
@@ -145,31 +149,47 @@ export interface CompactStepperProps {
 export function CompactStepper({ className }: CompactStepperProps) {
   const { steps, currentStep, totalSteps } = useWizard()
   const currentStepData = steps[currentStep]
+  const progressPercent = Math.round(((currentStep + 1) / totalSteps) * 100)
 
   return (
     <div className={cn('px-4 py-3', className)}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-success text-inverse text-sm font-semibold font-sans">
+          <div
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-success text-inverse text-sm font-semibold font-sans"
+            aria-hidden="true"
+          >
             {currentStep + 1}
           </div>
           <div>
-            <p className="text-sm font-medium font-sans text-primary">{currentStepData?.label}</p>
+            <p className="text-sm font-medium font-sans text-primary" id="current-step-label">
+              {currentStepData?.label}
+            </p>
             <p className="text-xs font-sans text-emphasis">
               Step {currentStep + 1} of {totalSteps}
             </p>
           </div>
         </div>
 
-        {/* Progress dots */}
-        <div className="flex items-center gap-1.5">
-          {steps.map((_, index) => (
+        {/* Progress dots - accessible progress indicator */}
+        <div
+          role="progressbar"
+          aria-valuenow={currentStep + 1}
+          aria-valuemin={1}
+          aria-valuemax={totalSteps}
+          aria-label={`Wizard progress: step ${currentStep + 1} of ${totalSteps}, ${progressPercent}% complete`}
+          aria-describedby="current-step-label"
+          className="flex items-center gap-1.5"
+        >
+          {steps.map((step, index) => (
             <div
               key={index}
               className={cn(
                 'w-2 h-2 rounded-full transition-colors',
                 index <= currentStep ? 'bg-success' : 'bg-slate'
               )}
+              aria-hidden="true"
+              title={step.label}
             />
           ))}
         </div>
