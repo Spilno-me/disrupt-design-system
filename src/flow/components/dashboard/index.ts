@@ -30,6 +30,18 @@ export type { UpcomingTasksCardProps, UpcomingTask } from './UpcomingTasksCard'
 export { SectionHeader } from './SectionHeader'
 export type { SectionHeaderProps, BadgeVariant } from './SectionHeader'
 
+export { MetricsDashboardWidget } from './MetricsDashboardWidget'
+export type {
+  MetricsDashboardWidgetProps,
+  MetricsDashboardWidgetMetricItem,
+  MetricsDashboardWidgetChartDataPoint,
+  MetricsDashboardWidgetBorderStyle,
+  MetricColor,
+  MetricItem,
+  ChartDataPoint,
+  BorderStyle,
+} from './MetricsDashboardWidget'
+
 export { EHSAnalyticsDashboard } from './EHSAnalyticsDashboard'
 export type {
   EHSAnalyticsDashboardProps,
