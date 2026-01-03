@@ -149,7 +149,7 @@ function ActivityItem({ activity, onClick, isLast }: ActivityItemProps) {
         {/* Connector line to next item - only for non-last */}
         {!isLast && (
           <div
-            className="absolute left-1/2 top-11 -bottom-6 w-px -translate-x-1/2 bg-slate-300 dark:bg-slate-600"
+            className="absolute left-1/2 top-11 -bottom-6 w-px -translate-x-1/2 bg-border dark:bg-border-strong"
             aria-hidden="true"
           />
         )}
@@ -224,14 +224,14 @@ interface ActivityConfigItem {
 }
 
 const activityConfig: Record<ActivityType, ActivityConfigItem> = {
-  call: { label: 'Phone Call', icon: Phone, bgColor: 'bg-info-light dark:bg-blue-900', iconColor: 'text-info', labelColor: 'text-info' },
-  email: { label: 'Email', icon: Mail, bgColor: 'bg-accent-bg dark:bg-teal-900', iconColor: 'text-accent', labelColor: 'text-accent' },
-  meeting: { label: 'Meeting', icon: Calendar, bgColor: 'bg-warning-light dark:bg-amber-900', iconColor: 'text-warning-dark dark:text-warning', labelColor: 'text-warning-dark dark:text-warning' },
-  note: { label: 'Note Added', icon: FileText, bgColor: 'bg-slate-100 dark:bg-slate-800', iconColor: 'text-slate-600 dark:text-slate-300', labelColor: 'text-slate-600 dark:text-slate-300' },
-  status_change: { label: 'Status Changed', icon: ArrowRight, bgColor: 'bg-muted-bg dark:bg-slate-700', iconColor: 'text-muted', labelColor: 'text-muted' },
-  follow_up: { label: 'Follow-up', icon: MessageSquare, bgColor: 'bg-accent-bg dark:bg-teal-900', iconColor: 'text-accent', labelColor: 'text-accent' },
-  converted: { label: 'Converted', icon: CheckCircle2, bgColor: 'bg-success-light dark:bg-green-900', iconColor: 'text-success', labelColor: 'text-success' },
-  lost: { label: 'Lost', icon: XCircle, bgColor: 'bg-error-light dark:bg-red-900', iconColor: 'text-error', labelColor: 'text-error' },
+  call: { label: 'Phone Call', icon: Phone, bgColor: 'bg-info-light dark:bg-info-muted', iconColor: 'text-info', labelColor: 'text-info' },
+  email: { label: 'Email', icon: Mail, bgColor: 'bg-accent-bg dark:bg-accent-muted', iconColor: 'text-accent', labelColor: 'text-accent' },
+  meeting: { label: 'Meeting', icon: Calendar, bgColor: 'bg-warning-light dark:bg-warning-muted', iconColor: 'text-warning-dark dark:text-warning', labelColor: 'text-warning-dark dark:text-warning' },
+  note: { label: 'Note Added', icon: FileText, bgColor: 'bg-surface dark:bg-surface-dark', iconColor: 'text-secondary dark:text-tertiary', labelColor: 'text-secondary dark:text-tertiary' },
+  status_change: { label: 'Status Changed', icon: ArrowRight, bgColor: 'bg-muted-bg dark:bg-surface-dark', iconColor: 'text-muted', labelColor: 'text-muted' },
+  follow_up: { label: 'Follow-up', icon: MessageSquare, bgColor: 'bg-accent-bg dark:bg-accent-muted', iconColor: 'text-accent', labelColor: 'text-accent' },
+  converted: { label: 'Converted', icon: CheckCircle2, bgColor: 'bg-success-light dark:bg-success-muted', iconColor: 'text-success', labelColor: 'text-success' },
+  lost: { label: 'Lost', icon: XCircle, bgColor: 'bg-error-light dark:bg-error-muted', iconColor: 'text-error', labelColor: 'text-error' },
 }
 
 // =============================================================================

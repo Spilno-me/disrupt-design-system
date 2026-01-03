@@ -102,17 +102,13 @@ function validateStructure(data) {
 }
 
 /**
- * Generate TOON format for agent consumption (~100 lines)
+ * Generate TOON format content (without timestamp header)
  */
-function generateToon(data) {
+function generateToonContent(data) {
   const lines = []
 
-  // Header
-  lines.push('# Color Intelligence (TOON)')
-  lines.push(`# Generated: ${new Date().toISOString()}`)
-  lines.push(`# Source: src/data/color-intelligence.json`)
-  lines.push('# Use MCP tools for queries: mcp__dds__get_color_guidance, mcp__dds__check_contrast')
-  lines.push('')
+  // Note: Header with timestamp is added in generateToon() to allow content comparison
+  // Do NOT add empty line here - it's part of the header
 
   // Contexts summary (13 contexts)
   lines.push('## Contexts [13]')
@@ -218,16 +214,41 @@ function generateToon(data) {
 }
 
 /**
- * Generate TypeScript type definitions
+ * Generate TOON with header (compares content to avoid timestamp churn)
  */
-function generateTypes(data) {
+function generateToon(data, existingContent) {
+  const content = generateToonContent(data)
+
+  // Extract existing content without header (first 5 lines: 4 comments + 1 empty)
+  const existingWithoutHeader = existingContent
+    ? existingContent.split('\n').slice(5).join('\n')
+    : null
+
+  // If content hasn't changed, return null to signal no update needed
+  if (existingWithoutHeader === content) {
+    return null
+  }
+
+  // Content changed - generate new file with fresh timestamp
+  const header = [
+    '# Color Intelligence (TOON)',
+    `# Generated: ${new Date().toISOString()}`,
+    '# Source: src/data/color-intelligence.json',
+    '# Use MCP tools for queries: mcp__dds__get_color_guidance, mcp__dds__check_contrast',
+    '' // Empty line before content
+  ].join('\n')
+
+  return header + content
+}
+
+/**
+ * Generate TypeScript type definitions (without timestamp - added separately)
+ */
+function generateTypesContent(data) {
   const lines = []
 
-  // Header
-  lines.push('// Auto-generated - DO NOT EDIT')
-  lines.push('// Generated from: src/data/color-intelligence.json')
-  lines.push(`// Generated at: ${new Date().toISOString()}`)
-  lines.push('')
+  // Note: Header with timestamp is added in generateTypes() to allow content comparison
+  // Do NOT add empty line here - it's part of the header
 
   // ContextName type union (13 contexts)
   const contextNames = Object.keys(data.contexts)
@@ -394,6 +415,33 @@ function generateTypes(data) {
 }
 
 /**
+ * Generate TypeScript types with header (compares content to avoid timestamp churn)
+ */
+function generateTypes(data, existingContent) {
+  const content = generateTypesContent(data)
+
+  // Extract existing content without the header (first 4 lines)
+  const existingWithoutHeader = existingContent
+    ? existingContent.split('\n').slice(4).join('\n')
+    : null
+
+  // If content hasn't changed, return existing file as-is (preserves timestamp)
+  if (existingWithoutHeader === content) {
+    return null // Signal: no update needed
+  }
+
+  // Content changed - generate new file with fresh timestamp
+  const header = [
+    '// Auto-generated - DO NOT EDIT',
+    '// Generated from: src/data/color-intelligence.json',
+    `// Generated at: ${new Date().toISOString()}`,
+    '' // Empty line before content
+  ].join('\n')
+
+  return header + content
+}
+
+/**
  * Format file size for display
  */
 function formatSize(bytes) {
@@ -438,20 +486,36 @@ function main() {
   console.log(`${DIM}  All ${REQUIRED_KEYS.length} required keys present${RESET}`)
   console.log(`${DIM}  ${Object.keys(data.contexts).length} contexts found${RESET}`)
 
-  // Generate TOON
+  // Generate TOON (only if content changed)
   console.log(`${CYAN}>${RESET} Generating color-intelligence.toon...`)
-  const toonContent = generateToon(data)
-  writeFileSync(TOON_PATH, toonContent)
-  const toonSize = toonContent.length
-  const toonLines = toonContent.split('\n').length
-  console.log(`${DIM}  ${toonLines} lines, ${formatSize(toonSize)}${RESET}`)
+  const existingToon = existsSync(TOON_PATH) ? readFileSync(TOON_PATH, 'utf8') : null
+  const toonContent = generateToon(data, existingToon)
 
-  // Generate TypeScript types
+  let toonSize, toonLines
+  if (toonContent === null) {
+    console.log(`${GREEN}✓${RESET} TOON unchanged - skipping write`)
+    toonSize = existingToon.length
+    toonLines = existingToon.split('\n').length
+  } else {
+    writeFileSync(TOON_PATH, toonContent)
+    toonSize = toonContent.length
+    toonLines = toonContent.split('\n').length
+    console.log(`${DIM}  ${toonLines} lines, ${formatSize(toonSize)}${RESET}`)
+  }
+
+  // Generate TypeScript types (only if content changed)
   console.log(`${CYAN}>${RESET} Generating color-intelligence.types.ts...`)
-  const typesContent = generateTypes(data)
-  writeFileSync(TYPES_PATH, typesContent)
-  const typesSize = typesContent.length
-  console.log(`${DIM}  ${formatSize(typesSize)}${RESET}`)
+  const existingTypes = existsSync(TYPES_PATH) ? readFileSync(TYPES_PATH, 'utf8') : null
+  const typesContent = generateTypes(data, existingTypes)
+
+  if (typesContent === null) {
+    console.log(`${GREEN}✓${RESET} Types unchanged - skipping write`)
+    var typesSize = existingTypes.length
+  } else {
+    writeFileSync(TYPES_PATH, typesContent)
+    var typesSize = typesContent.length
+    console.log(`${DIM}  ${formatSize(typesSize)}${RESET}`)
+  }
 
   // Summary
   const sourceSize = readFileSync(SOURCE_PATH, 'utf8').length

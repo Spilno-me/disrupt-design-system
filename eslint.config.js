@@ -382,5 +382,13 @@ export default tseslint.config(
         },
       ],
     },
+  },
+  {
+    // PromptLibrary contains documentation examples showing "bad patterns" to avoid
+    // These hex colors are intentional examples demonstrating what NOT to do
+    files: ['src/components/shared/PromptLibrary/**/*.ts'],
+    rules: {
+      'no-restricted-syntax': 'off',
+    },
   }
 )

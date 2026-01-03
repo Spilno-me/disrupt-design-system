@@ -1785,6 +1785,177 @@ min-height: 100dvh;
 - Input font sizes ≥16px
 - Tested on iOS Safari`,
   },
+  // =============================================================================
+  // LOCAL DEVELOPMENT
+  // =============================================================================
+  {
+    id: 'local-dev-start',
+    title: 'Start Local Development',
+    description: 'Set up local DDS development workflow with yalc for hot-reload or npm pack for verification.',
+    category: 'delivery',
+    variables: ['APP_PATH', 'METHOD'],
+    tags: ['local', 'development', 'yalc', 'npm-pack', 'testing'],
+    prompt: `Set up local DDS development for testing in consumer app at {APP_PATH}.
+
+READ FIRST: \`src/stories/developers/LocalDevelopment.mdx\`
+
+## Method: {METHOD}
+
+### Option A: yalc (Best for Active Development - Hot Reload)
+
+\`\`\`bash
+# One-time setup (if not installed)
+npm install -g yalc
+
+# Step 1: Build and publish DDS to local store
+cd ~/Desktop/DDS
+npm run build
+yalc publish
+
+# Step 2: Link in your app (first time only)
+cd {APP_PATH}
+yalc add @adrozdenko/design-system
+
+# Step 3: Start development
+# Terminal 1 (DDS): Watch and auto-push
+cd ~/Desktop/DDS
+npm run build && yalc push --watch
+
+# Terminal 2 (Your app): Dev server
+cd {APP_PATH}
+npm run dev
+\`\`\`
+
+**After each DDS change:**
+\`\`\`bash
+cd ~/Desktop/DDS
+npm run build && yalc push
+\`\`\`
+
+### Option B: npm pack (Best for Final Verification)
+
+\`\`\`bash
+# Step 1: Build DDS
+cd ~/Desktop/DDS
+npm run build
+
+# Step 2: Create package tarball
+npm pack
+# Creates: adrozdenko-design-system-X.X.X.tgz
+
+# Step 3: Install in your app
+cd {APP_PATH}
+npm install ~/Desktop/DDS/adrozdenko-design-system-*.tgz
+
+# Step 4: Start app
+npm run dev
+\`\`\`
+
+**One-liner for updates:**
+\`\`\`bash
+cd ~/Desktop/DDS && npm run build && npm pack && cd {APP_PATH} && npm install ~/Desktop/DDS/*.tgz
+\`\`\`
+
+## Verification Checklist
+- [ ] DDS components render correctly
+- [ ] Styles/tokens applied properly
+- [ ] No "Multiple React instances" error
+- [ ] TypeScript types resolve
+
+## Troubleshooting
+| Issue | Solution |
+|-------|----------|
+| "Invalid hook call" | Use yalc, not npm link |
+| Changes not reflecting | Clear node_modules/.cache, restart dev server |
+| TypeScript errors | Run \`npm run build\` in DDS first |
+| Styles missing | Import \`@adrozdenko/design-system/styles\` |
+
+OUTPUT: Local development environment ready with DDS linked.`,
+  },
+  {
+    id: 'local-dev-end',
+    title: 'End Local Development',
+    description: 'Clean up local DDS links and restore npm registry version before committing.',
+    category: 'delivery',
+    variables: ['APP_PATH'],
+    tags: ['local', 'development', 'cleanup', 'yalc', 'restore'],
+    prompt: `Clean up local DDS development and restore npm version in {APP_PATH}.
+
+READ FIRST: \`src/stories/developers/LocalDevelopment.mdx\`
+
+## Cleanup Steps
+
+### If using yalc:
+
+\`\`\`bash
+# Step 1: Remove yalc link
+cd {APP_PATH}
+yalc remove @adrozdenko/design-system
+
+# Step 2: Restore npm version
+npm install
+
+# Step 3: Verify package.json has no yalc references
+cat package.json | grep -E "yalc|file:"
+# Should return empty
+
+# Step 4: Clean yalc store (optional)
+yalc installations clean
+\`\`\`
+
+### If using npm pack / file path:
+
+\`\`\`bash
+# Step 1: Update package.json to npm version
+cd {APP_PATH}
+npm uninstall @adrozdenko/design-system
+npm install @adrozdenko/design-system@latest
+
+# Step 2: Verify package.json
+cat package.json | grep "@adrozdenko/design-system"
+# Should show npm version like "^2.7.0"
+
+# Step 3: Remove tarball files from DDS
+cd ~/Desktop/DDS
+rm -f *.tgz
+\`\`\`
+
+## Pre-Commit Checklist
+- [ ] No \`file:\` references in package.json
+- [ ] No \`.yalc\` folder in app root
+- [ ] No \`yalc.lock\` file in app root
+- [ ] package-lock.json shows npm registry URL
+- [ ] App builds successfully with npm version
+
+## Verification
+
+\`\`\`bash
+# Verify clean package.json
+cd {APP_PATH}
+grep -E "yalc|file:" package.json
+# Should return nothing
+
+# Verify npm version works
+rm -rf node_modules
+npm install
+npm run build
+\`\`\`
+
+## Common Issues
+| Issue | Solution |
+|-------|----------|
+| yalc folder still exists | \`rm -rf .yalc yalc.lock\` |
+| Old tarball path in lockfile | Delete package-lock.json, run \`npm install\` |
+| Version mismatch | Specify exact version: \`npm install @adrozdenko/design-system@2.7.0\` |
+
+## FORBIDDEN
+- Committing with \`file:\` or yalc references in package.json
+- Leaving .yalc folder in repository
+- Pushing tarball files to git
+
+OUTPUT: Clean package.json with npm registry version, ready to commit.`,
+  },
+
   {
     id: 'migration-page',
     title: 'Migrate Page to DDS',

@@ -129,10 +129,10 @@ export function CreateActivityDialog({
       label: 'Note',
       icon: FileText,
       colors: {
-        selected: 'bg-slate-600 text-white border-slate-600 dark:bg-slate-400 dark:border-slate-400',
-        unselected: 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-slate-400',
+        selected: 'bg-secondary text-white border-secondary dark:bg-tertiary dark:border-tertiary',
+        unselected: 'bg-surface dark:bg-surface-dark border-border dark:border-border-strong text-secondary dark:text-tertiary hover:border-border-strong',
         iconSelected: 'text-white',
-        iconUnselected: 'text-slate-600 dark:text-slate-300',
+        iconUnselected: 'text-secondary dark:text-tertiary',
       },
     },
     {
