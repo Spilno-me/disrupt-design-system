@@ -24,6 +24,62 @@ import {
 {/* Import the contrast matrix data - this is the source of truth */}
 import contrastData from '../../data/contrast-matrix.json';
 
+{/* Import color intelligence data for boundary information */}
+import colorData from '@/data/color-intelligence.json';
+
+{/* Extract boundary data from color-intelligence.json */}
+export const darkBackgrounds = colorData.boundaries.dark_backgrounds;
+export const lightBackgrounds = colorData.boundaries.light_backgrounds;
+export const semanticBackgrounds = colorData.boundaries.semantic_backgrounds;
+
+{/* Helper function to transform token format to boundary format */}
+{/* Transforms "CORAL[500]" or "PRIMITIVES.white" into {colorFamily, shade, ratio, level} */}
+export const transformToBoundaryFormat = (foregrounds) => {
+  if (!foregrounds) return [];
+  return foregrounds.map(fg => {
+    const token = fg.token;
+    // Handle PRIMITIVES.xxx format
+    if (token.startsWith('PRIMITIVES.')) {
+      return {
+        colorFamily: 'PRIMITIVES',
+        shade: token.replace('PRIMITIVES.', ''),
+        ratio: fg.ratio,
+        level: fg.level,
+      };
+    }
+    // Handle FAMILY[shade] format
+    const match = token.match(/^(\w+)\[(\d+)\]$/);
+    if (match) {
+      return {
+        colorFamily: match[1],
+        shade: parseInt(match[2], 10),
+        ratio: fg.ratio,
+        level: fg.level,
+      };
+    }
+    return null;
+  }).filter(Boolean);
+};
+
+{/* Helper to get boundary colors for a specific background from color-intelligence.json */}
+export const getBoundaryColors = (bgKey, category = 'dark_backgrounds') => {
+  const categoryData = colorData.boundaries[category];
+  if (!categoryData || !categoryData[bgKey]) return [];
+  const bgData = categoryData[bgKey];
+  return transformToBoundaryFormat(bgData.minPassingForegrounds || []);
+};
+
+{/* Derive boundary colors from color-intelligence.json for backgrounds that have data */}
+{/* Dark backgrounds from color-intelligence.json */}
+export const BOUNDARY_FROM_JSON_ABYSS900 = getBoundaryColors('ABYSS[900]', 'dark_backgrounds');
+export const BOUNDARY_FROM_JSON_ABYSS800 = getBoundaryColors('ABYSS[800]', 'dark_backgrounds');
+export const BOUNDARY_FROM_JSON_ABYSS700 = getBoundaryColors('ABYSS[700]', 'dark_backgrounds');
+export const BOUNDARY_FROM_JSON_ABYSS500 = getBoundaryColors('ABYSS[500]', 'dark_backgrounds');
+
+{/* Light backgrounds from color-intelligence.json */}
+export const BOUNDARY_FROM_JSON_WHITE = getBoundaryColors('PRIMITIVES.white', 'light_backgrounds');
+export const BOUNDARY_FROM_JSON_SLATE100 = getBoundaryColors('SLATE[100]', 'light_backgrounds');
+
 export const COLOR_SCALES = {
   ABYSS,
   DEEP_CURRENT,
@@ -68,43 +124,685 @@ export const getBadge = (level) => {
   return { bg: CORAL[100], text: CORAL[700], label: 'FAIL' };
 };
 
-{/* Foreground Sample Component */}
+{/* Foreground Sample Component - Shows text in actual foreground color on actual background */}
 export const FgSample = ({ bgHex, fg }) => {
   const fgHex = resolveToken(fg.foreground);
-  const labelColor = isLight(bgHex) ? ABYSS[600] : SLATE[300];
   const badge = getBadge(fg.level);
   return (
-    <div style={{ padding: SPACING.px.tight }}>
-      <div style={{ color: fgHex, fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.medium, fontFamily: TYPOGRAPHY.fontFamily.sans }}>
+    <div style={{
+      padding: SPACING.px.base,
+      borderRight: `1px solid ${isLight(bgHex) ? SLATE[200] : 'rgba(255,255,255,0.1)'}`,
+      borderBottom: `1px solid ${isLight(bgHex) ? SLATE[200] : 'rgba(255,255,255,0.1)'}`,
+    }}>
+      {/* Main sample area - text in foreground color on background color */}
+      <div style={{
+        color: fgHex,
+        fontSize: TYPOGRAPHY.fontSize.lg[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        marginBottom: '8px',
+        lineHeight: 1.3,
+      }}>
         Sample Text
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
-        <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '10px', color: labelColor }}>{fg.foreground}</span>
-        <span style={{ background: badge.bg, color: badge.text, padding: '2px 6px', borderRadius: RADIUS.xs, fontSize: '9px', fontWeight: 700, fontFamily: TYPOGRAPHY.fontFamily.mono }}>
-          {badge.label} {fg.ratio.toFixed(1)}:1
+      {/* Color swatch showing the actual foreground color */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '6px',
+      }}>
+        <div style={{
+          width: '16px',
+          height: '16px',
+          borderRadius: RADIUS.xs,
+          background: fgHex,
+          border: `1px solid ${isLight(fgHex) ? SLATE[300] : 'rgba(255,255,255,0.2)'}`,
+          flexShrink: 0,
+        }} />
+        <span style={{
+          fontFamily: TYPOGRAPHY.fontFamily.mono,
+          fontSize: '11px',
+          color: fgHex,
+          fontWeight: 500,
+        }}>
+          {fg.foreground}
         </span>
+      </div>
+      {/* WCAG badge */}
+      <span style={{
+        background: badge.bg,
+        color: badge.text,
+        padding: '3px 8px',
+        borderRadius: RADIUS.xs,
+        fontSize: '10px',
+        fontWeight: 700,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        display: 'inline-block',
+      }}>
+        {badge.label} {fg.ratio.toFixed(1)}:1
+      </span>
+    </div>
+  );
+};
+
+{/* Boundary Color Sample - Shows the dimmest passing shade for a color family */}
+export const BoundarySample = ({ bgHex, colorFamily, shade, ratio, level }) => {
+  const token = `${colorFamily}[${shade}]`;
+  const fgHex = resolveToken(token);
+  const badge = getBadge(level);
+  const isDarkBg = !isLight(bgHex);
+  // ALWAYS use fgHex for labels - it's guaranteed to pass contrast on ANY background
+  // This fixes mid-tone accent backgrounds (HARBOR[500], CORAL[500]) where isLight() fails
+  const labelColor = fgHex;
+  const subLabelColor = fgHex;
+  const borderColor = isDarkBg ? 'rgba(255,255,255,0.2)' : SLATE[200];
+  const swatchBorder = isDarkBg ? 'rgba(255,255,255,0.3)' : SLATE[300];
+  return (
+    <div style={{
+      padding: SPACING.px.comfortable,
+      background: bgHex,
+      borderRadius: RADIUS.md,
+      border: `1px solid ${borderColor}`,
+      minWidth: '160px',
+    }}>
+      <div style={{
+        color: fgHex,
+        fontSize: TYPOGRAPHY.fontSize['2xl'][0],
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        marginBottom: '8px',
+      }}>
+        Aa
+      </div>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '8px',
+      }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.sm,
+          background: fgHex,
+          border: `1px solid ${swatchBorder}`,
+        }} />
+        <div>
+          <div style={{
+            fontFamily: TYPOGRAPHY.fontFamily.mono,
+            fontSize: '12px',
+            fontWeight: 600,
+            color: labelColor,
+          }}>
+            {colorFamily}[{shade}]
+          </div>
+          <div style={{
+            fontFamily: TYPOGRAPHY.fontFamily.mono,
+            fontSize: '10px',
+            color: subLabelColor,
+            opacity: isDarkBg ? 0.8 : 1,
+          }}>
+            {fgHex}
+          </div>
+        </div>
+      </div>
+      <span style={{
+        background: badge.bg,
+        color: badge.text,
+        padding: '4px 10px',
+        borderRadius: RADIUS.xs,
+        fontSize: '11px',
+        fontWeight: 700,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+      }}>
+        {badge.label} {ratio.toFixed(1)}:1
+      </span>
+    </div>
+  );
+};
+
+{/* ═══════════════════════════════════════════════════════════════════════════
+    SUBTLE NEUTRAL OPTIONS (LIGHT MODE) - Desaturated grays for muted light mode text
+    These are less vibrant alternatives to the accent colors
+   ═══════════════════════════════════════════════════════════════════════════ */}
+
+export const SUBTLE_NEUTRALS_WHITE = [
+  { colorFamily: 'LINEN', shade: 600, ratio: 4.65, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.76, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 7.25, level: 'AAA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 7.26, level: 'AAA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 7.58, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.89, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_CREAM = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.58, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.97, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.98, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 7.28, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.39, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_SLATE50 = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.55, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.93, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 7.24, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.32, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_SLATE100 = [
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.62, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.92, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.76, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_ABYSS50 = [
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 5.97, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.24, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 10.61, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_LINEN50 = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.59, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.99, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 7.0, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.43, level: 'AAA' },
+];
+
+{/* ═══════════════════════════════════════════════════════════════════════════ */}
+
+{/* Boundary Colors for White - Minimum passing shade per family, sorted by ratio (dimmest first) */}
+export const BOUNDARY_COLORS_WHITE = [
+  { colorFamily: 'LINEN', shade: 600, ratio: 4.65, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.76, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 600, ratio: 4.83, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.92, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 5.02, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 5.17, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 5.18, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 7.02, level: 'AAA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 7.25, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.89, level: 'AAA' },
+];
+
+{/* Boundary Colors for Cream - Minimum passing shade per family, sorted by ratio (dimmest first) */}
+export const BOUNDARY_COLORS_CREAM = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.58, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 600, ratio: 4.64, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.73, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.82, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.97, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.98, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.75, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.97, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.98, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.39, level: 'AAA' },
+];
+
+{/* Boundary Colors for ABYSS[50] - Card/Elevated background, sorted by ratio (dimmest first) */}
+export const BOUNDARY_COLORS_ABYSS50 = [
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.33, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 700, ratio: 5.52, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 5.64, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 5.78, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 800, ratio: 5.87, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 5.97, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 5.98, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 800, ratio: 6.01, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.24, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 10.61, level: 'AAA' },
+];
+
+{/* Boundary Colors for SLATE[50] - Surface Light background, sorted by ratio (dimmest first) */}
+export const BOUNDARY_COLORS_SLATE50 = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.55, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 600, ratio: 4.62, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.71, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.79, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.94, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.95, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.71, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.93, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.94, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.32, level: 'AAA' },
+];
+
+{/* Boundary Colors for SLATE[100] - Surface background, sorted by ratio (dimmest first) */}
+export const BOUNDARY_COLORS_SLATE100 = [
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.58, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.72, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.73, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.91, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 6.25, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.41, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.62, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.63, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.92, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.76, level: 'AAA' },
+];
+
+{/* Boundary Colors for LINEN[50] - Warm Surface background, sorted by ratio (dimmest first) */}
+export const BOUNDARY_COLORS_LINEN50 = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.59, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 600, ratio: 4.66, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.75, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.84, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.98, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.99, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.77, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.99, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 7.0, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.43, level: 'AAA' },
+];
+
+{/* Boundary Colors for DUSK_REEF[50] - Muted Surface background, sorted by ratio (dimmest first) */}
+export const BOUNDARY_COLORS_DUSKREEF50 = [
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.57, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 700, ratio: 5.77, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 5.9, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.04, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 800, ratio: 6.14, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.24, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.25, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 800, ratio: 6.29, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.52, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.09, level: 'AAA' },
+];
+
+{/* ═══════════════════════════════════════════════════════════════════════════
+    STATUS ALERT BACKGROUNDS - Light tints for notifications/badges
+    Note: Sorted by LOWEST ratio first (dimmest/subtlest colors that pass)
+   ═══════════════════════════════════════════════════════════════════════════ */}
+
+export const BOUNDARY_COLORS_CORAL50 = [
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.5, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.59, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.72, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.73, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.91, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.42, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.63, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.64, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.93, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.78, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_CORAL100 = [
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.3, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 700, ratio: 5.49, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 5.61, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 5.75, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 800, ratio: 5.84, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 5.94, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 5.94, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 800, ratio: 5.98, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.2, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 10.55, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_HARBOR50 = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.55, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 600, ratio: 4.61, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.7, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.79, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.94, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.95, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.71, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.93, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.94, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.31, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_HARBOR100 = [
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.57, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.71, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.72, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.89, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 6.24, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.39, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.6, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.61, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.9, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.73, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_SUNRISE50 = [
+  { colorFamily: 'SLATE', shade: 500, ratio: 4.59, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 600, ratio: 4.66, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.75, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.84, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.98, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.99, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.77, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.99, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 7.0, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 12.43, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_SUNRISE100 = [
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.5, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.64, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.65, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.81, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 6.15, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.3, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.51, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.52, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.81, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.57, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_WAVE50 = [
+  { colorFamily: 'SUNRISE', shade: 700, ratio: 4.52, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.61, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.76, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.95, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 700, ratio: 6.16, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.45, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.66, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.67, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.96, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.84, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_WAVE100 = [
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.3, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 700, ratio: 5.49, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 5.62, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 5.75, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 800, ratio: 5.84, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 5.94, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 5.95, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 800, ratio: 5.99, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.21, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 10.56, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_DEEPCURRENT50 = [
+  { colorFamily: 'HARBOR', shade: 700, ratio: 4.55, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 600, ratio: 4.69, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 700, ratio: 4.7, level: 'AA' },
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.87, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 6.21, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 6.37, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 6.58, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 6.59, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.87, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 11.69, level: 'AAA' },
+];
+
+export const BOUNDARY_COLORS_DEEPCURRENT100 = [
+  { colorFamily: 'CORAL', shade: 700, ratio: 5.31, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 700, ratio: 5.5, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 800, ratio: 5.62, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 700, ratio: 5.76, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 800, ratio: 5.85, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 500, ratio: 5.95, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 700, ratio: 5.96, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 800, ratio: 6.0, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 600, ratio: 6.22, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 10.57, level: 'AAA' },
+];
+
+{/* ═══════════════════════════════════════════════════════════════════════════
+    DARK MODE BACKGROUNDS - Dimmest passing colors (lowest ratio that passes AA)
+    Note: For dark backgrounds, we show the DIMMEST/subtlest colors first (lowest ratio ≥4.5)
+    This gives designers the most muted options that still meet accessibility.
+   ═══════════════════════════════════════════════════════════════════════════ */}
+
+export const BOUNDARY_COLORS_ABYSS500 = [
+  { colorFamily: 'ORANGE', shade: 500, ratio: 4.6, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 500, ratio: 5.66, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 500, ratio: 6.72, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_ABYSS600 = [
+  { colorFamily: 'LINEN', shade: 500, ratio: 4.71, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 500, ratio: 4.92, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 600, ratio: 4.98, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 500, ratio: 5.22, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 500, ratio: 6.42, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_ABYSS700 = [
+  { colorFamily: 'ORANGE', shade: 600, ratio: 4.6, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 600, ratio: 4.97, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 500, ratio: 5.27, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 500, ratio: 5.5, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 600, ratio: 5.58, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 500, ratio: 5.85, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_ABYSS800 = [
+  { colorFamily: 'WAVE', shade: 500, ratio: 4.91, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 600, ratio: 5.07, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 600, ratio: 5.48, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 500, ratio: 5.81, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 500, ratio: 6.07, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 600, ratio: 6.15, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_ABYSS900 = [
+  { colorFamily: 'CORAL', shade: 500, ratio: 4.65, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 500, ratio: 5.28, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 600, ratio: 5.45, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 600, ratio: 5.89, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 500, ratio: 6.25, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 500, ratio: 6.52, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 600, ratio: 6.61, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_DEEPCURRENT800 = [
+  { colorFamily: 'HARBOR', shade: 500, ratio: 4.89, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 500, ratio: 5.81, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_DEEPCURRENT900 = [
+  { colorFamily: 'WAVE', shade: 500, ratio: 4.58, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 600, ratio: 4.73, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 600, ratio: 5.11, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 500, ratio: 5.42, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 600, ratio: 5.73, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 500, ratio: 6.01, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_DUSKREEF800 = [
+  { colorFamily: 'HARBOR', shade: 600, ratio: 4.77, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 500, ratio: 5.05, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 600, ratio: 5.35, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 500, ratio: 5.6, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_DUSKREEF900 = [
+  { colorFamily: 'CORAL', shade: 500, ratio: 4.5, level: 'AA' },
+  { colorFamily: 'WAVE', shade: 500, ratio: 5.11, level: 'AA' },
+  { colorFamily: 'ORANGE', shade: 600, ratio: 5.28, level: 'AA' },
+  { colorFamily: 'HARBOR', shade: 600, ratio: 5.71, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 500, ratio: 6.05, level: 'AA' },
+  { colorFamily: 'SUNRISE', shade: 600, ratio: 6.4, level: 'AA' },
+];
+
+{/* ═══════════════════════════════════════════════════════════════════════════
+    SUBTLE NEUTRAL OPTIONS - Desaturated grays for muted dark mode text
+    These are less vibrant alternatives to the accent colors above
+   ═══════════════════════════════════════════════════════════════════════════ */}
+
+export const SUBTLE_NEUTRALS_ABYSS900 = [
+  { colorFamily: 'ABYSS', shade: 300, ratio: 4.57, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 300, ratio: 6.78, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 200, ratio: 8.04, level: 'AAA' },
+  { colorFamily: 'DUSK_REEF', shade: 200, ratio: 10.06, level: 'AAA' },
+  { colorFamily: 'SLATE', shade: 300, ratio: 13.07, level: 'AAA' },
+  { colorFamily: 'LINEN', shade: 300, ratio: 13.43, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_ABYSS800 = [
+  { colorFamily: 'ABYSS', shade: 200, ratio: 7.48, level: 'AAA' },
+  { colorFamily: 'DUSK_REEF', shade: 300, ratio: 6.31, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 300, ratio: 12.15, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 100, ratio: 12.04, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_ABYSS700 = [
+  { colorFamily: 'ABYSS', shade: 200, ratio: 6.79, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 300, ratio: 5.72, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 300, ratio: 11.02, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 100, ratio: 10.93, level: 'AAA' },
+];
+
+export const SUBTLE_NEUTRALS_ABYSS600 = [
+  { colorFamily: 'ABYSS', shade: 100, ratio: 9.76, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 200, ratio: 6.06, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 300, ratio: 9.85, level: 'AAA' },
+  { colorFamily: 'DUSK_REEF', shade: 300, ratio: 5.11, level: 'AA' },
+];
+
+export const SUBTLE_NEUTRALS_ABYSS500 = [
+  { colorFamily: 'ABYSS', shade: 100, ratio: 8.6, level: 'AAA' },
+  { colorFamily: 'ABYSS', shade: 200, ratio: 5.34, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 300, ratio: 8.68, level: 'AAA' },
+  { colorFamily: 'DUSK_REEF', shade: 300, ratio: 4.5, level: 'AA' },
+];
+
+{/* ═══════════════════════════════════════════════════════════════════════════
+    ACCENT BACKGROUNDS - Vibrant mid-tone backgrounds
+    Note: Sorted by LOWEST ratio first (dimmest/subtlest colors that pass)
+   ═══════════════════════════════════════════════════════════════════════════ */}
+
+export const BOUNDARY_COLORS_DEEPCURRENT500 = [
+  { colorFamily: 'SLATE', shade: 800, ratio: 4.91, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 800, ratio: 5.28, level: 'AA' },
+  { colorFamily: 'LINEN', shade: 900, ratio: 5.57, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 900, ratio: 5.66, level: 'AA' },
+  { colorFamily: 'SLATE', shade: 900, ratio: 6.0, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 900, ratio: 6.32, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_CORAL500 = [
+  { colorFamily: 'DUSK_REEF', shade: 900, ratio: 4.5, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 900, ratio: 4.65, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_HARBOR500 = [
+  { colorFamily: 'DEEP_CURRENT', shade: 800, ratio: 4.89, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 700, ratio: 5.49, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 5.66, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 600, ratio: 6.42, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 800, ratio: 6.89, level: 'AA' },
+];
+
+export const BOUNDARY_COLORS_SUNRISE500 = [
+  { colorFamily: 'DUSK_REEF', shade: 600, ratio: 4.98, level: 'AA' },
+  { colorFamily: 'DEEP_CURRENT', shade: 800, ratio: 5.81, level: 'AA' },
+  { colorFamily: 'DUSK_REEF', shade: 700, ratio: 6.52, level: 'AA' },
+  { colorFamily: 'ABYSS', shade: 500, ratio: 6.72, level: 'AA' },
+];
+
+export const BoundarySection = ({ bgToken, boundaryColors }) => {
+  const bgHex = resolveToken(bgToken);
+  return (
+    <div style={{ marginBottom: SPACING.px.section }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+        gap: SPACING.px.base,
+      }}>
+        {boundaryColors.map(({ colorFamily, shade, ratio, level }) => (
+          <BoundarySample
+            key={colorFamily}
+            bgHex={bgHex}
+            colorFamily={colorFamily}
+            shade={shade}
+            ratio={ratio}
+            level={level}
+          />
+        ))}
       </div>
     </div>
   );
 };
 
-{/* Background Row Component */}
-export const BgRow = ({ token, limit = 5, minLevel = 'AA' }) => {
+{/* WhiteBoundarySection now reads from color-intelligence.json when available, falls back to hardcoded */}
+export const WhiteBoundarySection = () => {
+  const boundaryFromJson = getBoundaryColors('PRIMITIVES.white', 'light_backgrounds');
+  const boundaryData = boundaryFromJson.length > 0 ? boundaryFromJson : BOUNDARY_COLORS_WHITE;
+  return <BoundarySection bgToken="PRIMITIVES.white" boundaryColors={boundaryData} />;
+};
+
+{/* CreamBoundarySection - cream is not in color-intelligence.json, uses hardcoded fallback */}
+export const CreamBoundarySection = () => (
+  <BoundarySection bgToken="PRIMITIVES.cream" boundaryColors={BOUNDARY_COLORS_CREAM} />
+);
+
+{/* Background Row Component - Shows accessible foreground colors on a background */}
+export const BgRow = ({ token, limit = 8, minLevel = 'AA' }) => {
   const bgHex = resolveToken(token);
   const textColor = isLight(bgHex) ? ABYSS[700] : PRIMITIVES.white;
+  const borderColor = isLight(bgHex) ? SLATE[300] : 'rgba(255,255,255,0.15)';
   const levelOrder = ['FAIL', 'AA-large', 'AA', 'AAA'];
   const minIdx = levelOrder.indexOf(minLevel);
   const foregrounds = (contrastData.byBackground[token] || [])
     .filter(fg => levelOrder.indexOf(fg.level) >= minIdx)
     .slice(0, limit);
-  if (foregrounds.length === 0) return null;
-  return (
-    <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, overflow: 'hidden', border: `1px solid ${SLATE[200]}`, boxShadow: SHADOWS.sm, marginBottom: SPACING.px.base }}>
-      <div style={{ background: bgHex, padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '13px', fontWeight: 600, color: textColor }}>{token}</span>
-        <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '11px', color: textColor, opacity: 0.7 }}>{bgHex}</span>
+  if (foregrounds.length === 0) {
+    return (
+      <div style={{
+        background: bgHex,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.comfortable,
+        border: `1px solid ${borderColor}`,
+        marginBottom: SPACING.px.base,
+      }}>
+        <span style={{ fontFamily: TYPOGRAPHY.fontFamily.mono, fontSize: '12px', color: textColor, opacity: 0.6 }}>
+          No accessible foreground colors found for {token}
+        </span>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', background: bgHex }}>
+    );
+  }
+  return (
+    <div style={{
+      borderRadius: RADIUS.md,
+      overflow: 'hidden',
+      border: `1px solid ${borderColor}`,
+      boxShadow: SHADOWS.sm,
+      marginBottom: SPACING.px.spacious,
+    }}>
+      {/* Header showing the background token and hex */}
+      <div style={{
+        background: bgHex,
+        padding: '14px 20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: `1px solid ${borderColor}`,
+      }}>
+        <span style={{
+          fontFamily: TYPOGRAPHY.fontFamily.mono,
+          fontSize: '14px',
+          fontWeight: 600,
+          color: textColor,
+        }}>
+          {token}
+        </span>
+        <span style={{
+          fontFamily: TYPOGRAPHY.fontFamily.mono,
+          fontSize: '12px',
+          color: textColor,
+          opacity: 0.7,
+          background: isLight(bgHex) ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)',
+          padding: '4px 10px',
+          borderRadius: RADIUS.xs,
+        }}>
+          {bgHex}
+        </span>
+      </div>
+      {/* Grid of foreground samples - each cell shows text on the actual background */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        background: bgHex,
+      }}>
         {foregrounds.map(fg => <FgSample key={fg.foreground} bgHex={bgHex} fg={fg} />)}
       </div>
     </div>
@@ -121,7 +819,7 @@ export const BgRow = ({ token, limit = 5, minLevel = 'AA' }) => {
 />
 
 <InfoBox variant="tip">
-  <strong>Dynamic Data:</strong> This page reads from <code>.claude/contrast-matrix.json</code> and uses design tokens directly.
+  <strong>Dynamic Data:</strong> This page reads from <code>.claude/contrast-matrix.json</code> and <code>src/data/color-intelligence.json</code> for boundary colors.
   When you run <code>npm run sync:colors</code>, this page auto-updates. All colors render from tokens, not hardcoded values.
 </InfoBox>
 
@@ -156,38 +854,71 @@ export const BgRow = ({ token, limit = 5, minLevel = 'AA' }) => {
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Page Backgrounds (Light Mode)</h2>
 
-### PRIMITIVES.white
-<BgRow token="PRIMITIVES.white" />
+### PRIMITIVES.white — Lightest Passing Colors
 
-### PRIMITIVES.cream
-<BgRow token="PRIMITIVES.cream" />
+<InfoBox variant="info">
+  <strong>Boundary Colors:</strong> These are the <em>lightest</em> shades of each color family that still pass WCAG contrast on white.
+  At these shades you can actually <strong>see the color</strong>, not just "dark with a hint of hue".
+</InfoBox>
 
-### PRIMITIVES.softLinen
-<BgRow token="PRIMITIVES.softLinen" />
+<WhiteBoundarySection />
+
+### PRIMITIVES.cream — Lightest Passing Colors
+
+<InfoBox variant="info">
+  <strong>Cream Background:</strong> Slightly warmer than white (#FBFBF3). Same boundary shades work, but with ~3% lower contrast ratios.
+</InfoBox>
+
+<CreamBoundarySection />
 
 ---
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Card & Surface Backgrounds (Light Mode)</h2>
 
 <InfoBox variant="tip">
-  <strong>Depth Model:</strong> Closer = Lighter. These backgrounds are used for cards, panels, and elevated elements.
-  See <a href="?path=/docs/foundation-depth-layering-model--docs">Depth Layering</a> for the full system.
+  <strong>Light Mode Depth:</strong> These sections show <em>minimum passing accent colors</em> — vibrant colors that barely pass AA. For <strong>muted/subtle text</strong>, see the "Subtle Neutral Options (Light Mode)" section below which uses desaturated grays.
 </InfoBox>
 
 ### ABYSS[50] — Elevated/Card
-<BgRow token="ABYSS[50]" />
+<BoundarySection bgToken="ABYSS[50]" boundaryColors={BOUNDARY_COLORS_ABYSS50} />
 
 ### SLATE[50] — Surface Light
-<BgRow token="SLATE[50]" />
+<BoundarySection bgToken="SLATE[50]" boundaryColors={BOUNDARY_COLORS_SLATE50} />
 
 ### SLATE[100] — Surface
-<BgRow token="SLATE[100]" />
+<BoundarySection bgToken="SLATE[100]" boundaryColors={BOUNDARY_FROM_JSON_SLATE100.length > 0 ? BOUNDARY_FROM_JSON_SLATE100 : BOUNDARY_COLORS_SLATE100} />
 
 ### LINEN[50] — Warm Surface
-<BgRow token="LINEN[50]" />
+<BoundarySection bgToken="LINEN[50]" boundaryColors={BOUNDARY_COLORS_LINEN50} />
 
 ### DUSK_REEF[50] — Muted Surface
-<BgRow token="DUSK_REEF[50]" />
+<BoundarySection bgToken="DUSK_REEF[50]" boundaryColors={BOUNDARY_COLORS_DUSKREEF50} />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Subtle Neutral Options (Light Mode)</h2>
+
+<InfoBox variant="tip">
+  <strong>For Muted Text:</strong> When you want subtle, understated text on light backgrounds instead of vibrant accent colors, use these desaturated grays. <code>SLATE[500]</code> and <code>LINEN[600]</code> are the most subtle options that barely pass AA.
+</InfoBox>
+
+### PRIMITIVES.white — Subtle Neutrals
+<BoundarySection bgToken="PRIMITIVES.white" boundaryColors={SUBTLE_NEUTRALS_WHITE} />
+
+### PRIMITIVES.cream — Subtle Neutrals
+<BoundarySection bgToken="PRIMITIVES.cream" boundaryColors={SUBTLE_NEUTRALS_CREAM} />
+
+### SLATE[50] — Subtle Neutrals
+<BoundarySection bgToken="SLATE[50]" boundaryColors={SUBTLE_NEUTRALS_SLATE50} />
+
+### SLATE[100] — Subtle Neutrals
+<BoundarySection bgToken="SLATE[100]" boundaryColors={SUBTLE_NEUTRALS_SLATE100} />
+
+### ABYSS[50] — Subtle Neutrals
+<BoundarySection bgToken="ABYSS[50]" boundaryColors={SUBTLE_NEUTRALS_ABYSS50} />
+
+### LINEN[50] — Subtle Neutrals
+<BoundarySection bgToken="LINEN[50]" boundaryColors={SUBTLE_NEUTRALS_LINEN50} />
 
 ---
 
@@ -198,92 +929,174 @@ export const BgRow = ({ token, limit = 5, minLevel = 'AA' }) => {
 </InfoBox>
 
 ### CORAL[50] — Error Light
-<BgRow token="CORAL[50]" />
+<BoundarySection bgToken="CORAL[50]" boundaryColors={BOUNDARY_COLORS_CORAL50} />
 
 ### CORAL[100] — Error Medium
-<BgRow token="CORAL[100]" />
+<BoundarySection bgToken="CORAL[100]" boundaryColors={BOUNDARY_COLORS_CORAL100} />
 
 ### HARBOR[50] — Success Light
-<BgRow token="HARBOR[50]" />
+<BoundarySection bgToken="HARBOR[50]" boundaryColors={BOUNDARY_COLORS_HARBOR50} />
 
 ### HARBOR[100] — Success Medium
-<BgRow token="HARBOR[100]" />
+<BoundarySection bgToken="HARBOR[100]" boundaryColors={BOUNDARY_COLORS_HARBOR100} />
 
 ### SUNRISE[50] — Warning Light
-<BgRow token="SUNRISE[50]" />
+<BoundarySection bgToken="SUNRISE[50]" boundaryColors={BOUNDARY_COLORS_SUNRISE50} />
 
 ### SUNRISE[100] — Warning Medium
-<BgRow token="SUNRISE[100]" />
+<BoundarySection bgToken="SUNRISE[100]" boundaryColors={BOUNDARY_COLORS_SUNRISE100} />
 
 ### WAVE[50] — Info Light
-<BgRow token="WAVE[50]" />
+<BoundarySection bgToken="WAVE[50]" boundaryColors={BOUNDARY_COLORS_WAVE50} />
 
 ### WAVE[100] — Info Medium
-<BgRow token="WAVE[100]" />
+<BoundarySection bgToken="WAVE[100]" boundaryColors={BOUNDARY_COLORS_WAVE100} />
 
 ### DEEP_CURRENT[50] — Accent Light
-<BgRow token="DEEP_CURRENT[50]" />
+<BoundarySection bgToken="DEEP_CURRENT[50]" boundaryColors={BOUNDARY_COLORS_DEEPCURRENT50} />
 
 ### DEEP_CURRENT[100] — Accent Medium
-<BgRow token="DEEP_CURRENT[100]" />
+<BoundarySection bgToken="DEEP_CURRENT[100]" boundaryColors={BOUNDARY_COLORS_DEEPCURRENT100} />
 
 ---
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Dark Mode Depth Layers</h2>
 
 <InfoBox variant="tip">
-  <strong>Dark Mode Depth:</strong> In dark mode, elevated = lighter shades of ABYSS. These are the card/surface backgrounds for dark themes.
+  <strong>Dark Mode Depth:</strong> These sections show <em>minimum passing accent colors</em> — vibrant colors that barely pass AA. For <strong>muted/subtle text</strong>, see the "Subtle Neutral Options" section below which uses desaturated grays.
 </InfoBox>
 
 ### ABYSS[500] — Elevated/Card (Dark Mode)
-<BgRow token="ABYSS[500]" />
+<BoundarySection bgToken="ABYSS[500]" boundaryColors={BOUNDARY_FROM_JSON_ABYSS500.length > 0 ? BOUNDARY_FROM_JSON_ABYSS500 : BOUNDARY_COLORS_ABYSS500} />
 
 ### ABYSS[600] — Surface Hover (Dark Mode)
-<BgRow token="ABYSS[600]" />
+<BoundarySection bgToken="ABYSS[600]" boundaryColors={BOUNDARY_COLORS_ABYSS600} />
 
 ### ABYSS[700] — Surface (Dark Mode)
-<BgRow token="ABYSS[700]" />
+<BoundarySection bgToken="ABYSS[700]" boundaryColors={BOUNDARY_FROM_JSON_ABYSS700.length > 0 ? BOUNDARY_FROM_JSON_ABYSS700 : BOUNDARY_COLORS_ABYSS700} />
 
 ---
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Page Backgrounds (Dark Mode)</h2>
 
 ### ABYSS[900]
-<BgRow token="ABYSS[900]" />
+<BoundarySection bgToken="ABYSS[900]" boundaryColors={BOUNDARY_FROM_JSON_ABYSS900.length > 0 ? BOUNDARY_FROM_JSON_ABYSS900 : BOUNDARY_COLORS_ABYSS900} />
 
 ### ABYSS[800]
-<BgRow token="ABYSS[800]" />
-
-### ABYSS[700]
-<BgRow token="ABYSS[700]" />
+<BoundarySection bgToken="ABYSS[800]" boundaryColors={BOUNDARY_FROM_JSON_ABYSS800.length > 0 ? BOUNDARY_FROM_JSON_ABYSS800 : BOUNDARY_COLORS_ABYSS800} />
 
 ### DEEP_CURRENT[900]
-<BgRow token="DEEP_CURRENT[900]" />
+<BoundarySection bgToken="DEEP_CURRENT[900]" boundaryColors={BOUNDARY_COLORS_DEEPCURRENT900} />
 
 ### DEEP_CURRENT[800]
-<BgRow token="DEEP_CURRENT[800]" />
+<BoundarySection bgToken="DEEP_CURRENT[800]" boundaryColors={BOUNDARY_COLORS_DEEPCURRENT800} />
 
 ### DUSK_REEF[900]
-<BgRow token="DUSK_REEF[900]" />
+<BoundarySection bgToken="DUSK_REEF[900]" boundaryColors={BOUNDARY_COLORS_DUSKREEF900} />
 
 ### DUSK_REEF[800]
-<BgRow token="DUSK_REEF[800]" />
+<BoundarySection bgToken="DUSK_REEF[800]" boundaryColors={BOUNDARY_COLORS_DUSKREEF800} />
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Subtle Neutral Options (Dark Mode)</h2>
+
+<InfoBox variant="tip">
+  <strong>For Muted Text:</strong> When you want subtle, understated text on dark backgrounds instead of vibrant accent colors, use these desaturated grays. <code>ABYSS[300]</code> on <code>ABYSS[900]</code> barely passes AA at 4.57:1 — the most subtle option available.
+</InfoBox>
+
+### ABYSS[900] — Subtle Neutrals
+<BoundarySection bgToken="ABYSS[900]" boundaryColors={SUBTLE_NEUTRALS_ABYSS900} />
+
+### ABYSS[800] — Subtle Neutrals
+<BoundarySection bgToken="ABYSS[800]" boundaryColors={SUBTLE_NEUTRALS_ABYSS800} />
+
+### ABYSS[700] — Subtle Neutrals
+<BoundarySection bgToken="ABYSS[700]" boundaryColors={SUBTLE_NEUTRALS_ABYSS700} />
+
+### ABYSS[600] — Subtle Neutrals
+<BoundarySection bgToken="ABYSS[600]" boundaryColors={SUBTLE_NEUTRALS_ABYSS600} />
+
+### ABYSS[500] — Subtle Neutrals
+<BoundarySection bgToken="ABYSS[500]" boundaryColors={SUBTLE_NEUTRALS_ABYSS500} />
 
 ---
 
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Accent Backgrounds</h2>
 
+<InfoBox variant="info">
+  <strong>Limited Options:</strong> Vibrant mid-tone backgrounds have fewer accessible text colors. CORAL[500] is particularly challenging - only the darkest colors pass.
+</InfoBox>
+
 ### DEEP_CURRENT[500] (Primary Accent)
-<BgRow token="DEEP_CURRENT[500]" minLevel="AA-large" />
+<BoundarySection bgToken="DEEP_CURRENT[500]" boundaryColors={BOUNDARY_COLORS_DEEPCURRENT500} />
 
 ### CORAL[500] (Error/Danger)
-<BgRow token="CORAL[500]" minLevel="AA-large" />
+<BoundarySection bgToken="CORAL[500]" boundaryColors={BOUNDARY_COLORS_CORAL500} />
 
 ### HARBOR[500] (Success)
-<BgRow token="HARBOR[500]" minLevel="AA-large" />
+<BoundarySection bgToken="HARBOR[500]" boundaryColors={BOUNDARY_COLORS_HARBOR500} />
 
 ### SUNRISE[500] (Warning)
-<BgRow token="SUNRISE[500]" minLevel="AA-large" />
+<BoundarySection bgToken="SUNRISE[500]" boundaryColors={BOUNDARY_COLORS_SUNRISE500} />
+
+---
+
+## Glass & Transparent Surfaces
+
+Transparent/glass backgrounds present unique accessibility challenges because the actual contrast depends on what's *behind* the glass element.
+
+<InfoBox variant="warning">
+  <strong>Rule of Thumb:</strong> If glass opacity is less than 60%, don't put text directly on it without a backdrop scrim. Transparent surfaces cannot guarantee consistent contrast ratios.
+</InfoBox>
+
+### Strategies for Glass Surfaces
+
+| Approach | Description | When to Use |
+|----------|-------------|-------------|
+| **Worst-case baseline** | Design for the lightest possible underlying background | When underlying content varies |
+| **Text backdrop scrim** | Add semi-opaque container behind text only | Critical text on glass |
+| **Increased opacity** | Use 60-80% opacity instead of 20-40% | When you control the design |
+| **Avoid critical text** | Use glass for decorative areas only | Best practice |
+
+### Code Examples
+
+```tsx
+// ❌ Risky - text directly on low-opacity glass
+<div className="bg-white/20 backdrop-blur-md">
+  <span className="text-abyss-900">May fail on light backgrounds</span>
+</div>
+
+// ✅ Safe - text has its own backdrop scrim
+<div className="bg-white/20 backdrop-blur-md">
+  <span className="bg-abyss-900/80 text-white px-2 py-1 rounded">
+    Always readable
+  </span>
+</div>
+
+// ✅ Safe - glass is opaque enough to guarantee contrast
+<div className="bg-abyss-900/70 backdrop-blur-md">
+  <span className="text-white">White always passes on 70% ABYSS[900]</span>
+</div>
+
+// ✅ Safe - dark glass with guaranteed white contrast
+<div className="bg-abyss-800/75 backdrop-blur-lg">
+  <span className="text-white">Minimum 75% opacity for text-bearing glass</span>
+</div>
+```
+
+### Opacity Guidelines
+
+| Glass Opacity | Text Allowed? | Recommendation |
+|---------------|---------------|----------------|
+| **< 40%** | ❌ No | Decorative only, no text |
+| **40-60%** | ⚠️ Caution | Large headings only, test thoroughly |
+| **60-75%** | ✓ Yes | Add text backdrop for body text |
+| **> 75%** | ✓ Yes | Safe for all text with proper color choice |
+
+<InfoBox variant="tip">
+  When designing glass surfaces, always test against both the lightest AND darkest backgrounds that could appear behind the glass. Your text must pass WCAG on both extremes.
+</InfoBox>
 
 ---
 

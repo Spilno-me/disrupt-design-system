@@ -1,0 +1,777 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "generated": "2026-01-03T00:00:00Z",
+    "source": "designTokens.ts",
+    "schemaVersion": "1.0",
+    "description": "Single source of truth for context-aware color recommendations"
+  },
+
+  "contexts": {
+    "default": {
+      "description": "Fallback for custom/unknown components",
+      "solid": {
+        "light": { "bg": "bg-surface", "hex": "#FAF8F3" },
+        "dark": { "bg": "bg-surface", "hex": "#1D1F2A" }
+      },
+      "text": {
+        "primary": "text-primary",
+        "secondary": "text-secondary",
+        "muted": "text-muted"
+      },
+      "border": "border border-default",
+      "note": "Use when no specific context applies; safe defaults for any UI element"
+    },
+    "page": {
+      "description": "Main page background",
+      "light": { "bg": "bg-page", "hex": "#F0EDE6" },
+      "dark": { "bg": "bg-page", "hex": "#0C0D12" },
+      "text": {
+        "primary": "text-primary",
+        "secondary": "text-secondary",
+        "muted": "text-muted"
+      }
+    },
+    "card": {
+      "description": "Content cards, panels",
+      "depth": 2,
+      "solid": {
+        "light": { "bg": "bg-elevated", "hex": "#FFFEF9" },
+        "dark": { "bg": "bg-elevated", "hex": "#2D3142" }
+      },
+      "glass": {
+        "light": "bg-white/40 backdrop-blur-[4px]",
+        "dark": "bg-black/40 backdrop-blur-[4px]"
+      },
+      "border": "border-2 border-accent",
+      "shadow": "shadow-md",
+      "text": {
+        "primary": "text-primary",
+        "secondary": "text-secondary"
+      }
+    },
+    "surface": {
+      "description": "Nested containers inside cards",
+      "depth": 3,
+      "solid": {
+        "light": { "bg": "bg-surface", "hex": "#FAF8F3" },
+        "dark": { "bg": "bg-surface", "hex": "#1D1F2A" }
+      },
+      "border": "border border-default",
+      "shadow": "shadow-sm",
+      "text": {
+        "primary": "text-primary",
+        "secondary": "text-secondary"
+      }
+    },
+    "modal": {
+      "description": "Dialogs, overlays",
+      "depth": 1,
+      "solid": {
+        "light": { "bg": "bg-elevated", "hex": "#FFFEF9" },
+        "dark": { "bg": "bg-elevated", "hex": "#2D3142" }
+      },
+      "glass": {
+        "light": "bg-white/60 backdrop-blur-[8px]",
+        "dark": "bg-black/60 backdrop-blur-[8px]"
+      },
+      "shadow": "shadow-lg",
+      "scrim": "bg-black/50",
+      "text": {
+        "primary": "text-primary",
+        "secondary": "text-secondary"
+      }
+    },
+    "button": {
+      "description": "Interactive button variants and states",
+      "variants": {
+        "primary": { "bg": "bg-accent-strong", "text": "text-inverse", "border": "border-transparent" },
+        "secondary": { "bg": "bg-surface", "text": "text-primary", "border": "border border-default" },
+        "destructive": { "bg": "bg-error", "text": "text-inverse", "border": "border-transparent" },
+        "ghost": { "bg": "bg-transparent", "text": "text-primary", "border": "border-transparent" },
+        "outline": { "bg": "bg-transparent", "text": "text-accent", "border": "border border-accent" },
+        "link": { "bg": "bg-transparent", "text": "text-accent", "decoration": "underline-offset-4 hover:underline" }
+      },
+      "states": {
+        "hover": { "modifier": "hover:brightness-95 dark:hover:brightness-110" },
+        "active": { "modifier": "active:scale-[0.98]", "brightness": "brightness-90" },
+        "focus": { "ring": "ring-2 ring-offset-2 ring-accent", "outline": "outline-none" },
+        "loading": { "opacity": "opacity-70", "cursor": "cursor-wait" },
+        "disabled": { "bg": "bg-muted-bg", "text": "text-disabled", "cursor": "cursor-not-allowed", "opacity": "opacity-50" }
+      },
+      "transition": {
+        "default": "transition-colors duration-150 ease-in-out",
+        "withScale": "transition-all duration-150 ease-in-out",
+        "note": "Use 'withScale' when active state includes scale transform"
+      }
+    },
+    "input": {
+      "description": "Form inputs, selects, textareas",
+      "default": { "bg": "bg-surface", "border": "border border-default", "text": "text-primary" },
+      "placeholder": { "text": "text-muted" },
+      "focus": { "ring": "ring-2 ring-accent", "border": "border-accent" },
+      "error": { "border": "border-error", "ring": "ring-2 ring-error/20", "text": "text-error" },
+      "disabled": { "bg": "bg-muted-bg", "text": "text-disabled", "cursor": "cursor-not-allowed" },
+      "readonly": { "bg": "bg-muted-bg/50", "cursor": "cursor-default" }
+    },
+    "navigation": {
+      "description": "Sidebars, nav panels, menus",
+      "solid": {
+        "light": { "bg": "bg-surface", "hex": "#FAF8F3" },
+        "dark": { "bg": "bg-surface", "hex": "#1D1F2A" }
+      },
+      "item": {
+        "default": { "bg": "bg-transparent", "text": "text-secondary" },
+        "hover": { "bg": "bg-surfaceHover", "text": "text-primary" },
+        "active": { "bg": "bg-accent-bg", "text": "text-accent" },
+        "disabled": { "text": "text-disabled" }
+      },
+      "divider": "border-default"
+    },
+    "tooltip": {
+      "description": "Tooltips, popovers, small overlays",
+      "depth": 1,
+      "solid": {
+        "light": { "bg": "bg-elevated", "hex": "#FFFEF9", "text": "text-primary" },
+        "dark": { "bg": "bg-elevated", "hex": "#2D3142", "text": "text-primary" }
+      },
+      "shadow": "shadow-lg",
+      "border": "border border-default"
+    },
+    "tableRow": {
+      "description": "Data table rows (DataTable, lists)",
+      "default": { "bg": "bg-transparent", "text": "text-primary" },
+      "hover": { "bg": "bg-surfaceHover" },
+      "selected": { "bg": "bg-accent-bg", "text": "text-primary", "border": "border-l-2 border-accent" },
+      "striped": { "bg": "odd:bg-muted-bg/50" },
+      "disabled": { "bg": "bg-muted-bg", "text": "text-disabled", "cursor": "cursor-not-allowed" },
+      "loading": { "bg": "animate-pulse bg-muted-bg" }
+    },
+    "badge": {
+      "description": "Status badges, tags, chips, pills",
+      "note": "Small text (12-14px) requires AAA compliance (7:1 ratio) for readability",
+      "variants": {
+        "default": { "bg": "bg-muted-bg", "text": "text-secondary" },
+        "success": { "bg": "bg-success-tint", "text": "text-success-strong dark:text-white" },
+        "warning": { "bg": "bg-warning-tint", "text": "text-warning-dark dark:text-white" },
+        "error": { "bg": "bg-error-tint", "text": "text-error-strong dark:text-white" },
+        "info": { "bg": "bg-info-light", "text": "text-info" },
+        "accent": { "bg": "bg-accent-bg", "text": "text-accent" }
+      },
+      "sizes": {
+        "sm": "px-1.5 py-0.5 text-xs rounded",
+        "md": "px-2 py-1 text-sm rounded-md",
+        "lg": "px-3 py-1.5 text-base rounded-lg"
+      }
+    },
+    "status": {
+      "description": "Semantic status indicators",
+      "success": {
+        "bg": "bg-success-tint",
+        "text": "text-success-strong",
+        "darkText": "dark:text-white",
+        "icon": "text-success"
+      },
+      "warning": {
+        "bg": "bg-warning-tint",
+        "text": "text-warning-dark",
+        "darkText": "dark:text-white",
+        "icon": "text-warning"
+      },
+      "error": {
+        "bg": "bg-error-tint",
+        "text": "text-error-strong",
+        "darkText": "dark:text-white",
+        "icon": "text-error"
+      },
+      "info": {
+        "bg": "bg-info-light",
+        "text": "text-info",
+        "icon": "text-info"
+      }
+    },
+    "dataViz": {
+      "description": "Charts, graphs, heatmaps, and data visualization",
+      "categorical": {
+        "description": "Distinct categories (pie slices, bar groups, legend items)",
+        "palette": [
+          { "token": "DEEP_CURRENT[500]", "hex": "#08A4BD", "role": "primary/brand" },
+          { "token": "WAVE[500]", "hex": "#3B82F6", "role": "secondary" },
+          { "token": "HARBOR[500]", "hex": "#22C55E", "role": "positive" },
+          { "token": "CORAL[500]", "hex": "#F70D1A", "role": "negative" },
+          { "token": "SUNRISE[500]", "hex": "#EAB308", "role": "warning" },
+          { "token": "DUSK_REEF[500]", "hex": "#5E4F7E", "role": "neutral" }
+        ],
+        "rules": {
+          "maxDistinct": 6,
+          "overflow": "Use patterns (stripes, dots) for >6 categories",
+          "a11y": "Never rely on color alone - add labels, patterns, or shapes"
+        }
+      },
+      "sequential": {
+        "description": "Single-variable intensity (heatmaps, density, progress)",
+        "cool": {
+          "family": "DEEP_CURRENT",
+          "scale": ["DEEP_CURRENT[100]", "DEEP_CURRENT[300]", "DEEP_CURRENT[500]", "DEEP_CURRENT[700]", "DEEP_CURRENT[900]"],
+          "hexScale": ["#CCEFF5", "#66CFE1", "#08A4BD", "#056271", "#022125"],
+          "usage": "Default for most data (neutral connotation)"
+        },
+        "warm": {
+          "family": "CORAL",
+          "scale": ["CORAL[100]", "CORAL[300]", "CORAL[500]", "CORAL[700]", "CORAL[900]"],
+          "hexScale": ["#FEE2E2", "#FCA5A5", "#F70D1A", "#B91C1C", "#7F1D1D"],
+          "usage": "Heat, urgency, intensity (negative connotation)"
+        },
+        "success": {
+          "family": "HARBOR",
+          "scale": ["HARBOR[100]", "HARBOR[300]", "HARBOR[500]", "HARBOR[700]", "HARBOR[900]"],
+          "hexScale": ["#DCFCE7", "#86EFAC", "#22C55E", "#15803D", "#14532D"],
+          "usage": "Progress, completion, positive metrics"
+        }
+      },
+      "diverging": {
+        "description": "Positive/negative values centered on neutral (profit/loss, above/below target)",
+        "scale": [
+          { "token": "CORAL[600]", "hex": "#DC2626", "meaning": "strong negative" },
+          { "token": "CORAL[300]", "hex": "#FCA5A5", "meaning": "weak negative" },
+          { "token": "SLATE[200]", "hex": "#E2E8F0", "meaning": "neutral/zero" },
+          { "token": "HARBOR[300]", "hex": "#86EFAC", "meaning": "weak positive" },
+          { "token": "HARBOR[600]", "hex": "#16A34A", "meaning": "strong positive" }
+        ],
+        "neutralPoint": "SLATE[200]",
+        "usage": "Financial data, variance from target, sentiment"
+      },
+      "accessibility": {
+        "colorBlindSafe": "Categorical palette tested for deuteranopia, protanopia, tritanopia",
+        "patterns": "Always provide texture/pattern alternative for charts",
+        "labels": "Direct labeling preferred over legend-only"
+      }
+    }
+  },
+
+  "boundaries": {
+    "_note": "Minimum passing foregrounds per background, organized by theme",
+
+    "dark_backgrounds": {
+      "ABYSS[900]": {
+        "hex": "#0C0D12",
+        "usage": "Dark mode page background",
+        "minPassingForegrounds": [
+          { "token": "CORAL[500]", "ratio": 4.65, "level": "AA", "type": "accent" },
+          { "token": "WAVE[500]", "ratio": 5.28, "level": "AA", "type": "accent" },
+          { "token": "PRIMITIVES.white", "ratio": 19.41, "level": "AAA", "type": "neutral" }
+        ],
+        "subtleNeutrals": [
+          { "token": "ABYSS[300]", "ratio": 4.57, "level": "AA" },
+          { "token": "SLATE[300]", "ratio": 5.12, "level": "AA" }
+        ],
+        "recommended": {
+          "primary": "PRIMITIVES.white",
+          "secondary": "SLATE[200]",
+          "muted": "SLATE[400]",
+          "accent": "DEEP_CURRENT[400]"
+        }
+      },
+      "ABYSS[800]": {
+        "hex": "#14161E",
+        "usage": "Dark mode elevated surfaces",
+        "recommended": {
+          "primary": "PRIMITIVES.white",
+          "secondary": "SLATE[200]",
+          "muted": "SLATE[400]",
+          "accent": "DEEP_CURRENT[400]"
+        }
+      },
+      "ABYSS[700]": {
+        "hex": "#1D1F2A",
+        "usage": "Dark mode surface (nested containers)",
+        "recommended": {
+          "primary": "PRIMITIVES.white",
+          "secondary": "SLATE[200]",
+          "muted": "SLATE[400]",
+          "accent": "DEEP_CURRENT[400]"
+        }
+      },
+      "ABYSS[500]": {
+        "hex": "#2D3142",
+        "usage": "Dark mode card background",
+        "recommended": {
+          "primary": "PRIMITIVES.white",
+          "secondary": "SLATE[200]",
+          "muted": "SLATE[400]",
+          "accent": "DEEP_CURRENT[400]"
+        }
+      },
+      "DEEP_CURRENT[700]": {
+        "hex": "#056271",
+        "usage": "Accent background (CTAs, highlights)",
+        "recommended": {
+          "primary": "PRIMITIVES.white",
+          "secondary": "DEEP_CURRENT[100]",
+          "accent": "WAVE[300]"
+        }
+      },
+      "CORAL[600]": {
+        "hex": "#DC2626",
+        "usage": "Error/danger button background",
+        "recommended": {
+          "primary": "PRIMITIVES.white",
+          "secondary": "CORAL[100]"
+        }
+      }
+    },
+
+    "light_backgrounds": {
+      "PRIMITIVES.white": {
+        "hex": "#FFFFFF",
+        "usage": "Light mode surface, cards, inputs",
+        "minPassingForegrounds": [
+          { "token": "LINEN[600]", "ratio": 4.65, "level": "AA", "type": "neutral" },
+          { "token": "SLATE[500]", "ratio": 4.76, "level": "AA", "type": "neutral" },
+          { "token": "ABYSS[900]", "ratio": 19.41, "level": "AAA", "type": "neutral" }
+        ],
+        "recommended": {
+          "primary": "ABYSS[900]",
+          "secondary": "DUSK_REEF[600]",
+          "muted": "SLATE[500]",
+          "accent": "DEEP_CURRENT[600]"
+        }
+      },
+      "IVORY[50]": {
+        "hex": "#FFFEF9",
+        "usage": "Light mode elevated (cards)",
+        "recommended": {
+          "primary": "ABYSS[900]",
+          "secondary": "DUSK_REEF[600]",
+          "muted": "SLATE[500]",
+          "accent": "DEEP_CURRENT[600]"
+        }
+      },
+      "IVORY[100]": {
+        "hex": "#FAF8F3",
+        "usage": "Light mode surface",
+        "recommended": {
+          "primary": "ABYSS[900]",
+          "secondary": "DUSK_REEF[600]",
+          "muted": "SLATE[500]",
+          "accent": "DEEP_CURRENT[600]"
+        }
+      },
+      "IVORY[200]": {
+        "hex": "#F0EDE6",
+        "usage": "Light mode page background",
+        "recommended": {
+          "primary": "ABYSS[900]",
+          "secondary": "DUSK_REEF[600]",
+          "muted": "SLATE[500]",
+          "accent": "DEEP_CURRENT[600]"
+        }
+      },
+      "IVORY[300]": {
+        "hex": "#E5E2DB",
+        "usage": "Light mode muted/disabled background, hover states",
+        "recommended": {
+          "primary": "ABYSS[900]",
+          "secondary": "SLATE[600]",
+          "muted": "SLATE[500]"
+        }
+      },
+      "SLATE[100]": {
+        "hex": "#F1F5F9",
+        "usage": "Light mode hover states, zebra striping",
+        "recommended": {
+          "primary": "ABYSS[900]",
+          "secondary": "SLATE[600]",
+          "accent": "DEEP_CURRENT[600]"
+        }
+      },
+      "DEEP_CURRENT[100]": {
+        "hex": "#CCEFF5",
+        "usage": "Accent tint background (selected rows, highlights)",
+        "recommended": {
+          "primary": "ABYSS[900]",
+          "secondary": "DEEP_CURRENT[700]",
+          "accent": "DEEP_CURRENT[600]"
+        }
+      }
+    },
+
+    "semantic_backgrounds": {
+      "SUCCESS_TINT": {
+        "usage": "Success/positive states",
+        "light": { "bg": "bg-success-tint", "text": "text-success-strong" },
+        "dark": { "bg": "bg-success-tint", "text": "text-white" }
+      },
+      "WARNING_TINT": {
+        "usage": "Warning/caution states",
+        "light": { "bg": "bg-warning-tint", "text": "text-warning-dark" },
+        "dark": { "bg": "bg-warning-tint", "text": "text-white" }
+      },
+      "ERROR_TINT": {
+        "usage": "Error/danger states",
+        "light": { "bg": "bg-error-tint", "text": "text-error-strong" },
+        "dark": { "bg": "bg-error-tint", "text": "text-white" }
+      },
+      "INFO_TINT": {
+        "usage": "Informational states",
+        "light": { "bg": "bg-info-light", "text": "text-info" },
+        "dark": { "bg": "bg-info-light", "text": "text-info" }
+      }
+    }
+  },
+
+  "harmony_principles": {
+    "_teaching_note": "These rules let agents DERIVE harmony, not just memorize",
+
+    "P1_temperature_compatibility": {
+      "rule": "Accent temperature should match or be neutral to base",
+      "formula": "base.temp in {cool, neutral-cool} -> accent.temp in {cool, neutral}",
+      "why": "Warm colors advance, cool recede. Mixing creates visual competition.",
+      "exception": "Single warm accent on cool base OK for emphasis (error badge on dark card)"
+    },
+
+    "P2_semantic_separation": {
+      "rule": "Colors with semantic meaning must not be adjacent or competing",
+      "formula": "IF both have semantic AND semantics differ -> avoid adjacent",
+      "why": "User's brain assigns meaning. CORAL (error) next to DEEP_CURRENT (brand) = confusion",
+      "semantics": {
+        "error": ["CORAL"],
+        "warning": ["SUNRISE", "ORANGE"],
+        "success": ["HARBOR"],
+        "info": ["WAVE"],
+        "brand": ["DEEP_CURRENT"],
+        "neutral": ["ABYSS", "SLATE", "LINEN", "IVORY", "DUSK_REEF"]
+      }
+    },
+
+    "P3_family_contrast": {
+      "rule": "Same color family requires 400+ step difference",
+      "formula": "IF family1 == family2 -> require |step1 - step2| >= 400",
+      "why": "ABYSS[500] on ABYSS[600] = invisible. Same hue, insufficient contrast.",
+      "example": {
+        "bad": "ABYSS[200] on ABYSS[500] (300 step gap)",
+        "good": "ABYSS[100] on ABYSS[900] (800 step gap)"
+      }
+    },
+
+    "P4_dominance": {
+      "rule": "One temperature must dominate; other is accent only",
+      "formula": "primary_area.temp == base.temp; accent_area < 20% of composition",
+      "why": "Equal warm/cool creates tension. Hierarchy creates harmony.",
+      "example": {
+        "good": "ABYSS base (90%) + CORAL error badge (5%)",
+        "bad": "ABYSS (50%) + CORAL (50%) competing"
+      }
+    },
+
+    "P5_semantic_priority": {
+      "rule": "Semantic meaning ALWAYS takes precedence over temperature harmony",
+      "formula": "IF element.semantic != null -> use semantic color, ignore P1",
+      "why": "User safety and clarity > aesthetic harmony. Error MUST look like error.",
+      "priority_order": ["semantic meaning", "accessibility (WCAG)", "temperature harmony"],
+      "override_cases": [
+        { "case": "Error state", "use": "CORAL family", "even_on": "cool ABYSS base" },
+        { "case": "Warning state", "use": "SUNRISE family", "even_on": "cool ABYSS base" },
+        { "case": "Success state", "use": "HARBOR family", "even_on": "warm LINEN base" },
+        { "case": "Brand accent", "use": "DEEP_CURRENT family", "even_on": "any base" }
+      ]
+    }
+  },
+
+  "color_properties": {
+    "ABYSS": {
+      "temperature": "neutral-cool",
+      "semantic": null,
+      "role": "Dark theme base",
+      "compatible_temps": ["cool", "neutral-cool", "neutral"]
+    },
+    "DEEP_CURRENT": {
+      "temperature": "cool",
+      "semantic": "brand",
+      "role": "Primary accent, CTAs, links",
+      "compatible_temps": ["cool", "neutral-cool", "neutral"]
+    },
+    "WAVE": {
+      "temperature": "cool",
+      "semantic": "info",
+      "role": "Info states, secondary teal accent",
+      "compatible_temps": ["cool", "neutral"]
+    },
+    "HARBOR": {
+      "temperature": "cool",
+      "semantic": "success",
+      "role": "Success states, confirmations",
+      "compatible_temps": ["cool", "neutral"]
+    },
+    "CORAL": {
+      "temperature": "warm",
+      "semantic": "error",
+      "role": "Error states, destructive actions",
+      "compatible_temps": ["warm", "neutral-warm", "neutral"]
+    },
+    "SUNRISE": {
+      "temperature": "warm",
+      "semantic": "warning",
+      "role": "Warning states, caution",
+      "compatible_temps": ["warm", "neutral-warm", "neutral"]
+    },
+    "ORANGE": {
+      "temperature": "warm",
+      "semantic": "highlight",
+      "role": "Energy, attention, badges",
+      "compatible_temps": ["warm", "neutral-warm", "neutral"]
+    },
+    "SLATE": {
+      "temperature": "neutral",
+      "semantic": null,
+      "role": "Universal gray, borders, muted text",
+      "compatible_temps": ["cool", "warm", "neutral"]
+    },
+    "LINEN": {
+      "temperature": "cool",
+      "semantic": null,
+      "role": "Cool blue-white scale, subtle cool tints",
+      "compatible_temps": ["cool", "neutral-cool", "neutral"],
+      "note": "Use for cool/clinical contexts. NOT for main backgrounds - use IVORY."
+    },
+    "IVORY": {
+      "temperature": "neutral-warm",
+      "semantic": null,
+      "role": "Light theme depth layering (page/surface/elevated)",
+      "compatible_temps": ["warm", "neutral-warm", "neutral", "cool"],
+      "note": "PRIMARY light mode backgrounds. LINEN is cool (blue tints), IVORY is warm (cream/beige)."
+    },
+    "DUSK_REEF": {
+      "temperature": "neutral-cool",
+      "semantic": null,
+      "role": "Sophisticated neutral, secondary text",
+      "compatible_temps": ["cool", "neutral-cool", "neutral"]
+    }
+  },
+
+  "harmony_lookup": {
+    "_note": "Derived from principles above - use for quick reference",
+
+    "ABYSS": {
+      "companions": ["SLATE", "DUSK_REEF", "DEEP_CURRENT"],
+      "accents": ["DEEP_CURRENT", "WAVE", "HARBOR"],
+      "avoid": ["CORAL", "ORANGE"],
+      "avoid_reason": "P1: warm on cool-neutral base; P2: semantic clash if brand context"
+    },
+    "DEEP_CURRENT": {
+      "companions": ["WAVE", "HARBOR", "SLATE", "ABYSS"],
+      "accents": ["HARBOR", "WAVE"],
+      "avoid": ["CORAL", "SUNRISE", "ORANGE"],
+      "avoid_reason": "P1: warm temps; P2: error/warning != brand semantic"
+    },
+    "WAVE": {
+      "companions": ["DEEP_CURRENT", "HARBOR", "SLATE"],
+      "accents": ["DEEP_CURRENT", "HARBOR"],
+      "avoid": ["CORAL", "SUNRISE"],
+      "avoid_reason": "P1: warm temps clash; P2: info != error/warning semantic"
+    },
+    "HARBOR": {
+      "companions": ["WAVE", "DEEP_CURRENT", "SLATE", "ABYSS"],
+      "accents": ["DEEP_CURRENT", "WAVE"],
+      "avoid": ["CORAL", "ORANGE", "SUNRISE"],
+      "avoid_reason": "P1: warm temps; P2: success != error/warning"
+    },
+    "CORAL": {
+      "companions": ["SUNRISE", "ORANGE", "IVORY"],
+      "accents": ["SUNRISE"],
+      "avoid": ["HARBOR", "DEEP_CURRENT", "WAVE"],
+      "avoid_reason": "P2: error semantic != brand/success/info semantics"
+    },
+    "SUNRISE": {
+      "companions": ["CORAL", "ORANGE", "IVORY"],
+      "accents": ["ORANGE"],
+      "avoid": ["DEEP_CURRENT", "HARBOR"],
+      "avoid_reason": "P2: warning semantic != brand/success"
+    },
+    "ORANGE": {
+      "companions": ["SUNRISE", "CORAL", "IVORY"],
+      "accents": ["SUNRISE"],
+      "avoid": ["ABYSS", "HARBOR", "DEEP_CURRENT"],
+      "avoid_reason": "P1: warm on cool-neutral; P4: high-energy needs dominance"
+    },
+    "SLATE": {
+      "companions": ["ABYSS", "IVORY", "DUSK_REEF", "DEEP_CURRENT"],
+      "accents": ["DEEP_CURRENT", "CORAL"],
+      "avoid": [],
+      "avoid_reason": "Neutral works with all temperatures"
+    },
+    "LINEN": {
+      "companions": ["SLATE", "ABYSS", "DEEP_CURRENT", "WAVE"],
+      "accents": ["DEEP_CURRENT", "HARBOR"],
+      "avoid": ["CORAL", "ORANGE"],
+      "avoid_reason": "P1: cool family; warm colors clash"
+    },
+    "IVORY": {
+      "companions": ["SLATE", "DUSK_REEF", "SUNRISE", "LINEN"],
+      "accents": ["DEEP_CURRENT", "CORAL"],
+      "avoid": [],
+      "avoid_reason": "Warm-neutral accepts all accents - primary light mode base"
+    },
+    "DUSK_REEF": {
+      "companions": ["ABYSS", "SLATE", "DEEP_CURRENT"],
+      "accents": ["DEEP_CURRENT", "HARBOR"],
+      "avoid": ["ORANGE", "SUNRISE"],
+      "avoid_reason": "P1: cool-neutral base; warm oranges clash"
+    }
+  },
+
+  "glass": {
+    "depth1_elevated": {
+      "opacity": 60,
+      "blur": "8px",
+      "light": "bg-white/60 backdrop-blur-[8px]",
+      "dark": "bg-black/60 backdrop-blur-[8px]",
+      "textStrategy": "direct",
+      "textColor": "High-contrast text directly on glass (white on dark, ABYSS[900] on light)",
+      "notes": "60%+ opacity with 8px blur = sufficient contrast for text"
+    },
+    "depth2_card": {
+      "opacity": 40,
+      "blur": "4px",
+      "light": "bg-white/40 backdrop-blur-[4px]",
+      "dark": "bg-black/40 backdrop-blur-[4px]",
+      "border": "border-2 border-accent",
+      "textStrategy": "semantic-or-nested",
+      "textColor": "Semantic tokens (text-primary) OR place text on nested solid surface",
+      "notes": "40% opacity acceptable when: (1) semantic tokens used, (2) blur provides sufficient uniformity"
+    },
+    "depth3_surface": {
+      "opacity": 20,
+      "blur": "2px",
+      "light": "bg-white/20 backdrop-blur-[2px]",
+      "dark": "bg-black/20 backdrop-blur-[2px]",
+      "textStrategy": "nested-solid-required",
+      "textColor": "MUST place text on nested solid surface (bg-surface)",
+      "notes": "20% opacity = too transparent for direct text; use for decorative layers only"
+    },
+    "rules": {
+      "minOpacityForDirectText": 60,
+      "minOpacityForSemanticText": 40,
+      "belowMinOpacity": "Text must be on nested solid surface (bg-surface)",
+      "backdropBlurRequired": true,
+      "nestedGlass": "FORBIDDEN - use solid bg-surface inside glass containers",
+      "textPlacementDecisionTree": [
+        "opacity >= 60% -> direct text OK (high contrast colors)",
+        "opacity 40-59% -> semantic tokens OR nested solid surface",
+        "opacity < 40% -> nested solid surface REQUIRED"
+      ]
+    },
+    "examples": {
+      "correct": [
+        "bg-white/60 backdrop-blur-[8px] + text-abyss-900 (direct)",
+        "bg-white/40 backdrop-blur-[4px] + text-primary (semantic)",
+        "bg-white/40 backdrop-blur-[4px] > div.bg-surface > text-primary (nested)",
+        "bg-white/20 backdrop-blur-[2px] > div.bg-surface > content (nested required)"
+      ],
+      "forbidden": [
+        "bg-white/20 + text-primary (no nested surface, too transparent)",
+        "bg-white/40 without backdrop-blur (blur required)",
+        "bg-white/40 > bg-white/20 (nested glass forbidden)"
+      ]
+    }
+  },
+
+  "forbidden": [
+    {
+      "pattern": "Same family on itself",
+      "examples": ["ABYSS[200] on ABYSS[500]", "CORAL[300] on CORAL[600]"],
+      "reason": "Insufficient contrast, colors blend",
+      "exceptions": []
+    },
+    {
+      "pattern": "Raw hex colors",
+      "examples": ["#FF0000", "rgb(255,0,0)"],
+      "reason": "Breaks themes, not maintainable",
+      "exceptions": []
+    },
+    {
+      "pattern": "Standard Tailwind colors",
+      "examples": ["bg-blue-500", "text-red-600"],
+      "reason": "Not DDS tokens, inconsistent",
+      "exceptions": []
+    },
+    {
+      "pattern": "Opacity on semantic tokens",
+      "examples": ["bg-muted-bg/30", "text-primary/50"],
+      "reason": "Use glass patterns or solid tokens",
+      "exceptions": [
+        {
+          "pattern": "ring-error/20",
+          "context": "input error state focus ring",
+          "reason": "Subtle error indication without overwhelming the input"
+        },
+        {
+          "pattern": "ring-accent/20",
+          "context": "focus rings on interactive elements",
+          "reason": "Soft focus indication that doesn't compete with content"
+        }
+      ]
+    },
+    {
+      "pattern": "Text on low-opacity glass without backdrop",
+      "examples": ["bg-white/20 (no blur)", "bg-black/30"],
+      "reason": "Text unreadable on varied backgrounds",
+      "exceptions": []
+    }
+  ],
+
+  "escapeHatch": {
+    "attribute": "data-dds-override",
+    "usage": "Add to element when intentionally breaking rules",
+    "example": "<div data-dds-override=\"P1-temperature\" className=\"bg-abyss-900 text-coral-500\">",
+    "note": "Document reason in code comment; hookify will skip validation",
+    "validReasons": [
+      "Brand requirement from design",
+      "Third-party component styling",
+      "Animation intermediate state",
+      "Accessibility override (user preference)"
+    ]
+  },
+
+  "composite_rules": {
+    "_note": "Inner context rules take precedence; outer provides backdrop only",
+
+    "valid_nesting": {
+      "modal > card": {
+        "description": "Card inside modal dialog",
+        "behavior": "Card uses depth 2 rules; modal provides scrim + blur backdrop",
+        "example": "Modal with bg-black/60 contains Card with bg-elevated"
+      },
+      "card > surface": {
+        "description": "Surface nested inside card (most common)",
+        "behavior": "Surface uses depth 3 rules; inherits card's theme context",
+        "example": "Card contains SearchFilter with bg-surface border-default"
+      },
+      "page > card": {
+        "description": "Card on page background",
+        "behavior": "Card uses depth 2 rules; may use glass on page bg",
+        "example": "bg-page contains Card with bg-white/40 backdrop-blur"
+      }
+    },
+
+    "forbidden_nesting": [
+      {
+        "pattern": "glass > glass",
+        "reason": "Nested glass creates unpredictable blur stacking",
+        "fix": "Use solid bg-surface inside glass containers"
+      },
+      {
+        "pattern": "surface > card",
+        "reason": "Inverted depth hierarchy (surface is depth 3, card is depth 2)",
+        "fix": "Card should contain surface, not vice versa"
+      },
+      {
+        "pattern": "badge > badge",
+        "reason": "Nested badges create visual noise",
+        "fix": "Combine into single badge with compound status"
+      }
+    ],
+
+    "decision_rule": "When in doubt: inner element's context rules apply for colors/borders; outer element provides only background/backdrop"
+  }
+}
