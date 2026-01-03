@@ -30,6 +30,7 @@ import {
   Smartphone,
   Grid3X3,
   Package,
+  Plug,
 } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 
@@ -48,6 +49,7 @@ export interface Prompt {
 }
 
 export type PromptCategory =
+  | 'planning'
   | 'stories'
   | 'components'
   | 'tokens'
@@ -58,6 +60,7 @@ export type PromptCategory =
   | 'documentation'
   | 'review'
   | 'delivery'
+  | 'mcp'
 
 // =============================================================================
 // CATEGORY CONFIG - Using Tailwind classes
@@ -73,6 +76,13 @@ const CATEGORY_CONFIG: Record<
     headerClass: string
   }
 > = {
+  planning: {
+    label: 'Planning',
+    icon: <Brain className="w-4 h-4" />,
+    badgeClass: 'bg-accent-subtle text-accent',
+    activeClass: 'bg-accent-strong text-inverse',
+    headerClass: 'text-accent',
+  },
   stories: {
     label: 'Stories',
     icon: <BookOpen className="w-4 h-4" />,
@@ -142,6 +152,13 @@ const CATEGORY_CONFIG: Record<
     badgeClass: 'bg-error-subtle text-error',
     activeClass: 'bg-error-strong text-inverse',
     headerClass: 'text-error',
+  },
+  mcp: {
+    label: 'MCP Tools',
+    icon: <Plug className="w-4 h-4" />,
+    badgeClass: 'bg-info-subtle text-info',
+    activeClass: 'bg-info-strong text-inverse',
+    headerClass: 'text-info',
   },
 }
 
