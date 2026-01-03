@@ -364,5 +364,23 @@ export default tseslint.config(
     rules: {
       'no-restricted-syntax': 'off',
     },
+  },
+  {
+    // DataTable column definitions use width/minWidth as config values, not CSS styles
+    // These are API configuration objects passed to DataTable, not inline styles
+    files: [
+      'src/flow/components/corrective-actions/**/*.tsx',
+      'src/components/ui/DataTable.tsx',
+    ],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        // Keep color rules active, but disable spacing rule that catches column widths
+        {
+          selector: 'Literal[value=/^#[0-9A-Fa-f]{3,8}$/]',
+          message: '🚫 Hardcoded hex color detected. Use design tokens instead.',
+        },
+      ],
+    },
   }
 )
