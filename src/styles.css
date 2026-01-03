@@ -385,6 +385,23 @@
   .dark\:hover\:border-success:is(.dark *):hover { border-color: var(--color-success); }
   .dark\:hover\:text-on-status:is(.dark *):hover { color: #FFFFFF; }
 
+  /* ActionTile hover/active - WHITE icon on colored backgrounds
+   * Utility classes for Tailwind arbitrary selectors in component */
+  .stroke-white { stroke: #FFFFFF; }
+
+  /* Fallback CSS selectors for ActionTile icons */
+  [data-slot="action-tile"][data-slot="action-tile"]:hover,
+  [data-slot="action-tile"][data-slot="action-tile"]:active {
+    color: #FFFFFF;
+  }
+  [data-slot="action-tile"]:hover svg,
+  [data-slot="action-tile"]:active svg,
+  [data-slot="action-tile"]:hover svg *,
+  [data-slot="action-tile"]:active svg * {
+    color: #FFFFFF;
+    stroke: #FFFFFF;
+  }
+
   /* Focus ring variants */
   .focus-visible\:ring-accent\/30:focus-visible {
     --tw-ring-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
