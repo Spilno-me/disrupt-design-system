@@ -18,7 +18,7 @@
 | `get_design_tokens` | Token value reference |
 | `get_color_guidance` | Color usage rules |
 | `check_token_usage` | Token validation |
-| `get_design_philosophy` | Wu Wei principles |
+| `get_design_philosophy` | Wu Wei + MAYA principles |
 
 **Outcome:** AI can query DDS knowledge and validate tokens.
 

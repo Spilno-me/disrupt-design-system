@@ -6,7 +6,7 @@
  * - Component metadata (props, variants, status)
  * - Design tokens (colors, spacing, typography)
  * - Color guidance (semantic colors, contrast requirements)
- * - Design system philosophy (Wu Wei principles)
+ * - Design philosophy (Wu Wei engineering + MAYA UX principles)
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -15,6 +15,12 @@ import { z } from "zod";
 import { readFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+
+// Import color intelligence tools
+import { registerColorRecommendationTool } from "./tools/colorRecommendation.js";
+import { registerColorHarmonyTool } from "./tools/colorHarmony.js";
+import { registerColorValidationTool } from "./tools/colorValidation.js";
+import { registerGlassRulesTool } from "./tools/glassRules.js";
 
 // =============================================================================
 // SETUP
@@ -26,10 +32,27 @@ const __dirname = dirname(__filename);
 // Find the DDS root directory (parent of mcp/)
 const DDS_ROOT = join(__dirname, "../..");
 const CLAUDE_DIR = join(DDS_ROOT, ".claude");
+const DATA_DIR = join(DDS_ROOT, "src/data");
 
-// Load JSON files
+// Load JSON files from .claude directory
 function loadJSON<T>(filename: string): T | null {
   const filepath = join(CLAUDE_DIR, filename);
+  if (!existsSync(filepath)) {
+    console.error(`File not found: ${filepath}`);
+    return null;
+  }
+  try {
+    const content = readFileSync(filepath, "utf-8");
+    return JSON.parse(content) as T;
+  } catch (e) {
+    console.error(`Error loading ${filename}:`, e);
+    return null;
+  }
+}
+
+// Load JSON files from src/data directory
+function loadDataJSON<T>(filename: string): T | null {
+  const filepath = join(DATA_DIR, filename);
   if (!existsSync(filepath)) {
     console.error(`File not found: ${filepath}`);
     return null;
@@ -58,21 +81,34 @@ interface ComponentInfo {
   for?: string;
 }
 
+interface PhilosophyRules {
+  name: string;
+  principle: string;
+  rules: Record<string, { do: string; dont: string; test: string }>;
+  quote: string;
+}
+
+interface EngineeringPhilosophy extends PhilosophyRules {
+  preCommitChecklist: string[];
+}
+
+interface UXPhilosophy extends PhilosophyRules {
+  origin: string;
+  applicationAreas: string[];
+  preDesignChecklist: string[];
+}
+
 interface AgentContext {
   meta: {
     project: string;
     version: string;
     designPhilosophy: string;
     engineeringPhilosophy: string;
+    uxPhilosophy: string;
   };
   criticalRules: {
-    philosophy: {
-      name: string;
-      principle: string;
-      rules: Record<string, { do: string; dont: string; test: string }>;
-      preCommitChecklist: string[];
-      quote: string;
-    };
+    engineeringPhilosophy: EngineeringPhilosophy;
+    uxPhilosophy: UXPhilosophy;
     tokens: {
       forbidden: string[];
       required: string;
@@ -164,6 +200,63 @@ interface ContrastMatrix {
   }>;
 }
 
+// Color Intelligence types (from src/data/color-intelligence.json)
+interface ColorIntelligence {
+  _meta: Record<string, unknown>;
+  contexts: Record<string, unknown>;
+  boundaries: Record<string, unknown>;
+  harmony_principles: Record<string, unknown>;
+  color_properties: Record<string, {
+    temperature: string;
+    semantic: string | null;
+    role: string;
+    compatible_temps: string[];
+    note?: string;
+  }>;
+  harmony_lookup: Record<string, {
+    companions: string[];
+    accents: string[];
+    avoid: string[];
+    avoid_reason: string;
+  }>;
+  glass: {
+    depth1_elevated: GlassDepthConfig;
+    depth2_card: GlassDepthConfig;
+    depth3_surface: GlassDepthConfig;
+    rules: {
+      minOpacityForDirectText: number;
+      minOpacityForSemanticText: number;
+      belowMinOpacity: string;
+      backdropBlurRequired: boolean;
+      nestedGlass: string;
+      textPlacementDecisionTree: string[];
+    };
+    examples: {
+      correct: string[];
+      forbidden: string[];
+    };
+  };
+  forbidden: Array<{
+    pattern: string;
+    examples: string[];
+    reason: string;
+    exceptions?: Array<{ pattern: string; context: string; reason: string }>;
+  }>;
+  escapeHatch: Record<string, unknown>;
+  composite_rules: Record<string, unknown>;
+}
+
+interface GlassDepthConfig {
+  opacity: number;
+  blur: string;
+  light: string;
+  dark: string;
+  border?: string;
+  textStrategy: string;
+  textColor: string;
+  notes: string;
+}
+
 // =============================================================================
 // DATA LOADERS
 // =============================================================================
@@ -171,6 +264,7 @@ interface ContrastMatrix {
 const agentContext = loadJSON<AgentContext>("agent-context.json");
 const colorMatrix = loadJSON<ColorMatrix>("color-matrix.json");
 const contrastMatrix = loadJSON<ContrastMatrix>("contrast-matrix.json");
+const colorIntelligence = loadDataJSON<ColorIntelligence>("color-intelligence.json");
 
 // =============================================================================
 // MCP SERVER
@@ -498,21 +592,27 @@ server.tool(
 
 server.tool(
   "get_design_philosophy",
-  "Get DDS design philosophy and engineering principles (Wu Wei)",
+  "Get DDS design philosophy and principles (Wu Wei engineering + MAYA UX)",
   {},
   async () => {
     if (!agentContext) {
       return { content: [{ type: "text" as const, text: "Error: Agent context not loaded" }] };
     }
 
-    const philosophy = agentContext.criticalRules.philosophy;
+    let response = "# DDS Design Philosophy\n\n";
+    response += "DDS is guided by two complementary principles:\n";
+    response += "- **Wu Wei (無為)** - Engineering philosophy: work with the grain\n";
+    response += "- **MAYA** - UX philosophy: innovate within acceptance\n\n";
+    response += "---\n\n";
 
-    let response = `# ${philosophy.name}\n\n`;
-    response += `**Principle:** ${philosophy.principle}\n\n`;
-    response += `> "${philosophy.quote}"\n\n`;
+    // Wu Wei - Engineering Philosophy
+    const wuWei = agentContext.criticalRules.engineeringPhilosophy;
+    response += `# ${wuWei.name}\n\n`;
+    response += `**Principle:** ${wuWei.principle}\n\n`;
+    response += `> "${wuWei.quote}"\n\n`;
 
     response += "## Rules\n\n";
-    for (const [name, rule] of Object.entries(philosophy.rules)) {
+    for (const [name, rule] of Object.entries(wuWei.rules)) {
       response += `### ${name}\n`;
       response += `- **Do:** ${rule.do}\n`;
       response += `- **Dont:** ${rule.dont}\n`;
@@ -520,7 +620,34 @@ server.tool(
     }
 
     response += "## Pre-Commit Checklist\n";
-    for (const item of philosophy.preCommitChecklist) {
+    for (const item of wuWei.preCommitChecklist) {
+      response += `- [ ] ${item}\n`;
+    }
+
+    response += "\n---\n\n";
+
+    // MAYA - UX Philosophy
+    const maya = agentContext.criticalRules.uxPhilosophy;
+    response += `# ${maya.name}\n\n`;
+    response += `**Principle:** ${maya.principle}\n\n`;
+    response += `**Origin:** ${maya.origin}\n\n`;
+    response += `> "${maya.quote}"\n\n`;
+
+    response += "## Rules\n\n";
+    for (const [name, rule] of Object.entries(maya.rules)) {
+      response += `### ${name}\n`;
+      response += `- **Do:** ${rule.do}\n`;
+      response += `- **Dont:** ${rule.dont}\n`;
+      response += `- **Test:** ${rule.test}\n\n`;
+    }
+
+    response += "## Application Areas\n";
+    for (const area of maya.applicationAreas) {
+      response += `- ${area}\n`;
+    }
+
+    response += "\n## Pre-Design Checklist\n";
+    for (const item of maya.preDesignChecklist) {
       response += `- [ ] ${item}\n`;
     }
 
@@ -779,6 +906,32 @@ server.tool(
     return { content: [{ type: "text" as const, text: response }] };
   }
 );
+
+// =============================================================================
+// COLOR INTELLIGENCE TOOLS
+// =============================================================================
+
+// Register color intelligence tools (from src/data/color-intelligence.json)
+// These provide context-aware color recommendations, harmony rules, validation, and glass styling
+
+// Cast to the expected types for the tool modules
+const colorIntelligenceForTools = colorIntelligence as unknown as Parameters<typeof registerColorRecommendationTool>[1];
+const colorIntelligenceForHarmony = colorIntelligence as unknown as Parameters<typeof registerColorHarmonyTool>[1];
+const colorIntelligenceForValidation = colorIntelligence as unknown as Parameters<typeof registerColorValidationTool>[1];
+const contrastMatrixForValidation = contrastMatrix as unknown as Parameters<typeof registerColorValidationTool>[2];
+const colorIntelligenceForGlass = colorIntelligence as unknown as Parameters<typeof registerGlassRulesTool>[1];
+
+// get_color_recommendation: Context-aware color token recommendations
+registerColorRecommendationTool(server, colorIntelligenceForTools);
+
+// get_color_harmony: Color harmony rules (companions, accents, avoid)
+registerColorHarmonyTool(server, colorIntelligenceForHarmony);
+
+// validate_color_choice: Validate foreground/background combinations
+registerColorValidationTool(server, colorIntelligenceForValidation, contrastMatrixForValidation);
+
+// get_glass_rules: Glass/frosted UI styling rules by depth
+registerGlassRulesTool(server, colorIntelligenceForGlass);
 
 // =============================================================================
 // MAIN

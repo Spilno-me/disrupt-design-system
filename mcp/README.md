@@ -21,7 +21,7 @@ MCP (Model Context Protocol) server that enables AI assistants to follow DDS rul
 | `get_design_tokens` | Token values for colors/shadows/radius | `get_design_tokens({category: "shadows"})` |
 | `get_color_guidance` | Color rules for background types | `get_color_guidance({category: "dark_backgrounds"})` |
 | `check_token_usage` | Validate if token is DDS-compliant | `check_token_usage({token: "bg-blue-500"})` |
-| `get_design_philosophy` | Wu Wei principles and rules | `get_design_philosophy({})` |
+| `get_design_philosophy` | Wu Wei + MAYA principles | `get_design_philosophy({})` |
 | `check_contrast` | WCAG contrast ratio between colors | `check_contrast({background: "ABYSS[900]", foreground: "PRIMITIVES.white"})` |
 | `get_accessible_colors` | Find colors that pass WCAG | `get_accessible_colors({background: "ABYSS[900]", minLevel: "AAA"})` |
 | `list_color_tokens` | List available color tokens | `list_color_tokens({filter: "ABYSS"})` |
