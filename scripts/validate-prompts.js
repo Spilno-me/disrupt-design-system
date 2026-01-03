@@ -114,6 +114,10 @@ async function main() {
     const withTsx = pathExists(cleanPath + '.tsx')
     if (withTsx.exists) continue
 
+    // Try with .mdx extension (Storybook docs)
+    const withMdx = pathExists(cleanPath + '.mdx')
+    if (withMdx.exists) continue
+
     // Path not found - only report if it looks like a real path (not partial)
     if (path.includes('_infrastructure') || path.split('/').length >= 3) {
       errors.push({ path, type: 'src' })
