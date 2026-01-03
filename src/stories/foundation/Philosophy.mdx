@@ -1,0 +1,481 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Compass,
+  Feather,
+  Target,
+  Eye,
+  CheckCircle,
+  XCircle,
+  ArrowRight,
+  Lightbulb,
+  Users,
+  Layers,
+  Sparkles,
+  Workflow,
+  BookOpen,
+  Gauge,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/Design Philosophy" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Design Philosophy"
+  description="DDS is guided by two complementary principles: Wu Wei for engineering (work with the grain) and MAYA for UX (innovate within acceptance)."
+  gradient="purple"
+  decorativeIcon={<Compass size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Philosophy-Driven Design.</strong> These aren't just guidelines—they're the foundation
+  of every DDS decision. Understanding them helps you build components that feel native to the system.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Wu Wei (無為) - Effortless Action</h2>
+
+<SectionHeader
+  icon={<Feather size={20} />}
+  title="Engineering Philosophy"
+  description="Work with the grain, not against it."
+/>
+
+<div style={{
+  background: `linear-gradient(135deg, ${DUSK_REEF[50]} 0%, ${PRIMITIVES.white} 100%)`,
+  borderRadius: RADIUS.lg,
+  border: `1px solid ${DUSK_REEF[200]}`,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <blockquote style={{
+    margin: 0,
+    padding: 0,
+    fontStyle: 'italic',
+    fontSize: TYPOGRAPHY.fontSize.lg,
+    color: DUSK_REEF[700],
+    lineHeight: 1.6,
+  }}>
+    "The sage does not act, yet nothing is left undone."
+    <footer style={{
+      marginTop: SPACING.px.tight,
+      fontStyle: 'normal',
+      fontSize: TYPOGRAPHY.fontSize.sm,
+      color: DUSK_REEF[500],
+    }}>— Tao Te Ching</footer>
+  </blockquote>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Simple Over Clever">
+    Let solutions emerge naturally from problems. Can a junior dev understand this in 30 seconds?
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Over-Engineer">
+    Avoid adding abstractions prematurely. Three similar lines are better than a premature abstraction.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Add Only What's Needed">
+    Solve today's problem, not imaginary future ones. DRY zealotry creates unnecessary complexity.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Speculative Generalization">
+    Don't build for hypothetical requirements. If you're not sure it's needed, it probably isn't.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Trust the Flow">
+    Use existing patterns, tokens, and components first. Check agent-context.json before inventing.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Invent When Existing Works">
+    Don't create new patterns when established ones already solve the problem.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Step Back If Fighting">
+    If implementation feels like a fight—STOP. Find the natural path that works with the system.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Hack Around System">
+    Never force solutions. Resistance is a signal that you're working against the architecture.
+  </GuidelineCard>
+</div>
+
+<h3 style={{
+  fontSize: TYPOGRAPHY.fontSize.lg,
+  fontWeight: TYPOGRAPHY.fontWeight.semibold,
+  marginBottom: SPACING.px.base,
+  color: ABYSS[900],
+}}>Pre-Commit Checklist</h3>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.md,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    "Am I adding more complexity than needed?",
+    "Does an existing pattern already solve this?",
+    "Am I fighting the codebase structure?",
+    "Will this break existing consumers?",
+    "Would deletion be better than addition?",
+  ].map((item, i) => (
+    <div key={i} style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      padding: `${SPACING.px.tight} 0`,
+      borderBottom: i < 4 ? `1px solid ${SLATE[200]}` : 'none',
+    }}>
+      <div style={{
+        width: '20px',
+        height: '20px',
+        borderRadius: RADIUS.xs,
+        border: `2px solid ${DUSK_REEF[400]}`,
+        flexShrink: 0,
+      }} />
+      <span style={{ color: ABYSS[700], fontSize: TYPOGRAPHY.fontSize.sm }}>{item}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>MAYA - Most Advanced Yet Acceptable</h2>
+
+<SectionHeader
+  icon={<Target size={20} />}
+  title="UX Philosophy"
+  description="Innovate in visuals and behaviors—preserve mental models and task flow."
+/>
+
+<div style={{
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[50]} 0%, ${PRIMITIVES.white} 100%)`,
+  borderRadius: RADIUS.lg,
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <blockquote style={{
+    margin: 0,
+    padding: 0,
+    fontStyle: 'italic',
+    fontSize: TYPOGRAPHY.fontSize.lg,
+    color: DEEP_CURRENT[700],
+    lineHeight: 1.6,
+  }}>
+    "The adult public's taste is not necessarily ready to accept the logical solutions to their requirements if the solution implies too vast a departure from what they have been conditioned into accepting as the norm."
+    <footer style={{
+      marginTop: SPACING.px.tight,
+      fontStyle: 'normal',
+      fontSize: TYPOGRAPHY.fontSize.sm,
+      color: DEEP_CURRENT[500],
+    }}>— Raymond Loewy (Industrial Designer)</footer>
+  </blockquote>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Innovate in Small Steps">
+    Keep core interaction patterns familiar. Modernize progressively—users should immediately understand.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Redesign Everything">
+    Avoid radical changes that break muscle memory. Evolution beats revolution.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Anchor to Familiar">
+    New concepts should use existing mental models. Familiar icons, labels, and layouts reduce friction.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Force New Paradigms">
+    Don't make users learn entirely new interaction patterns when established ones work.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Respect Conventions">
+    Follow platform guidelines, accessibility heuristics, and common UX patterns.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Different for Different's Sake">
+    Only break conventions when innovation adds real, measurable value.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Modern Visuals, Stable Interaction">
+    Update typography, spacing, motion, micro-interactions—while keeping interactions predictable.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Change Learned Behaviors">
+    Users have muscle memory. Changing where buttons live or how forms work creates friction.
+  </GuidelineCard>
+</div>
+
+<h3 style={{
+  fontSize: TYPOGRAPHY.fontSize.lg,
+  fontWeight: TYPOGRAPHY.fontWeight.semibold,
+  marginBottom: SPACING.px.base,
+  color: ABYSS[900],
+}}>Application Areas</h3>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { icon: <Layers size={20} />, title: "Design System Evolution", desc: "Refactors and migrations" },
+    { icon: <Sparkles size={20} />, title: "Product Redesigns", desc: "Major UI overhauls" },
+    { icon: <Workflow size={20} />, title: "AI/Automation Workflows", desc: "New interaction paradigms" },
+    { icon: <Compass size={20} />, title: "Navigation Changes", desc: "Layout migrations" },
+    { icon: <BookOpen size={20} />, title: "Legacy Re-theming", desc: "Enterprise tool updates" },
+    { icon: <Users size={20} />, title: "User Onboarding", desc: "Feature discovery" },
+  ].map((item, i) => (
+    <div key={i} style={{
+      background: PRIMITIVES.softLinen,
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.cardGap,
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{
+        width: '36px',
+        height: '36px',
+        borderRadius: RADIUS.sm,
+        background: DEEP_CURRENT[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.tight,
+        color: DEEP_CURRENT[600],
+      }}>
+        {item.icon}
+      </div>
+      <div style={{ fontWeight: TYPOGRAPHY.fontWeight.semibold, fontSize: TYPOGRAPHY.fontSize.sm, color: ABYSS[900] }}>
+        {item.title}
+      </div>
+      <div style={{ fontSize: TYPOGRAPHY.fontSize.xs, color: SLATE[500], marginTop: '2px' }}>
+        {item.desc}
+      </div>
+    </div>
+  ))}
+</div>
+
+<h3 style={{
+  fontSize: TYPOGRAPHY.fontSize.lg,
+  fontWeight: TYPOGRAPHY.fontWeight.semibold,
+  marginBottom: SPACING.px.base,
+  color: ABYSS[900],
+}}>Pre-Design Checklist</h3>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.md,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    "Is this innovation in visuals or in behavior?",
+    "What familiar pattern can anchor this new concept?",
+    "Am I breaking conventions? If so, is it worth it?",
+    "Will users understand this in 5 seconds?",
+    "Too advanced? Pull back. Too boring? Push forward.",
+  ].map((item, i) => (
+    <div key={i} style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      padding: `${SPACING.px.tight} 0`,
+      borderBottom: i < 4 ? `1px solid ${SLATE[200]}` : 'none',
+    }}>
+      <div style={{
+        width: '20px',
+        height: '20px',
+        borderRadius: RADIUS.xs,
+        border: `2px solid ${DEEP_CURRENT[400]}`,
+        flexShrink: 0,
+      }} />
+      <span style={{ color: ABYSS[700], fontSize: TYPOGRAPHY.fontSize.sm }}>{item}</span>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>How They Work Together</h2>
+
+<SectionHeader
+  icon={<Gauge size={20} />}
+  title="Complementary Principles"
+  description="Wu Wei for HOW you build. MAYA for WHAT you build."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: `linear-gradient(180deg, ${DUSK_REEF[50]} 0%, ${PRIMITIVES.white} 100%)`,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${DUSK_REEF[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Feather size={24} color={DUSK_REEF[600]} />
+      <span style={{
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+        fontSize: TYPOGRAPHY.fontSize.lg,
+        color: DUSK_REEF[700],
+      }}>Wu Wei</span>
+    </div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.sm, color: ABYSS[700], marginBottom: SPACING.px.base }}>
+      <strong>Engineering: HOW you build</strong>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: ABYSS[600], fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>Code architecture</li>
+      <li>Component structure</li>
+      <li>API design</li>
+      <li>Refactoring decisions</li>
+      <li>Technical debt</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: `linear-gradient(180deg, ${DEEP_CURRENT[50]} 0%, ${PRIMITIVES.white} 100%)`,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${DEEP_CURRENT[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Target size={24} color={DEEP_CURRENT[600]} />
+      <span style={{
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+        fontSize: TYPOGRAPHY.fontSize.lg,
+        color: DEEP_CURRENT[700],
+      }}>MAYA</span>
+    </div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.sm, color: ABYSS[700], marginBottom: SPACING.px.base }}>
+      <strong>UX: WHAT you build</strong>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: ABYSS[600], fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>Visual design choices</li>
+      <li>Interaction patterns</li>
+      <li>Feature introduction</li>
+      <li>Navigation changes</li>
+      <li>User experience</li>
+    </ul>
+  </div>
+</div>
+
+<InfoBox variant="info">
+  <strong>In Practice:</strong> When building a new feature, Wu Wei asks "Am I over-engineering this?"
+  while MAYA asks "Will users immediately understand this?" Both questions should have satisfying answers.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Validation</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <h4 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.md,
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      color: ABYSS[900],
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+    }}>
+      <CheckCircle size={20} color="#22C55E" />
+      Wu Wei Success Signals
+    </h4>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: ABYSS[600], fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>Code feels natural, not forced</li>
+      <li>Junior devs understand it quickly</li>
+      <li>No fighting with the architecture</li>
+      <li>Existing patterns were reused</li>
+      <li>Complexity was reduced, not added</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <h4 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.md,
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      color: ABYSS[900],
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+    }}>
+      <CheckCircle size={20} color="#22C55E" />
+      MAYA Success Signals
+    </h4>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: ABYSS[600], fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>"Looks fresh but I immediately understood it"</li>
+      <li>Quick user adoption</li>
+      <li>Low cognitive load</li>
+      <li>Familiar interaction patterns</li>
+      <li>Modern visuals, stable behaviors</li>
+    </ul>
+  </div>
+</div>
+
+<InfoBox variant="warning">
+  <strong>Remember:</strong> If users say "this is confusing" → MAYA violation.
+  If implementation feels like a fight → Wu Wei violation.
+  Both philosophies serve the same goal: effortless, intuitive experiences.
+</InfoBox>

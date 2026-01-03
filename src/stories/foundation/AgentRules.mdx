@@ -1,0 +1,857 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Bot,
+  Code,
+  Palette,
+  Layout,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Lightbulb,
+  FileCode,
+  Layers,
+  Sparkles,
+  Shield,
+  Zap,
+  BookOpen,
+  Terminal,
+  Eye,
+  MousePointer,
+  Accessibility,
+  TestTube,
+  Package,
+  GitBranch,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+  HARBOR,
+  CORAL,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/Agent Rules" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Agent Rules & Guidelines"
+  description="Comprehensive documentation of all DDS development rules. These rules are enforced by AI agents (Claude) and should be followed by all developers."
+  gradient="teal"
+  decorativeIcon={<Bot size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Source of Truth.</strong> These rules live in <code>.claude/</code> folder and are automatically
+  enforced during AI-assisted development. This page provides a human-readable reference.
+</InfoBox>
+
+---
+
+{/* Table of Contents */}
+<div style={{
+  background: ABYSS[50],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  border: `1px solid ${ABYSS[200]}`,
+}}>
+  <h3 style={{ marginTop: 0, marginBottom: SPACING.px.base, color: ABYSS[800] }}>
+    📑 Table of Contents
+  </h3>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: SPACING.px.tight }}>
+    <span>• <a href="#clean-code">Clean Code Rules</a></span>
+    <span>• <a href="#component-dev">Component Development</a></span>
+    <span>• <a href="#ux-laws">UX Laws</a></span>
+    <span>• <a href="#defensive">Defensive Components</a></span>
+    <span>• <a href="#styling">Styling & Tokens</a></span>
+    <span>• <a href="#spacing">Spacing Rules</a></span>
+    <span>• <a href="#storybook">Storybook Rules</a></span>
+    <span>• <a href="#lessons">Lessons Learned</a></span>
+    <span>• <a href="#hookify">Hookify Enforcement</a></span>
+  </div>
+</div>
+
+---
+
+<h2 id="clean-code" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  Clean Code Rules (Uncle Bob's A+ Standard)
+</h2>
+
+<SectionHeader
+  icon={<Code size={20} />}
+  title="Code that reads like prose"
+  description="Functions that do one thing. No surprises."
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/clean-code-rules.md</code>
+</InfoBox>
+
+{/* Grading Rubric */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  boxShadow: SHADOWS.sm,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base, display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+    <CheckCircle size={18} color={HARBOR[500]} /> <span>Grading Rubric</span>
+  </h4>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight, color: ABYSS[700] }}>Category</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight, color: ABYSS[700] }}>A+ Standard</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Naming</td>
+        <td style={{ padding: SPACING.px.tight }}>Names express intent. No abbreviations. No mental mapping.</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Functions</td>
+        <td style={{ padding: SPACING.px.tight }}>Each function does ONE thing. &lt;20 lines ideal. Extract at &gt;30.</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Comments</td>
+        <td style={{ padding: SPACING.px.tight }}>JSDoc for public APIs. Design notes for WHY. No apologetic comments.</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Structure</td>
+        <td style={{ padding: SPACING.px.tight }}>Logical top-to-bottom flow. Helpers first, then main component.</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Errors</td>
+        <td style={{ padding: SPACING.px.tight }}>No silent failures. Users see feedback. Structured error returns.</td>
+      </tr>
+      <tr>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>SOLID</td>
+        <td style={{ padding: SPACING.px.tight }}>Single Responsibility. Open for extension. Clear abstractions.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{/* File Size Limits */}
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `1px solid ${CORAL[200]}`,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base, display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+    <AlertTriangle size={18} color={CORAL[600]} /> <span>File Size Limits</span>
+  </h4>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${CORAL[200]}` }}>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>File Type</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Max Lines</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>If Exceeded</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${CORAL[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Component</td>
+        <td style={{ padding: SPACING.px.tight }}>&lt;300</td>
+        <td style={{ padding: SPACING.px.tight }}>Extract sub-components</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${CORAL[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Dialog</td>
+        <td style={{ padding: SPACING.px.tight }}>&lt;400</td>
+        <td style={{ padding: SPACING.px.tight }}>Extract content sections</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${CORAL[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Types file</td>
+        <td style={{ padding: SPACING.px.tight }}>&lt;400</td>
+        <td style={{ padding: SPACING.px.tight }}>Move utilities to utils.ts</td>
+      </tr>
+      <tr>
+        <td style={{ padding: SPACING.px.tight }}>Utils file</td>
+        <td style={{ padding: SPACING.px.tight }}>&lt;150</td>
+        <td style={{ padding: SPACING.px.tight }}>Split by domain</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style={{ margin: `${SPACING.px.base} 0 0`, fontSize: TYPOGRAPHY.fontSize.sm, color: CORAL[700] }}>
+    <strong>God File Rule:</strong> Any file &gt;500 lines is a "God File" - split immediately.
+  </p>
+</div>
+
+---
+
+<h2 id="component-dev" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  Component Development Rules
+</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Wu Wei - Effortless Action"
+  description="Work WITH the system, not against it."
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/component-dev-rules.md</code>
+</InfoBox>
+
+{/* Pre-Build Checklist */}
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base, display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+    <CheckCircle size={18} color={DEEP_CURRENT[600]} /> <span>Pre-Build Checklist</span>
+  </h4>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${DEEP_CURRENT[200]}` }}>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Question</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>If Yes</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>If No</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${DEEP_CURRENT[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Does existing component solve this?</td>
+        <td style={{ padding: SPACING.px.tight, color: HARBOR[600], fontWeight: 600 }}>Use it. Stop.</td>
+        <td style={{ padding: SPACING.px.tight }}>Continue</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${DEEP_CURRENT[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Is there real use case (Figma/ticket)?</td>
+        <td style={{ padding: SPACING.px.tight }}>Continue</td>
+        <td style={{ padding: SPACING.px.tight, color: CORAL[600], fontWeight: 600 }}>Don't build</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${DEEP_CURRENT[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Will this break existing consumers?</td>
+        <td style={{ padding: SPACING.px.tight, color: CORAL[600], fontWeight: 600 }}>STOP. Deprecate instead.</td>
+        <td style={{ padding: SPACING.px.tight }}>Continue</td>
+      </tr>
+      <tr>
+        <td style={{ padding: SPACING.px.tight }}>Am I adding &gt;3 props?</td>
+        <td style={{ padding: SPACING.px.tight, color: CORAL[600], fontWeight: 600 }}>Step back. Simplify.</td>
+        <td style={{ padding: SPACING.px.tight }}>Continue</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{/* CVA Pattern */}
+<div style={{
+  background: ABYSS[900],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base, color: PRIMITIVES.white, display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+    <FileCode size={18} /> <span>CVA Pattern (Required for Variants)</span>
+  </h4>
+  <pre style={{
+    background: ABYSS[800],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    margin: 0,
+    overflow: 'auto',
+    fontSize: TYPOGRAPHY.fontSize.sm,
+    color: SLATE[100],
+  }}>{`const buttonVariants = cva(
+  "inline-flex items-center justify-center", // Base styles
+  {
+    variants: {
+      variant: {
+        primary: "bg-abyss-900 text-white",
+        secondary: "bg-slate-100 text-slate-900",
+        destructive: "bg-coral-500 text-white",
+      },
+      size: {
+        sm: "h-8 px-3 text-sm",
+        md: "h-10 px-4 text-base",
+        lg: "h-12 px-6 text-lg",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  }
+);`}</pre>
+</div>
+
+---
+
+<h2 id="ux-laws" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  UX Laws Reference
+</h2>
+
+<SectionHeader
+  icon={<MousePointer size={20} />}
+  title="Cognitive Science Principles"
+  description="Evidence-based UX patterns from lawsofux.com"
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/ux-laws-rules.md</code>
+</InfoBox>
+
+{/* Core Laws Grid */}
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: SPACING.px.base, marginBottom: SPACING.px.comfortable }}>
+  <FeatureCard
+    icon={<MousePointer size={20} />}
+    title="Fitts's Law"
+    description="Target size + distance matters. Minimum touch target: 44px (min-h-11)"
+    color={DEEP_CURRENT[500]}
+  />
+  <FeatureCard
+    icon={<Zap size={20} />}
+    title="Hick's Law"
+    description="Decision time ∝ options. Maximum 5-7 options before cognitive overload."
+    color={HARBOR[500]}
+  />
+  <FeatureCard
+    icon={<Layers size={20} />}
+    title="Miller's Law"
+    description="Working memory holds 7±2 items. Chunk information into groups."
+    color={DUSK_REEF[500]}
+  />
+  <FeatureCard
+    icon={<Zap size={20} />}
+    title="Doherty Threshold"
+    description="Response time must be <400ms or show a spinner. Users expect instant feedback."
+    color={CORAL[500]}
+  />
+</div>
+
+{/* Critical: Action Overflow Rule */}
+<div style={{
+  background: `linear-gradient(135deg, ${CORAL[50]} 0%, ${PRIMITIVES.white} 100%)`,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `2px solid ${CORAL[300]}`,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base, display: 'flex', alignItems: 'center', gap: SPACING.px.tight, color: CORAL[700] }}>
+    <AlertTriangle size={18} /> <span>CRITICAL: Action Overflow Rule</span>
+  </h4>
+  <div style={{ fontSize: TYPOGRAPHY.fontSize.lg, fontWeight: 700, marginBottom: SPACING.px.base, color: ABYSS[900] }}>
+    ≤3 actions = Visible buttons | ≥4 actions = Overflow menu
+  </div>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: SPACING.px.base }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+        <XCircle size={16} color={CORAL[600]} /> <strong style={{ color: CORAL[700] }}>WRONG</strong>
+      </div>
+      <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs, whiteSpace: 'pre-wrap' }}>{`// 3 actions hidden in menu
+<ActionSheet>
+  <Item>Edit</Item>
+  <Item>Copy</Item>
+  <Item>Delete</Item>
+</ActionSheet>`}</pre>
+    </div>
+    <div style={{ background: HARBOR[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+        <CheckCircle size={16} color={HARBOR[600]} /> <strong style={{ color: HARBOR[700] }}>CORRECT</strong>
+      </div>
+      <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs, whiteSpace: 'pre-wrap' }}>{`// 3 actions as visible buttons
+<ActionTile variant="info">Edit</ActionTile>
+<ActionTile variant="neutral">Copy</ActionTile>
+<ActionTile variant="destructive">Delete</ActionTile>`}</pre>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 id="defensive" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  Defensive Component Design
+</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="Resilient to Malformed Data"
+  description="Components that gracefully handle broken adapters."
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/defensive-component-rules.md</code>
+</InfoBox>
+
+{/* Validation Diagram */}
+<div style={{
+  background: ABYSS[50],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `1px solid ${ABYSS[200]}`,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base }}>Validation Layer: ORGANISM Only</h4>
+  <pre style={{
+    background: ABYSS[900],
+    color: SLATE[100],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    margin: 0,
+    overflow: 'auto',
+    fontSize: TYPOGRAPHY.fontSize.sm,
+  }}>{`┌─────────────────────────────────────────────────────┐
+│  ORGANISM (IncidentManagementTable)                  │
+│  ┌────────────────────────────────────────────────┐ │
+│  │  🛡️ VALIDATION LAYER                           │ │
+│  │  isValidSeverity(), isValidString()           │ │
+│  │  Shows DataError if invalid                   │ │
+│  └────────────────────────────────────────────────┘ │
+│                        │                            │
+│        ┌───────────────┼───────────────┐           │
+│        ▼               ▼               ▼           │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐     │
+│  │ MOLECULE │    │ MOLECULE │    │ MOLECULE │     │
+│  │ AgeBadge │    │StatusBadge│   │ Actions  │     │
+│  └──────────┘    └──────────┘    └──────────┘     │
+│        ▼               ▼               ▼           │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐     │
+│  │  ATOMS   │    │  ATOMS   │    │  ATOMS   │     │
+│  └──────────┘    └──────────┘    └──────────┘     │
+└─────────────────────────────────────────────────────┘`}</pre>
+  <table style={{ width: '100%', marginTop: SPACING.px.base, borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${ABYSS[200]}` }}>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Level</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Role</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Validation?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${ABYSS[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Atom</td>
+        <td style={{ padding: SPACING.px.tight }}>Dumb, reusable, no domain knowledge</td>
+        <td style={{ padding: SPACING.px.tight, color: CORAL[600] }}>❌ Trust props</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${ABYSS[100]}` }}>
+        <td style={{ padding: SPACING.px.tight }}>Molecule</td>
+        <td style={{ padding: SPACING.px.tight }}>Combines atoms, still generic</td>
+        <td style={{ padding: SPACING.px.tight, color: CORAL[600] }}>❌ Trust props</td>
+      </tr>
+      <tr>
+        <td style={{ padding: SPACING.px.tight }}>Organism</td>
+        <td style={{ padding: SPACING.px.tight }}>Domain-aware, API boundary</td>
+        <td style={{ padding: SPACING.px.tight, color: HARBOR[600], fontWeight: 600 }}>✅ Validate here</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 id="styling" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  CSS Styling Rules
+</h2>
+
+<SectionHeader
+  icon={<Palette size={20} />}
+  title="Token Selection Priority"
+  description="Semantic tokens first. Always prefer tokens that convey meaning."
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/css-styling-rules.md</code>
+</InfoBox>
+
+{/* Token Priority */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  boxShadow: SHADOWS.sm,
+}}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Priority</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Type</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Example</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>When</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}`, background: HARBOR[50] }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 700, color: HARBOR[700] }}>1st</td>
+        <td style={{ padding: SPACING.px.tight }}>Semantic</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>text-warning, bg-error</td>
+        <td style={{ padding: SPACING.px.tight }}>Color conveys meaning</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}`, background: DEEP_CURRENT[50] }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 700, color: DEEP_CURRENT[700] }}>2nd</td>
+        <td style={{ padding: SPACING.px.tight }}>Contextual</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>text-primary, bg-surface</td>
+        <td style={{ padding: SPACING.px.tight }}>UI structure</td>
+      </tr>
+      <tr style={{ background: SLATE[50] }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 700, color: SLATE[600] }}>3rd</td>
+        <td style={{ padding: SPACING.px.tight }}>Primitive</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>text-abyss-500</td>
+        <td style={{ padding: SPACING.px.tight }}>Only when neither above fits</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: SPACING.px.base, marginBottom: SPACING.px.comfortable }}>
+  <div style={{ background: HARBOR[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+      <CheckCircle size={16} color={HARBOR[600]} /> <strong style={{ color: HARBOR[700] }}>GOOD - Semantic</strong>
+    </div>
+    <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs }}>{`<Badge className="border-warning text-warning">
+  Investigation
+</Badge>`}</pre>
+  </div>
+  <div style={{ background: CORAL[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+      <XCircle size={16} color={CORAL[600]} /> <strong style={{ color: CORAL[700] }}>AVOID - Primitive</strong>
+    </div>
+    <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs }}>{`<Badge className="border-amber-500 text-amber-600">
+  Investigation
+</Badge>`}</pre>
+  </div>
+</div>
+
+---
+
+<h2 id="spacing" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  Spacing Rules
+</h2>
+
+<SectionHeader
+  icon={<Layout size={20} />}
+  title="Base: 4px. NEVER arbitrary values."
+  description="ALWAYS use tokens for consistent spacing."
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/spacing-rules.md</code>
+</InfoBox>
+
+{/* Spacing Tokens */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `1px solid ${SLATE[200]}`,
+  boxShadow: SHADOWS.sm,
+}}>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Token</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>px</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Tailwind</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight }}>Use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>micro</td>
+        <td style={{ padding: SPACING.px.tight }}>4</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>gap-1</td>
+        <td style={{ padding: SPACING.px.tight }}>Icon↔text</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>tight</td>
+        <td style={{ padding: SPACING.px.tight }}>8</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>gap-2</td>
+        <td style={{ padding: SPACING.px.tight }}>Label↔input</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>base</td>
+        <td style={{ padding: SPACING.px.tight }}>16</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>gap-4</td>
+        <td style={{ padding: SPACING.px.tight }}>Within component</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>comfortable</td>
+        <td style={{ padding: SPACING.px.tight }}>24</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>gap-6</td>
+        <td style={{ padding: SPACING.px.tight }}>Between components</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>spacious</td>
+        <td style={{ padding: SPACING.px.tight }}>32</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>gap-8</td>
+        <td style={{ padding: SPACING.px.tight }}>Between sections</td>
+      </tr>
+      <tr>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>section</td>
+        <td style={{ padding: SPACING.px.tight }}>48</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>gap-12</td>
+        <td style={{ padding: SPACING.px.tight }}>Major sections</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 id="storybook" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  Storybook Rules
+</h2>
+
+<SectionHeader
+  icon={<BookOpen size={20} />}
+  title="Use Infrastructure, Never Inline"
+  description="ALWAYS import from src/stories/_infrastructure"
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/storybook-rules.md</code>
+</InfoBox>
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: SPACING.px.base, marginBottom: SPACING.px.comfortable }}>
+  <div style={{ background: CORAL[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+      <XCircle size={16} color={CORAL[600]} /> <strong style={{ color: CORAL[700] }}>FORBIDDEN</strong>
+    </div>
+    <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs }}>{`// Inline decorators
+decorators: [
+  (Story) => (
+    <div className="p-4 max-w-sm">
+      <Story />
+    </div>
+  )
+]`}</pre>
+  </div>
+  <div style={{ background: HARBOR[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+      <CheckCircle size={16} color={HARBOR[600]} /> <strong style={{ color: HARBOR[700] }}>REQUIRED</strong>
+    </div>
+    <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs }}>{`import { withStoryContainer }
+  from '../_infrastructure'
+
+decorators: [
+  withStoryContainer('atom')
+]`}</pre>
+  </div>
+</div>
+
+{/* Infrastructure Imports */}
+<div style={{
+  background: ABYSS[50],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `1px solid ${ABYSS[200]}`,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base }}>Infrastructure Imports</h4>
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${ABYSS[200]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Container</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>withStoryContainer('atom' | 'molecule' | 'organism')</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${ABYSS[200]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Dark preview</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>withDarkBackground()</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${ABYSS[200]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Sections</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>&lt;StorySection title="Variants"&gt;</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${ABYSS[200]}` }}>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Layout</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>&lt;StoryFlex&gt; or &lt;StoryGrid cols=&#123;3&#125;&gt;</td>
+      </tr>
+      <tr>
+        <td style={{ padding: SPACING.px.tight, fontWeight: 600 }}>Meta preset</td>
+        <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace' }}>ATOM_META, MOLECULE_META, ORGANISM_META</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 id="lessons" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  Lessons Learned (Common Gotchas)
+</h2>
+
+<SectionHeader
+  icon={<Lightbulb size={20} />}
+  title="Hard-Won Knowledge"
+  description="Issues discovered during development that should never repeat."
+/>
+
+{/* SVG Icon Colors */}
+<div style={{
+  background: `linear-gradient(135deg, ${CORAL[50]} 0%, ${PRIMITIVES.white} 100%)`,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.comfortable,
+  border: `2px solid ${CORAL[300]}`,
+}}>
+  <h4 style={{ marginTop: 0, marginBottom: SPACING.px.base, display: 'flex', alignItems: 'center', gap: SPACING.px.tight, color: CORAL[700] }}>
+    <AlertTriangle size={18} /> <span>SVG Icon Colors on Hover/Active States</span>
+  </h4>
+  <div style={{
+    fontSize: TYPOGRAPHY.fontSize.lg,
+    fontWeight: 700,
+    marginBottom: SPACING.px.base,
+    color: ABYSS[900],
+    padding: SPACING.px.base,
+    background: PRIMITIVES.white,
+    borderRadius: RADIUS.md,
+    border: `1px solid ${CORAL[200]}`,
+  }}>
+    Never rely on <code style={{ background: CORAL[100], padding: '2px 6px', borderRadius: RADIUS.sm }}>currentColor</code> for SVG icons in hover states.
+    <br />
+    Always explicitly target the SVG with <code style={{ background: HARBOR[100], padding: '2px 6px', borderRadius: RADIUS.sm }}>[&_svg]:[stroke:...]</code>
+  </div>
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: SPACING.px.base }}>
+    <div style={{ background: CORAL[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+        <XCircle size={16} color={CORAL[600]} /> <strong style={{ color: CORAL[700] }}>WRONG - Unreliable</strong>
+      </div>
+      <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs }}>{`// Icon may stay red on hover
+'text-error hover:text-white'`}</pre>
+    </div>
+    <div style={{ background: HARBOR[100], borderRadius: RADIUS.md, padding: SPACING.px.base }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.px.micro, marginBottom: SPACING.px.tight }}>
+        <CheckCircle size={16} color={HARBOR[600]} /> <strong style={{ color: HARBOR[700] }}>CORRECT - Explicit</strong>
+      </div>
+      <pre style={{ margin: 0, fontSize: TYPOGRAPHY.fontSize.xs }}>{`// Explicitly target SVG stroke
+'text-error hover:text-white
+ hover:[&_svg]:[stroke:white]'`}</pre>
+    </div>
+  </div>
+  <div style={{ marginTop: SPACING.px.base, fontSize: TYPOGRAPHY.fontSize.sm, color: ABYSS[700] }}>
+    <strong>Why this fails:</strong>
+    <ul style={{ margin: `${SPACING.px.tight} 0 0`, paddingLeft: SPACING.px.comfortable }}>
+      <li>SVG elements create new stacking contexts</li>
+      <li><code>currentColor</code> resolves at SVG level, not cascading from parent</li>
+      <li>CSS specificity battles between utility classes</li>
+    </ul>
+  </div>
+  <div style={{ marginTop: SPACING.px.base, padding: SPACING.px.tight, background: ABYSS[100], borderRadius: RADIUS.sm, fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <strong>Reference:</strong> <code>src/components/ui/ActionTile.tsx</code>
+  </div>
+</div>
+
+---
+
+<h2 id="hookify" style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>
+  Hookify Enforcement Rules
+</h2>
+
+<SectionHeader
+  icon={<Terminal size={20} />}
+  title="Automated Rule Enforcement"
+  description="Rules automatically enforced during AI-assisted development."
+/>
+
+<InfoBox variant="warning">
+  <strong>Source:</strong> <code>.claude/hookify.*.local.md</code> files
+</InfoBox>
+
+{/* Hookify Rules Grid */}
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: SPACING.px.base, marginBottom: SPACING.px.comfortable }}>
+  <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, padding: SPACING.px.base, border: `1px solid ${SLATE[200]}` }}>
+    <h5 style={{ marginTop: 0, marginBottom: SPACING.px.tight, display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+      <Palette size={16} color={DEEP_CURRENT[500]} /> <span>Color Enforcement</span>
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.base, fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>No hardcoded hex colors</li>
+      <li>No standard Tailwind colors</li>
+      <li>Use semantic tokens</li>
+    </ul>
+  </div>
+  <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, padding: SPACING.px.base, border: `1px solid ${SLATE[200]}` }}>
+    <h5 style={{ marginTop: 0, marginBottom: SPACING.px.tight, display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+      <Code size={16} color={HARBOR[500]} /> <span>Code Quality</span>
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.base, fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>No console.log in production</li>
+      <li>No !important in CSS</li>
+      <li>No inline styles</li>
+    </ul>
+  </div>
+  <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, padding: SPACING.px.base, border: `1px solid ${SLATE[200]}` }}>
+    <h5 style={{ marginTop: 0, marginBottom: SPACING.px.tight, display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+      <Accessibility size={16} color={DUSK_REEF[500]} /> <span>Accessibility</span>
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.base, fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>No native title attribute</li>
+      <li>Focus rings required</li>
+      <li>Semantic HTML enforced</li>
+    </ul>
+  </div>
+  <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, padding: SPACING.px.base, border: `1px solid ${SLATE[200]}` }}>
+    <h5 style={{ marginTop: 0, marginBottom: SPACING.px.tight, display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+      <Layout size={16} color={CORAL[500]} /> <span>Styling</span>
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.base, fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>No arbitrary values</li>
+      <li>Mobile-first required</li>
+      <li>CVA for variants</li>
+    </ul>
+  </div>
+  <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, padding: SPACING.px.base, border: `1px solid ${SLATE[200]}` }}>
+    <h5 style={{ marginTop: 0, marginBottom: SPACING.px.tight, display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+      <BookOpen size={16} color={ABYSS[500]} /> <span>Storybook</span>
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.base, fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>Story file required</li>
+      <li>Use infrastructure</li>
+      <li>Design tokens in stories</li>
+    </ul>
+  </div>
+  <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, padding: SPACING.px.base, border: `1px solid ${SLATE[200]}` }}>
+    <h5 style={{ marginTop: 0, marginBottom: SPACING.px.tight, display: 'flex', alignItems: 'center', gap: SPACING.px.micro }}>
+      <GitBranch size={16} color={SLATE[500]} /> <span>Git/Commits</span>
+    </h5>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.base, fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>Clean commit messages</li>
+      <li>No Claude attribution</li>
+      <li>Pre-commit checks</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<div style={{
+  background: `linear-gradient(135deg, ${DEEP_CURRENT[800]} 0%, ${DEEP_CURRENT[900]} 100%)`,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.spacious,
+  marginTop: SPACING.px.section,
+  textAlign: 'center',
+  border: `1px solid ${DEEP_CURRENT[700]}`,
+}}>
+  <h3 style={{ color: PRIMITIVES.white, marginTop: 0, marginBottom: SPACING.px.base }}>
+    <span style={{ color: PRIMITIVES.white }}>Questions or Suggestions?</span>
+  </h3>
+  <p style={{ color: DEEP_CURRENT[100], margin: 0, fontSize: TYPOGRAPHY.fontSize.sm }}>
+    <span>These rules are maintained in </span>
+    <code style={{ background: DEEP_CURRENT[700], padding: '2px 6px', borderRadius: RADIUS.sm, color: PRIMITIVES.white }}>.claude/</code>
+    <span> folder.</span>
+    <br />
+    <span>To propose changes, discuss with the team or update the source files directly.</span>
+  </p>
+</div>
