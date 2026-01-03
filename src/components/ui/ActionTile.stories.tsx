@@ -139,7 +139,7 @@ export const AllStates: Story = {
 
       {/* Sizes */}
       <StorySection title="Sizes" description="Small, medium, and large">
-        <div className="bg-dark rounded-xl p-8">
+        <div className="bg-surface border border-default rounded-xl p-8">
           <StoryFlex>
             <ActionTile variant="success" appearance="outline" size="sm" aria-label="Small">
               <Plus className="size-5" />
@@ -159,7 +159,7 @@ export const AllStates: Story = {
         title="Common Actions"
         description="Typical action tile use cases"
       >
-        <div className="bg-dark rounded-xl p-8">
+        <div className="bg-surface border border-default rounded-xl p-8">
           <StoryFlex>
             <ActionTile variant="success" appearance="outline" aria-label="Add new item">
               <Plus className="size-8" />
@@ -179,7 +179,7 @@ export const AllStates: Story = {
 
       {/* Disabled state */}
       <StorySection title="Disabled State" description="All variants in disabled state">
-        <div className="bg-dark rounded-xl p-8">
+        <div className="bg-surface border border-default rounded-xl p-8">
           <StoryFlex>
             <ActionTile variant="success" appearance="outline" disabled aria-label="Disabled submit">
               <Rocket className="size-8" />
@@ -213,7 +213,7 @@ export const Success: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-dark rounded-xl p-8">
+      <div className="bg-surface border border-default rounded-xl p-8">
         <Story />
       </div>
     ),
@@ -229,7 +229,7 @@ export const Neutral: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-dark rounded-xl p-8">
+      <div className="bg-surface border border-default rounded-xl p-8">
         <Story />
       </div>
     ),
@@ -245,7 +245,7 @@ export const Info: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-dark rounded-xl p-8">
+      <div className="bg-surface border border-default rounded-xl p-8">
         <Story />
       </div>
     ),
@@ -261,7 +261,7 @@ export const Destructive: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-dark rounded-xl p-8">
+      <div className="bg-surface border border-default rounded-xl p-8">
         <Story />
       </div>
     ),
@@ -277,7 +277,7 @@ export const Filled: Story = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-dark rounded-xl p-8">
+      <div className="bg-surface border border-default rounded-xl p-8">
         <Story />
       </div>
     ),

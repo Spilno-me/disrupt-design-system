@@ -62,16 +62,18 @@ export interface TipseenProps {
 const TIPSEEN_Z_INDEX = 60
 const DEFAULT_OFFSET = 8
 
-const colorStyles: Record<TipseenColor, { bg: string; text: string; arrow: string }> = {
+const colorStyles: Record<TipseenColor, { bg: string; text: string; arrow: string; border: string }> = {
   primary: {
-    bg: "bg-accent",
-    text: "text-inverse",
-    arrow: "text-accent",
+    bg: "bg-accent-light",
+    text: "text-primary",
+    arrow: "text-accent-light",
+    border: "border-accent",
   },
   inverted: {
     bg: "bg-inverse-bg",
     text: "text-inverse",
     arrow: "text-inverse-bg",
+    border: "border-transparent",
   },
 }
 
@@ -182,7 +184,8 @@ function Tipseen({
               className={cn(
                 styles.bg,
                 styles.text,
-                "rounded-lg shadow-lg",
+                styles.border,
+                "rounded-lg shadow-lg border-2",
                 "min-w-[200px] max-w-[320px] p-4",
                 "animate-in fade-in-0 zoom-in-95",
                 "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -205,7 +208,10 @@ function Tipseen({
                     <button
                       data-slot="tipseen-close"
                       onClick={handleClose}
-                      className="shrink-0 rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-inverse"
+                      className={cn(
+                        "shrink-0 rounded-sm opacity-70 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+                        color === "inverted" ? "focus-visible:ring-inverse" : "focus-visible:ring-accent"
+                      )}
                       aria-label="Close tip"
                     >
                       <X className="w-4 h-4" />
@@ -217,7 +223,10 @@ function Tipseen({
               <div className="font-sans text-sm leading-relaxed">{content}</div>
 
               {(step || primaryAction || secondaryAction) && (
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-inverse/20">
+                <div className={cn(
+                  "flex items-center justify-between mt-4 pt-3 border-t",
+                  color === "inverted" ? "border-inverse/20" : "border-accent/30"
+                )}>
                   {step && (
                     <span data-slot="tipseen-step" className="text-xs opacity-70 font-sans">
                       {step.current} of {step.total}
@@ -230,17 +239,25 @@ function Tipseen({
                           variant="ghost"
                           size="sm"
                           onClick={secondaryAction.onClick}
-                          className="text-xs h-7 px-2 text-inverse hover:bg-inverse/10"
+                          className={cn(
+                            "text-xs h-7 px-2",
+                            color === "inverted"
+                              ? "text-inverse hover:bg-inverse/10"
+                              : "text-primary hover:bg-accent/10"
+                          )}
                         >
                           {secondaryAction.label}
                         </Button>
                       )}
                       {primaryAction && (
                         <Button
-                          variant="secondary"
+                          variant={color === "inverted" ? "secondary" : "accent"}
                           size="sm"
                           onClick={primaryAction.onClick}
-                          className="text-xs h-7 px-3 bg-inverse text-dark hover:bg-inverse/90"
+                          className={cn(
+                            "text-xs h-7 px-3",
+                            color === "inverted" && "bg-inverse text-dark hover:bg-inverse/90"
+                          )}
                         >
                           {primaryAction.label}
                         </Button>

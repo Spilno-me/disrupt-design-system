@@ -3,6 +3,21 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 
 // =============================================================================
+// LESSON LEARNED (SVG Icon Colors)
+// =============================================================================
+// Never rely on `currentColor` for SVG icons in hover states.
+// Always explicitly target the SVG with `[&_svg]:[stroke:...]` for reliable
+// color changes. This is a common gotcha in component libraries.
+//
+// Why: CSS `color` property inheritance through SVGs is unreliable due to:
+// - SVG elements creating new stacking contexts
+// - `currentColor` resolving at SVG level, not cascading from parent
+// - CSS specificity battles between utility classes
+//
+// Solution: Use `hover:[&_svg]:[stroke:white]` instead of `hover:text-white`
+// =============================================================================
+
+// =============================================================================
 // CONSTANTS
 // =============================================================================
 
@@ -46,6 +61,8 @@ const actionTileVariants = cva(
     'cursor-pointer',
     // Pressed: subtle scale for tactile feedback
     'active:scale-95',
+    // Force white SVG icons on hover/active (overrides currentColor inheritance)
+    'hover:[&_svg]:[stroke:white] active:[&_svg]:[stroke:white]',
   ],
   {
     variants: {
@@ -53,7 +70,7 @@ const actionTileVariants = cva(
         success: [
           // Semantic: green for positive actions (create, approve, submit)
           'border-success-strong dark:border-success text-success-strong dark:text-success',
-          'hover:bg-success-strong hover:text-on-status hover:border-success-strong',
+          'hover:bg-success-strong hover:border-success-strong hover:text-on-status',
           'dark:hover:bg-success dark:hover:border-success dark:hover:text-on-status',
           'active:text-on-status',
           ACTIVE_STATES.success.light,
@@ -63,7 +80,8 @@ const actionTileVariants = cva(
         info: [
           // Semantic: teal for informational actions (edit, view, modify)
           'border-accent-strong dark:border-info text-accent-strong dark:text-info',
-          'hover:bg-accent-strong hover:text-on-status hover:border-accent-strong',
+          // Using [600] for hover: DEEP_CURRENT[500] fails WCAG (2.98:1), [600] passes AA (4.47:1)
+          'hover:bg-[var(--brand-deep-current-600)] hover:border-[var(--brand-deep-current-600)] hover:text-on-status',
           'dark:hover:bg-info dark:hover:border-info dark:hover:text-on-status',
           'active:text-on-status',
           ACTIVE_STATES.info.light,
@@ -73,18 +91,19 @@ const actionTileVariants = cva(
         neutral: [
           // Contextual: gray for low-emphasis actions (settings, options)
           'border-strong text-secondary',
-          'hover:bg-inverse-bg hover:text-inverse hover:border-inverse-bg',
-          'active:text-inverse',
+          'hover:bg-inverse-bg hover:text-on-status hover:border-inverse-bg',
+          'active:text-on-status',
           ACTIVE_STATES.neutral.light,
-          'dark:border-muted dark:text-muted',
-          'dark:hover:bg-muted dark:hover:border-muted dark:hover:text-inverse',
+          // Dark mode: use border-default (visible) instead of border-muted (invisible on dark bg)
+          'dark:border-default dark:text-muted',
+          'dark:hover:bg-muted dark:hover:border-muted dark:hover:text-on-status',
           ACTIVE_STATES.neutral.dark,
           'focus-visible:ring-muted',
         ],
         destructive: [
           // Semantic: red for dangerous actions (delete, remove, cancel)
           'border-error text-error',
-          'hover:bg-error hover:text-on-status hover:border-error',
+          'hover:bg-error hover:border-error hover:text-on-status',
           'active:text-on-status',
           ACTIVE_STATES.destructive.light,
           ACTIVE_STATES.destructive.dark,
@@ -117,7 +136,7 @@ const actionTileVariants = cva(
     ],
     defaultVariants: {
       variant: 'neutral',
-      appearance: 'outline',
+      appearance: 'filled',  // Default: filled style with subtle tinted background
       size: 'md',
     },
   }

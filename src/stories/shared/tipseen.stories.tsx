@@ -6,7 +6,7 @@ import { MOLECULE_META, StorySection } from '../_infrastructure'
 
 const meta: Meta<typeof Tipseen> = {
   ...MOLECULE_META,
-  title: 'UI/Tipseen',
+  title: 'Shared/Feedback/Tipseen',
   component: Tipseen,
   parameters: {
     docs: {
