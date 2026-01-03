@@ -56,6 +56,9 @@ const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
 
 type PageState = "login" | "loading" | "success"
 
+/** Card style variants matching MetricsDashboardWidget */
+export type CardStyle = "default" | "glass" | "glass-gradient"
+
 export interface LoginPageProps {
   /** Product to display logo for (flow, market, partner) */
   product?: ProductType
@@ -89,6 +92,8 @@ export interface LoginPageProps {
   heroImageAlt?: string
   /** Position of the login form - "left" (default) or "right" */
   loginPosition?: "left" | "right"
+  /** Card style variant: default, glass, or glass-gradient */
+  cardStyle?: CardStyle
   /** Optional className */
   className?: string
 }
@@ -168,6 +173,70 @@ function SuccessState({ message, product, customLogo }: SuccessStateProps) {
 // LOGIN PAGE COMPONENT
 // =============================================================================
 
+// =============================================================================
+// GLASS CARD WRAPPER - Reusable glass effect from MetricsDashboardWidget
+// =============================================================================
+
+interface GlassCardProps {
+  children: React.ReactNode
+  cardStyle: CardStyle
+  className?: string
+}
+
+function GlassCard({ children, cardStyle, className }: GlassCardProps) {
+  // Default style - simple card
+  if (cardStyle === "default") {
+    return (
+      <div className={cn(
+        "rounded-xl border border-default bg-surface shadow-ambient",
+        className
+      )}>
+        {children}
+      </div>
+    )
+  }
+
+  // Glass styles - wrapper structure for frosted glass effect
+  return (
+    <div className={cn(
+      "relative p-1.5 rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-200",
+      className
+    )}>
+      {/* Glass border layer - frosted glass on all four sides */}
+      <div
+        className="absolute inset-0 rounded-2xl"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0.06) 100%)',
+          backdropFilter: 'blur(2px)',
+          WebkitBackdropFilter: 'blur(2px)',
+        }}
+      />
+
+      {/* Gradient border stripe - right edge with accent colors */}
+      {cardStyle === "glass-gradient" && (
+        <div
+          className="absolute right-0 w-1.5"
+          style={{
+            top: 0,
+            bottom: 0,
+            borderRadius: '0 16px 16px 0',
+            background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 5%, var(--color-accent) 20%, var(--color-success) 50%, var(--color-warning) 80%, rgba(0,0,0,0) 95%, rgba(0,0,0,0) 100%)',
+          }}
+        />
+      )}
+
+      {/* Content card - fills the padded area */}
+      <div className="relative bg-elevated dark:bg-abyss-900 rounded-xl overflow-hidden">
+        {children}
+      </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// LOGIN PAGE COMPONENT
+// =============================================================================
+
 export function LoginPage({
   product,
   customLogo,
@@ -185,6 +254,7 @@ export function LoginPage({
   heroImage,
   heroImageAlt = "Team collaboration",
   loginPosition = "left",
+  cardStyle = "glass",
   className,
 }: LoginPageProps) {
   const [pageState, setPageState] = useState<PageState>("login")
@@ -244,12 +314,28 @@ export function LoginPage({
         className
       )}
     >
-      {/* Animated grid blob background - full page */}
+      {/* Layer 1: Hero image (right side only, lowest layer) */}
       <div className="absolute inset-0 z-0">
+        <div className="grid lg:grid-cols-2 h-full">
+          <div className={loginPosition === "right" ? "lg:order-2" : "lg:order-1"} />
+          <div className={cn("hidden lg:block", loginPosition === "right" ? "lg:order-1" : "lg:order-2")}>
+            <img
+              src={heroImage || "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80"}
+              alt={heroImageAlt}
+              className="w-full h-full object-cover"
+            />
+            {/* Subtle vignette for depth */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
+          </div>
+        </div>
+      </div>
+
+      {/* Layer 2: Grid blob overlay - full page, on top of image */}
+      <div className="absolute inset-0 z-[5]">
         <GridBlobBackground scale={blobScale} />
       </div>
 
-      {/* Two-column grid layout */}
+      {/* Layer 3: Content - highest layer */}
       <div className="grid lg:grid-cols-2 w-full relative z-10">
         {/* Login Form - order changes based on loginPosition prop */}
         <div
@@ -262,46 +348,46 @@ export function LoginPage({
         >
           {/* Content container */}
           <div className="relative z-10 w-full max-w-md">
-        {/* Main card */}
-        <div
-          className="rounded-xl border border-default bg-surface p-5 sm:p-6 lg:p-8 shadow-ambient"
-        >
-          {/* Product Logo */}
-          {pageState === "login" && (
-            <ProductLogo
-              product={product}
-              customLogo={customLogo}
-              alt={logoAlt}
-              onClick={onLogoClick}
-            />
-          )}
+        {/* Main card with glass style variant */}
+        <GlassCard cardStyle={cardStyle}>
+          <div className="p-5 sm:p-6 lg:p-8">
+            {/* Product Logo */}
+            {pageState === "login" && (
+              <ProductLogo
+                product={product}
+                customLogo={customLogo}
+                alt={logoAlt}
+                onClick={onLogoClick}
+              />
+            )}
 
-          {/* Login form state */}
-          {pageState === "login" && (
-            <LoginForm
-              companyName={displayName}
-              onSubmit={handleLogin}
-              onForgotPassword={() => setForgotDialogOpen(true)}
-            />
-          )}
+            {/* Login form state */}
+            {pageState === "login" && (
+              <LoginForm
+                companyName={displayName}
+                onSubmit={handleLogin}
+                onForgotPassword={() => setForgotDialogOpen(true)}
+              />
+            )}
 
-          {/* Loading state */}
-          {pageState === "loading" && (
-            <div className="flex flex-col items-center justify-center py-12">
-              <ExecutingAnimation className="w-32 h-32" />
-              <p className="mt-4 text-sm text-muted">Signing you in...</p>
-            </div>
-          )}
+            {/* Loading state */}
+            {pageState === "loading" && (
+              <div className="flex flex-col items-center justify-center py-12">
+                <ExecutingAnimation className="w-32 h-32" />
+                <p className="mt-4 text-sm text-muted">Signing you in...</p>
+              </div>
+            )}
 
-          {/* Success state */}
-          {pageState === "success" && (
-            <SuccessState
-              message={displaySuccessMessage}
-              product={product}
-              customLogo={customLogo}
-            />
-          )}
-        </div>
+            {/* Success state */}
+            {pageState === "success" && (
+              <SuccessState
+                message={displaySuccessMessage}
+                product={product}
+                customLogo={customLogo}
+              />
+            )}
+          </div>
+        </GlassCard>
 
         {/* Terms and privacy footer */}
         <p className="mt-6 text-center text-xs text-muted">
@@ -317,7 +403,7 @@ export function LoginPage({
         </div>
         </div>
 
-        {/* Hero Section with Image - order changes based on loginPosition prop */}
+        {/* Hero Section - order changes based on loginPosition prop */}
         <div
           className={cn(
             "hidden lg:flex relative overflow-hidden",
@@ -326,16 +412,8 @@ export function LoginPage({
           data-testid="hero-section"
           data-position={loginPosition}
         >
-          {/* Hero image background - full vibrancy */}
-          <div className="absolute inset-0">
-            <img
-              src={heroImage || "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80"}
-              alt={heroImageAlt}
-              className="w-full h-full object-cover"
-            />
-            {/* Subtle vignette for depth - edges only */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
-            {/* Floating particles overlay */}
+          {/* Floating particles overlay */}
+          <div className="absolute inset-0 z-[6]">
             <HeroParticles />
           </div>
 

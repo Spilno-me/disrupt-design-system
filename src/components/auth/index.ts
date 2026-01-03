@@ -1,4 +1,4 @@
-export { LoginPage, type LoginPageProps, type ProductType } from "./LoginPage"
+export { LoginPage, type LoginPageProps, type ProductType, type CardStyle } from "./LoginPage"
 export { LoginForm, type LoginFormProps, type LoginFormValues } from "./LoginForm"
 export { SocialLoginButtons, type SocialLoginButtonsProps, type SocialProvider } from "./SocialLoginButtons"
 export { ForgotPasswordForm, type ForgotPasswordFormProps, type ForgotPasswordFormValues } from "./ForgotPasswordForm"
