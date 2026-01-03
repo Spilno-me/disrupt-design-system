@@ -6,6 +6,8 @@ import { StatsCard } from './StatsCard'
 import { LeadCard, Lead, LeadAction } from './LeadCard'
 import { LeadsDataTable } from './LeadsDataTable'
 import { CreateLeadDialog, CreateLeadFormData, Partner } from './CreateLeadDialog'
+import { BulkActionsToolbar, BulkAction } from './BulkActionsToolbar'
+import { ExportButton, ExportOptions } from './ExportButton'
 import { SearchFilter } from '../shared/SearchFilter/SearchFilter'
 import type { FilterGroup, FilterState } from '../shared/SearchFilter/types'
 import { Pagination } from '../ui/Pagination'
@@ -82,6 +84,10 @@ export interface LeadsPageProps {
   loading?: boolean
   /** Additional className */
   className?: string
+  /** Callback for bulk actions on selected leads */
+  onBulkAction?: (action: BulkAction, leadIds: string[], data?: Record<string, unknown>) => void | Promise<void>
+  /** Callback for export */
+  onExport?: (options: ExportOptions) => void | Promise<void>
 }
 
 // =============================================================================
@@ -122,6 +128,8 @@ export function LeadsPage({
   defaultPageSize = 10,
   loading = false,
   className,
+  onBulkAction,
+  onExport,
 }: LeadsPageProps) {
   // Create lead dialog state
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
@@ -281,6 +289,25 @@ export function LeadsPage({
       setIsCreating(false)
     }
   }, [onCreateLead])
+  // Handle bulk actions
+  const handleBulkAction = useCallback(async (action: BulkAction, data?: Record<string, unknown>) => {
+    if (!onBulkAction) return
+    const leadIds = Array.from(selectedLeads)
+    await onBulkAction(action, leadIds, data)
+    if (action === 'delete') {
+      setSelectedLeads(new Set())
+    }
+  }, [onBulkAction, selectedLeads])
+
+  // Handle export
+  const handleExport = useCallback(async (options: ExportOptions) => {
+    if (!onExport) return
+    await onExport({
+      ...options,
+    })
+  }, [onExport])
+
+
 
   return (
     <div className={cn('relative min-h-full bg-surface', className)}>
@@ -297,6 +324,13 @@ export function LeadsPage({
               <span className="text-sm text-muted">
                 {selectedLeads.size} lead{selectedLeads.size > 1 ? 's' : ''} selected
               </span>
+            )}
+            {onExport && (
+              <ExportButton
+                onExport={handleExport}
+                selectedCount={selectedLeads.size}
+                totalCount={sortedLeads.length}
+              />
             )}
             {onCreateLead && (
               <Button
@@ -368,6 +402,18 @@ export function LeadsPage({
         filters={filters}
         onFiltersChange={handleFiltersChange}
       />
+
+      {/* Bulk Actions Toolbar */}
+      {onBulkAction && (
+        <BulkActionsToolbar
+          selectedCount={selectedLeads.size}
+          totalCount={sortedLeads.length}
+          onAction={handleBulkAction}
+          onClearSelection={() => setSelectedLeads(new Set())}
+          onSelectAll={() => setSelectedLeads(new Set(sortedLeads.map(l => l.id)))}
+          availablePartners={partners.map(p => ({ id: p.id, name: p.name }))}
+        />
+      )}
 
       {/* Desktop: Data Table (hidden on mobile) */}
       <div className="hidden md:block">

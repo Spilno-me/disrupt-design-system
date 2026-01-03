@@ -9,7 +9,9 @@ import {
   Building2,
 } from "lucide-react"
 import { DataTable, ColumnDef, SortDirection, RowPriority } from "../ui/DataTable"
-import { DataTableStatusDot, DataTableActions, DataTableSeverity, LEAD_DOT_STATUS_MAP, LEAD_PRIORITY_SEVERITY_MAP, type ActionItem, EmailLink, ScoreBadge } from "../ui/table"
+import { DataTableStatusDot, DataTableSeverity, LEAD_DOT_STATUS_MAP, LEAD_PRIORITY_SEVERITY_MAP, EmailLink, ScoreBadge } from "../ui/table"
+import { ActionTile } from "../ui/ActionTile"
+import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip"
 import type { Lead, LeadAction, LeadPriority, LeadSource } from "./LeadCard"
 
 // =============================================================================
@@ -169,31 +171,68 @@ export function LeadsDataTable({
   loading = false,
   className,
 }: LeadsDataTableProps) {
-  // Define lead actions using unified system
-  const leadActions: ActionItem<Lead>[] = useMemo(
-    () => [
-      {
-        id: 'view',
-        label: 'View Details',
-        icon: Eye,
-        onClick: (row) => onActionClick?.(row, 'view'),
-      },
-      {
-        id: 'edit',
-        label: 'Edit Lead',
-        icon: Edit,
-        onClick: (row) => onActionClick?.(row, 'edit'),
-      },
-      {
-        id: 'delete',
-        label: 'Delete',
-        icon: Trash2,
-        variant: 'destructive',
-        onClick: (row) => onActionClick?.(row, 'delete'),
-      },
-    ],
-    [onActionClick]
-  )
+  // Render lead actions using ActionTile pattern (≤3 actions = visible buttons)
+  const renderLeadActions = React.useCallback((lead: Lead) => (
+    <div className="flex items-center gap-1">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="info"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              onActionClick?.(lead, 'view')
+            }}
+            aria-label="View details"
+          >
+            <Eye className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          View Details
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="neutral"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              onActionClick?.(lead, 'edit')
+            }}
+            aria-label="Edit lead"
+          >
+            <Edit className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          Edit Lead
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="destructive"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              onActionClick?.(lead, 'delete')
+            }}
+            aria-label="Delete lead"
+          >
+            <Trash2 className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          Delete
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  ), [onActionClick])
 
   /* eslint-disable no-restricted-syntax -- minWidth/width values are CSS column widths, not spacing */
   // Define columns
@@ -285,21 +324,14 @@ export function LeadsDataTable({
       },
       {
         id: "actions",
-        header: "",
-        accessor: (row) => (
-          <DataTableActions
-            actions={leadActions}
-            row={row}
-            maxVisible={0}
-            align="right"
-          />
-        ),
-        width: "50px",
+        header: "Actions",
+        accessor: (row) => renderLeadActions(row),
+        width: "120px",
         align: "right",
         sticky: "right",
       },
     ],
-    [onActionClick, leadActions]
+    [onActionClick, renderLeadActions]
   )
   /* eslint-enable no-restricted-syntax */
 

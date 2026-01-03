@@ -22,3 +22,18 @@ export type { StatusUpdateDialogProps } from './StatusUpdateDialog'
 
 export { DeleteLeadDialog } from './DeleteLeadDialog'
 export type { DeleteLeadDialogProps } from './DeleteLeadDialog'
+
+export { ActivityTimeline } from './ActivityTimeline'
+export type { ActivityTimelineProps, Activity, ActivityType } from './ActivityTimeline'
+
+export { CreateActivityDialog } from './CreateActivityDialog'
+export type { CreateActivityDialogProps, CreateActivityFormData } from './CreateActivityDialog'
+
+export { BulkActionsToolbar } from './BulkActionsToolbar'
+export type { BulkActionsToolbarProps, BulkAction } from './BulkActionsToolbar'
+
+export { ExportButton } from './ExportButton'
+export type { ExportButtonProps, ExportFormat, ExportOptions } from './ExportButton'
+
+export { LeadScoreRecalculator } from './LeadScoreRecalculator'
+export type { LeadScoreRecalculatorProps, ScoreChange } from './LeadScoreRecalculator'
