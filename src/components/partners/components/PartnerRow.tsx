@@ -10,20 +10,13 @@ import {
   ChevronDown,
   ChevronRight,
   UserPlus,
-  MoreHorizontal,
   Pencil,
   Trash2,
   FileText,
 } from "lucide-react"
 import { cn } from "../../../lib/utils"
 import { Button } from "../../ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../../ui/dropdown-menu"
+import { ActionTile } from "../../ui/ActionTile"
 import { StatusIndicator } from "./StatusIndicator"
 import { PartnerMetricsCard } from "./PartnerMetricsCard"
 import { expandedContentVariants } from "../constants"
@@ -137,40 +130,34 @@ export function PartnerRow({
           </span>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center justify-end gap-1 w-20 flex-shrink-0">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                aria-label="More options"
-              >
-                <MoreHorizontal className="h-4 w-4 text-muted" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onEdit?.(partner)}>
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit Partner
-              </DropdownMenuItem>
-              {partner.isMasterPartner && (
-                <DropdownMenuItem onClick={() => onAddSubPartner?.(partner)}>
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Add Sub-Partner
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => onDelete?.(partner)}
-                className="text-error focus:text-error focus:bg-error-light"
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete Partner
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        {/* Actions - Using core ActionTile for consistent styling */}
+        <div className="flex items-center justify-end gap-1 w-28 flex-shrink-0">
+          <ActionTile
+            variant="info"
+            size="xs"
+            aria-label="Edit Partner"
+            onClick={() => onEdit?.(partner)}
+          >
+            <Pencil className="h-4 w-4" />
+          </ActionTile>
+          {partner.isMasterPartner && (
+            <ActionTile
+              variant="success"
+              size="xs"
+              aria-label="Add Sub-Partner"
+              onClick={() => onAddSubPartner?.(partner)}
+            >
+              <UserPlus className="h-4 w-4" />
+            </ActionTile>
+          )}
+          <ActionTile
+            variant="destructive"
+            size="xs"
+            aria-label="Delete Partner"
+            onClick={() => onDelete?.(partner)}
+          >
+            <Trash2 className="h-4 w-4" />
+          </ActionTile>
         </div>
       </div>
     </div>

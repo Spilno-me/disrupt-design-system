@@ -11,7 +11,6 @@ import { SearchFilter } from '../../shared/SearchFilter/SearchFilter'
 import type { FilterGroup, FilterState } from '../../shared/SearchFilter/types'
 import { Pagination } from '../../ui/Pagination'
 import { SortDirection } from '../../ui/DataTable'
-import { GridBlobBackground } from '../../ui/GridBlobCanvas'
 import type { Invoice, InvoiceAction } from './types'
 
 // =============================================================================
@@ -285,12 +284,9 @@ export function InvoicesPage({
   }, [selectedInvoice, onUpdateInvoice])
 
   return (
-    <div className={cn('relative min-h-full bg-page', className)}>
-      {/* Grid blob background */}
-      <GridBlobBackground scale={2} />
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col gap-6 p-6">
+    <div className={cn('min-h-full', className)}>
+      {/* Content - no extra background, page background comes from shell */}
+      <div className="flex flex-col gap-6 p-6">
         {/* Page Header */}
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-primary">

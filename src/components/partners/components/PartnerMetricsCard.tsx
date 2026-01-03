@@ -60,7 +60,7 @@ export function PartnerMetricsCard({ metrics, depth = 0, "data-testid": testId }
       data-testid={testId}
     >
       <div className={cn(
-        "rounded-md border border-default bg-muted-bg/30 transition-all",
+        "rounded-md border border-default bg-muted-bg transition-all",
         isCollapsed ? "p-2" : "p-4"
       )}>
         {/* Header with toggle */}

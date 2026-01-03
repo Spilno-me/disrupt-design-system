@@ -43,6 +43,10 @@ export interface FAQItem {
 }
 
 export interface HelpPageProps {
+  /** Help articles to display (uses defaults if not provided) */
+  articles?: HelpArticle[]
+  /** FAQ items to display (uses defaults if not provided) */
+  faqs?: FAQItem[]
   /** Additional className */
   className?: string
   /** Callback when article is clicked */
@@ -54,10 +58,10 @@ export interface HelpPageProps {
 }
 
 // =============================================================================
-// DEFAULT DATA
+// DEFAULT DATA (exported for consumers)
 // =============================================================================
 
-const defaultArticles: HelpArticle[] = [
+export const DEFAULT_HELP_ARTICLES: HelpArticle[] = [
   {
     id: '1',
     title: 'Getting Started with Partner Portal',
@@ -102,7 +106,7 @@ const defaultArticles: HelpArticle[] = [
   },
 ]
 
-const defaultFAQs: FAQItem[] = [
+export const DEFAULT_HELP_FAQS: FAQItem[] = [
   {
     question: 'How do I create a new tenant?',
     answer:
@@ -140,6 +144,8 @@ const defaultFAQs: FAQItem[] = [
 // =============================================================================
 
 export function HelpPage({
+  articles = DEFAULT_HELP_ARTICLES,
+  faqs = DEFAULT_HELP_FAQS,
   className,
   onArticleClick,
   onContactSupport,
@@ -255,7 +261,7 @@ export function HelpPage({
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            {defaultArticles.map((article) => (
+            {articles.map((article) => (
               <button
                 key={article.id}
                 className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-accent/5 transition-colors text-left group"
@@ -286,7 +292,7 @@ export function HelpPage({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Accordion items={defaultFAQs} allowMultiple={false} />
+          <Accordion items={faqs} allowMultiple={false} />
         </CardContent>
       </Card>
 

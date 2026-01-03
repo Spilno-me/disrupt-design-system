@@ -32,8 +32,9 @@ import { Pagination } from "../ui/Pagination"
 import { ResetPasswordDialog } from "./ResetPasswordDialog"
 import { CreateLoginAccountDialog } from "./CreateLoginAccountDialog"
 import { DeleteLoginAccountDialog } from "./DeleteLoginAccountDialog"
-import { DataTableStatusDot, DataTableActions, LOGIN_ACCOUNT_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
-import { GridBlobBackground } from "../ui/GridBlobCanvas"
+import { DataTableStatusDot, LOGIN_ACCOUNT_DOT_STATUS_MAP } from "../ui/table"
+import { ActionTile } from "../ui/ActionTile"
+import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip"
 import { PageActionPanel } from "../ui/PageActionPanel"
 
 // Re-export types for external consumers
@@ -170,22 +171,49 @@ export function PartnerLoginAccountsPage({
     }
   }, [onDeleteLoginAccount])
 
-  // Define login account actions using unified system
-  const loginAccountActions: ActionItem<LoginAccount>[] = [
-    {
-      id: 'reset-password',
-      label: 'Reset Password',
-      icon: Key,
-      onClick: (row) => handleResetPasswordClick(row),
-    },
-    {
-      id: 'delete',
-      label: 'Delete Account',
-      icon: Trash2,
-      variant: 'destructive',
-      onClick: (row) => handleDeleteClick(row),
-    },
-  ]
+  // Render login account actions using ActionTile pattern (≤3 actions = visible buttons)
+  const renderLoginAccountActions = React.useCallback((account: LoginAccount) => (
+    <div className="flex items-center gap-1">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="info"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleResetPasswordClick(account)
+            }}
+            aria-label="Reset password"
+          >
+            <Key className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          Reset Password
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="destructive"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDeleteClick(account)
+            }}
+            aria-label="Delete account"
+          >
+            <Trash2 className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          Delete Account
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  ), [handleResetPasswordClick, handleDeleteClick])
 
   // Column definitions
   /* eslint-disable no-restricted-syntax */
@@ -229,18 +257,11 @@ export function PartnerLoginAccountsPage({
     },
     {
       id: "actions",
-      header: "",
+      header: "Actions",
       align: "right",
-      width: "50px",
+      width: "90px",
       sticky: "right",
-      accessor: (row) => (
-        <DataTableActions
-          actions={loginAccountActions}
-          row={row}
-          maxVisible={0}
-          align="right"
-        />
-      ),
+      accessor: (row) => renderLoginAccountActions(row),
     },
   ]
   /* eslint-enable no-restricted-syntax */
@@ -249,13 +270,10 @@ export function PartnerLoginAccountsPage({
     <main
       data-slot="partner-accounts-page"
       data-testid="partner-accounts-page"
-      className={cn("relative min-h-screen bg-page overflow-hidden", className)}
+      className={cn("min-h-screen", className)}
     >
-      {/* Animated grid blob background */}
-      <GridBlobBackground scale={1.2} blobCount={2} />
-
-      {/* Content layer - above background */}
-      <div className="relative z-10 flex flex-col gap-6 p-4 md:p-6">
+      {/* Content - no extra background, page background comes from shell */}
+      <div className="flex flex-col gap-6 p-4 md:p-6">
         {/* Back Link */}
         <button
           onClick={onBackClick}

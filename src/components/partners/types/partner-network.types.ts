@@ -25,21 +25,83 @@ export interface NetworkPartner {
   parentId?: string
 }
 
+/** Form data for creating/editing a network partner (comprehensive) */
+export interface NetworkPartnerFormData {
+  // Company Information
+  companyName: string
+  industry: string
+  companySize: string
+  website: string
+
+  // Contact Information
+  contactName: string
+  contactEmail: string
+  contactPhone: string
+
+  // Partner Type
+  isMasterPartner: boolean
+
+  // Address (Optional)
+  country: string
+  streetAddress: string
+  city: string
+  state: string
+  zipCode: string
+}
+
+/** Form data for creating a sub-partner (comprehensive) */
+export interface SubPartnerFormData {
+  // Company Information
+  companyName: string
+  industry: string
+  companySize: string
+  website: string
+
+  // Contact Information
+  contactName: string
+  contactEmail: string
+  contactPhone: string
+
+  // Address (Optional)
+  country: string
+  streetAddress: string
+  city: string
+  state: string
+  zipCode: string
+}
+
 export interface PartnerNetworkPageProps {
   /** Partner hierarchy data */
   partners?: NetworkPartner[]
   /** Loading state */
   loading?: boolean
-  /** Callback when Add Partner is clicked */
-  onAddPartner?: () => void
-  /** Callback when a partner is edited */
-  onEditPartner?: (partner: NetworkPartner) => void
-  /** Callback when a partner is viewed */
+
+  // --- CRUD Callbacks (adapter pattern) ---
+  /** Callback when a new partner is created via form */
+  onCreatePartner?: (data: NetworkPartnerFormData) => void | Promise<void>
+  /** Callback when a partner is updated via form */
+  onUpdatePartner?: (partner: NetworkPartner, data: NetworkPartnerFormData) => void | Promise<void>
+  /** Callback when delete is confirmed */
+  onConfirmDelete?: (partner: NetworkPartner) => void | Promise<void>
+  /** Callback when a sub-partner is created */
+  onCreateSubPartner?: (parent: NetworkPartner, data: SubPartnerFormData) => void | Promise<void>
+
+  // --- Navigation Callbacks ---
+  /** Callback when a partner row is clicked (view details) */
   onViewPartner?: (partner: NetworkPartner) => void
-  /** Callback when Add Sub-Partner is clicked */
+  /** Callback when "Manage Users" is clicked */
+  onManageUsers?: (partner: NetworkPartner) => void
+
+  // --- Legacy callbacks (deprecated, use CRUD callbacks above) ---
+  /** @deprecated Use onCreatePartner instead */
+  onAddPartner?: () => void
+  /** @deprecated Use onUpdatePartner instead */
+  onEditPartner?: (partner: NetworkPartner) => void
+  /** @deprecated Use onCreateSubPartner instead */
   onAddSubPartner?: (parentPartner: NetworkPartner) => void
-  /** Callback when a partner is deleted */
+  /** @deprecated Use onConfirmDelete instead */
   onDeletePartner?: (partner: NetworkPartner) => void
+
   /** Additional className */
   className?: string
 }

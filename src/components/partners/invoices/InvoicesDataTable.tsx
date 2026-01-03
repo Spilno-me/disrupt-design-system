@@ -1,9 +1,17 @@
 import * as React from 'react'
-import { Copy, Eye, Download, Pencil, Send } from 'lucide-react'
+import { Eye, Download, Pencil, Send, MoreHorizontal, Copy } from 'lucide-react'
 import { DataTable, ColumnDef, SortDirection } from '../../ui/DataTable'
 import type { Invoice, InvoiceAction } from './types'
 import { formatCurrency, formatDate, getPaymentTermsLabel } from './types'
-import { DataTableStatusDot, DataTableActions, INVOICE_DOT_STATUS_MAP, type ActionItem } from '../../ui/table'
+import { DataTableStatusDot, INVOICE_DOT_STATUS_MAP } from '../../ui/table'
+import { ActionTile } from '../../ui/ActionTile'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../../ui/dropdown-menu'
+import { Button } from '../../ui/button'
 
 
 // =============================================================================
@@ -55,43 +63,6 @@ export function InvoicesDataTable({
   loading = false,
   className,
 }: InvoicesDataTableProps) {
-  // Define invoice actions using unified system
-  const invoiceActions: ActionItem<Invoice>[] = [
-    {
-      id: 'copy',
-      label: 'Copy Invoice Number',
-      icon: Copy,
-      onClick: (invoice) => onActionClick?.(invoice, 'copy'),
-    },
-    {
-      id: 'preview',
-      label: 'Preview Invoice',
-      icon: Eye,
-      onClick: (invoice) => onActionClick?.(invoice, 'preview'),
-    },
-    {
-      id: 'download',
-      label: 'Download PDF',
-      icon: Download,
-      onClick: (invoice) => onActionClick?.(invoice, 'download'),
-    },
-    {
-      id: 'edit',
-      label: 'Edit Invoice',
-      icon: Pencil,
-      onClick: (invoice) => onActionClick?.(invoice, 'edit'),
-      showWhen: (invoice) => invoice.status === 'draft',
-    },
-    {
-      id: 'mark-sent',
-      label: 'Mark as Sent',
-      icon: Send,
-      variant: 'accent',
-      onClick: (invoice) => onActionClick?.(invoice, 'mark_sent'),
-      showWhen: (invoice) => invoice.status === 'draft',
-    },
-  ]
-
   // Define columns - using CSS property values for DataTable API (not hardcoded styling)
   /* eslint-disable no-restricted-syntax */
   const columns: ColumnDef<Invoice>[] = [
@@ -179,15 +150,111 @@ export function InvoicesDataTable({
     {
       id: "actions",
       header: "",
-      accessor: (invoice) => (
-        <DataTableActions
-          actions={invoiceActions}
-          row={invoice}
-          maxVisible={0}
-          align="right"
-        />
-      ),
-      width: "50px",
+      accessor: (invoice) => {
+        const isDraft = invoice.status === 'draft'
+
+        // Rule: >3 actions = show 2 inline + "..." menu
+        // Draft: 4 actions (Preview, Download, Edit, Mark as Sent) → 2 inline + menu
+        // Non-draft: 2 actions (Preview, Download) → both inline
+
+        if (isDraft) {
+          return (
+            <div className="flex items-center justify-end gap-1">
+              <ActionTile
+                variant="info"
+                size="xs"
+                aria-label="Preview Invoice"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onActionClick?.(invoice, 'preview')
+                }}
+              >
+                <Eye className="h-4 w-4" />
+              </ActionTile>
+              <ActionTile
+                variant="info"
+                size="xs"
+                aria-label="Edit Invoice"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onActionClick?.(invoice, 'edit')
+                }}
+              >
+                <Pencil className="h-4 w-4" />
+              </ActionTile>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                  <DropdownMenuItem onClick={() => onActionClick?.(invoice, 'download')}>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download PDF
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onActionClick?.(invoice, 'mark_sent')}>
+                    <Send className="h-4 w-4 mr-2" />
+                    Mark as Sent
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )
+        }
+
+        // Non-draft: 3 actions (Preview, Download, Copy) → 2 inline + menu
+        return (
+          <div className="flex items-center justify-end gap-1">
+            <ActionTile
+              variant="info"
+              size="xs"
+              aria-label="Preview Invoice"
+              onClick={(e) => {
+                e.stopPropagation()
+                onActionClick?.(invoice, 'preview')
+              }}
+            >
+              <Eye className="h-4 w-4" />
+            </ActionTile>
+            <ActionTile
+              variant="neutral"
+              size="xs"
+              aria-label="Download PDF"
+              onClick={(e) => {
+                e.stopPropagation()
+                onActionClick?.(invoice, 'download')
+              }}
+            >
+              <Download className="h-4 w-4" />
+            </ActionTile>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                <DropdownMenuItem onClick={() => onActionClick?.(invoice, 'copy')}>
+                  <Copy className="h-4 w-4 mr-2" />
+                  Copy Invoice Number
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )
+      },
+      width: "110px",
       align: "right",
       sticky: "right",
     },

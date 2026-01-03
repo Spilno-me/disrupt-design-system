@@ -26,8 +26,9 @@ import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
 import type { FilterState } from "../shared/SearchFilter/types"
 import { EditPartnerDialog, PartnerFormData } from "./EditPartnerDialog"
 import { DeletePartnerDialog } from "./DeletePartnerDialog"
-import { DataTableStatusDot, DataTableActions, PARTNER_DOT_STATUS_MAP, type ActionItem } from "../ui/table"
-import { GridBlobBackground } from "../ui/GridBlobCanvas"
+import { DataTableStatusDot, PARTNER_DOT_STATUS_MAP } from "../ui/table"
+import { ActionTile } from "../ui/ActionTile"
+import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip"
 import { PageActionPanel } from "../ui/PageActionPanel"
 
 // Re-export types for external consumers
@@ -175,28 +176,68 @@ export function PartnersPage({
     }
   }, [onConfirmDelete])
 
-  // Define partner actions using unified system
-  const partnerActions: ActionItem<Partner>[] = [
-    {
-      id: 'edit',
-      label: 'Edit Partner',
-      icon: Pencil,
-      onClick: (row) => handleViewPartnerClick(row),
-    },
-    {
-      id: 'manage-users',
-      label: 'Manage Users',
-      icon: Users,
-      onClick: (row) => onManageUsers?.(row),
-    },
-    {
-      id: 'delete',
-      label: 'Delete Partner',
-      icon: Trash2,
-      variant: 'destructive',
-      onClick: (row) => handleDeletePartnerClick(row),
-    },
-  ]
+  // Render partner actions using ActionTile pattern (≤3 actions = visible buttons)
+  const renderPartnerActions = React.useCallback((partner: Partner) => (
+    <div className="flex items-center gap-1">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="info"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleViewPartnerClick(partner)
+            }}
+            aria-label="Edit partner"
+          >
+            <Pencil className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          Edit Partner
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="neutral"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              onManageUsers?.(partner)
+            }}
+            aria-label="Manage users"
+          >
+            <Users className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          Manage Users
+        </TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <ActionTile
+            variant="destructive"
+            appearance="filled"
+            size="xs"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDeletePartnerClick(partner)
+            }}
+            aria-label="Delete partner"
+          >
+            <Trash2 className="size-4" />
+          </ActionTile>
+        </TooltipTrigger>
+        <TooltipContent side="top" sideOffset={4}>
+          Delete Partner
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  ), [handleViewPartnerClick, onManageUsers, handleDeletePartnerClick])
 
   // Column definitions
   /* eslint-disable no-restricted-syntax */
@@ -255,18 +296,11 @@ export function PartnersPage({
     },
     {
       id: "actions",
-      header: "",
+      header: "Actions",
       align: "right",
-      width: "50px",
+      width: "120px",
       sticky: "right",
-      accessor: (row) => (
-        <DataTableActions
-          actions={partnerActions}
-          row={row}
-          maxVisible={0}
-          align="right"
-        />
-      ),
+      accessor: (row) => renderPartnerActions(row),
     },
   ]
   /* eslint-enable no-restricted-syntax */
@@ -275,13 +309,10 @@ export function PartnersPage({
     <main
       data-slot="partners-page"
       data-testid="partners-page"
-      className={cn("relative min-h-screen bg-page overflow-hidden", className)}
+      className={cn("min-h-screen", className)}
     >
-      {/* Animated grid blob background */}
-      <GridBlobBackground scale={1.2} blobCount={2} />
-
-      {/* Content layer - above background */}
-      <div className="relative z-10 flex flex-col gap-6 p-4 md:p-6">
+      {/* Content - no extra background, page background comes from shell */}
+      <div className="flex flex-col gap-6 p-4 md:p-6">
         {/* Page Action Panel - replaces manual header */}
         <PageActionPanel
           icon={<Building2 className="w-6 h-6 md:w-8 md:h-8" />}

@@ -17,6 +17,8 @@ import type {
   NetworkPartner,
   NetworkPartnerStatus,
   NetworkPartnerMetrics,
+  NetworkPartnerFormData,
+  SubPartnerFormData,
   PartnerNetworkPageProps,
 } from "./types"
 import { MOCK_NETWORK_PARTNERS } from "./data"
@@ -27,14 +29,20 @@ import { usePartnerFiltering, usePartnerCount, usePartnerExpansion } from "./hoo
 import { Button } from "../ui/button"
 import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
 import type { FilterState } from "../shared/SearchFilter/types"
-import { EditNetworkPartnerDialog, NetworkPartnerFormData } from "./EditNetworkPartnerDialog"
+import { EditNetworkPartnerDialog } from "./EditNetworkPartnerDialog"
 import { DeleteNetworkPartnerDialog } from "./DeleteNetworkPartnerDialog"
-import { CreateSubPartnerDialog, SubPartnerFormData } from "./CreateSubPartnerDialog"
-import { GridBlobBackground } from "../ui/GridBlobCanvas"
+import { CreateSubPartnerDialog } from "./CreateSubPartnerDialog"
 import { PageActionPanel } from "../ui/PageActionPanel"
 
 // Re-export types for external consumers
-export type { NetworkPartnerStatus, NetworkPartnerMetrics, NetworkPartner, PartnerNetworkPageProps }
+export type {
+  NetworkPartnerStatus,
+  NetworkPartnerMetrics,
+  NetworkPartner,
+  NetworkPartnerFormData,
+  SubPartnerFormData,
+  PartnerNetworkPageProps,
+}
 export { MOCK_NETWORK_PARTNERS }
 
 // =============================================================================
@@ -44,9 +52,17 @@ export { MOCK_NETWORK_PARTNERS }
 export function PartnerNetworkPage({
   partners = MOCK_NETWORK_PARTNERS,
   loading = false,
+  // New CRUD callbacks (adapter pattern)
+  onCreatePartner,
+  onUpdatePartner,
+  onConfirmDelete,
+  onCreateSubPartner,
+  // Navigation callbacks
+  onViewPartner: _onViewPartner,
+  onManageUsers: _onManageUsers,
+  // Legacy callbacks (deprecated)
   onAddPartner,
   onEditPartner,
-  onViewPartner: _onViewPartner,
   onAddSubPartner,
   onDeletePartner,
   className,
@@ -67,16 +83,18 @@ export function PartnerNetworkPage({
   const [selectedPartner, setSelectedPartner] = useState<NetworkPartner | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Dialog handlers
+  // Dialog handlers - open dialogs
   const handleAddPartnerClick = useCallback(() => {
     setSelectedPartner(null)
     setCreateDialogOpen(true)
+    // Legacy callback (deprecated)
     onAddPartner?.()
   }, [onAddPartner])
 
   const handleEditPartnerClick = useCallback((partner: NetworkPartner) => {
     setSelectedPartner(partner)
     setEditDialogOpen(true)
+    // Legacy callback (deprecated)
     onEditPartner?.(partner)
   }, [onEditPartner])
 
@@ -88,57 +106,84 @@ export function PartnerNetworkPage({
   const handleAddSubPartnerClick = useCallback((parent: NetworkPartner) => {
     setSelectedPartner(parent)
     setSubPartnerDialogOpen(true)
+    // Legacy callback (deprecated)
     onAddSubPartner?.(parent)
   }, [onAddSubPartner])
 
+  // Form submission handlers - call CRUD callbacks with form data
   const handleCreateSubmit = useCallback(async (data: NetworkPartnerFormData) => {
-    setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Create partner:', data)
-    setIsSubmitting(false)
-    setCreateDialogOpen(false)
-  }, [])
+    if (onCreatePartner) {
+      setIsSubmitting(true)
+      try {
+        await onCreatePartner(data)
+      } finally {
+        setIsSubmitting(false)
+        setCreateDialogOpen(false)
+      }
+    } else {
+      // Fallback for demo/storybook mode
+      console.log('Create partner:', data)
+      setCreateDialogOpen(false)
+    }
+  }, [onCreatePartner])
 
   const handleEditSubmit = useCallback(async (data: NetworkPartnerFormData, partner?: NetworkPartner) => {
-    setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Update partner:', partner?.id, data)
-    setIsSubmitting(false)
-    setEditDialogOpen(false)
-  }, [])
+    if (onUpdatePartner && partner) {
+      setIsSubmitting(true)
+      try {
+        await onUpdatePartner(partner, data)
+      } finally {
+        setIsSubmitting(false)
+        setEditDialogOpen(false)
+      }
+    } else {
+      // Fallback for demo/storybook mode
+      console.log('Update partner:', partner?.id, data)
+      setEditDialogOpen(false)
+    }
+  }, [onUpdatePartner])
 
   const handleDeleteConfirm = useCallback(async (partner: NetworkPartner) => {
-    setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Delete partner:', partner.id)
-    onDeletePartner?.(partner)
-    setIsSubmitting(false)
-    setDeleteDialogOpen(false)
-  }, [onDeletePartner])
+    if (onConfirmDelete) {
+      setIsSubmitting(true)
+      try {
+        await onConfirmDelete(partner)
+      } finally {
+        setIsSubmitting(false)
+        setDeleteDialogOpen(false)
+      }
+    } else {
+      // Fallback for demo/storybook mode + legacy callback
+      console.log('Delete partner:', partner.id)
+      onDeletePartner?.(partner)
+      setDeleteDialogOpen(false)
+    }
+  }, [onConfirmDelete, onDeletePartner])
 
   const handleSubPartnerSubmit = useCallback(async (data: SubPartnerFormData, parent: NetworkPartner) => {
-    setIsSubmitting(true)
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Create sub-partner under:', parent.id, data)
-    setIsSubmitting(false)
-    setSubPartnerDialogOpen(false)
-  }, [])
+    if (onCreateSubPartner) {
+      setIsSubmitting(true)
+      try {
+        await onCreateSubPartner(parent, data)
+      } finally {
+        setIsSubmitting(false)
+        setSubPartnerDialogOpen(false)
+      }
+    } else {
+      // Fallback for demo/storybook mode
+      console.log('Create sub-partner under:', parent.id, data)
+      setSubPartnerDialogOpen(false)
+    }
+  }, [onCreateSubPartner])
 
   return (
     <main
       data-slot="partner-network-page"
       data-testid="partner-network-page"
-      className={cn("relative min-h-screen bg-page overflow-hidden", className)}
+      className={cn("min-h-screen", className)}
     >
-      {/* Animated grid blob background */}
-      <GridBlobBackground scale={1.2} blobCount={2} />
-
-      {/* Content layer - above background */}
-      <div className="relative z-10 flex flex-col gap-6 p-4 md:p-6">
+      {/* Content - no extra background, page background comes from shell */}
+      <div className="flex flex-col gap-6 p-4 md:p-6">
         {/* Page Action Panel - replaces manual header */}
         <PageActionPanel
           icon={<Network className="w-6 h-6 md:w-8 md:h-8" />}
@@ -213,7 +258,7 @@ export function PartnerNetworkPage({
                 <div className="flex-1">Partner</div>
                 <div className="w-12 flex-shrink-0 text-center">Status</div>
                 <div className="w-36 flex-shrink-0 text-right">Monthly Revenue</div>
-                <div className="w-20 flex-shrink-0 text-right">Actions</div>
+                <div className="w-28 flex-shrink-0 text-right">Actions</div>
               </div>
 
               {/* Loading state */}

@@ -63,20 +63,16 @@ export type {
   NetworkPartner,
   NetworkPartnerStatus,
   NetworkPartnerMetrics,
+  NetworkPartnerFormData,
+  SubPartnerFormData,
   PartnerNetworkPageProps,
 } from '../components/partners/PartnerNetworkPage'
 
 export { EditNetworkPartnerDialog } from '../components/partners/EditNetworkPartnerDialog'
-export type {
-  EditNetworkPartnerDialogProps,
-  NetworkPartnerFormData,
-} from '../components/partners/EditNetworkPartnerDialog'
+export type { EditNetworkPartnerDialogProps } from '../components/partners/EditNetworkPartnerDialog'
 
 export { CreateSubPartnerDialog } from '../components/partners/CreateSubPartnerDialog'
-export type {
-  CreateSubPartnerDialogProps,
-  SubPartnerFormData,
-} from '../components/partners/CreateSubPartnerDialog'
+export type { CreateSubPartnerDialogProps } from '../components/partners/CreateSubPartnerDialog'
 
 export { DeleteNetworkPartnerDialog } from '../components/partners/DeleteNetworkPartnerDialog'
 export type { DeleteNetworkPartnerDialogProps } from '../components/partners/DeleteNetworkPartnerDialog'
@@ -97,7 +93,7 @@ export type {
 // HELP PAGE - Partner documentation and support
 // =============================================================================
 
-export { HelpPage } from '../components/partners/HelpPage'
+export { HelpPage, DEFAULT_HELP_ARTICLES, DEFAULT_HELP_FAQS } from '../components/partners/HelpPage'
 export type {
   HelpPageProps,
   HelpArticle,

@@ -23,34 +23,10 @@ import {
   DialogTitle,
 } from "../ui/dialog"
 import { Separator } from "../ui/separator"
-import { NetworkPartner } from "./PartnerNetworkPage"
+import type { NetworkPartner, NetworkPartnerFormData } from "./types"
 
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export interface NetworkPartnerFormData {
-  // Company Information
-  companyName: string
-  industry: string
-  companySize: string
-  website: string
-
-  // Contact Information
-  contactName: string
-  contactEmail: string
-  contactPhone: string
-
-  // Partner Type
-  isMasterPartner: boolean
-
-  // Address (Optional)
-  country: string
-  streetAddress: string
-  city: string
-  state: string
-  zipCode: string
-}
+// Re-export for backwards compatibility
+export type { NetworkPartnerFormData }
 
 export interface EditNetworkPartnerDialogProps {
   /** Whether the dialog is open */
