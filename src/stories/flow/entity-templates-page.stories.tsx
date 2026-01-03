@@ -315,29 +315,103 @@ const MOCK_TEMPLATES: EntityTemplate[] = [
 ]
 
 // =============================================================================
-// HANDLERS
+// FUNCTIONAL WRAPPER - Provides full interactivity for stories
 // =============================================================================
 
-const handleCreateNavigate = () => {
-  console.log('Navigate to create page')
-  // In real app: navigate('/entity-templates/create')
+interface FunctionalWrapperProps {
+  initialTemplates: EntityTemplate[]
+  isLoading?: boolean
 }
 
-const handleEditNavigate = (template: EntityTemplate) => {
-  console.log('Navigate to edit page for:', template.id, template.name)
-  // In real app: navigate(`/entity-templates/${template.id}/edit`)
-}
+/**
+ * Wrapper component that provides full CRUD functionality for stories.
+ * Manages state internally and renders list/create/edit views as needed.
+ */
+function FunctionalWrapper({ initialTemplates, isLoading = false }: FunctionalWrapperProps) {
+  const [currentView, setCurrentView] = React.useState<'list' | 'create' | 'edit'>('list')
+  const [editingTemplate, setEditingTemplate] = React.useState<EntityTemplate | null>(null)
+  const [templates, setTemplates] = React.useState<EntityTemplate[]>(initialTemplates)
 
-const handleRefresh = async () => {
-  console.log('Refreshing templates...')
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 500))
-}
+  const handleCreateNavigate = () => {
+    setCurrentView('create')
+  }
 
-const handleTemplateDelete = async (templateId: string) => {
-  console.log('Deleting template:', templateId)
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  const handleEditNavigate = (template: EntityTemplate) => {
+    setEditingTemplate(template)
+    setCurrentView('edit')
+  }
+
+  const handleBack = () => {
+    setCurrentView('list')
+    setEditingTemplate(null)
+  }
+
+  const handleEditSubmit = async (data: EditTemplateFormData) => {
+    // Update the template in local state
+    setTemplates((prev) =>
+      prev.map((t) =>
+        t.id === data.id
+          ? { ...t, name: data.name, businessKeyTemplate: data.businessKeyTemplate, jsonSchema: data.jsonSchema }
+          : t
+      )
+    )
+    await new Promise((resolve) => setTimeout(resolve, 500))
+  }
+
+  const handleCreateSubmit = async (data: CreateTemplateFormData) => {
+    const newTemplate: EntityTemplate = {
+      id: `new-${Date.now()}`,
+      name: data.name,
+      code: data.name.toLowerCase().replace(/\s+/g, '-'),
+      category: data.category,
+      version: 1,
+      isSystem: false,
+      businessKeyTemplate: data.businessKeyTemplate,
+      jsonSchema: data.jsonSchema,
+      createdAt: new Date().toISOString(),
+    }
+    setTemplates((prev) => [newTemplate, ...prev])
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    setCurrentView('list')
+  }
+
+  const handleDelete = async (templateId: string) => {
+    setTemplates((prev) => prev.filter((t) => t.id !== templateId))
+  }
+
+  const handleRefresh = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500))
+  }
+
+  if (currentView === 'create') {
+    return (
+      <CreateTemplatePage
+        onSubmit={handleCreateSubmit}
+        onBack={handleBack}
+      />
+    )
+  }
+
+  if (currentView === 'edit' && editingTemplate) {
+    return (
+      <EditTemplatePage
+        template={editingTemplate}
+        onSubmit={handleEditSubmit}
+        onBack={handleBack}
+      />
+    )
+  }
+
+  return (
+    <EntityTemplatesPage
+      templates={templates}
+      isLoading={isLoading}
+      onCreateNavigate={handleCreateNavigate}
+      onEditNavigate={handleEditNavigate}
+      onTemplateDelete={handleDelete}
+      onRefresh={handleRefresh}
+    />
+  )
 }
 
 // =============================================================================
@@ -346,77 +420,54 @@ const handleTemplateDelete = async (templateId: string) => {
 
 /**
  * Default state with sample templates including system and custom types.
+ * Fully functional - create, edit, and delete all work.
  */
 export const Default: Story = {
-  args: {
-    templates: MOCK_TEMPLATES,
-    onCreateNavigate: handleCreateNavigate,
-    onEditNavigate: handleEditNavigate,
-    onTemplateDelete: handleTemplateDelete,
-    onRefresh: handleRefresh,
-  },
+  render: () => <FunctionalWrapper initialTemplates={MOCK_TEMPLATES} />,
 }
 
 /**
  * Loading state while fetching templates.
  */
 export const Loading: Story = {
-  args: {
-    templates: [],
-    isLoading: true,
-  },
+  render: () => <FunctionalWrapper initialTemplates={[]} isLoading />,
 }
 
 /**
  * Empty state when no templates exist.
+ * Fully functional - can create new templates.
  */
 export const Empty: Story = {
-  args: {
-    templates: [],
-    isLoading: false,
-    onCreateNavigate: handleCreateNavigate,
-    onRefresh: handleRefresh,
-  },
+  render: () => <FunctionalWrapper initialTemplates={[]} />,
 }
 
 /**
  * State with only system templates.
+ * System templates cannot be edited or deleted.
  */
 export const SystemTemplatesOnly: Story = {
-  args: {
-    templates: MOCK_TEMPLATES.filter((t) => t.isSystem),
-    onCreateNavigate: handleCreateNavigate,
-    onEditNavigate: handleEditNavigate,
-    onRefresh: handleRefresh,
-  },
+  render: () => <FunctionalWrapper initialTemplates={MOCK_TEMPLATES.filter((t) => t.isSystem)} />,
 }
 
 /**
  * State with only custom templates.
+ * Fully functional - all CRUD operations work.
  */
 export const CustomTemplatesOnly: Story = {
-  args: {
-    templates: MOCK_TEMPLATES.filter((t) => !t.isSystem),
-    onCreateNavigate: handleCreateNavigate,
-    onEditNavigate: handleEditNavigate,
-    onRefresh: handleRefresh,
-  },
+  render: () => <FunctionalWrapper initialTemplates={MOCK_TEMPLATES.filter((t) => !t.isSystem)} />,
 }
 
 /**
  * Single template for focused view.
+ * Note: First mock template is a system template (cannot edit/delete).
  */
 export const SingleTemplate: Story = {
-  args: {
-    templates: [MOCK_TEMPLATES[0]],
-    onCreateNavigate: handleCreateNavigate,
-    onEditNavigate: handleEditNavigate,
-    onRefresh: handleRefresh,
-  },
+  render: () => <FunctionalWrapper initialTemplates={[MOCK_TEMPLATES[0]]} />,
 }
 
 /**
  * Many templates to test pagination.
+ * Fully functional - all CRUD operations work.
  */
 const CATEGORIES_FOR_GENERATED = [
   'incident',
@@ -428,25 +479,22 @@ const CATEGORIES_FOR_GENERATED = [
   'custom',
 ] as const
 
+const MANY_TEMPLATES: EntityTemplate[] = [
+  ...MOCK_TEMPLATES,
+  ...Array.from({ length: 20 }, (_, i) => ({
+    id: `generated-${i + 6}`,
+    name: `Custom Template ${i + 1}`,
+    code: `custom-template-${i + 1}`,
+    category: CATEGORIES_FOR_GENERATED[i % CATEGORIES_FOR_GENERATED.length],
+    version: 1,
+    isSystem: false,
+    jsonSchema: `{"type": "object", "properties": {"field": {"type": "string"}}}`,
+    createdAt: new Date(Date.now() - i * 86400000).toISOString(),
+  })),
+]
+
 export const ManyTemplates: Story = {
-  args: {
-    templates: [
-      ...MOCK_TEMPLATES,
-      ...Array.from({ length: 20 }, (_, i) => ({
-        id: `generated-${i + 6}`,
-        name: `Custom Template ${i + 1}`,
-        code: `custom-template-${i + 1}`,
-        category: CATEGORIES_FOR_GENERATED[i % CATEGORIES_FOR_GENERATED.length],
-        version: 1,
-        isSystem: false,
-        jsonSchema: `{"type": "object", "properties": {"field": {"type": "string"}}}`,
-        createdAt: new Date(Date.now() - i * 86400000).toISOString(),
-      })),
-    ],
-    onCreateNavigate: handleCreateNavigate,
-    onEditNavigate: handleEditNavigate,
-    onRefresh: handleRefresh,
-  },
+  render: () => <FunctionalWrapper initialTemplates={MANY_TEMPLATES} />,
 }
 
 /**
@@ -614,16 +662,11 @@ const ALL_CATEGORIES_TEMPLATES: EntityTemplate[] = [
 ]
 
 export const AllCategories: Story = {
-  args: {
-    templates: ALL_CATEGORIES_TEMPLATES,
-    onCreateNavigate: handleCreateNavigate,
-    onEditNavigate: handleEditNavigate,
-    onRefresh: handleRefresh,
-  },
+  render: () => <FunctionalWrapper initialTemplates={ALL_CATEGORIES_TEMPLATES} />,
   parameters: {
     docs: {
       description: {
-        story: 'Showcases the split layout with templates in every category. Click categories in the sidebar to filter.',
+        story: 'Showcases the split layout with templates in every category. Click categories in the sidebar to filter. Fully functional - all CRUD operations work.',
       },
     },
   },
@@ -634,122 +677,30 @@ export const AllCategories: Story = {
 // =============================================================================
 
 /**
- * Wrapper component that simulates routing between list, create, and edit pages.
- * In a real app, you'd use React Router or similar.
- */
-function EntityTemplatesFlow() {
-  const [currentView, setCurrentView] = React.useState<'list' | 'create' | 'edit'>('list')
-  const [editingTemplate, setEditingTemplate] = React.useState<EntityTemplate | null>(null)
-  const [templates, setTemplates] = React.useState<EntityTemplate[]>(MOCK_TEMPLATES)
-
-  const handleCreateNavigate = () => {
-    setCurrentView('create')
-  }
-
-  const handleEditNavigate = (template: EntityTemplate) => {
-    setEditingTemplate(template)
-    setCurrentView('edit')
-  }
-
-  const handleBack = () => {
-    setCurrentView('list')
-    setEditingTemplate(null)
-  }
-
-  const handleEditSubmit = async (data: EditTemplateFormData) => {
-    console.log('Saving template:', data)
-    // Update the template in our local state
-    setTemplates((prev) =>
-      prev.map((t) =>
-        t.id === data.id
-          ? { ...t, name: data.name, businessKeyTemplate: data.businessKeyTemplate, jsonSchema: data.jsonSchema }
-          : t
-      )
-    )
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
-  }
-
-  const handleCreateSubmit = async (data: CreateTemplateFormData) => {
-    console.log('Creating template:', data)
-    // Add the new template to our local state
-    const newTemplate: EntityTemplate = {
-      id: `new-${Date.now()}`,
-      name: data.name,
-      code: data.name.toLowerCase().replace(/\s+/g, '-'),
-      category: data.category,
-      version: 1,
-      isSystem: false,
-      businessKeyTemplate: data.businessKeyTemplate,
-      jsonSchema: data.jsonSchema,
-      createdAt: new Date().toISOString(),
-    }
-    setTemplates((prev) => [newTemplate, ...prev])
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    setCurrentView('list')
-  }
-
-  const handleDelete = async (templateId: string) => {
-    console.log('Deleting template:', templateId)
-    setTemplates((prev) => prev.filter((t) => t.id !== templateId))
-  }
-
-  if (currentView === 'create') {
-    return (
-      <CreateTemplatePage
-        onSubmit={handleCreateSubmit}
-        onBack={handleBack}
-      />
-    )
-  }
-
-  if (currentView === 'edit' && editingTemplate) {
-    return (
-      <EditTemplatePage
-        template={editingTemplate}
-        onSubmit={handleEditSubmit}
-        onBack={handleBack}
-      />
-    )
-  }
-
-  return (
-    <EntityTemplatesPage
-      templates={templates}
-      onCreateNavigate={handleCreateNavigate}
-      onEditNavigate={handleEditNavigate}
-      onTemplateDelete={handleDelete}
-      onRefresh={async () => {
-        await new Promise((resolve) => setTimeout(resolve, 500))
-      }}
-    />
-  )
-}
-
-/**
  * **Interactive Flow** - Full list → create/edit → back experience.
  *
  * This story demonstrates the complete user flow:
  * 1. View template list
  * 2. Click "Create Template" button to create a new template
- * 3. Click edit button on any template to edit it
+ * 3. Click edit button on any custom template to edit it
  * 4. Both create and edit open full-screen pages with SchemaStudio editor
  * 5. Make changes and save, or click "Back to Templates"
+ * 6. Delete custom templates (system templates cannot be deleted)
  *
  * Try it:
  * - Click "Create Template" to see the create page
- * - Click the ✏️ edit icon on any template row for edit page
- * - Edit the template name, category, or schema fields
- * - Click "Create Template"/"Save Changes" or "Back to Templates"
+ * - Click the edit icon on any custom template row for edit page
+ * - Edit the template name, business key, or schema fields
+ * - Click "Save Changes" or "Back to Templates"
+ * - Delete a custom template using the delete button
  */
 export const InteractiveFlow: Story = {
-  render: () => <EntityTemplatesFlow />,
+  render: () => <FunctionalWrapper initialTemplates={MOCK_TEMPLATES} />,
   parameters: {
     docs: {
       description: {
         story:
-          'Complete interactive flow demonstrating navigation between list, create, and edit pages. Click create or edit to see full-screen experiences.',
+          'Complete interactive flow demonstrating navigation between list, create, and edit pages. All CRUD operations are fully functional.',
       },
     },
   },

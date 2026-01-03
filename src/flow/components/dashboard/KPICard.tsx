@@ -12,12 +12,11 @@
  * - thresholds: { warning, critical } values for zone boundaries
  */
 import * as React from 'react'
-import { useMemo, useId } from 'react'
+import { useMemo } from 'react'
 import { CheckCircle2, AlertTriangle, XCircle } from 'lucide-react'
 import {
   AreaChart,
   Area,
-  ResponsiveContainer,
   YAxis,
   ReferenceLine,
   XAxis,
@@ -28,6 +27,11 @@ import {
 } from '../../../components/ui/app-card'
 import { Badge } from '../../../components/ui/badge'
 import { cn } from '../../../lib/utils'
+import {
+  ChartContainer,
+  DDS_CHART_COLORS,
+  type ChartConfig,
+} from '../../../components/ui/chart'
 
 // =============================================================================
 // TYPES
@@ -60,33 +64,23 @@ interface SparklineProps {
   invertZones?: boolean
 }
 
-// Color mapping to CSS variables
-const colorMap: Record<string, { stroke: string; fill: string; gradient: string }> = {
-  success: {
-    stroke: 'var(--color-success)',
-    fill: 'url(#sparklineGradientSuccess)',
-    gradient: 'var(--color-success)',
-  },
-  warning: {
-    stroke: 'var(--color-warning)',
-    fill: 'url(#sparklineGradientWarning)',
-    gradient: 'var(--color-warning)',
-  },
-  error: {
-    stroke: 'var(--color-error)',
-    fill: 'url(#sparklineGradientError)',
-    gradient: 'var(--color-error)',
-  },
-  accent: {
-    stroke: 'var(--color-accent)',
-    fill: 'url(#sparklineGradientAccent)',
-    gradient: 'var(--color-accent)',
-  },
-  muted: {
-    stroke: 'var(--color-text-muted)',
-    fill: 'url(#sparklineGradientMuted)',
-    gradient: 'var(--color-text-muted)',
-  },
+// Color mapping using DDS_CHART_COLORS for consistency
+const SPARKLINE_COLORS: Record<SparklineColor, string> = {
+  success: DDS_CHART_COLORS.success.color,
+  warning: DDS_CHART_COLORS.warning.color,
+  error: DDS_CHART_COLORS.error.color,
+  accent: DDS_CHART_COLORS.accent.color,
+  muted: DDS_CHART_COLORS.muted.color,
+}
+
+/** Build chart config for sparkline */
+function buildSparklineConfig(color: SparklineColor): ChartConfig {
+  return {
+    value: {
+      label: 'Value',
+      color: SPARKLINE_COLORS[color],
+    },
+  }
 }
 
 // Status zone colors (using design system tokens)
@@ -105,8 +99,8 @@ function Sparkline({
   thresholds,
   invertZones = false,
 }: SparklineProps) {
-  // Generate unique IDs for gradients to avoid collisions
-  const instanceId = useId()
+  // Build chart config for this sparkline color
+  const chartConfig = useMemo(() => buildSparklineConfig(color), [color])
 
   // Transform data for Recharts
   const chartData = useMemo(
@@ -115,11 +109,6 @@ function Sparkline({
   )
 
   if (!data || data.length < 2) return null
-
-  const colors = colorMap[color]
-  const gradientId = `sparkline-${instanceId}-fill`
-  const statusZoneId = `sparkline-${instanceId}-zones`
-  const futureClipId = `sparkline-${instanceId}-future`
 
   // Calculate domain with padding for visual appeal
   const minValue = Math.min(...data)
@@ -171,7 +160,7 @@ function Sparkline({
 
   return (
     <div className={cn('w-full h-full relative', className)}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ChartContainer config={chartConfig} className="h-full w-full aspect-auto">
         <AreaChart
           data={chartData}
           margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
@@ -179,7 +168,7 @@ function Sparkline({
           <defs>
             {/* Status zone gradient background */}
             {showStatusZones && zoneStops.length > 0 && (
-              <linearGradient id={statusZoneId} x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="sparkline-zones" x1="0" y1="0" x2="0" y2="1">
                 {zoneStops.map((stop, i) => (
                   <stop
                     key={i}
@@ -191,15 +180,15 @@ function Sparkline({
               </linearGradient>
             )}
 
-            {/* Line fill gradient */}
-            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={colors.gradient} stopOpacity={0.4} />
-              <stop offset="100%" stopColor={colors.gradient} stopOpacity={0.05} />
+            {/* Line fill gradient - uses CSS variable from ChartContainer */}
+            <linearGradient id="sparkline-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--color-value)" stopOpacity={0.4} />
+              <stop offset="100%" stopColor="var(--color-value)" stopOpacity={0.05} />
             </linearGradient>
 
             {/* Clip path for future fade (when periodProgress is set) */}
             {periodProgress !== undefined && periodProgress < 100 && (
-              <clipPath id={futureClipId}>
+              <clipPath id="sparkline-future">
                 <rect
                   x="0"
                   y="0"
@@ -217,7 +206,7 @@ function Sparkline({
               y="0"
               width="100%"
               height="100%"
-              fill={`url(#${statusZoneId})`}
+              fill="url(#sparkline-zones)"
             />
           )}
 
@@ -243,21 +232,21 @@ function Sparkline({
             />
           )}
 
-          {/* Main area - shows only actual data up to "now" */}
+          {/* Main area - uses CSS variable from ChartContainer */}
           <Area
             type="monotone"
             dataKey="value"
-            stroke={colors.stroke}
+            stroke="var(--color-value)"
             strokeWidth={2}
-            fill={`url(#${gradientId})`}
+            fill="url(#sparkline-fill)"
             isAnimationActive={false}
             clipPath={periodProgress !== undefined && periodProgress < 100
-              ? `url(#${futureClipId})`
+              ? 'url(#sparkline-future)'
               : undefined
             }
           />
         </AreaChart>
-      </ResponsiveContainer>
+      </ChartContainer>
     </div>
   )
 }

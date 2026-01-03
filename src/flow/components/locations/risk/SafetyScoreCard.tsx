@@ -11,14 +11,18 @@
  */
 
 import * as React from 'react'
-import { useMemo, useId } from 'react'
+import { useMemo } from 'react'
 import { Shield, TrendingUp, TrendingDown, Minus } from 'lucide-react'
-import { AreaChart, Area, ResponsiveContainer, YAxis } from 'recharts'
+import { AreaChart, Area, YAxis } from 'recharts'
 import { cn } from '../../../../lib/utils'
 import {
   AppCard,
   AppCardContent,
 } from '../../../../components/ui/app-card'
+import {
+  ChartContainer,
+  type ChartConfig,
+} from '../../../../components/ui/chart'
 import type { SafetyScoreCardProps, RiskTrend } from './types'
 import { DEFAULT_SAFETY_THRESHOLDS } from './types'
 
@@ -81,14 +85,24 @@ interface SparklineProps {
   category: ScoreCategory
 }
 
-function Sparkline({ data, category }: SparklineProps) {
-  const instanceId = useId()
+/** Build ChartConfig for sparkline based on score category */
+function buildSparklineConfig(category: ScoreCategory): ChartConfig {
   const colors = CATEGORY_COLORS[category]
+  return {
+    value: {
+      label: 'Score',
+      color: colors.gradient,
+    },
+  }
+}
 
+function Sparkline({ data, category }: SparklineProps) {
   const chartData = useMemo(
     () => data.map((value, index) => ({ index, value })),
     [data]
   )
+
+  const chartConfig = useMemo(() => buildSparklineConfig(category), [category])
 
   if (!data || data.length < 2) return null
 
@@ -97,33 +111,29 @@ function Sparkline({ data, category }: SparklineProps) {
   const range = maxValue - minValue || 1
   const padding = range * 0.15
 
-  const gradientId = `safety-sparkline-${instanceId}`
-
   return (
-    <div className="w-full h-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
-          data={chartData}
-          margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-        >
-          <defs>
-            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={colors.gradient} stopOpacity={0.4} />
-              <stop offset="100%" stopColor={colors.gradient} stopOpacity={0.05} />
-            </linearGradient>
-          </defs>
-          <YAxis domain={[minValue - padding, maxValue + padding]} hide />
-          <Area
-            type="monotone"
-            dataKey="value"
-            stroke={colors.gradient}
-            strokeWidth={2}
-            fill={`url(#${gradientId})`}
-            isAnimationActive={false}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
+    <ChartContainer config={chartConfig} className="w-full h-full">
+      <AreaChart
+        data={chartData}
+        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+      >
+        <defs>
+          <linearGradient id="fill-value" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--color-value)" stopOpacity={0.4} />
+            <stop offset="100%" stopColor="var(--color-value)" stopOpacity={0.05} />
+          </linearGradient>
+        </defs>
+        <YAxis domain={[minValue - padding, maxValue + padding]} hide />
+        <Area
+          type="monotone"
+          dataKey="value"
+          stroke="var(--color-value)"
+          strokeWidth={2}
+          fill="url(#fill-value)"
+          isAnimationActive={false}
+        />
+      </AreaChart>
+    </ChartContainer>
   )
 }
 

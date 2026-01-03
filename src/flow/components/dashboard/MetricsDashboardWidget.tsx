@@ -25,17 +25,22 @@
  * />
  */
 import * as React from 'react'
-import { useMemo, useId } from 'react'
+import { useMemo } from 'react'
 import {
   AreaChart,
   Area,
   XAxis,
   YAxis,
-  ResponsiveContainer,
-  Tooltip,
   CartesianGrid,
 } from 'recharts'
 import { cn } from '../../../lib/utils'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+  DDS_CHART_COLORS,
+} from '../../../components/ui/chart'
 
 // =============================================================================
 // TYPES
@@ -91,42 +96,31 @@ export interface MetricsDashboardWidgetProps {
 }
 
 // =============================================================================
-// COLOR MAPPING - Uses DDS CSS variables for theming support
+// COLOR MAPPING - Uses DDS semantic tokens via shadcn Chart
 // =============================================================================
 
-/** Maps semantic colors to DDS CSS variables */
-const COLOR_MAP: Record<MetricColor, {
-  dotClass: string      // Tailwind class for dot background
-  line: string          // CSS variable for chart line
-}> = {
-  info: {
-    dotClass: 'bg-info',
-    line: 'var(--color-info)',
-  },
-  warning: {
-    dotClass: 'bg-warning',
-    line: 'var(--color-warning)',
-  },
-  success: {
-    dotClass: 'bg-success',
-    line: 'var(--color-success)',
-  },
-  error: {
-    dotClass: 'bg-error',
-    line: 'var(--color-error)',
-  },
-  accent: {
-    dotClass: 'bg-accent-strong',
-    line: 'var(--color-accent)',
-  },
-  secondary: {
-    dotClass: 'bg-secondary',
-    line: 'var(--color-secondary)',
-  },
-  aging: {
-    dotClass: 'bg-aging',
-    line: 'var(--color-aging)',
-  },
+/** Maps metric colors to Tailwind dot classes */
+const DOT_CLASS_MAP: Record<MetricColor, string> = {
+  info: 'bg-info',
+  warning: 'bg-warning',
+  success: 'bg-success',
+  error: 'bg-error',
+  accent: 'bg-accent-strong',
+  secondary: 'bg-secondary',
+  aging: 'bg-aging',
+}
+
+/** Build ChartConfig from metrics array */
+function buildChartConfig(metrics: MetricItem[]): ChartConfig {
+  return metrics.reduce((config, metric) => {
+    const key = metric.dataKey || metric.label.toLowerCase()
+    const colorDef = DDS_CHART_COLORS[metric.color as keyof typeof DDS_CHART_COLORS]
+    config[key] = {
+      label: metric.label,
+      color: colorDef?.color || 'var(--color-accent)',
+    }
+    return config
+  }, {} as ChartConfig)
 }
 
 // =============================================================================
@@ -135,7 +129,7 @@ const COLOR_MAP: Record<MetricColor, {
 
 /** Metric item with dot indicator, label, and value */
 function MetricDisplay({ metric }: { metric: MetricItem }) {
-  const colors = COLOR_MAP[metric.color]
+  const dotClass = DOT_CLASS_MAP[metric.color]
 
   // Determine if trend is positive (default: check if starts with '+')
   const isPositive = metric.trendPositive ?? (metric.trend?.startsWith('+') ?? true)
@@ -144,7 +138,7 @@ function MetricDisplay({ metric }: { metric: MetricItem }) {
     <div className="flex flex-col gap-1">
       {/* Label row with dot indicator */}
       <div className="flex items-center gap-2">
-        <span className={cn('w-2.5 h-2.5 rounded-full flex-shrink-0', colors.dotClass)} />
+        <span className={cn('w-2.5 h-2.5 rounded-full flex-shrink-0', dotClass)} />
         <span className="text-sm text-secondary font-medium">{metric.label}</span>
       </div>
       {/* Value row with optional trend */}
@@ -167,41 +161,6 @@ function MetricDisplay({ metric }: { metric: MetricItem }) {
   )
 }
 
-/** Custom tooltip for the chart */
-function ChartTooltip({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean
-  payload?: Array<{ dataKey: string; value: number; color: string }>
-  label?: string
-}) {
-  if (!active || !payload?.length) return null
-
-  return (
-    <div className="bg-surface rounded-lg shadow-lg border border-default p-3 min-w-[120px]">
-      <p className="text-xs text-muted mb-2 font-medium">{label}</p>
-      <div className="space-y-1.5">
-        {payload.map((entry) => (
-          <div key={entry.dataKey} className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-1.5">
-              <span
-                className="w-2 h-2 rounded-full flex-shrink-0"
-                style={{ backgroundColor: entry.color }}
-              />
-              <span className="text-xs text-secondary capitalize">{entry.dataKey}</span>
-            </div>
-            <span className="text-xs font-semibold text-primary tabular-nums">
-              {entry.value.toLocaleString()}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 // =============================================================================
 // MAIN COMPONENT
 // =============================================================================
@@ -216,10 +175,11 @@ export function MetricsDashboardWidget({
   className,
   headerAction,
 }: MetricsDashboardWidgetProps) {
-  const instanceId = useId()
-
   // Resolve border style (glass is the default, glass-gradient adds accent stripe)
   const resolvedBorderStyle: BorderStyle = borderStyle ?? (showGradientBorder ? 'glass-gradient' : 'glass')
+
+  // Build chart config from metrics (memoized for performance)
+  const chartConfig = useMemo(() => buildChartConfig(metrics), [metrics])
 
   // Compute chart domain for consistent Y-axis
   const chartDomain = useMemo(() => {
@@ -260,10 +220,14 @@ export function MetricsDashboardWidget({
         ))}
       </div>
 
-      {/* Chart area - aligned with metrics padding */}
+      {/* Chart area - uses shadcn ChartContainer for consistent styling */}
       {chartData && chartData.length > 0 && (
         <div className="px-4 pb-5">
-          <ResponsiveContainer width="100%" height={chartHeight}>
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto w-full"
+            style={{ height: chartHeight }}
+          >
             <AreaChart
               data={chartData}
               margin={{ top: 8, right: 16, left: 24, bottom: 0 }}
@@ -271,18 +235,17 @@ export function MetricsDashboardWidget({
               <defs>
                 {metrics.map((metric) => {
                   const key = metric.dataKey || metric.label.toLowerCase()
-                  const colors = COLOR_MAP[metric.color]
                   return (
                     <linearGradient
                       key={key}
-                      id={`gradient-${instanceId}-${key}`}
+                      id={`fill-${key}`}
                       x1="0"
                       y1="0"
                       x2="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor={colors.line} stopOpacity={showAreaFill ? 0.2 : 0} />
-                      <stop offset="100%" stopColor={colors.line} stopOpacity={showAreaFill ? 0.02 : 0} />
+                      <stop offset="0%" stopColor={`var(--color-${key})`} stopOpacity={showAreaFill ? 0.2 : 0} />
+                      <stop offset="100%" stopColor={`var(--color-${key})`} stopOpacity={showAreaFill ? 0.02 : 0} />
                     </linearGradient>
                   )
                 })}
@@ -298,7 +261,7 @@ export function MetricsDashboardWidget({
                 dataKey="date"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: 'var(--color-muted)', fontSize: 11, fontWeight: 500 }}
+                tick={{ fill: 'var(--color-text-muted)', fontSize: 11, fontWeight: 500 }}
                 dy={8}
                 tickMargin={4}
               />
@@ -311,23 +274,22 @@ export function MetricsDashboardWidget({
                 width={0}
               />
 
-              <Tooltip content={<ChartTooltip />} />
+              <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
 
               {metrics.map((metric) => {
                 const key = metric.dataKey || metric.label.toLowerCase()
-                const colors = COLOR_MAP[metric.color]
                 return (
                   <Area
                     key={key}
                     type="monotone"
                     dataKey={key}
-                    stroke={colors.line}
+                    stroke={`var(--color-${key})`}
                     strokeWidth={2}
-                    fill={`url(#gradient-${instanceId}-${key})`}
+                    fill={`url(#fill-${key})`}
                     dot={false}
                     activeDot={{
                       r: 4,
-                      fill: colors.line,
+                      fill: `var(--color-${key})`,
                       stroke: 'var(--color-bg-elevated)',
                       strokeWidth: 2,
                     }}
@@ -335,7 +297,7 @@ export function MetricsDashboardWidget({
                 )
               })}
             </AreaChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </div>
       )}
     </>

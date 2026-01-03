@@ -68,7 +68,7 @@ export function FormBuilderProvider({ children, initialSchema }: FormBuilderProv
       // Reset unsaved changes flag since this is the initial load
       setHasUnsavedChanges(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Intentionally only depend on initialSchema - setSchema/setHasUnsavedChanges are stable
   }, [initialSchema]);
 
   // ─────────────────────────────────────────────────────────────────────
