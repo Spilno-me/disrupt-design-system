@@ -30,6 +30,7 @@ Human-to-Agent prompt templates for consistent, high-quality DDS operations.
 
 | Category | Use For |
 |----------|---------|
+| **Planning** | Exploration, getting unstuck, QoE-aligned process prompts |
 | **Stories** | Creating Storybook stories and documentation |
 | **Components** | Building and stabilizing UI components |
 | **Tokens** | Managing design tokens (colors, spacing, etc.) |
@@ -82,5 +83,15 @@ export const ComponentsOnly: Story = {
 export const ReviewOnly: Story = {
   args: {
     prompts: DDS_PROMPTS.filter((p) => p.category === 'review'),
+  },
+}
+
+/**
+ * Filtered to show only planning & process prompts (QoE-aligned).
+ * These prompts help with exploration, getting unstuck, and working with flow.
+ */
+export const PlanningOnly: Story = {
+  args: {
+    prompts: DDS_PROMPTS.filter((p) => p.category === 'planning'),
   },
 }
