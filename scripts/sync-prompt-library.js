@@ -105,6 +105,12 @@ function parsePrompts(content) {
       ? variablesMatch[1].match(/['"]([^'"]+)['"]/g)?.map((v) => v.replace(/['"]/g, '')) || []
       : []
 
+    // Extract tags
+    const tagsMatch = promptStr.match(/tags:\s*\[([^\]]*)\]/)
+    const tags = tagsMatch
+      ? tagsMatch[1].match(/['"]([^'"]+)['"]/g)?.map((t) => t.replace(/['"]/g, '')) || []
+      : []
+
     if (titleMatch && promptContent) {
       prompts.push({
         id,
@@ -112,6 +118,7 @@ function parsePrompts(content) {
         category: categoryMatch ? categoryMatch[1] : 'general',
         description: descriptionMatch ? descriptionMatch[1] : '',
         variables,
+        tags,
         prompt: promptContent,
       })
     }
@@ -221,33 +228,41 @@ function generateSkillFiles(prompts) {
     const filepath = join(SKILLS_DIR, filename)
     generatedFiles.add(filename)
 
-    // Generate skill file content
-    const variablesSection = prompt.variables.length > 0
-      ? `\n## Variables\n\n${prompt.variables.map(v => `- \`{${v}}\` - Replace with actual value`).join('\n')}\n`
+    // Extract philosophy principle from description if present (QoE alignment)
+    const philosophyMatch = prompt.description.match(/(Wu Wei|MAYA|QoE):\s*(.+?)\.?$/)
+    const philosophyNote = philosophyMatch
+      ? `> **${philosophyMatch[1]}:** ${philosophyMatch[2]}`
       : ''
 
+    // Generate variables section (Wu Wei: explain what each variable means)
+    const variablesSection = prompt.variables.length > 0
+      ? `**Variables:** ${prompt.variables.map(v => `\`{${v}}\``).join(', ')}\n`
+      : ''
+
+    // Extract required files
     const filesRequired = extractRequiredFiles(prompt.prompt)
     const filesSection = filesRequired.length > 0
-      ? `\n## Required Files\n\nRead these files before executing:\n${filesRequired.map(f => `- \`${f}\``).join('\n')}\n`
+      ? `**Read first:** ${filesRequired.map(f => `\`${f}\``).join(', ')}\n`
       : ''
 
+    // Extract tags from prompt object (need to parse from source)
+    const tagsSection = prompt.tags && prompt.tags.length > 0
+      ? `**Tags:** ${prompt.tags.join(', ')}\n`
+      : ''
+
+    // Build clean skill content (Wu Wei: no unnecessary wrapper, direct content)
     const skillContent = `# ${prompt.title}
 
-> **AUTO-GENERATED** from prompts.ts - Do not edit directly!
-> Source: \`src/components/shared/PromptLibrary/prompts.ts\`
+${philosophyNote}
 
-${prompt.description}
-${variablesSection}${filesSection}
-## Prompt
+**Category:** ${prompt.category} | ${tagsSection}${variablesSection}${filesSection}
+---
 
-\`\`\`
 ${prompt.prompt}
-\`\`\`
 
-## Usage
+---
 
-This skill is automatically available to agents working in the DDS codebase.
-Agents should read the required files before executing this prompt.
+*Auto-generated from \`prompts.ts\` — edit source, run \`npm run sync:prompts\`*
 `
 
     // Write skill file

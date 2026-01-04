@@ -80,7 +80,8 @@ const TAB_LABEL_FONT_SIZE = 'text-[11px]'
 // TYPES
 // =============================================================================
 
-export interface BottomNavProps extends React.HTMLAttributes<HTMLElement> {
+/** BottomNav props - DDS owns all styling, no className allowed */
+export interface BottomNavProps {
   /** Navigation items - first N shown in bar, rest in More menu */
   items: NavItem[]
   /** Currently active item ID */
@@ -370,13 +371,11 @@ export function BottomNav({
   activeItemId,
   onNavigate,
   maxVisibleItems = DEFAULT_MAX_VISIBLE_ITEMS,
-  className,
   showHelpItem = true,
   onHelpClick,
   moreLabel = DEFAULT_MORE_LABEL,
   forceVisible = false,
   embedded = false,
-  ...props
 }: BottomNavProps) {
   const [moreSheetOpen, setMoreSheetOpen] = useState(false)
 
@@ -411,14 +410,12 @@ export function BottomNav({
       <nav
         data-slot="bottom-nav"
         className={cn(
-          'bottom-0 left-0 right-0 z-50 flex items-center bg-surface border-t border-default shadow-lg',
+          'bottom-0 left-0 right-0 z-50 flex items-center bg-surface border-t border-default shadow-lg pb-safe',
           embedded ? 'absolute' : 'fixed',
-          !forceVisible && !embedded && 'md:hidden',
-          className
+          !forceVisible && !embedded && 'md:hidden'
         )}
         style={{ height: NAV_HEIGHT_PX }}
         aria-label="Bottom navigation"
-        {...props}
       >
         {visibleItems.map((item) => (
           <BottomNavTab

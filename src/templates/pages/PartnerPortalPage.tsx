@@ -217,10 +217,6 @@ export interface PartnerPortalPageProps {
   onLogoClick?: () => void
 
   // === Customization ===
-  /** Custom className */
-  className?: string
-  /** Show background (default: true) */
-  showBackground?: boolean
   /** Custom page overrides - render your own content for specific pages */
   pageOverrides?: Record<string, ReactNode>
 }
@@ -459,8 +455,6 @@ export function PartnerPortalPage({
   onLogoClick,
 
   // Customization
-  className,
-  showBackground = true,
   pageOverrides = {},
 }: PartnerPortalPageProps) {
   // Internal page state (uncontrolled mode)
@@ -678,9 +672,7 @@ export function PartnerPortalPage({
       onMenuItemClick={handleMenuItemClick}
       onHelpClick={handleHelpClick}
       onLogoClick={onLogoClick}
-      showBackground={showBackground}
       showHelpItem={true}
-      className={className}
     >
       {renderPageContent()}
     </AppLayoutShell>

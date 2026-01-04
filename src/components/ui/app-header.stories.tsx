@@ -15,7 +15,7 @@ const meta: Meta<typeof AppHeader> = {
         component: organismDescription(`Application header component for the Disrupt Family apps (Flow, Market, Partner).
 
 ## Features
-- **Product-specific branding**: Automatically displays the correct logo based on the \`product\` prop. Set \`tagline\` prop to display text next to logo (e.g., "Environmental Compliance" for Flow)
+- **Product-specific branding**: Automatically displays the correct logo based on the \`product\` prop
 - **Notification bell**: Shows notification count with a badge
 - **User menu**: Avatar with dropdown menu for user actions
 - **Wave pattern background**: Decorative wave pattern with glass morphism effect
@@ -23,7 +23,7 @@ const meta: Meta<typeof AppHeader> = {
 
 ## Testing
 - \`data-slot="app-header"\` - Main header container
-- \`data-slot="logo-container"\` - Logo and tagline section
+- \`data-slot="logo-container"\` - Logo section
 - \`data-slot="notification-bell"\` - Notification bell button
 - \`data-slot="user-avatar"\` - User avatar
 - \`data-slot="user-menu-trigger"\` - User menu trigger button
@@ -37,7 +37,6 @@ import { AppHeader } from '@/components/ui/AppHeader'
 // Basic usage
 <AppHeader
   product="flow"
-  tagline="Environmental Compliance"
   notificationCount={4}
   user={{ name: 'John Doe', email: 'john@example.com' }}
   onNotificationClick={() => console.log('Notifications')}
@@ -46,7 +45,6 @@ import { AppHeader } from '@/components/ui/AppHeader'
 // With custom menu items
 <AppHeader
   product="market"
-  tagline="Modules & Add-ons"
   user={{ name: 'Jane Smith', email: 'jane@example.com' }}
   menuItems={[
     { id: 'profile', label: 'Profile', icon: <User /> },
@@ -68,10 +66,6 @@ import { AppHeader } from '@/components/ui/AppHeader'
     notificationCount: {
       control: { type: 'number', min: 0, max: 999 },
       description: 'Notification badge count (0 to hide)',
-    },
-    showWavePattern: {
-      control: 'boolean',
-      description: 'Whether to show the wave pattern background',
     },
   },
   decorators: [
@@ -119,7 +113,6 @@ export const Default: Story = {
   name: 'Default (Flow)',
   args: {
     product: 'flow',
-    tagline: 'Environmental Compliance',
     notificationCount: 4,
     user: sampleUser,
     menuItems: sampleMenuItems,
@@ -137,7 +130,6 @@ export const WithAvatar: Story = {
   name: 'With User Avatar',
   args: {
     product: 'flow',
-    tagline: 'Environmental Compliance',
     notificationCount: 3,
     user: sampleUserWithAvatar,
     menuItems: sampleMenuItems,
@@ -155,7 +147,6 @@ export const Interactive: Story = {
   name: 'Interactive',
   args: {
     product: 'flow',
-    tagline: 'Environmental Compliance',
     notificationCount: 7,
     user: sampleUserWithAvatar,
     menuItems: sampleMenuItems,
@@ -203,7 +194,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Flow EHS</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               notificationCount={4}
               user={sampleUser}
               disablePortal
@@ -213,7 +203,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Market</p>
             <AppHeader
               product="market"
-              tagline="Modules & Add-ons"
               notificationCount={12}
               user={sampleUserWithAvatar}
               disablePortal
@@ -223,7 +212,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Partner Portal</p>
             <AppHeader
               product="partner"
-              tagline="Management Portal"
               notificationCount={0}
               user={sampleUser}
               disablePortal
@@ -240,7 +228,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">With Notifications (4)</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               notificationCount={4}
               user={sampleUser}
               disablePortal
@@ -250,7 +237,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Many Notifications (99+)</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               notificationCount={150}
               user={sampleUser}
               disablePortal
@@ -260,7 +246,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">No Notifications</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               notificationCount={0}
               user={sampleUser}
               disablePortal
@@ -270,7 +255,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">Notifications Hidden</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               showNotifications={false}
               user={sampleUser}
               disablePortal
@@ -287,7 +271,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">With Avatar Image</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               notificationCount={3}
               user={sampleUserWithAvatar}
               disablePortal
@@ -297,7 +280,6 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">With Initials</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               notificationCount={2}
               user={sampleUser}
               disablePortal
@@ -307,36 +289,7 @@ export const AllStates: Story = {
             <p className="text-xs font-medium text-secondary px-4 py-2">No User (Logged Out)</p>
             <AppHeader
               product="flow"
-              tagline="Environmental Compliance"
               notificationCount={0}
-              disablePortal
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Customization */}
-      <div>
-        <h3 className="text-lg font-semibold mb-4 px-4 text-primary">Customization</h3>
-        <div className="space-y-4">
-          <div>
-            <p className="text-xs font-medium text-secondary px-4 py-2">Custom Tagline Override</p>
-            <AppHeader
-              product="flow"
-              tagline="Enterprise Safety Suite"
-              notificationCount={1}
-              user={sampleUser}
-              disablePortal
-            />
-          </div>
-          <div>
-            <p className="text-xs font-medium text-secondary px-4 py-2">Without Wave Pattern</p>
-            <AppHeader
-              product="flow"
-              tagline="Environmental Compliance"
-              showWavePattern={false}
-              notificationCount={2}
-              user={sampleUser}
               disablePortal
             />
           </div>

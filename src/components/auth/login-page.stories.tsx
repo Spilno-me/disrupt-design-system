@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { LoginPage } from "./LoginPage"
-import heroFrame from "../../assets/optimized/auth/hero-frame-desktop.webp"
 import { PAGE_META, pageDescription } from "@/stories/_infrastructure"
 
 const meta: Meta<typeof LoginPage> = {
@@ -47,8 +46,6 @@ export const DisruptFlow: Story = {
   name: "Disrupt Flow",
   args: {
     product: "flow",
-    heroImage: heroFrame,
-    heroImageAlt: "Disrupt Flow platform interface",
     ...baseHandlers,
   },
 }
@@ -57,8 +54,6 @@ export const DisruptMarket: Story = {
   name: "Disrupt Market",
   args: {
     product: "market",
-    heroImage: heroFrame,
-    heroImageAlt: "Disrupt Market platform interface",
     ...baseHandlers,
   },
 }
@@ -67,8 +62,6 @@ export const DisruptPartner: Story = {
   name: "Disrupt Partner",
   args: {
     product: "partner",
-    heroImage: heroFrame,
-    heroImageAlt: "Disrupt Partner platform interface",
     ...baseHandlers,
   },
 }

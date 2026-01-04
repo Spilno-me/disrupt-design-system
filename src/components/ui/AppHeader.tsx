@@ -55,8 +55,8 @@ const WAVE_SECONDARY_DELAY_S = -5
 /** Wave swell animation duration in seconds */
 const WAVE_SWELL_DURATION_S = 8
 
-/** Logo container minimum width */
-const LOGO_CONTAINER_MIN_WIDTH = 'min-w-[219px]'
+/** Logo container minimum width - wider than sidebar expanded (255px) for visual balance */
+const LOGO_CONTAINER_MIN_WIDTH = 'min-w-[280px]'
 
 /** Logo image height */
 const LOGO_HEIGHT = 'h-[32px]'
@@ -68,11 +68,10 @@ const LOGO_HEIGHT = 'h-[32px]'
 /** Supported product types */
 export type ProductType = 'flow' | 'market' | 'partner'
 
-/** Product configuration with logo paths and taglines */
+/** Product configuration with logo paths */
 interface ProductConfig {
   logoLight: string
   logoDark: string
-  tagline: string
 }
 
 /** Menu item for user dropdown */
@@ -105,12 +104,10 @@ export interface UserInfo {
   initials?: string
 }
 
-/** Main AppHeader props - extends HTMLAttributes for proper HTML element support */
-export interface AppHeaderProps extends React.HTMLAttributes<HTMLElement> {
+/** Main AppHeader props - DDS owns all styling, no className allowed */
+export interface AppHeaderProps {
   /** Which product app this header is for */
   product: ProductType
-  /** Optional tagline override (defaults to product tagline) */
-  tagline?: string
   /** Whether to show the notification bell (default: true) */
   showNotifications?: boolean
   /** Current notification count (0 or undefined to hide badge) */
@@ -127,30 +124,25 @@ export interface AppHeaderProps extends React.HTMLAttributes<HTMLElement> {
   colorMode?: 'dark' | 'light' | 'auto'
   /** Callback when logo is clicked */
   onLogoClick?: () => void
-  /** Whether to show the wave pattern background */
-  showWavePattern?: boolean
   /** Disable dropdown portal for Storybook testing */
   disablePortal?: boolean
   /** Content to render on the left side (e.g., mobile hamburger menu) */
   leftContent?: React.ReactNode
 }
 
-/** Product configurations with logo paths and taglines */
+/** Product configurations with logo paths */
 const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   flow: {
     logoLight: LOGOS.flow.light,
     logoDark: LOGOS.flow.dark,
-    tagline: 'Environmental Compliance',
   },
   market: {
     logoLight: LOGOS.market.light,
     logoDark: LOGOS.market.dark,
-    tagline: 'Modules & Add-ons',
   },
   partner: {
     logoLight: LOGOS.partner.light,
     logoDark: LOGOS.partner.dark,
-    tagline: 'Management Portal',
   },
 }
 
@@ -193,8 +185,9 @@ function createDarkModeObserver(callback: () => void): () => void {
  * @param color - Hex color for wave stroke
  */
 function generateWaveSvgDataUri(color: string): string {
+  // Using literal values for consistency: 1600x55 px
   return `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${WAVE_TILE_WIDTH_PX}" height="${WAVE_SVG_HEIGHT_PX}" viewBox="0 0 ${WAVE_TILE_WIDTH_PX} ${WAVE_SVG_HEIGHT_PX}" preserveAspectRatio="none"><path fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round" d="M0 10 c200 0 300 35 400 35 c100 0 200-35 400-35 c200 0 300 35 400 35 c100 0 200-35 400-35"/></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="55" viewBox="0 0 1600 55" preserveAspectRatio="none"><path fill="none" stroke="${color}" stroke-width="5" stroke-linecap="round" d="M0 10 c200 0 300 35 400 35 c100 0 200-35 400-35 c200 0 300 35 400 35 c100 0 200-35 400-35"/></svg>`
   )}`
 }
 
@@ -267,14 +260,13 @@ function WaveLayer({
 }) {
   return (
     <div
-      className={`absolute top-0 left-0 h-[${WAVE_SVG_HEIGHT_PX}px] ${opacity}`}
+      className={cn('absolute top-0 left-0 h-[55px]', opacity)}
       data-slot="wave-layer"
       style={{
-         
-        width: `${WAVE_ANIMATION_WIDTH_PX}px`,
+        width: '6400px',
         backgroundImage: `url("${waveSvg}")`,
         backgroundRepeat: 'repeat-x',
-        backgroundSize: `${WAVE_TILE_WIDTH_PX}px ${WAVE_SVG_HEIGHT_PX}px`,
+        backgroundSize: '1600px 55px',
         animation,
       }}
     />
@@ -291,7 +283,7 @@ function WaveKeyframes() {
     <style>{`
       @keyframes header-wave-scroll {
         0% { transform: translateX(0) translateZ(0); }
-        100% { transform: translateX(-${WAVE_TILE_WIDTH_PX}px) translateZ(0); }
+        100% { transform: translateX(-1600px) translateZ(0); }
       }
       @keyframes header-wave-swell {
         0%, 100% { transform: translateY(3px) translateZ(0); }
@@ -336,48 +328,24 @@ function WavePattern() {
 }
 WavePattern.displayName = 'WavePattern'
 
-/**
- * Returns glassmorphism styles based on dark mode state.
- * @param isDarkMode - Current dark mode state
- */
-function getLogoGlassStyles(isDarkMode: boolean): React.CSSProperties {
-  /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba and composite shadows */
-  if (isDarkMode) {
-    return {
-      background: 'linear-gradient(180deg, rgba(29, 31, 42, 0.85) 0%, rgba(20, 22, 30, 0.9) 100%)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
-      boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.4)',
-      border: '1px solid rgba(255, 255, 255, 0.06)',
-    }
-  }
-  return {
-    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.15) 100%)',
-    backdropFilter: 'blur(6px)',
-    WebkitBackdropFilter: 'blur(6px)',
-    boxShadow: `${SHADOWS.sm}, inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.12)`,
-    border: '1px solid rgba(255, 255, 255, 0.15)',
-  }
-  /* eslint-enable no-restricted-syntax */
-}
 
 /**
  * Logo container with product branding.
  *
- * Displays product logo with glassmorphism styling and tagline.
+ * Displays product logo with solid surface background.
  * Auto-detects dark mode for appropriate logo variant.
+ * Uses bg-surface to match sidebar - DDS owns styling.
+ * Width (280px) extends beyond sidebar expanded width (255px) for visual balance.
  *
  * @component ATOM
  * @figma 685:8840
  */
 function LogoContainer({
   product,
-  tagline,
   colorMode,
   onClick,
 }: {
   product: ProductType
-  tagline?: string
   colorMode?: 'dark' | 'light' | 'auto'
   onClick?: () => void
 }) {
@@ -394,17 +362,17 @@ function LogoContainer({
     ? (isDarkMode ? 'light' : 'dark')
     : colorMode
   const logoSrc = effectiveColorMode === 'dark' ? config.logoDark : config.logoLight
-  const displayTagline = tagline ?? config.tagline
 
   return (
     <div
       className={cn(
-        'flex items-center gap-3 h-14 pl-4 pr-3 cursor-pointer rounded-r-full',
+        'flex items-center h-14 pl-4 pr-3 cursor-pointer rounded-r-full',
         LOGO_CONTAINER_MIN_WIDTH,
+        // bg-elevated per depth-layering-rules: header floats above sidebar, so lighter (Closer = Lighter)
+        'bg-elevated shadow-sm',
         onClick && 'hover:opacity-90 transition-opacity'
       )}
       onClick={onClick}
-      style={getLogoGlassStyles(isDarkMode)}
       data-slot="logo-container"
     >
       <img
@@ -412,9 +380,6 @@ function LogoContainer({
         alt={`${product} logo`}
         className={cn(LOGO_HEIGHT, 'w-auto object-contain')}
       />
-      <span className="text-xs font-medium whitespace-nowrap text-accent">
-        {displayTagline}
-      </span>
     </div>
   )
 }
@@ -452,8 +417,6 @@ interface IconButtonProps {
   className?: string
   /** Accessible label for screen readers */
   'aria-label'?: string
-  /** Visual variant */
-  variant?: 'default' | 'ghost'
 }
 
 /**
@@ -469,41 +432,21 @@ function IconButton({
   onClick,
   className,
   'aria-label': ariaLabel,
-  variant = 'default',
 }: IconButtonProps) {
-  const [isHovered, setIsHovered] = useState(false)
-
   return (
     <motion.button
       onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className={cn(
-        'relative flex items-center justify-center transition-colors rounded-md',
+        'relative flex items-center justify-center rounded-md',
+        // Hover changes icon color via text-primary -> text-accent, no border/background
+        'text-primary hover:text-accent transition-colors',
         className
       )}
       aria-label={ariaLabel}
       whileTap={{ scale: 0.95 }}
       data-slot="icon-button"
     >
-      <motion.div
-        className={cn(
-          "absolute inset-0 rounded-md",
-          variant === 'default' && "border border-subtle/30"
-        )}
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: isHovered ? 1 : 0,
-          scale: isHovered ? 1 : 0.8,
-        }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-        style={{
-          background: variant === 'default'
-            ? 'var(--alias-gradient-subtle)'
-            : 'var(--alias-overlay-light)',
-        }}
-      />
-      <div className="relative z-[1]">{children}</div>
+      {children}
     </motion.button>
   )
 }
@@ -531,7 +474,8 @@ function NotificationBell({
       aria-label={`Notifications${count > 0 ? ` (${count} unread)` : ''}`}
     >
       <div className="relative flex items-center justify-center" data-slot="notification-bell">
-        <Bell className={cn(BELL_ICON_SIZE, 'text-primary')} strokeWidth={1.5} />
+        {/* Icon inherits color from parent IconButton (text-primary -> hover:text-accent) */}
+        <Bell className={BELL_ICON_SIZE} strokeWidth={1.5} />
         {count > 0 && <NotificationBadge count={count} />}
       </div>
     </IconButton>
@@ -631,7 +575,11 @@ function UserMenu({
         align="end"
         sideOffset={DROPDOWN_SIDE_OFFSET}
         {...(disablePortal ? { container: undefined } : {})}
-        className={USER_MENU_MIN_WIDTH}
+        className={cn(
+          USER_MENU_MIN_WIDTH,
+          // Glassmorphism matching header wave glass (12px blur, 60% opacity per depth-1 glass rules)
+          'bg-white/60 dark:bg-abyss-800/70 backdrop-blur-[12px] border border-white/30 dark:border-white/10'
+        )}
         style={{ boxShadow: SHADOWS.md }}
         data-slot="user-menu-content"
       >
@@ -688,7 +636,7 @@ UserMenu.displayName = 'UserMenu'
  * while maintaining flexibility for customization.
  *
  * ## Features
- * - Product-specific logos with taglines (Flow, Market, Partner)
+ * - Product-specific logos (Flow, Market, Partner)
  * - Notification bell with count badge (up to 99+)
  * - User avatar with dropdown menu
  * - Wave pattern background with glass morphism
@@ -736,8 +684,7 @@ UserMenu.displayName = 'UserMenu'
  * ```tsx
  * <AppHeader
  *   product="partner"
- *   showWavePattern={false}  // Disable wave background
- *   colorMode="light"        // Use light logo on dark background
+ *   colorMode="light"  // Use light logo on dark background
  *   user={user}
  * />
  * ```
@@ -745,7 +692,7 @@ UserMenu.displayName = 'UserMenu'
  * ## Testing
  * Use these data-slot attributes for testing and automation:
  * - `data-slot="app-header"` - Main header container (height: 55px)
- * - `data-slot="logo-container"` - Logo and tagline section (clickable)
+ * - `data-slot="logo-container"` - Logo section (clickable)
  * - `data-slot="notification-bell"` - Notification bell button
  * - `data-slot="notification-badge"` - Badge showing notification count
  * - `data-slot="user-avatar"` - User avatar (image or initials)
@@ -791,23 +738,16 @@ export function AppHeader({
   onMenuItemClick,
   colorMode = 'auto',
   onLogoClick,
-  className,
-  showWavePattern = true,
   disablePortal = false,
   leftContent,
-  ...props
 }: AppHeaderProps) {
   return (
     <header
-      className={cn(
-        'relative z-20 flex items-center justify-between w-full',
-        `h-[${HEADER_HEIGHT_PX}px]`,
-        className
-      )}
+      className="relative z-20 flex items-center justify-between w-full h-[55px]"
       data-slot="app-header"
-      {...props}
     >
-      {showWavePattern && <WavePattern />}
+      {/* Wave pattern always shown - DDS owns styling */}
+      <WavePattern />
 
       <div
         className="absolute bottom-0 left-0 right-0 h-px pointer-events-none bg-gradient-to-r from-transparent via-default to-transparent z-20"

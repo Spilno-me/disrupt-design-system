@@ -16,6 +16,7 @@ import {
 } from "../ui/dialog"
 import { LOGOS } from "../../assets/logos"
 import { ExecutingAnimation } from "../ui/ExecutingAnimation"
+import heroFrameDefault from "../../assets/optimized/auth/hero-frame-desktop.webp"
 
 // =============================================================================
 // PRODUCT TYPES & CONFIG
@@ -251,8 +252,8 @@ export function LoginPage({
   blobScale = 1.2,
   successMessage,
   successDuration = 1500,
-  heroImage,
-  heroImageAlt = "Team collaboration",
+  heroImage = heroFrameDefault,
+  heroImageAlt = "Disrupt platform interface",
   loginPosition = "left",
   cardStyle = "glass",
   className,
@@ -320,7 +321,7 @@ export function LoginPage({
           <div className={loginPosition === "right" ? "lg:order-2" : "lg:order-1"} />
           <div className={cn("hidden lg:block", loginPosition === "right" ? "lg:order-1" : "lg:order-2")}>
             <img
-              src={heroImage || "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80"}
+              src={heroImage}
               alt={heroImageAlt}
               className="w-full h-full object-cover"
             />

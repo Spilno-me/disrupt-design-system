@@ -40,7 +40,8 @@ const WAVE_STROKE_WIDTH_PX = 4
  * AppFooter component props
  * @extends React.HTMLAttributes<HTMLElement> - Supports all standard HTML footer attributes
  */
-export interface AppFooterProps extends React.HTMLAttributes<HTMLElement> {
+/** AppFooter props - DDS owns all styling, no className allowed */
+export interface AppFooterProps {
   /** Color mode for MadeWithLove component: 'auto' (default) detects from theme */
   colorMode?: 'dark' | 'light' | 'auto'
   /** Show compact mobile version */
@@ -289,10 +290,6 @@ CopyrightText.displayName = 'CopyrightText'
  * <AppFooter variant="wave-only" />
  * ```
  *
- * ### With custom className
- * ```tsx
- * <AppFooter className="custom-class" />
- * ```
  *
  * ## Testing
  * Use these data-slot attributes for testing:
@@ -319,16 +316,13 @@ CopyrightText.displayName = 'CopyrightText'
  *   colorMode="auto"
  *   compactOnMobile={true}
  *   variant="default"
- *   className="my-custom-class"
  * />
  * ```
  */
 export function AppFooter({
   colorMode = 'auto',
-  className,
   compactOnMobile = true,
   variant = 'default',
-  ...props
 }: AppFooterProps) {
   const [isDarkMode, setIsDarkMode] = useState(false)
 
@@ -354,11 +348,9 @@ export function AppFooter({
         'relative flex items-center justify-between overflow-hidden',
         compactOnMobile
           ? `h-${FOOTER_HEIGHT_COMPACT_PX / 4} md:h-auto md:py-3 px-4 md:px-6`
-          : 'px-6 py-3',
-        className
+          : 'px-6 py-3'
       )}
       data-slot="footer"
-      {...props}
     >
       {/* Wave pattern background (matches header) */}
       <WavePattern />

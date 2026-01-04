@@ -1476,7 +1476,6 @@ function FlowApp({ initialPage = 'myFlow', initialConfigPage = null }: FlowAppPr
         userMenuItems={userMenuItems}
         notificationCount={4}
         showHelpItem={true}
-        footerVariant="wave-only"
         onNotificationClick={() => alert('Opening notifications...')}
         onMenuItemClick={(item) => {
           if (item.id === 'logout') {

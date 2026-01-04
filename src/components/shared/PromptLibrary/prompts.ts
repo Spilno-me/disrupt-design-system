@@ -427,6 +427,300 @@ The plan is APPROVED only when:
   },
 
   // =============================================================================
+  // PROCESS & ENGAGEMENT (QoE-Aligned)
+  // =============================================================================
+  {
+    id: 'explore-patterns',
+    title: 'Explore Existing Patterns',
+    description: 'Discover what exists before building. QoE: Find the living question.',
+    category: 'planning',
+    variables: ['AREA'],
+    tags: ['exploration', 'discovery', 'qoe', 'patterns'],
+    prompt: `Explore patterns in {AREA}. Don't build anything yet.
+
+## QoE Principle: Find the Living Question
+
+A "living question" has energy and specificity. Dead questions are abstract.
+
+**Your task:** Discover, don't create.
+
+## Questions to Answer
+
+1. **What already exists?**
+   - Search for similar patterns in codebase
+   - Check MCP for existing components
+   \`\`\`
+   mcp__dds__search_components({ query: "{AREA}" })
+   \`\`\`
+
+2. **What's working well?**
+   - Which patterns feel natural?
+   - What do users praise?
+
+3. **What's missing or awkward?**
+   - Where do patterns break down?
+   - What requires workarounds?
+
+4. **What questions emerged?**
+   - List specific, energized questions
+   - Avoid vague "should we..." questions
+
+## FORBIDDEN
+- Writing code
+- Making decisions
+- Proposing solutions
+
+OUTPUT: Observations and living questions, NOT actions.`,
+  },
+  {
+    id: 'unblock-task',
+    title: 'Get Unstuck on Task',
+    description: 'Find what\'s blocking progress. QoE: Invite the resistant part.',
+    category: 'planning',
+    variables: ['TASK'],
+    tags: ['unblock', 'stuck', 'qoe', 'resistance'],
+    prompt: `I'm stuck on: {TASK}
+
+## QoE Principle: Invite the Resistant Part
+
+Resistance holds information. Don't override it—ask what it needs.
+
+## Diagnostic Questions
+
+1. **What's actually blocking?**
+   - Technical blocker? (missing info, unclear API)
+   - Motivation blocker? (boring, overwhelming, unclear purpose)
+   - Fear blocker? (might break things, looks hard)
+
+2. **What am I avoiding?**
+   - What part of this task do I keep not doing?
+   - What would I do if I "had to" finish in 10 minutes?
+
+3. **Can we make scope smaller?** (QoE: Make it smaller)
+   - What's the smallest useful increment?
+   - What can I delete from requirements?
+
+4. **What would "ugly but working" look like?** (QoE: Allow ugliness)
+   - Skip validation, skip edge cases
+   - Hardcode values
+   - Copy-paste instead of abstract
+
+## Output Format
+
+| Blocker Type | Specific Block | Smallest Next Step |
+|--------------|----------------|-------------------|
+| [technical/motivation/fear] | [what exactly] | [5-minute task] |
+
+OUTPUT: One small next step, NOT a full solution.`,
+  },
+  {
+    id: 'draft-ugly',
+    title: 'Create Ugly First Draft',
+    description: 'Permission to write bad code first. QoE: Allow ugliness.',
+    category: 'components',
+    variables: ['COMPONENT'],
+    tags: ['draft', 'ugly', 'qoe', 'iteration'],
+    prompt: `Create ugly first draft of {COMPONENT}.
+
+## QoE Principle: Allow Ugliness
+
+> "Give permission to fail, be messy, be wrong. The need to be good kills curiosity."
+
+## Rules for Ugly Draft
+
+1. **No abstractions** - Inline everything
+2. **Hardcode values** - Magic numbers are fine
+3. **Skip edge cases** - Happy path only
+4. **Copy-paste allowed** - Don't DRY yet
+5. **No comments needed** - Code explains itself later
+6. **Skip tests** - Verify manually
+
+## What Makes This Different
+
+| Normal Prompt | Ugly Draft |
+|---------------|------------|
+| MCP duplicate check | Skip it |
+| Semantic tokens | Hardcode colors |
+| CVA variants | Inline className |
+| TypeScript strict | \`any\` is fine |
+| Error handling | Let it crash |
+
+## The Deal
+
+After ugly draft works:
+1. Show it working (screenshot/demo)
+2. THEN refactor with proper patterns
+3. THEN run \`component-stabilize\` prompt
+
+## FORBIDDEN
+- Perfectionism
+- "But we should..."
+- Premature optimization
+- Checking if pattern exists
+
+OUTPUT: Working ugly code. Refactor comes LATER.`,
+  },
+  {
+    id: 'question-before-build',
+    title: 'Ask Questions Before Building',
+    description: 'Frame work as offering, not extracting. QoE: The offer.',
+    category: 'planning',
+    variables: ['FEATURE'],
+    tags: ['questions', 'discovery', 'qoe', 'offering'],
+    prompt: `Before building {FEATURE}, let's ask better questions.
+
+## QoE Principle: The Offer
+
+> "Come to give: attention, confusion, willingness. Don't come only to extract results."
+
+## Offering Questions (vs Extracting)
+
+| Extracting (avoid) | Offering (prefer) |
+|-------------------|-------------------|
+| "What do you want?" | "What problem are you solving?" |
+| "Which option?" | "What does success look like?" |
+| "Can I start?" | "What would make this delightful?" |
+
+## Questions to Ask
+
+### 1. Purpose Questions
+- What problem does {FEATURE} solve?
+- Who benefits and how?
+- What happens if we don't build this?
+
+### 2. Scope Questions
+- What's the minimum that would be useful?
+- What can we explicitly exclude?
+- What's v2 vs v1?
+
+### 3. Success Questions
+- How will we know it works?
+- What would make users love this?
+- What would make this embarrassingly simple?
+
+### 4. Risk Questions
+- What could go wrong?
+- What don't we know yet?
+- What assumptions are we making?
+
+## FORBIDDEN
+- Jumping to implementation
+- Assuming you know the answer
+- Skipping to "how" before "why"
+
+OUTPUT: List of answered questions, THEN proceed to planning.`,
+  },
+  {
+    id: 'scope-smaller',
+    title: 'Make Scope Smaller',
+    description: 'Shrink until interesting. QoE: Make it smaller.',
+    category: 'planning',
+    variables: ['TASK'],
+    tags: ['scope', 'smaller', 'qoe', 'focus'],
+    prompt: `Shrink {TASK} until it becomes interesting.
+
+## QoE Principle: Make It Smaller
+
+> "Shrink scope until it becomes interesting. Boredom often means scope is too large."
+
+## Shrinking Techniques
+
+### 1. Time-box
+| Original | Smaller |
+|----------|---------|
+| "Build feature" | "What can I ship in 30 minutes?" |
+| "Fix all bugs" | "Fix one bug completely" |
+| "Refactor system" | "Refactor one function" |
+
+### 2. Slice Vertically
+| Original | Smaller |
+|----------|---------|
+| "User authentication" | "User can log in (no signup, no reset)" |
+| "Dashboard" | "One metric, one chart" |
+| "Form builder" | "One field type, no validation" |
+
+### 3. Remove Requirements
+Ask for each requirement:
+- [ ] Is this essential for v1?
+- [ ] Can this be hardcoded?
+- [ ] Can this be a follow-up?
+
+### 4. Find the Kernel
+What's the ONE thing that makes {TASK} valuable?
+Everything else is decoration.
+
+## Output Format
+
+\`\`\`
+Original scope: {TASK}
+
+Shrunk to: [minimal valuable version]
+
+Removed:
+- [thing 1] → future
+- [thing 2] → unnecessary
+- [thing 3] → can hardcode
+
+Kernel: [the one essential thing]
+\`\`\`
+
+OUTPUT: Smallest interesting scope, ready to build.`,
+  },
+  {
+    id: 'stop-at-peak',
+    title: 'Find Good Stopping Point',
+    description: 'Leave knowing what\'s next. QoE: Stop at the peak.',
+    category: 'planning',
+    tags: ['stopping', 'peak', 'qoe', 'energy'],
+    prompt: `Find a good stopping point for current work.
+
+## QoE Principle: Stop at the Peak
+
+> "Stop when you know what comes next (Hemingway). Don't drain the well completely."
+
+## Signs You Should Stop
+
+| Stop Now | Keep Going |
+|----------|------------|
+| You know exactly what's next | You're unsure what's next |
+| Energy is still high | Energy is draining |
+| Code is in working state | Code is broken |
+| Tests pass | Tests failing |
+| Clean commit possible | Uncommittable state |
+
+## Stopping Ritual
+
+1. **Write down next step** (specific, not vague)
+   \`\`\`
+   NEXT: Implement error handling for API timeout case
+   NOT: Continue working on error handling
+   \`\`\`
+
+2. **Leave a breadcrumb** (comment in code)
+   \`\`\`tsx
+   // TODO(next-session): Add retry logic here
+   // Context: API sometimes times out, need exponential backoff
+   \`\`\`
+
+3. **Commit current state**
+   - Even if incomplete
+   - Mark as WIP if needed
+
+4. **Rate your return eagerness**
+   - 😊 Eager to return = good stop
+   - 😐 Neutral = okay stop
+   - 😫 Dreading return = stopped too late
+
+## FORBIDDEN
+- Stopping mid-thought with no notes
+- "I'll remember where I was"
+- Leaving broken/uncommittable code
+- Working until exhausted
+
+OUTPUT: Clear next step written down, code in committable state.`,
+  },
+
+  // =============================================================================
   // REVIEW
   // =============================================================================
   {
@@ -884,93 +1178,67 @@ OUTPUT: Accessible component with semantic HTML + MCP contrast verification resu
     tags: ['responsive', 'mobile', 'tablet', 'breakpoints'],
     prompt: `Apply responsive patterns to {COMPONENT}.
 
-## CRITICAL: First Determine the Right Strategy
+## Step 1: Understand User Context (MAYA Principle)
 
-**NOT everything should be mobile-first.** Complex configuration UIs should stay desktop-first.
+Before deciding strategy, ask:
+- Who uses this on mobile? What's their task?
+- What's the *minimum viable mobile experience*?
+- Can we simplify rather than block?
 
-### Decision Matrix (MANDATORY)
+## Step 2: Choose Strategy
 
-| UI Type | Strategy | Base Breakpoint | Mobile Behavior |
-|---------|----------|-----------------|-----------------|
-| Simple lists, cards, content | Mobile-first | (none) 0+ | Full functionality |
-| Dashboards, data tables | Tablet-first | \`md:\` 768px | Simplified view or redirect |
-| Form builders, entity templates | Desktop-only | \`lg:\` 1024px | Read-only preview or "Use desktop" message |
-| Complex configuration UIs | Desktop-only | \`lg:\` 1024px | Hide or disable editing |
-| Drag-and-drop interfaces | Desktop-only | \`lg:\` 1024px | Not supported on mobile |
+| UI Type | Strategy | Mobile Experience |
+|---------|----------|-------------------|
+| Lists, cards, content | Mobile-first | Full functionality |
+| Dashboards, tables | Tablet-first | Simplified card view |
+| Complex forms | Progressive | Core fields mobile, advanced desktop |
+| Drag-and-drop | Desktop-enhanced | Alternative interaction on mobile |
 
-### Strategy Decision Flow
-\`\`\`
-1. Is this a CRUD list/detail view? → Mobile-first
-2. Is this a dashboard with charts/tables? → Tablet-first
-3. Does it require drag-and-drop? → Desktop-only
-4. Does it have complex nested forms? → Desktop-only
-5. Is it a configuration/builder tool? → Desktop-only
-\`\`\`
+**MAYA reminder:** "Desktop Required" is a last resort, not a default. Most users expect *some* mobile functionality. Anchor to familiar mobile patterns (swipe, tap-to-expand) before blocking.
 
-### Mobile Fallback Options (for desktop-only UIs)
-\`\`\`tsx
-// Option 1: Show simplified read-only version
-<div className="lg:hidden">
-  <ReadOnlyPreview data={data} />
-  <p className="text-muted text-sm">Edit on desktop for full functionality</p>
-</div>
-<div className="hidden lg:block">
-  <FullEditor data={data} />
-</div>
+## Step 3: Implement Pattern
 
-// Option 2: Show "desktop required" message
-<div className="lg:hidden flex flex-col items-center justify-center p-8 text-center">
-  <Monitor className="w-12 h-12 text-muted mb-4" />
-  <p className="text-primary font-medium">Desktop Required</p>
-  <p className="text-muted text-sm">This feature requires a larger screen</p>
-</div>
-\`\`\`
-
-## Breakpoints Reference
-| Prefix | Width | Device |
-|--------|-------|--------|
-| (none) | 0+ | Mobile phones |
-| \`sm:\` | 640px | Large phones |
-| \`md:\` | 768px | Tablets (portrait) |
-| \`lg:\` | 1024px | Tablets (landscape) / Laptops |
-| \`xl:\` | 1280px | Desktops |
-
-## Pattern Examples by Strategy
-
-### Mobile-First (simple content)
+### Mobile-First (default)
 \`\`\`tsx
 <div className="px-4 sm:px-6 lg:px-8">
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 \`\`\`
 
-### Tablet-First (dashboards)
+### Progressive Enhancement (complex UIs)
 \`\`\`tsx
-<div className="hidden md:block">  {/* Hide on mobile */}
-  <DataTable />
+// Mobile: essential features
+<div className="lg:hidden">
+  <SimplifiedView data={data} />
+  <p className="text-muted text-xs mt-2">More options on larger screens</p>
 </div>
-<div className="md:hidden">  {/* Mobile alternative */}
-  <CardList />
+// Desktop: full features
+<div className="hidden lg:block">
+  <FullEditor data={data} />
 </div>
 \`\`\`
 
-### Desktop-Only (complex config)
-\`\`\`tsx
-<div className="hidden lg:block">
-  <FormBuilder />
-</div>
-<div className="lg:hidden">
-  <DesktopRequiredMessage />
-</div>
-\`\`\`
+### Truly Desktop-Only (validate first!)
+Only use if you've confirmed:
+- [ ] Mobile users don't need this task
+- [ ] No simplified alternative exists
+- [ ] Users understand why (clear messaging)
+
+## Breakpoints
+| Prefix | Width | Use |
+|--------|-------|-----|
+| (none) | 0+ | Base mobile |
+| \`sm:\` | 640px | Large phones |
+| \`md:\` | 768px | Tablets |
+| \`lg:\` | 1024px | Laptops |
 
 ## Universal Requirements
-- Touch targets ≥44px on all devices
-- Text ≥16px (prevents zoom on iOS)
+- Touch targets ≥44px
+- Text ≥16px (prevents iOS zoom)
 - No horizontal scroll
 
 OUTPUT:
-1. Strategy decision with justification
-2. Responsive component with appropriate fallbacks`,
+1. Strategy with user-context justification
+2. Responsive component with progressive enhancement`,
   },
 
   // =============================================================================
@@ -1373,27 +1641,7 @@ OUTPUT: Full contrast matrix for category.`,
     tags: ['integration', 'adapter', 'mapping', 'typescript'],
     prompt: `Create adapter functions to map {APP_DATA_TYPE} to {COMPONENT} props.
 
-READ FIRST: \`src/stories/developers/AdapterPatterns.mdx\`
-
-## Adapter Pattern (Recommended for Data Transformation)
-
-\`\`\`tsx
-// adapters/statusAdapter.ts
-import type { BadgeProps } from '@dds/design-system/core'
-
-// Map your app's status to DDS Badge variants
-export function adaptStatusToBadge(status: AppStatus): BadgeProps {
-  const mapping: Record<AppStatus, BadgeProps> = {
-    active: { variant: 'success', children: 'Active' },
-    pending: { variant: 'warning', children: 'Pending' },
-    inactive: { variant: 'muted', children: 'Inactive' },
-  }
-  return mapping[status] ?? { variant: 'muted', children: 'Unknown' }
-}
-
-// Usage in component
-<Badge {...adaptStatusToBadge(user.status)} />
-\`\`\`
+READ FIRST: \`src/stories/developers/AdapterPatterns.mdx\` (contains full examples)
 
 ## When to Use Adapters vs Wrappers
 
@@ -1404,40 +1652,10 @@ export function adaptStatusToBadge(status: AppStatus): BadgeProps {
 | **Render Props** | Consumer needs granular control |
 | **Composition** | Building complex UI from DDS primitives |
 
-## Adapter Best Practices
-
-1. **Type-safe mapping**
-\`\`\`tsx
-// ✅ Exhaustive mapping with TypeScript
-function adaptStatus(s: AppStatus): BadgeVariant {
-  switch (s) {
-    case 'active': return 'success'
-    case 'pending': return 'warning'
-    case 'inactive': return 'muted'
-    // TypeScript ensures all cases covered
-  }
-}
-\`\`\`
-
-2. **Handle edge cases**
-\`\`\`tsx
-// ✅ Safe fallback
-return mapping[status] ?? { variant: 'muted', children: 'Unknown' }
-\`\`\`
-
-3. **Keep adapters pure**
-\`\`\`tsx
-// ❌ No side effects
-function adaptData(d: Data): Props {
-  console.log(d) // Don't do this
-  return { ... }
-}
-
-// ✅ Pure transformation
-function adaptData(d: Data): Props {
-  return { ... }
-}
-\`\`\`
+## Key Principles (details in MDX)
+1. Type-safe exhaustive mapping
+2. Safe fallbacks for unknown values
+3. Keep adapters pure (no side effects)
 
 ## Output
 - Adapter function(s) in \`adapters/\` folder
@@ -1453,30 +1671,7 @@ function adaptData(d: Data): Props {
     tags: ['integration', 'wrapper', 'encapsulation', 'isolation'],
     prompt: `Create wrapper component {WRAPPER_NAME} for {COMPONENT}.
 
-READ FIRST: \`src/stories/developers/AdapterPatterns.mdx\`
-
-## Wrapper Pattern (Recommended for Behavior/Isolation)
-
-\`\`\`tsx
-// components/AppButton.tsx
-import { Button, type ButtonProps } from '@dds/design-system/core'
-import { useAppContext } from '../context/AppContext'
-
-interface AppButtonProps extends ButtonProps {
-  trackingId?: string
-}
-
-export function AppButton({ trackingId, onClick, ...props }: AppButtonProps) {
-  const { analytics } = useAppContext()
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (trackingId) analytics.track(trackingId)
-    onClick?.(e)
-  }
-
-  return <Button {...props} onClick={handleClick} />
-}
-\`\`\`
+READ FIRST: \`src/stories/developers/AdapterPatterns.mdx\` (contains full examples)
 
 ## Benefits of Wrapper Pattern
 
@@ -1487,29 +1682,10 @@ export function AppButton({ trackingId, onClick, ...props }: AppButtonProps) {
 | **Default props** | Consistent sizing across app |
 | **Migration ease** | Swap underlying component in one place |
 
-## Wrapper vs Direct Import
-
-\`\`\`tsx
-// ❌ Direct import everywhere (hard to migrate)
-import { Button } from '@dds/design-system/core'
-
-// ✅ Wrapper isolates DDS (easy to update)
-import { AppButton } from '@/components/AppButton'
-\`\`\`
-
 ## Three-Layer Integration
-
 \`\`\`
-┌─────────────────────────────────────────────┐
-│ Application Pages & Features                │
-│ (import from app wrappers)                  │
-├─────────────────────────────────────────────┤
-│ App Wrappers (adapters + behavior)          │
-│ (import from DDS)                           │
-├─────────────────────────────────────────────┤
-│ DDS Components                              │
-│ (never imported directly by features)       │
-└─────────────────────────────────────────────┘
+App Pages → App Wrappers → DDS Components
+(features never import DDS directly)
 \`\`\`
 
 ## Output

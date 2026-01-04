@@ -94,14 +94,6 @@ const [page, setPage] = useState('dashboard')
       options: ['partner', 'flow', 'market'],
       description: 'Product type determines branding and default styles',
     },
-    showBackground: {
-      control: 'boolean',
-      description: 'Show the animated grid blob background',
-    },
-    showFooter: {
-      control: 'boolean',
-      description: 'Show the footer',
-    },
     showHelpItem: {
       control: 'boolean',
       description: 'Show help item in navigation',
@@ -442,49 +434,7 @@ export const TabletView: Story = {
   },
 }
 
-/**
- * Without background - for content-heavy pages
- */
-export const NoBackground: Story = {
-  render: function NoBackgroundStory() {
-    const [currentPage, setCurrentPage] = useState('dashboard')
-
-    return (
-      <AppLayoutShell
-        product="partner"
-        navItems={partnerNavItems}
-        user={mockUsers.partner}
-        currentPageId={currentPage}
-        onPageChange={setCurrentPage}
-        showBackground={false}
-      >
-        <DashboardPage kpis={mockPartnerKPIs} onNavigate={setCurrentPage} />
-      </AppLayoutShell>
-    )
-  },
-}
-
-/**
- * Without footer - for full-height content
- */
-export const NoFooter: Story = {
-  render: function NoFooterStory() {
-    const [currentPage, setCurrentPage] = useState('dashboard')
-
-    return (
-      <AppLayoutShell
-        product="market"
-        navItems={marketNavItems}
-        user={mockUsers.market}
-        currentPageId={currentPage}
-        onPageChange={setCurrentPage}
-        showFooter={false}
-      >
-        <DashboardPage kpis={mockMarketKPIs} onNavigate={setCurrentPage} />
-      </AppLayoutShell>
-    )
-  },
-}
+/* NoBackground and NoFooter stories removed - DDS owns all styling */
 
 /**
  * Using automatic mode with component props

@@ -103,6 +103,7 @@ import {
   isGroupActive,
   findParentGroupId,
 } from './navigation'
+import { Tooltip, TooltipTrigger, TooltipContent } from './tooltip'
 
 // =============================================================================
 // CONSTANTS
@@ -142,8 +143,8 @@ interface NavItemRegistryContextType {
   activeItemId?: string
 }
 
-/** Props for the AppSidebar component */
-export interface AppSidebarProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onNavigate' | 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'> {
+/** Props for the AppSidebar component - DDS owns all styling, no className allowed */
+export interface AppSidebarProps {
   /** Which product app this sidebar is for */
   product: ProductType
   /** Navigation items to display */
@@ -224,6 +225,7 @@ function _useNavItemRegistry(): NavItemRegistryContextType {
 /**
  * NavItemButton - Individual navigation item button.
  * Renders a single nav item with icon, label, and active state.
+ * Shows tooltip with label when sidebar is collapsed.
  */
 function NavItemButton({
   item,
@@ -245,7 +247,7 @@ function NavItemButton({
   // Show active background only when NOT using animated indicator (or when collapsed)
   const showActiveBackground = isActive && (!animatedIndicator || collapsed)
 
-  return (
+  const button = (
     <button
       type="button"
       ref={buttonRef}
@@ -287,12 +289,27 @@ function NavItemButton({
       )}
     </button>
   )
+
+  // Show tooltip only when collapsed
+  if (collapsed) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipContent side="right" sideOffset={8}>
+          {item.label}
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
+  return button
 }
 NavItemButton.displayName = 'AppSidebar.NavItemButton'
 
 /**
  * NavGroup - Collapsible navigation group with children.
  * Renders a group header with expandable children items.
+ * Shows tooltip with label when sidebar is collapsed.
  */
 function NavGroup({
   item,
@@ -309,6 +326,50 @@ function NavGroup({
   const activeChild = item.children?.find((child) => child.id === activeItemId)
   const displayIcon = collapsed && activeChild ? activeChild.icon : item.icon
 
+  // Label for tooltip: show active child's label if any, otherwise group label
+  const tooltipLabel = collapsed && activeChild ? activeChild.label : item.label
+
+  const triggerButton = (
+    <button
+      type="button"
+      className={cn(
+        'relative z-[1] w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+        'hover:bg-surface-hover',
+        collapsed ? 'justify-center' : 'gap-2 px-3'
+      )}
+      onClick={(e) => {
+        e.stopPropagation()
+        if (collapsed) onNavigate(item)
+      }}
+      data-slot="nav-group-trigger"
+    >
+      <NavIcon icon={displayIcon} isActive={groupActive} size="sm" showActiveBackground={collapsed} />
+
+      {!collapsed && (
+        <>
+          <span
+            className={cn(
+              'text-[13px] whitespace-nowrap overflow-hidden flex-1 text-left',
+              groupActive ? 'font-bold text-primary' : 'font-medium text-primary'
+            )}
+          >
+            {item.label}
+          </span>
+
+          <div
+            style={{
+              transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.2s ease',
+            }}
+          >
+            <ChevronDown className="w-3 h-3 text-secondary" />
+          </div>
+        </>
+      )}
+    </button>
+  )
+
   return (
     <CollapsiblePrimitive.Root
       open={!collapsed && isOpen}
@@ -316,44 +377,16 @@ function NavGroup({
       data-slot="nav-group"
     >
       <CollapsiblePrimitive.Trigger asChild>
-        <button
-          type="button"
-          className={cn(
-            'relative z-[1] w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-            'hover:bg-surface-hover',
-            collapsed ? 'justify-center' : 'gap-2 px-3'
-          )}
-          onClick={(e) => {
-            e.stopPropagation()
-            if (collapsed) onNavigate(item)
-          }}
-          data-slot="nav-group-trigger"
-        >
-          <NavIcon icon={displayIcon} isActive={groupActive} size="sm" showActiveBackground={collapsed} />
-
-          {!collapsed && (
-            <>
-              <span
-                className={cn(
-                  'text-[13px] whitespace-nowrap overflow-hidden flex-1 text-left',
-                  groupActive ? 'font-bold text-primary' : 'font-medium text-primary'
-                )}
-              >
-                {item.label}
-              </span>
-
-              <div
-                style={{
-                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s ease',
-                }}
-              >
-                <ChevronDown className="w-3 h-3 text-secondary" />
-              </div>
-            </>
-          )}
-        </button>
+        {collapsed ? (
+          <Tooltip>
+            <TooltipTrigger asChild>{triggerButton}</TooltipTrigger>
+            <TooltipContent side="right" sideOffset={8}>
+              {tooltipLabel}
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          triggerButton
+        )}
       </CollapsiblePrimitive.Trigger>
 
       <CollapsiblePrimitive.Content asChild>
@@ -388,9 +421,10 @@ NavGroup.displayName = 'AppSidebar.NavGroup'
 /**
  * HelpItem - Help button displayed at the bottom of the sidebar.
  * Provides access to help/support functionality.
+ * Shows tooltip when sidebar is collapsed.
  */
 function HelpItem({ collapsed, onClick }: HelpItemProps) {
-  return (
+  const button = (
     <button
       type="button"
       onClick={(e) => {
@@ -400,7 +434,8 @@ function HelpItem({ collapsed, onClick }: HelpItemProps) {
       className={cn(
         'relative w-[calc(100%-16px)] mx-2 h-[41px] min-h-[41px] flex items-center rounded-lg cursor-pointer',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent',
-        'hover:bg-surface-hover',
+        // Icon/text color change on hover, no background change
+        'text-primary hover:text-accent transition-colors',
         collapsed ? 'justify-center' : 'gap-2 px-3'
       )}
       data-slot="help-item"
@@ -408,12 +443,26 @@ function HelpItem({ collapsed, onClick }: HelpItemProps) {
       <NavIcon icon={<CircleHelp />} size="sm" showActiveBackground={collapsed} />
 
       {!collapsed && (
-        <span className="text-[13px] font-medium text-primary whitespace-nowrap overflow-hidden">
+        <span className="text-[13px] font-medium whitespace-nowrap overflow-hidden">
           Get Help
         </span>
       )}
     </button>
   )
+
+  // Show tooltip only when collapsed
+  if (collapsed) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipContent side="right" sideOffset={8}>
+          Get Help
+        </TooltipContent>
+      </Tooltip>
+    )
+  }
+
+  return button
 }
 HelpItem.displayName = 'AppSidebar.HelpItem'
 
@@ -430,14 +479,12 @@ export function AppSidebar({
   collapsed = false,
   onCollapsedChange,
   onNavigate,
-  className,
   showHelpItem = true,
   onHelpClick,
   expandOnHover = false,
   expandOnClick = true,
   collapseOnClickOutside = true,
   animatedIndicator = true,
-  ...props
 }: AppSidebarProps) {
   const sidebarRef = useRef<HTMLElement>(null)
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -613,7 +660,7 @@ export function AppSidebar({
   return (
     <motion.nav
       ref={sidebarRef}
-      className={cn('relative flex flex-col h-full', className)}
+      className="relative flex flex-col h-full"
       initial={false}
       animate={{ width: collapsed ? COLLAPSED_WIDTH : EXPANDED_WIDTH }}
       transition={{ duration: TRANSITION_DURATION, ease: 'easeInOut' }}
@@ -624,12 +671,10 @@ export function AppSidebar({
       onClick={handleSidebarClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      {...props}
     >
-      {/* Background with gradient fade to transparent at bottom */}
+      {/* Background with gradient fade at bottom - blends into page, fade size ~60px (help item section) */}
       <div
-        className="absolute inset-0 pointer-events-none bg-gradient-to-b from-surface/60 from-70% to-transparent backdrop-blur-sm"
-        style={{ maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
+        className="absolute inset-0 pointer-events-none bg-gradient-to-b from-surface from-85% to-transparent"
         data-slot="sidebar-bg"
       />
 

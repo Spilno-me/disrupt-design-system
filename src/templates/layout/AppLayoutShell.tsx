@@ -46,8 +46,6 @@ export interface ProductConfig {
 
 /** Props for AppLayoutShell */
 export interface AppLayoutShellProps extends ProductConfig {
-  /** Custom className for the container */
-  className?: string
   /** Callback when a nav item is clicked */
   onNavigate?: (item: AppNavItem) => void
   /** Callback when notification bell is clicked */
@@ -64,14 +62,6 @@ export interface AppLayoutShellProps extends ProductConfig {
   onPageChange?: (pageId: string) => void
   /** Custom content to render instead of page components */
   children?: ReactNode
-  /** Show the grid blob background (default: true) */
-  showBackground?: boolean
-  /** Show the footer (default: true) */
-  showFooter?: boolean
-  /** Footer visual variant */
-  footerVariant?: 'default' | 'wave-only'
-  /** Scale for the grid blob background */
-  backgroundScale?: number
   /** Show the search bar (default: false) */
   showSearch?: boolean
   /** Search placeholder text */
@@ -185,7 +175,6 @@ export function AppLayoutShell({
   showHelpItem = true,
   maxBottomNavItems = 4,
   useMobileDrawer = false,
-  className,
   onNavigate,
   onNotificationClick,
   onMenuItemClick,
@@ -194,10 +183,6 @@ export function AppLayoutShell({
   currentPageId: controlledPageId,
   onPageChange,
   children,
-  showBackground = true,
-  showFooter = true,
-  footerVariant = 'default',
-  backgroundScale = 1,
   showSearch = false,
   searchPlaceholder = 'Search...',
   searchValue,
@@ -279,15 +264,12 @@ export function AppLayoutShell({
 
   return (
     <div
-      className={cn(
-        'relative flex flex-col h-screen overflow-hidden',
-        className
-      )}
+      className="relative flex flex-col h-screen bg-page overflow-hidden"
       data-product={product}
       data-page={currentPage}
     >
-      {/* Grid blob background */}
-      {showBackground && <GridBlobBackground scale={backgroundScale} />}
+      {/* Grid blob background - always shown, DDS owns styling */}
+      <GridBlobBackground />
 
       {/* App Header - fixed at z-30, OUTSIDE content layer for glassmorphism to work
           iOS 26: pt-safe adds padding for status bar safe area */}
@@ -305,20 +287,18 @@ export function AppLayoutShell({
         />
       </div>
 
-      {/* Desktop Footer - fixed at z-30, OUTSIDE content layer for glassmorphism to work (like header)
+      {/* Desktop Footer - fixed at z-30, always shown on desktop, DDS owns styling
           iOS 26: pb-safe adds padding for home indicator safe area (iPad) */}
-      {showFooter && (
-        <div className="hidden md:fixed md:bottom-0 md:left-0 md:right-0 md:z-30 md:block md:pb-safe">
-          <AppFooter compactOnMobile={false} variant={footerVariant} />
-        </div>
-      )}
+      <div className="hidden md:fixed md:bottom-0 md:left-0 md:right-0 md:z-30 md:block md:pb-safe">
+        <AppFooter compactOnMobile={false} />
+      </div>
 
       {/* Content layer - z-10 so header's backdrop-filter can blur this */}
       <div className="relative z-10 flex flex-col h-full">
         {/* Main Content Area */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar - hidden on mobile, transparent to show grid blob, pt-[55px] for header clearance */}
-          <div className="hidden md:block pt-[55px]">
+          {/* Sidebar - hidden on mobile, pt-[55px] for header, pb-[48px] for footer clearance */}
+          <div className="hidden md:block pt-[55px] pb-[48px]">
             <AppSidebar
               product={product}
               items={navItems}
