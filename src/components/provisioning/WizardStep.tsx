@@ -15,6 +15,8 @@ export interface WizardStepProps {
   className?: string
   /** Whether to keep the step mounted when not active (for form state preservation) */
   keepMounted?: boolean
+  /** Test ID for automation testing */
+  'data-testid'?: string
 }
 
 export function WizardStep({
@@ -22,6 +24,7 @@ export function WizardStep({
   children,
   className,
   keepMounted = false,
+  'data-testid': testId,
 }: WizardStepProps) {
   const { currentStep } = useWizard()
   const isActive = currentStep === step
@@ -39,6 +42,7 @@ export function WizardStep({
       )}
       data-step={step}
       data-active={isActive}
+      data-testid={testId}
     >
       {children}
     </div>

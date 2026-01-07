@@ -66,7 +66,7 @@ export function BulkActionsToolbar({
   onAction,
   onClearSelection,
   onSelectAll,
-  availableStatuses = ['new', 'contacted', 'qualified', 'converted', 'lost'],
+  availableStatuses = ['new', 'in_progress', 'converted', 'lost'],
   availablePartners = [],
   loading = false,
   disabledActions = [],
@@ -237,8 +237,7 @@ export function BulkActionsToolbar({
 function formatStatus(status: LeadStatus): string {
   const labels: Record<LeadStatus, string> = {
     new: 'New',
-    contacted: 'Contacted',
-    qualified: 'Qualified',
+    in_progress: 'In Progress',
     converted: 'Converted',
     lost: 'Lost',
   }

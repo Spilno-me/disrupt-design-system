@@ -57,16 +57,10 @@ const STATUS_OPTIONS: Array<{
     colorClass: 'bg-info-light text-info border-info',
   },
   {
-    value: 'contacted',
-    label: 'Contacted',
-    description: 'Initial contact made with the lead',
+    value: 'in_progress',
+    label: 'In Progress',
+    description: 'Active communication / negotiations in progress',
     colorClass: 'bg-warning-light text-warning border-warning',
-  },
-  {
-    value: 'qualified',
-    label: 'Qualified',
-    description: 'Lead meets criteria and shows interest',
-    colorClass: 'bg-accent-bg text-accent border-accent',
   },
   {
     value: 'converted',

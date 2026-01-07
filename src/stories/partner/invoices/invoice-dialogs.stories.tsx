@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { Pencil, Eye } from 'lucide-react'
+import { Pencil, Eye, FileText } from 'lucide-react'
 import { Button } from '../../../components/ui/button'
 import { EditInvoiceDialog } from '../../../components/partners/invoices/EditInvoiceDialog'
 import { InvoicePreviewSheet } from '../../../components/partners/invoices/InvoicePreviewSheet'
+import { InvoicePDFDialog } from '../../../components/partners/invoices/InvoicePDFDialog'
 import type { Invoice } from '../../../components/partners/invoices/types'
 import { ORGANISM_META, organismDescription } from '../../_infrastructure'
 
@@ -23,6 +24,7 @@ const meta: Meta = {
 
 ## Components
 - **EditInvoiceDialog**: Edit invoice details like payment terms and notes
+- **InvoicePDFDialog**: Full-screen PDF preview with animated gradient border
 - **InvoicePreviewSheet**: Full preview of invoice with line items`),
       },
     },
@@ -194,6 +196,54 @@ function EditInvoiceDialogOpen() {
 
 export const EditDialogOpen: Story = {
   render: () => <EditInvoiceDialogOpen />,
+}
+
+// =============================================================================
+// INVOICE PDF DIALOG STORIES
+// =============================================================================
+
+function InvoicePDFDialogDemo() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <h3 className="font-semibold text-primary">Invoice PDF Dialog</h3>
+      <Button variant="accent" onClick={() => setOpen(true)}>
+        <FileText className="w-4 h-4 mr-2" />
+        View PDF
+      </Button>
+
+      <InvoicePDFDialog
+        invoice={mockInvoice}
+        open={open}
+        onOpenChange={setOpen}
+      />
+
+      <div className="text-sm text-secondary text-center max-w-xs">
+        Full-screen PDF preview dialog with animated gradient border
+      </div>
+    </div>
+  )
+}
+
+export const PDFDialog: Story = {
+  render: () => <InvoicePDFDialogDemo />,
+}
+
+function InvoicePDFDialogOpen() {
+  const [open, setOpen] = useState(true)
+
+  return (
+    <InvoicePDFDialog
+      invoice={mockInvoice}
+      open={open}
+      onOpenChange={setOpen}
+    />
+  )
+}
+
+export const PDFDialogOpen: Story = {
+  render: () => <InvoicePDFDialogOpen />,
 }
 
 // =============================================================================

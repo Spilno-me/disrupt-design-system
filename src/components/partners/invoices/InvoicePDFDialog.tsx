@@ -1,7 +1,12 @@
 import * as React from 'react'
-import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { cn } from '../../../lib/utils'
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from '../../ui/dialog'
 import { Button } from '../../ui/button'
 import type { Invoice } from './types'
 
@@ -27,6 +32,9 @@ export interface InvoicePDFDialogProps {
 /**
  * InvoicePDFDialog - Full-screen PDF preview dialog
  *
+ * Uses DDS Dialog for consistent styling with animated gradient border,
+ * standardized z-index, and iOS 26 compatibility.
+ *
  * Displays the invoice PDF in a full-screen dialog with an embedded viewer.
  * Falls back to a placeholder if no PDF URL is available.
  */
@@ -39,61 +47,55 @@ export function InvoicePDFDialog({
   if (!invoice) return null
 
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
-      <DialogPrimitive.Portal>
-        {/* Overlay */}
-        <DialogPrimitive.Overlay
-          className={cn(
-            'fixed inset-0 z-50 bg-black/80',
-            'data-[state=open]:animate-in data-[state=closed]:animate-out',
-            'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0'
-          )}
-        />
-
-        {/* Content */}
-        <DialogPrimitive.Content
-          className={cn(
-            'fixed inset-4 z-50 flex flex-col',
-            'bg-surface rounded-lg shadow-lg',
-            'data-[state=open]:animate-in data-[state=closed]:animate-out',
-            'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
-            'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
-            className
-          )}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-default">
-            <div className="flex flex-col gap-1">
-              <DialogPrimitive.Title className="text-lg font-semibold text-primary">
-                Invoice Preview
-              </DialogPrimitive.Title>
-              <DialogPrimitive.Description className="text-sm text-muted">
-                {invoice.invoiceNumber} - {invoice.company.name}
-              </DialogPrimitive.Description>
-            </div>
-            <DialogPrimitive.Close asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <X className="h-5 w-5" />
-                <span className="sr-only">Close</span>
-              </Button>
-            </DialogPrimitive.Close>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        className={cn(
+          // Hide DDS built-in close button (keep custom one in header)
+          '[&_button.absolute]:hidden',
+          // Override DDS centered positioning for fullscreen layout
+          '!fixed !inset-4 !top-4 !left-4 !right-4 !bottom-4',
+          '!translate-x-0 !translate-y-0 !max-w-none',
+          // Reset inner wrapper for fullscreen (remove padding, gap, border-radius)
+          '[&>div]:p-0 [&>div]:gap-0 [&>div]:rounded-none',
+          'flex flex-col',
+          className
+        )}
+      >
+        {/* Header - custom padding since inner wrapper padding is reset */}
+        <div className="flex items-center justify-between px-4 py-4 border-b border-default">
+          <div className="flex flex-col gap-1">
+            <DialogTitle className="text-lg font-semibold">
+              Invoice Preview
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted">
+              {invoice.invoiceNumber} - {invoice.company.name}
+            </DialogDescription>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => onOpenChange(false)}
+          >
+            <X className="h-5 w-5" />
+            <span className="sr-only">Close</span>
+          </Button>
+        </div>
 
-          {/* PDF Viewer */}
-          <div className="flex-1 overflow-hidden">
-            {invoice.pdfUrl ? (
-              <iframe
-                src={invoice.pdfUrl}
-                className="w-full h-full border-0"
-                title={`Invoice ${invoice.invoiceNumber} PDF`}
-              />
-            ) : (
-              <PDFPlaceholder invoice={invoice} />
-            )}
-          </div>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+        {/* PDF Viewer - full remaining height */}
+        <div className="flex-1 overflow-hidden">
+          {invoice.pdfUrl ? (
+            <iframe
+              src={invoice.pdfUrl}
+              className="w-full h-full border-0"
+              title={`Invoice ${invoice.invoiceNumber} PDF`}
+            />
+          ) : (
+            <PDFPlaceholder invoice={invoice} />
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
 

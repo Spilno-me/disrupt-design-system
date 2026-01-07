@@ -53,7 +53,7 @@ const contactedLead: Lead = {
   id: '2',
   name: 'Sarah Johnson',
   company: 'Global Compliance Solutions',
-  status: 'contacted',
+  status: 'in_progress',
 }
 
 const qualifiedLead: Lead = {
@@ -61,7 +61,7 @@ const qualifiedLead: Lead = {
   id: '3',
   name: 'Mike Davis',
   company: 'Safety Corp',
-  status: 'qualified',
+  status: 'in_progress',
 }
 
 const convertedLead: Lead = {
@@ -99,8 +99,7 @@ function StatusUpdateDialogDemo({
   const getStatusColor = (status: LeadStatus) => {
     switch (status) {
       case 'new': return 'bg-info-light text-info border-info'
-      case 'contacted': return 'bg-warning-light text-warning border-warning'
-      case 'qualified': return 'bg-accent-bg text-accent border-accent'
+      case 'in_progress': return 'bg-warning-light text-warning border-warning'
       case 'converted': return 'bg-success-light text-success border-success'
       case 'lost': return 'bg-error-light text-error border-error'
       default: return 'bg-muted-bg text-primary border-default'
@@ -270,8 +269,7 @@ function FullWorkflowDemo() {
   const getStatusColor = (status: LeadStatus) => {
     switch (status) {
       case 'new': return 'bg-info-light text-info'
-      case 'contacted': return 'bg-warning-light text-warning'
-      case 'qualified': return 'bg-accent-bg text-accent'
+      case 'in_progress': return 'bg-warning-light text-warning'
       case 'converted': return 'bg-success-light text-success'
       case 'lost': return 'bg-error-light text-error'
       default: return 'bg-muted-bg text-primary'

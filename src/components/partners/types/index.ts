@@ -6,3 +6,4 @@
 export * from "./partner-network.types"
 export * from "./partners.types"
 export * from "./login-accounts.types"
+export * from "./pricing.types"

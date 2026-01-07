@@ -92,9 +92,11 @@ function getWaveGradientColors(isDarkMode: boolean): { start: string; end: strin
  */
 function getGlassBackground(isDarkMode: boolean): string {
   /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba opacity for glass effect */
+  // Reduced opacity for more transparent glass effect - allows background grid to show through
+  // Light: 30% white, Dark: 30-40% dark
   return isDarkMode
-    ? 'linear-gradient(0deg, rgba(20, 22, 30, 0.85) 0%, rgba(29, 31, 42, 0.7) 100%)'
-    : 'rgba(255, 255, 255, 0.15)'
+    ? 'linear-gradient(0deg, rgba(20, 22, 30, 0.4) 0%, rgba(29, 31, 42, 0.3) 100%)'
+    : 'rgba(255, 255, 255, 0.3)'
   /* eslint-enable no-restricted-syntax */
 }
 
@@ -161,11 +163,13 @@ WaveGlassBackground.displayName = 'WaveGlassBackground'
 function WaveLayer({ waveSvg }: { waveSvg: string }) {
   return (
     <div
-      className={`absolute left-0 h-[${WAVE_SVG_HEIGHT_PX}px] opacity-${WAVE_OPACITY_PERCENT}`}
+      // Static classes only - dynamic values moved to inline style
+      className="absolute left-0"
       data-slot="wave-layer"
       style={{
-         
-        width: `${WAVE_ANIMATION_WIDTH_PX}px`,
+        height: WAVE_SVG_HEIGHT_PX,
+        opacity: WAVE_OPACITY_PERCENT / 100,
+        width: WAVE_ANIMATION_WIDTH_PX,
         backgroundImage: `url("${waveSvg}")`,
         backgroundRepeat: 'repeat-x',
         backgroundSize: `${WAVE_TILE_WIDTH_PX}px ${WAVE_SVG_HEIGHT_PX}px`,

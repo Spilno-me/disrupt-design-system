@@ -98,6 +98,14 @@ interface UXPhilosophy extends PhilosophyRules {
   preDesignChecklist: string[];
 }
 
+interface EngagementPhilosophy extends PhilosophyRules {
+  fullGuide: string;
+  preWorkChecklist: string[];
+  duringWorkChecklist: string[];
+  endingChecklist: string[];
+  metaPrinciple: string;
+}
+
 interface AgentContext {
   meta: {
     project: string;
@@ -105,10 +113,12 @@ interface AgentContext {
     designPhilosophy: string;
     engineeringPhilosophy: string;
     uxPhilosophy: string;
+    engagementPhilosophy?: string;
   };
   criticalRules: {
     engineeringPhilosophy: EngineeringPhilosophy;
     uxPhilosophy: UXPhilosophy;
+    engagementPhilosophy?: EngagementPhilosophy;
     tokens: {
       forbidden: string[];
       required: string;
@@ -592,7 +602,7 @@ server.tool(
 
 server.tool(
   "get_design_philosophy",
-  "Get DDS design philosophy and principles (Wu Wei engineering + MAYA UX)",
+  "Get DDS design philosophy and principles (Wu Wei engineering + MAYA UX + Quality of Engagement)",
   {},
   async () => {
     if (!agentContext) {
@@ -600,9 +610,10 @@ server.tool(
     }
 
     let response = "# DDS Design Philosophy\n\n";
-    response += "DDS is guided by two complementary principles:\n";
+    response += "DDS is guided by three complementary principles:\n";
     response += "- **Wu Wei (無為)** - Engineering philosophy: work with the grain\n";
-    response += "- **MAYA** - UX philosophy: innovate within acceptance\n\n";
+    response += "- **MAYA** - UX philosophy: innovate within acceptance\n";
+    response += "- **Quality of Engagement (QoE)** - Process philosophy: how we work\n\n";
     response += "---\n\n";
 
     // Wu Wei - Engineering Philosophy
@@ -649,6 +660,42 @@ server.tool(
     response += "\n## Pre-Design Checklist\n";
     for (const item of maya.preDesignChecklist) {
       response += `- [ ] ${item}\n`;
+    }
+
+    response += "\n---\n\n";
+
+    // Quality of Engagement - Process Philosophy
+    const qoe = agentContext.criticalRules.engagementPhilosophy;
+    if (qoe) {
+      response += `# ${qoe.name}\n\n`;
+      response += `**Principle:** ${qoe.principle}\n\n`;
+      response += `> "${qoe.quote}"\n\n`;
+      response += `**Full Guide:** ${qoe.fullGuide}\n\n`;
+
+      response += "## 13 Principles\n\n";
+      for (const [name, rule] of Object.entries(qoe.rules)) {
+        response += `### ${name}\n`;
+        response += `- **Do:** ${rule.do}\n`;
+        response += `- **Dont:** ${rule.dont}\n`;
+        response += `- **Test:** ${rule.test}\n\n`;
+      }
+
+      response += "## Pre-Work Checklist\n";
+      for (const item of qoe.preWorkChecklist) {
+        response += `- [ ] ${item}\n`;
+      }
+
+      response += "\n## During Work Checklist\n";
+      for (const item of qoe.duringWorkChecklist) {
+        response += `- [ ] ${item}\n`;
+      }
+
+      response += "\n## Ending Checklist\n";
+      for (const item of qoe.endingChecklist) {
+        response += `- [ ] ${item}\n`;
+      }
+
+      response += `\n## Meta-Principle\n${qoe.metaPrinciple}\n`;
     }
 
     return { content: [{ type: "text" as const, text: response }] };

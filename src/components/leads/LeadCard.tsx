@@ -15,7 +15,7 @@ import {
 // TYPES
 // =============================================================================
 
-export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'converted' | 'lost'
+export type LeadStatus = 'new' | 'in_progress' | 'converted' | 'lost'
 export type LeadPriority = 'high' | 'medium' | 'low'
 export type LeadSource = 'website' | 'referral' | 'cold_outreach' | 'partner' | 'other'
 
@@ -32,8 +32,8 @@ export interface Lead {
   phone?: string
   /** Lead priority */
   priority: LeadPriority
-  /** Lead score (0-100) */
-  score: number
+  /** Lead score (0-100) - optional, not displayed in MVP */
+  score?: number
   /** Lead status */
   status: LeadStatus
   /** Source of the lead */
@@ -44,6 +44,8 @@ export interface Lead {
   value?: number
   /** When the lead was created */
   createdAt: string
+  /** When the lead was last updated */
+  updatedAt?: string
   /** Avatar URL (optional) */
   avatarUrl?: string
 }
@@ -141,9 +143,9 @@ export function LeadCard({
           </div>
         </div>
 
-        {/* Score and Actions */}
+        {/* Score (if provided) and Actions */}
         <div className="flex items-center gap-3 flex-shrink-0">
-          <ScoreBadge score={lead.score} />
+          {lead.score !== undefined && <ScoreBadge score={lead.score} />}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -298,8 +300,7 @@ function ScoreBadge({ score }: { score: number }) {
 function StatusBadge({ status }: { status: LeadStatus }) {
   const statusConfig: Record<LeadStatus, { label: string; className: string }> = {
     new: { label: 'New', className: 'bg-info-light text-info' },
-    contacted: { label: 'Contacted', className: 'bg-warning-light text-warning' },
-    qualified: { label: 'Qualified', className: 'bg-accent-bg text-accent' },
+    in_progress: { label: 'In Progress', className: 'bg-warning-light text-warning' },
     converted: { label: 'Converted', className: 'bg-success-light text-success' },
     lost: { label: 'Lost', className: 'bg-error-light text-error' },
   }

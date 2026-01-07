@@ -132,7 +132,9 @@ export function CreateSubPartnerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      {/* NOTE: Do NOT use overflow-y-auto on DialogContent - it clips the gradient border.
+          Instead, use a scrollable inner container. */}
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-primary">
             Create Sub-Partner
@@ -143,7 +145,7 @@ export function CreateSubPartnerDialog({
           </p>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 overflow-y-auto flex-1">
           {/* Parent Partner Info */}
           <div className="flex items-center gap-3 p-3 rounded-lg bg-accent-bg border border-accent">
             <div className="flex h-10 w-10 items-center justify-center rounded-md bg-surface">

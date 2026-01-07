@@ -91,20 +91,11 @@ export const StatusNew: Story = {
   },
 }
 
-export const StatusContacted: Story = {
+export const StatusInProgress: Story = {
   args: {
     lead: {
       ...baseLead,
-      status: 'contacted',
-    },
-  },
-}
-
-export const StatusQualified: Story = {
-  args: {
-    lead: {
-      ...baseLead,
-      status: 'qualified',
+      status: 'in_progress',
     },
   },
 }
@@ -200,7 +191,7 @@ export const GridView: Story = {
             email: 'lisa@novacorp.com',
             priority: 'medium',
             score: 65,
-            status: 'contacted',
+            status: 'in_progress',
             source: 'referral',
             value: 8000,
           }}
@@ -217,7 +208,7 @@ export const GridView: Story = {
             email: 'bob@techstart.io',
             priority: 'low',
             score: 45,
-            status: 'qualified',
+            status: 'in_progress',
             source: 'cold_outreach',
             value: 15000,
           }}

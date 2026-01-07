@@ -19,18 +19,15 @@
 
 import * as React from 'react'
 import { useState, useCallback, ReactNode } from 'react'
+import { cn } from '../../lib/utils'
 import {
   Users,
-  Zap,
-  FileText,
-  Building2,
   Settings,
 } from 'lucide-react'
 import { AppLayoutShell, AppNavItem } from '../layout/AppLayoutShell'
 import { DashboardPage, KPICardData, ActivityItemData, QuickActionData } from './DashboardPage'
 import { partnerNavItems, addBadges } from '../navigation/configs'
 import { UserInfo, UserMenuItem } from '../../components/ui/AppHeader'
-import { Button } from '../../components/ui/button'
 
 // Import page components
 import { LeadsPage } from '../../components/leads/LeadsPage'
@@ -39,7 +36,8 @@ import type { CreateLeadFormData } from '../../components/leads/CreateLeadDialog
 import { PartnersPage } from '../../components/partners/PartnersPage'
 import type { Partner } from '../../components/partners/PartnersPage'
 import type { PartnerFormData } from '../../components/partners/EditPartnerDialog'
-import { PartnerNetworkPage, MOCK_NETWORK_PARTNERS } from '../../components/partners/PartnerNetworkPage'
+import { EditPartnerPage } from '../../components/partners/pages'
+import { MOCK_NETWORK_PARTNERS } from '../../components/partners/PartnerNetworkPage'
 import type { NetworkPartner } from '../../components/partners/PartnerNetworkPage'
 import { InvoicesPage } from '../../components/partners/invoices/InvoicesPage'
 import type { Invoice, InvoiceAction } from '../../components/partners/invoices/types'
@@ -49,8 +47,13 @@ import {
 } from '../../components/provisioning/ProvisioningMethodSelector'
 import {
   TenantProvisioningChat,
-  TenantFormData,
+  TenantChatFormData,
 } from '../../components/provisioning/TenantProvisioningChat'
+import {
+  TenantProvisioningWizard,
+  TenantFormData as WizardTenantFormData,
+  transformToApiRequest,
+} from '../../components/provisioning/TenantProvisioningWizard'
 import {
   SettingsPage,
   UserProfile,
@@ -58,8 +61,20 @@ import {
   NotificationSettings,
 } from '../../components/partners/SettingsPage'
 import { HelpPage, HelpArticle } from '../../components/partners/HelpPage'
-import { PricingCalculator, PricingInput, PricingBreakdown } from '../../components/partners/PricingCalculator'
+import { PricingCalculator, type CalculateRequest } from '../../components/partners/PricingCalculator'
+import {
+  useRoleDashboardConfig,
+  MOCK_DASHBOARD_DATA,
+  type UserRole,
+  type NavigationFilter,
+  type DashboardHandlers,
+} from '../../components/partners/dashboard'
+import type { FilterState } from '../../components/shared/SearchFilter/types'
 import { StatsCard } from '../../components/leads/StatsCard'
+import { TenantsPage, MOCK_TENANTS } from '../../components/tenants'
+import type { Tenant, TenantFormData } from '../../components/tenants'
+import { MyEarningsPage, MOCK_EARNINGS, MOCK_EARNINGS_SUMMARY } from '../../components/earnings'
+import type { Earning, EarningsSummary } from '../../components/earnings'
 import { DataTable, ColumnDef } from '../../components/ui/DataTable'
 import { Badge } from '../../components/ui/badge'
 import { DataTableStatusDot, TENANT_REQUEST_DOT_STATUS_MAP } from '../../components/ui/table'
@@ -170,7 +185,7 @@ export interface PartnerPortalPageProps {
   onUpdateInvoice?: (invoice: Invoice) => void
 
   // === Provisioning callbacks ===
-  onProvisioningComplete?: (data: TenantFormData) => void
+  onProvisioningComplete?: (data: TenantChatFormData | WizardTenantFormData) => void
 
   // === Settings data ===
   /** User profile for settings */
@@ -193,10 +208,28 @@ export interface PartnerPortalPageProps {
   onHelpSearch?: (query: string) => void
 
   // === Pricing Calculator ===
-  /** Commission percentage for pricing calculator */
-  commissionPercentage?: number
-  onCalculatePricing?: (input: PricingInput, breakdown: PricingBreakdown) => void
-  onGenerateQuote?: (input: PricingInput, breakdown: PricingBreakdown) => void
+  /** Callback when pricing calculation is requested */
+  onCalculatePricing?: (request: CalculateRequest) => void
+  /** Callback when quote generation is requested */
+  onGenerateQuote?: (request: CalculateRequest) => void
+
+  // === Tenants Data & Callbacks ===
+  /** Tenants data */
+  tenants?: Tenant[]
+  /** Callback when viewing tenant details */
+  onViewTenant?: (tenant: Tenant) => void
+  /** Callback when editing a tenant */
+  onEditTenant?: (tenant: Tenant, data: TenantFormData) => void
+  /** Callback when suspending a tenant */
+  onSuspendTenant?: (tenant: Tenant) => void
+  /** Callback when activating a suspended tenant */
+  onActivateTenant?: (tenant: Tenant) => void
+
+  // === Earnings Data ===
+  /** Earnings summary for My Earnings page */
+  earningsSummary?: EarningsSummary
+  /** Earnings history */
+  earnings?: Earning[]
 
   // === Navigation & Layout ===
   /** Initial page to show */
@@ -226,12 +259,34 @@ export interface PartnerPortalPageProps {
 // =============================================================================
 
 /** Tenant Provisioning Page */
-function TenantProvisioningContent({
+function _TenantProvisioningContent({
   onComplete,
 }: {
-  onComplete?: (data: TenantFormData) => void
+  onComplete?: (data: TenantChatFormData | WizardTenantFormData) => void
 }) {
   const [selectedMethod, setSelectedMethod] = useState<ProvisioningMethod | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Example API submission handler
+  const handleWizardSubmit = async (data: WizardTenantFormData) => {
+    setIsSubmitting(true)
+    try {
+      // Transform form data to API format
+      const apiRequest = transformToApiRequest(data)
+
+      // Simulate API call (replace with real API in consumer app)
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
+      console.log('API Request:', apiRequest)
+
+      onComplete?.(data)
+      setSelectedMethod(null)
+    } catch (error) {
+      console.error('Submission failed:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   if (!selectedMethod) {
     return (
@@ -259,12 +314,24 @@ function TenantProvisioningContent({
   }
 
   return (
-    <div className="p-6">
-      <Button variant="ghost" onClick={() => setSelectedMethod(null)} className="mb-4">
-        Back to method selection
-      </Button>
-      <h2 className="text-xl font-semibold text-primary">Manual Wizard</h2>
-      <p className="text-secondary mt-2">Manual wizard form implementation...</p>
+    <div className="p-4 md:p-6 h-full flex flex-col">
+      <div className="flex-1 flex items-center justify-center min-h-0">
+        {/* Glass Card - Depth 1 (Elevated) */}
+        <div className={cn(
+          "w-full max-w-5xl mb-8",
+          "rounded-xl",
+          "bg-white/60 dark:bg-black/60 backdrop-blur-[8px]",
+          "border-2 border-accent shadow-lg",
+          "flex flex-col"
+        )}>
+          <TenantProvisioningWizard
+            onSubmit={handleWizardSubmit}
+            onCancel={() => setSelectedMethod(null)}
+            commissionPercentage={15}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -393,7 +460,7 @@ export function PartnerPortalPage({
   // Data
   leads = [],
   partners = [],
-  networkPartners = MOCK_NETWORK_PARTNERS,
+  networkPartners: _networkPartners = MOCK_NETWORK_PARTNERS,
   invoices = [],
   stats,
   dashboardConfig,
@@ -412,9 +479,9 @@ export function PartnerPortalPage({
   onDeletePartner,
 
   // Network Partner callbacks
-  onEditNetworkPartner,
-  onAddSubPartner,
-  onDeleteNetworkPartner,
+  onEditNetworkPartner: _onEditNetworkPartner,
+  onAddSubPartner: _onAddSubPartner,
+  onDeleteNetworkPartner: _onDeleteNetworkPartner,
 
   // Invoice callbacks
   onInvoiceClick,
@@ -422,7 +489,7 @@ export function PartnerPortalPage({
   onUpdateInvoice,
 
   // Provisioning callbacks
-  onProvisioningComplete,
+  onProvisioningComplete: _onProvisioningComplete,
 
   // Settings data & callbacks
   settingsUser,
@@ -440,9 +507,19 @@ export function PartnerPortalPage({
   onHelpSearch,
 
   // Pricing Calculator
-  commissionPercentage = 15,
   onCalculatePricing,
   onGenerateQuote,
+
+  // Tenants data & callbacks
+  tenants = MOCK_TENANTS,
+  onViewTenant,
+  onEditTenant,
+  onSuspendTenant,
+  onActivateTenant,
+
+  // Earnings data
+  earningsSummary = MOCK_EARNINGS_SUMMARY,
+  earnings = MOCK_EARNINGS,
 
   // Navigation & Layout
   initialPage = 'dashboard',
@@ -461,6 +538,13 @@ export function PartnerPortalPage({
   const [internalPage, setInternalPage] = useState(initialPage)
   const activePage = currentPageId ?? internalPage
 
+  // Page filter state (for KPI → filtered page navigation)
+  const [pageFilters, setPageFilters] = useState<NavigationFilter | undefined>()
+
+  // Partner edit state (for page-based edit flow)
+  const [editingPartner, setEditingPartner] = useState<Partner | null>(null)
+  const [partnerPageMode, setPartnerPageMode] = useState<'edit' | 'create'>('edit')
+
   // Handle page navigation
   const handlePageChange = useCallback(
     (pageId: string) => {
@@ -473,23 +557,51 @@ export function PartnerPortalPage({
     [onPageChange]
   )
 
+  // Handle navigation with filters (from dashboard KPIs)
+  const handleNavigateWithFilter = useCallback(
+    (pageId: string, filters?: NavigationFilter) => {
+      setPageFilters(filters)
+      handlePageChange(pageId)
+    },
+    [handlePageChange]
+  )
+
+  // Convert NavigationFilter → FilterState for LeadsPage
+  const leadsInitialFilters: FilterState | undefined = pageFilters
+    ? {
+        status: pageFilters.status ?? [],
+        priority: pageFilters.priority ?? [],
+        source: [],
+      }
+    : undefined
+
+  // Get user's role (default to 'partner' if not specified)
+  const userRole: UserRole = user.role ?? 'partner'
+
+  // Dashboard handlers
+  const dashboardHandlers: DashboardHandlers = {
+    onNavigate: handleNavigateWithFilter,
+    onCreateLead: () => {
+      handlePageChange('leads')
+      // Note: LeadsPage handles its own create dialog
+    },
+    onCreateTenantRequest: () => {
+      handlePageChange('tenant-provisioning')
+    },
+    onAddPartner: () => {
+      handlePageChange('partners')
+    },
+  }
+
+  // Get role-based dashboard configuration
+  const { kpis: roleKpis, quickActions: roleQuickActions } = useRoleDashboardConfig({
+    userRole,
+    handlers: dashboardHandlers,
+    data: MOCK_DASHBOARD_DATA[userRole],
+  })
+
   // Build nav items with badges
   const navItemsWithBadges = addBadges(partnerNavItems, badges)
-
-  // Default dashboard config
-  const defaultKPIs: KPICardData[] = dashboardConfig?.kpis ?? [
-    { id: '1', label: 'Total Revenue', value: '$0', trend: '0%', trendDirection: 'neutral' },
-    { id: '2', label: 'Active Partners', value: partners.length, trend: '+0', trendDirection: 'neutral' },
-    { id: '3', label: 'Open Leads', value: leads.length, trend: '0', trendDirection: 'neutral' },
-    { id: '4', label: 'Pending Invoices', value: invoices.filter(i => i.status === 'sent').length, trend: '0', trendDirection: 'neutral' },
-  ]
-
-  const defaultQuickActions: QuickActionData[] = dashboardConfig?.quickActions ?? [
-    { id: '1', label: 'New Tenant Provisioning', icon: <Zap className="w-4 h-4" />, onClick: () => handlePageChange('tenant-provisioning') },
-    { id: '2', label: 'View All Leads', icon: <Users className="w-4 h-4" />, onClick: () => handlePageChange('leads') },
-    { id: '3', label: 'Manage Invoices', icon: <FileText className="w-4 h-4" />, onClick: () => handlePageChange('invoices') },
-    { id: '4', label: 'Partner Management', icon: <Building2 className="w-4 h-4" />, onClick: () => handlePageChange('partners') },
-  ]
 
   // Default settings data (derived from user if not provided)
   const defaultSettingsUser: UserProfile = settingsUser ?? {
@@ -534,9 +646,9 @@ export function PartnerPortalPage({
           <DashboardPage
             title="Dashboard"
             subtitle={`Welcome back, ${user.name?.split(' ')[0] ?? 'Partner'}`}
-            kpis={defaultKPIs}
+            kpis={dashboardConfig?.kpis ?? roleKpis}
             activity={dashboardConfig?.activity ?? []}
-            quickActions={defaultQuickActions}
+            quickActions={dashboardConfig?.quickActions ?? roleQuickActions}
           />
         )
 
@@ -549,14 +661,25 @@ export function PartnerPortalPage({
             onLeadAction={onLeadAction}
             onCreateLead={onCreateLead}
             partners={leadPartners}
+            initialFilters={leadsInitialFilters}
           />
         )
 
-      case 'tenant-provisioning':
-        return <TenantProvisioningContent onComplete={onProvisioningComplete} />
-
       case 'tenant-requests':
         return <TenantRequestsContent />
+
+      case 'tenants':
+        return (
+          <div className="p-6">
+            <TenantsPage
+              tenants={tenants}
+              onViewTenant={onViewTenant}
+              onEditTenant={onEditTenant}
+              onSuspendTenant={onSuspendTenant}
+              onActivateTenant={onActivateTenant}
+            />
+          </div>
+        )
 
       case 'invoices':
         return (
@@ -569,11 +692,31 @@ export function PartnerPortalPage({
           />
         )
 
+      case 'my-earnings':
+        return (
+          <div className="p-6">
+            <MyEarningsPage
+              summary={earningsSummary}
+              earnings={earnings}
+            />
+          </div>
+        )
+
       case 'partners':
         return (
           <div className="p-6">
             <PartnersPage
               partners={partners}
+              onViewPartner={(partner) => {
+                setEditingPartner(partner)
+                setPartnerPageMode('edit')
+                handlePageChange('partner-edit')
+              }}
+              onAddPartner={() => {
+                setEditingPartner(null)
+                setPartnerPageMode('create')
+                handlePageChange('partner-edit')
+              }}
               onEditPartner={onEditPartner}
               onCreatePartner={onCreatePartner}
               onManageUsers={onManageUsers}
@@ -582,25 +725,30 @@ export function PartnerPortalPage({
           </div>
         )
 
-      case 'partner-network':
+      case 'partner-edit':
         return (
-          <div className="p-6">
-            <PartnerNetworkPage
-              partners={networkPartners}
-              onEditPartner={onEditNetworkPartner}
-              onAddSubPartner={onAddSubPartner}
-              onDeletePartner={onDeleteNetworkPartner}
-            />
-          </div>
+          <EditPartnerPage
+            partner={editingPartner}
+            mode={partnerPageMode}
+            onSubmit={async (data) => {
+              if (partnerPageMode === 'edit' && editingPartner && onEditPartner) {
+                await onEditPartner(editingPartner, data as PartnerFormData)
+              } else if (partnerPageMode === 'create' && onCreatePartner) {
+                await onCreatePartner(data as PartnerFormData)
+              }
+              handlePageChange('partners')
+            }}
+            onBack={() => handlePageChange('partners')}
+          />
         )
 
       case 'pricing-calculator':
         return (
           <div className="p-6">
             <PricingCalculator
-              commissionPercentage={commissionPercentage}
               onCalculate={onCalculatePricing}
               onGenerateQuote={onGenerateQuote}
+              showCommission={userRole === 'system_admin'}
             />
           </div>
         )
@@ -633,8 +781,8 @@ export function PartnerPortalPage({
           <DashboardPage
             title="Dashboard"
             subtitle={`Welcome back, ${user.name?.split(' ')[0] ?? 'Partner'}`}
-            kpis={defaultKPIs}
-            quickActions={defaultQuickActions}
+            kpis={dashboardConfig?.kpis ?? roleKpis}
+            quickActions={dashboardConfig?.quickActions ?? roleQuickActions}
           />
         )
     }

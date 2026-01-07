@@ -370,6 +370,14 @@ export function InvoicesPage({
             sortDirection={sortDirection}
             onSortChange={handleSortChange}
             loading={loading}
+            // Pagination embedded in table footer
+            pagination
+            currentPage={currentPage}
+            totalItems={sortedInvoices.length}
+            pageSize={pageSize}
+            onPageChange={setCurrentPage}
+            onPageSizeChange={handlePageSizeChange}
+            pageSizeOptions={[10, 25, 50]}
           />
         </div>
 
@@ -397,19 +405,21 @@ export function InvoicesPage({
           )}
         </div>
 
-        {/* Pagination */}
-        {sortedInvoices.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalItems={sortedInvoices.length}
-            pageSize={pageSize}
-            onPageChange={setCurrentPage}
-            onPageSizeChange={handlePageSizeChange}
-            showPageSizeSelector
-            showResultsText
-            showFirstLastButtons
-          />
-        )}
+        {/* Mobile Pagination - only shown on small screens (desktop has embedded pagination in table) */}
+        <div className="md:hidden">
+          {sortedInvoices.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalItems={sortedInvoices.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={handlePageSizeChange}
+              showPageSizeSelector
+              showResultsText
+              showFirstLastButtons
+            />
+          )}
+        </div>
       </div>
 
       {/* Invoice Preview Sheet */}

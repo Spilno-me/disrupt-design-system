@@ -265,6 +265,7 @@ function NavItemButton({
         isNested && !collapsed && 'pl-8',
         showActiveBackground && 'bg-surface-active'
       )}
+      aria-label={item.label}
       aria-current={isActive ? 'page' : undefined}
       data-slot="nav-item-button"
       data-item-id={item.id}
@@ -342,6 +343,8 @@ function NavGroup({
         e.stopPropagation()
         if (collapsed) onNavigate(item)
       }}
+      aria-label={item.label}
+      aria-expanded={!collapsed && isOpen}
       data-slot="nav-group-trigger"
     >
       <NavIcon icon={displayIcon} isActive={groupActive} size="sm" showActiveBackground={collapsed} />
@@ -438,6 +441,7 @@ function HelpItem({ collapsed, onClick }: HelpItemProps) {
         'text-primary hover:text-accent transition-colors',
         collapsed ? 'justify-center' : 'gap-2 px-3'
       )}
+      aria-label="Get Help"
       data-slot="help-item"
     >
       <NavIcon icon={<CircleHelp />} size="sm" showActiveBackground={collapsed} />

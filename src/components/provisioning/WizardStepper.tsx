@@ -76,10 +76,10 @@ export function WizardStepper({
                 <div
                   className={cn(
                     'flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold font-sans transition-colors shrink-0',
-                    // Completed state - green with checkmark
-                    isCompleted && 'bg-success text-inverse',
-                    // Current state - green filled with number
-                    isCurrent && 'bg-success text-inverse',
+                    // Completed state - green with checkmark (WCAG AA: 5.02:1)
+                    isCompleted && 'bg-success-dark text-inverse',
+                    // Current state - green filled with number (WCAG AA: 5.02:1)
+                    isCurrent && 'bg-success-dark text-inverse',
                     // Upcoming state - gray outline with good contrast
                     isUpcoming && 'bg-surface border-2 border-default text-emphasis',
                     // Hover states for clickable
@@ -110,25 +110,29 @@ export function WizardStepper({
                 </span>
               </li>
 
-              {/* Connector Line (between steps) */}
+              {/* Connector Line (between steps) - wrapped in li for valid HTML */}
               {index < steps.length - 1 && orientation === 'horizontal' && (
-                <div
-                  className={cn(
-                    'flex-1 h-0.5 mx-4 transition-colors',
-                    // Line color based on completion
-                    index < currentStep ? 'bg-success' : 'bg-slate'
-                  )}
-                />
+                <li className="flex-1 flex items-center" aria-hidden="true">
+                  <div
+                    className={cn(
+                      'flex-1 h-0.5 mx-4 transition-colors',
+                      // Line color based on completion
+                      index < currentStep ? 'bg-success' : 'bg-slate'
+                    )}
+                  />
+                </li>
               )}
 
-              {/* Vertical connector */}
+              {/* Vertical connector - wrapped in li for valid HTML */}
               {index < steps.length - 1 && orientation === 'vertical' && (
-                <div
-                  className={cn(
-                    'w-0.5 h-6 ml-4 transition-colors',
-                    index < currentStep ? 'bg-success' : 'bg-slate'
-                  )}
-                />
+                <li className="flex items-center" aria-hidden="true">
+                  <div
+                    className={cn(
+                      'w-0.5 h-6 ml-4 transition-colors',
+                      index < currentStep ? 'bg-success' : 'bg-slate'
+                    )}
+                  />
+                </li>
               )}
             </React.Fragment>
           )
@@ -156,7 +160,7 @@ export function CompactStepper({ className }: CompactStepperProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-success text-inverse text-sm font-semibold font-sans"
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-success-dark text-inverse text-sm font-semibold font-sans"
             aria-hidden="true"
           >
             {currentStep + 1}

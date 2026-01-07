@@ -264,7 +264,7 @@ export function AppLayoutShell({
 
   return (
     <div
-      className="relative flex flex-col h-screen bg-page overflow-hidden"
+      className="relative flex flex-col h-screen overflow-hidden"
       data-product={product}
       data-page={currentPage}
     >
@@ -284,6 +284,7 @@ export function AppLayoutShell({
           onMenuItemClick={onMenuItemClick}
           onLogoClick={onLogoClick}
           leftContent={mobileNavTrigger}
+          sidebarCollapsed={sidebarCollapsed}
         />
       </div>
 
@@ -316,7 +317,7 @@ export function AppLayoutShell({
           {/* Transparent to show grid blob background - individual sections add their own bg as needed */}
           <main className="flex-1 overflow-auto">
             <div className={cn(
-              "flex flex-col min-h-full pt-[55px]",
+              "flex flex-col h-full pt-[55px]",
               // Mobile bottom padding when using custom mobile nav (FlowMobileNav is ~70px + safe area)
               customMobileNav && "pb-[88px] md:pb-[48px]",
               // Default desktop footer padding

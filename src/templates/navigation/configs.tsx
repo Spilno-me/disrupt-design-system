@@ -9,11 +9,9 @@ import * as React from 'react'
 import {
   LayoutDashboard,
   Users,
-  Zap,
   ClipboardList,
   FileText,
   Building2,
-  Network,
   DollarSign,
   Settings,
   AlertTriangle,
@@ -29,6 +27,7 @@ import {
   MessageSquare,
   Bookmark,
   Contact2,
+  Wallet,
 } from 'lucide-react'
 import type { NavItem } from '../../components/ui/navigation'
 import { addBadges as addBadgesUtil } from '../../components/ui/navigation'
@@ -57,16 +56,16 @@ export const partnerNavItems: NavItem[] = [
     href: '/leads',
   },
   {
-    id: 'tenant-provisioning',
-    label: 'Tenant Provisioning',
-    icon: <Zap />,
-    href: '/tenant-provisioning',
-  },
-  {
     id: 'tenant-requests',
     label: 'Tenant Requests',
     icon: <ClipboardList />,
     href: '/tenant-requests',
+  },
+  {
+    id: 'tenants',
+    label: 'Tenants',
+    icon: <Building2 />,
+    href: '/tenants',
   },
   {
     id: 'invoices',
@@ -75,16 +74,16 @@ export const partnerNavItems: NavItem[] = [
     href: '/invoices',
   },
   {
+    id: 'my-earnings',
+    label: 'My Earnings',
+    icon: <Wallet />,
+    href: '/my-earnings',
+  },
+  {
     id: 'partners',
     label: 'Partners',
     icon: <Building2 />,
     href: '/partners',
-  },
-  {
-    id: 'partner-network',
-    label: 'Partner Network',
-    icon: <Network />,
-    href: '/partner-network',
   },
   {
     id: 'pricing-calculator',

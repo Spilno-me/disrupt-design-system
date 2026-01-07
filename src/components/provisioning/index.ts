@@ -7,7 +7,7 @@ export type {
 export { TenantProvisioningChat } from './TenantProvisioningChat'
 export type {
   TenantProvisioningChatProps,
-  TenantFormData as TenantChatFormData,
+  TenantChatFormData,
 } from './TenantProvisioningChat'
 
 // Wizard Components
@@ -40,6 +40,49 @@ export type {
   TenantProvisioningWizardProps,
   TenantFormData,
 } from './TenantProvisioningWizard'
+
+// Tenant Provisioning Wizard - Subcomponents (for advanced use)
+export { FormField } from './components/FormField'
+export type { FormFieldProps } from './components/FormField'
+export { PaymentMethodSelector } from './components/PaymentMethodSelector'
+export type { PaymentMethodSelectorProps, PaymentMethod } from './components/PaymentMethodSelector'
+
+// Tenant Provisioning Wizard - Constants (for advanced use)
+export {
+  WIZARD_STEPS as TENANT_WIZARD_STEPS,
+  INDUSTRIES,
+  EMPLOYEE_COUNTS,
+  COUNTRIES,
+  EMPLOYEE_COUNT_MIDPOINTS,
+  DEFAULT_EMPLOYEE_COUNT,
+  TIER_2_COMMISSION_THRESHOLD,
+  MONTHS_PER_YEAR,
+  PACKAGE_TO_TIER_MAP,
+  TIER_TO_PACKAGE_MAP,
+} from './tenant-provisioning.constants'
+export type {
+  ApiPricingTier,
+  WizardPackage,
+} from './tenant-provisioning.constants'
+
+// Tenant Provisioning Wizard - API Types (for backend integration)
+export type {
+  TenantRequestStatus,
+  TenantApiRequest,
+  TenantApiResponse,
+} from './tenant-provisioning.types'
+
+// Tenant Provisioning Wizard - API Utilities (for backend integration)
+export {
+  transformToApiRequest,
+  transformFromApiResponse,
+  packageToTier,
+  tierToPackage,
+  generateRequestNumber,
+} from './tenant-provisioning.utils'
+
+// Tenant Provisioning Wizard - Hooks (for advanced use)
+export { usePricingData, LICENSE_FIELD_MAP } from './hooks'
 
 // Tenant Request Action Dialogs
 export { ApproveRequestDialog } from './ApproveRequestDialog'

@@ -156,20 +156,20 @@ export function SettingsPage({
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
-          <TabsTrigger value="profile" className="gap-2">
+        <TabsList variant="accent" animated className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex">
+          <TabsTrigger variant="accent" value="profile" className="gap-2">
             <User className="w-4 h-4" />
             <span className="hidden sm:inline">Profile</span>
           </TabsTrigger>
-          <TabsTrigger value="company" className="gap-2">
+          <TabsTrigger variant="accent" value="company" className="gap-2">
             <Building2 className="w-4 h-4" />
             <span className="hidden sm:inline">Company</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="gap-2">
+          <TabsTrigger variant="accent" value="notifications" className="gap-2">
             <Bell className="w-4 h-4" />
             <span className="hidden sm:inline">Notifications</span>
           </TabsTrigger>
-          <TabsTrigger value="security" className="gap-2">
+          <TabsTrigger variant="accent" value="security" className="gap-2">
             <Shield className="w-4 h-4" />
             <span className="hidden sm:inline">Security</span>
           </TabsTrigger>

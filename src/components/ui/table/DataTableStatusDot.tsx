@@ -113,10 +113,9 @@ export const REQUEST_DOT_STATUS_MAP: DotStatusMapping<'pending' | 'processing' |
 }
 
 /** Lead status mapping */
-export const LEAD_DOT_STATUS_MAP: DotStatusMapping<'new' | 'contacted' | 'qualified' | 'converted' | 'lost'> = {
+export const LEAD_DOT_STATUS_MAP: DotStatusMapping<'new' | 'in_progress' | 'converted' | 'lost'> = {
   new: { variant: 'info', label: 'New' },
-  contacted: { variant: 'warning', label: 'Contacted' },
-  qualified: { variant: 'info', label: 'Qualified' },
+  in_progress: { variant: 'warning', label: 'In Progress' },
   converted: { variant: 'success', label: 'Converted' },
   lost: { variant: 'secondary', label: 'Lost' },
 }
@@ -147,6 +146,13 @@ export const TENANT_REQUEST_DOT_STATUS_MAP: DotStatusMapping<'pending_review' | 
   pending_payment: { variant: 'info', label: 'Pending Payment' },
   provisioning: { variant: 'info', label: 'Provisioning' },
   completed: { variant: 'success', label: 'Completed' },
+}
+
+/** Tenant status mapping (for active tenants page) */
+export const TENANT_DOT_STATUS_MAP: DotStatusMapping<'active' | 'suspended' | 'overdue'> = {
+  active: { variant: 'success', label: 'Active' },
+  suspended: { variant: 'destructive', label: 'Suspended' },
+  overdue: { variant: 'warning', label: 'Overdue' },
 }
 
 // =============================================================================

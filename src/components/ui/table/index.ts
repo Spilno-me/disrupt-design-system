@@ -30,6 +30,7 @@ export {
   INVOICE_DOT_STATUS_MAP,
   LOGIN_ACCOUNT_DOT_STATUS_MAP,
   TENANT_REQUEST_DOT_STATUS_MAP,
+  TENANT_DOT_STATUS_MAP,
   type DataTableStatusDotProps,
   type DotStatusMapping,
   type DotStatusConfig,

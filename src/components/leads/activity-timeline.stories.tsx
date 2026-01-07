@@ -47,7 +47,7 @@ const sampleActivities: Activity[] = [
     type: 'status_change',
     description: 'Lead status updated based on engagement level',
     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
-    metadata: { oldStatus: 'new', newStatus: 'contacted' },
+    metadata: { oldStatus: 'new', newStatus: 'in_progress' },
   },
   {
     id: '4',

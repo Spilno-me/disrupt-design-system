@@ -20,7 +20,7 @@ import {
 // =============================================================================
 
 /** Header height in pixels - matches Figma spec */
-const HEADER_HEIGHT_PX = 55
+const _HEADER_HEIGHT_PX = 55
 
 /** Icon size for menu item icons */
 const MENU_ICON_SIZE = 'w-4 h-4'
@@ -35,13 +35,13 @@ const BELL_ICON_SIZE = 'w-5 h-5'
 const MAX_NOTIFICATION_DISPLAY = 99
 
 /** Wave animation tile width for seamless scrolling */
-const WAVE_TILE_WIDTH_PX = 1600
+const _WAVE_TILE_WIDTH_PX = 1600
 
 /** Wave animation total width (4× tile for seamless loop) */
-const WAVE_ANIMATION_WIDTH_PX = 6400
+const _WAVE_ANIMATION_WIDTH_PX = 6400
 
 /** Wave SVG height in pixels */
-const WAVE_SVG_HEIGHT_PX = 55
+const _WAVE_SVG_HEIGHT_PX = 55
 
 /** Primary wave animation duration in seconds */
 const WAVE_PRIMARY_DURATION_S = 35
@@ -55,11 +55,19 @@ const WAVE_SECONDARY_DELAY_S = -5
 /** Wave swell animation duration in seconds */
 const WAVE_SWELL_DURATION_S = 8
 
-/** Logo container minimum width - wider than sidebar expanded (255px) for visual balance */
-const LOGO_CONTAINER_MIN_WIDTH = 'min-w-[280px]'
+/** Logo container width when sidebar is expanded (matches sidebar 255px + 25px margin) */
+const LOGO_CONTAINER_EXPANDED_WIDTH_PX = 280
+
+/** Logo container width when sidebar is collapsed (logo 81px + padding 32px = 113px) */
+const LOGO_CONTAINER_COLLAPSED_WIDTH_PX = 113
+
+/** Logo container animation duration in seconds (matches sidebar transition) */
+const LOGO_ANIMATION_DURATION_S = 0.25
 
 /** Logo image height */
 const LOGO_HEIGHT = 'h-[32px]'
+/** Logo width calculated from SVG aspect ratio (282/112 = 2.517) at 32px height */
+const LOGO_WIDTH = 'w-[81px]'
 
 // =============================================================================
 // TYPES
@@ -92,6 +100,9 @@ export interface UserMenuItem {
   separator?: boolean
 }
 
+/** User role for dashboard customization */
+export type UserRole = 'system_admin' | 'partner' | 'sub_partner'
+
 /** User information for avatar display */
 export interface UserInfo {
   /** User's display name */
@@ -102,6 +113,8 @@ export interface UserInfo {
   avatarUrl?: string
   /** Fallback initials (e.g., "JD" for John Doe) */
   initials?: string
+  /** User role for dashboard and permission scoping */
+  role?: UserRole
 }
 
 /** Main AppHeader props - DDS owns all styling, no className allowed */
@@ -128,6 +141,8 @@ export interface AppHeaderProps {
   disablePortal?: boolean
   /** Content to render on the left side (e.g., mobile hamburger menu) */
   leftContent?: React.ReactNode
+  /** Whether the sidebar is collapsed (for responsive logo width) */
+  sidebarCollapsed?: boolean
 }
 
 /** Product configurations with logo paths */
@@ -226,9 +241,11 @@ function getUserInitials(user?: UserInfo): string {
  */
 function WaveGlassBackground({ isDarkMode }: { isDarkMode: boolean }) {
   /* eslint-disable no-restricted-syntax -- Glassmorphism requires specific rgba opacity for glass effect */
+  // Reduced opacity for more transparent glass effect - allows background grid to show through
+  // Light: 30% white, Dark: 30-40% dark
   const glassBackground = isDarkMode
-    ? 'linear-gradient(180deg, rgba(29, 31, 42, 0.7) 0%, rgba(20, 22, 30, 0.85) 100%)'
-    : 'rgba(255, 255, 255, 0.15)'
+    ? 'linear-gradient(180deg, rgba(29, 31, 42, 0.3) 0%, rgba(20, 22, 30, 0.4) 100%)'
+    : 'rgba(255, 255, 255, 0.3)'
   /* eslint-enable no-restricted-syntax */
 
   return (
@@ -263,6 +280,7 @@ function WaveLayer({
       className={cn('absolute top-0 left-0 h-[55px]', opacity)}
       data-slot="wave-layer"
       style={{
+        // eslint-disable-next-line no-restricted-syntax -- Intentional: 4× pattern width (1600px) for seamless wave animation
         width: '6400px',
         backgroundImage: `url("${waveSvg}")`,
         backgroundRepeat: 'repeat-x',
@@ -335,7 +353,7 @@ WavePattern.displayName = 'WavePattern'
  * Displays product logo with solid surface background.
  * Auto-detects dark mode for appropriate logo variant.
  * Uses bg-surface to match sidebar - DDS owns styling.
- * Width (280px) extends beyond sidebar expanded width (255px) for visual balance.
+ * Width animates between expanded (280px) and collapsed (auto) states.
  *
  * @component ATOM
  * @figma 685:8840
@@ -344,10 +362,12 @@ function LogoContainer({
   product,
   colorMode,
   onClick,
+  sidebarCollapsed = false,
 }: {
   product: ProductType
   colorMode?: 'dark' | 'light' | 'auto'
   onClick?: () => void
+  sidebarCollapsed?: boolean
 }) {
   const [isDarkMode, setIsDarkMode] = useState(false)
 
@@ -364,23 +384,32 @@ function LogoContainer({
   const logoSrc = effectiveColorMode === 'dark' ? config.logoDark : config.logoLight
 
   return (
-    <div
+    <motion.div
       className={cn(
-        'flex items-center h-14 pl-4 pr-3 cursor-pointer rounded-r-full',
-        LOGO_CONTAINER_MIN_WIDTH,
+        'flex items-center h-14 pl-4 cursor-pointer rounded-r-full overflow-hidden',
         // bg-elevated per depth-layering-rules: header floats above sidebar, so lighter (Closer = Lighter)
         'bg-elevated shadow-sm',
         onClick && 'hover:opacity-90 transition-opacity'
       )}
+      animate={{
+        width: sidebarCollapsed
+          ? LOGO_CONTAINER_COLLAPSED_WIDTH_PX
+          : LOGO_CONTAINER_EXPANDED_WIDTH_PX,
+        paddingRight: sidebarCollapsed ? 16 : 12,
+      }}
+      transition={{
+        duration: LOGO_ANIMATION_DURATION_S,
+        ease: 'easeInOut',
+      }}
       onClick={onClick}
       data-slot="logo-container"
     >
       <img
         src={logoSrc}
         alt={`${product} logo`}
-        className={cn(LOGO_HEIGHT, 'w-auto object-contain')}
+        className={cn(LOGO_HEIGHT, LOGO_WIDTH, 'object-contain shrink-0')}
       />
-    </div>
+    </motion.div>
   )
 }
 LogoContainer.displayName = 'LogoContainer'
@@ -740,6 +769,7 @@ export function AppHeader({
   onLogoClick,
   disablePortal = false,
   leftContent,
+  sidebarCollapsed = false,
 }: AppHeaderProps) {
   return (
     <header
@@ -760,6 +790,7 @@ export function AppHeader({
           product={product}
           colorMode={colorMode}
           onClick={onLogoClick}
+          sidebarCollapsed={sidebarCollapsed}
         />
       </div>
 

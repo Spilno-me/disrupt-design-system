@@ -70,6 +70,8 @@ interface FormErrors {
   companyName?: string
   contactName?: string
   contactEmail?: string
+  contactPhone?: string
+  notes?: string
 }
 
 // =============================================================================
@@ -82,7 +84,7 @@ const initialFormData: CreateLeadFormData = {
   contactEmail: '',
   contactPhone: '',
   priority: 'medium',
-  source: 'website',
+  source: 'other',
   assignedPartnerId: undefined,
   notes: '',
 }
@@ -123,7 +125,7 @@ export function CreateLeadDialog({
   open,
   onOpenChange,
   onSubmit,
-  partners = [],
+  partners: _partners = [],
   isSubmitting = false,
   className,
 }: CreateLeadDialogProps) {
@@ -149,18 +151,49 @@ export function CreateLeadDialog({
   const validateForm = useCallback((): FormErrors => {
     const newErrors: FormErrors = {}
 
-    if (!formData.companyName.trim()) {
-      newErrors.companyName = 'Company name is required'
+    // Company name: 2-150 chars
+    const companyTrimmed = formData.companyName.trim()
+    if (!companyTrimmed) {
+      newErrors.companyName = 'Company name is required.'
+    } else if (companyTrimmed.length < 2) {
+      newErrors.companyName = 'Company name must be at least 2 characters.'
+    } else if (companyTrimmed.length > 150) {
+      newErrors.companyName = 'Company name must be 150 characters or less.'
     }
 
-    if (!formData.contactName.trim()) {
-      newErrors.contactName = 'Contact name is required'
+    // Contact name: must have 2+ words (first + last)
+    const nameTrimmed = formData.contactName.trim()
+    if (!nameTrimmed) {
+      newErrors.contactName = 'Contact name is required.'
+    } else {
+      const words = nameTrimmed.split(/\s+/).filter(w => w.length > 0)
+      if (words.length < 2) {
+        newErrors.contactName = 'Enter first and last name (e.g., John Smith).'
+      }
     }
 
-    if (!formData.contactEmail.trim()) {
-      newErrors.contactEmail = 'Email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contactEmail)) {
-      newErrors.contactEmail = 'Please enter a valid email address'
+    // Email: required, valid format, max 254
+    const emailTrimmed = formData.contactEmail.trim()
+    if (!emailTrimmed) {
+      newErrors.contactEmail = 'Email is required.'
+    } else if (emailTrimmed.length > 254) {
+      newErrors.contactEmail = 'Email must be 254 characters or less.'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
+      newErrors.contactEmail = 'Enter a valid email address.'
+    }
+
+    // Phone: optional, but if provided must have min 7 digits
+    const phoneTrimmed = formData.contactPhone.trim()
+    if (phoneTrimmed) {
+      const digitCount = (phoneTrimmed.match(/\d/g) || []).length
+      if (digitCount < 7) {
+        newErrors.contactPhone = 'Enter a valid phone number.'
+      }
+    }
+
+    // Notes: max 2000 chars
+    if (formData.notes.length > 2000) {
+      newErrors.notes = 'Notes must be 2000 characters or less.'
     }
 
     return newErrors
@@ -301,7 +334,14 @@ export function CreateLeadDialog({
                 value={formData.contactPhone}
                 onChange={handleChange}
                 placeholder="Enter phone number"
+                aria-invalid={!!errors.contactPhone}
+                aria-describedby={errors.contactPhone ? 'contactPhone-error' : undefined}
               />
+              {errors.contactPhone && (
+                <p id="contactPhone-error" className="text-sm text-error">
+                  {errors.contactPhone}
+                </p>
+              )}
             </div>
 
             {/* Priority and Source Row */}
@@ -350,40 +390,27 @@ export function CreateLeadDialog({
             </div>
           </div>
 
-          {/* Partner Assignment Section */}
-          <div className="flex flex-col gap-4">
-            <h3 className="text-sm font-semibold text-primary">
-              Partner Assignment <span className="text-muted font-normal">(Optional)</span>
-            </h3>
-
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="assignedPartnerId" className="text-primary">
-                Assign to Partner
-              </Label>
-              <Select
-                value={formData.assignedPartnerId ?? 'none'}
-                onValueChange={(value) => handleSelectChange('assignedPartnerId', value)}
-              >
-                <SelectTrigger id="assignedPartnerId" className="w-full">
-                  <SelectValue placeholder="Select partner" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">Assign later</SelectItem>
-                  {partners.map((partner) => (
-                    <SelectItem key={partner.id} value={partner.id}>
-                      {partner.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          {/* Partner Assignment Section - HIDDEN PER MVP SPEC (Section 10)
+           * "Assign to Partner: Hidden or disabled in MVP.
+           * Field is reserved for future assignment logic.
+           * Must not affect lead creation in MVP."
+           *
+           * TODO: Re-enable when assignment workflow is implemented post-MVP
+           */}
 
           {/* Notes Section */}
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="notes" className="text-primary">
-              Notes
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="notes" className="text-primary">
+                Notes
+              </Label>
+              <span className={cn(
+                "text-xs",
+                formData.notes.length > 2000 ? "text-error" : "text-muted"
+              )}>
+                {formData.notes.length}/2000
+              </span>
+            </div>
             <Textarea
               id="notes"
               name="notes"
@@ -391,7 +418,14 @@ export function CreateLeadDialog({
               onChange={handleChange}
               placeholder="Add any additional notes about this lead..."
               rows={3}
+              aria-invalid={!!errors.notes}
+              aria-describedby={errors.notes ? 'notes-error' : undefined}
             />
+            {errors.notes && (
+              <p id="notes-error" className="text-sm text-error">
+                {errors.notes}
+              </p>
+            )}
           </div>
 
           {/* Footer */}

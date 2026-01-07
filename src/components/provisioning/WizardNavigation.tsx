@@ -34,6 +34,19 @@ export interface WizardNavigationProps {
   rightContent?: React.ReactNode
 }
 
+/**
+ * WizardNavigation - Navigation controls for wizard steps
+ *
+ * @component MOLECULE
+ * @testId Auto-generated: `wizard-nav-{element}`
+ *
+ * Test IDs:
+ * - `wizard-nav` - Root container
+ * - `wizard-nav-cancel` - Cancel button
+ * - `wizard-nav-back` - Back button
+ * - `wizard-nav-next` - Next/Continue button
+ * - `wizard-nav-submit` - Submit button (last step)
+ */
 export function WizardNavigation({
   backLabel = 'Back',
   nextLabel = 'Continue',
@@ -82,35 +95,42 @@ export function WizardNavigation({
     }
   }
 
-  const handleBack = () => {
-    if (isFirstStep && onCancel) {
-      onCancel()
-    } else {
-      goToPrevious()
-    }
-  }
-
   return (
     <div
       className={cn(
         'flex items-center justify-between pt-6 border-t border-default',
         className
       )}
+      data-testid="wizard-nav"
     >
-      {/* Left side - Back/Cancel button */}
-      <div>
+      {/* Left side - Cancel and/or Back buttons */}
+      <div className="flex items-center gap-2">
         {leftContent ?? (
           <>
-            {(isFirstStep && showCancelOnFirst) || !isFirstStep ? (
+            {/* Cancel button - always visible when onCancel provided */}
+            {onCancel && (showCancelOnFirst || !isFirstStep) && (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={onCancel}
+                disabled={isSubmitting}
+                data-testid="wizard-nav-cancel"
+              >
+                Cancel
+              </Button>
+            )}
+            {/* Back button - visible on steps 2+ */}
+            {!isFirstStep && (
               <Button
                 type="button"
                 variant="outline"
-                onClick={handleBack}
+                onClick={goToPrevious}
                 disabled={isSubmitting}
+                data-testid="wizard-nav-back"
               >
-                {isFirstStep ? 'Cancel' : backLabel}
+                {backLabel}
               </Button>
-            ) : null}
+            )}
           </>
         )}
       </div>
@@ -123,6 +143,7 @@ export function WizardNavigation({
             variant="accent"
             onClick={isLastStep ? handleSubmit : handleNext}
             disabled={disabled || isLoading || isSubmitting}
+            data-testid={isLastStep ? 'wizard-nav-submit' : 'wizard-nav-next'}
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">

@@ -16,6 +16,18 @@ import {
   Workflow,
   BookOpen,
   Gauge,
+  Heart,
+  Zap,
+  Minimize2,
+  Hand,
+  Activity,
+  HelpCircle,
+  Gift,
+  UserCheck,
+  RefreshCw,
+  Mountain,
+  MessageCircle,
+  Flag,
 } from 'lucide-react';
 import {
   BrandHero,
@@ -38,25 +50,25 @@ import {
 
 {/* Hero Header */}
 <BrandHero
-  title="Design Philosophy"
-  description="DDS is guided by two complementary principles: Wu Wei for engineering (work with the grain) and MAYA for UX (innovate within acceptance)."
+  title="Agent Philosophy Triad"
+  description="Three principles that guide AI AGENTS working on DDS: Wu Wei (work with the codebase), MAYA (build UI for humans), and QoE (engage curiously, don't force)."
   gradient="purple"
   decorativeIcon={<Compass size={180} color={PRIMITIVES.white} strokeWidth={1} />}
 />
 
 <InfoBox variant="tip">
-  <strong>Philosophy-Driven Design.</strong> These aren't just guidelines—they're the foundation
-  of every DDS decision. Understanding them helps you build components that feel native to the system.
+  <strong>For Agents, Not Humans.</strong> These philosophies guide AI agent behavior when working on the DDS codebase.
+  Agents that follow these principles produce higher quality, more maintainable code.
 </InfoBox>
 
 ---
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Wu Wei (無為) - Effortless Action</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Wu Wei (無為) - Agent Engineering Philosophy</h2>
 
 <SectionHeader
   icon={<Feather size={20} />}
-  title="Engineering Philosophy"
-  description="Work with the grain, not against it."
+  title="For Agents: Work WITH the Codebase"
+  description="Agents that work with the codebase produce better results than agents that fight it."
 />
 
 <div style={{
@@ -74,13 +86,13 @@ import {
     color: DUSK_REEF[700],
     lineHeight: 1.6,
   }}>
-    "The sage does not act, yet nothing is left undone."
+    "Agents that work WITH the codebase produce better results than agents that fight it."
     <footer style={{
       marginTop: SPACING.px.tight,
       fontStyle: 'normal',
       fontSize: TYPOGRAPHY.fontSize.sm,
       color: DUSK_REEF[500],
-    }}>— Tao Te Ching</footer>
+    }}>— DDS Agent Philosophy</footer>
   </blockquote>
 </div>
 
@@ -164,12 +176,12 @@ import {
 
 ---
 
-<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>MAYA - Most Advanced Yet Acceptable</h2>
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>MAYA - Agent UX Philosophy</h2>
 
 <SectionHeader
   icon={<Target size={20} />}
-  title="UX Philosophy"
-  description="Innovate in visuals and behaviors—preserve mental models and task flow."
+  title="For Agents: Build UI for HUMANS"
+  description="When agents build UI, keep it familiar to users. Innovate visually, keep interactions stable."
 />
 
 <div style={{
@@ -187,13 +199,13 @@ import {
     color: DEEP_CURRENT[700],
     lineHeight: 1.6,
   }}>
-    "The adult public's taste is not necessarily ready to accept the logical solutions to their requirements if the solution implies too vast a departure from what they have been conditioned into accepting as the norm."
+    "Build for humans: modern visuals, stable interactions. Users should find UI fresh but immediately understandable."
     <footer style={{
       marginTop: SPACING.px.tight,
       fontStyle: 'normal',
       fontSize: TYPOGRAPHY.fontSize.sm,
       color: DEEP_CURRENT[500],
-    }}>— Raymond Loewy (Industrial Designer)</footer>
+    }}>— DDS Agent Philosophy (inspired by Raymond Loewy)</footer>
   </blockquote>
 </div>
 
@@ -327,17 +339,282 @@ import {
 
 ---
 
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quality of Engagement (QoE) - Agent Process Philosophy</h2>
+
+<SectionHeader
+  icon={<Heart size={20} />}
+  title="For Agents: Engage Curiously, Don't Force"
+  description="Force creates resistance. Curiosity creates flow. Agents work better when engaged, not forcing."
+/>
+
+<div style={{
+  background: `linear-gradient(135deg, #FDF2F8 0%, ${PRIMITIVES.white} 100%)`,
+  borderRadius: RADIUS.lg,
+  border: `1px solid #FBCFE8`,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <blockquote style={{
+    margin: 0,
+    padding: 0,
+    fontStyle: 'italic',
+    fontSize: TYPOGRAPHY.fontSize.lg,
+    color: '#9D174D',
+    lineHeight: 1.6,
+  }}>
+    "Quality emerges from relationship with the codebase. Agents that engage curiously produce better results than agents that force."
+    <footer style={{
+      marginTop: SPACING.px.tight,
+      fontStyle: 'normal',
+      fontSize: TYPOGRAPHY.fontSize.sm,
+      color: '#BE185D',
+    }}>— DDS Agent Philosophy</footer>
+  </blockquote>
+</div>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Step Back When Stuck">
+    Try a different approach instead of brute-force hammering. Exploration beats forcing.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Brute-Force Hammer">
+    Forcing the same approach creates resistance. Step back and investigate why it's not working.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Break Tasks Down">
+    Start with the smallest tractable piece. Make progress on that first.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Plan Everything at Once">
+    Huge scope creates friction. If context is growing unexpectedly, scope is too large.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="First Draft Can Be Rough">
+    Get it working first, refactor after. Functional before polished.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Over-Optimize Prematurely">
+    Polishing before functional wastes cycles. Make it work, then make it clean.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Investigate Friction">
+    When pattern doesn't fit, ask WHY. Friction contains information.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Ignore Warning Signs">
+    Forcing through friction produces brittle code. The friction is telling you something.
+  </GuidelineCard>
+</div>
+
+<h3 style={{
+  fontSize: TYPOGRAPHY.fontSize.lg,
+  fontWeight: TYPOGRAPHY.fontWeight.semibold,
+  marginBottom: SPACING.px.base,
+  color: ABYSS[900],
+}}>The 13 Principles</h3>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { icon: <Zap size={18} />, num: 1, title: "Decrease Effort", desc: "Attention > brute force" },
+    { icon: <Activity size={18} />, num: 2, title: "Follow Friction", desc: "Friction = information" },
+    { icon: <Minimize2 size={18} />, num: 3, title: "Make It Smaller", desc: "Shrink until tractable" },
+    { icon: <Flag size={18} />, num: 4, title: "Stop at Peak", desc: "End at coherent points" },
+    { icon: <Hand size={18} />, num: 5, title: "Allow Ugliness", desc: "Working > perfect" },
+    { icon: <Activity size={18} />, num: 6, title: "Output as Signal", desc: "Quality = engagement" },
+    { icon: <HelpCircle size={18} />, num: 7, title: "Clear Objective", desc: "Defined goal > vague scope" },
+    { icon: <Gift size={18} />, num: 8, title: "The Offer", desc: "Add value, don't extract" },
+    { icon: <UserCheck size={18} />, num: 9, title: "Investigate Friction", desc: "Include, don't fight" },
+    { icon: <RefreshCw size={18} />, num: 10, title: "Change Approach", desc: "Switch methods entirely" },
+    { icon: <Mountain size={18} />, num: 11, title: "Explore Constraints", desc: "Beyond initial limits" },
+    { icon: <MessageCircle size={18} />, num: 12, title: "Surface Implicit", desc: "Explicit requirements" },
+    { icon: <CheckCircle size={18} />, num: 13, title: "Let It End", desc: "Allow completion" },
+  ].map((item, i) => (
+    <div key={i} style={{
+      background: PRIMITIVES.softLinen,
+      borderRadius: RADIUS.md,
+      padding: SPACING.px.tight,
+      border: `1px solid ${SLATE[200]}`,
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        marginBottom: '4px',
+      }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          borderRadius: RADIUS.xs,
+          background: '#FCE7F3',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#BE185D',
+          fontSize: TYPOGRAPHY.fontSize.xs,
+          fontWeight: TYPOGRAPHY.fontWeight.bold,
+        }}>
+          {item.num}
+        </div>
+        <span style={{ color: '#9D174D' }}>{item.icon}</span>
+      </div>
+      <div style={{ fontWeight: TYPOGRAPHY.fontWeight.semibold, fontSize: TYPOGRAPHY.fontSize.xs, color: ABYSS[900] }}>
+        {item.title}
+      </div>
+      <div style={{ fontSize: '10px', color: SLATE[500] }}>
+        {item.desc}
+      </div>
+    </div>
+  ))}
+</div>
+
+<h3 style={{
+  fontSize: TYPOGRAPHY.fontSize.lg,
+  fontWeight: TYPOGRAPHY.fontWeight.semibold,
+  marginBottom: SPACING.px.base,
+  color: ABYSS[900],
+}}>QoE Checklists</h3>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.cardGap,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      fontSize: TYPOGRAPHY.fontSize.sm,
+      color: ABYSS[900],
+      marginBottom: SPACING.px.tight,
+    }}>Before Work</div>
+    {[
+      "Clear objective here?",
+      "Scope small enough?",
+      "Building on patterns?",
+      "Friction signals to investigate?",
+    ].map((item, i) => (
+      <div key={i} style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        fontSize: TYPOGRAPHY.fontSize.xs,
+        color: ABYSS[600],
+        padding: '3px 0',
+      }}>
+        <div style={{
+          width: '14px',
+          height: '14px',
+          borderRadius: '3px',
+          border: `1.5px solid #BE185D`,
+          flexShrink: 0,
+        }} />
+        {item}
+      </div>
+    ))}
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.cardGap,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      fontSize: TYPOGRAPHY.fontSize.sm,
+      color: ABYSS[900],
+      marginBottom: SPACING.px.tight,
+    }}>During Work</div>
+    {[
+      "Output quality degrading?",
+      "Forcing or flowing?",
+      "Context growing unexpectedly?",
+    ].map((item, i) => (
+      <div key={i} style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        fontSize: TYPOGRAPHY.fontSize.xs,
+        color: ABYSS[600],
+        padding: '3px 0',
+      }}>
+        <div style={{
+          width: '14px',
+          height: '14px',
+          borderRadius: '3px',
+          border: `1.5px solid #BE185D`,
+          flexShrink: 0,
+        }} />
+        {item}
+      </div>
+    ))}
+  </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.cardGap,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <div style={{
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      fontSize: TYPOGRAPHY.fontSize.sm,
+      color: ABYSS[900],
+      marginBottom: SPACING.px.tight,
+    }}>Ending Work</div>
+    {[
+      "Stop at a good point?",
+      "Task actually complete?",
+    ].map((item, i) => (
+      <div key={i} style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        fontSize: TYPOGRAPHY.fontSize.xs,
+        color: ABYSS[600],
+        padding: '3px 0',
+      }}>
+        <div style={{
+          width: '14px',
+          height: '14px',
+          borderRadius: '3px',
+          border: `1.5px solid #BE185D`,
+          flexShrink: 0,
+        }} />
+        {item}
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
 <h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>How They Work Together</h2>
 
 <SectionHeader
   icon={<Gauge size={20} />}
   title="Complementary Principles"
-  description="Wu Wei for HOW you build. MAYA for WHAT you build."
+  description="Wu Wei for HOW you build. MAYA for WHAT you build. QoE for HOW you engage."
 />
 
 <div style={{
   display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
+  gridTemplateColumns: 'repeat(3, 1fr)',
   gap: SPACING.px.comfortable,
   marginBottom: SPACING.px.section,
 }}>
@@ -402,11 +679,43 @@ import {
       <li>User experience</li>
     </ul>
   </div>
+
+  <div style={{
+    background: `linear-gradient(180deg, #FDF2F8 0%, ${PRIMITIVES.white} 100%)`,
+    borderRadius: RADIUS.lg,
+    border: `1px solid #FBCFE8`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+      marginBottom: SPACING.px.base,
+    }}>
+      <Heart size={24} color="#BE185D" />
+      <span style={{
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+        fontSize: TYPOGRAPHY.fontSize.lg,
+        color: '#9D174D',
+      }}>QoE</span>
+    </div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.sm, color: ABYSS[700], marginBottom: SPACING.px.base }}>
+      <strong>Process: HOW you engage</strong>
+    </div>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: ABYSS[600], fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>Attention quality</li>
+      <li>Scope management</li>
+      <li>Resistance awareness</li>
+      <li>Energy preservation</li>
+      <li>Completion timing</li>
+    </ul>
+  </div>
 </div>
 
 <InfoBox variant="info">
-  <strong>In Practice:</strong> When building a new feature, Wu Wei asks "Am I over-engineering this?"
-  while MAYA asks "Will users immediately understand this?" Both questions should have satisfying answers.
+  <strong>In Practice:</strong> When building a new feature, Wu Wei asks "Am I over-engineering this?",
+  MAYA asks "Will users immediately understand this?", and QoE asks "Is my engagement alive or am I forcing?"
+  All three questions should have satisfying answers.
 </InfoBox>
 
 ---
@@ -415,7 +724,7 @@ import {
 
 <div style={{
   display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
+  gridTemplateColumns: 'repeat(3, 1fr)',
   gap: SPACING.px.comfortable,
   marginBottom: SPACING.px.section,
 }}>
@@ -439,7 +748,7 @@ import {
     </h4>
     <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: ABYSS[600], fontSize: TYPOGRAPHY.fontSize.sm }}>
       <li>Code feels natural, not forced</li>
-      <li>Junior devs understand it quickly</li>
+      <li>Clear enough for any agent to modify</li>
       <li>No fighting with the architecture</li>
       <li>Existing patterns were reused</li>
       <li>Complexity was reduced, not added</li>
@@ -472,10 +781,38 @@ import {
       <li>Modern visuals, stable behaviors</li>
     </ul>
   </div>
+
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${SLATE[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <h4 style={{
+      margin: `0 0 ${SPACING.px.base} 0`,
+      fontSize: TYPOGRAPHY.fontSize.md,
+      fontWeight: TYPOGRAPHY.fontWeight.semibold,
+      color: ABYSS[900],
+      display: 'flex',
+      alignItems: 'center',
+      gap: SPACING.px.tight,
+    }}>
+      <CheckCircle size={20} color="#22C55E" />
+      QoE Success Signals
+    </h4>
+    <ul style={{ margin: 0, paddingLeft: SPACING.px.comfortable, color: ABYSS[600], fontSize: TYPOGRAPHY.fontSize.sm }}>
+      <li>Task continuation feels natural</li>
+      <li>Scope was appropriately bounded</li>
+      <li>Exploration over brute-force</li>
+      <li>Stopped at a coherent point</li>
+      <li>Friction signals were investigated</li>
+    </ul>
+  </div>
 </div>
 
 <InfoBox variant="warning">
-  <strong>Remember:</strong> If users say "this is confusing" → MAYA violation.
+  <strong>Agent Self-Check:</strong> If users find UI confusing → MAYA violation.
   If implementation feels like a fight → Wu Wei violation.
-  Both philosophies serve the same goal: effortless, intuitive experiences.
+  If scope keeps growing or you're hammering the same approach → QoE violation.
+  All three philosophies guide agents toward the same goal: quality code that serves users.
 </InfoBox>

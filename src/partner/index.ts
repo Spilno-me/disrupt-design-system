@@ -104,15 +104,36 @@ export type {
 // PRICING CALCULATOR - Partner pricing tools
 // =============================================================================
 
-export { PricingCalculator } from '../components/partners/PricingCalculator'
+export {
+  PricingCalculator,
+  ProcessSelector,
+  UserLicenseSelector,
+  CompanyInfoForm,
+  PricingSummary,
+  CommissionPreview,
+} from '../components/partners/PricingCalculator'
 export type {
   PricingCalculatorProps,
-  PricingInput,
-  PricingBreakdown,
-  CompanySize,
-  BillingCycle,
-  PricingTier,
+  ProcessTier,
+  ProcessSelection,
+  UserLicenseTier,
+  UserLicenseSelection,
+  PricingConfig,
+  PricingCalculationResult,
+  CommissionPreviewResult,
+  PartnerCommissionStatus,
+  CalculateRequest,
 } from '../components/partners/PricingCalculator'
+
+// =============================================================================
+// TENANT PROVISIONING - Wizard for tenant onboarding
+// =============================================================================
+
+export { TenantProvisioningWizard } from '../components/provisioning/TenantProvisioningWizard'
+export type {
+  TenantProvisioningWizardProps,
+  TenantFormData,
+} from '../components/provisioning/TenantProvisioningWizard'
 
 // =============================================================================
 // INVOICES - Invoice management

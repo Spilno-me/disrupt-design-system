@@ -20,6 +20,10 @@ export interface StatsCardProps {
   trendDirection?: TrendDirection
   /** Optional description text below value */
   description?: string
+  /** Click handler for filtering (makes card interactive) */
+  onClick?: () => void
+  /** Whether this widget is currently active/selected */
+  active?: boolean
   /** Additional className */
   className?: string
 }
@@ -50,31 +54,50 @@ export function StatsCard({
   trend,
   trendDirection = 'neutral',
   description,
+  onClick,
+  active,
   className,
 }: StatsCardProps) {
+  const isInteractive = !!onClick
+
   return (
     <AppCard
       variant="default"
       shadow="md"
-      className={cn('gap-1 px-5 py-4', className)}
+      className={cn(
+        'gap-1 px-5 py-4',
+        isInteractive && 'cursor-pointer transition-all',
+        isInteractive && 'hover:border-accent hover:shadow-lg',
+        isInteractive && 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+        active && 'ring-2 ring-accent border-accent',
+        className
+      )}
+      onClick={onClick}
+      role={isInteractive ? 'button' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      aria-pressed={isInteractive ? active : undefined}
+      onKeyDown={
+        isInteractive
+          ? (e: React.KeyboardEvent) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                onClick?.()
+              }
+            }
+          : undefined
+      }
     >
       {/* Header row with title and trend */}
       <div className="flex items-center justify-between gap-2">
         <span className="text-sm text-muted font-medium">{title}</span>
-        {trend && (
-          <TrendBadge trend={trend} direction={trendDirection} />
-        )}
+        {trend && <TrendBadge trend={trend} direction={trendDirection} />}
       </div>
 
       {/* Main value */}
-      <div className="text-2xl font-semibold text-primary">
-        {value}
-      </div>
+      <div className="text-2xl font-semibold text-primary">{value}</div>
 
       {/* Optional description */}
-      {description && (
-        <p className="text-xs text-muted">{description}</p>
-      )}
+      {description && <p className="text-xs text-muted">{description}</p>}
     </AppCard>
   )
 }

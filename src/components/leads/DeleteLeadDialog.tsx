@@ -108,12 +108,11 @@ export function DeleteLeadDialog({
             <span className="text-muted">Status</span>
             <span className={`px-2 py-0.5 text-xs font-semibold rounded capitalize ${
               lead.status === 'new' ? 'bg-info-light text-info' :
-              lead.status === 'contacted' ? 'bg-warning-light text-warning' :
-              lead.status === 'qualified' ? 'bg-accent-bg text-accent' :
+              lead.status === 'in_progress' ? 'bg-warning-light text-warning' :
               lead.status === 'converted' ? 'bg-success-light text-success' :
               'bg-error-light text-error'
             }`}>
-              {lead.status}
+              {lead.status === 'in_progress' ? 'In Progress' : lead.status}
             </span>
           </div>
           {lead.value && lead.value > 0 && (

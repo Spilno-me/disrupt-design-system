@@ -9,7 +9,7 @@ import {
   Building2,
 } from "lucide-react"
 import { DataTable, ColumnDef, SortDirection, RowPriority } from "../ui/DataTable"
-import { DataTableStatusDot, DataTableSeverity, LEAD_DOT_STATUS_MAP, LEAD_PRIORITY_SEVERITY_MAP, EmailLink, ScoreBadge } from "../ui/table"
+import { DataTableStatusDot, DataTableSeverity, LEAD_DOT_STATUS_MAP, LEAD_PRIORITY_SEVERITY_MAP, EmailLink } from "../ui/table"
 import { ActionTile } from "../ui/ActionTile"
 import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip"
 import type { Lead, LeadAction, LeadPriority, LeadSource } from "./LeadCard"
@@ -41,6 +41,21 @@ export interface LeadsDataTableProps {
   loading?: boolean
   /** Additional className */
   className?: string
+  // Pagination props (forwarded to DataTable)
+  /** Enable embedded pagination in table footer */
+  pagination?: boolean
+  /** Current page number (1-indexed) */
+  currentPage?: number
+  /** Total number of items (for pagination display) */
+  totalItems?: number
+  /** Number of items per page */
+  pageSize?: number
+  /** Callback when page changes */
+  onPageChange?: (page: number) => void
+  /** Callback when page size changes */
+  onPageSizeChange?: (size: number) => void
+  /** Available page size options */
+  pageSizeOptions?: number[]
 }
 
 
@@ -122,18 +137,6 @@ function SourceLabel({ source }: { source: LeadSource }) {
   )
 }
 
-/** Format currency */
-function formatCurrency(value: number): string {
-  if (value === 0) return "-"
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value)
-}
-
-
 // =============================================================================
 // LEADS DATA TABLE COMPONENT
 // =============================================================================
@@ -144,7 +147,7 @@ function formatCurrency(value: number): string {
  * Features:
  * - All standard DataTable features (sorting, selection, etc.)
  * - Lead-specific columns with proper formatting
- * - Priority, Score, and Status badges
+ * - Priority and Status badges
  * - Actions dropdown per row
  *
  * @example
@@ -170,6 +173,14 @@ export function LeadsDataTable({
   onSortChange,
   loading = false,
   className,
+  // Pagination props
+  pagination,
+  currentPage,
+  totalItems,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  pageSizeOptions,
 }: LeadsDataTableProps) {
   // Render lead actions using ActionTile pattern (≤3 actions = visible buttons)
   const renderLeadActions = React.useCallback((lead: Lead) => (
@@ -271,6 +282,14 @@ export function LeadsDataTable({
         minWidth: "130px",
       },
       {
+        id: "status",
+        header: "Status",
+        accessor: (row) => <DataTableStatusDot status={row.status} mapping={LEAD_DOT_STATUS_MAP} />,
+        sortable: true,
+        sortValue: (row) => row.status,
+        minWidth: "100px",
+      },
+      {
         id: "priority",
         header: "Priority",
         accessor: (row) => (
@@ -285,23 +304,6 @@ export function LeadsDataTable({
         minWidth: "100px",
       },
       {
-        id: "score",
-        header: "Score",
-        accessor: (row) => <ScoreBadge score={row.score} />,
-        sortable: true,
-        sortValue: (row) => row.score,
-        minWidth: "70px",
-        align: "center",
-      },
-      {
-        id: "status",
-        header: "Status",
-        accessor: (row) => <DataTableStatusDot status={row.status} mapping={LEAD_DOT_STATUS_MAP} />,
-        sortable: true,
-        sortValue: (row) => row.status,
-        minWidth: "100px",
-      },
-      {
         id: "source",
         header: "Source",
         accessor: (row) => <SourceLabel source={row.source} />,
@@ -310,17 +312,24 @@ export function LeadsDataTable({
         minWidth: "100px",
       },
       {
-        id: "value",
-        header: "Deal Value",
+        id: "createdAt",
+        header: "Created",
         accessor: (row) => (
-          <span className="font-medium text-primary">
-            {formatCurrency(row.value ?? 0)}
-          </span>
+          <span className="text-primary text-sm">{row.createdAt || "-"}</span>
         ),
         sortable: true,
-        sortValue: (row) => row.value ?? 0,
+        sortValue: (row) => row.createdAt || "",
         minWidth: "100px",
-        align: "right",
+      },
+      {
+        id: "updatedAt",
+        header: "Updated",
+        accessor: (row) => (
+          <span className="text-primary text-sm">{row.updatedAt || "-"}</span>
+        ),
+        sortable: true,
+        sortValue: (row) => row.updatedAt || "",
+        minWidth: "100px",
       },
       {
         id: "actions",
@@ -368,6 +377,14 @@ export function LeadsDataTable({
       bordered
       className={className}
       getRowPriority={(row) => mapLeadPriorityToRowPriority(row.priority)}
+      // Pagination props (forwarded)
+      pagination={pagination}
+      currentPage={currentPage}
+      totalItems={totalItems}
+      pageSize={pageSize}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
+      pageSizeOptions={pageSizeOptions}
     />
   )
 }

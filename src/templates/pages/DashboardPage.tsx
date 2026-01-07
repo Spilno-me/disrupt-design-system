@@ -34,6 +34,8 @@ export interface KPICardData {
   trendDirection?: 'up' | 'down' | 'neutral'
   icon?: React.ReactNode
   onClick?: () => void
+  /** Static descriptive text below the value (e.g., "47 active tenants") */
+  subtitle?: string
 }
 
 export interface ActivityItemData {
@@ -123,6 +125,9 @@ function KPICard({ kpi }: { kpi: KPICardData }) {
             <div>
               <p className="text-sm text-secondary">{kpi.label}</p>
               <p className="text-2xl font-bold text-primary">{kpi.value}</p>
+              {kpi.subtitle && (
+                <p className="text-xs text-muted mt-1">{kpi.subtitle}</p>
+              )}
             </div>
           </div>
           {kpi.trend && (

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useState, useMemo, useCallback } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, X, Filter } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { StatsCard } from './StatsCard'
 import { LeadCard, Lead, LeadAction } from './LeadCard'
@@ -25,8 +25,7 @@ const LEADS_FILTER_GROUPS: FilterGroup[] = [
     label: 'Status',
     options: [
       { id: 'new', label: 'New' },
-      { id: 'contacted', label: 'Contacted' },
-      { id: 'qualified', label: 'Qualified' },
+      { id: 'in_progress', label: 'In Progress' },
       { id: 'converted', label: 'Converted' },
       { id: 'lost', label: 'Lost' },
     ],
@@ -88,6 +87,8 @@ export interface LeadsPageProps {
   onBulkAction?: (action: BulkAction, leadIds: string[], data?: Record<string, unknown>) => void | Promise<void>
   /** Callback for export */
   onExport?: (options: ExportOptions) => void | Promise<void>
+  /** Initial filters to apply on mount (e.g., from dashboard KPI navigation) */
+  initialFilters?: FilterState
 }
 
 // =============================================================================
@@ -130,6 +131,7 @@ export function LeadsPage({
   className,
   onBulkAction,
   onExport,
+  initialFilters,
 }: LeadsPageProps) {
   // Create lead dialog state
   const [createDialogOpen, setCreateDialogOpen] = useState(false)
@@ -137,11 +139,13 @@ export function LeadsPage({
 
   // Filter state
   const [searchValue, setSearchValue] = useState('')
-  const [filters, setFilters] = useState<FilterState>({
-    status: [],
-    priority: [],
-    source: [],
-  })
+  const [filters, setFilters] = useState<FilterState>(
+    initialFilters ?? {
+      status: [],
+      priority: [],
+      source: [],
+    }
+  )
 
   // Selection state
   const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set())
@@ -154,17 +158,19 @@ export function LeadsPage({
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(defaultPageSize)
 
+  // Widget filter state - tracks which KPI widget is active
+  type WidgetFilter = 'all' | 'new' | 'in_progress' | 'converted' | 'high_priority' | null
+  const [activeWidget, setActiveWidget] = useState<WidgetFilter>(null)
+
   // Filter leads based on current filters
   const filteredLeads = useMemo(() => {
     return leads.filter((lead) => {
-      // Search filter
+      // Search filter - MVP: only name and company
       if (searchValue) {
         const searchLower = searchValue.toLowerCase()
         const matchesSearch =
           lead.name.toLowerCase().includes(searchLower) ||
-          lead.company.toLowerCase().includes(searchLower) ||
-          lead.email.toLowerCase().includes(searchLower) ||
-          (lead.description?.toLowerCase().includes(searchLower) ?? false)
+          lead.company.toLowerCase().includes(searchLower)
         if (!matchesSearch) return false
       }
 
@@ -215,8 +221,8 @@ export function LeadsPage({
           break
         }
         case 'score':
-          valueA = a.score
-          valueB = b.score
+          valueA = a.score ?? 0
+          valueB = b.score ?? 0
           break
         case 'status':
           valueA = a.status
@@ -259,7 +265,42 @@ export function LeadsPage({
   const handleFiltersChange = useCallback((newFilters: FilterState) => {
     setFilters(newFilters)
     setCurrentPage(1)
+    // Clear widget selection when manual filter changes
+    setActiveWidget(null)
   }, [])
+
+  // Handle KPI widget click - filters table by status or priority
+  const handleWidgetClick = useCallback((widget: WidgetFilter) => {
+    // Toggle off if already active
+    if (activeWidget === widget) {
+      setActiveWidget(null)
+      setFilters({ status: [], priority: [], source: [] })
+      setCurrentPage(1)
+      return
+    }
+
+    setActiveWidget(widget)
+    setCurrentPage(1)
+
+    switch (widget) {
+      case 'all':
+        // Show all - clear filters
+        setFilters({ status: [], priority: [], source: [] })
+        break
+      case 'new':
+        setFilters({ status: ['new'], priority: [], source: [] })
+        break
+      case 'in_progress':
+        setFilters({ status: ['in_progress'], priority: [], source: [] })
+        break
+      case 'converted':
+        setFilters({ status: ['converted'], priority: [], source: [] })
+        break
+      case 'high_priority':
+        setFilters({ status: [], priority: ['high'], source: [] })
+        break
+    }
+  }, [activeWidget])
 
   // Handle sort change
   const handleSortChange = useCallback((column: string, direction: SortDirection) => {
@@ -344,7 +385,7 @@ export function LeadsPage({
           </div>
         </div>
 
-      {/* Stats Cards Row */}
+      {/* Stats Cards Row - Clickable KPI widgets that filter the table */}
       {stats && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {stats.totalLeads && (
@@ -353,6 +394,8 @@ export function LeadsPage({
               value={stats.totalLeads.value}
               trend={stats.totalLeads.trend}
               trendDirection={stats.totalLeads.trendDirection}
+              onClick={() => handleWidgetClick('all')}
+              active={activeWidget === 'all'}
             />
           )}
           {stats.newLeads && (
@@ -361,6 +404,8 @@ export function LeadsPage({
               value={stats.newLeads.value}
               trend={stats.newLeads.trend}
               trendDirection={stats.newLeads.trendDirection}
+              onClick={() => handleWidgetClick('new')}
+              active={activeWidget === 'new'}
             />
           )}
           {stats.converted && (
@@ -369,6 +414,8 @@ export function LeadsPage({
               value={stats.converted.value}
               trend={stats.converted.trend}
               trendDirection={stats.converted.trendDirection}
+              onClick={() => handleWidgetClick('converted')}
+              active={activeWidget === 'converted'}
             />
           )}
           {stats.highPriority && (
@@ -377,6 +424,8 @@ export function LeadsPage({
               value={stats.highPriority.value}
               trend={stats.highPriority.trend}
               trendDirection={stats.highPriority.trendDirection}
+              onClick={() => handleWidgetClick('high_priority')}
+              active={activeWidget === 'high_priority'}
             />
           )}
           {stats.avgResponse && (
@@ -390,9 +439,36 @@ export function LeadsPage({
         </div>
       )}
 
+      {/* Active Filter Banner - Shows when widget filter is applied (per MVP spec) */}
+      {activeWidget && activeWidget !== 'all' && (
+        <div className="flex items-center justify-between gap-4 px-4 py-3 bg-accent-bg border border-accent rounded-lg">
+          <div className="flex items-center gap-2 text-sm text-accent">
+            <Filter className="w-4 h-4" />
+            <span className="font-medium">
+              Filter active:{' '}
+              {activeWidget === 'new' && 'New Leads'}
+              {activeWidget === 'in_progress' && 'Leads in Progress'}
+              {activeWidget === 'converted' && 'Converted'}
+              {activeWidget === 'high_priority' && 'High Priority'}
+            </span>
+            <span className="text-accent/70">
+              — Showing {filteredLeads.length} of {leads.length} leads
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => handleWidgetClick('all')}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-accent bg-surface border border-accent rounded-md hover:bg-accent-bg transition-colors"
+          >
+            <X className="w-3.5 h-3.5" />
+            Clear filter
+          </button>
+        </div>
+      )}
+
       {/* Search and Filter Bar */}
       <SearchFilter
-        placeholder="Search leads..."
+        placeholder="Search by name or company..."
         value={searchValue}
         onChange={(value) => {
           setSearchValue(value)
@@ -427,6 +503,14 @@ export function LeadsPage({
           sortDirection={sortDirection}
           onSortChange={handleSortChange}
           loading={loading}
+          // Pagination embedded in table footer
+          pagination
+          currentPage={currentPage}
+          totalItems={sortedLeads.length}
+          pageSize={pageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={handlePageSizeChange}
+          pageSizeOptions={[10, 25, 50]}
         />
       </div>
 
@@ -457,19 +541,21 @@ export function LeadsPage({
         )}
       </div>
 
-        {/* Pagination */}
-        {sortedLeads.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalItems={sortedLeads.length}
-            pageSize={pageSize}
-            onPageChange={setCurrentPage}
-            onPageSizeChange={handlePageSizeChange}
-            showPageSizeSelector
-            showResultsText
-            showFirstLastButtons
-          />
-        )}
+        {/* Mobile Pagination - only shown on small screens (desktop has embedded pagination in table) */}
+        <div className="md:hidden">
+          {sortedLeads.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalItems={sortedLeads.length}
+              pageSize={pageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={handlePageSizeChange}
+              showPageSizeSelector
+              showResultsText
+              showFirstLastButtons
+            />
+          )}
+        </div>
       </div>
 
       {/* Create Lead Dialog */}

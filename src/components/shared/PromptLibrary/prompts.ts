@@ -9,6 +9,132 @@ import type { Prompt } from './PromptLibrary'
 
 export const DDS_PROMPTS: Prompt[] = [
   // =============================================================================
+  // META (Entry Points & Routing)
+  // =============================================================================
+  {
+    id: 'prompt-router',
+    title: 'Auto-Select Prompt from Context',
+    description:
+      'Analyze conversation context and automatically select the most appropriate prompt from the library to execute.',
+    category: 'planning',
+    variables: [],
+    tags: ['meta', 'router', 'auto-select', 'intelligent', 'entry-point', 'universal'],
+    prompt: `Analyze the current conversation context and automatically select the most appropriate prompt from the DDS Prompt Library to execute.
+
+## STEP 1: CONTEXT ANALYSIS
+
+Extract signals from the conversation:
+
+### 1.1 Identify Keywords
+Scan for specific terms that map directly to prompts:
+
+| Keywords Present | Maps To Prompt |
+|------------------|----------------|
+| "plan", "design", "architect", "how should we" | \`plan-unified\` |
+| "quick plan", "simple plan", "tiny plan" | \`plan-bulletproof\` |
+| "iterate plan", "review plan agents" | \`plan-iterate\` |
+| "create component", "new component", "build a" | \`component-create\` |
+| "write story", "storybook", "create story" | \`story-full\` |
+| "fix color", "contrast", "hover state" | \`mcp-contrast-check\` |
+| "dark mode", "theme" | \`dark-mode-check\` |
+| "review", "check code", "audit" | \`review-dds-compliance\` |
+| "add token", "new color", "new token" | \`token-add-color\` |
+| "stabilize", "clean code", "refactor" | \`component-stabilize\` |
+| "pre-PR", "before merge" | \`review-pre-pr\` |
+| "create prompt", "new prompt" | \`prompt-create\` |
+| "ux", "usability", "user experience" | \`ux-apply-laws\` |
+| "accessibility", "a11y", "semantic html" | \`a11y-semantic-html\` |
+| "spacing", "padding", "margin", "gap" | \`styling-spacing\` |
+| "typography", "font", "text size" | \`styling-typography\` |
+| "depth", "elevation", "layers", "z-index" | \`styling-depth-layering\` |
+| "icons", "emoji", "replace emoji" | \`icons-replace-emoji\` |
+| "responsive", "mobile", "breakpoints" | \`responsive-mobile-first\` |
+| "package", "deliver", "export", "publish" | \`delivery-package\` |
+| "local dev", "start dev", "development server" | \`local-dev-start\` |
+| "end session", "finish dev", "stop dev" | \`local-dev-end\` |
+
+### 1.2 Identify Intent
+What is the user trying to DO?
+
+| Intent Type | Likely Prompts |
+|-------------|----------------|
+| **CREATE** something new | \`component-create\`, \`story-full\`, \`token-add-color\` |
+| **FIX** an issue | \`mcp-contrast-check\`, \`dark-mode-check\`, \`review-find-violations\` |
+| **REVIEW** existing code | \`review-dds-compliance\`, \`review-pre-pr\`, \`review-clean-code\` |
+| **PLAN** before building | \`plan-unified\`, \`plan-bulletproof\` |
+| **IMPROVE** existing code | \`component-stabilize\`, \`review-refactor-plan\` |
+| **STYLE** a component | \`styling-*\` prompts based on what's being styled |
+| **DOCUMENT** | \`docs-mdx-page\`, \`story-full\` |
+
+### 1.3 Identify Artifacts
+What files/components are being discussed?
+
+| Artifact Type | Relevant Prompts |
+|---------------|------------------|
+| .tsx component files | \`component-*\`, \`review-*\` |
+| .stories.tsx files | \`story-*\` |
+| Color/token files | \`token-*\`, \`mcp-contrast-check\` |
+| .md documentation | \`docs-*\` |
+| CSS/styling | \`styling-*\` |
+
+## STEP 2: MATCH TO BEST PROMPT
+
+Apply this priority order:
+
+1. **Exact keyword match** → Use that prompt directly
+2. **Multiple keyword matches** → Pick based on PRIMARY intent (create > fix > review > plan)
+3. **Intent-only match** → Use the most specific prompt for that intent
+4. **No clear match** → Default to \`plan-unified\` if exploratory, or ask user
+
+## STEP 3: OUTPUT SELECTION
+
+\`\`\`
+📋 PROMPT SELECTION
+─────────────────────────────────────
+Context signals detected:
+- Keywords: [list matched keywords]
+- Intent: [CREATE | FIX | REVIEW | PLAN | IMPROVE | STYLE | DOCUMENT]
+- Artifacts: [list mentioned files/components]
+
+Selected prompt: [prompt-id]
+Reason: [1-line justification]
+Confidence: [HIGH | MEDIUM | LOW]
+─────────────────────────────────────
+\`\`\`
+
+## STEP 4: EXECUTE SELECTED PROMPT
+
+After selection, IMMEDIATELY:
+
+1. **Read the skill file**: \`.claude/skills/[prompt-id].md\`
+2. **Run MCP tools FIRST** if the prompt includes a PRE-FLIGHT section
+3. **Follow the prompt's instructions** exactly
+4. **Deliver in the prompt's OUTPUT format**
+
+## FALLBACK RULES
+
+**If multiple prompts could apply:**
+- Task involves code changes → prefer \`component-*\` or \`review-*\` prompts
+- Task is exploratory/unclear → prefer \`plan-unified\`
+- Task mentions specific styling aspect → prefer that \`styling-*\` prompt
+- Still ambiguous → ask: "Should I use [prompt-a] or [prompt-b]?"
+
+**If NO prompt matches:**
+1. State: "No matching prompt found. Proceeding with general approach."
+2. Suggest: "Consider creating a prompt for this pattern via \`prompt-create\`"
+3. Apply DDS philosophy triad (Wu Wei, MAYA, QoE) directly
+
+## ANTI-PATTERNS
+
+FORBIDDEN:
+- Skipping Step 1 context analysis
+- Guessing without reading the skill file
+- Executing without showing the selection output
+- Combining multiple prompts in one pass (execute one at a time)
+- Saying "I'll use prompt X" without reading \`.claude/skills/[X].md\``,
+  },
+
+  // =============================================================================
   // STORIES
   // =============================================================================
   {
@@ -18,8 +144,15 @@ export const DDS_PROMPTS: Prompt[] = [
       'Generate a complete Storybook story with Default, AllStates, and contextual variants.',
     category: 'stories',
     variables: ['COMPONENT'],
-    tags: ['storybook', 'documentation', 'testing'],
+    tags: ['storybook', 'documentation', 'testing', 'qoe'],
     prompt: `Create a complete Storybook story for {COMPONENT}.
+
+## Quality of Engagement (QoE) Mindset
+Before writing, apply these principles:
+- **Make it smaller**: Start with Default story, then expand. Don't plan all variants at once.
+- **Find the living question**: "What makes this component interesting to showcase?"
+- **Allow ugliness**: First draft can be rough—refine after seeing it in Storybook.
+- **Follow irritation**: If a story feels forced, ask what the component actually needs.
 
 REQUIREMENTS:
 1. Read \`.claude/storybook-rules.md\` first
@@ -48,8 +181,12 @@ OUTPUT: Single .stories.tsx file ready to use.`,
       'Generate an AllStates story showcasing all variants, sizes, and states.',
     category: 'stories',
     variables: ['COMPONENT', 'LEVEL'],
-    tags: ['storybook', 'allstates'],
+    tags: ['storybook', 'allstates', 'qoe'],
     prompt: `Create an AllStates story for {COMPONENT}.
+
+## QoE Mindset
+- **Stop at the peak**: Don't exhaust every possible combination—show meaningful states.
+- **Body as barometer**: If listing states feels tedious, you're over-documenting.
 
 Read \`.claude/storybook-rules.md\` and use infrastructure from \`src/stories/_infrastructure\`.
 
@@ -72,8 +209,20 @@ Use withStoryContainer('{LEVEL}') decorator where LEVEL is atom, molecule, or or
       'Generate a new UI component following DDS patterns with CVA variants.',
     category: 'components',
     variables: ['COMPONENT'],
-    tags: ['component', 'ui', 'cva', 'mcp'],
+    tags: ['component', 'ui', 'cva', 'mcp', 'wu-wei', 'maya'],
     prompt: `Create a new UI component: {COMPONENT}
+
+## Philosophy Triad Mindset
+
+**Wu Wei (Engineering):**
+- Reuse existing patterns before inventing new ones
+- Simple implementation over clever abstraction
+- If fighting the codebase, step back and find the natural path
+
+**MAYA (UX):**
+- Users should immediately understand the component
+- Familiar interaction patterns over novel ones
+- Modern visuals, stable behaviors
 
 BEFORE WRITING (MANDATORY - DO NOT SKIP):
 
@@ -128,8 +277,20 @@ OUTPUT: Component file + story file + update to index.ts exports.`,
       'Full stabilization workflow: analyze, refactor to Uncle Bob A+ standard, track, and document.',
     category: 'components',
     variables: ['COMPONENT'],
-    tags: ['stabilization', 'clean-code', 'refactoring', 'production-ready', 'mcp'],
+    tags: ['stabilization', 'clean-code', 'refactoring', 'production-ready', 'mcp', 'wu-wei', 'qoe'],
     prompt: `Stabilize {COMPONENT} to Clean Code A+ standard.
+
+## Philosophy Triad Mindset
+
+**Wu Wei (Engineering):**
+- Work WITH the existing code structure, not against it
+- Simplify without over-engineering—delete > add
+- If refactoring feels like a fight, scope may be too large
+
+**QoE (Process):**
+- Make it smaller: stabilize one aspect at a time
+- Allow ugliness: functional first, polish after
+- Stop at coherent points: don't refactor everything at once
 
 ## PRE-FLIGHT: MCP Checks
 \`\`\`
@@ -324,6 +485,258 @@ Run \`npm run health\` to verify docs sync.`,
   // PLANNING
   // =============================================================================
   {
+    id: 'plan-unified',
+    title: 'Unified Planning Protocol (Super Prompt)',
+    description:
+      'Complete adaptive planning protocol combining Discovery → Scoping → Drafting → Review → Agent Validation. Adapts depth based on task size.',
+    category: 'planning',
+    variables: ['FEATURE_OR_TASK'],
+    tags: ['planning', 'architecture', 'review', 'qoe', 'unified', 'super-prompt'],
+    prompt: `Execute the unified planning protocol for: {FEATURE_OR_TASK}
+
+## PHASE 0: ORIENTATION (30 seconds)
+
+### Determine Planning Depth
+
+| Task Size | Phases to Use | Est. Time |
+|-----------|---------------|-----------|
+| **Tiny** (1 file, clear scope) | Skip to Phase 2 | 2 min |
+| **Small** (2-5 files, known pattern) | Phase 1 → 2 → 3 | 5 min |
+| **Medium** (cross-cutting, new pattern) | All phases, no agents | 15 min |
+| **Large** (architecture, unknown territory) | All phases + agent iteration | 30 min |
+
+**Your task:** {FEATURE_OR_TASK}
+**Estimated size:** [TINY | SMALL | MEDIUM | LARGE]
+
+---
+
+## PHASE 1: DISCOVERY (QoE: Find the Living Question)
+
+> "A 'living question' has energy and specificity. Dead questions are abstract."
+
+### 1.1 What Already Exists?
+\`\`\`
+mcp__dds__search_components({ query: "{FEATURE_OR_TASK}" })
+\`\`\`
+
+- Similar patterns in codebase?
+- Prior art we can build on?
+- What would we reinvent?
+
+### 1.2 Ask Offering Questions (not Extracting)
+
+| Extracting (avoid) | Offering (prefer) |
+|-------------------|-------------------|
+| "What do you want?" | "What problem are you solving?" |
+| "Which option?" | "What does success look like?" |
+| "Can I start?" | "What would make this delightful?" |
+
+**Questions to answer:**
+- What problem does this solve?
+- Who benefits and how?
+- What happens if we don't build this?
+- What assumptions are we making?
+
+### 1.3 Living Questions Found
+[List specific, energized questions - NOT vague "should we..." questions]
+
+**PHASE 1 OUTPUT:** Observations, living questions, NO solutions yet.
+
+---
+
+## PHASE 2: SCOPING (QoE: Make It Smaller)
+
+> "Shrink scope until it becomes interesting. Boredom often means scope is too large."
+
+### 2.1 Find the Kernel
+What's the ONE thing that makes {FEATURE_OR_TASK} valuable?
+Everything else is decoration.
+
+**Kernel:** [the essential thing]
+
+### 2.2 Vertical Slice
+| Original Scope | Minimal Valuable Version |
+|----------------|--------------------------|
+| [full feature] | [smallest useful increment] |
+
+### 2.3 Explicitly Remove
+For each requirement:
+- [ ] Essential for v1? → KEEP / FUTURE / UNNECESSARY
+- [ ] Can be hardcoded? → YES (defer) / NO (implement)
+
+**Removed from v1:**
+- [thing 1] → reason
+- [thing 2] → reason
+
+**PHASE 2 OUTPUT:** Smallest interesting scope, clear kernel.
+
+---
+
+## PHASE 3: INITIAL DRAFT
+
+### 3.1 Requirements & Acceptance Criteria
+- [ ] Critical requirement 1
+- [ ] Critical requirement 2
+
+### 3.2 Technical Approach
+[How will this work? Key decisions and rationale]
+
+### 3.3 Files to Modify
+| File | Action | Description |
+|------|--------|-------------|
+| path/to/file.tsx | CREATE/MODIFY | What changes |
+
+### 3.4 Dependencies & Integration Points
+- External: [packages, APIs]
+- Internal: [other components]
+- Integration: [how this connects]
+
+### 3.5 Risk Areas
+| Risk | Severity | Mitigation |
+|------|----------|------------|
+| Risk 1 | HIGH/MED/LOW | How to handle |
+
+**PHASE 3 OUTPUT:** First draft of complete plan.
+
+---
+
+## PHASE 4: SELF-REVIEW ROUNDS
+
+### Round A: Gaps & Assumptions
+- [ ] What assumptions am I making?
+- [ ] What information is missing?
+- [ ] Are there unstated requirements?
+- [ ] What dependencies haven't I identified?
+
+### Round B: Edge Cases & Failures
+- [ ] What could go wrong?
+- [ ] What edge cases exist?
+- [ ] What's the failure mode?
+- [ ] How do we handle errors?
+
+### Round C: Consistency
+- [ ] Does this match existing codebase patterns?
+- [ ] Am I reinventing something that exists?
+- [ ] Does this integrate cleanly with current architecture?
+- [ ] Will this cause breaking changes?
+
+### Continue rounds until:
+1. ✅ Zero critical blockers or risks
+2. ✅ All dependencies identified
+3. ✅ All integration points specified
+4. ✅ Clear success criteria defined
+5. ✅ Zero open questions about requirements
+
+**PHASE 4 OUTPUT:** Reviewed plan with all issues addressed.
+
+---
+
+## PHASE 5: AGENT VALIDATION (For LARGE tasks only)
+
+> Fresh eyes eliminate confirmation bias.
+
+### Critical Issue Criteria
+| Category | Critical Issue |
+|----------|---------------|
+| **Requirements** | Missing acceptance criteria, unstated assumptions |
+| **Technical** | Missing dependencies, unclear integration points |
+| **Risk** | Unmitigated high-severity risk, no failure handling |
+| **Completeness** | Missing files to modify, unclear success criteria |
+| **Consistency** | Breaks existing patterns, reinvents existing solution |
+
+### Agent Iteration
+\`\`\`
+Task tool with:
+- subagent_type: "Plan"
+- run_in_background: true
+- prompt: Review plan for critical issues...
+\`\`\`
+Repeat until ZERO critical issues (max 5 iterations).
+
+---
+
+## FINAL OUTPUT FORMAT
+
+\`\`\`
+## Plan: {FEATURE_OR_TASK}
+
+### Status: [DRAFT | NEEDS_REVIEW | APPROVED]
+### Confidence: [LOW | MEDIUM | HIGH]
+### Planning Depth: [TINY | SMALL | MEDIUM | LARGE]
+### Review Rounds: [N]
+### Agent Iterations: [N or SKIPPED]
+
+### Kernel (The ONE Thing)
+[Single sentence]
+
+### Critical Requirements
+- [ ] Requirement 1
+- [ ] Requirement 2
+
+### Technical Approach
+[Details]
+
+### Files to Modify
+| File | Action | Description |
+|------|--------|-------------|
+
+### Dependencies
+- Item 1
+
+### Risk Areas
+| Risk | Mitigation |
+|------|------------|
+
+### Deferred to v2
+- Item 1
+
+### Open Questions
+[If not empty, plan is NOT APPROVED]
+\`\`\`
+
+---
+
+## EXECUTION SUPPORT
+
+### When Stuck (QoE: Invite the Resistant Part)
+| Blocker Type | Question |
+|--------------|----------|
+| Technical | "What specific info am I missing?" |
+| Motivation | "Can I make this smaller?" |
+| Fear | "What's the smallest safe step?" |
+
+### Good Stopping Points (QoE: Stop at the Peak)
+| Stop Now ✅ | Keep Going ⏳ |
+|-------------|---------------|
+| Know what's next | Unsure what's next |
+| Energy high | Energy draining |
+| Tests pass | Tests failing |
+
+**Stopping ritual:** Write next step → Leave breadcrumb → Commit → Rate eagerness
+
+---
+
+## FORBIDDEN
+- Saying "looks good" without completing review rounds
+- Skipping phases for LARGE tasks
+- Proceeding with open questions
+- Assuming requirements without clarification
+- Stopping mid-thought with no notes
+
+---
+
+## QoE PRINCIPLES EMBEDDED
+
+| Phase | Principle |
+|-------|-----------|
+| Discovery | Find the living question, The offer |
+| Scoping | Make it smaller |
+| Draft | Allow ugliness |
+| Review | Decrease effort, increase attention |
+| Validation | Follow irritation |
+| Execution | Stop at the peak, Invite resistant part |`,
+  },
+  {
     id: 'plan-bulletproof',
     title: 'Bulletproof Planning Protocol',
     description:
@@ -424,6 +837,165 @@ The plan is APPROVED only when:
 1. All review rounds complete
 2. Open Questions section is EMPTY
 3. You can confidently say "I have no concerns about this plan"`,
+  },
+  {
+    id: 'plan-iterate',
+    title: 'Iterate Plan with Background Agents',
+    description:
+      'Launch background agents to iteratively review and polish a plan until zero critical issues remain.',
+    category: 'planning',
+    variables: ['PLAN_FILE'],
+    tags: ['planning', 'iteration', 'agents', 'review', 'automation', 'background'],
+    prompt: `Iterate plan in {PLAN_FILE} using background agents until bulletproof.
+
+## CONCEPT
+
+Each iteration spawns a FRESH agent that:
+1. Reviews the plan with fresh eyes (no confirmation bias)
+2. Identifies critical issues
+3. Updates the plan
+4. Reports findings
+
+Loop continues until an agent finds ZERO critical issues.
+
+## CRITICAL ISSUE CRITERIA
+
+An issue is CRITICAL if ANY of these apply:
+| Category | Critical Issue |
+|----------|---------------|
+| **Requirements** | Missing acceptance criteria, unstated assumptions |
+| **Technical** | Missing dependencies, unclear integration points |
+| **Risk** | Unmitigated high-severity risk, no failure handling |
+| **Completeness** | Missing files to modify, unclear success criteria |
+| **Consistency** | Breaks existing patterns, reinvents existing solution |
+
+Non-critical (can proceed): Nice-to-haves, minor wording, future enhancements
+
+## AGENT ITERATION PROTOCOL
+
+### Step 1: Launch Review Agent (Background)
+\`\`\`
+Task tool with:
+- subagent_type: "Plan"
+- run_in_background: true
+- prompt: Review plan at {PLAN_FILE} against critical issue criteria...
+\`\`\`
+
+### Step 2: Poll for Completion
+\`\`\`
+TaskOutput tool with:
+- task_id: [from Step 1]
+- block: true
+\`\`\`
+
+### Step 3: Check Result
+If agent reports critical issues:
+1. Read updated plan from agent output
+2. Write updates to {PLAN_FILE}
+3. Launch NEW agent (back to Step 1)
+4. Increment iteration counter
+
+If agent reports ZERO critical issues:
+→ STOP iteration, proceed to output
+
+### Step 4: Present Final Plan
+Show user:
+- Final plan content
+- Iteration count
+- Summary of all issues found/fixed across iterations
+
+## AGENT PROMPT TEMPLATE
+
+Each spawned agent receives:
+\`\`\`
+You are reviewing a plan for critical issues. Be STRICT but FAIR.
+
+PLAN FILE: {PLAN_FILE}
+
+YOUR TASK:
+1. Read the plan file
+2. Check against critical issue criteria (requirements, technical, risk, completeness, consistency)
+3. For EACH critical issue found:
+   - Describe the issue clearly
+   - Provide the FIX (concrete, not vague)
+4. Output format:
+
+   ## ITERATION REVIEW
+
+   ### Critical Issues Found: [N]
+
+   | # | Category | Issue | Fix |
+   |---|----------|-------|-----|
+   | 1 | [cat] | [issue] | [fix] |
+
+   ### Updated Plan Section
+   [If fixes needed, provide the corrected plan sections]
+
+   ### Verdict
+   - PASS (0 critical issues) or FAIL (N critical issues)
+
+IMPORTANT:
+- Be thorough but not pedantic
+- Missing info = critical, wording preferences = not critical
+- If unsure whether something is critical, ask: "Would this block implementation?"
+\`\`\`
+
+## ITERATION LIMITS
+
+| Limit | Value | Action if Exceeded |
+|-------|-------|-------------------|
+| Max iterations | 5 | Stop, report remaining issues to user |
+| Single agent timeout | 2 min | Retry once, then fail |
+
+## OUTPUT FORMAT
+
+After iterations complete:
+
+\`\`\`
+## Plan Iteration Summary
+
+**File:** {PLAN_FILE}
+**Iterations:** [N]
+**Final Status:** [APPROVED | MAX_ITERATIONS_REACHED]
+
+### Issues Resolved by Iteration
+
+| Iteration | Issues Found | Categories |
+|-----------|--------------|------------|
+| 1 | 4 | Requirements, Technical |
+| 2 | 2 | Risk, Completeness |
+| 3 | 0 | — |
+
+### Final Plan
+[Show full plan content]
+
+### Confidence
+[HIGH if 0 issues, MEDIUM if max iterations reached with remaining issues]
+\`\`\`
+
+## FORBIDDEN
+
+- Running agents synchronously (use background for parallelism potential)
+- Same agent reviewing its own output (always spawn FRESH agent)
+- Infinite loops (max 5 iterations enforced)
+- Skipping iteration count reporting
+- Marking plan approved with any critical issues remaining
+
+## USAGE EXAMPLE
+
+\`\`\`
+User: "Iterate this plan until it's bulletproof"
+Agent: Launches background Plan agent #1
+Agent: [polls for completion]
+Agent: Agent #1 found 3 critical issues, updating plan...
+Agent: Launches background Plan agent #2
+Agent: [polls for completion]
+Agent: Agent #2 found 1 critical issue, updating plan...
+Agent: Launches background Plan agent #3
+Agent: [polls for completion]
+Agent: Agent #3 found 0 critical issues!
+Agent: [presents final plan with summary]
+\`\`\``,
   },
 
   // =============================================================================
@@ -729,8 +1301,16 @@ OUTPUT: Clear next step written down, code in committable state.`,
     description: 'Review code against all DDS rules and report violations.',
     category: 'review',
     variables: ['FILE_PATH'],
-    tags: ['review', 'compliance', 'quality', 'mcp'],
+    tags: ['review', 'compliance', 'quality', 'mcp', 'wu-wei', 'maya', 'qoe'],
     prompt: `Review {FILE_PATH} for DDS compliance.
+
+## Philosophy Triad Check (report violations)
+
+| Philosophy | Check For | Violation Signal |
+|------------|-----------|------------------|
+| **Wu Wei** | Over-engineering, fighting patterns | Premature abstraction, ignoring existing utilities |
+| **MAYA** | User confusion, broken conventions | Novel interactions where familiar ones work |
+| **QoE** | Scope creep, forced solutions | Complexity growing unexpectedly, hacks over investigation |
 
 ## MCP-First Validation (run for each color found)
 \`\`\`
@@ -761,8 +1341,15 @@ Severity: CRITICAL (blocks), WARNING (should fix), INFO (suggestion)`,
     title: 'Pre-PR Checklist',
     description: 'Run full validation before submitting a pull request.',
     category: 'review',
-    tags: ['review', 'pr', 'checklist', 'mcp'],
+    tags: ['review', 'pr', 'checklist', 'mcp', 'wu-wei', 'maya', 'qoe'],
     prompt: `Run pre-PR validation for my changes.
+
+## Philosophy Triad Final Check
+
+Before approving, verify NO violations:
+- **Wu Wei**: Is code simple? Working WITH codebase? No premature abstractions?
+- **MAYA**: Will users immediately understand? Familiar patterns used?
+- **QoE**: Was scope appropriate? Clean completion point? No forced solutions?
 
 ## MCP Pre-Flight Checks
 \`\`\`
@@ -823,8 +1410,13 @@ Group by severity and provide fix commands where possible.`,
     description: 'Review code against Uncle Bob clean code principles for production readiness.',
     category: 'review',
     variables: ['FILE_PATH'],
-    tags: ['review', 'clean-code', 'refactoring', 'quality'],
+    tags: ['review', 'clean-code', 'refactoring', 'quality', 'wu-wei'],
     prompt: `Review {FILE_PATH} against Uncle Bob's clean code principles.
+
+## Wu Wei Mindset
+- Simple over clever: complexity is a code smell
+- Delete > add: if in doubt, remove it
+- Work WITH patterns: don't fight the codebase structure
 
 READ FIRST: \`.claude/clean-code-rules.md\`
 
@@ -869,8 +1461,14 @@ VERDICT: SHIP IT or NEEDS WORK with specific fixes.`,
     description: 'Analyze a God File (>500 lines) and create extraction plan.',
     category: 'review',
     variables: ['FILE_PATH'],
-    tags: ['refactoring', 'clean-code', 'architecture'],
+    tags: ['refactoring', 'clean-code', 'architecture', 'wu-wei', 'qoe'],
     prompt: `Create a refactoring plan for {FILE_PATH}.
+
+## Wu Wei + QoE Mindset
+- **Make it smaller**: Plan extraction in small, safe steps
+- **Trust the flow**: Work with existing patterns, not against them
+- **Stop at coherent points**: Each extraction should be independently mergeable
+- **Allow ugliness**: First extraction can be rough—polish after it works
 
 READ FIRST: \`.claude/clean-code-rules.md\`
 
@@ -909,6 +1507,65 @@ OUTPUT FORMAT:
 1. Step 1...
 2. Step 2...`,
   },
+  {
+    id: 'testing-attributes-add',
+    title: 'Add Foundation Testing Attributes',
+    description: 'Add data-testid attributes to components following DDS three-layer testing strategy.',
+    category: 'review',
+    variables: ['COMPONENT'],
+    tags: ['testing', 'testid', 'automation', 'quality'],
+    prompt: `Add data-testid attributes to {COMPONENT}.
+
+READ FIRST: \`.claude/testing-quick-ref.md\`
+REFERENCE: \`src/flow/components/entity-templates/dialogs/ViewTemplateDialog.tsx\` (gold standard)
+
+## Layer Strategy
+
+| Layer | Strategy | testId Source |
+|-------|----------|---------------|
+| ATOM | Pass-through props | Consumer provides |
+| MOLECULE | Auto-generate | \`{feature}-{element}-\${id}\` |
+| PAGE | Named regions | \`{page}-{section}\` |
+
+## Naming Convention
+
+Format: \`{context}-{component}-{identifier}\`
+
+Examples:
+- \`tenant-wizard-company-input\`
+- \`pricing-step-package-selector\`
+- \`view-template-close-\${template.id}\`
+
+## MUST Have testId
+
+- Form inputs (input, select, checkbox)
+- Buttons (submit, cancel, navigation)
+- Interactive elements (clickable cards, tabs)
+- Container sections (for scoping)
+- Dynamic items (cards, rows with IDs)
+
+## JSDoc Template
+
+\`\`\`tsx
+/**
+ * @component MOLECULE
+ * @testId Auto-generated: \`{feature}-{element}-\${id}\`
+ *
+ * Test IDs:
+ * - \`{feature}-container-\${id}\` - Root
+ * - \`{feature}-{element}-\${id}\` - Each interactive element
+ */
+\`\`\`
+
+## FORBIDDEN
+
+- Generic: \`data-testid="button"\`
+- Index-only: \`data-testid="item-0"\`
+- CamelCase: \`data-testid="submitButton"\`
+- Skipping form inputs or action buttons
+
+OUTPUT: Component with testIds + JSDoc documentation.`,
+  },
 
   // =============================================================================
   // STYLING (Applying foundational rules)
@@ -919,8 +1576,13 @@ OUTPUT FORMAT:
     description: 'Apply correct depth layering with elevation, shadows, and backgrounds.',
     category: 'styling',
     variables: ['COMPONENT'],
-    tags: ['depth', 'elevation', 'shadows', 'layering'],
+    tags: ['depth', 'elevation', 'shadows', 'layering', 'maya'],
     prompt: `Apply depth layering rules to {COMPONENT}.
+
+## MAYA Mindset
+- Depth conveys meaning—users expect "closer = more prominent"
+- Consistent shadows create familiar spatial understanding
+- Modern visuals through subtle elevation, stable interaction through clear hierarchy
 
 READ FIRST: \`.claude/depth-layering-rules.md\`
 
@@ -957,8 +1619,13 @@ OUTPUT: Updated component with correct depth tokens.`,
     description: 'Apply correct spacing using DDS spacing tokens.',
     category: 'styling',
     variables: ['COMPONENT'],
-    tags: ['spacing', 'layout', 'tokens'],
+    tags: ['spacing', 'layout', 'tokens', 'maya'],
     prompt: `Apply spacing rules to {COMPONENT}.
+
+## MAYA Mindset
+- Consistent spacing creates rhythm—users feel "this is organized"
+- Related elements close together, separate things farther apart
+- Modern refinement through precise spacing, familiar layout patterns
 
 READ FIRST: \`.claude/spacing-rules.md\`
 
@@ -993,8 +1660,13 @@ OUTPUT: Updated component with DDS spacing tokens.`,
     description: 'Apply correct typography using DDS font scale and weights.',
     category: 'styling',
     variables: ['COMPONENT'],
-    tags: ['typography', 'fonts', 'text'],
+    tags: ['typography', 'fonts', 'text', 'maya'],
     prompt: `Apply typography rules to {COMPONENT}.
+
+## MAYA Mindset
+- Clear hierarchy helps users scan—biggest = most important
+- Consistent font creates professionalism users expect
+- Modern type refinement, familiar reading patterns
 
 READ FIRST: \`.claude/typography-rules.md\`
 
@@ -1034,8 +1706,13 @@ OUTPUT: Updated component with DDS typography.`,
     description: 'Apply correct color token priority: semantic > contextual > primitive.',
     category: 'styling',
     variables: ['COMPONENT'],
-    tags: ['colors', 'tokens', 'semantic', 'mcp'],
+    tags: ['colors', 'tokens', 'semantic', 'mcp', 'maya'],
     prompt: `Apply semantic color rules to {COMPONENT}.
+
+## MAYA Mindset
+- Semantic colors convey meaning—red = error, green = success, users already know
+- Consistent token usage creates visual language users recognize
+- Modern color palette, familiar meaning conventions
 
 ## MCP-First Color Workflow (REQUIRED)
 \`\`\`
@@ -1090,8 +1767,13 @@ OUTPUT: Updated component with semantic-first color tokens + MCP validation resu
     description: 'Apply Fitts, Hick, Miller, and Gestalt principles to UI.',
     category: 'ux',
     variables: ['COMPONENT'],
-    tags: ['ux', 'usability', 'laws'],
+    tags: ['ux', 'usability', 'laws', 'maya'],
     prompt: `Apply UX laws to {COMPONENT}.
+
+## MAYA Mindset (Core of UX)
+- These laws ARE MAYA in practice—they ensure users immediately understand
+- Familiar patterns (44px targets, 7±2 items) leverage learned behavior
+- Modern visuals, stable interactions: look fresh but work exactly as expected
 
 READ FIRST: \`.claude/ux-laws-rules.md\`
 
@@ -1124,8 +1806,13 @@ OUTPUT: Updated component following UX laws.`,
     description: 'Replace inaccessible patterns with semantic HTML and Radix.',
     category: 'ux',
     variables: ['COMPONENT'],
-    tags: ['accessibility', 'a11y', 'semantic', 'mcp'],
+    tags: ['accessibility', 'a11y', 'semantic', 'mcp', 'maya'],
     prompt: `Fix accessibility in {COMPONENT}.
+
+## MAYA Mindset
+- Semantic HTML uses browser conventions users already know
+- Screen reader expectations are established patterns—respect them
+- Accessible = familiar to assistive technology users
 
 ## MCP Contrast Verification (REQUIRED for WCAG)
 \`\`\`

@@ -41,7 +41,7 @@ const sampleLead: Lead = {
   phone: '+1 (555) 123-4567',
   priority: 'high',
   score: 85,
-  status: 'qualified',
+  status: 'in_progress',
   source: 'website',
   description: 'Interested in comprehensive safety compliance platform.',
   value: 45000,
@@ -246,8 +246,7 @@ function FullWorkflowDemo() {
                 <div className="flex items-center gap-2">
                   <span className={`px-2 py-1 text-xs font-semibold uppercase rounded ${
                     lead.status === 'new' ? 'bg-info-light text-info' :
-                    lead.status === 'contacted' ? 'bg-warning-light text-warning' :
-                    lead.status === 'qualified' ? 'bg-accent-bg text-accent' :
+                    lead.status === 'in_progress' ? 'bg-accent-bg text-accent' :
                     lead.status === 'converted' ? 'bg-success-light text-success' :
                     'bg-error-light text-error'
                   }`}>

@@ -184,14 +184,16 @@ export function EditPartnerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="partners-edit-partner-dialog">
+      {/* NOTE: Do NOT use overflow-y-auto on DialogContent - it clips the gradient border.
+          Instead, use a scrollable inner container. */}
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col" data-testid="partners-edit-partner-dialog">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-primary" data-testid="partners-edit-partner-dialog-title">
             {mode === "edit" ? "Edit Partner" : "Add Partner"}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6" data-testid="partners-edit-partner-dialog-form">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 overflow-y-auto flex-1" data-testid="partners-edit-partner-dialog-form">
           {/* Company Information Section */}
           <div className="space-y-4">
             <h3 className="text-sm font-semibold text-primary">Company Information</h3>

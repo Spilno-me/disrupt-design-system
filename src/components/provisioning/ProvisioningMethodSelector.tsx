@@ -1,13 +1,16 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { MessageSquare, ClipboardList } from 'lucide-react'
+import { ClipboardList } from 'lucide-react'
 import { cn } from '../../lib/utils'
-import { AppCard, AppCardContent } from '../ui/app-card'
 
 // =============================================================================
 // TYPES
 // =============================================================================
 
+/**
+ * @deprecated 'chat' method removed per MVP spec.
+ * Tenant Request creation should use wizard only.
+ */
 export type ProvisioningMethod = 'chat' | 'wizard'
 
 export interface ProvisioningMethodSelectorProps {
@@ -31,6 +34,7 @@ interface MethodCardProps {
   badgeTextClass: string
   selected: boolean
   onClick: () => void
+  'data-testid'?: string
 }
 
 function MethodCard({
@@ -43,18 +47,19 @@ function MethodCard({
   badgeTextClass,
   selected,
   onClick,
+  'data-testid': testId,
 }: MethodCardProps) {
   return (
     <button
       onClick={onClick}
+      data-testid={testId}
       className={cn(
-        'flex-1 flex flex-col items-center p-6 rounded-xl border-2 bg-surface',
+        'flex-1 flex flex-col items-center p-6 rounded-xl bg-surface',
+        'border border-default shadow-sm',
         'transition-all duration-300 ease-out',
-        'hover:-translate-y-1 hover:shadow-md',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2',
-        selected
-          ? 'border-teal shadow-md -translate-y-1'
-          : 'border-transparent hover:border-subtle'
+        'hover:-translate-y-1 hover:shadow-md hover:border-subtle',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
+        selected && 'border-accent shadow-md -translate-y-1 ring-2 ring-accent/20'
       )}
     >
       {/* Icon container */}
@@ -92,18 +97,19 @@ function MethodCard({
 // =============================================================================
 
 /**
- * ProvisioningMethodSelector - Allows users to choose between Chat Assistant
- * or Classic Wizard for creating new tenants.
+ * ProvisioningMethodSelector - Direct entry to Classic Wizard for creating new tenants.
+ *
+ * NOTE: Per MVP spec (Section 14.2), Chat Assistant option has been removed.
+ * Tenant Request creation opens manual wizard directly.
+ *
+ * @deprecated Consider bypassing this selector entirely and going directly to wizard.
  *
  * @example
  * ```tsx
  * <ProvisioningMethodSelector
  *   onSelectMethod={(method) => {
- *     if (method === 'chat') {
- *       router.push('/tenant-provisioning/chat')
- *     } else {
- *       router.push('/tenant-provisioning/wizard')
- *     }
+ *     // method will always be 'wizard' in MVP
+ *     router.push('/tenant-requests/new')
  *   }}
  * />
  * ```
@@ -120,49 +126,41 @@ export function ProvisioningMethodSelector({
   }
 
   return (
-    <div className={cn('flex items-center justify-center min-h-[calc(100vh-200px)]', className)}>
-      <AppCard className="max-w-2xl w-full" shadow="lg">
-        <AppCardContent className="p-8">
+    <div className={cn('flex items-center justify-center', className)}>
+      {/* Glass Card - Depth 1 (Elevated) */}
+      <div className={cn(
+        "max-w-md w-full",
+        "rounded-xl p-8",
+        "bg-white/60 dark:bg-black/60 backdrop-blur-[8px]",
+        "border-2 border-accent shadow-lg"
+      )}>
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-primary mb-2">
-            Create New Tenant
+            Create New Tenant Request
           </h2>
           <p className="text-secondary">
-            Choose how you&apos;d like to proceed
+            Fill out the form to submit a new tenant request
           </p>
         </div>
 
-        {/* Method Cards */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          {/* Chat Assistant Option */}
-          <MethodCard
-            icon={<MessageSquare className="w-8 h-8 text-info" strokeWidth={1.5} />}
-            iconBgClass="bg-info-light"
-            title="Chat Assistant"
-            description="Answer questions conversationally with AI guidance"
-            badge="Best for: Quick setup, guidance"
-            badgeBgClass="bg-info-muted"
-            badgeTextClass="text-info"
-            selected={selectedMethod === 'chat'}
-            onClick={() => handleMethodClick('chat')}
-          />
-
-          {/* Classic Wizard Option */}
+        {/* Single Method Card - Wizard Only (MVP) */}
+        <div className="flex justify-center mb-8" data-testid="provisioning-method-cards">
+          {/* Classic Wizard Option - Only option in MVP */}
           <MethodCard
             icon={<ClipboardList className="w-8 h-8 text-success" strokeWidth={1.5} />}
             iconBgClass="bg-success-light"
-            title="Classic Wizard"
+            title="Start Wizard"
             description="Fill out forms step by step with full control"
-            badge="Best for: Detailed control, review"
+            badge="Guided form workflow"
             badgeBgClass="bg-success-muted"
             badgeTextClass="text-success"
             selected={selectedMethod === 'wizard'}
             onClick={() => handleMethodClick('wizard')}
+            data-testid="provisioning-method-wizard"
           />
         </div>
-        </AppCardContent>
-      </AppCard>
+      </div>
     </div>
   )
 }

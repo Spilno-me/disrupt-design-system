@@ -39,6 +39,21 @@ export interface InvoicesDataTableProps {
   loading?: boolean
   /** Additional className */
   className?: string
+  // Pagination props (forwarded to DataTable)
+  /** Enable embedded pagination in table footer */
+  pagination?: boolean
+  /** Current page number (1-indexed) */
+  currentPage?: number
+  /** Total number of items (for pagination display) */
+  totalItems?: number
+  /** Number of items per page */
+  pageSize?: number
+  /** Callback when page changes */
+  onPageChange?: (page: number) => void
+  /** Callback when page size changes */
+  onPageSizeChange?: (size: number) => void
+  /** Available page size options */
+  pageSizeOptions?: number[]
 }
 
 // =============================================================================
@@ -62,6 +77,14 @@ export function InvoicesDataTable({
   onSortChange,
   loading = false,
   className,
+  // Pagination props
+  pagination,
+  currentPage,
+  totalItems,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  pageSizeOptions,
 }: InvoicesDataTableProps) {
   // Define columns - using CSS property values for DataTable API (not hardcoded styling)
   /* eslint-disable no-restricted-syntax */
@@ -277,6 +300,14 @@ export function InvoicesDataTable({
       hoverable
       bordered
       className={className}
+      // Pagination props (forwarded)
+      pagination={pagination}
+      currentPage={currentPage}
+      totalItems={totalItems}
+      pageSize={pageSize}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
+      pageSizeOptions={pageSizeOptions}
       emptyState={
         <div className="flex flex-col items-center justify-center py-12">
           <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">

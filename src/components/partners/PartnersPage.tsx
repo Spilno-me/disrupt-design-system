@@ -8,12 +8,13 @@ import {
   Users,
   Trash2,
   Building2,
+  Network,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
 
 // Extracted modules
 import { PARTNER_FILTER_GROUPS } from "./constants"
-import type { Partner, PartnerStatus, PartnerTier, PartnersPageProps } from "./types"
+import type { Partner, PartnerStatus, PartnerTier, PartnersPageProps, PartnerNetworkPageProps } from "./types"
 import { MOCK_PARTNERS } from "./data"
 import { TierBadge, PartnerId } from "./components"
 import { formatDate } from "./utils"
@@ -21,7 +22,6 @@ import { formatDate } from "./utils"
 // UI components
 import { Button } from "../ui/button"
 import { DataTable, type ColumnDef } from "../ui/DataTable"
-import { Pagination } from "../ui/Pagination"
 import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
 import type { FilterState } from "../shared/SearchFilter/types"
 import { EditPartnerDialog, PartnerFormData } from "./EditPartnerDialog"
@@ -30,19 +30,32 @@ import { DataTableStatusDot, PARTNER_DOT_STATUS_MAP } from "../ui/table"
 import { ActionTile } from "../ui/ActionTile"
 import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip"
 import { PageActionPanel } from "../ui/PageActionPanel"
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "../ui/tabs"
+
+// Partner Network page (embedded in Sub-Partners tab)
+import { PartnerNetworkPage } from "./PartnerNetworkPage"
 
 // Re-export types for external consumers
 export type { PartnerStatus, PartnerTier, Partner, PartnersPageProps }
 export { MOCK_PARTNERS }
+
+/** Tab type for external control of Partners page tabs */
+export type PartnersTab = "partners" | "sub-partners"
 
 // =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 
 /**
- * PartnersPage - A complete partners management page
+ * PartnersPage - A complete partners management page with tabs
  *
  * Features:
+ * - Tabbed interface: Partners (table) and Sub-Partners (hierarchy)
  * - Header with title, subtitle, and Add Partner button
  * - Search input and status filter
  * - Data table with partner information
@@ -60,7 +73,25 @@ export function PartnersPage({
   onConfirmDelete,
   loading = false,
   className,
-}: PartnersPageProps) {
+  // Tab control
+  activeTab,
+  onTabChange,
+  // Network props (passed to Sub-Partners tab)
+  networkProps,
+}: PartnersPageProps & {
+  activeTab?: PartnersTab
+  onTabChange?: (tab: PartnersTab) => void
+  networkProps?: Partial<PartnerNetworkPageProps>
+}) {
+  // Tab state
+  const [internalTab, setInternalTab] = useState<PartnersTab>("partners")
+  const currentTab = activeTab ?? internalTab
+  const handleTabChange = (value: string) => {
+    const tab = value as PartnersTab
+    setInternalTab(tab)
+    onTabChange?.(tab)
+  }
+
   // State
   const [searchQuery, setSearchQuery] = useState("")
   const [filters, setFilters] = useState<FilterState>({
@@ -320,85 +351,103 @@ export function PartnersPage({
           title="Partners"
           subtitle="Manage partner organizations and relationships"
           primaryAction={
-            <Button
-              variant="accent"
-              size="sm"
-              onClick={handleAddPartnerClick}
-              data-testid="partners-add-button"
-            >
-              <Plus className="h-4 w-4" />
-              Add Partner
-            </Button>
+            currentTab === "partners" ? (
+              <Button
+                variant="accent"
+                size="sm"
+                onClick={handleAddPartnerClick}
+                data-testid="partners-add-button"
+              >
+                <Plus className="h-4 w-4" />
+                Add Partner
+              </Button>
+            ) : undefined
           }
         />
 
-        {/* Glass container for main content */}
-        <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
-          <div className="flex flex-col gap-4 p-4 md:p-6">
-            {/* Search and Filter Bar */}
-            <SearchFilter
-              placeholder="Search partners..."
-              value={searchQuery}
-              onChange={(value) => {
-                setSearchQuery(value)
-                setCurrentPage(1)
-              }}
-              filterGroups={PARTNER_FILTER_GROUPS}
-              filters={filters}
-              onFiltersChange={handleFiltersChange}
-              className="bg-surface border border-default rounded-lg"
-              data-testid="partners-search-filter"
-            />
+        {/* Tabs for Partners / Sub-Partners */}
+        <Tabs value={currentTab} onValueChange={handleTabChange} className="w-full">
+          <TabsList variant="accent" animated className="mb-4" data-testid="partners-tabs">
+            <TabsTrigger variant="accent" value="partners" data-testid="partners-tab-partners">
+              <Building2 className="h-4 w-4 mr-1.5" />
+              Partners
+            </TabsTrigger>
+            <TabsTrigger variant="accent" value="sub-partners" data-testid="partners-tab-sub-partners">
+              <Network className="h-4 w-4 mr-1.5" />
+              Sub-Partners
+            </TabsTrigger>
+          </TabsList>
 
-            {/* Data Table */}
-            <DataTable
-              data={paginatedPartners}
-              columns={columns}
-              getRowId={(row) => row.id}
-              loading={loading}
-              hoverable
-              bordered
-              data-testid="partners-table"
-              emptyState={
-                <div className="flex flex-col items-center py-8">
-                  <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
-                    <Building2 className="h-8 w-8 text-muted" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-primary mb-2">
-                    {searchQuery || filters.status.length > 0 || filters.tier.length > 0
-                      ? "No partners found"
-                      : "No partners yet"}
-                  </h3>
-                  <p className="text-muted text-sm max-w-sm text-center">
-                    {searchQuery || filters.status.length > 0 || filters.tier.length > 0
-                      ? "No partners match your search criteria. Try adjusting your filters."
-                      : "Get started by adding your first partner organization."}
-                  </p>
-                </div>
-              }
-            />
-          </div>
-        </section>
+          {/* Partners Tab Content */}
+          <TabsContent value="partners" className="mt-0">
+            {/* Glass container for main content */}
+            <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
+              <div className="flex flex-col gap-4 p-4 md:p-6">
+                {/* Search and Filter Bar */}
+                <SearchFilter
+                  placeholder="Search partners..."
+                  value={searchQuery}
+                  onChange={(value) => {
+                    setSearchQuery(value)
+                    setCurrentPage(1)
+                  }}
+                  filterGroups={PARTNER_FILTER_GROUPS}
+                  filters={filters}
+                  onFiltersChange={handleFiltersChange}
+                  className="bg-surface border border-default rounded-lg"
+                  data-testid="partners-search-filter"
+                />
 
-        {/* Pagination - outside glass container */}
-        {filteredPartners.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalItems={filteredPartners.length}
-            pageSize={pageSize}
-            onPageChange={setCurrentPage}
-            onPageSizeChange={(size) => {
-              setPageSize(size)
-              setCurrentPage(1)
-            }}
-            showPageSizeSelector={false}
-            showFirstLastButtons={false}
-            resultsTextFormat={(start, end, total) =>
-              `Showing ${start} to ${end} of ${total} results`
-            }
-            data-testid="partners-pagination"
-          />
-        )}
+                {/* Data Table */}
+                <DataTable
+                  data={paginatedPartners}
+                  columns={columns}
+                  getRowId={(row) => row.id}
+                  loading={loading}
+                  hoverable
+                  bordered
+                  // Pagination embedded in table footer
+                  pagination
+                  currentPage={currentPage}
+                  totalItems={filteredPartners.length}
+                  pageSize={pageSize}
+                  onPageChange={setCurrentPage}
+                  onPageSizeChange={(size) => {
+                    setPageSize(size)
+                    setCurrentPage(1)
+                  }}
+                  pageSizeOptions={[10, 25, 50]}
+                  data-testid="partners-table"
+                  emptyState={
+                    <div className="flex flex-col items-center py-8">
+                      <div className="w-16 h-16 mb-4 rounded-full bg-muted-bg flex items-center justify-center">
+                        <Building2 className="h-8 w-8 text-muted" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-primary mb-2">
+                        {searchQuery || filters.status.length > 0 || filters.tier.length > 0
+                          ? "No partners found"
+                          : "No partners yet"}
+                      </h3>
+                      <p className="text-muted text-sm max-w-sm text-center">
+                        {searchQuery || filters.status.length > 0 || filters.tier.length > 0
+                          ? "No partners match your search criteria. Try adjusting your filters."
+                          : "Get started by adding your first partner organization."}
+                      </p>
+                    </div>
+                  }
+                />
+              </div>
+            </section>
+          </TabsContent>
+
+          {/* Sub-Partners Tab Content */}
+          <TabsContent value="sub-partners" className="mt-0">
+            <PartnerNetworkPage
+              {...networkProps}
+              className="min-h-0 [&>div]:p-0"
+            />
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Edit/Create Partner Dialog */}

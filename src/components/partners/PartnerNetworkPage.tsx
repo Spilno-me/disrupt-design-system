@@ -49,6 +49,14 @@ export { MOCK_NETWORK_PARTNERS }
 // MAIN COMPONENT
 // =============================================================================
 
+/**
+ * PartnerNetworkPage - Hierarchical partner management with sub-partners
+ *
+ * NOTE: Per MVP spec (Section 14.3), this component is now EMBEDDED within PartnersPage
+ * as the "Sub-Partners" tab. It should NOT be used as a standalone navigational item.
+ *
+ * @see PartnersPage - The consolidated Partners page with tabs
+ */
 export function PartnerNetworkPage({
   partners = MOCK_NETWORK_PARTNERS,
   loading = false,
