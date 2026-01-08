@@ -12,6 +12,7 @@ import type { PartnerFormData } from '../../../components/partners/EditPartnerDi
 import { DashboardContent } from './DashboardContent'
 import { LeadsContent } from './LeadsContent'
 import { TenantRequestsContent } from './TenantRequestsContent'
+import { TenantProvisioningContent } from './TenantProvisioningContent'
 import { TenantsContent } from './TenantsContent'
 import { InvoicesContent } from './InvoicesContent'
 import { EarningsContent } from './EarningsContent'
@@ -183,6 +184,9 @@ export function usePageRenderer(config: PageRendererConfig): ReactNode {
 
     case 'tenant-requests':
       return <TenantRequestsContent />
+
+    case 'tenant-provisioning':
+      return <TenantProvisioningContent />
 
     case 'tenants':
       return (

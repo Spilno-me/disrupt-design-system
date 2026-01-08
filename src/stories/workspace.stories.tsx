@@ -684,6 +684,15 @@ export const InteractionCreateFolder: Story = {
       expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
     })
 
+    // Wait for folder nodes to render (store initialization is async)
+    await waitFor(
+      () => {
+        const folders = canvas.queryAllByTestId(/^workspace-node-folder-/)
+        expect(folders.length).toBeGreaterThan(0)
+      },
+      { timeout: 5000 }
+    )
+
     // Count initial folders
     const initialFolders = canvas.getAllByTestId(/^workspace-node-folder-/)
 
@@ -970,8 +979,13 @@ export const InteractionDeleteViaMenu: Story = {
       expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
     })
 
-    // Verify item-1 exists before delete
-    expect(canvas.getByTestId('workspace-node-item-1')).toBeInTheDocument()
+    // Wait for item-1 to render (store initialization is async)
+    await waitFor(
+      () => {
+        expect(canvas.getByTestId('workspace-node-item-1')).toBeInTheDocument()
+      },
+      { timeout: 5000 }
+    )
 
     // Hover on item-1 to reveal menu
     const item1 = await canvas.findByTestId('workspace-node-item-1')

@@ -32,4 +32,5 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           autoAcceptChanges: main
-          exitOnceUploaded: true
+          # Fast on feature branches, blocking on main for stability
+          exitOnceUploaded: ${{ github.ref != 'refs/heads/main' }}
