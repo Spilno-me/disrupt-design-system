@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-01-08T16:26:26.074Z",
+    "generated": "2026-01-08T17:25:46.664Z",
     "contentHash": "85e23819012c",
     "source": "src/constants/designTokens.ts",
     "note": "AUTO-GENERATED - Do not edit. Run npm run sync:colors",
