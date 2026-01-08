@@ -14,10 +14,10 @@
  * - API integration (replaceNodeId, confirmOptimistic, rollbackNode)
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { useWorkspaceStore, getWorkspaceState, getWorkspaceActions } from '../store/workspace.store'
 import { MAX_DEPTH, MAX_HISTORY_SIZE } from '../constants'
-import type { WorkspaceNode, WorkspaceFolder, WorkspaceItem, Product } from '../types'
+import type { WorkspaceNode, WorkspaceFolder, WorkspaceItem } from '../types'
 
 // =============================================================================
 // TEST FIXTURES
@@ -167,7 +167,7 @@ describe('workspace store', () => {
         const { createFolder, collapseAll } = getWorkspaceActions()
 
         collapseAll()
-        const id = createFolder('folder-2', 'Subfolder')
+        createFolder('folder-2', 'Subfolder')
 
         const state = getWorkspaceState()
         expect(state.expandedFolderIds).toContain('folder-2')
@@ -302,6 +302,93 @@ describe('workspace store', () => {
         const { rename } = getWorkspaceActions()
 
         expect(() => rename('invalid-id', 'Name')).not.toThrow()
+      })
+
+      // =========================================================================
+      // VALIDATION TESTS (TDD - expect FAIL until store is fixed)
+      // =========================================================================
+
+      it('should REJECT empty name and return false', () => {
+        const { rename } = getWorkspaceActions()
+        const originalName = getWorkspaceState().nodes['folder-1'].name
+
+        const result = rename('folder-1', '')
+
+        expect(result).toBe(false)
+        expect(getWorkspaceState().nodes['folder-1'].name).toBe(originalName)
+      })
+
+      it('should REJECT whitespace-only name and return false', () => {
+        const { rename } = getWorkspaceActions()
+        const originalName = getWorkspaceState().nodes['folder-1'].name
+
+        const result = rename('folder-1', '   ')
+
+        expect(result).toBe(false)
+        expect(getWorkspaceState().nodes['folder-1'].name).toBe(originalName)
+      })
+
+      it('should TRIM whitespace from names before saving', () => {
+        const { rename } = getWorkspaceActions()
+
+        rename('folder-1', '  Trimmed Name  ')
+
+        expect(getWorkspaceState().nodes['folder-1'].name).toBe('Trimmed Name')
+      })
+
+      it('should ALLOW rename to same name (no-op, returns true)', () => {
+        const { rename } = getWorkspaceActions()
+        const originalName = getWorkspaceState().nodes['folder-1'].name
+        const historyBefore = getWorkspaceState().historyIndex
+
+        const result = rename('folder-1', originalName)
+
+        expect(result).toBe(true)
+        // Should NOT add to history (no-op)
+        expect(getWorkspaceState().historyIndex).toBe(historyBefore)
+      })
+
+      it('should REJECT duplicate name in same parent (case-insensitive)', () => {
+        const { rename } = getWorkspaceActions()
+        // folder-1 has children: folder-1-1 and item-1-1
+        // Try to rename item-1-1 to same name as folder-1-1
+
+        const result = rename('item-1-1', 'Nested Folder')
+
+        expect(result).toBe(false)
+        expect(getWorkspaceState().nodes['item-1-1'].name).toBe('Nested Item')
+      })
+
+      it('should REJECT "Archive" when "archive" exists (case-insensitive)', () => {
+        const { rename } = getWorkspaceActions()
+        // First rename folder-1-1 to "archive"
+        rename('folder-1-1', 'archive')
+
+        // Now try to rename item-1-1 to "Archive" (different case)
+        const result = rename('item-1-1', 'Archive')
+
+        expect(result).toBe(false)
+        expect(getWorkspaceState().nodes['item-1-1'].name).toBe('Nested Item')
+      })
+
+      it('should ALLOW duplicate name in different parent', () => {
+        const { rename } = getWorkspaceActions()
+        // folder-2 is at root level, "Nested Folder" exists in folder-1
+        // Should be allowed to name folder-2 as "Nested Folder"
+
+        const result = rename('folder-2', 'Nested Folder')
+
+        expect(result).toBe(true)
+        expect(getWorkspaceState().nodes['folder-2'].name).toBe('Nested Folder')
+      })
+
+      it('should TRUNCATE names over 50 characters', () => {
+        const { rename } = getWorkspaceActions()
+        const longName = 'A'.repeat(60)
+
+        rename('folder-1', longName)
+
+        expect(getWorkspaceState().nodes['folder-1'].name).toBe('A'.repeat(50))
       })
     })
 

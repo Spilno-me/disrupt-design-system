@@ -29,8 +29,8 @@ import {
 } from '../dropdown-menu'
 import { useWorkspaceStore } from './store/workspace.store'
 import { FolderColorPicker } from './FolderColorPicker'
-import type { WorkspaceNode, FolderColor } from './types'
-import { isFolder } from './types'
+import type { WorkspaceNode, WorkspaceItem, FolderColor } from './types'
+import { isFolder, isItem } from './types'
 import { KEYBOARD_SHORTCUTS } from './constants'
 
 // =============================================================================
@@ -52,7 +52,7 @@ export interface WorkspaceOverflowMenuProps {
 
 export function WorkspaceOverflowMenu({
   node,
-  hasChildren,
+  hasChildren: _hasChildren,
   className,
 }: WorkspaceOverflowMenuProps) {
   const [open, setOpen] = React.useState(false)
@@ -61,6 +61,7 @@ export function WorkspaceOverflowMenu({
   const setEditing = useWorkspaceStore((s) => s.setEditing)
   const setColor = useWorkspaceStore((s) => s.setColor)
   const createFolder = useWorkspaceStore((s) => s.createFolder)
+  const createItem = useWorkspaceStore((s) => s.createItem)
   const deleteNode = useWorkspaceStore((s) => s.deleteNode)
 
   // Handlers
@@ -93,14 +94,16 @@ export function WorkspaceOverflowMenu({
   const handleDuplicate = React.useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
-      // For now, create a copy at the same level with "(copy)" suffix
+      // Create a copy at the same level with "(copy)" suffix
       if (isFolder(node)) {
         createFolder(node.parentId, `${node.name} (copy)`, node.color)
+      } else if (isItem(node)) {
+        const itemNode = node as WorkspaceItem
+        createItem(node.parentId, `${node.name} (copy)`, itemNode.href, itemNode.iconName)
       }
-      // Items would need createItem which requires href
       setOpen(false)
     },
-    [node, createFolder]
+    [node, createFolder, createItem]
   )
 
   const handleDelete = React.useCallback(

@@ -1,0 +1,639 @@
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  Palette,
+  Layers,
+  Target,
+  Zap,
+  CheckCircle,
+  XCircle,
+  ArrowRight,
+  Eye,
+  Contrast,
+  Lightbulb,
+  Terminal,
+  BookOpen,
+  Sparkles,
+  BarChart3,
+  Droplets,
+} from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  FeatureCard,
+  SectionHeader,
+  GuidelineCard,
+  CodeBlock,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  CORAL,
+  HARBOR,
+  PRIMITIVES,
+  SHADOWS,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
+
+<Meta title="Foundation/Color Intelligence Guide" />
+
+{/* Hero Header */}
+<BrandHero
+  title="Color Intelligence"
+  description="Context-aware color selection system. Stop guessing which colors work together—query the system for guaranteed WCAG-compliant combinations."
+  gradient="purple"
+  decorativeIcon={<Palette size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
+
+<InfoBox variant="tip">
+  <strong>Single Source of Truth.</strong> All color decisions flow from
+  <code style={{ marginLeft: '4px', marginRight: '4px' }}>src/data/color-intelligence.json</code>
+  — queried via MCP tools or visualized in Storybook at Foundation → Color Intelligence.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Problem</h2>
+
+<SectionHeader
+  icon={<XCircle size={20} />}
+  title="Why Color Selection is Hard"
+  description="Manual color selection leads to inconsistency, accessibility failures, and theme-breaking combinations."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{
+    background: CORAL[50],
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${CORAL[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: CORAL[700] }}>
+      Common Failures
+    </h4>
+    <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', color: CORAL[600], lineHeight: 1.8 }}>
+      <li>Same color family on itself (ABYSS on ABYSS = invisible)</li>
+      <li>Insufficient contrast on badges (needs 7:1, not 4.5:1)</li>
+      <li>Dark mode afterthought (light colors that fail in dark)</li>
+      <li>Hardcoded hex values that break theming</li>
+      <li>Relying on "looks good" instead of WCAG ratios</li>
+    </ul>
+  </div>
+
+  <div style={{
+    background: HARBOR[50],
+    borderRadius: RADIUS.lg,
+    border: `1px solid ${HARBOR[200]}`,
+    padding: SPACING.px.comfortable,
+  }}>
+    <h4 style={{ margin: '0 0 12px 0', fontSize: '14px', fontWeight: 600, color: HARBOR[700] }}>
+      The Solution
+    </h4>
+    <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', color: HARBOR[600], lineHeight: 1.8 }}>
+      <li>Query by context → get pre-validated colors</li>
+      <li>MCP tools check contrast automatically</li>
+      <li>Light/dark tokens built-in</li>
+      <li>Semantic tokens adapt to themes</li>
+      <li>13 UI contexts with complete color definitions</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>13 UI Contexts</h2>
+
+<SectionHeader
+  icon={<Target size={20} />}
+  title="Context-Aware Color Selection"
+  description="Every UI element fits into one of 13 contexts. Query the context, get guaranteed-compliant colors."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Context</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Use For</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Key Properties</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { ctx: 'default', use: 'Fallback for custom components', props: 'bg, text, border' },
+        { ctx: 'page', use: 'Main page background', props: 'bg (light/dark)' },
+        { ctx: 'card', use: 'Content cards, panels', props: 'solid, glass, border, shadow, depth' },
+        { ctx: 'surface', use: 'Nested containers inside cards', props: 'solid, border, shadow, depth' },
+        { ctx: 'modal', use: 'Dialogs, overlays', props: 'solid, glass, shadow, scrim, depth' },
+        { ctx: 'button', use: 'Interactive buttons', props: '6 variants, 5 states, transitions' },
+        { ctx: 'input', use: 'Form inputs, selects', props: 'default, focus, error, disabled' },
+        { ctx: 'navigation', use: 'Sidebars, nav panels', props: 'item states (hover, active)' },
+        { ctx: 'tooltip', use: 'Tooltips, popovers', props: 'solid, shadow, border, depth' },
+        { ctx: 'tableRow', use: 'DataTable rows', props: 'hover, selected, striped, loading' },
+        { ctx: 'badge', use: 'Status badges, tags', props: '6 variants, 3 sizes, AAA contrast' },
+        { ctx: 'status', use: 'Semantic indicators', props: 'success, warning, error, info' },
+        { ctx: 'dataViz', use: 'Charts, graphs', props: 'categorical, sequential, diverging' },
+      ].map((row, i) => (
+        <tr key={row.ctx} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: '12px 16px' }}>
+            <code style={{ background: DEEP_CURRENT[50], color: DEEP_CURRENT[700], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>{row.ctx}</code>
+          </td>
+          <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>{row.use}</td>
+          <td style={{ padding: '12px 16px', color: ABYSS[500], fontSize: '12px' }}>{row.props}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>MCP Tools</h2>
+
+<SectionHeader
+  icon={<Terminal size={20} />}
+  title="Query Colors Programmatically"
+  description="AI assistants use these tools to get guaranteed-compliant color combinations."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { name: 'get_color_recommendation', icon: <Target size={18} />, desc: 'Get colors for a UI context', example: 'mcp__dds__get_color_recommendation({context: "card", theme: "light"})' },
+    { name: 'check_contrast', icon: <Contrast size={18} />, desc: 'Check WCAG contrast ratio', example: 'mcp__dds__check_contrast({background: "ABYSS[900]", foreground: "PRIMITIVES.white"})' },
+    { name: 'get_accessible_colors', icon: <Eye size={18} />, desc: 'Find all passing foregrounds', example: 'mcp__dds__get_accessible_colors({background: "ABYSS[900]", minLevel: "AAA"})' },
+    { name: 'get_color_harmony', icon: <Sparkles size={18} />, desc: 'Compatible color companions', example: 'mcp__dds__get_color_harmony({color: "CORAL"})' },
+    { name: 'validate_color_choice', icon: <CheckCircle size={18} />, desc: 'Check if combo is valid', example: 'mcp__dds__validate_color_choice({background: "...", foreground: "..."})' },
+    { name: 'get_glass_rules', icon: <Droplets size={18} />, desc: 'Glass depth rules', example: 'mcp__dds__get_glass_rules({depth: 1})' },
+  ].map((tool) => (
+    <div
+      key={tool.name}
+      style={{
+        background: PRIMITIVES.softLinen,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.cardGap,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '8px',
+      }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.sm,
+          background: DEEP_CURRENT[50],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: DEEP_CURRENT[600],
+        }}>
+          {tool.icon}
+        </div>
+        <span style={{
+          fontSize: '13px',
+          fontWeight: 600,
+          fontFamily: '"JetBrains Mono", monospace',
+          color: DEEP_CURRENT[700],
+        }}>
+          {tool.name}
+        </span>
+      </div>
+      <div style={{
+        fontSize: '12px',
+        color: DUSK_REEF[500],
+        marginBottom: '8px',
+      }}>
+        {tool.desc}
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: '"JetBrains Mono", monospace',
+        color: SLATE[500],
+        background: SLATE[50],
+        padding: '8px',
+        borderRadius: RADIUS.xs,
+        wordBreak: 'break-all',
+      }}>
+        {tool.example}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Contrast Rules</h2>
+
+<SectionHeader
+  icon={<Contrast size={20} />}
+  title="WCAG Compliance by Element Type"
+  description="Different UI elements require different contrast ratios. Don't apply 4.5:1 to everything."
+/>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Element Category</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Threshold</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Examples</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Normal Text</td>
+        <td style={{ padding: '12px 16px' }}>
+          <span style={{ background: DEEP_CURRENT[100], color: DEEP_CURRENT[700], padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>4.5:1 (AA)</span>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>Body text, labels, button text, form fields</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Large Text</td>
+        <td style={{ padding: '12px 16px' }}>
+          <span style={{ background: HARBOR[100], color: HARBOR[700], padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>3.0:1 (AA)</span>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>Headings 18pt+, bold text 14pt+</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Graphics/Icons</td>
+        <td style={{ padding: '12px 16px' }}>
+          <span style={{ background: HARBOR[100], color: HARBOR[700], padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>3.0:1 (AA)</span>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>Icons, borders, focus rings, UI boundaries</td>
+      </tr>
+      <tr>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Badges (Small Text)</td>
+        <td style={{ padding: '12px 16px' }}>
+          <span style={{ background: CORAL[100], color: CORAL[700], padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>7.0:1 (AAA)</span>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500], fontSize: '12px' }}>Status badges, tags (12-14px text)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '16px',
+  border: `1px solid ${CORAL[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+    <XCircle size={20} style={{ color: CORAL[600], flexShrink: 0, marginTop: '2px' }} />
+    <div>
+      <div style={{ fontWeight: 600, color: CORAL[700], marginBottom: '4px' }}>Common Mistake</div>
+      <div style={{ fontSize: '13px', color: CORAL[600] }}>
+        Using 3.0:1 for button text because "it passes AA". Button text is <strong>normal text</strong>,
+        which requires 4.5:1. Only icons and large headings can use 3.0:1.
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>DataViz Palettes</h2>
+
+<SectionHeader
+  icon={<BarChart3 size={20} />}
+  title="Data Visualization Colors"
+  description="Categorical, sequential, and diverging palettes for charts and graphs."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {/* Categorical */}
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+      Categorical
+    </h4>
+    <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+      Distinct categories (pie slices, bar groups)
+    </p>
+    <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
+      {['#08A4BD', '#3B82F6', '#22C55E', '#F70D1A', '#EAB308', '#5E4F7E'].map((hex, i) => (
+        <div key={i} style={{ width: '28px', height: '28px', borderRadius: RADIUS.xs, background: hex }} />
+      ))}
+    </div>
+    <div style={{ fontSize: '11px', color: SLATE[500] }}>
+      Max 6 colors. Use patterns for &gt;6 categories.
+    </div>
+  </div>
+
+  {/* Sequential */}
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+      Sequential
+    </h4>
+    <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+      Single-variable intensity (heatmaps)
+    </p>
+    <div style={{ marginBottom: '8px' }}>
+      <div style={{ fontSize: '11px', color: SLATE[500], marginBottom: '4px' }}>Cool (neutral)</div>
+      <div style={{ display: 'flex', height: '20px', borderRadius: RADIUS.xs, overflow: 'hidden' }}>
+        {['#CCEFF5', '#66CFE1', '#08A4BD', '#056271', '#022125'].map((hex, i) => (
+          <div key={i} style={{ flex: 1, background: hex }} />
+        ))}
+      </div>
+    </div>
+    <div>
+      <div style={{ fontSize: '11px', color: SLATE[500], marginBottom: '4px' }}>Warm (urgency)</div>
+      <div style={{ display: 'flex', height: '20px', borderRadius: RADIUS.xs, overflow: 'hidden' }}>
+        {['#FEE2E2', '#FCA5A5', '#F70D1A', '#B91C1C', '#7F1D1D'].map((hex, i) => (
+          <div key={i} style={{ flex: 1, background: hex }} />
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* Diverging */}
+  <div style={{
+    background: PRIMITIVES.softLinen,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.px.comfortable,
+    border: `1px solid ${SLATE[200]}`,
+  }}>
+    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
+      Diverging
+    </h4>
+    <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+      Positive/negative from neutral center
+    </p>
+    <div style={{ display: 'flex', height: '28px', borderRadius: RADIUS.xs, overflow: 'hidden', marginBottom: '8px' }}>
+      {['#DC2626', '#FCA5A5', '#E2E8F0', '#86EFAC', '#16A34A'].map((hex, i) => (
+        <div key={i} style={{ flex: 1, background: hex }} />
+      ))}
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: SLATE[500] }}>
+      <span>Negative</span>
+      <span>Neutral</span>
+      <span>Positive</span>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Glass Depth System</h2>
+
+<SectionHeader
+  icon={<Layers size={20} />}
+  title="Transparency & Blur Rules"
+  description="Three depth levels with specific opacity, blur, and text placement strategies."
+/>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { depth: 1, name: 'Elevated', opacity: '60%', blur: '8px', border: 'border-white/20', text: 'Direct text OK', use: 'Modals, overlays' },
+    { depth: 2, name: 'Card', opacity: '40%', blur: '4px', border: 'border-2 border-accent', text: 'Direct text OK', use: 'Cards, panels' },
+    { depth: 3, name: 'Surface', opacity: '20%', blur: '2px', border: 'border-white/10', text: 'Nest solid surface', use: 'Nested containers' },
+  ].map((level) => (
+    <div
+      key={level.depth}
+      style={{
+        background: DEEP_CURRENT[50],
+        borderRadius: RADIUS.lg,
+        padding: SPACING.px.comfortable,
+        border: `1px solid ${DEEP_CURRENT[200]}`,
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '12px',
+      }}>
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: RADIUS.full,
+          background: DEEP_CURRENT[600],
+          color: PRIMITIVES.white,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '14px',
+          fontWeight: 700,
+        }}>
+          {level.depth}
+        </div>
+        <span style={{ fontSize: '14px', fontWeight: 600, color: DEEP_CURRENT[700] }}>{level.name}</span>
+      </div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[600], lineHeight: 1.8 }}>
+        <div><strong>Opacity:</strong> {level.opacity}</div>
+        <div><strong>Blur:</strong> {level.blur}</div>
+        <div><strong>Border:</strong> <code style={{ fontSize: '11px' }}>{level.border}</code></div>
+        <div><strong>Text:</strong> {level.text}</div>
+        <div style={{ marginTop: '8px', color: SLATE[500], fontSize: '11px' }}>
+          Use for: {level.use}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<InfoBox variant="warning">
+  <strong>Text Placement Rule:</strong> Below 40% opacity, place text on nested solid surfaces,
+  not directly on glass. Use <code>mcp__dds__get_glass_rules(depth)</code> to get exact rules.
+</InfoBox>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Usage Workflow</h2>
+
+<SectionHeader
+  icon={<Lightbulb size={20} />}
+  title="How to Use Color Intelligence"
+  description="Step-by-step workflow for selecting colors."
+/>
+
+<div style={{
+  background: ABYSS[600],
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  overflow: 'auto',
+}}>
+  <pre style={{
+    margin: 0,
+    fontFamily: '"JetBrains Mono", monospace',
+    fontSize: '12px',
+    lineHeight: 1.8,
+    color: SLATE[200],
+  }}>
+{`# 1. Identify your UI context
+"I'm building a card component"  →  context = "card"
+
+# 2. Query MCP for context colors
+mcp__dds__get_color_recommendation({context: "card", theme: "light"})
+→ Returns: bg, text, border, shadow, glass options
+
+# 3. If using custom colors, validate contrast
+mcp__dds__check_contrast({
+  background: "ABYSS[900]",
+  foreground: "CORAL[200]"
+})
+→ Returns: ratio, level (AA/AAA/FAIL), pass status
+
+# 4. For dark backgrounds, get accessible foregrounds
+mcp__dds__get_accessible_colors({
+  background: "ABYSS[900]",
+  minLevel: "AAA"
+})
+→ Returns: list of passing foreground tokens
+
+# 5. For color combos, check harmony
+mcp__dds__get_color_harmony({color: "CORAL"})
+→ Returns: companions, accents, colors to avoid`}
+  </pre>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Quick Reference</h2>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.cardGap,
+  marginBottom: SPACING.px.section,
+}}>
+  <GuidelineCard type="do" title="Use Context Queries">
+    Always start with <code>get_color_recommendation(context)</code> instead of picking colors manually.
+    The system knows which colors work together.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Hardcode Hex Values">
+    Never use <code>#08A4BD</code> directly. Use semantic tokens like <code>text-accent</code> that adapt to themes.
+  </GuidelineCard>
+
+  <GuidelineCard type="do" title="Validate Badge Contrast">
+    Badges use small text (12-14px) which requires AAA (7:1 ratio), not just AA (4.5:1).
+    Always verify with <code>check_contrast</code>.
+  </GuidelineCard>
+
+  <GuidelineCard type="dont" title="Same Family on Itself">
+    Never put ABYSS text on ABYSS background, or CORAL on CORAL. Same color family = invisible text.
+  </GuidelineCard>
+</div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Files & Resources</h2>
+
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Resource</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Location</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Source Data</td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>src/data/color-intelligence.json</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Single source of truth (28KB)</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Compressed Summary</td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>.claude/color-intelligence.toon</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Agent-optimized summary (2.7KB)</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Visual Demo</td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>Foundation → Color Intelligence</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Interactive Storybook demo</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>MCP Tools</td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>mcp/src/tools/color*.ts</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Programmatic queries</td>
+      </tr>
+      <tr>
+        <td style={{ padding: '12px 16px', fontWeight: 600, color: ABYSS[500] }}>Sync Script</td>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px', fontSize: '12px' }}>npm run sync:color-intelligence</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Regenerate .toon + types from JSON</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

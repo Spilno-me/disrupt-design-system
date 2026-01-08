@@ -19,6 +19,7 @@ import {
   Layers,
   Target,
   Workflow,
+  Eye,
 } from 'lucide-react';
 import {
   BrandHero,
@@ -147,15 +148,20 @@ import {
 
 <SectionHeader
   icon={<Wrench size={20} />}
-  title="Phase 1 Tools (Current)"
-  description="6 tools for component lookup, token validation, and design guidance."
+  title="13 Tools Available"
+  description="Component lookup, token validation, color intelligence, and WCAG contrast checking."
 />
+
+{/* Core Tools */}
+<h3 style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.base }}>
+  Core Tools
+</h3>
 
 <div style={{
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
   gap: SPACING.px.base,
-  marginBottom: SPACING.px.section,
+  marginBottom: SPACING.px.comfortable,
 }}>
   {[
     { name: 'get_component', icon: <Component size={20} />, desc: 'Component metadata (variants, status, path)', example: 'get_component({name: "Button"})' },
@@ -163,7 +169,7 @@ import {
     { name: 'get_design_tokens', icon: <Palette size={20} />, desc: 'Token values for colors, shadows, radius', example: 'get_design_tokens({category: "shadows"})' },
     { name: 'get_color_guidance', icon: <Layers size={20} />, desc: 'Color rules for background types', example: 'get_color_guidance({category: "dark_backgrounds"})' },
     { name: 'check_token_usage', icon: <ShieldCheck size={20} />, desc: 'Validate if token is DDS-compliant', example: 'check_token_usage({token: "bg-blue-500"})' },
-    { name: 'get_design_philosophy', icon: <BookOpen size={20} />, desc: 'Wu Wei + MAYA principles', example: 'get_design_philosophy({})' },
+    { name: 'get_design_philosophy', icon: <BookOpen size={20} />, desc: 'Wu Wei + MAYA + QoE principles', example: 'get_design_philosophy({})' },
   ].map((tool) => (
     <div
       key={tool.name}
@@ -212,6 +218,149 @@ import {
         background: SLATE[50],
         padding: SPACING.px.tight,
         borderRadius: RADIUS.xs,
+      }}>
+        {tool.example}
+      </div>
+    </div>
+  ))}
+</div>
+
+{/* Contrast & Accessibility Tools */}
+<h3 style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.base }}>
+  Contrast & Accessibility
+</h3>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.comfortable,
+}}>
+  {[
+    { name: 'check_contrast', icon: <Eye size={20} />, desc: 'WCAG contrast ratio between two colors', example: 'check_contrast({background: "ABYSS[900]", foreground: "PRIMITIVES.white"})' },
+    { name: 'get_accessible_colors', icon: <ShieldCheck size={20} />, desc: 'Find colors meeting WCAG requirements', example: 'get_accessible_colors({background: "ABYSS[900]", minLevel: "AAA"})' },
+    { name: 'list_color_tokens', icon: <Palette size={20} />, desc: 'List available color tokens', example: 'list_color_tokens({filter: "ABYSS"})' },
+  ].map((tool) => (
+    <div
+      key={tool.name}
+      style={{
+        background: PRIMITIVES.softLinen,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.cardGap,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        width: '36px',
+        height: '36px',
+        borderRadius: RADIUS.sm,
+        background: DUSK_REEF[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.compact,
+        color: DUSK_REEF[600],
+      }}>
+        {tool.icon}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: DUSK_REEF[600],
+        marginBottom: SPACING.px.micro,
+      }}>
+        {tool.name}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: DUSK_REEF[500],
+        marginBottom: SPACING.px.tight,
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+      }}>
+        {tool.desc}
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+        background: SLATE[50],
+        padding: SPACING.px.tight,
+        borderRadius: RADIUS.xs,
+        wordBreak: 'break-all',
+      }}>
+        {tool.example}
+      </div>
+    </div>
+  ))}
+</div>
+
+{/* Color Intelligence Tools */}
+<h3 style={{ fontSize: TYPOGRAPHY.fontSize.sm[0], fontWeight: TYPOGRAPHY.fontWeight.semibold, color: ABYSS[500], marginBottom: SPACING.px.base }}>
+  Color Intelligence
+</h3>
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: SPACING.px.base,
+  marginBottom: SPACING.px.section,
+}}>
+  {[
+    { name: 'get_color_recommendation', icon: <Target size={20} />, desc: 'Context-aware color recommendations for 13 UI contexts (card, modal, button, etc.)', example: 'get_color_recommendation({context: "card", theme: "light"})' },
+    { name: 'get_color_harmony', icon: <Layers size={20} />, desc: 'Color harmony rules (companions, accents, colors to avoid)', example: 'get_color_harmony({color: "CORAL"})' },
+    { name: 'validate_color_choice', icon: <ShieldCheck size={20} />, desc: 'Validate foreground/background combinations with WCAG + forbidden patterns', example: 'validate_color_choice({background: "ABYSS[900]", foreground: "CORAL[200]"})' },
+    { name: 'get_glass_rules', icon: <Layers size={20} />, desc: 'Glass/frosted UI styling rules by depth level (1-3)', example: 'get_glass_rules({depth: 1})' },
+  ].map((tool) => (
+    <div
+      key={tool.name}
+      style={{
+        background: PRIMITIVES.softLinen,
+        borderRadius: RADIUS.md,
+        padding: SPACING.px.cardGap,
+        border: `1px solid ${SLATE[200]}`,
+      }}
+    >
+      <div style={{
+        width: '36px',
+        height: '36px',
+        borderRadius: RADIUS.sm,
+        background: ABYSS[50],
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.px.compact,
+        color: ABYSS[600],
+      }}>
+        {tool.icon}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.sm[0],
+        fontWeight: TYPOGRAPHY.fontWeight.semibold,
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: ABYSS[600],
+        marginBottom: SPACING.px.micro,
+      }}>
+        {tool.name}
+      </div>
+      <div style={{
+        fontSize: TYPOGRAPHY.fontSize.xs[0],
+        fontFamily: TYPOGRAPHY.fontFamily.sans,
+        color: DUSK_REEF[500],
+        marginBottom: SPACING.px.tight,
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed,
+      }}>
+        {tool.desc}
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontFamily: TYPOGRAPHY.fontFamily.mono,
+        color: SLATE[500],
+        background: SLATE[50],
+        padding: SPACING.px.tight,
+        borderRadius: RADIUS.xs,
+        wordBreak: 'break-all',
       }}>
         {tool.example}
       </div>
@@ -430,8 +579,8 @@ import {
   marginBottom: SPACING.px.section,
 }}>
   {[
-    { phase: 'Phase 1', status: 'COMPLETE', color: DEEP_CURRENT[500], bg: DEEP_CURRENT[50], title: 'Foundation', desc: '6 tools: component lookup, token validation, color guidance', tools: 'get_component, search_components, get_design_tokens, get_color_guidance, check_token_usage, get_design_philosophy' },
-    { phase: 'Phase 2', status: 'NEXT', color: DUSK_REEF[500], bg: DUSK_REEF[50], title: 'Validation & Patterns', desc: 'Proactive rule enforcement during development', tools: 'check_contrast, get_storybook_patterns, get_component_workflow, get_testing_patterns' },
+    { phase: 'Phase 1', status: 'COMPLETE', color: DEEP_CURRENT[500], bg: DEEP_CURRENT[50], title: 'Foundation + Color Intelligence', desc: '13 tools: component lookup, token validation, WCAG contrast, color intelligence', tools: 'get_component, search_components, get_design_tokens, get_color_guidance, check_token_usage, get_design_philosophy, check_contrast, get_accessible_colors, list_color_tokens, get_color_recommendation, get_color_harmony, validate_color_choice, get_glass_rules' },
+    { phase: 'Phase 2', status: 'NEXT', color: DUSK_REEF[500], bg: DUSK_REEF[50], title: 'Patterns & Workflows', desc: 'Storybook patterns, testing guides, component workflows', tools: 'get_storybook_patterns, get_component_workflow, get_testing_patterns' },
     { phase: 'Phase 3', status: 'FUTURE', color: ABYSS[400], bg: ABYSS[50], title: 'Consumer Integration', desc: 'Help developers using DDS in their apps', tools: 'suggest_component, get_usage_example, check_composition, get_accessibility_rules' },
     { phase: 'Phase 4', status: 'FUTURE', color: SLATE[400], bg: SLATE[50], title: 'Full Compliance Audit', desc: 'Audit entire files/projects for DDS compliance', tools: 'audit_file, audit_tokens, suggest_fixes' },
     { phase: 'Phase 5', status: 'FUTURE', color: SLATE[400], bg: SLATE[50], title: 'Code Generation', desc: 'Generate DDS-compliant code from descriptions', tools: 'generate_component_scaffold, generate_story_file' },
@@ -593,16 +742,21 @@ echo '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"get_design
   }}>
     <pre style={{ margin: 0 }}>{`mcp/
 ├── src/
-│   └── index.ts          # Main server with all tools
-├── dist/                 # Compiled output
-├── package.json          # Dependencies (@modelcontextprotocol/sdk, zod)
-├── tsconfig.json         # TypeScript config
-├── README.md             # Full documentation
-└── ROADMAP.md            # Development roadmap
+│   ├── index.ts              # Main server with core tools
+│   └── tools/
+│       ├── colorRecommendation.ts  # Context-aware color recommendations
+│       ├── colorHarmony.ts         # Color harmony rules
+│       ├── colorValidation.ts      # Validate color combinations
+│       └── glassRules.ts           # Glass/frosted UI styling
+├── dist/                     # Compiled output
+├── package.json              # Dependencies (@modelcontextprotocol/sdk, zod)
+├── tsconfig.json             # TypeScript config
+└── README.md                 # Full documentation
 
 Data Sources (read at runtime):
-├── .claude/agent-context.json    # Components, tokens, philosophy
-├── .claude/color-matrix.json     # Color usage rules
-└── .claude/contrast-matrix.json  # WCAG contrast (Phase 2)`}</pre>
+├── .claude/agent-context.json      # Components, tokens, philosophy
+├── .claude/color-matrix.json       # Color usage rules
+├── .claude/contrast-matrix.json    # WCAG contrast combinations
+└── src/data/color-intelligence.json # Full color intelligence system`}</pre>
   </div>
 </div>

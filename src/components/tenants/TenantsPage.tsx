@@ -6,6 +6,7 @@ import {
   Eye,
   Pencil,
   PauseCircle,
+  PlayCircle,
   Building2,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
@@ -30,6 +31,7 @@ import { PageActionPanel } from "../ui/PageActionPanel"
 import { ViewTenantDialog } from "./ViewTenantDialog"
 import { EditTenantDialog } from "./EditTenantDialog"
 import { SuspendTenantDialog } from "./SuspendTenantDialog"
+import { ActivateTenantDialog } from "./ActivateTenantDialog"
 
 // Re-export types for external consumers
 export type { TenantStatus, SubscriptionPackage, Tenant, TenantsPageProps, TenantFormData }
@@ -85,7 +87,7 @@ const getPackageVariant = (pkg: SubscriptionPackage) => {
  * - Pagination
  */
 export function TenantsPage({
-  tenants = MOCK_TENANTS,
+  tenants: initialTenants = MOCK_TENANTS,
   onViewTenant,
   onEditTenant,
   onSuspendTenant,
@@ -93,6 +95,14 @@ export function TenantsPage({
   loading = false,
   className,
 }: TenantsPageProps) {
+  // Internal tenant state - allows UI updates after actions
+  const [tenants, setTenants] = useState<Tenant[]>(initialTenants)
+
+  // Sync internal state when prop changes (for controlled usage)
+  React.useEffect(() => {
+    setTenants(initialTenants)
+  }, [initialTenants])
+
   // State
   const [searchQuery, setSearchQuery] = useState("")
   const [filters, setFilters] = useState<FilterState>({
@@ -115,6 +125,11 @@ export function TenantsPage({
   const [suspendDialogOpen, setSuspendDialogOpen] = useState(false)
   const [tenantToSuspend, setTenantToSuspend] = useState<Tenant | null>(null)
   const [isSuspending, setIsSuspending] = useState(false)
+
+  // Activate Dialog state
+  const [activateDialogOpen, setActivateDialogOpen] = useState(false)
+  const [tenantToActivate, setTenantToActivate] = useState<Tenant | null>(null)
+  const [isActivating, setIsActivating] = useState(false)
 
   // Filter tenants based on search and filters
   const filteredTenants = useMemo(() => {
@@ -193,11 +208,51 @@ export function TenantsPage({
       if (onSuspendTenant) {
         await onSuspendTenant(tenant)
       }
+      // Update internal state to reflect suspension
+      setTenants((prev) =>
+        prev.map((t) =>
+          t.id === tenant.id ? { ...t, status: "suspended" as TenantStatus, monthlyRevenue: 0 } : t
+        )
+      )
+      // Update selected tenant if viewing
+      if (selectedTenant?.id === tenant.id) {
+        setSelectedTenant({ ...tenant, status: "suspended", monthlyRevenue: 0 })
+      }
       setSuspendDialogOpen(false)
     } finally {
       setIsSuspending(false)
     }
-  }, [onSuspendTenant])
+  }, [onSuspendTenant, selectedTenant])
+
+  // Handle activate tenant click - opens confirmation dialog
+  const handleActivateTenantClick = React.useCallback((tenant: Tenant) => {
+    setTenantToActivate(tenant)
+    setTimeout(() => setActivateDialogOpen(true), 150)
+  }, [])
+
+  // Handle activate confirmation
+  const handleActivateConfirm = React.useCallback(async (tenant: Tenant) => {
+    setIsActivating(true)
+    try {
+      if (onActivateTenant) {
+        await onActivateTenant(tenant)
+      }
+      // Update internal state to reflect activation
+      setTenants((prev) =>
+        prev.map((t) =>
+          t.id === tenant.id ? { ...t, status: "active" as TenantStatus } : t
+        )
+      )
+      // Update selected tenant if viewing
+      if (selectedTenant?.id === tenant.id) {
+        setSelectedTenant({ ...tenant, status: "active" })
+      }
+      setActivateDialogOpen(false)
+      setViewDialogOpen(false)
+    } finally {
+      setIsActivating(false)
+    }
+  }, [onActivateTenant, selectedTenant])
 
   // Render tenant actions using ActionTile pattern (≤3 actions = visible buttons)
   const renderTenantActions = React.useCallback((tenant: Tenant) => (
@@ -261,8 +316,29 @@ export function TenantsPage({
           </TooltipContent>
         </Tooltip>
       )}
+      {tenant.status === "suspended" && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ActionTile
+              variant="success"
+              appearance="filled"
+              size="xs"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleActivateTenantClick(tenant)
+              }}
+              aria-label="Activate tenant"
+            >
+              <PlayCircle className="size-4" />
+            </ActionTile>
+          </TooltipTrigger>
+          <TooltipContent side="top" sideOffset={4}>
+            Activate Tenant
+          </TooltipContent>
+        </Tooltip>
+      )}
     </div>
-  ), [handleViewTenantClick, handleEditTenantClick, handleSuspendTenantClick])
+  ), [handleViewTenantClick, handleEditTenantClick, handleSuspendTenantClick, handleActivateTenantClick])
 
   // Column definitions
   /* eslint-disable no-restricted-syntax */
@@ -425,7 +501,7 @@ export function TenantsPage({
         tenant={selectedTenant}
         onEdit={handleEditTenantClick}
         onSuspend={handleSuspendTenantClick}
-        onActivate={onActivateTenant ? (t) => onActivateTenant(t) : undefined}
+        onActivate={handleActivateTenantClick}
       />
 
       {/* Edit Tenant Dialog */}
@@ -444,6 +520,15 @@ export function TenantsPage({
         tenant={tenantToSuspend}
         onConfirm={handleSuspendConfirm}
         isSuspending={isSuspending}
+      />
+
+      {/* Activate Tenant Dialog */}
+      <ActivateTenantDialog
+        open={activateDialogOpen}
+        onOpenChange={setActivateDialogOpen}
+        tenant={tenantToActivate}
+        onConfirm={handleActivateConfirm}
+        isActivating={isActivating}
       />
     </main>
   )

@@ -22,6 +22,9 @@ export const MAX_TOTAL_NODES = 200
 /** History size for undo/redo */
 export const MAX_HISTORY_SIZE = 50
 
+/** Maximum characters for folder/item names */
+export const MAX_NAME_LENGTH = 50
+
 // =============================================================================
 // LAYOUT
 // =============================================================================

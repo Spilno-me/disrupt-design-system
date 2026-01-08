@@ -7,6 +7,7 @@
 
 import * as React from 'react'
 import { cn } from '../../../lib/utils'
+import { MAX_NAME_LENGTH } from './constants'
 
 // =============================================================================
 // TYPES
@@ -53,7 +54,13 @@ export function InlineRenameInput({
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         e.preventDefault()
-        onComplete(value)
+        // Trim and truncate before validating
+        const trimmed = value.trim().slice(0, MAX_NAME_LENGTH)
+        if (trimmed) {
+          onComplete(trimmed)
+        } else {
+          onCancel() // Empty/whitespace = cancel
+        }
       } else if (e.key === 'Escape') {
         e.preventDefault()
         onCancel()
@@ -62,10 +69,11 @@ export function InlineRenameInput({
     [value, onComplete, onCancel]
   )
 
-  // Handle blur - commit if changed, cancel if empty
+  // Handle blur - commit if trimmed value exists, otherwise cancel
   const handleBlur = React.useCallback(() => {
-    if (value.trim()) {
-      onComplete(value)
+    const trimmed = value.trim().slice(0, MAX_NAME_LENGTH)
+    if (trimmed) {
+      onComplete(trimmed) // Pass trimmed value
     } else {
       onCancel()
     }

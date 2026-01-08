@@ -18,7 +18,7 @@ import type {
   Product,
 } from '../types'
 import { isFolder } from '../types'
-import { MAX_DEPTH, MAX_HISTORY_SIZE } from '../constants'
+import { MAX_DEPTH, MAX_HISTORY_SIZE, MAX_NAME_LENGTH } from '../constants'
 
 // =============================================================================
 // STATE INTERFACE
@@ -65,7 +65,7 @@ export interface WorkspaceActions {
   // CRUD
   createFolder: (parentId: string | null, name: string, color?: FolderColor) => string
   createItem: (parentId: string | null, name: string, href: string, iconName?: string) => string
-  rename: (id: string, name: string) => void
+  rename: (id: string, name: string) => boolean
   deleteNode: (id: string) => void
   setColor: (id: string, color: FolderColor) => void
 
@@ -401,12 +401,38 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
         return id
       },
 
-      rename: (id: string, name: string) => {
+      rename: (id: string, name: string): boolean => {
         const state = get()
         const { nodes, rootIds, history, historyIndex } = state
         const node = nodes[id]
 
-        if (!node) return
+        if (!node) return false
+
+        // Trim and truncate name
+        const trimmedName = name.trim().slice(0, MAX_NAME_LENGTH)
+
+        // Reject empty/whitespace-only names
+        if (!trimmedName) {
+          return false
+        }
+
+        // Same name = no-op, but return true (not a failure)
+        if (trimmedName === node.name) {
+          // Exit edit mode without adding to history
+          set({ editingNodeId: null })
+          return true
+        }
+
+        // Check for duplicate sibling names (case-insensitive)
+        const siblings = Object.values(nodes).filter(
+          (n) => n.parentId === node.parentId && n.id !== id
+        )
+        const isDuplicate = siblings.some(
+          (s) => s.name.toLowerCase() === trimmedName.toLowerCase()
+        )
+        if (isDuplicate) {
+          return false
+        }
 
         const { newHistory, newHistoryIndex } = addToHistory(
           history, historyIndex, nodes, rootIds, 'Rename'
@@ -415,12 +441,14 @@ export const useWorkspaceStore = create<WorkspaceStore>()(
         set({
           nodes: {
             ...nodes,
-            [id]: { ...node, name, updatedAt: Date.now() },
+            [id]: { ...node, name: trimmedName, updatedAt: Date.now() },
           },
           history: newHistory,
           historyIndex: newHistoryIndex,
           editingNodeId: null,
         })
+
+        return true
       },
 
       deleteNode: (id: string) => {

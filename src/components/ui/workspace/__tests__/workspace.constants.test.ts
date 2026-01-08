@@ -10,6 +10,7 @@ import {
   MAX_CHILDREN_PER_FOLDER,
   MAX_TOTAL_NODES,
   MAX_HISTORY_SIZE,
+  MAX_NAME_LENGTH,
   WORKSPACE_MAX_HEIGHT,
   BASE_INDENT_PX,
   INDENT_PER_LEVEL_PX,
@@ -23,7 +24,7 @@ import {
   FOLDER_COLOR_MAP,
 } from '../constants'
 import { FOLDER_COLORS, isFolder, isItem } from '../types'
-import type { FolderColor, WorkspaceFolder, WorkspaceItem } from '../types'
+import type { WorkspaceFolder, WorkspaceItem } from '../types'
 
 // =============================================================================
 // STRUCTURE LIMITS
@@ -48,6 +49,12 @@ describe('structure limits', () => {
   it('should define MAX_HISTORY_SIZE for undo/redo', () => {
     expect(MAX_HISTORY_SIZE).toBe(50)
     expect(MAX_HISTORY_SIZE).toBeGreaterThan(10) // Allow meaningful history
+  })
+
+  it('should define MAX_NAME_LENGTH for folder/item names', () => {
+    expect(MAX_NAME_LENGTH).toBe(50)
+    expect(MAX_NAME_LENGTH).toBeGreaterThan(10) // Allow reasonable names
+    expect(MAX_NAME_LENGTH).toBeLessThanOrEqual(100) // Fit in UI
   })
 })
 

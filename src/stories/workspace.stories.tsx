@@ -149,6 +149,18 @@ const MOCK_NODES: WorkspaceNode[] = [
     sortOrder: 0,
     updatedAt: Date.now(),
   },
+  // Root-level item for testing (no parent folder)
+  {
+    id: 'item-1',
+    product: 'flow',
+    name: 'Root Item',
+    type: 'item',
+    href: '/root-item',
+    iconName: 'FileText',
+    parentId: null,
+    sortOrder: 3,
+    updatedAt: Date.now(),
+  },
 ]
 
 // =============================================================================
@@ -161,23 +173,28 @@ const MOCK_NODES: WorkspaceNode[] = [
 function StoreInitializer({
   nodes,
   children,
+  expandFirstFolder = true,
 }: {
   nodes: WorkspaceNode[]
   children: React.ReactNode
+  /** Whether to auto-expand first folder (default: true) */
+  expandFirstFolder?: boolean
 }) {
   const initialize = useWorkspaceStore((s) => s.initialize)
-  const expandedFolderIds = useWorkspaceStore((s) => s.expandedFolderIds)
+  const reset = useWorkspaceStore((s) => s.reset)
 
   React.useEffect(() => {
+    // Reset store to clean state before initializing
+    reset()
     initialize(nodes, 'flow')
-    // Expand first folder for visibility
-    if (nodes.length > 0 && expandedFolderIds.length === 0) {
+    // Optionally expand first folder for visibility
+    if (expandFirstFolder && nodes.length > 0) {
       const folders = nodes.filter((n) => n.type === 'folder' && n.parentId === null)
       if (folders[0]) {
         useWorkspaceStore.getState().toggleExpand(folders[0].id)
       }
     }
-  }, [nodes, initialize, expandedFolderIds.length])
+  }, [nodes, initialize, reset, expandFirstFolder])
 
   return <>{children}</>
 }
@@ -464,6 +481,587 @@ export const InAppShell: Story = {
 // =============================================================================
 // INTERACTION TESTS (TDD BEHAVIOR VERIFICATION)
 // =============================================================================
-// TODO: Re-enable when @storybook/test types are properly configured
-// These tests verify: expand/collapse, selection, inline rename, create folder,
-// overflow menu, and empty state CTA behaviors
+
+/**
+ * Tests folder expand/collapse behavior.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click chevron to toggle expand/collapse
+ * - aria-expanded attribute reflects state
+ */
+export const InteractionExpandCollapse: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES} expandFirstFolder={false}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Wait for initial render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Find "Archive" folder which starts collapsed (all folders collapsed)
+    const archiveNode = await canvas.findByTestId('workspace-node-folder-2')
+    expect(archiveNode).toBeInTheDocument()
+
+    // Check initial collapsed state
+    expect(archiveNode).toHaveAttribute('aria-expanded', 'false')
+
+    // Find and click the chevron to expand
+    const chevron = canvas.getByTestId('workspace-node-folder-2-chevron')
+    await userEvent.click(chevron)
+
+    // Verify expanded state
+    await waitFor(() => {
+      expect(archiveNode).toHaveAttribute('aria-expanded', 'true')
+    })
+
+    // Click again to collapse
+    await userEvent.click(chevron)
+
+    // Verify collapsed state
+    await waitFor(() => {
+      expect(archiveNode).toHaveAttribute('aria-expanded', 'false')
+    })
+  },
+}
+
+/**
+ * Tests click-to-select behavior.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click node to select it
+ * - aria-selected attribute reflects selection
+ * - Only one node selected at a time
+ */
+export const InteractionSelection: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Find folder nodes
+    const folder1 = await canvas.findByTestId('workspace-node-folder-1')
+    const folder2 = await canvas.findByTestId('workspace-node-folder-2')
+
+    // Initially nothing selected
+    expect(folder1).toHaveAttribute('aria-selected', 'false')
+    expect(folder2).toHaveAttribute('aria-selected', 'false')
+
+    // Click to select folder-1
+    await userEvent.click(folder1)
+
+    await waitFor(() => {
+      expect(folder1).toHaveAttribute('aria-selected', 'true')
+      expect(folder2).toHaveAttribute('aria-selected', 'false')
+    })
+
+    // Click to select folder-2 (should deselect folder-1)
+    await userEvent.click(folder2)
+
+    await waitFor(() => {
+      expect(folder1).toHaveAttribute('aria-selected', 'false')
+      expect(folder2).toHaveAttribute('aria-selected', 'true')
+    })
+  },
+}
+
+/**
+ * Tests inline rename behavior.
+ *
+ * Expected behaviors (TDD spec):
+ * - Double-click to enter rename mode
+ * - Input appears and receives focus
+ * - Enter commits the rename
+ * - Escape cancels the rename
+ */
+export const InteractionInlineRename: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Find Archive folder name element
+    const folderNameElement = await canvas.findByTestId('workspace-node-folder-2-name')
+    expect(folderNameElement).toHaveTextContent('Archive')
+
+    // Double-click to enter rename mode
+    await userEvent.dblClick(folderNameElement)
+
+    // Wait for input to appear
+    const input = await canvas.findByTestId('workspace-input-folder-2')
+    expect(input).toBeInTheDocument()
+    expect(input).toHaveFocus()
+
+    // Clear and type new name
+    await userEvent.clear(input)
+    await userEvent.type(input, 'Archived Items')
+
+    // Press Enter to commit
+    await userEvent.keyboard('{Enter}')
+
+    // Input should disappear and name should be updated
+    await waitFor(() => {
+      expect(canvas.queryByTestId('workspace-input-folder-2')).not.toBeInTheDocument()
+    })
+
+    // Verify the name changed
+    const updatedName = canvas.getByTestId('workspace-node-folder-2-name')
+    expect(updatedName).toHaveTextContent('Archived Items')
+  },
+}
+
+/**
+ * Tests create folder behavior.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click create button adds new folder
+ * - New folder enters rename mode immediately
+ * - New folder is selected
+ */
+export const InteractionCreateFolder: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Count initial folders
+    const initialFolders = canvas.getAllByTestId(/^workspace-node-folder-/)
+
+    // Click create button
+    const createButton = canvas.getByTestId('workspace-section-create')
+    await userEvent.click(createButton)
+
+    // Wait for new folder to appear with input (rename mode)
+    await waitFor(() => {
+      const inputs = canvas.getAllByTestId(/^workspace-input-/)
+      expect(inputs.length).toBeGreaterThan(0)
+    })
+
+    // Get the new input (should have temp-* ID pattern)
+    const newInput = await canvas.findByRole('textbox', { name: /rename/i })
+    expect(newInput).toHaveFocus()
+
+    // Confirm the rename
+    await userEvent.keyboard('{Enter}')
+
+    // Verify folder count increased
+    await waitFor(() => {
+      const currentFolders = canvas.getAllByTestId(/^workspace-node-/)
+      expect(currentFolders.length).toBeGreaterThan(initialFolders.length)
+    })
+  },
+}
+
+/**
+ * Tests overflow menu actions.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click overflow button opens menu
+ * - Menu contains expected actions
+ * - Clicking action performs it
+ */
+export const InteractionOverflowMenu: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    // Dropdown menus render in portals - need to query document body
+    const body = within(document.body)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Find folder-2 (Archive) and hover to reveal menu trigger
+    const folder2 = await canvas.findByTestId('workspace-node-folder-2')
+    await userEvent.hover(folder2)
+
+    // Click overflow menu trigger
+    const menuTrigger = canvas.getByTestId('workspace-menu-folder-2-trigger')
+    await userEvent.click(menuTrigger)
+
+    // Wait for menu to open (menus render in portal, query body)
+    await waitFor(() => {
+      expect(body.getByTestId('workspace-menu-folder-2')).toBeInTheDocument()
+    })
+
+    // Verify menu has expected items (query body for portal)
+    expect(body.getByTestId('workspace-menu-folder-2-rename')).toBeInTheDocument()
+    expect(body.getByTestId('workspace-menu-folder-2-color')).toBeInTheDocument()
+    expect(body.getByTestId('workspace-menu-folder-2-subfolder')).toBeInTheDocument()
+    expect(body.getByTestId('workspace-menu-folder-2-delete')).toBeInTheDocument()
+
+    // Click rename (query body for portal)
+    await userEvent.click(body.getByTestId('workspace-menu-folder-2-rename'))
+
+    // Should enter rename mode (back to canvas)
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-input-folder-2')).toBeInTheDocument()
+    })
+
+    // Cancel rename with Escape
+    await userEvent.keyboard('{Escape}')
+  },
+}
+
+/**
+ * Tests empty state CTA.
+ *
+ * Expected behaviors (TDD spec):
+ * - Empty workspace shows empty state
+ * - CTA button creates first folder
+ */
+export const InteractionEmptyState: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={[]}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Wait for empty state
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-empty')).toBeInTheDocument()
+    })
+
+    // Verify empty state content
+    expect(canvas.getByText('Organize your workspace')).toBeInTheDocument()
+
+    // Click CTA button
+    const createButton = canvas.getByTestId('workspace-empty-create')
+    await userEvent.click(createButton)
+
+    // Should create folder and enter rename mode
+    await waitFor(() => {
+      const inputs = canvas.getAllByTestId(/^workspace-input-/)
+      expect(inputs.length).toBeGreaterThan(0)
+    })
+
+    // Empty state should be gone
+    expect(canvas.queryByTestId('workspace-empty')).not.toBeInTheDocument()
+  },
+}
+
+/**
+ * Tests duplicate folder via overflow menu.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click overflow menu on folder
+ * - Click "Duplicate" option
+ * - New folder created with "(copy)" suffix
+ * - New folder appears in same parent
+ */
+export const InteractionDuplicateFolder: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const body = within(document.body)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Verify Archive folder exists (sanity check)
+    await waitFor(() => {
+      expect(canvas.getByText('Archive')).toBeInTheDocument()
+    })
+
+    // Hover on folder-2 (Archive) to reveal menu
+    const folder2 = await canvas.findByTestId('workspace-node-folder-2')
+    await userEvent.hover(folder2)
+
+    // Click overflow menu trigger
+    const menuTrigger = canvas.getByTestId('workspace-menu-folder-2-trigger')
+    await userEvent.click(menuTrigger)
+
+    // Wait for menu to open (portal renders to body)
+    await waitFor(() => {
+      expect(body.getByTestId('workspace-menu-folder-2')).toBeInTheDocument()
+    })
+
+    // Click duplicate
+    await userEvent.click(body.getByTestId('workspace-menu-folder-2-duplicate'))
+
+    // Verify new folder created with "(copy)" suffix
+    // Note: New folder has auto-generated ID (temp-*), so we verify by text content
+    await waitFor(() => {
+      expect(canvas.getByText('Archive (copy)')).toBeInTheDocument()
+    })
+  },
+}
+
+/**
+ * Tests duplicate item via overflow menu.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click overflow menu on item
+ * - Click "Duplicate" option
+ * - New item created with "(copy)" suffix
+ * - New item has same href as original
+ */
+export const InteractionDuplicateItem: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const body = within(document.body)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Find item-1 (Root Item) and hover to reveal menu
+    const item1 = await canvas.findByTestId('workspace-node-item-1')
+    await userEvent.hover(item1)
+
+    // Click overflow menu trigger
+    const menuTrigger = canvas.getByTestId('workspace-menu-item-1-trigger')
+    await userEvent.click(menuTrigger)
+
+    // Wait for menu to open
+    await waitFor(() => {
+      expect(body.getByTestId('workspace-menu-item-1')).toBeInTheDocument()
+    })
+
+    // Click duplicate
+    await userEvent.click(body.getByTestId('workspace-menu-item-1-duplicate'))
+
+    // Verify new item created with "(copy)" suffix
+    await waitFor(() => {
+      expect(canvas.getByText('Root Item (copy)')).toBeInTheDocument()
+    })
+  },
+}
+
+/**
+ * Tests delete via overflow menu.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click overflow menu on node
+ * - Click "Delete" option
+ * - Node is removed from workspace
+ */
+export const InteractionDeleteViaMenu: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const body = within(document.body)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Verify item-1 exists before delete
+    expect(canvas.getByTestId('workspace-node-item-1')).toBeInTheDocument()
+
+    // Hover on item-1 to reveal menu
+    const item1 = await canvas.findByTestId('workspace-node-item-1')
+    await userEvent.hover(item1)
+
+    // Click overflow menu trigger
+    const menuTrigger = canvas.getByTestId('workspace-menu-item-1-trigger')
+    await userEvent.click(menuTrigger)
+
+    // Wait for menu to open
+    await waitFor(() => {
+      expect(body.getByTestId('workspace-menu-item-1')).toBeInTheDocument()
+    })
+
+    // Click delete
+    await userEvent.click(body.getByTestId('workspace-menu-item-1-delete'))
+
+    // Verify node is removed
+    await waitFor(() => {
+      expect(canvas.queryByTestId('workspace-node-item-1')).not.toBeInTheDocument()
+    })
+  },
+}
+
+/**
+ * Tests color picker via overflow menu.
+ *
+ * Expected behaviors (TDD spec):
+ * - Click overflow menu on folder
+ * - Hover "Change Color" submenu
+ * - Click a color (e.g., blue)
+ * - Folder icon color changes
+ */
+export const InteractionColorPicker: Story = {
+  args: {
+    product: 'flow',
+    headerLabel: 'My Workspace',
+  },
+  decorators: [
+    (Story) => (
+      <div className="w-64 bg-surface border border-default rounded-lg">
+        <StoreInitializer nodes={MOCK_NODES}>
+          <Story />
+        </StoreInitializer>
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const body = within(document.body)
+
+    // Wait for render
+    await waitFor(() => {
+      expect(canvas.getByTestId('workspace-section')).toBeInTheDocument()
+    })
+
+    // Verify folder-2 (Archive) exists and has default color
+    const folder2 = await canvas.findByTestId('workspace-node-folder-2')
+    const folderIconBefore = canvas.getByTestId('workspace-node-folder-2-icon')
+    // SVG elements: use getAttribute('class') instead of className (which is SVGAnimatedString)
+    expect(folderIconBefore.getAttribute('class')).toContain('text-muted') // default color
+
+    // Hover to reveal menu
+    await userEvent.hover(folder2)
+
+    // Click overflow menu trigger
+    const menuTrigger = canvas.getByTestId('workspace-menu-folder-2-trigger')
+    await userEvent.click(menuTrigger)
+
+    // Wait for menu to open (portal renders to body)
+    await waitFor(() => {
+      expect(body.getByTestId('workspace-menu-folder-2')).toBeInTheDocument()
+    })
+
+    // Click on color submenu trigger to open it
+    const colorSubmenu = body.getByTestId('workspace-menu-folder-2-color')
+    await userEvent.click(colorSubmenu)
+
+    // Wait for color picker to appear
+    await waitFor(() => {
+      expect(body.getByTestId('workspace-color-picker')).toBeInTheDocument()
+    })
+
+    // Click blue color
+    await userEvent.click(body.getByTestId('workspace-color-blue'))
+
+    // Verify folder icon now has blue color class
+    await waitFor(() => {
+      const folderIconAfter = canvas.getByTestId('workspace-node-folder-2-icon')
+      expect(folderIconAfter.getAttribute('class')).toContain('text-info')
+    })
+  },
+}

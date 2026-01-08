@@ -11,6 +11,7 @@ export { default as TenantsPageDefault } from "./TenantsPage"
 export { ViewTenantDialog } from "./ViewTenantDialog"
 export { EditTenantDialog } from "./EditTenantDialog"
 export { SuspendTenantDialog } from "./SuspendTenantDialog"
+export { ActivateTenantDialog } from "./ActivateTenantDialog"
 
 // Types
 export type {
@@ -24,6 +25,7 @@ export type {
 export type { ViewTenantDialogProps } from "./ViewTenantDialog"
 export type { EditTenantDialogProps } from "./EditTenantDialog"
 export type { SuspendTenantDialogProps } from "./SuspendTenantDialog"
+export type { ActivateTenantDialogProps } from "./ActivateTenantDialog"
 
 // Data
 export { MOCK_TENANTS } from "./data/mock-tenants"
