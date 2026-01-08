@@ -355,9 +355,9 @@ import {
     <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
       Categorical
     </h4>
-    <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
-      Distinct categories (pie slices, bar groups)
-    </p>
+    <div style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <span>Distinct categories (pie slices, bar groups)</span>
+    </div>
     <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
       {['#08A4BD', '#3B82F6', '#22C55E', '#F70D1A', '#EAB308', '#5E4F7E'].map((hex, i) => (
         <div key={i} style={{ width: '28px', height: '28px', borderRadius: RADIUS.xs, background: hex }} />
@@ -378,9 +378,9 @@ import {
     <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
       Sequential
     </h4>
-    <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
-      Single-variable intensity (heatmaps)
-    </p>
+    <div style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <span>Single-variable intensity (heatmaps)</span>
+    </div>
     <div style={{ marginBottom: '8px' }}>
       <div style={{ fontSize: '11px', color: SLATE[500], marginBottom: '4px' }}>Cool (neutral)</div>
       <div style={{ display: 'flex', height: '20px', borderRadius: RADIUS.xs, overflow: 'hidden' }}>
@@ -409,9 +409,9 @@ import {
     <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 600, color: ABYSS[500] }}>
       Diverging
     </h4>
-    <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
-      Positive/negative from neutral center
-    </p>
+    <div style={{ margin: '0 0 12px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+      <span>Positive/negative from neutral center</span>
+    </div>
     <div style={{ display: 'flex', height: '28px', borderRadius: RADIUS.xs, overflow: 'hidden', marginBottom: '8px' }}>
       {['#DC2626', '#FCA5A5', '#E2E8F0', '#86EFAC', '#16A34A'].map((hex, i) => (
         <div key={i} style={{ flex: 1, background: hex }} />
