@@ -27,6 +27,18 @@
       "import": "./dist/market/index.js",
       "types": "./dist/market/index.d.ts"
     },
+    "./ui": {
+      "import": "./dist/ui/index.js",
+      "types": "./dist/ui/index.d.ts"
+    },
+    "./sections": {
+      "import": "./dist/sections/index.js",
+      "types": "./dist/sections/index.d.ts"
+    },
+    "./forms": {
+      "import": "./dist/forms/index.js",
+      "types": "./dist/forms/index.d.ts"
+    },
     "./tokens": {
       "import": "./dist/constants/designTokens.js",
       "types": "./dist/constants/designTokens.d.ts"

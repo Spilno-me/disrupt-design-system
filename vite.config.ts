@@ -63,6 +63,10 @@ export default defineConfig({
         'flow/index': resolve(__dirname, 'src/flow/index.ts'),
         'partner/index': resolve(__dirname, 'src/partner/index.ts'),
         'market/index': resolve(__dirname, 'src/market/index.ts'),
+        // Granular subpath exports for better tree-shaking
+        'ui/index': resolve(__dirname, 'src/ui/index.ts'),
+        'sections/index': resolve(__dirname, 'src/sections/index.ts'),
+        'forms/index': resolve(__dirname, 'src/forms/index.ts'),
       },
       name: 'DisruptDesignSystem',
       formats: ['es'],
