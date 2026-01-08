@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { ALIAS } from '@/constants/designTokens'
 
 // Particle spawn configuration - uses ALIAS animation tokens
@@ -45,6 +45,13 @@ export function useMouseParticles({
   const [particles, setParticles] = useState<MouseParticle[]>([])
   const particleIdRef = useRef(0)
   const lastSpawnRef = useRef(0)
+  // Track particle count via ref to avoid stale closure and callback recreation
+  const particlesLengthRef = useRef(0)
+
+  // Sync ref with particle count - avoids including particles.length in callback deps
+  useEffect(() => {
+    particlesLengthRef.current = particles.length
+  }, [particles.length])
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
@@ -64,8 +71,8 @@ export function useMouseParticles({
       // Only spawn if mouse is within bounds
       if (x < 0 || x > rect.width || y < 0 || y > rect.height) return
 
-      // Limit active particles
-      if (particles.length > MAX_ACTIVE_PARTICLES) return
+      // Limit active particles - uses ref to get current count without stale closure
+      if (particlesLengthRef.current > MAX_ACTIVE_PARTICLES) return
 
       // Probabilistic spawn for organic feel
       if (Math.random() > SPAWN_PROBABILITY) return
@@ -86,7 +93,7 @@ export function useMouseParticles({
         setParticles(prev => prev.filter(p => p.id !== newParticle.id))
       }, LIFETIME_MS)
     },
-    [enabled, containerRef, particles.length]
+    [enabled, containerRef] // Removed particles.length - now tracked via ref
   )
 
   return { particles, handleMouseMove }

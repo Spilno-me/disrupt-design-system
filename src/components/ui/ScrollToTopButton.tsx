@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ArrowUp } from 'lucide-react'
 
@@ -10,6 +10,9 @@ export interface ScrollToTopButtonProps {
 export function ScrollToTopButton({ triggerSelector = '[data-element="faq-section"]' }: ScrollToTopButtonProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  // RAF throttle refs - matches pattern from useHeaderContrast.ts
+  const resizeTickingRef = useRef(false)
+  const scrollTickingRef = useRef(false)
 
   useEffect(() => {
     // Check if mobile
@@ -17,10 +20,24 @@ export function ScrollToTopButton({ triggerSelector = '[data-element="faq-sectio
       setIsMobile(window.innerWidth < 768)
     }
 
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
+    // RAF-throttled resize handler
+    const throttledCheckMobile = () => {
+      if (!resizeTickingRef.current) {
+        requestAnimationFrame(() => {
+          try {
+            checkMobile()
+          } finally {
+            resizeTickingRef.current = false
+          }
+        })
+        resizeTickingRef.current = true
+      }
+    }
 
-    return () => window.removeEventListener('resize', checkMobile)
+    checkMobile() // Initial check (no throttle needed)
+    window.addEventListener('resize', throttledCheckMobile)
+
+    return () => window.removeEventListener('resize', throttledCheckMobile)
   }, [])
 
   useEffect(() => {
@@ -39,10 +56,24 @@ export function ScrollToTopButton({ triggerSelector = '[data-element="faq-sectio
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // Check initial position
+    // RAF-throttled scroll handler
+    const throttledHandleScroll = () => {
+      if (!scrollTickingRef.current) {
+        requestAnimationFrame(() => {
+          try {
+            handleScroll()
+          } finally {
+            scrollTickingRef.current = false
+          }
+        })
+        scrollTickingRef.current = true
+      }
+    }
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+    handleScroll() // Check initial position (no throttle needed)
+
+    return () => window.removeEventListener('scroll', throttledHandleScroll)
   }, [isMobile, triggerSelector])
 
   const scrollToTop = () => {

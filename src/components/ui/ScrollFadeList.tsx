@@ -39,6 +39,8 @@ const ScrollFadeContext = React.createContext<ScrollFadeContextValue | null>(nul
 export function useVerticalScrollFadeOpacity(itemRef: React.RefObject<HTMLElement | null>): number {
   const context = React.useContext(ScrollFadeContext)
   const [opacity, setOpacity] = React.useState(1)
+  // RAF throttle ref - matches pattern from useHeaderContrast.ts
+  const tickingRef = React.useRef(false)
 
   React.useEffect(() => {
     if (!context?.enabled || !itemRef.current) {
@@ -93,18 +95,32 @@ export function useVerticalScrollFadeOpacity(itemRef: React.RefObject<HTMLElemen
       setOpacity(Math.max(minOpacity, Math.min(1, newOpacity)))
     }
 
-    // Initial calculation
+    // RAF-throttled handler - prevents layout thrashing on high-frequency events
+    const throttledCalculate = () => {
+      if (!tickingRef.current) {
+        requestAnimationFrame(() => {
+          try {
+            calculateOpacity()
+          } finally {
+            tickingRef.current = false
+          }
+        })
+        tickingRef.current = true
+      }
+    }
+
+    // Initial calculation (no throttle needed)
     calculateOpacity()
 
     // Listen to scroll events on WINDOW (page-level scroll)
-    window.addEventListener('scroll', calculateOpacity, { passive: true })
+    window.addEventListener('scroll', throttledCalculate, { passive: true })
 
     // Also recalculate on resize
-    window.addEventListener('resize', calculateOpacity, { passive: true })
+    window.addEventListener('resize', throttledCalculate, { passive: true })
 
     return () => {
-      window.removeEventListener('scroll', calculateOpacity)
-      window.removeEventListener('resize', calculateOpacity)
+      window.removeEventListener('scroll', throttledCalculate)
+      window.removeEventListener('resize', throttledCalculate)
     }
   }, [context, itemRef])
 
@@ -230,13 +246,14 @@ export const ScrollFadeList = React.forwardRef<HTMLDivElement, ScrollFadeListPro
     // Merge refs
     React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement)
 
-    const contextValue: ScrollFadeContextValue = {
+    // Memoize context value to prevent unnecessary re-renders and listener re-registration
+    const contextValue = React.useMemo<ScrollFadeContextValue>(() => ({
       containerRef,
       fadeZoneHeight,
       enabled: fadeOnScroll,
       fadeEdges,
       bottomOffset,
-    }
+    }), [fadeZoneHeight, fadeOnScroll, fadeEdges, bottomOffset])
 
     // Auto-wrap children in ScrollFadeItem
     const processedChildren = autoWrap && fadeOnScroll

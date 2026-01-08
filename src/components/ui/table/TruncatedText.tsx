@@ -84,6 +84,8 @@ export function TruncatedText({
 }: TruncatedTextProps) {
   const textRef = useRef<HTMLSpanElement>(null)
   const [isTruncated, setIsTruncated] = useState(false)
+  // RAF throttle ref - matches pattern from useHeaderContrast.ts
+  const tickingRef = useRef(false)
 
   const checkTruncation = useCallback(() => {
     const element = textRef.current
@@ -96,9 +98,23 @@ export function TruncatedText({
   useEffect(() => {
     checkTruncation()
 
+    // RAF-throttled resize handler - prevents layout thrashing with many TruncatedText instances
+    const throttledCheck = () => {
+      if (!tickingRef.current) {
+        requestAnimationFrame(() => {
+          try {
+            checkTruncation()
+          } finally {
+            tickingRef.current = false
+          }
+        })
+        tickingRef.current = true
+      }
+    }
+
     // Re-check on window resize (table columns may change width)
-    window.addEventListener("resize", checkTruncation)
-    return () => window.removeEventListener("resize", checkTruncation)
+    window.addEventListener("resize", throttledCheck)
+    return () => window.removeEventListener("resize", throttledCheck)
   }, [checkTruncation, children])
 
   const textElement = (

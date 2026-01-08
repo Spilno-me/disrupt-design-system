@@ -25,6 +25,8 @@ const ScrollFadeContext = React.createContext<ScrollFadeContextValue | null>(nul
 function useScrollFadeOpacity(itemRef: React.RefObject<HTMLElement | null>): number {
   const context = React.useContext(ScrollFadeContext)
   const [opacity, setOpacity] = React.useState(1)
+  // RAF throttle ref - matches pattern from useHeaderContrast.ts
+  const tickingRef = React.useRef(false)
 
   React.useEffect(() => {
     if (!context?.enabled || !itemRef.current || !context.containerRef.current) {
@@ -66,19 +68,33 @@ function useScrollFadeOpacity(itemRef: React.RefObject<HTMLElement | null>): num
       setOpacity(Math.max(minOpacity, Math.min(1, newOpacity)))
     }
 
-    // Initial calculation
+    // RAF-throttled handler - prevents layout thrashing on high-frequency events
+    const throttledCalculate = () => {
+      if (!tickingRef.current) {
+        requestAnimationFrame(() => {
+          try {
+            calculateOpacity()
+          } finally {
+            tickingRef.current = false
+          }
+        })
+        tickingRef.current = true
+      }
+    }
+
+    // Initial calculation (no throttle needed)
     calculateOpacity()
 
     // Listen to scroll events on container
     const container = context.containerRef.current
-    container?.addEventListener('scroll', calculateOpacity, { passive: true })
+    container?.addEventListener('scroll', throttledCalculate, { passive: true })
 
     // Also recalculate on resize
-    window.addEventListener('resize', calculateOpacity, { passive: true })
+    window.addEventListener('resize', throttledCalculate, { passive: true })
 
     return () => {
-      container?.removeEventListener('scroll', calculateOpacity)
-      window.removeEventListener('resize', calculateOpacity)
+      container?.removeEventListener('scroll', throttledCalculate)
+      window.removeEventListener('resize', throttledCalculate)
     }
   }, [context, itemRef])
 
@@ -419,6 +435,8 @@ export const QuickFilter = React.forwardRef<HTMLDivElement, QuickFilterProps>(
   }, ref) => {
     const containerRef = React.useRef<HTMLDivElement>(null)
     const [scrollState, setScrollState] = React.useState({ scrollLeft: 0, containerWidth: 0 })
+    // RAF throttle ref - matches pattern from useHeaderContrast.ts
+    const tickingRef = React.useRef(false)
 
     // Track scroll for context updates
     React.useEffect(() => {
@@ -432,13 +450,28 @@ export const QuickFilter = React.forwardRef<HTMLDivElement, QuickFilterProps>(
         })
       }
 
+      // RAF-throttled handler - prevents cascade re-renders on high-frequency events
+      const throttledUpdate = () => {
+        if (!tickingRef.current) {
+          requestAnimationFrame(() => {
+            try {
+              updateScrollState()
+            } finally {
+              tickingRef.current = false
+            }
+          })
+          tickingRef.current = true
+        }
+      }
+
+      // Initial state (no throttle needed)
       updateScrollState()
-      container.addEventListener('scroll', updateScrollState, { passive: true })
-      window.addEventListener('resize', updateScrollState, { passive: true })
+      container.addEventListener('scroll', throttledUpdate, { passive: true })
+      window.addEventListener('resize', throttledUpdate, { passive: true })
 
       return () => {
-        container.removeEventListener('scroll', updateScrollState)
-        window.removeEventListener('resize', updateScrollState)
+        container.removeEventListener('scroll', throttledUpdate)
+        window.removeEventListener('resize', throttledUpdate)
       }
     }, [])
 
@@ -448,13 +481,14 @@ export const QuickFilter = React.forwardRef<HTMLDivElement, QuickFilterProps>(
     // Default: hide static gradients when fadeOnScroll is enabled
     const shouldShowGradients = showEdgeGradients ?? !fadeOnScroll
 
-    const contextValue: ScrollFadeContextValue = {
+    // Memoize context value to prevent unnecessary re-renders and listener re-registration
+    const contextValue = React.useMemo<ScrollFadeContextValue>(() => ({
       containerRef,
       fadeZoneWidth,
       scrollLeft: scrollState.scrollLeft,
       containerWidth: scrollState.containerWidth,
       enabled: fadeOnScroll,
-    }
+    }), [fadeZoneWidth, scrollState.scrollLeft, scrollState.containerWidth, fadeOnScroll])
 
     // Process children to add edge padding for edge-to-edge layout
     const childArray = React.Children.toArray(children)
