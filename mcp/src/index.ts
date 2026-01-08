@@ -100,10 +100,10 @@ interface UXPhilosophy extends PhilosophyRules {
 
 interface EngagementPhilosophy extends PhilosophyRules {
   fullGuide: string;
-  preWorkChecklist: string[];
-  duringWorkChecklist: string[];
-  endingChecklist: string[];
-  metaPrinciple: string;
+  preTaskChecklist?: string[];
+  duringTaskChecklist?: string[];
+  endingChecklist?: string[];
+  metaPrinciple?: string;
 }
 
 interface AgentContext {
@@ -680,17 +680,17 @@ server.tool(
         response += `- **Test:** ${rule.test}\n\n`;
       }
 
-      if (qoe.preWorkChecklist && Array.isArray(qoe.preWorkChecklist)) {
-        response += "## Pre-Work Checklist\n";
-        for (const item of qoe.preWorkChecklist) {
+      if (qoe.preTaskChecklist && Array.isArray(qoe.preTaskChecklist)) {
+        response += "## Pre-Task Checklist\n";
+        for (const item of qoe.preTaskChecklist) {
           response += `- [ ] ${item}\n`;
         }
         response += "\n";
       }
 
-      if (qoe.duringWorkChecklist && Array.isArray(qoe.duringWorkChecklist)) {
-        response += "## During Work Checklist\n";
-        for (const item of qoe.duringWorkChecklist) {
+      if (qoe.duringTaskChecklist && Array.isArray(qoe.duringTaskChecklist)) {
+        response += "## During Task Checklist\n";
+        for (const item of qoe.duringTaskChecklist) {
           response += `- [ ] ${item}\n`;
         }
         response += "\n";
