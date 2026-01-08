@@ -241,6 +241,43 @@ test('templates page loads with real API', async () => {
 
 ---
 
+## Visual Regression Testing (Chromatic)
+
+<div style={{ background: DEEP_CURRENT[50], borderRadius: RADIUS.lg, padding: '24px', border: `1px solid ${DEEP_CURRENT[200]}`, marginBottom: '24px' }}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: DEEP_CURRENT[700] }}>How Chromatic Works in DDS</h4>
+  <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: DUSK_REEF[600] }}>
+    {"Chromatic captures screenshots of every Storybook story and compares them across commits. Any visual change is flagged for review."}
+  </p>
+
+  <div style={{ background: PRIMITIVES.white, borderRadius: RADIUS.md, padding: '16px', marginBottom: '16px' }}>
+    <h5 style={{ margin: '0 0 8px 0', fontSize: '13px', fontWeight: 600, color: ABYSS[500] }}>CI Workflow Configuration</h5>
+    <p style={{ margin: '0 0 8px 0', fontSize: '12px', color: DUSK_REEF[500] }}>
+      {"Our workflow uses smart defaults for development velocity vs release stability:"}
+    </p>
+    <CodeBlock language="yaml" code={`# .github/workflows/chromatic.yml
+exitOnceUploaded: \${{ github.ref != 'refs/heads/main' }}
+# Feature branches: Fast (upload and continue, check regressions later)
+# Main branch: Blocking (wait for results, catch regressions before release)`} />
+  </div>
+
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+    <div style={{ background: HARBOR[50], borderRadius: RADIUS.sm, padding: '12px' }}>
+      <div style={{ fontSize: '11px', fontWeight: 600, color: HARBOR[700], marginBottom: '4px' }}>Feature Branches</div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>Fast CI - upload only, review regressions in Chromatic dashboard when ready</div>
+    </div>
+    <div style={{ background: CORAL[50], borderRadius: RADIUS.sm, padding: '12px' }}>
+      <div style={{ fontSize: '11px', fontWeight: 600, color: CORAL[700], marginBottom: '4px' }}>Main Branch</div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[500] }}>Blocking - waits for visual comparison, catches regressions before release</div>
+    </div>
+  </div>
+</div>
+
+<InfoBox variant="tip">
+  <strong>Check regressions:</strong> Visit <a href="https://www.chromatic.com" style={{ color: DEEP_CURRENT[600] }}>chromatic.com</a> → DDS project → Build history to review visual diffs at any time.
+</InfoBox>
+
+---
+
 ## Summary
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '24px' }}>
