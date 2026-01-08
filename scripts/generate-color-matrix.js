@@ -370,6 +370,26 @@ function generateContrastToon(contrastMatrix) {
   return lines.join('\n')
 }
 
+// Read existing content hash from a file
+function getExistingContentHash(filePath) {
+  if (!existsSync(filePath)) return null
+  try {
+    const content = readFileSync(filePath, 'utf8')
+    if (filePath.endsWith('.json')) {
+      const data = JSON.parse(content)
+      // Handle both formats: _contentHash (color-matrix) and _meta.contentHash (contrast-matrix)
+      return data._contentHash || data._meta?.contentHash || null
+    } else if (filePath.endsWith('.toon')) {
+      // Parse TOON format - look for contentHash in _meta section
+      const match = content.match(/contentHash:\s*(\S+)/)
+      return match ? match[1] : null
+    }
+  } catch {
+    return null
+  }
+  return null
+}
+
 // Main
 function main() {
   console.log(`\n${BOLD}Generate Color Matrix${RESET}`)
@@ -390,6 +410,17 @@ function main() {
 
   console.log(`${CYAN}>${RESET} Calculating WCAG contrast ratios...`)
   const contentHash = generateContentHash(tokens)
+
+  // Check if content has changed by comparing hashes
+  const existingHash = getExistingContentHash(CONTRAST_MATRIX_PATH)
+  if (existingHash === contentHash) {
+    console.log(`${GREEN}✓${RESET} Content unchanged (hash: ${contentHash}) - skipping write`)
+    console.log('')
+    return
+  }
+
+  console.log(`${DIM}  Content hash: ${existingHash || '(new)'} → ${contentHash}${RESET}`)
+
   const colorMatrix = generateColorMatrix(tokens, contentHash)
   const contrastMatrix = generateContrastMatrix(tokens, contentHash)
   console.log(`${DIM}  ${contrastMatrix.combinations.length} combinations calculated${RESET}`)
