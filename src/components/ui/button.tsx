@@ -118,6 +118,44 @@ const BEACON_COLORS = {
 type ButtonVariant = keyof typeof VARIANT_GRADIENTS
 
 // =============================================================================
+// UTILITIES
+// =============================================================================
+
+/**
+ * Extracts margin classes from className for wrapper application.
+ * Handles: m-4, mx-auto, -mt-2, md:ml-4, m-[24px]
+ * Does NOT extract: space-*, gap-* (these apply to children)
+ */
+function extractMarginClasses(className?: string): {
+  marginClasses: string;
+  otherClasses: string;
+} {
+  if (!className) return { marginClasses: '', otherClasses: '' };
+
+  // Comprehensive pattern for all margin variants:
+  // - Simple: m-4, mx-2, -ml-4, m-auto
+  // - Responsive: sm:m-4, md:ml-4, lg:-mx-2
+  // - Arbitrary: m-[24px], mt-[var(--spacing)]
+  const marginPattern = /^(sm:|md:|lg:|xl:|2xl:)?-?m[lrtbxy]?-(\d+|auto|px|\[[\w()%-]+\])$/;
+
+  const marginClasses: string[] = [];
+  const otherClasses: string[] = [];
+
+  for (const cls of className.split(/\s+/).filter(Boolean)) {
+    if (marginPattern.test(cls)) {
+      marginClasses.push(cls);
+    } else {
+      otherClasses.push(cls);
+    }
+  }
+
+  return {
+    marginClasses: marginClasses.join(' '),
+    otherClasses: otherClasses.join(' '),
+  };
+}
+
+// =============================================================================
 // HOOKS
 // =============================================================================
 
@@ -190,6 +228,7 @@ function GlassEffect({ isVisible, backgroundPosition, gradient, glow }: GlassEff
           backgroundSize: '200% 100%',
           backgroundPosition,
           filter: 'blur(8px)',
+          clipPath: `inset(0 round ${GLOW_RADIUS})`,
           zIndex: Z_INDEX.dropdown,
         }}
         initial={{ opacity: 0 }}
@@ -205,8 +244,12 @@ function BeaconEffect({ variant }: { variant: ButtonVariant }) {
   const { color, fade } = BEACON_COLORS[variant]
   return (
     <span
-      className="absolute inset-0 rounded-xl animate-beacon pointer-events-none"
-      style={{ '--beacon-color': color, '--beacon-color-fade': fade } as React.CSSProperties}
+      className="absolute inset-0 animate-beacon pointer-events-none"
+      style={{
+        '--beacon-color': color,
+        '--beacon-color-fade': fade,
+        borderRadius: BORDER_RADIUS,
+      } as React.CSSProperties}
       aria-hidden="true"
     />
   )
@@ -240,6 +283,9 @@ function Button({
   const showBeacon = beacon ?? (variant === 'destructive')
   const isFullWidth = fullWidth || className?.includes('w-full')
 
+  // Extract margin classes to apply to wrapper (fixes effects width mismatch)
+  const { marginClasses, otherClasses } = extractMarginClasses(className)
+
   const { backgroundPosition, isAnimating } = useGlassAnimation(isHovered, effectActive)
   const { gradient, glow } = VARIANT_GRADIENTS[variantKey]
 
@@ -256,7 +302,7 @@ function Button({
 
   return (
     <div
-      className={cn("relative", isFullWidth ? "flex" : "inline-flex")}
+      className={cn("relative", isFullWidth ? "flex" : "inline-flex", marginClasses)}
       style={{ borderRadius: BORDER_RADIUS, isolation: 'isolate', width: isFullWidth ? '100%' : 'fit-content' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -265,7 +311,7 @@ function Button({
       <GlassEffect isVisible={isAnimating} backgroundPosition={backgroundPosition} gradient={gradient} glow={glow} />
       <Comp
         data-slot="button"
-        className={cn(buttonVariants({ variant, size, className }), "relative z-[1]")}
+        className={cn(buttonVariants({ variant, size }), otherClasses, "relative z-[1]")}
         style={{ borderRadius: BORDER_RADIUS, width: isFullWidth ? '100%' : undefined }}
         {...props}
       />

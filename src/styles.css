@@ -23,7 +23,7 @@
 /* These classes are used by components but need to be pre-gen   */
 /* ============================================================ */
 @layer utilities {
-  /* Beacon animation for attention-grabbing buttons */
+  /* Beacon animation for attention-grabbing buttons (outer pulse) */
   @keyframes beacon-ping {
     0% { box-shadow: 0 0 0 0 var(--beacon-color, rgba(220, 38, 38, 0.5)); }
     70% { box-shadow: 0 0 0 10px var(--beacon-color-fade, rgba(220, 38, 38, 0)); }
