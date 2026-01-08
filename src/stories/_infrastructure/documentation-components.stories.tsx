@@ -68,11 +68,16 @@ const meta: Meta = {
 export default meta;
 
 // =============================================================================
-// COMPONENT RULES - Live Do/Don't Examples
+// PATTERN B: COMPONENT DOCUMENTATION
+// For component API docs (Button, Dialog, etc.)
 // =============================================================================
 
+// -----------------------------------------------------------------------------
+// ComponentRules - Live Do/Don't Examples
+// -----------------------------------------------------------------------------
+
 export const ComponentRulesDemo: StoryObj = {
-  name: 'ComponentRules',
+  name: 'Pattern B: ComponentRules',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">ComponentRules</h2>
@@ -110,12 +115,12 @@ export const ComponentRulesDemo: StoryObj = {
   ),
 };
 
-// =============================================================================
-// RELATED COMPONENTS - Navigation Links
-// =============================================================================
+// -----------------------------------------------------------------------------
+// RelatedComponents - Navigation Links
+// -----------------------------------------------------------------------------
 
 export const RelatedComponentsDemo: StoryObj = {
-  name: 'RelatedComponents',
+  name: 'Pattern B: RelatedComponents',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">RelatedComponents</h2>
@@ -134,12 +139,12 @@ export const RelatedComponentsDemo: StoryObj = {
   ),
 };
 
-// =============================================================================
-// STATUS WARNINGS - Component Maturity Indicators
-// =============================================================================
+// -----------------------------------------------------------------------------
+// Status Warnings - Component Maturity Indicators
+// -----------------------------------------------------------------------------
 
 export const StatusWarningsDemo: StoryObj = {
-  name: 'Status Warnings',
+  name: 'Pattern B: Status Warnings',
   render: () => (
     <div className="max-w-4xl space-y-8">
       <div>
@@ -177,12 +182,12 @@ export const StatusWarningsDemo: StoryObj = {
   ),
 };
 
-// =============================================================================
-// COMPOSITION GUIDE - DDS Constraint Enforcement
-// =============================================================================
+// -----------------------------------------------------------------------------
+// CompositionGuide - DDS Constraint Enforcement
+// -----------------------------------------------------------------------------
 
 export const CompositionGuideDemo: StoryObj = {
-  name: 'CompositionGuide',
+  name: 'Pattern B: CompositionGuide',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">CompositionGuide</h2>
@@ -224,12 +229,12 @@ export const CompositionGuideDemo: StoryObj = {
   ),
 };
 
-// =============================================================================
-// MDX HEADINGS - Automatic Mapping Preview
-// =============================================================================
+// -----------------------------------------------------------------------------
+// MDX Headings - Automatic Mapping Preview
+// -----------------------------------------------------------------------------
 
 export const MDXHeadingsDemo: StoryObj = {
-  name: 'MDX Headings',
+  name: 'Pattern B: MDX Headings',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">MDX Headings (Auto-Mapped)</h2>
@@ -263,12 +268,12 @@ export const MDXHeadingsDemo: StoryObj = {
   ),
 };
 
-// =============================================================================
-// FULL EXAMPLE - Component Documentation Page
-// =============================================================================
+// -----------------------------------------------------------------------------
+// Full Component Documentation Page - Complete Example
+// -----------------------------------------------------------------------------
 
 export const FullDocumentationExample: StoryObj = {
-  name: 'Full Documentation Page',
+  name: 'Pattern B: Full Component Page',
   render: () => (
     <div className="max-w-4xl">
       <AlphaWarning />
