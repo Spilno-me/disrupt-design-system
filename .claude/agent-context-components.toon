@@ -1,0 +1,49 @@
+_meta:
+  source: .claude/agent-context.json#components
+  note: Component registry summary. Full details in source.
+
+stabilization:
+  website: FROZEN (DO NOT TOUCH)
+  app: CAN_STABILIZE (SAFE changes only)
+  shared: EXTREME_CARE (ADD ONLY)
+  progress: 11/46 (24%)
+
+statusLegend:
+  STABILIZED: Production ready, AllStates story, tokens compliant
+  FROZEN: DO NOT TOUCH - website production
+  TODO: Needs stabilization review
+  UTILITY: Infrastructure helper
+  DOMAIN: Domain-specific
+
+ui[18]{name,path,type,status,variants}:
+  Avatar,ui/avatar.tsx,ATOM,STABILIZED,xs|sm|default|lg|xl
+  Badge,ui/badge.tsx,ATOM,STABILIZED,default|secondary|destructive|outline|success|warning|info
+  Button,ui/button.tsx,ATOM,STABILIZED,default|destructive|outline|secondary|ghost|link|contact|accent
+  Card,ui/card.tsx,MOLECULE,FROZEN,website pricing only
+  AppCard,ui/app-card.tsx,ATOM,STABILIZED,default|elevated|flat
+  Checkbox,ui/checkbox.tsx,ATOM,STABILIZED,
+  Input,ui/input.tsx,ATOM,STABILIZED,
+  Label,ui/label.tsx,ATOM,STABILIZED,
+  Select,ui/select.tsx,ATOM,STABILIZED,subs:SelectTrigger|SelectContent|SelectItem|SelectValue
+  Separator,ui/separator.tsx,ATOM,STABILIZED,
+  Skeleton,ui/Skeleton.tsx,ATOM,STABILIZED,pulse|shimmer|wave
+  Slider,ui/Slider.tsx,ATOM,STABILIZED,
+  Textarea,ui/textarea.tsx,ATOM,STABILIZED,
+  Dialog,ui/dialog.tsx,MOLECULE,STABILIZED,subs:DialogTrigger|DialogContent|DialogHeader|DialogTitle|DialogDescription|DialogFooter|DialogClose
+  Sheet,ui/sheet.tsx,MOLECULE,TODO,
+  Tooltip,ui/tooltip.tsx,ATOM,STABILIZED,
+  DataTable,ui/DataTable.tsx,MOLECULE,TODO,sorting|selection|pagination|filtering
+  Form,ui/form.tsx,ATOM,UTILITY,subs:FormField|FormItem|FormLabel|FormControl|FormMessage
+
+missingExports:
+  high: QuickFilter,NotificationsPanel,DropdownMenu,Tabs
+  medium: Wizard,WizardStepper,WizardStep,WizardNavigation
+
+testIdStrategy:
+  ATOM: Props spread + JSDoc examples (consumer provides)
+  MOLECULE: Auto-gen from props (component generates)
+  PAGE: Named regions (hardcoded in component)
+
+workflows:
+  edit: "Breaking? → STOP → v3.0.0 | Safe? → Update CHANGELOG"
+  create: "1.Check registry 2.Radix UI 3.Tokens only 4.Export src/index.ts 5.MINOR bump"

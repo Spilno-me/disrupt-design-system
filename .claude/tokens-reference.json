@@ -1,0 +1,542 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Complete design token reference for AI agents. Visual examples are in DesignTokens.mdx for humans.",
+  "version": "2.6.0",
+  "lastUpdated": "2025-12-21",
+  "spacing": {
+    "website": {
+      "_usage": "Marketing sites, landing pages - larger spacing for content-focused layouts",
+      "sectionPaddingY": {
+        "class": "py-16 lg:py-24",
+        "values": "64px / 96px"
+      },
+      "sectionPaddingX": {
+        "class": "px-6 lg:px-10",
+        "values": "24px / 40px"
+      },
+      "headingGap": {
+        "class": "mb-1",
+        "values": "4px"
+      },
+      "subheadingGap": {
+        "class": "mb-8",
+        "values": "32px"
+      },
+      "listItemGap": {
+        "class": "gap-4",
+        "values": "16px"
+      },
+      "sectionContentGap": {
+        "class": "gap-12 lg:gap-16",
+        "values": "48px / 64px"
+      },
+      "containerMaxWidth": "1440px"
+    },
+    "app": {
+      "_usage": "Web applications - compact spacing for productivity workflows",
+      "pageContainer": {
+        "class": "p-6",
+        "values": "24px all sides"
+      },
+      "cardPadding": {
+        "class": "p-4 or p-6",
+        "values": "16px compact / 24px default"
+      },
+      "cardHeader": {
+        "class": "px-6 gap-1.5",
+        "values": "24px horizontal, 6px gap"
+      },
+      "cardContent": {
+        "class": "px-6",
+        "values": "24px horizontal"
+      },
+      "formGap": {
+        "class": "gap-2",
+        "values": "8px between fields"
+      },
+      "sectionGap": {
+        "class": "gap-6",
+        "values": "24px between sections"
+      },
+      "tableRowHeight": "44px minimum (touch-friendly)"
+    },
+    "scale": {
+      "0": "0px",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "7": "28px",
+      "8": "32px",
+      "9": "36px",
+      "10": "40px",
+      "11": "44px",
+      "12": "48px",
+      "14": "56px",
+      "16": "64px",
+      "20": "80px",
+      "24": "96px",
+      "32": "128px",
+      "40": "160px",
+      "48": "192px",
+      "64": "256px",
+      "0.5": "2px",
+      "1.5": "6px",
+      "2.5": "10px",
+      "3.5": "14px"
+    }
+  },
+  "radius": {
+    "_rule": "Larger radius = More prominent/interactive",
+    "scale": {
+      "none": "0px",
+      "xs": {
+        "value": "4px",
+        "use": "Badges, tags, small buttons"
+      },
+      "sm": {
+        "value": "8px",
+        "use": "Input fields, cards, standard elements (DEFAULT)"
+      },
+      "md": {
+        "value": "12px",
+        "use": "Buttons, dialogs, prominent cards"
+      },
+      "lg": {
+        "value": "16px",
+        "use": "Large cards, feature sections"
+      },
+      "xl": {
+        "value": "20px",
+        "use": "Hero elements, featured content"
+      },
+      "2xl": {
+        "value": "24px",
+        "use": "Large containers"
+      },
+      "full": {
+        "value": "9999px",
+        "use": "Pills, circular elements, avatars"
+      }
+    }
+  },
+  "borderWidth": {
+    "0": "0px",
+    "1": "1px (default for inputs, cards)",
+    "2": "2px (emphasis, focus rings)",
+    "4": "4px (strong emphasis)",
+    "8": "8px (decorative)"
+  },
+  "shadows": {
+    "_rule": "Elevation = Importance + Interactivity. Closer to user = more important.",
+    "_physics": "Natural light from above: umbra (sharp, close) + penumbra (soft, far)",
+    "scale": {
+      "none": {
+        "value": "none",
+        "use": "Flat elements, text links"
+      },
+      "sm": {
+        "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        "use": "Data display",
+        "examples": "Tags, badges, list items, stats"
+      },
+      "md": {
+        "value": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)",
+        "use": "Standard interactive (DEFAULT)",
+        "examples": "Cards, buttons, dropdowns"
+      },
+      "elevated": {
+        "value": "0 2px 8px -1px rgba(0, 0, 0, 0.14), 0 6px 20px -4px rgba(0, 0, 0, 0.10)",
+        "use": "Premium emphasis",
+        "examples": "KPI cards, featured content, CTAs"
+      },
+      "lg": {
+        "value": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+        "use": "Interactive overlays",
+        "examples": "Modals, sheets, drawers"
+      },
+      "xl": {
+        "value": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
+        "use": "Critical attention",
+        "examples": "System alerts, error dialogs"
+      }
+    },
+    "special": {
+      "header": "0px 2px 4px 5px rgba(0, 0, 0, 0.15)",
+      "footer": "0px -1px 3px rgba(0, 0, 0, 0.08)",
+      "button": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "image": "0 6px 12px -2px rgba(0,0,0,0.3), 0 20px 50px -8px rgba(0,0,0,0.2)"
+    },
+    "decisionTree": [
+      "Interactive + Immediate attention? → xl (critical) or lg (overlay)",
+      "Interactive + Primary CTA/Featured? → elevated (premium)",
+      "Interactive + Standard? → md (default)",
+      "Data display + Important? → md",
+      "Data display + Secondary? → sm"
+    ]
+  },
+  "typography": {
+    "fonts": {
+      "display": {
+        "family": "Pilat Extended",
+        "class": "font-display",
+        "use": "Marketing websites, landing pages, hero sections"
+      },
+      "sans": {
+        "family": "Fixel",
+        "class": "font-sans",
+        "use": "Application interfaces, dashboards, forms, data tables"
+      },
+      "mono": {
+        "family": "ui-monospace",
+        "class": "font-mono",
+        "use": "Code snippets, technical data"
+      }
+    },
+    "website": {
+      "_font": "Pilat Extended (font-display)",
+      "heroH1": {
+        "class": "text-4xl md:text-6xl lg:text-7xl font-display font-bold",
+        "use": "Hero headlines"
+      },
+      "heroH2": {
+        "class": "text-3xl md:text-4xl lg:text-5xl font-display font-bold",
+        "use": "Large section headings"
+      },
+      "sectionHeading": {
+        "class": "text-2xl lg:text-[32px] font-display font-semibold",
+        "use": "Standard section headings"
+      },
+      "sectionSubheading": {
+        "class": "text-base lg:text-lg font-display font-medium",
+        "use": "Section descriptions"
+      },
+      "cardHeading": {
+        "class": "text-xl lg:text-2xl font-display font-semibold",
+        "use": "Feature cards"
+      }
+    },
+    "app": {
+      "_font": "Fixel (font-sans)",
+      "pageTitle": {
+        "class": "text-2xl font-sans font-semibold",
+        "use": "Page headings"
+      },
+      "sectionTitle": {
+        "class": "text-lg font-sans font-semibold",
+        "use": "Section headings"
+      },
+      "cardTitle": {
+        "class": "text-base font-sans font-semibold",
+        "use": "Card titles"
+      },
+      "body": {
+        "class": "text-sm font-sans",
+        "use": "Body text, descriptions"
+      },
+      "label": {
+        "class": "text-sm font-sans font-medium",
+        "use": "Form labels"
+      },
+      "caption": {
+        "class": "text-xs font-sans text-muted",
+        "use": "Help text, metadata"
+      },
+      "tableHeader": {
+        "class": "text-xs font-sans font-medium uppercase tracking-wide",
+        "use": "Table headers"
+      }
+    },
+    "sizes": {
+      "xs": {
+        "size": "12px",
+        "lineHeight": "16px"
+      },
+      "sm": {
+        "size": "14px",
+        "lineHeight": "20px"
+      },
+      "base": {
+        "size": "16px",
+        "lineHeight": "24px"
+      },
+      "lg": {
+        "size": "18px",
+        "lineHeight": "28px"
+      },
+      "xl": {
+        "size": "20px",
+        "lineHeight": "28px"
+      },
+      "2xl": {
+        "size": "24px",
+        "lineHeight": "32px"
+      },
+      "3xl": {
+        "size": "30px",
+        "lineHeight": "36px"
+      },
+      "4xl": {
+        "size": "36px",
+        "lineHeight": "40px"
+      },
+      "5xl": {
+        "size": "48px",
+        "lineHeight": "1"
+      },
+      "6xl": {
+        "size": "60px",
+        "lineHeight": "1"
+      },
+      "7xl": {
+        "size": "72px",
+        "lineHeight": "1"
+      }
+    },
+    "weights": {
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colors": {
+    "_rule": "Use semantic classes, not raw hex values",
+    "primitives": {
+      "_note": "Raw color scales - use ALIAS tokens instead",
+      "abyss": {
+        "50": "#E8E9EB",
+        "500": "#2D3142",
+        "700": "#1D1F2A"
+      },
+      "deepCurrent": {
+        "50": "#E6F7FA",
+        "500": "#08A4BD",
+        "700": "#056271"
+      },
+      "duskReef": {
+        "50": "#EFEDF3",
+        "500": "#5E4F7E"
+      },
+      "coral": {
+        "50": "#FEF2F2",
+        "500": "#F70D1A"
+      },
+      "harbor": {
+        "50": "#F0FDF4",
+        "500": "#22C55E"
+      },
+      "wave": {
+        "50": "#EFF6FF",
+        "500": "#3B82F6"
+      },
+      "sunrise": {
+        "50": "#FFFBEB",
+        "500": "#EAB308"
+      },
+      "slate": {
+        "300": "#CBD5E1"
+      },
+      "cream": "#FBFBF3",
+      "white": "#FFFFFF"
+    },
+    "semantic": {
+      "text": {
+        "primary": {
+          "class": "text-primary",
+          "use": "Main text"
+        },
+        "secondary": {
+          "class": "text-secondary",
+          "use": "Supporting text"
+        },
+        "muted": {
+          "class": "text-muted",
+          "use": "Subtle text"
+        },
+        "emphasis": {
+          "class": "text-emphasis",
+          "use": "Emphasized labels"
+        },
+        "inverse": {
+          "class": "text-inverse",
+          "use": "Text on dark backgrounds"
+        },
+        "disabled": {
+          "class": "text-disabled",
+          "use": "Disabled state"
+        },
+        "link": {
+          "class": "text-link hover:text-link-hover",
+          "use": "Links"
+        },
+        "error": {
+          "class": "text-error",
+          "use": "Error messages"
+        },
+        "success": {
+          "class": "text-success",
+          "use": "Success messages"
+        },
+        "warning": {
+          "class": "text-warning",
+          "use": "Warning messages"
+        }
+      },
+      "background": {
+        "page": {
+          "class": "bg-page bg-cream",
+          "use": "Page background"
+        },
+        "surface": {
+          "class": "bg-surface",
+          "use": "Cards, panels"
+        },
+        "muted": {
+          "class": "bg-muted-bg",
+          "use": "Subtle backgrounds"
+        },
+        "accent": {
+          "class": "bg-accent-bg",
+          "use": "Accent highlights"
+        },
+        "accentStrong": {
+          "class": "bg-accent-strong",
+          "use": "Primary accent"
+        },
+        "inverse": {
+          "class": "bg-inverse-bg",
+          "use": "Dark backgrounds"
+        },
+        "error": {
+          "class": "bg-error-light",
+          "use": "Error background"
+        },
+        "success": {
+          "class": "bg-success-light",
+          "use": "Success background"
+        },
+        "warning": {
+          "class": "bg-warning-light",
+          "use": "Warning background"
+        }
+      },
+      "border": {
+        "default": {
+          "class": "border-default",
+          "use": "Standard borders"
+        },
+        "subtle": {
+          "class": "border-subtle",
+          "use": "Subtle borders"
+        },
+        "strong": {
+          "class": "border-strong",
+          "use": "Emphasized borders"
+        },
+        "focus": {
+          "class": "border-focus ring-focus",
+          "use": "Focus rings (teal)"
+        },
+        "accent": {
+          "class": "border-accent",
+          "use": "Accent borders"
+        },
+        "error": {
+          "class": "border-error",
+          "use": "Error state"
+        },
+        "success": {
+          "class": "border-success",
+          "use": "Success state"
+        }
+      }
+    },
+    "brand": {
+      "dark": {
+        "class": "bg-dark text-dark",
+        "hex": "#2D3142",
+        "name": "Abyss"
+      },
+      "teal": {
+        "class": "bg-teal text-teal bg-accent-strong",
+        "hex": "#08A4BD",
+        "name": "Deep Current"
+      },
+      "cream": {
+        "class": "bg-cream",
+        "hex": "#FBFBF3"
+      },
+      "purple": {
+        "class": "text-muted bg-muted-bg",
+        "hex": "#5E4F7E",
+        "name": "Dusk Reef"
+      }
+    }
+  },
+  "transitions": {
+    "durations": {
+      "fast": "150ms",
+      "normal": "200ms",
+      "smooth": "300ms",
+      "slow": "500ms"
+    },
+    "timing": {
+      "default": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "ease": "ease",
+      "easeIn": "cubic-bezier(0.4, 0, 1, 1)",
+      "easeOut": "cubic-bezier(0, 0, 0.2, 1)",
+      "easeInOut": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "common": {
+      "colorChange": "transition-colors duration-200",
+      "transform": "transition-transform duration-300",
+      "opacity": "transition-opacity duration-200",
+      "all": "transition-all duration-200"
+    }
+  },
+  "breakpoints": {
+    "sm": {
+      "value": "640px",
+      "use": "Small tablets, large phones"
+    },
+    "md": {
+      "value": "768px",
+      "use": "Tablets"
+    },
+    "lg": {
+      "value": "1024px",
+      "use": "Small desktops, landscape tablets"
+    },
+    "xl": {
+      "value": "1280px",
+      "use": "Standard desktops"
+    },
+    "2xl": {
+      "value": "1536px",
+      "use": "Large desktops"
+    }
+  },
+  "zIndex": {
+    "background": "0",
+    "content": "1",
+    "dropdown": "10",
+    "sticky": "20",
+    "header": "50",
+    "modal": "100",
+    "tooltip": "150",
+    "notification": "200"
+  },
+  "quickReference": {
+    "_note": "Most common patterns for quick lookup",
+    "card": "bg-surface border border-default rounded-sm shadow-md p-6",
+    "cardElevated": "bg-surface border border-subtle rounded-lg shadow-elevated p-6",
+    "input": "h-10 md:h-10 w-full rounded-sm border border-default bg-surface px-3 py-2 text-sm",
+    "button": "h-10 px-4 py-2 rounded-md text-sm font-medium",
+    "badge": "inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium",
+    "modal": "bg-surface rounded-lg shadow-lg p-6",
+    "focusRing": "focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2"
+  }
+}

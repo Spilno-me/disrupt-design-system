@@ -1,0 +1,84 @@
+# CRITICAL: Session Context Loader
+# Ensures agents read agent-context.json at session start
+
+name: "session-context"
+description: "Loads agent context at session start - REQUIRED READING"
+enabled: true
+type: "prompt"
+
+# =============================================================================
+# SESSION START - Load Master Context
+# =============================================================================
+
+- trigger:
+    event: "SessionStart"
+  check: |
+    ═══════════════════════════════════════════════════════════════
+    🚀 DDS AGENT CONTEXT - READ THIS FIRST
+    ═══════════════════════════════════════════════════════════════
+
+    You are working on the Disrupt Design System (DDS).
+
+    📖 REQUIRED READING (read in this order):
+
+    1. ⭐ .claude/agent-context.json
+       → Master file: rules, workflows, quick lookups
+
+    2. 📦 .claude/component-registry.json
+       → Component existence check
+
+    3. 🎨 .claude/DESIGN-SYSTEM.md
+       → Visual design decisions (shadows, colors, spacing)
+
+    OPTIONAL (if building components):
+    4. 🧪 .claude/testing-quick-ref.md
+       → testId strategy
+    5. 📖 .claude/storybook-rules.md
+       → Story patterns
+
+    ⚡ Core: ~400 lines = 5 seconds
+
+    ═══════════════════════════════════════════════════════════════
+    CRITICAL RULES:
+    ═══════════════════════════════════════════════════════════════
+
+    🚨 VERSIONING: NO breaking changes until v3.0.0
+    🎨 TOKENS: ZERO raw colors (#hex, rgb(), bg-blue-500)
+    📦 EXPORTS: Two-level (component + src/index.ts)
+    🧪 TESTING: ATOM (accept) | MOLECULE (auto-gen) | PAGE (hardcode)
+    🎯 VARIANTS: Minimal (≤5), functional only, no aesthetic
+
+    ═══════════════════════════════════════════════════════════════
+
+    Ready. Use JSON for all lookups! ⚡
+
+# =============================================================================
+# FIRST MAJOR OPERATION - Remind if context not loaded
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "src/.+\\.(tsx?|css)$"
+  check: |
+    💡 TIP: If you haven't yet, read .claude/agent-context.json first
+
+    Quick check before editing:
+    • Is this backwards compatible? (workflow.editComponent)
+    • Using design tokens only? (criticalRules.tokens)
+    • Need to update CHANGELOG? (Yes if API change)
+
+    Read: .claude/agent-context.json → workflow.editComponent
+
+- trigger:
+    tool: "Write"
+    filePattern: "src/components/.+\\.tsx$"
+  check: |
+    💡 TIP: If you haven't yet, read .claude/agent-context.json first
+
+    Creating new component checklist:
+    • Check: .claude/component-registry.json (does it exist?)
+    • Export from src/index.ts + types
+    • Update CLAUDE.md
+    • This is MINOR bump
+
+    Read: .claude/agent-context.json → workflow.createComponent

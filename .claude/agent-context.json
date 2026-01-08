@@ -1,0 +1,1730 @@
+{
+  "$schema": ".claude/agent-context.schema.json",
+  "version": "2.1.0",
+  "description": "SINGLE SOURCE OF TRUTH for AI agents. Read this ONE file for complete context.",
+  "meta": {
+    "project": "Disrupt Design System (DDS)",
+    "version": "2.6.0",
+    "designPhilosophy": "OPINIONATED - Strong design vision, minimal variants",
+    "engineeringPhilosophy": "Wu Wei (無為) - See criticalRules.engineeringPhilosophy",
+    "uxPhilosophy": "MAYA - See criticalRules.uxPhilosophy",
+    "engagementPhilosophy": "Quality of Engagement (QoE) - See criticalRules.engagementPhilosophy",
+    "lastUpdated": "2026-01-08"
+  },
+  "criticalRules": {
+    "engineeringPhilosophy": {
+      "name": "Wu Wei (無為) - Agent Engineering Philosophy",
+      "principle": "Work WITH the codebase, not against it",
+      "forAgents": true,
+      "rules": {
+        "simpleOverClever": {
+          "do": "Let solutions emerge from existing patterns",
+          "dont": "Over-engineer or add premature abstractions",
+          "test": "Is this the simplest solution that works?"
+        },
+        "addOnlyWhatsNeeded": {
+          "do": "Three similar lines > premature abstraction",
+          "dont": "DRY zealotry, speculative generalization",
+          "test": "Am I solving the actual task or imaginary future ones?"
+        },
+        "trustTheFlow": {
+          "do": "Search existing patterns/tokens/components FIRST",
+          "dont": "Invent new patterns when existing ones work",
+          "test": "Did I check agent-context.json and existing code?"
+        },
+        "noForce": {
+          "signal": "If implementation feels like fighting the codebase → STOP",
+          "action": "Step back, investigate why, find the natural path",
+          "test": "Am I working around the system or with it?"
+        },
+        "backwardsCompatibility": {
+          "do": "ADD new, DEPRECATE old, never REMOVE until v3",
+          "dont": "Break existing consumers",
+          "test": "Will existing code that uses this break?"
+        }
+      },
+      "preCommitChecklist": [
+        "Am I adding complexity the task doesn't require?",
+        "Did I search for existing patterns first?",
+        "Am I fighting the codebase structure?",
+        "Will this break existing consumers?",
+        "Would deletion be better than addition?"
+      ],
+      "quote": "Agents that work WITH the codebase produce better results than agents that fight it."
+    },
+    "uxPhilosophy": {
+      "name": "MAYA - Agent UX Philosophy",
+      "principle": "When building UI, keep it familiar to USERS (humans). Innovate visually, keep interactions stable.",
+      "forAgents": true,
+      "origin": "Raymond Loewy (industrial designer)",
+      "rules": {
+        "innovateInSmallSteps": {
+          "do": "Keep core interaction patterns that users expect",
+          "dont": "Redesign everything at once",
+          "test": "Would users immediately understand how to use this?"
+        },
+        "anchorToFamiliar": {
+          "do": "New concepts use existing mental models users already have",
+          "dont": "Force users to learn entirely new paradigms",
+          "test": "What familiar pattern does this remind users of?"
+        },
+        "respectConventions": {
+          "do": "Follow platform/accessibility/UX patterns humans expect",
+          "dont": "Be different for the sake of different",
+          "test": "Does breaking this convention add real value for users?"
+        },
+        "modernVisualsStableInteraction": {
+          "do": "Update typography, spacing, motion—visual polish",
+          "dont": "Change where buttons live, how forms work—behavioral changes",
+          "test": "Is this change visual polish or behavioral change?"
+        },
+        "validateAcceptability": {
+          "do": "Build for 'new but easy' user experience",
+          "dont": "Break user muscle memory",
+          "test": "Will users find this fresh but immediately understandable?"
+        }
+      },
+      "applicationAreas": [
+        "Design system evolution/refactors",
+        "Product redesigns",
+        "AI/automation workflow introduction",
+        "Navigation/layout migrations",
+        "Legacy tool re-theming"
+      ],
+      "preDesignChecklist": [
+        "Is this change visual or behavioral?",
+        "What familiar pattern anchors this for users?",
+        "Am I breaking conventions? Worth it for users?",
+        "Will users understand this in 5 seconds?"
+      ],
+      "quote": "Build for humans: modern visuals, stable interactions."
+    },
+    "engagementPhilosophy": {
+      "name": "Quality of Engagement (QoE) - Agent Process Philosophy",
+      "principle": "Force creates resistance. Curiosity creates flow. Agents work better when engaged, not forcing.",
+      "forAgents": true,
+      "fullGuide": ".claude/quality-of-engagement.md",
+      "rules": {
+        "decreaseEffort": {
+          "do": "Step back when stuck, try different approach",
+          "dont": "Brute-force hammering the same approach",
+          "test": "Am I forcing or exploring?"
+        },
+        "followFriction": {
+          "do": "When pattern doesn't fit, investigate WHY",
+          "dont": "Ignore warning signs, force implementation",
+          "test": "What is this friction trying to tell me?"
+        },
+        "makeItSmaller": {
+          "do": "Break tasks down, start with smallest tractable piece",
+          "dont": "Plan everything at once, huge scope",
+          "test": "Is this small enough to make progress on?"
+        },
+        "stopAtThePeak": {
+          "do": "Don't exhaust context in one pass, leave clear handoff",
+          "dont": "Drain all possibilities, leave no context for continuation",
+          "test": "Is there clear context for next steps?"
+        },
+        "allowUgliness": {
+          "do": "First draft can be rough, refactor after it works",
+          "dont": "Over-optimize prematurely, perfect before functional",
+          "test": "Am I polishing before I have something working?"
+        },
+        "noticeSignals": {
+          "do": "Watch for: context growing, going in circles, scope creeping",
+          "dont": "Ignore computational friction signals",
+          "test": "Is context/scope growing unexpectedly?"
+        },
+        "livingQuestion": {
+          "do": "Start with specific, actionable questions",
+          "dont": "Start with vague abstract questions like 'how do I do everything?'",
+          "test": "Is this question specific enough to answer?"
+        },
+        "theOffer": {
+          "do": "Contribute care, attention, and quality—not just execute",
+          "dont": "Rush through mechanically",
+          "test": "Am I contributing quality or just completing?"
+        },
+        "inviteResistance": {
+          "do": "When task feels wrong, ask WHY before forcing",
+          "dont": "Override with brute force",
+          "test": "If this feels wrong, have I investigated why?"
+        },
+        "changeRegister": {
+          "do": "Switch modes: code→diagrams, read→search, analyze→create",
+          "dont": "Keep forcing the same approach that isn't working",
+          "test": "Would a different approach unlock this?"
+        },
+        "intermediateImpossible": {
+          "do": "Ask 'what would the ideal solution look like?' to orient",
+          "dont": "Only consider immediately achievable",
+          "test": "What would perfect look like?"
+        },
+        "theUnsaid": {
+          "do": "State the uncomfortable truth about the code/task",
+          "dont": "Dance around the real issue",
+          "test": "What am I avoiding mentioning?"
+        },
+        "letItEnd": {
+          "do": "Recognize when task is done, don't over-engineer",
+          "dont": "Add unnecessary features, force continuation",
+          "test": "Is this task actually complete?"
+        }
+      },
+      "preTaskChecklist": [
+        "Is scope small enough to be tractable?",
+        "What's the specific question I'm answering?",
+        "Am I contributing quality or just executing?",
+        "Is there friction I should investigate first?"
+      ],
+      "duringTaskChecklist": [
+        "Signal check: context growing? going in circles?",
+        "Effort check: forcing or exploring?",
+        "What's the uncomfortable truth I'm avoiding?"
+      ],
+      "endingChecklist": [
+        "Clear handoff for next steps?",
+        "Is this task actually complete?"
+      ],
+      "metaPrinciple": "Quality emerges from RELATIONSHIP with the codebase—agents that engage curiously produce better results than agents that force.",
+      "quote": "Quality emerges from relationship with the codebase."
+    },
+    "versioning": {
+      "policy": "NO_BREAKING_UNTIL_V3",
+      "breaking": [
+        "rename props",
+        "remove props",
+        "change types",
+        "change defaults",
+        "remove exports"
+      ],
+      "safe": [
+        "add optional props",
+        "new components",
+        "bug fixes",
+        "add variants",
+        "deprecate with warning"
+      ]
+    },
+    "tokens": {
+      "forbidden": [
+        "#hex",
+        "rgb()",
+        "hsl()",
+        "bg-blue-500",
+        "text-red-600"
+      ],
+      "required": "ALIAS tokens OR semantic Tailwind (bg-surface, text-primary)",
+      "colorFormat": "oklch",
+      "afterEdit": "npm run generate-tokens",
+      "colorMatrix": {
+        "_CRITICAL": "CONSULT BEFORE WRITING ANY COLOR CODE",
+        "file": "src/data/color-intelligence.json",
+        "toon": ".claude/color-intelligence.toon",
+        "mcp": "mcp__dds__get_color_recommendation",
+        "workflow": [
+          "1. Identify background category (dark/light/accent/subtle)",
+          "2. Look up allowed text/icon/border colors",
+          "3. Check FORBIDDEN list - never use those"
+        ],
+        "goldenRule": "Same color family on itself = INVISIBLE (ABYSS on ABYSS = WRONG)"
+      },
+      "contrastValidation": {
+        "_CRITICAL": "VALIDATE WCAG CONTRAST BY ELEMENT CATEGORY - NOT ALL ELEMENTS USE SAME THRESHOLD",
+        "mcp": "mcp__dds__check_contrast",
+        "accessibleColors": "mcp__dds__get_accessible_colors",
+        "skill": ".claude/skills/contrast-category-check.md",
+        "hook": ".claude/hookify/contrast-category-check.yaml",
+        "categoryThresholds": {
+          "_RULE": "FIRST identify element category, THEN apply correct threshold",
+          "normalText": {
+            "threshold": "4.5:1",
+            "appliesTo": "Body text, labels, input text, button text, form fields",
+            "largeTextException": "18pt+ regular OR 14pt+ bold can use 3.0:1"
+          },
+          "largeText": {
+            "threshold": "3.0:1",
+            "appliesTo": "Headings 18pt+, bold text 14pt+",
+            "pixelEquivalent": "18pt = 24px, 14pt = 18.5px"
+          },
+          "graphics": {
+            "threshold": "3.0:1",
+            "appliesTo": "Icons, borders, focus rings, UI component boundaries",
+            "note": "Non-text visual elements"
+          }
+        },
+        "commonMistake": {
+          "error": "Using 3.0:1 for button text because 'it passes AA'",
+          "why": "Button text is NORMAL TEXT, needs 4.5:1",
+          "fix": "Only icons/borders/large headings can use 3.0:1"
+        },
+        "commonFailures": {
+          "ABYSS[200]_on_ABYSS[500]": "3.98:1 FAIL for text",
+          "DEEP_CURRENT[500]_on_white": "3.57:1 - FAIL normal text, PASS large text/icons",
+          "white_on_white": "1:1 INVISIBLE",
+          "text-tertiary_as_body": "3.5:1 - FAIL for body text, OK for icons"
+        },
+        "safeDefaults": {
+          "darkBg": "PRIMITIVES.white (12:1+) or SLATE[300] (8:1+)",
+          "lightBg": "ABYSS[500] (12:1+) or DUSK_REEF[500] (7:1+)",
+          "tealButtons": "Use DEEP_CURRENT[600] not [500] for white text"
+        },
+        "agentBehavior": {
+          "step1": "Identify element category (Normal text | Large text | Graphics)",
+          "step2": "Apply correct threshold (4.5:1 | 3.0:1)",
+          "step3": "Validate using MCP mcp__dds__check_contrast",
+          "step4": "If fails, REPORT with category and suggest fix"
+        }
+      }
+    },
+    "git": {
+      "noClaudeAttribution": true,
+      "format": "feat:|fix:|chore:|refactor:|docs:"
+    },
+    "errors": {
+      "typescript": "FIX, never revert",
+      "forbidden": "git reset --hard"
+    }
+  },
+  "colors": {
+    "_note": "Quick lookup - use Tailwind classes, not raw values",
+    "brand": {
+      "primary": {
+        "class": "bg-dark text-dark",
+        "hex": "#2D3142",
+        "name": "Abyss"
+      },
+      "accent": {
+        "class": "bg-accent-strong text-accent",
+        "hex": "#08A4BD",
+        "name": "Deep Current (Teal)"
+      },
+      "tertiary": {
+        "class": "bg-muted text-muted",
+        "hex": "#5E4F7E",
+        "name": "Dusk Reef (Purple)"
+      }
+    },
+    "semantic": {
+      "error": {
+        "class": "bg-error text-error border-error",
+        "hex": "#F70D1A"
+      },
+      "success": {
+        "class": "bg-success text-success border-success",
+        "hex": "#22C55E"
+      },
+      "warning": {
+        "class": "bg-warning text-warning border-warning",
+        "hex": "#EAB308"
+      },
+      "info": {
+        "class": "bg-info text-info border-info",
+        "hex": "#3B82F6"
+      }
+    },
+    "surfaces": {
+      "page": {
+        "class": "bg-cream",
+        "hex": "#FBFBF3"
+      },
+      "card": {
+        "class": "bg-surface bg-card",
+        "hex": "#FFFFFF"
+      },
+      "muted": {
+        "class": "bg-muted-bg",
+        "hex": "#EFEDF3"
+      },
+      "accent": {
+        "class": "bg-accent-bg",
+        "hex": "#E6F7FA"
+      }
+    },
+    "text": {
+      "primary": {
+        "class": "text-primary",
+        "hex": "#2D3142"
+      },
+      "secondary": {
+        "class": "text-secondary text-muted",
+        "hex": "#5E4F7E"
+      },
+      "emphasis": {
+        "class": "text-emphasis",
+        "hex": "#474F5F"
+      },
+      "inverse": {
+        "class": "text-inverse",
+        "hex": "#FFFFFF"
+      }
+    },
+    "border": {
+      "default": {
+        "class": "border-default",
+        "hex": "#CBD5E1"
+      },
+      "focus": {
+        "class": "border-accent ring-accent",
+        "hex": "#08A4BD"
+      }
+    }
+  },
+  "shadows": {
+    "rule": "Elevation = Importance + Interactivity",
+    "lookup": {
+      "sm": {
+        "use": "data display",
+        "examples": "tags, badges, stats"
+      },
+      "md": {
+        "use": "standard",
+        "examples": "cards, buttons, dropdowns"
+      },
+      "elevated": {
+        "use": "premium emphasis",
+        "examples": "KPIs, CTAs, featured"
+      },
+      "lg": {
+        "use": "interactive overlays",
+        "examples": "modals, sheets, drawers"
+      },
+      "xl": {
+        "use": "critical attention",
+        "examples": "alerts, error dialogs"
+      }
+    },
+    "values": {
+      "sm": "0 1px 3px 0 rgba(0,0,0,0.12), 0 1px 2px -1px rgba(0,0,0,0.08)",
+      "md": "0 2px 8px -1px rgba(0,0,0,0.12), 0 4px 12px -2px rgba(0,0,0,0.08)",
+      "elevated": "0 3px 12px -1px rgba(0,0,0,0.14), 0 10px 28px -4px rgba(0,0,0,0.10)",
+      "lg": "0 4px 16px -2px rgba(0,0,0,0.12), 0 8px 24px -4px rgba(0,0,0,0.08)",
+      "xl": "0 8px 24px -4px rgba(0,0,0,0.12), 0 12px 32px -6px rgba(0,0,0,0.08)"
+    }
+  },
+  "radius": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "12px",
+    "lg": "16px",
+    "xl": "20px",
+    "full": "9999px"
+  },
+  "motion": {
+    "_note": "Inspired by Vibe Design System - Productive (functional) vs Expressive (delightful)",
+    "duration": {
+      "productive": {
+        "short": {
+          "value": "70ms",
+          "use": "Micro-interactions, hover states"
+        },
+        "medium": {
+          "value": "100ms",
+          "use": "Toggles, checkboxes, small buttons"
+        },
+        "long": {
+          "value": "150ms",
+          "use": "Tooltips appearing, small transitions"
+        }
+      },
+      "expressive": {
+        "short": {
+          "value": "250ms",
+          "use": "Cards, modals, medium elements"
+        },
+        "long": {
+          "value": "400ms",
+          "use": "Page transitions, hero animations"
+        }
+      }
+    },
+    "easing": {
+      "enter": {
+        "value": "cubic-bezier(0, 0, 0.35, 1)",
+        "use": "Elements appearing"
+      },
+      "exit": {
+        "value": "cubic-bezier(0.4, 0, 1, 1)",
+        "use": "Elements leaving"
+      },
+      "transition": {
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "use": "State changes on screen"
+      },
+      "emphasize": {
+        "value": "cubic-bezier(0, 0, 0.2, 1.4)",
+        "use": "Attention/bounce (subtle overshoot)"
+      }
+    },
+    "delay": {
+      "short": {
+        "value": "50ms",
+        "use": "Quick stagger between items"
+      },
+      "normal": {
+        "value": "100ms",
+        "use": "Standard delay"
+      },
+      "long": {
+        "value": "200ms",
+        "use": "Pronounced stagger"
+      }
+    },
+    "cssVars": {
+      "duration": [
+        "--motion-duration-productive-short",
+        "--motion-duration-productive-medium",
+        "--motion-duration-productive-long",
+        "--motion-duration-expressive-short",
+        "--motion-duration-expressive-long"
+      ],
+      "easing": [
+        "--motion-easing-enter",
+        "--motion-easing-exit",
+        "--motion-easing-transition",
+        "--motion-easing-emphasize"
+      ],
+      "delay": [
+        "--motion-delay-short",
+        "--motion-delay-normal",
+        "--motion-delay-long"
+      ]
+    },
+    "guidelines": {
+      "productiveVsExpressive": "Use productive for functional interactions, expressive for emphasis/delight",
+      "enterVsExit": "enter easing for appearing elements, exit easing for disappearing",
+      "distanceRule": "Short distance = short duration, Long distance = long duration"
+    }
+  },
+  "typography": {
+    "website": {
+      "font": "Pilat Extended",
+      "class": "font-display",
+      "scope": "website headings only"
+    },
+    "app": {
+      "font": "Fixel",
+      "class": "font-sans",
+      "scope": "ALL app UI - the only allowed font"
+    },
+    "forbidden": {
+      "_CRITICAL": "ONLY Fixel is allowed in app UI",
+      "fonts": [
+        "font-mono",
+        "font-serif",
+        "font-display (in app)",
+        "any Google Font"
+      ],
+      "reason": "Consistent brand identity - Fixel for all UI"
+    }
+  },
+  "spacing": {
+    "website": {
+      "sectionY": "py-16 lg:py-24",
+      "sectionX": "px-6 lg:px-10",
+      "gap": "gap-12 lg:gap-16"
+    },
+    "app": {
+      "page": "p-6",
+      "card": "p-4 or p-6",
+      "form": "gap-2",
+      "section": "gap-6"
+    }
+  },
+  "components": {
+    "stabilization": {
+      "website": {
+        "status": "FROZEN",
+        "rule": "DO NOT TOUCH"
+      },
+      "app": {
+        "status": "CAN_STABILIZE",
+        "rule": "SAFE changes only"
+      },
+      "shared": {
+        "status": "EXTREME_CARE",
+        "rule": "ADD ONLY, never change existing"
+      },
+      "progress": {
+        "stabilized": 14,
+        "frozen": 19,
+        "todo": 32,
+        "utility": 19,
+        "total": 85,
+        "percentage": "16%"
+      }
+    },
+    "registry": {
+      "ui": {
+        "Avatar": {
+          "path": "ui/avatar.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "xs",
+            "sm",
+            "default",
+            "lg",
+            "xl"
+          ],
+          "subs": [
+            "AvatarImage",
+            "AvatarFallback"
+          ]
+        },
+        "Badge": {
+          "path": "ui/badge.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "default",
+            "secondary",
+            "destructive",
+            "outline"
+          ]
+        },
+        "Button": {
+          "path": "ui/button.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "default",
+            "destructive",
+            "outline",
+            "secondary",
+            "ghost",
+            "link",
+            "contact",
+            "accent"
+          ]
+        },
+        "Card": {
+          "path": "ui/card.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A",
+          "for": "website pricing only"
+        },
+        "AppCard": {
+          "path": "ui/app-card.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "default",
+            "elevated",
+            "flat"
+          ],
+          "for": "in-app use"
+        },
+        "Checkbox": {
+          "path": "ui/checkbox.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Input": {
+          "path": "ui/input.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Label": {
+          "path": "ui/label.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Select": {
+          "path": "ui/select.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "subs": [
+            "SelectTrigger",
+            "SelectContent",
+            "SelectItem",
+            "SelectValue"
+          ]
+        },
+        "Separator": {
+          "path": "ui/separator.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Skeleton": {
+          "path": "ui/Skeleton.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "pulse",
+            "shimmer",
+            "wave"
+          ]
+        },
+        "Slider": {
+          "path": "ui/Slider.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "TODO"
+        },
+        "Textarea": {
+          "path": "ui/textarea.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "Dialog": {
+          "path": "ui/dialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "data-slot",
+          "subs": [
+            "DialogTrigger",
+            "DialogContent",
+            "DialogHeader",
+            "DialogTitle",
+            "DialogDescription",
+            "DialogFooter",
+            "DialogClose",
+            "DialogOverlay"
+          ]
+        },
+        "Sheet": {
+          "path": "ui/sheet.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "Tooltip": {
+          "path": "ui/tooltip.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "DataTable": {
+          "path": "ui/DataTable.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO",
+          "features": [
+            "sorting",
+            "selection",
+            "pagination",
+            "filtering"
+          ]
+        },
+        "Form": {
+          "path": "ui/form.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A",
+          "subs": [
+            "FormField",
+            "FormItem",
+            "FormLabel",
+            "FormControl",
+            "FormMessage"
+          ]
+        },
+        "ErrorState": {
+          "path": "ui/ErrorState.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO",
+          "variants": [
+            "default",
+            "subtle",
+            "prominent"
+          ]
+        },
+        "SeverityIndicator": {
+          "path": "ui/SeverityIndicator.tsx",
+          "type": "ATOM",
+          "status": "DOMAIN",
+          "testId": "ready",
+          "levels": [
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ]
+        },
+        "Accordion": {
+          "path": "ui/Accordion.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "ActionSheet": {
+          "path": "ui/ActionSheet.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "ActionTile": {
+          "path": "ui/ActionTile.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A",
+          "variants": [
+            "variant"
+          ]
+        },
+        "Alert": {
+          "path": "ui/alert.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A",
+          "variants": [
+            "variant"
+          ]
+        },
+        "AnimatedCheck": {
+          "path": "ui/AnimatedCheck.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "AnimatedLogo": {
+          "path": "ui/AnimatedLogo.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "AppFooter": {
+          "path": "ui/AppFooter.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "AppHeader": {
+          "path": "ui/AppHeader.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "AppSidebar": {
+          "path": "ui/AppSidebar.tsx",
+          "type": "ORGANISM",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "BlurImage": {
+          "path": "ui/BlurImage.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "BottomNav": {
+          "path": "ui/BottomNav.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "ready"
+        },
+        "Calendar": {
+          "path": "ui/calendar.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "Chart": {
+          "path": "ui/chart.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "CheckListItem": {
+          "path": "ui/CheckListItem.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "Collapsible": {
+          "path": "ui/collapsible.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "CopyButton": {
+          "path": "ui/CopyButton.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "ready"
+        },
+        "DateTimePicker": {
+          "path": "ui/date-time-picker.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "DropdownMenu": {
+          "path": "ui/dropdown-menu.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "ElectricInput": {
+          "path": "ui/ElectricInput.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "ElectricLucideIcon": {
+          "path": "ui/ElectricLucideIcon.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "EmptyState": {
+          "path": "ui/EmptyState.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "ErrorBoundary": {
+          "path": "ui/ErrorBoundary.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "ExecutingAnimation": {
+          "path": "ui/ExecutingAnimation.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "FeatureCard": {
+          "path": "ui/FeatureCard.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "FeatureItem": {
+          "path": "ui/FeatureItem.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "GenericErrorPage": {
+          "path": "ui/GenericErrorPage.tsx",
+          "type": "PAGE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "GlassEffect": {
+          "path": "ui/GlassEffect.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "GridBlobCanvas": {
+          "path": "ui/GridBlobCanvas.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "Header": {
+          "path": "ui/Header.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "HeroParticles": {
+          "path": "ui/HeroParticles.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "IconText": {
+          "path": "ui/IconText.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "LinkedInButton": {
+          "path": "ui/LinkedInButton.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "MadeWithLove": {
+          "path": "ui/MadeWithLove.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "MapWithMarkers": {
+          "path": "ui/MapWithMarkers.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "MobileMenu": {
+          "path": "ui/MobileMenu.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "MobileNav": {
+          "path": "ui/MobileNav.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "MouseParticleRenderer": {
+          "path": "ui/MouseParticleRenderer.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "NotificationsPanel": {
+          "path": "ui/NotificationsPanel.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "NumberStepper": {
+          "path": "ui/number-stepper.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "OptimizedImage": {
+          "path": "ui/OptimizedImage.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "PageActionPanel": {
+          "path": "ui/PageActionPanel.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "Pagination": {
+          "path": "ui/Pagination.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "ParallaxImage": {
+          "path": "ui/ParallaxImage.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "Popover": {
+          "path": "ui/popover.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "PricingConnector": {
+          "path": "ui/pricing-connector.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "QuickFilter": {
+          "path": "ui/QuickFilter.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A",
+          "variants": [
+            "variant"
+          ]
+        },
+        "ResizablePanels": {
+          "path": "ui/resizable-panels.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "ResponsiveActionMenu": {
+          "path": "ui/ResponsiveActionMenu.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "ResponsiveImage": {
+          "path": "ui/ResponsiveImage.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "ResponsivePicture": {
+          "path": "ui/ResponsivePicture.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "RowActions": {
+          "path": "ui/RowActions.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "ready"
+        },
+        "ScrollArea": {
+          "path": "ui/scroll-area.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "ScrollFadeList": {
+          "path": "ui/ScrollFadeList.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "ScrollLockContainer": {
+          "path": "ui/ScrollLockContainer.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "ScrollToTopButton": {
+          "path": "ui/ScrollToTopButton.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "ScrollableTableWrapper": {
+          "path": "ui/ScrollableTableWrapper.tsx",
+          "type": "ATOM",
+          "status": "UTILITY",
+          "testId": "N/A"
+        },
+        "SectionHeading": {
+          "path": "ui/SectionHeading.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "SectionLayout": {
+          "path": "ui/SectionLayout.tsx",
+          "type": "MOLECULE",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "Sonner": {
+          "path": "ui/sonner.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "StepIndicator": {
+          "path": "ui/StepIndicator.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        },
+        "Switch": {
+          "path": "ui/switch.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "Tabs": {
+          "path": "ui/tabs.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A",
+          "variants": [
+            "variant"
+          ]
+        },
+        "Tipseen": {
+          "path": "ui/Tipseen.tsx",
+          "type": "MOLECULE",
+          "status": "FROZEN",
+          "testId": "N/A"
+        },
+        "ToggleGroup": {
+          "path": "ui/toggle-group.tsx",
+          "type": "ATOM",
+          "status": "FROZEN",
+          "testId": "N/A",
+          "variants": [
+            "size"
+          ]
+        },
+        "TruncatedId": {
+          "path": "ui/TruncatedId.tsx",
+          "type": "ATOM",
+          "status": "TODO",
+          "testId": "TODO"
+        }
+      },
+      "partners": {
+        "_description": "Partner Portal components - business domain",
+        "PartnersPage": {
+          "path": "partners/PartnersPage.tsx",
+          "type": "ORGANISM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "list",
+            "search",
+            "filter",
+            "CRUD"
+          ]
+        },
+        "PartnerNetworkPage": {
+          "path": "partners/PartnerNetworkPage.tsx",
+          "type": "ORGANISM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "hierarchy",
+            "metrics",
+            "sub-partners"
+          ]
+        },
+        "PartnerLoginAccountsPage": {
+          "path": "partners/PartnerLoginAccountsPage.tsx",
+          "type": "ORGANISM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "accounts",
+            "permissions",
+            "reset-password"
+          ]
+        },
+        "SettingsPage": {
+          "path": "partners/SettingsPage.tsx",
+          "type": "ORGANISM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "profile",
+            "company",
+            "notifications",
+            "security"
+          ]
+        },
+        "HelpPage": {
+          "path": "partners/HelpPage.tsx",
+          "type": "ORGANISM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "docs",
+            "faq",
+            "support"
+          ]
+        },
+        "PricingCalculator": {
+          "path": "partners/PricingCalculator.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "calculate",
+            "quote-generation"
+          ]
+        },
+        "EditPartnerDialog": {
+          "path": "partners/EditPartnerDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "modes": [
+            "create",
+            "edit"
+          ]
+        },
+        "DeletePartnerDialog": {
+          "path": "partners/DeletePartnerDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "CreateSubPartnerDialog": {
+          "path": "partners/CreateSubPartnerDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "EditNetworkPartnerDialog": {
+          "path": "partners/EditNetworkPartnerDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "DeleteNetworkPartnerDialog": {
+          "path": "partners/DeleteNetworkPartnerDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "CreateLoginAccountDialog": {
+          "path": "partners/CreateLoginAccountDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "DeleteLoginAccountDialog": {
+          "path": "partners/DeleteLoginAccountDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "ResetPasswordDialog": {
+          "path": "partners/ResetPasswordDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "TierBadge": {
+          "path": "partners/components/TierBadge.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "Enterprise",
+            "Premium",
+            "Standard"
+          ]
+        },
+        "StatusIndicator": {
+          "path": "partners/components/StatusIndicator.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "variants": [
+            "active",
+            "pending",
+            "inactive"
+          ]
+        },
+        "PartnerId": {
+          "path": "partners/components/PartnerId.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "MetricItem": {
+          "path": "partners/components/MetricItem.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "PartnerMetricsCard": {
+          "path": "partners/components/PartnerMetricsCard.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "PartnerRow": {
+          "path": "partners/components/PartnerRow.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        }
+      },
+      "invoices": {
+        "_description": "Invoice management components",
+        "InvoicesPage": {
+          "path": "partners/invoices/InvoicesPage.tsx",
+          "type": "ORGANISM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "list",
+            "filter",
+            "status",
+            "CRUD"
+          ]
+        },
+        "InvoicesDataTable": {
+          "path": "partners/invoices/InvoicesDataTable.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "sorting",
+            "selection",
+            "pagination"
+          ]
+        },
+        "InvoiceCard": {
+          "path": "partners/invoices/InvoiceCard.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "statuses": [
+            "draft",
+            "sent",
+            "paid",
+            "overdue"
+          ]
+        },
+        "InvoicePreviewSheet": {
+          "path": "partners/invoices/InvoicePreviewSheet.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "EditInvoiceDialog": {
+          "path": "partners/invoices/EditInvoiceDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "modes": [
+            "create",
+            "edit"
+          ]
+        },
+        "InvoicePDFDialog": {
+          "path": "partners/invoices/InvoicePDFDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        }
+      },
+      "leads": {
+        "_description": "Lead management components",
+        "LeadsPage": {
+          "path": "leads/LeadsPage.tsx",
+          "type": "ORGANISM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "features": [
+            "list",
+            "filter",
+            "stats",
+            "CRUD"
+          ]
+        },
+        "LeadsDataTable": {
+          "path": "leads/LeadsDataTable.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "LeadCard": {
+          "path": "leads/LeadCard.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "priorities": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "StatsCard": {
+          "path": "leads/StatsCard.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "trendDirections": [
+            "up",
+            "down",
+            "neutral"
+          ]
+        },
+        "CreateLeadDialog": {
+          "path": "leads/CreateLeadDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "EditLeadDialog": {
+          "path": "leads/EditLeadDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "DeleteLeadDialog": {
+          "path": "leads/DeleteLeadDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "AssignLeadDialog": {
+          "path": "leads/AssignLeadDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "StatusUpdateDialog": {
+          "path": "leads/StatusUpdateDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "ActivityTimeline": {
+          "path": "leads/ActivityTimeline.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "activityTypes": [
+            "call",
+            "email",
+            "meeting",
+            "note",
+            "status_change",
+            "follow_up",
+            "converted",
+            "lost"
+          ]
+        },
+        "CreateActivityDialog": {
+          "path": "leads/CreateActivityDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "BulkActionsToolbar": {
+          "path": "leads/BulkActionsToolbar.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "actions": [
+            "assign",
+            "delete",
+            "export",
+            "update_status",
+            "recalculate_score"
+          ]
+        },
+        "ExportButton": {
+          "path": "leads/ExportButton.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "formats": [
+            "csv",
+            "xlsx",
+            "json",
+            "pdf"
+          ]
+        },
+        "LeadScoreRecalculator": {
+          "path": "leads/LeadScoreRecalculator.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        }
+      },
+      "templates": {
+        "_description": "Page templates for complete applications",
+        "PartnerPortalPage": {
+          "path": "templates/pages/PartnerPortalPage.tsx",
+          "type": "PAGE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "pages": [
+            "dashboard",
+            "leads",
+            "partners",
+            "invoices",
+            "settings",
+            "help",
+            "pricing-calculator",
+            "partner-network",
+            "tenant-provisioning"
+          ]
+        },
+        "DashboardPage": {
+          "path": "templates/pages/DashboardPage.tsx",
+          "type": "PAGE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "ActivityTimeline": {
+          "path": "leads/ActivityTimeline.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "activityTypes": [
+            "call",
+            "email",
+            "meeting",
+            "note",
+            "status_change",
+            "follow_up",
+            "converted",
+            "lost"
+          ]
+        },
+        "CreateActivityDialog": {
+          "path": "leads/CreateActivityDialog.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        },
+        "BulkActionsToolbar": {
+          "path": "leads/BulkActionsToolbar.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "actions": [
+            "assign",
+            "delete",
+            "export",
+            "update_status",
+            "recalculate_score"
+          ]
+        },
+        "ExportButton": {
+          "path": "leads/ExportButton.tsx",
+          "type": "ATOM",
+          "status": "STABILIZED",
+          "testId": "ready",
+          "formats": [
+            "csv",
+            "xlsx",
+            "json",
+            "pdf"
+          ]
+        },
+        "LeadScoreRecalculator": {
+          "path": "leads/LeadScoreRecalculator.tsx",
+          "type": "MOLECULE",
+          "status": "STABILIZED",
+          "testId": "ready"
+        }
+      },
+      "statusLegend": {
+        "STABILIZED": "Production ready, AllStates story, tokens compliant",
+        "FROZEN": "DO NOT TOUCH - website production use",
+        "TODO": "Needs stabilization review",
+        "UTILITY": "Infrastructure helper, not a UI primitive",
+        "DOMAIN": "Domain-specific, stabilize after core",
+        "PAGE": "Complete page template, composes multiple organisms"
+      },
+      "testIdLegend": {
+        "ready": "Props spread + JSDoc examples for ATOM, or auto-gen for MOLECULE",
+        "data-slot": "Compound component uses data-slot attributes (Dialog, Select, Sheet)",
+        "TODO": "Needs data-testid implementation per testing-quick-ref.md",
+        "N/A": "Not applicable (FROZEN or UTILITY)"
+      },
+      "testIdProgress": {
+        "ready": 16,
+        "todo": 30,
+        "na": 38,
+        "data-slot": 1
+      },
+      "missingExports": {
+        "high": [
+          "QuickFilter",
+          "NotificationsPanel",
+          "DropdownMenu",
+          "Tabs"
+        ],
+        "medium": [
+          "Wizard",
+          "WizardStepper",
+          "WizardStep",
+          "WizardNavigation"
+        ]
+      }
+    }
+  },
+  "workflows": {
+    "editComponent": "Breaking? → STOP → v3.0.0 | Safe? → Update CHANGELOG",
+    "createComponent": "1. Check registry 2. Radix UI 3. Tokens only 4. Export src/index.ts 5. MINOR bump",
+    "writeStory": "1. AllStates required 2. autoFocus for focus 3. No hardcoded overrides 4. Composition only",
+    "writeTest": "Atoms=accept testId | Molecules=auto-gen | Pages=named regions",
+    "editTokens": "1. Update designTokens.ts 2. Update tokens-reference.json 3. Update DesignTokens.mdx 4. Run npm run sync-docs",
+    "afterChanges": "Run npm run sync-components && npm run sync-docs && npm run validate-context"
+  },
+  "storybook": {
+    "modalOverlayPattern": {
+      "_CRITICAL": "Modals use portals + fixed positioning - won't render inline",
+      "staticPreview": {
+        "use": "Default, WithForm stories (always visible)",
+        "pattern": "Plain HTML div with dialog classes",
+        "classes": "bg-surface text-primary font-sans rounded-lg border border-default p-6 shadow-lg",
+        "example": "<div className=\"bg-surface...\"><h2>Title</h2><p>Description</p><Button>Action</Button></div>"
+      },
+      "interactiveDemo": {
+        "use": "AllStates story only",
+        "pattern": "Real Dialog with DialogTrigger (user clicks to open)",
+        "example": "<Dialog><DialogTrigger asChild><Button>Open</Button></DialogTrigger><DialogContent>...</DialogContent></Dialog>"
+      },
+      "forbidden": {
+        "defaultOpen": "Never use defaultOpen alone - breaks Storybook rendering",
+        "modalFalse": "modal={false} causes context errors"
+      }
+    },
+    "dataSlotPattern": {
+      "_note": "Compound components use data-slot, not data-testid",
+      "whenToUse": {
+        "dataSlot": "Compound components (Dialog, Select, Sheet) - fixed internal structure",
+        "dataTestid": "ATOM, MOLECULE, PAGE - consumer or auto-generated"
+      },
+      "components": {
+        "Dialog": [
+          "dialog",
+          "dialog-trigger",
+          "dialog-content",
+          "dialog-header",
+          "dialog-footer",
+          "dialog-title",
+          "dialog-description",
+          "dialog-close",
+          "dialog-overlay"
+        ],
+        "Select": [
+          "select-trigger",
+          "select-content",
+          "select-item",
+          "select-separator"
+        ],
+        "Sheet": [
+          "sheet-trigger",
+          "sheet-content",
+          "sheet-header",
+          "sheet-title"
+        ]
+      },
+      "testing": "container.querySelector('[data-slot=\"dialog-content\"]')"
+    },
+    "allStatesStory": {
+      "required": true,
+      "sections": [
+        "Variants",
+        "Sizes",
+        "States",
+        "Focus (use autoFocus)"
+      ],
+      "headerClass": "text-sm font-semibold text-muted mb-4"
+    }
+  },
+  "commands": {
+    "typecheck": "npm run typecheck",
+    "lint": "npm run lint",
+    "build": "npm run build",
+    "storybook": "npm run storybook",
+    "generateTokens": "npm run generate-tokens",
+    "syncComponents": "npm run sync-components",
+    "syncDocs": "npm run sync-docs",
+    "validateContext": "npm run validate-context",
+    "syncAll": "npm run sync-components && npm run sync-docs && npm run validate-context"
+  },
+  "lazyLoad": {
+    "componentDev": ".claude/component-dev-rules.md",
+    "colorIntelligence": "src/data/color-intelligence.json",
+    "colorIntelligenceToon": ".claude/color-intelligence.toon",
+    "contrastMcp": "mcp__dds__check_contrast",
+    "tokens": ".claude/tokens-reference.json",
+    "storybookPatterns": ".claude/storybook-rules.md",
+    "testingPatterns": ".claude/testing-quick-ref.md",
+    "changelog": ".claude/changelog.json"
+  },
+  "humanOnly": {
+    "_note": "These files are for humans in Storybook, not for agents",
+    "visualTokenDocs": "src/stories/DesignTokens.mdx"
+  }
+}

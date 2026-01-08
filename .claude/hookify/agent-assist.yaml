@@ -1,0 +1,81 @@
+# AGENT-FIRST Hookify Rules
+# Ultra-minimal, references JSON only
+
+name: "agent-assist"
+description: "Agent-first: 3-line prompts that reference structured data"
+enabled: true
+type: "prompt"
+
+# =============================================================================
+# EDIT COMPONENT
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "src/components/.+\\.tsx$"
+  check: |
+    ⚠️  EDIT COMPONENT → Read: .claude/agent-context.json → workflow.editComponent
+    Breaking? (rename/remove props) → STOP → v3.0.0 only
+    Safe? (optional prop/bugfix) → MINOR/PATCH → Proceed
+    testId: Read .claude/testing-quick-ref.md → ATOM | MOLECULE | PAGE strategy
+
+# =============================================================================
+# CREATE COMPONENT
+# =============================================================================
+
+- trigger:
+    tool: "Write"
+    filePattern: "src/components/.+\\.tsx$"
+  check: |
+    ✨ NEW COMPONENT → Read: .claude/agent-context.json → workflow.createComponent
+    testId: ATOM (accept) | MOLECULE (auto-gen from props) | PAGE (hardcode)
+    Must: Export from src/index.ts + types + Update CLAUDE.md
+    This is MINOR bump
+
+# =============================================================================
+# EDIT EXPORTS
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "src/index\\.ts$"
+  check: |
+    📦 EXPORTS → Read: .claude/agent-context.json → components.exports
+    Missing HIGH: NotificationsPanel, QuickFilter, DropdownMenu, Tabs
+    Export: Component + Types + Sub-components + Hooks
+
+# =============================================================================
+# BUMP VERSION
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "package\\.json$"
+  check: |
+    📌 VERSION → Read: .claude/agent-context.json → versioning
+    PATCH|MINOR|MAJOR → Update CHANGELOG.md
+    MAJOR = v3.0.0 only (not now!)
+
+# =============================================================================
+# USE RAW COLOR (BLOCK)
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "\\.(tsx?|css)$"
+  check: |
+    🎨 TOKENS ONLY → Read: .claude/agent-context.json → tokens
+    ❌ NO: #hex, rgb(), bg-blue-500
+    ✅ YES: ALIAS.text.primary, bg-surface, text-primary
+    Format: Use oklch() in tokens.css (not hex/rgb)
+
+# =============================================================================
+# RECORD FINDING (Minimal prompt)
+# =============================================================================
+
+- trigger:
+    tool: "Edit"
+    filePattern: "src/.+\\.(tsx?|css)$"
+  check: |
+    💡 New design pattern? → Update .claude/DESIGN-SYSTEM.md
+    💡 New rule discovered? → Update .claude/agent-context.json

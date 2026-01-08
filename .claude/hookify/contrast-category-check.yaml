@@ -1,0 +1,103 @@
+# CONTRAST CATEGORY VALIDATION HOOK
+# Enforces WCAG thresholds based on element category
+#
+# Categories:
+#   Normal text (4.5:1) - body text, labels, buttons
+#   Large text (3.0:1)  - 18pt+ regular, 14pt+ bold
+#   Graphics (3.0:1)    - icons, borders, focus rings
+
+name: "contrast-category-validation"
+description: "Validates contrast ratios against correct category threshold"
+enabled: true
+type: "prompt"
+
+# =============================================================================
+# TRIGGER: Any file with color-related code
+# =============================================================================
+
+hooks:
+  - event: "PreToolUse"
+    matcher: "Edit|Write"
+    condition:
+      file_pattern: "\\.(tsx?|jsx?|css|mdx)$"
+      content_pattern: "(text-|bg-|border-|fill-|stroke-)[a-z]|className.*color|style.*color"
+
+    prompt: |
+      🎨 CONTRAST CATEGORY CHECK REQUIRED
+
+      Before applying colors, validate contrast based on element CATEGORY:
+
+      ┌────────────────────────────────────────────────────────┐
+      │ CATEGORY THRESHOLDS (WCAG AA)                          │
+      ├────────────────────────────────────────────────────────┤
+      │ Normal text  │ 4.5:1 │ Body, labels, button text      │
+      │ Large text   │ 3.0:1 │ 18pt+ regular, 14pt+ bold      │
+      │ Graphics     │ 3.0:1 │ Icons, borders, focus rings    │
+      └────────────────────────────────────────────────────────┘
+
+      VALIDATION STEPS:
+      1. Identify element category (text size matters!)
+      2. Determine required threshold
+      3. Check src/data/color-intelligence.json or MCP tools for allowed combinations
+      4. Report any failures with suggested fixes
+
+      ⚠️ COMMON MISTAKE: Using 3.0:1 for normal text
+         → Button text, labels = NORMAL TEXT = needs 4.5:1
+         → Only icons/borders can use 3.0:1 threshold
+
+      If contrast fails, use mcp__dds__get_accessible_colors to find alternatives
+
+# =============================================================================
+# POST-VALIDATION: Verify colors were checked
+# =============================================================================
+
+  - event: "PostToolUse"
+    matcher: "Edit|Write"
+    condition:
+      file_pattern: "\\.(tsx?|jsx?)$"
+      content_pattern: "text-(primary|secondary|tertiary|accent|success|warning|error)"
+
+    prompt: |
+      ✅ CONTRAST SELF-CHECK
+
+      Verify the semantic tokens used have adequate contrast:
+
+      SEMANTIC TOKEN CONTRAST (on default backgrounds):
+      ┌─────────────────┬─────────┬─────────────────────┐
+      │ Token           │ Ratio   │ Valid For           │
+      ├─────────────────┼─────────┼─────────────────────┤
+      │ text-primary    │ 12:1+   │ All text ✓          │
+      │ text-secondary  │ 7:1+    │ All text ✓          │
+      │ text-tertiary   │ 3.5:1   │ Large text, icons ✓ │
+      │ text-accent     │ 3.57:1  │ Large text, icons ✓ │
+      │ text-muted      │ 2.9:1   │ ❌ FAILS - avoid    │
+      └─────────────────┴─────────┴─────────────────────┘
+
+      If using text-tertiary or text-accent for normal text → ISSUE
+
+# =============================================================================
+# PRIMITIVE COLOR WARNING
+# =============================================================================
+
+  - event: "PreToolUse"
+    matcher: "Edit|Write"
+    condition:
+      content_pattern: "(bg|text|border)-(abyss|deep-current|dusk-reef|coral|wave|sunrise|harbor|slate|orange|linen)-\\d"
+
+    prompt: |
+      ⚠️ PRIMITIVE COLOR DETECTED
+
+      Primitive colors require manual contrast validation:
+
+      1. Identify the background color
+      2. Identify the foreground color
+      3. Look up ratio in src/data/color-intelligence.json or MCP tools
+      4. Apply correct category threshold:
+         - Normal text: 4.5:1
+         - Large text: 3.0:1
+         - Graphics: 3.0:1
+
+      PREFER semantic tokens (text-primary, bg-surface, etc.)
+      which have pre-validated contrast.
+
+      If you must use primitives, document the contrast ratio.

@@ -1,0 +1,69 @@
+# Color Intelligence (TOON)
+# Generated: 2026-01-03T13:26:42.951Z
+# Source: src/data/color-intelligence.json
+# Use MCP tools for queries: mcp__dds__get_color_guidance, mcp__dds__check_contrast
+
+## Contexts [13]
+
+  default: Fallback for custom/unknown components
+  page: Main page background
+  card: Content cards, panels
+  surface: Nested containers inside cards
+  modal: Dialogs, overlays
+  button: Interactive button variants and states
+  input: Form inputs, selects, textareas
+  navigation: Sidebars, nav panels, menus
+  tooltip: Tooltips, popovers, small overlays
+  tableRow: Data table rows (DataTable, lists)
+  badge: Status badges, tags, chips, pills
+  status: Semantic status indicators
+  dataViz: Charts, graphs, heatmaps, and data visualization
+
+## Harmony Principles
+
+  P1: Accent temperature should match or be neutral to base
+  P2: Colors with semantic meaning must not be adjacent or competing
+  P3: Same color family requires 400+ step difference
+  P4: One temperature must dominate; other is accent only
+  P5: Semantic meaning ALWAYS takes precedence over temperature harmony
+
+## Forbidden Patterns [5]
+
+  - Same family on itself: Insufficient contrast, colors blend
+  - Raw hex colors: Breaks themes, not maintainable
+  - Standard Tailwind colors: Not DDS tokens, inconsistent
+  - Opacity on semantic tokens: Use glass patterns or solid tokens
+  - Text on low-opacity glass without backdrop: Text unreadable on varied backgrounds
+
+## Glass Depths
+
+  depth1: opacity=60% blur=8px (direct text OK)
+  depth2: opacity=40% blur=4px (semantic or nested)
+  depth3: opacity=20% blur=2px (nested solid required)
+  minOpacityForDirectText: 60%
+  nestedGlass: FORBIDDEN - use solid bg-surface inside glass containers
+
+## Color Families [11]
+
+  ABYSS: neutral-cool - Dark theme base
+  DEEP_CURRENT: cool (brand) - Primary accent, CTAs, links
+  WAVE: cool (info) - Info states, secondary teal accent
+  HARBOR: cool (success) - Success states, confirmations
+  CORAL: warm (error) - Error states, destructive actions
+  SUNRISE: warm (warning) - Warning states, caution
+  ORANGE: warm (highlight) - Energy, attention, badges
+  SLATE: neutral - Universal gray, borders, muted text
+  LINEN: cool - Cool blue-white scale, subtle cool tints
+  IVORY: neutral-warm - Light theme depth layering (page/surface/elevated)
+  DUSK_REEF: neutral-cool - Sophisticated neutral, secondary text
+
+## Escape Hatch
+
+  attribute: data-dds-override
+  usage: Add to element when intentionally breaking rules
+
+## Composite Rules
+
+  valid: modal > card, card > surface, page > card
+  forbidden: glass > glass, surface > card, badge > badge
+  rule: When in doubt: inner element's context rules apply for colors/borders; outer element provides only background/backdrop

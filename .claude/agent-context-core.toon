@@ -1,0 +1,58 @@
+_meta:
+  version: 2.1.0
+  project: DDS (Disrupt Design System)
+  packageVersion: 2.6.0
+  fullContext: .claude/agent-context.json
+  note: CORE CONTEXT - Always loaded. Use lazyLoad paths for task-specific details.
+
+philosophy:
+  name: Wu Wei (無為)
+  rule: Work with grain, not against it
+  tests: Can junior understand in 30s? | Solving today's problem? | Pattern exists? | Fighting codebase?
+
+versioning:
+  policy: NO_BREAKING_UNTIL_V3
+  breaking: rename/remove props, change types/defaults, remove exports
+  safe: add optional props, new components, bug fixes, deprecate with warning
+
+tokens:
+  forbidden: "#hex,rgb(),hsl(),bg-blue-500,text-red-600"
+  required: ALIAS tokens OR semantic Tailwind
+  format: oklch in tokens.css
+  afterEdit: npm run generate-tokens
+
+git:
+  noClaudeAttribution: true
+  format: "feat:|fix:|chore:|refactor:|docs:"
+
+quickColors:
+  text: text-primary,text-secondary,text-tertiary,text-muted,text-error,text-success,text-warning,text-inverse
+  bg: bg-surface,bg-page,bg-muted-bg,bg-accent-bg,bg-dark,bg-error,bg-success,bg-warning,bg-cream
+  border: border-default,border-subtle,border-accent,border-error,border-success
+
+commands:
+  validate: "npm run typecheck && npm run lint && npm run build"
+  tokens: "npm run generate-tokens"
+  sync: "npm run sync-components && npm run sync-docs && npm run validate-context"
+  health: "npm run health"
+
+lazyLoad:
+  colors: .claude/color-intelligence.toon
+  contrast: MCP:mcp__dds__check_contrast
+  components: .claude/agent-context-components.toon
+  tokens: .claude/agent-context-tokens.toon
+  storybook: .claude/storybook-rules.md
+  testing: .claude/testing-quick-ref.md
+  cleanCode: .claude/clean-code-rules.md
+  uxLaws: .claude/ux-laws-rules.md
+  componentDev: .claude/component-dev-rules.md
+  darkMode: .claude/dark-mode-mapping-rules.md
+  spacing: .claude/spacing-rules.md
+  typography: .claude/typography-rules.md
+
+loadTriggers:
+  "*.tsx,*.css": colors
+  "*.stories.tsx": storybook
+  "src/components/*": components,componentDev
+  "package.json": versioning
+  "*.test.*": testing

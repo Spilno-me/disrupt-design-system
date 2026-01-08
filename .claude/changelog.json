@@ -1,0 +1,611 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Machine-readable changelog for AI agents",
+  "currentVersion": "2.10.0",
+  "lastUpdated": "2026-01-02",
+  "versions": {
+    "2.10.0": {
+      "date": "2026-01-02",
+      "highlights": [
+        "Partner Portal ecosystem fully stabilized (37 components)",
+        "New registry sections: partners, invoices, leads, templates",
+        "First ORGANISM and PAGE type components registered",
+        "Component coverage increased from 24% to 58%"
+      ],
+      "added": [
+        {
+          "component": "Partners Registry",
+          "type": "stabilization",
+          "description": "20 Partner components registered and stabilized",
+          "items": [
+            "PartnersPage (ORGANISM)",
+            "PartnerNetworkPage (ORGANISM)",
+            "PartnerLoginAccountsPage (ORGANISM)",
+            "SettingsPage (ORGANISM)",
+            "HelpPage (ORGANISM)",
+            "PricingCalculator (MOLECULE)",
+            "EditPartnerDialog (MOLECULE)",
+            "DeletePartnerDialog (MOLECULE)",
+            "CreateSubPartnerDialog (MOLECULE)",
+            "EditNetworkPartnerDialog (MOLECULE)",
+            "DeleteNetworkPartnerDialog (MOLECULE)",
+            "CreateLoginAccountDialog (MOLECULE)",
+            "DeleteLoginAccountDialog (MOLECULE)",
+            "ResetPasswordDialog (MOLECULE)",
+            "TierBadge (ATOM)",
+            "StatusIndicator (ATOM)",
+            "PartnerId (ATOM)",
+            "MetricItem (ATOM)",
+            "PartnerMetricsCard (MOLECULE)",
+            "PartnerRow (MOLECULE)"
+          ]
+        },
+        {
+          "component": "Invoices Registry",
+          "type": "stabilization",
+          "description": "6 Invoice components registered and stabilized",
+          "items": [
+            "InvoicesPage (ORGANISM)",
+            "InvoicesDataTable (MOLECULE)",
+            "InvoiceCard (MOLECULE)",
+            "InvoicePreviewSheet (MOLECULE)",
+            "EditInvoiceDialog (MOLECULE)",
+            "InvoicePDFDialog (MOLECULE)"
+          ]
+        },
+        {
+          "component": "Leads Registry",
+          "type": "stabilization",
+          "description": "9 Lead components registered and stabilized",
+          "items": [
+            "LeadsPage (ORGANISM)",
+            "LeadsDataTable (MOLECULE)",
+            "LeadCard (MOLECULE)",
+            "StatsCard (ATOM)",
+            "CreateLeadDialog (MOLECULE)",
+            "EditLeadDialog (MOLECULE)",
+            "DeleteLeadDialog (MOLECULE)",
+            "AssignLeadDialog (MOLECULE)",
+            "StatusUpdateDialog (MOLECULE)"
+          ]
+        },
+        {
+          "component": "Templates Registry",
+          "type": "stabilization",
+          "description": "2 Page templates registered and stabilized",
+          "items": [
+            "PartnerPortalPage (PAGE)",
+            "DashboardPage (PAGE)"
+          ]
+        },
+        {
+          "component": "PAGE Status",
+          "type": "registry",
+          "description": "New component status type for complete page templates"
+        }
+      ],
+      "improved": [
+        {
+          "component": "agent-context.json",
+          "change": "Registry expanded with 4 new sections (partners, invoices, leads, templates)"
+        },
+        {
+          "component": "Component Coverage",
+          "change": "Stabilized components increased from 11 to 48 (337% increase)"
+        }
+      ],
+      "fixed": []
+    },
+    "2.9.0": {
+      "date": "2025-12-30",
+      "highlights": [
+        "New IncidentManagementTable export for consumers",
+        "Full CSS custom properties in tokens.css for better DX",
+        "Partners module restructured with Clean Architecture",
+        "Tailwind v4 integration docs in README"
+      ],
+      "added": [
+        {
+          "component": "IncidentManagementTable",
+          "type": "export",
+          "description": "Full-featured incident table now exported for consumer use",
+          "items": ["IncidentManagementTable", "IncidentManagementTableProps", "Incident type"]
+        },
+        {
+          "component": "SectionHeading",
+          "type": "new",
+          "description": "Reusable section heading component"
+        },
+        {
+          "component": "Roadmap Documentation",
+          "type": "docs",
+          "description": "DDS roadmap and future plans documentation"
+        }
+      ],
+      "improved": [
+        {
+          "component": "tokens.css",
+          "change": "Expanded from minimal to full CSS custom properties (200+ variables) for better consumer integration"
+        },
+        {
+          "component": "README",
+          "change": "Added Tailwind v4 CSS-first integration instructions with @source directive"
+        },
+        {
+          "component": "Partners Module",
+          "change": "Restructured with Clean Architecture folders (components, constants, data, hooks, types, utils)"
+        },
+        {
+          "component": "Table Components",
+          "change": "Enhanced DataTableMobileCard, StatusBadge, CopyableId, and other table primitives"
+        }
+      ],
+      "fixed": []
+    },
+    "2.8.1": {
+      "date": "2025-12-30",
+      "highlights": [
+        "Proven adapter pattern testing with documented results",
+        "FAQ sidebar sorting for intuitive navigation",
+        "Defensive component design rules"
+      ],
+      "added": [
+        {
+          "component": "FAQ Documentation",
+          "type": "docs",
+          "items": [
+            "Q4-Testing: Adapter pattern breakage testing proof with V1/V2 API scenarios",
+            "Q3-Updates: Cross-reference to adapter testing results"
+          ]
+        },
+        {
+          "component": "Storybook",
+          "type": "dx",
+          "items": ["FAQ sidebar sorting via storySort configuration"]
+        }
+      ],
+      "improved": [
+        {
+          "component": "Developer Experience",
+          "change": "FAQ pages now display in logical order (Overview → Q1-Q9 → Known Gaps → Roadmap)"
+        }
+      ],
+      "fixed": []
+    },
+    "2.8.0": {
+      "date": "2025-12-30",
+      "highlights": [
+        "Major Flow application expansion with 7 new modules",
+        "New API service layer for data management",
+        "AIAssistant component for AI-powered help",
+        "Core UI primitives expansion (10+ new components)",
+        "Enhanced user management with invitation flows"
+      ],
+      "added": [
+        {
+          "component": "Flow Modules",
+          "type": "new",
+          "items": [
+            "DictionaryPage - terminology and lookup management",
+            "DirectoryPage - organization directory with profiles",
+            "EntityTemplatesPage - template CRUD operations",
+            "LocationsPage - location hierarchy with risk analysis",
+            "MappingStudio - data mapping interface",
+            "SchemaStudio - schema design tools",
+            "TrainingPage - training management system"
+          ]
+        },
+        {
+          "component": "API Layer",
+          "type": "new",
+          "description": "Complete API service layer with seed data",
+          "items": ["incidents.api", "users.api", "roles.api", "steps.api", "locations.api", "dictionary.api"]
+        },
+        {
+          "component": "AIAssistant",
+          "type": "new",
+          "description": "AI-powered assistance UI",
+          "items": ["AIAssistantFab", "AIAssistantPanel", "AIAssistantProvider", "AIAssistantQuickActions"]
+        },
+        {
+          "component": "Core UI Primitives",
+          "type": "new",
+          "items": ["CopyButton", "RowActions", "StepIndicator", "TruncatedId", "Collapsible", "ResizablePanels", "Sonner", "Switch", "ToggleGroup"]
+        },
+        {
+          "component": "FloorPlanUploader",
+          "type": "new",
+          "description": "Upload and manage floor plan images"
+        },
+        {
+          "component": "User Management",
+          "type": "new",
+          "items": ["InviteUserDialog", "EmailInvitePreview", "UserActivationFlow"]
+        },
+        {
+          "component": "Hooks",
+          "type": "new",
+          "items": ["useVisualViewportFix", "useLocations"]
+        },
+        {
+          "component": "GitHub",
+          "type": "chore",
+          "items": ["CODEOWNERS", "PR templates"]
+        }
+      ],
+      "improved": [
+        {
+          "component": "LocationPicker",
+          "change": "Enhanced with useLocations hook and improved tree navigation"
+        },
+        {
+          "component": "DataTable",
+          "change": "Improved column utilities and row actions"
+        },
+        {
+          "component": "Incidents Module",
+          "change": "Refined reporting flow, wizard, and details pages"
+        },
+        {
+          "component": "Flow Users",
+          "change": "Enhanced stats cards, bulk actions, and role management"
+        },
+        {
+          "component": "SearchFilter",
+          "change": "Improved search input and filter behavior"
+        },
+        {
+          "component": "Device Frames",
+          "change": "Expanded Storybook infrastructure with new stories"
+        },
+        {
+          "component": "Documentation",
+          "change": "New developer docs, FAQ section, and integration guides"
+        }
+      ],
+      "fixed": []
+    },
+    "2.7.0": {
+      "date": "2025-12-24",
+      "highlights": [
+        "Enhanced KPICard with status zones, temporal progress, and state transitions",
+        "Complete Incidents Management module",
+        "Dashboard edit mode with drag-and-drop widgets",
+        "New mobile components: ActionSheet, LocationPicker, What3Words"
+      ],
+      "added": [
+        {
+          "component": "KPICard",
+          "type": "enhancement",
+          "features": [
+            "Status zone gradient sparklines (red/amber/green thermometer)",
+            "periodProgress prop for temporal 'now' marker",
+            "thresholds prop for automatic status detection",
+            "Frosted glass text background for contrast",
+            "300ms state transition animations",
+            "Custom statusMessages per state"
+          ]
+        },
+        {
+          "component": "EHSAnalyticsDashboard",
+          "type": "new",
+          "description": "Full analytics dashboard with edit mode support"
+        },
+        {
+          "component": "Dashboard Cards",
+          "type": "new",
+          "items": ["AgingCard", "BreakdownCard", "TrendingCard", "WorkloadCard", "RiskHeatmapCard", "UpcomingTasksCard"]
+        },
+        {
+          "component": "Dashboard Edit Mode",
+          "type": "new",
+          "items": ["DashboardEditContext", "EditModeToolbar", "EditableWidget", "ReorderableSection", "WidgetSettingsPanel"]
+        },
+        {
+          "component": "Incidents Module",
+          "type": "new",
+          "items": ["IncidentsPage", "IncidentDetailsPage", "IncidentReportingFlow", "IncidentWizard", "DeleteIncidentDialog", "SubmitIncidentDialog", "EditIncidentFlow"]
+        },
+        {
+          "component": "ActionSheet",
+          "type": "new",
+          "description": "Mobile bottom sheet for actions"
+        },
+        {
+          "component": "EmptyState",
+          "type": "new",
+          "description": "Empty data placeholder component"
+        },
+        {
+          "component": "ResponsiveActionMenu",
+          "type": "new",
+          "description": "Adaptive action menu for different viewports"
+        },
+        {
+          "component": "ScrollFadeList",
+          "type": "new",
+          "description": "Scrollable list with fade edges"
+        },
+        {
+          "component": "LocationPicker",
+          "type": "new",
+          "description": "Hierarchical location selection with floor plan support"
+        },
+        {
+          "component": "What3Words",
+          "type": "new",
+          "items": ["What3WordsInput", "What3WordsMap", "UseMyLocationButton"]
+        }
+      ],
+      "improved": [
+        {
+          "component": "AppHeader",
+          "change": "Enhanced glassmorphism and responsive behavior"
+        },
+        {
+          "component": "AppSidebar",
+          "change": "Improved navigation and collapse behavior"
+        },
+        {
+          "component": "DataTable",
+          "change": "Better column sizing and mobile card view"
+        },
+        {
+          "component": "SearchFilter",
+          "change": "Enhanced mobile filter button and dropdown"
+        },
+        {
+          "component": "device-frames",
+          "change": "More iPhone and iPad models for Storybook"
+        }
+      ],
+      "fixed": [
+        "KPICard text contrast issue (green text blending with green chart)",
+        "Sparkline charts no longer show speculative future data"
+      ]
+    },
+    "2.6.0": {
+      "date": "2025-12-20",
+      "added": [
+        "Multi-package architecture with subpath exports",
+        "src/core/ - shared components, tokens, utils",
+        "src/flow/ - Flow EHS mobile components (MobileNavButton, MobileNavBar, QuickActionButton, NextStepButton)",
+        "src/portal/ - Portal-specific components (placeholder)",
+        "MobileNavButton dark mode support with CSS variables"
+      ],
+      "changed": [
+        {
+          "component": "package.json",
+          "change": "Added exports field for subpath imports (@dds/core, @dds/flow, @dds/portal)",
+          "breaking": false
+        }
+      ],
+      "improved": [
+        "Tree-shaking by product - Portal won't bundle Flow components",
+        "Separate bundle outputs for each subpackage"
+      ]
+    },
+    "unreleased": {
+      "status": "in-progress",
+      "targetVersion": "2.4.0",
+      "added": [
+        {
+          "component": "NotificationsPanel",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "QuickFilter",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "DropdownMenu",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "Tabs",
+          "type": "export",
+          "priority": "high"
+        },
+        {
+          "component": "Wizard",
+          "type": "export",
+          "priority": "medium",
+          "subs": [
+            "WizardStepper",
+            "WizardStep",
+            "WizardNavigation",
+            "useWizard"
+          ]
+        }
+      ],
+      "improved": [
+        {
+          "component": "Shadows",
+          "change": "Natural light physics system with elevated level"
+        },
+        {
+          "component": "Badge",
+          "change": "text-inverse, JSDoc, display name, testId ready"
+        },
+        {
+          "component": "SeverityIndicator",
+          "change": "Extended props, display name, ATOM testId"
+        },
+        {
+          "component": "Skeleton",
+          "change": "Extended props, display names, Tailwind classes"
+        },
+        {
+          "component": "Input",
+          "change": "Exported InputProps, display name, AllTypes story"
+        },
+        {
+          "component": "Label",
+          "change": "Exported LabelProps, display name, JSDoc"
+        },
+        {
+          "component": "Checkbox",
+          "change": "Exported CheckboxProps, display name, JSDoc"
+        },
+        {
+          "component": "Select",
+          "change": "Exported all 9 sub-component interfaces"
+        },
+        {
+          "component": "Textarea",
+          "change": "Exported TextareaProps, display name, JSDoc"
+        }
+      ],
+      "changed": [
+        {
+          "component": "Card",
+          "change": "FROZEN for website pricing only",
+          "breaking": false
+        }
+      ],
+      "newComponents": [
+        {
+          "component": "AppCard",
+          "type": "MOLECULE",
+          "variants": [
+            "default",
+            "elevated",
+            "flat"
+          ],
+          "replaces": "Card (in-app)"
+        }
+      ],
+      "deprecated": [
+        {
+          "component": "Skeleton",
+          "prop": "variant",
+          "removeIn": "3.0.0",
+          "reason": "Aesthetic animations create UI inconsistency"
+        }
+      ]
+    },
+    "2.3.1": {
+      "date": "2025-12-12",
+      "fixed": [
+        "Re-enabled EditLeadDialog export",
+        "Resolved all ESLint violations",
+        "Fixed hardcoded asset paths for npm package"
+      ],
+      "added": [
+        "New dialog components for lead management",
+        "Improved type safety across components"
+      ]
+    },
+    "2.3.0": {
+      "date": "2024-XX-XX",
+      "added": [
+        "Initial version tracking",
+        "Core component library established",
+        "Design token system",
+        "Radix UI integration"
+      ]
+    }
+  },
+  "breakingChangesDeferred": {
+    "targetVersion": "3.0.0",
+    "changes": [
+      {
+        "component": "Button",
+        "change": "Brand color redesign (FROZEN dependency)"
+      },
+      {
+        "component": "SeverityIndicator",
+        "change": "Refactor to use ALIAS tokens instead of PRIMITIVES"
+      },
+      {
+        "component": "Skeleton",
+        "change": "Remove deprecated variant prop"
+      },
+      {
+        "component": "Card",
+        "change": "Remove non-pricing variants completely"
+      }
+    ]
+  },
+  "stabilization": {
+    "completed": [
+      {
+        "component": "Badge",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Input",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Label",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Checkbox",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Select",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Textarea",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Skeleton",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Slider",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "Separator",
+        "version": "2.3.1",
+        "type": "ATOM"
+      },
+      {
+        "component": "AppCard",
+        "version": "2.3.1",
+        "type": "MOLECULE"
+      }
+    ],
+    "frozen": [
+      {
+        "component": "Card",
+        "reason": "Website pricing cards only"
+      },
+      {
+        "component": "Button",
+        "reason": "Website dependency, brand color redesign needed"
+      }
+    ],
+    "pending": [
+      "Dialog",
+      "Sheet",
+      "Tooltip",
+      "DataTable",
+      "ErrorState"
+    ]
+  },
+  "queries": {
+    "_note": "Example queries agents can run against this data",
+    "whatChangedIn": "versions[version].added + versions[version].changed + versions[version].fixed",
+    "isComponentStabilized": "stabilization.completed.find(c => c.component === name)",
+    "pendingExports": "versions.unreleased.added.filter(a => a.type === 'export')",
+    "breakingChanges": "breakingChangesDeferred.changes"
+  }
+}

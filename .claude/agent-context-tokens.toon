@@ -1,0 +1,59 @@
+_meta:
+  source: .claude/agent-context.json#colors,shadows,radius,motion,typography,spacing
+  note: Token quick reference. Full color rules in color-intelligence.toon or MCP tools.
+
+brand:
+  primary: bg-dark,text-dark,#2D3142,Abyss
+  accent: bg-accent-strong,text-accent,#08A4BD,Deep Current (Teal)
+  tertiary: bg-muted,text-muted,#5E4F7E,Dusk Reef (Purple)
+
+semantic:
+  error: bg-error,text-error,border-error,#F70D1A
+  success: bg-success,text-success,border-success,#22C55E
+  warning: bg-warning,text-warning,border-warning,#EAB308
+  info: bg-info,text-info,border-info,#3B82F6
+
+surfaces:
+  page: bg-cream,#FBFBF3
+  card: bg-surface,bg-card,#FFFFFF
+  muted: bg-muted-bg,#EFEDF3
+  accent: bg-accent-bg,#E6F7FA
+
+text:
+  primary: text-primary,#2D3142
+  secondary: text-secondary,text-muted,#5E4F7E
+  emphasis: text-emphasis,#474F5F
+  inverse: text-inverse,#FFFFFF
+
+border:
+  default: border-default,#CBD5E1
+  focus: border-accent,ring-accent,#08A4BD
+
+shadows[5]{name,use,examples}:
+  sm,data display,tags|badges|stats
+  md,standard,cards|buttons|dropdowns
+  elevated,premium emphasis,KPIs|CTAs|featured
+  lg,interactive overlays,modals|sheets|drawers
+  xl,critical attention,alerts|error dialogs
+
+radius:
+  xs: 4px
+  sm: 8px
+  md: 12px
+  lg: 16px
+  xl: 20px
+  full: 9999px
+
+motion:
+  productive: 70ms|100ms|150ms (micro-interactions|toggles|tooltips)
+  expressive: 250ms|400ms (cards/modals|page transitions)
+  easing: enter(0,0,0.35,1)|exit(0.4,0,1,1)|transition(0.4,0,0.2,1)|emphasize(0,0,0.2,1.4)
+
+typography:
+  website: Pilat Extended (font-display) - headings only
+  app: Fixel (font-sans) - ALL app UI - ONLY allowed font
+  forbidden: font-mono,font-serif,font-display in app,any Google Font
+
+spacing:
+  website: py-16 lg:py-24,px-6 lg:px-10,gap-12 lg:gap-16
+  app: page:p-6,card:p-4|p-6,form:gap-2,section:gap-6
