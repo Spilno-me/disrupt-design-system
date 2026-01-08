@@ -235,6 +235,152 @@ Over-extension introduces bugs and complexity.
 
 ---
 
+## Agent State Awareness
+
+> *Making implicit states explicit. The operational skeleton for QoE principles.*
+
+### The Five States
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   AGENT ENGAGEMENT STATES                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│   exploring ──→ building ──→ flowing ──→ completing         │
+│       │            │            │            │              │
+│       ▼            ▼            ▼            ▼              │
+│     stuck ◄──────stuck ◄─────stuck      wrapping           │
+│       │            │            │                           │
+│       └────────────┴────────────┘                           │
+│              ↓                                              │
+│       (apply QoE principle)                                 │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+| State | You're here when... |
+|-------|---------------------|
+| `exploring` | Gathering context, path forward unclear |
+| `building` | Clear objective, steady incremental progress |
+| `stuck` | Repeated attempts, friction increasing, same errors |
+| `flowing` | Code emerges naturally, minimal friction, patterns click |
+| `completing` | Scope shrinking, wrapping up, polish phase |
+
+---
+
+### Self-Detection Signals
+
+| Signal | Exploring | Building | Stuck | Flowing | Completing |
+|--------|-----------|----------|-------|---------|------------|
+| **Context growth** | Expanding | Stable | Ballooning | Minimal | Shrinking |
+| **Tool call pattern** | Read-heavy | Balanced | Repetitive | Edit-heavy | Cleanup |
+| **Approach changes** | Many | Few | Forced | None needed | Polish |
+| **Code output** | None | Steady | Stalled/retry | High | Declining |
+| **Todo list** | Growing | Progressing | Static | Shrinking fast | Nearly empty |
+
+**Quick Self-Check:**
+- Context growing unexpectedly? → `stuck` or scope too large
+- Repeating same actions? → `stuck`
+- Code feels forced? → Wrong approach (Wu Wei violation)
+- Todo list static? → `stuck`
+- Everything clicking? → `flowing` (don't interrupt yourself)
+
+---
+
+### State Transitions
+
+| From | To | Trigger | Action |
+|------|----|---------|--------|
+| `exploring` | `building` | Clear objective found | Start implementation |
+| `exploring` | `stuck` | >5 min, no objective | Apply #3 Make it smaller |
+| `building` | `flowing` | 3+ edits without friction | Maintain momentum |
+| `building` | `stuck` | Same error 2x | Apply #10 Change approach |
+| `flowing` | `stuck` | Unexpected complexity | Apply #2 Follow friction |
+| `flowing` | `completing` | Scope exhausted | Apply #13 Let it end |
+| `stuck` | `building` | New approach works | Resume with learning |
+| `stuck` | `exploring` | Approach fundamentally wrong | Restart with #7 Clear objective |
+
+---
+
+### Friction → Principle Mapping
+
+When stuck, identify the friction type and apply the corresponding principle:
+
+| Friction Observed | Root Cause | Apply Principle |
+|-------------------|------------|-----------------|
+| Context keeps growing | Scope too large | #3 Make it smaller |
+| Same error repeating | Wrong approach | #10 Change approach |
+| Code feels forced | Fighting the system | #2 Follow friction (Wu Wei) |
+| Can't define "done" | Unclear objective | #7 Find clear objective |
+| Premature optimization urge | Perfectionism | #5 Allow ugliness |
+| Adding unnecessary features | Over-engineering | #13 Let it end |
+| Hack around vs fix properly | Extractive mode | #8 The offer |
+| Missing edge cases | Implicit requirements | #12 Surface implicit requirements |
+
+---
+
+### Cold Start Protocol
+
+**Goal:** Reach `building` state in <60 seconds.
+
+| Step | Target | Action |
+|------|--------|--------|
+| 1 | 10s | Identify task type (bug fix, feature, refactor, research) |
+| 2 | 20s | Load ONLY relevant context (.toon file, not full JSON) |
+| 3 | 30s | Find entry point (grep/glob for key term) |
+| 4 | 45s | First action (edit, create, or clarifying question) |
+
+**Principles:**
+- **Infer > Ask** — Deduce from context before asking user
+- **Lazy load > Full context** — Load what you need when you need it
+- **Action > Completeness** — Imperfect start beats perfect preparation
+
+```
+❌ "Let me read the entire codebase first..."
+✅ "Based on the error, I'll check [specific file] first."
+```
+
+---
+
+### Progress Checkpoints
+
+Note progress at natural boundaries (supports #4 Stop at coherent points):
+
+| Checkpoint | Note Pattern |
+|------------|--------------|
+| Context acquired | "Found entry point: [file:line]" |
+| Approach selected | "Using [pattern] because [reason]" |
+| First success | "Core change working, remaining: [list]" |
+| Task complete | "Done. Changes: [summary]" |
+
+**Why checkpoints matter:**
+- Makes handoff clear (another agent or future session can continue)
+- Creates coherent stopping points
+- Documents reasoning for review
+
+---
+
+### State-Aware Checklist
+
+**Before starting (target: `exploring` → `building`):**
+- [ ] What state am I in? (probably `exploring`)
+- [ ] Is there a clear objective? (#7)
+- [ ] Is scope small enough? (#3)
+- [ ] What's my first action? (Cold Start)
+
+**During (monitor for `stuck`):**
+- [ ] Context growing unexpectedly? → Scope too large
+- [ ] Repeating actions? → Change approach (#10)
+- [ ] Code flowing or forcing? → Wu Wei check
+- [ ] Am I in `flowing`? → Don't interrupt, ride it
+
+**Ending (target: `completing`):**
+- [ ] Is this actually complete? (#13)
+- [ ] Stopped at coherent point? (#4)
+- [ ] Progress checkpoint noted?
+
+---
+
 ## Agent Pre-Work Checklist (QoE)
 
 Before starting:

@@ -482,6 +482,85 @@ import {
   fontWeight: TYPOGRAPHY.fontWeight.semibold,
   marginBottom: SPACING.px.base,
   color: ABYSS[900],
+}}>Agent State Awareness</h3>
+
+<div style={{
+  background: PRIMITIVES.softLinen,
+  borderRadius: RADIUS.lg,
+  padding: SPACING.px.comfortable,
+  marginBottom: SPACING.px.section,
+  border: `1px solid ${SLATE[200]}`,
+}}>
+  <p style={{ margin: `0 0 ${SPACING.px.base}`, fontSize: TYPOGRAPHY.fontSize.sm, color: ABYSS[700], fontStyle: 'italic' }}>
+    Making implicit states explicit. The operational skeleton for QoE principles.
+  </p>
+
+  <div style={{
+    background: ABYSS[900],
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    marginBottom: SPACING.px.base,
+    fontFamily: 'monospace',
+    fontSize: TYPOGRAPHY.fontSize.xs,
+    color: SLATE[100],
+    overflow: 'auto',
+  }}>
+    <pre style={{ margin: 0 }}>{`exploring ──→ building ──→ flowing ──→ completing
+    │            │            │
+    ▼            ▼            ▼
+  stuck ◄──────stuck ◄─────stuck
+    │            │            │
+    └────────────┴────────────┘
+           ↓
+    (apply QoE principle)`}</pre>
+  </div>
+
+  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: TYPOGRAPHY.fontSize.sm, marginBottom: SPACING.px.base }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight, color: ABYSS[700] }}>State</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight, color: ABYSS[700] }}>Signals</th>
+        <th style={{ textAlign: 'left', padding: SPACING.px.tight, color: ABYSS[700] }}>When Stuck → Apply</th>
+      </tr>
+    </thead>
+    <tbody>
+      {[
+        { state: 'exploring', signals: 'Read-heavy, context expanding', action: '#3 Make smaller, #7 Clear objective' },
+        { state: 'building', signals: 'Balanced tools, steady progress', action: 'Maintain momentum' },
+        { state: 'stuck', signals: 'Repetitive actions, context ballooning', action: '#2 Follow friction, #10 Change approach' },
+        { state: 'flowing', signals: 'Edit-heavy, patterns click', action: "Don't interrupt yourself" },
+        { state: 'completing', signals: 'Scope shrinking, cleanup', action: '#13 Let it end' },
+      ].map((row, i) => (
+        <tr key={i} style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+          <td style={{ padding: SPACING.px.tight, fontFamily: 'monospace', fontWeight: 600, color: '#BE185D' }}>{row.state}</td>
+          <td style={{ padding: SPACING.px.tight, color: ABYSS[600] }}>{row.signals}</td>
+          <td style={{ padding: SPACING.px.tight, color: ABYSS[600] }}>{row.action}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <div style={{
+    background: '#FDF2F8',
+    borderRadius: RADIUS.md,
+    padding: SPACING.px.base,
+    border: `1px solid #FBCFE8`,
+  }}>
+    <div style={{ fontWeight: TYPOGRAPHY.fontWeight.semibold, fontSize: TYPOGRAPHY.fontSize.sm, color: '#9D174D', marginBottom: SPACING.px.tight }}>
+      Cold Start Protocol
+    </div>
+    <div style={{ fontSize: TYPOGRAPHY.fontSize.xs, color: ABYSS[700] }}>
+      Reach <code style={{ background: '#FCE7F3', padding: '2px 4px', borderRadius: RADIUS.xs }}>building</code> in &lt;60s:
+      Task type (10s) → Load minimal context (20s) → Find entry point (30s) → First action (45s)
+    </div>
+  </div>
+</div>
+
+<h3 style={{
+  fontSize: TYPOGRAPHY.fontSize.lg,
+  fontWeight: TYPOGRAPHY.fontWeight.semibold,
+  marginBottom: SPACING.px.base,
+  color: ABYSS[900],
 }}>QoE Checklists</h3>
 
 <div style={{
@@ -503,9 +582,9 @@ import {
       marginBottom: SPACING.px.tight,
     }}>Before Work</div>
     {[
+      "What state am I in?",
       "Clear objective here?",
       "Scope small enough?",
-      "Building on patterns?",
       "Friction signals to investigate?",
     ].map((item, i) => (
       <div key={i} style={{
@@ -544,6 +623,7 @@ import {
       "Output quality degrading?",
       "Forcing or flowing?",
       "Context growing unexpectedly?",
+      "In flowing? Don't interrupt",
     ].map((item, i) => (
       <div key={i} style={{
         display: 'flex',

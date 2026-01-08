@@ -243,12 +243,25 @@ npm run sync:prompts       # Regenerate skills from prompts.ts
 | 12 | The unsaid | What's the uncomfortable truth about this code? | Dance around the real issue |
 | 13 | Let it end | Recognize when task is done | Over-engineer, add unnecessary features |
 
+### Agent State Awareness (Quick Reference)
+
+| State | Signals | When Stuck → Apply |
+|-------|---------|-------------------|
+| `exploring` | Read-heavy, context expanding | #3 Make smaller, #7 Clear objective |
+| `building` | Balanced tools, steady progress | Maintain momentum |
+| `stuck` | Repetitive actions, context ballooning | #2 Follow friction, #10 Change approach |
+| `flowing` | Edit-heavy, patterns click | Don't interrupt yourself |
+| `completing` | Scope shrinking, cleanup | #13 Let it end |
+
+**Cold Start:** Reach `building` in <60s: Task type (10s) → Load minimal context (20s) → Find entry point (30s) → First action (45s)
+
 **Agent Pre-task Check:**
 ```
 □ Is scope small enough to be tractable?
 □ Am I contributing quality or just executing?
 □ What's the specific question I'm answering?
 □ Is there friction I should investigate first?
+□ What state am I in? (exploring/building/stuck/flowing/completing)
 ```
 
 **Meta-principle:** Quality emerges from RELATIONSHIP with the codebase—agents that engage curiously produce better results than agents that force.
