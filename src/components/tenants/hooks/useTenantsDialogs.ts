@@ -6,7 +6,7 @@
  * @module tenants/hooks
  */
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import type { Tenant, TenantFormData } from "../types"
 
 interface UseTenantsDialogsOptions {
@@ -67,21 +67,43 @@ export function useTenantsDialogs({
   const [tenantToActivate, setTenantToActivate] = useState<Tenant | null>(null)
   const [isActivating, setIsActivating] = useState(false)
 
+  // Timeout refs for cleanup - prevents memory leaks if component unmounts during delay
+  const timeoutRefs = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
+
+  // Cleanup all pending timeouts on unmount
+  useEffect(() => {
+    return () => {
+      timeoutRefs.current.forEach((id) => clearTimeout(id))
+      timeoutRefs.current.clear()
+    }
+  }, [])
+
+  // Helper to schedule dialog open with cleanup tracking
+  // The 150ms delay allows the previous dialog's exit animation to complete
+  // before opening the new dialog, preventing visual glitches
+  const scheduleDialogOpen = useCallback((openFn: () => void) => {
+    const id = setTimeout(() => {
+      timeoutRefs.current.delete(id)
+      openFn()
+    }, 150)
+    timeoutRefs.current.add(id)
+  }, [])
+
   // Handle view tenant click
   const handleViewTenantClick = useCallback((tenant: Tenant) => {
     if (onViewTenant) {
       onViewTenant(tenant)
     } else {
       setSelectedTenant(tenant)
-      setTimeout(() => setViewDialogOpen(true), 150)
+      scheduleDialogOpen(() => setViewDialogOpen(true))
     }
-  }, [onViewTenant])
+  }, [onViewTenant, scheduleDialogOpen])
 
   // Handle edit tenant click
   const handleEditTenantClick = useCallback((tenant: Tenant) => {
     setTenantToEdit(tenant)
-    setTimeout(() => setEditDialogOpen(true), 150)
-  }, [])
+    scheduleDialogOpen(() => setEditDialogOpen(true))
+  }, [scheduleDialogOpen])
 
   // Handle edit dialog submit
   const handleEditSubmit = useCallback(async (data: TenantFormData) => {
@@ -99,8 +121,8 @@ export function useTenantsDialogs({
   // Handle suspend tenant click
   const handleSuspendTenantClick = useCallback((tenant: Tenant) => {
     setTenantToSuspend(tenant)
-    setTimeout(() => setSuspendDialogOpen(true), 150)
-  }, [])
+    scheduleDialogOpen(() => setSuspendDialogOpen(true))
+  }, [scheduleDialogOpen])
 
   // Handle suspend confirmation
   const handleSuspendConfirm = useCallback(async (tenant: Tenant) => {
@@ -118,8 +140,8 @@ export function useTenantsDialogs({
   // Handle activate tenant click
   const handleActivateTenantClick = useCallback((tenant: Tenant) => {
     setTenantToActivate(tenant)
-    setTimeout(() => setActivateDialogOpen(true), 150)
-  }, [])
+    scheduleDialogOpen(() => setActivateDialogOpen(true))
+  }, [scheduleDialogOpen])
 
   // Handle activate confirmation
   const handleActivateConfirm = useCallback(async (tenant: Tenant) => {
