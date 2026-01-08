@@ -680,22 +680,33 @@ server.tool(
         response += `- **Test:** ${rule.test}\n\n`;
       }
 
-      response += "## Pre-Work Checklist\n";
-      for (const item of qoe.preWorkChecklist) {
-        response += `- [ ] ${item}\n`;
+      if (qoe.preWorkChecklist && Array.isArray(qoe.preWorkChecklist)) {
+        response += "## Pre-Work Checklist\n";
+        for (const item of qoe.preWorkChecklist) {
+          response += `- [ ] ${item}\n`;
+        }
+        response += "\n";
       }
 
-      response += "\n## During Work Checklist\n";
-      for (const item of qoe.duringWorkChecklist) {
-        response += `- [ ] ${item}\n`;
+      if (qoe.duringWorkChecklist && Array.isArray(qoe.duringWorkChecklist)) {
+        response += "## During Work Checklist\n";
+        for (const item of qoe.duringWorkChecklist) {
+          response += `- [ ] ${item}\n`;
+        }
+        response += "\n";
       }
 
-      response += "\n## Ending Checklist\n";
-      for (const item of qoe.endingChecklist) {
-        response += `- [ ] ${item}\n`;
+      if (qoe.endingChecklist && Array.isArray(qoe.endingChecklist)) {
+        response += "## Ending Checklist\n";
+        for (const item of qoe.endingChecklist) {
+          response += `- [ ] ${item}\n`;
+        }
+        response += "\n";
       }
 
-      response += `\n## Meta-Principle\n${qoe.metaPrinciple}\n`;
+      if (qoe.metaPrinciple) {
+        response += `## Meta-Principle\n${qoe.metaPrinciple}\n`;
+      }
     }
 
     return { content: [{ type: "text" as const, text: response }] };
