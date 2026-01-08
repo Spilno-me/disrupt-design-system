@@ -9,10 +9,10 @@ dist
 storybook-static
 .storybook-cache
 
-# Private agent/orchestration files
+# Private agent/orchestration files (CLAUDE.md kept private, .claude/ now public for AI agents)
 CLAUDE.md
 CLAUDE.md.backup
-.claude/
+# .claude/ - REMOVED: Now committed so Devin/Cursor/other AI agents can access rules
 
 # Delivery artifacts (duplicated components for distribution)
 delivery/
