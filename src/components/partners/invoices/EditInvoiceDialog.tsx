@@ -28,8 +28,6 @@ export interface EditInvoiceDialogProps {
   onSubmit?: (data: EditInvoiceFormData) => void | Promise<void>
   /** Loading state during submission */
   isSubmitting?: boolean
-  /** Additional className */
-  className?: string
 }
 
 export interface EditInvoiceFormData {
@@ -55,6 +53,28 @@ export interface EditInvoiceFormData {
  *
  * Allows editing company info and line items.
  * Only available for draft invoices.
+ *
+ * @deprecated Use InvoiceDetailPage with mode="edit" instead. This dialog will be removed in v3.
+ * The page-based component provides better UX for complex forms with many fields.
+ *
+ * Migration:
+ * ```tsx
+ * // Before (deprecated)
+ * <EditInvoiceDialog
+ *   invoice={invoice}
+ *   open={open}
+ *   onOpenChange={setOpen}
+ *   onSubmit={handleSubmit}
+ * />
+ *
+ * // After (recommended)
+ * <InvoiceDetailPage
+ *   invoice={invoice}
+ *   mode="edit"
+ *   onSubmit={handleSubmit}
+ *   onBack={handleBack}
+ * />
+ * ```
  */
 export function EditInvoiceDialog({
   open,
@@ -62,7 +82,6 @@ export function EditInvoiceDialog({
   invoice,
   onSubmit,
   isSubmitting = false,
-  className,
 }: EditInvoiceDialogProps) {
   // Form state
   const [companyName, setCompanyName] = useState(invoice?.company.name || '')
@@ -140,8 +159,7 @@ export function EditInvoiceDialog({
           // Scrolling is handled by the inner scrollable area
           'max-w-3xl max-h-[90vh]',
           // Hide DDS built-in close button (keep custom one in header)
-          '[&_button.absolute]:hidden',
-          className
+          '[&_button.absolute]:hidden'
         )}
       >
         {/* Header - cancel DDS internal padding for custom header with border */}

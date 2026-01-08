@@ -10,6 +10,7 @@ export { locationsApi } from './locations.api'
 export { incidentsApi } from './incidents.api'
 export { stepsApi } from './steps.api'
 export { dictionaryApi } from './dictionary.api'
+export { workspacesApi, resetWorkspaceData } from './workspaces.api'
 
 /**
  * Unified API object for convenient access to all services.
@@ -40,6 +41,7 @@ export const api = {
   incidents: {} as typeof import('./incidents.api').incidentsApi,
   steps: {} as typeof import('./steps.api').stepsApi,
   dictionary: {} as typeof import('./dictionary.api').dictionaryApi,
+  workspaces: {} as typeof import('./workspaces.api').workspacesApi,
 }
 
 // Lazy initialization to avoid circular dependencies
@@ -49,6 +51,7 @@ import { locationsApi } from './locations.api'
 import { incidentsApi } from './incidents.api'
 import { stepsApi } from './steps.api'
 import { dictionaryApi } from './dictionary.api'
+import { workspacesApi } from './workspaces.api'
 
 api.users = usersApi
 api.roles = rolesApi
@@ -56,3 +59,4 @@ api.locations = locationsApi
 api.incidents = incidentsApi
 api.steps = stepsApi
 api.dictionary = dictionaryApi
+api.workspaces = workspacesApi

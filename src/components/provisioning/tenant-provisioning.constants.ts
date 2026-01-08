@@ -3,6 +3,7 @@
 // =============================================================================
 
 import type { WizardStep } from './Wizard'
+import { COUNTRY_NAMES } from '../../constants/form-options'
 
 // =============================================================================
 // WIZARD STEPS
@@ -41,18 +42,12 @@ export const EMPLOYEE_COUNTS = [
   { value: '1001+', label: '1,000+ employees', tier: 'Enterprise Plus' },
 ] as const
 
-export const COUNTRIES = [
-  'United States',
-  'Canada',
-  'United Kingdom',
-  'Australia',
-  'Germany',
-  'France',
-  'Netherlands',
-  'Singapore',
-  'Japan',
-  'Other',
-] as const
+/**
+ * Country names for provisioning forms.
+ * Re-exported from shared constants for backwards compatibility.
+ * @see src/constants/form-options.ts
+ */
+export const COUNTRIES = COUNTRY_NAMES
 
 // =============================================================================
 // EMPLOYEE COUNT CONVERSION (eliminates magic numbers)

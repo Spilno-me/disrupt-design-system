@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { MoreVertical, Mail, Phone, Building2, Calendar, Globe, DollarSign, Eye, Edit, Trash2 } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { formatCompactCurrency } from '../../lib/format'
 import { Button } from '../ui/button'
 import { SeverityIndicator, SeverityLevel } from '../ui/SeverityIndicator'
 import {
@@ -232,7 +233,7 @@ export function LeadCard({
         {lead.value !== undefined && (
           <div className="flex items-center gap-1 text-base font-bold text-accent">
             <DollarSign className="w-4 h-4" />
-            <span>{formatCurrency(lead.value)}</span>
+            <span>{formatCompactCurrency(lead.value)}</span>
           </div>
         )}
       </div>
@@ -332,17 +333,6 @@ function SourceBadge({ source }: { source: LeadSource }) {
       {config.label}
     </span>
   )
-}
-
-// =============================================================================
-// HELPERS
-// =============================================================================
-
-function formatCurrency(value: number): string {
-  if (value >= 1000) {
-    return `${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}k`
-  }
-  return value.toFixed(2)
 }
 
 export default LeadCard

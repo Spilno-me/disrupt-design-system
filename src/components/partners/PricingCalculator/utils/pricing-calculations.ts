@@ -7,6 +7,7 @@
  * @module partners/PricingCalculator/utils/pricing-calculations
  */
 
+import { formatCurrency } from '../../../../lib/format'
 import type {
   CompanySize,
   ProcessSelection,
@@ -16,6 +17,9 @@ import type {
   CommissionPreviewResult,
   PartnerCommissionStatus,
 } from '../../types/pricing.types'
+
+// Re-export formatCurrency for backwards compatibility
+export { formatCurrency }
 
 // =============================================================================
 // PRICING CALCULATION
@@ -133,17 +137,4 @@ export function determineCompanySize(employeeCount: number): CompanySize {
   if (employeeCount > 500) return 'enterprise'
   if (employeeCount > 100) return 'mid_market'
   return 'smb'
-}
-
-/**
- * Format currency value for display.
- * Uses en-US locale with USD currency, no decimal places.
- */
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value)
 }

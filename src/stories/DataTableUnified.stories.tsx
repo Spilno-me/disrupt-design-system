@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 import { useState } from "react"
+import { formatCurrency } from "../lib/format"
 import { DataTable, type ColumnDef, type RowPriority } from "../components/ui/DataTable"
 import {
   DataTableStatusDot,
@@ -148,19 +149,6 @@ const meta: Meta<typeof DataTable<Partner>> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
-// =============================================================================
-// HELPER FUNCTIONS
-// =============================================================================
-
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
 
 // =============================================================================
 // STORIES

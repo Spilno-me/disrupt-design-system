@@ -4,12 +4,13 @@ import * as React from "react"
 import { Building2, Mail, User, Calendar, DollarSign, Users } from "lucide-react"
 import { Button } from "../ui/button"
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "../ui/sheet"
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog"
 import { Badge } from "../ui/badge"
+import { formatCurrency } from "../../lib/format"
 import type { Tenant } from "./types"
 
 // =============================================================================
@@ -34,15 +35,6 @@ export interface ViewTenantDialogProps {
 // =============================================================================
 // HELPERS
 // =============================================================================
-
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
 
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat("en-US", {
@@ -83,9 +75,10 @@ const getPackageVariant = (pkg: Tenant["subscriptionPackage"]) => {
 // =============================================================================
 
 /**
- * ViewTenantDialog - Sheet dialog for viewing tenant details
+ * ViewTenantDialog - Dialog for viewing tenant details
  *
- * Displays comprehensive tenant information in a side sheet.
+ * Displays comprehensive tenant information in a centered modal dialog.
+ * Uses Dialog (not Sheet) per UX rules: 4-7 fields = Dialog pattern.
  *
  * @example
  * ```tsx
@@ -109,16 +102,16 @@ export function ViewTenantDialog({
   if (!tenant) return null
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-lg" data-testid="tenants-view-tenant-dialog">
-        <SheetHeader>
-          <SheetTitle className="flex items-center gap-2 text-xl font-semibold text-primary" data-testid="tenants-view-tenant-dialog-title">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md" data-testid="tenants-view-tenant-dialog">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-xl font-semibold text-primary" data-testid="tenants-view-tenant-dialog-title">
             <Building2 className="h-5 w-5 text-accent" />
             {tenant.companyName}
-          </SheetTitle>
-        </SheetHeader>
+          </DialogTitle>
+        </DialogHeader>
 
-        <div className="mt-6 space-y-6">
+        <div className="space-y-6">
           {/* Status & Package Badges */}
           <div className="flex items-center gap-2" data-testid="tenants-view-tenant-dialog-badges">
             <Badge variant={getStatusVariant(tenant.status)} className="capitalize">
@@ -221,8 +214,8 @@ export function ViewTenantDialog({
             )}
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   )
 }
 

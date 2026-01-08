@@ -7,6 +7,7 @@
 import { Building2, User, MapPin, Calculator, Package, Users } from "lucide-react"
 import { createElement } from "react"
 import type { FormSection, SectionId, TenantFormData } from "./types"
+import { COUNTRY_NAMES, COMPANY_SIZE_RANGES } from "../../../constants/form-options"
 
 // =============================================================================
 // DROPDOWN OPTIONS
@@ -20,18 +21,12 @@ export const US_STATES = [
   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC",
 ] as const
 
-export const COUNTRIES = [
-  "United States",
-  "Canada",
-  "United Kingdom",
-  "Australia",
-  "Germany",
-  "France",
-  "Japan",
-  "Singapore",
-  "Netherlands",
-  "Switzerland",
-] as const
+/**
+ * Country names for chat forms.
+ * Re-exported from shared constants for backwards compatibility.
+ * @see src/constants/form-options.ts
+ */
+export const COUNTRIES = COUNTRY_NAMES
 
 export const INDUSTRIES = [
   "Manufacturing",
@@ -42,7 +37,12 @@ export const INDUSTRIES = [
   "Other",
 ] as const
 
-export const COMPANY_SIZES = ["1-50", "51-200", "201-500", "501-1000", "1000+"] as const
+/**
+ * Company size ranges for chat forms.
+ * Re-exported from shared constants for backwards compatibility.
+ * @see src/constants/form-options.ts
+ */
+export const COMPANY_SIZES = COMPANY_SIZE_RANGES
 
 export const PRICING_TIERS = ["Starter", "Professional", "Enterprise"] as const
 

@@ -18,24 +18,36 @@
 
 "use client"
 
-import { useMemo, useCallback, useEffect } from "react"
+import { useMemo, useCallback, useEffect, useRef } from "react"
 import { motion } from "motion/react"
 import { ChevronRight, Users, Package, Settings2, DollarSign } from "lucide-react"
 import { Button } from "../../../ui/button"
-import { NumberStepper } from "../../../ui/number-stepper"
-import { ChatProcessSelector } from "./ChatProcessSelector"
-import { ChatConfigPanel } from "./ChatConfigPanel"
-import { ChatPricingSummary } from "./ChatPricingSummary"
-import type { PricingCardProps } from "../types"
-import type { ProcessTier, ProcessSelection } from "../../../partners/types/pricing.types"
+import type { PricingCardProps, PricingStep } from "../types"
+import type { ProcessTier, ProcessSelection, UserLicenseSelection } from "../../../partners/types/pricing.types"
 import { calculatePricingResult } from "../../../partners/PricingCalculator/utils/pricing-calculations"
 import { DEFAULT_PRICING_CONFIG } from "../../../partners/PricingCalculator/constants"
+import {
+  EmployeeStepContent,
+  PackageStepContent,
+  LicenseStepContent,
+  SummaryStepContent,
+  MIN_EMPLOYEE_COUNT,
+  MAX_EMPLOYEE_COUNT,
+} from "./PricingCardSteps"
 
 // =============================================================================
 // CONSTANTS
 // =============================================================================
 
-const STEP_CONFIG = {
+/** Delay in ms before triggering calculation (UX smoothing) */
+const CALCULATION_DELAY_MS = 150
+
+/** Configuration for each pricing wizard step */
+const STEP_CONFIG: Record<PricingStep, {
+  title: string
+  icon: typeof Users
+  description: string
+}> = {
   employees: {
     title: "Company Size",
     icon: Users,
@@ -56,7 +68,34 @@ const STEP_CONFIG = {
     icon: DollarSign,
     description: "Review the total pricing",
   },
-} as const
+}
+
+// =============================================================================
+// HOOKS
+// =============================================================================
+
+/** Validates if user can proceed to next step based on current state */
+function useCanContinue(
+  step: PricingStep,
+  employeeCount: number,
+  processTier: ProcessTier | null,
+  result: PricingCardProps["pricingState"]["result"]
+): boolean {
+  return useMemo(() => {
+    switch (step) {
+      case "employees":
+        return employeeCount >= MIN_EMPLOYEE_COUNT && employeeCount <= MAX_EMPLOYEE_COUNT
+      case "package":
+        return processTier !== null
+      case "licenses":
+        return true // Licenses are optional
+      case "summary":
+        return result !== null
+      default:
+        return false
+    }
+  }, [step, employeeCount, processTier, result])
+}
 
 // =============================================================================
 // MAIN COMPONENT
@@ -85,33 +124,29 @@ export function PricingCard({
   const stepConfig = STEP_CONFIG[step]
   const StepIcon = stepConfig.icon
 
+  // Ref to avoid triggering effect on callback identity change
+  const onPricingChangeRef = useRef(onPricingChange)
+  onPricingChangeRef.current = onPricingChange
+
   // ---------------------------------------------------------------------------
   // Calculation Effect
   // ---------------------------------------------------------------------------
 
-  /**
-   * Recalculate pricing when inputs change.
-   * Uses memoized ProcessSelection array from processTier.
-   */
   const processSelection: ProcessSelection[] = useMemo(() => {
     if (!processTier) return []
     return [{ tier: processTier, quantity: 1 }]
   }, [processTier])
 
-  // Calculate pricing result when we have process selection
   useEffect(() => {
-    // Only calculate when we have a process tier selected
     if (!processTier) {
       if (result !== null) {
-        onPricingChange({ result: null })
+        onPricingChangeRef.current({ result: null })
       }
       return
     }
 
-    // Set calculating state
-    onPricingChange({ isCalculating: true })
+    onPricingChangeRef.current({ isCalculating: true })
 
-    // Calculate (simulated small delay for UX)
     const timer = setTimeout(() => {
       const newResult = calculatePricingResult(
         employeeCount,
@@ -119,41 +154,33 @@ export function PricingCard({
         userLicenses,
         DEFAULT_PRICING_CONFIG
       )
-      onPricingChange({ result: newResult, isCalculating: false })
-    }, 150)
+      onPricingChangeRef.current({ result: newResult, isCalculating: false })
+    }, CALCULATION_DELAY_MS)
 
     return () => clearTimeout(timer)
-  }, [employeeCount, processTier, processSelection, userLicenses])
+  }, [employeeCount, processTier, processSelection, userLicenses, result])
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const handleEmployeeChange = useCallback(
-    (count: number) => {
-      onPricingChange({ employeeCount: count })
-    },
+    (count: number) => onPricingChange({ employeeCount: count }),
     [onPricingChange]
   )
 
   const handleProcessSelect = useCallback(
-    (tier: ProcessTier) => {
-      onPricingChange({ processTier: tier })
-    },
+    (tier: ProcessTier) => onPricingChange({ processTier: tier }),
     [onPricingChange]
   )
 
   const handleLicenseChange = useCallback(
-    (licenses: typeof userLicenses) => {
-      onPricingChange({ userLicenses: licenses })
-    },
+    (licenses: UserLicenseSelection[]) => onPricingChange({ userLicenses: licenses }),
     [onPricingChange]
   )
 
   const handleBillingCycleChange = useCallback(
-    (cycle: "monthly" | "annual") => {
-      onPricingChange({ billingCycle: cycle })
-    },
+    (cycle: "monthly" | "annual") => onPricingChange({ billingCycle: cycle }),
     [onPricingChange]
   )
 
@@ -161,21 +188,7 @@ export function PricingCard({
   // Validation
   // ---------------------------------------------------------------------------
 
-  const canContinue = useMemo(() => {
-    switch (step) {
-      case "employees":
-        return employeeCount >= 1 && employeeCount <= 10000
-      case "package":
-        return processTier !== null
-      case "licenses":
-        // Licenses are optional, can continue with 0
-        return true
-      case "summary":
-        return result !== null
-      default:
-        return false
-    }
-  }, [step, employeeCount, processTier, result])
+  const canContinue = useCanContinue(step, employeeCount, processTier, result)
 
   // ---------------------------------------------------------------------------
   // Render Step Content
@@ -185,72 +198,42 @@ export function PricingCard({
     switch (step) {
       case "employees":
         return (
-          <div className="space-y-4">
-            <p className="text-sm text-secondary">{stepConfig.description}</p>
-            <div className="flex items-center justify-between p-4 rounded-lg bg-surface border border-default">
-              <div>
-                <span className="text-sm font-medium text-primary">
-                  Employee Count
-                </span>
-                <span className="text-xs text-secondary ml-2">
-                  (1–10,000)
-                </span>
-              </div>
-              <NumberStepper
-                value={employeeCount}
-                onChange={handleEmployeeChange}
-                min={1}
-                max={10000}
-                step={10}
-                aria-label="Employee count"
-              />
-            </div>
-            {errors.employeeCount && (
-              <p className="text-xs text-error">{errors.employeeCount}</p>
-            )}
-          </div>
+          <EmployeeStepContent
+            description={stepConfig.description}
+            employeeCount={employeeCount}
+            onEmployeeChange={handleEmployeeChange}
+            error={errors.employeeCount}
+          />
         )
-
       case "package":
         return (
-          <div className="space-y-4">
-            <p className="text-sm text-secondary">{stepConfig.description}</p>
-            <ChatProcessSelector
-              selectedTier={processTier}
-              onSelect={handleProcessSelect}
-            />
-            {errors.processTier && (
-              <p className="text-xs text-error">{errors.processTier}</p>
-            )}
-          </div>
+          <PackageStepContent
+            description={stepConfig.description}
+            processTier={processTier}
+            onProcessSelect={handleProcessSelect}
+            error={errors.processTier}
+          />
         )
-
       case "licenses":
         return (
-          <div className="space-y-4">
-            <p className="text-sm text-secondary">{stepConfig.description}</p>
-            <ChatConfigPanel
-              employeeCount={employeeCount}
-              onEmployeeCountChange={handleEmployeeChange}
-              userLicenses={userLicenses}
-              onLicenseChange={handleLicenseChange}
-            />
-          </div>
+          <LicenseStepContent
+            description={stepConfig.description}
+            employeeCount={employeeCount}
+            onEmployeeCountChange={handleEmployeeChange}
+            userLicenses={userLicenses}
+            onLicenseChange={handleLicenseChange}
+          />
         )
-
       case "summary":
         return (
-          <div className="space-y-4">
-            <p className="text-sm text-secondary">{stepConfig.description}</p>
-            <ChatPricingSummary
-              result={result}
-              billingCycle={billingCycle}
-              onBillingCycleChange={handleBillingCycleChange}
-              isCalculating={isCalculating}
-            />
-          </div>
+          <SummaryStepContent
+            description={stepConfig.description}
+            result={result}
+            billingCycle={billingCycle}
+            onBillingCycleChange={handleBillingCycleChange}
+            isCalculating={isCalculating}
+          />
         )
-
       default:
         return null
     }
@@ -271,10 +254,8 @@ export function PricingCard({
       <div className="overflow-hidden bg-white/40 dark:bg-black/40 backdrop-blur-[4px] border-2 border-accent rounded-lg shadow-md">
         {/* Header - accent tint */}
         <div className="px-4 py-3 flex items-center gap-2 bg-accent/10 dark:bg-accent/5 border-b border-accent/30">
-          <StepIcon className="w-4 h-4 text-accent" aria-hidden="true" />
-          <span className="text-sm font-semibold text-accent">
-            {stepConfig.title}
-          </span>
+          <StepIcon className="size-4 text-accent" aria-hidden="true" />
+          <span className="text-sm font-semibold text-accent">{stepConfig.title}</span>
         </div>
 
         {/* Content */}
@@ -290,7 +271,7 @@ export function PricingCard({
             disabled={!canContinue || isCalculating}
           >
             {step === "summary" ? "Confirm Pricing" : "Continue"}
-            <ChevronRight className="w-4 h-4 ml-1" />
+            <ChevronRight className="size-4 ml-1" />
           </Button>
         </div>
       </div>

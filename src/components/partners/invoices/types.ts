@@ -1,3 +1,8 @@
+import { formatInvoiceCurrency } from '../../../lib/format'
+
+// Re-export for backwards compatibility
+export { formatInvoiceCurrency as formatCurrency }
+
 // =============================================================================
 // INVOICE TYPES
 // =============================================================================
@@ -84,16 +89,6 @@ export type InvoiceAction = 'copy' | 'preview' | 'download' | 'edit' | 'mark_sen
 // =============================================================================
 // HELPER FUNCTIONS
 // =============================================================================
-
-/** Format currency with proper symbol and decimals */
-export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount)
-}
 
 /** Format date for display */
 export function formatDate(dateString: string): string {

@@ -90,7 +90,8 @@ function validateComponents(context) {
 
   const validStatuses = Object.keys(statusLegend)
   const validTestIds = Object.keys(testIdLegend)
-  const validTypes = ['ATOM', 'MOLECULE', 'UTILITY']
+  // Component hierarchy types - from atomic design methodology
+  const validTypes = ['ATOM', 'MOLECULE', 'ORGANISM', 'PAGE', 'UTILITY']
 
   // Track actual counts for cross-validation
   const testIdCounts = { ready: 0, todo: 0, na: 0, 'data-slot': 0 }

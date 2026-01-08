@@ -9,6 +9,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { ChevronDown, ChevronRight, TrendingUp } from "lucide-react"
 import { cn } from "../../../lib/utils"
+import { formatCurrency } from "../../../lib/format"
 import { MetricItem } from "./MetricItem"
 import { slideDownVariants } from "../constants"
 import {
@@ -21,13 +22,6 @@ import type { PartnerMetricsCardProps as BasePartnerMetricsCardProps } from "../
 interface PartnerMetricsCardProps extends BasePartnerMetricsCardProps {
   /** Optional test ID for automated testing */
   "data-testid"?: string
-}
-
-/**
- * Formats a number as currency string
- */
-function formatCurrency(value: number): string {
-  return `$${value.toLocaleString()}`
 }
 
 /**

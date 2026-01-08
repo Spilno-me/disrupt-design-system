@@ -4,6 +4,8 @@ import {
   MOCK_NETWORK_PARTNERS,
   type NetworkPartner,
 } from '../../components/partners/PartnerNetworkPage'
+import { AppLayoutShell } from '../../templates/layout/AppLayoutShell'
+import { partnerNavItems } from '../../templates/navigation/configs'
 import { PAGE_META, pageDescription } from '../_infrastructure'
 
 // =============================================================================
@@ -111,6 +113,22 @@ interface NetworkPartner {
 
 export default meta
 type Story = StoryObj<typeof PartnerNetworkPage>
+
+// =============================================================================
+// SHELL WRAPPER
+// =============================================================================
+
+/** Wrap PartnerNetworkPage in AppLayoutShell for proper consumer app context */
+const ShellWrapper = (args: React.ComponentProps<typeof PartnerNetworkPage>) => (
+  <AppLayoutShell
+    product="partner"
+    navItems={partnerNavItems}
+    currentPageId="partners"
+    user={{ name: 'Demo Partner', email: 'demo@partner.com' }}
+  >
+    <PartnerNetworkPage {...args} />
+  </AppLayoutShell>
+)
 
 // =============================================================================
 // EXTENDED MOCK DATA
@@ -226,6 +244,7 @@ const SINGLE_PARTNER: NetworkPartner[] = [
  * Click on master partner rows to expand and see sub-partners and metrics.
  */
 export const Default: Story = {
+  render: (args) => <ShellWrapper {...args} />,
   args: {
     partners: MOCK_NETWORK_PARTNERS,
     loading: false,
@@ -240,6 +259,7 @@ export const Default: Story = {
  * Loading state shows a spinner while data is being fetched.
  */
 export const Loading: Story = {
+  render: (args) => <ShellWrapper {...args} />,
   args: {
     ...Default.args,
     loading: true,
@@ -251,6 +271,7 @@ export const Loading: Story = {
  * Shows a call-to-action to add the first partner.
  */
 export const Empty: Story = {
+  render: (args) => <ShellWrapper {...args} />,
   args: {
     ...Default.args,
     partners: [],
@@ -262,6 +283,7 @@ export const Empty: Story = {
  * Demonstrates the component's ability to handle larger datasets.
  */
 export const LargeNetwork: Story = {
+  render: (args) => <ShellWrapper {...args} />,
   args: {
     ...Default.args,
     partners: LARGE_NETWORK,
@@ -273,6 +295,7 @@ export const LargeNetwork: Story = {
  * Shows how the component handles minimal data.
  */
 export const SinglePartner: Story = {
+  render: (args) => <ShellWrapper {...args} />,
   args: {
     ...Default.args,
     partners: SINGLE_PARTNER,
@@ -284,6 +307,7 @@ export const SinglePartner: Story = {
  * Mix of active, inactive, and pending partners.
  */
 export const MixedStatuses: Story = {
+  render: (args) => <ShellWrapper {...args} />,
   args: {
     ...Default.args,
     partners: [
@@ -326,6 +350,7 @@ export const MixedStatuses: Story = {
  * Demonstrates visual hierarchy and indentation.
  */
 export const DeepHierarchy: Story = {
+  render: (args) => <ShellWrapper {...args} />,
   args: {
     ...Default.args,
     partners: [
@@ -393,7 +418,8 @@ export const DeepHierarchy: Story = {
  * Mobile viewport - demonstrates responsive behavior.
  */
 export const Mobile: Story = {
-  ...Default,
+  render: (args) => <ShellWrapper {...args} />,
+  args: Default.args,
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',
@@ -405,7 +431,8 @@ export const Mobile: Story = {
  * Tablet viewport - demonstrates responsive behavior.
  */
 export const Tablet: Story = {
-  ...Default,
+  render: (args) => <ShellWrapper {...args} />,
+  args: Default.args,
   parameters: {
     viewport: {
       defaultViewport: 'tablet',

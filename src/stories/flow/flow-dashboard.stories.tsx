@@ -121,7 +121,7 @@ import {
 } from '../../flow/components/dashboard'
 import { Reorder, AnimatePresence, motion } from 'motion/react'
 import { GridBlobBackground } from '../../components/ui/GridBlobCanvas'
-import { StatsCard } from '../../components/leads/StatsCard'
+import { StatsCard } from '../../components/shared/StatsCard'
 import {
   KPICard,
   BreakdownCard,

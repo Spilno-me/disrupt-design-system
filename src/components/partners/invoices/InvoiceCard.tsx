@@ -23,8 +23,6 @@ export interface InvoiceCardProps {
   onClick?: (invoice: Invoice) => void
   /** Callback when an action is selected from the dropdown */
   onActionClick?: (invoice: Invoice, action: InvoiceAction) => void
-  /** Additional className */
-  className?: string
 }
 
 // =============================================================================
@@ -41,7 +39,6 @@ export function InvoiceCard({
   invoice,
   onClick,
   onActionClick,
-  className,
 }: InvoiceCardProps) {
   const handleClick = () => {
     onClick?.(invoice)
@@ -58,8 +55,7 @@ export function InvoiceCard({
       className={cn(
         'flex flex-col gap-3 p-4 rounded-lg shadow-sm',
         'cursor-pointer hover:border-accent hover:shadow-md transition-all',
-        isDraft ? 'border-2 border-default bg-muted-bg/50' : 'border border-default bg-surface',
-        className
+        isDraft ? 'border-2 border-default bg-muted-bg/50' : 'border border-default bg-surface'
       )}
       onClick={handleClick}
       role="button"

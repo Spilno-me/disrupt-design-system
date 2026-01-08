@@ -134,8 +134,8 @@ export const LICENSE_DESCRIPTIONS: Record<UserLicenseTier, string> = {
  * Per DDS depth-layering-rules.md
  */
 export const GLASS_DEPTH_2 = {
-  /** Base glass effect for unselected/neutral cards */
+  /** Base glass effect for standalone elements (section, div) */
   neutral: 'bg-white/40 dark:bg-black/40 backdrop-blur-[4px] border-2 border-accent shadow-md',
-  /** Glass with accent tint (for commission preview, etc.) */
-  accent: 'bg-accent/40 backdrop-blur-[4px] border-2 border-accent/60 shadow-md',
+  /** Glass with softer accent border (commission preview, etc.) */
+  accent: 'bg-white/40 dark:bg-black/40 backdrop-blur-[4px] border-2 border-accent/60 shadow-md',
 } as const

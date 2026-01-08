@@ -21,8 +21,6 @@ export interface InvoicePDFDialogProps {
   onOpenChange: (open: boolean) => void
   /** Invoice to display PDF for */
   invoice: Invoice | null
-  /** Additional className */
-  className?: string
 }
 
 // =============================================================================
@@ -42,7 +40,6 @@ export function InvoicePDFDialog({
   open,
   onOpenChange,
   invoice,
-  className,
 }: InvoicePDFDialogProps) {
   if (!invoice) return null
 
@@ -57,8 +54,7 @@ export function InvoicePDFDialog({
           '!translate-x-0 !translate-y-0 !max-w-none',
           // Reset inner wrapper for fullscreen (remove padding, gap, border-radius)
           '[&>div]:p-0 [&>div]:gap-0 [&>div]:rounded-none',
-          'flex flex-col',
-          className
+          'flex flex-col'
         )}
       >
         {/* Header - custom padding since inner wrapper padding is reset */}

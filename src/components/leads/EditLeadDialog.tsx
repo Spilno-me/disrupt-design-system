@@ -1,31 +1,27 @@
 import * as React from 'react'
 import { useState, useCallback, useEffect } from 'react'
 import { cn } from '../../lib/utils'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '../ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '../ui/dialog'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import type { Lead } from './LeadCard'
 import type { CreateLeadFormData, Partner } from './CreateLeadDialog'
+import { LEAD_VALIDATION, validateCompanyName, validateContactName, validateEmail, validatePhone, validateNotes } from './constants'
 
 // =============================================================================
 // TYPES
 // =============================================================================
+
+interface FormErrors {
+  companyName?: string
+  contactName?: string
+  contactEmail?: string
+  contactPhone?: string
+  notes?: string
+}
 
 export interface EditLeadDialogProps {
   /** Whether the dialog is open */
@@ -44,12 +40,32 @@ export interface EditLeadDialogProps {
   className?: string
 }
 
-interface FormErrors {
-  companyName?: string
-  contactName?: string
-  contactEmail?: string
-  contactPhone?: string
-  notes?: string
+// =============================================================================
+// FORM FIELD SUB-COMPONENT
+// =============================================================================
+
+interface FormFieldProps {
+  id: string
+  label: string
+  required?: boolean
+  error?: string
+  children: React.ReactNode
+}
+
+function FormField({ id, label, required, error, children }: FormFieldProps) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label htmlFor={id} className="text-primary">
+        {label} {required && <span className="text-error">*</span>}
+      </Label>
+      {children}
+      {error && (
+        <p id={`${id}-error`} className="text-sm text-error">
+          {error}
+        </p>
+      )}
+    </div>
+  )
 }
 
 // =============================================================================
@@ -59,33 +75,12 @@ interface FormErrors {
 /**
  * EditLeadDialog - Modal dialog for editing an existing lead
  *
- * Features:
- * - Pre-populated form with lead data
- * - Required field validation (Company Name, Contact Name, Contact Email)
- * - Email format validation
- * - Priority and Source dropdowns
- * - Optional Partner assignment
- * - Notes textarea
+ * Features: Pre-populated form, required field validation (Company, Contact, Email),
+ * priority/source dropdowns, optional partner assignment, notes textarea.
  *
  * @example
- * ```tsx
- * const [open, setOpen] = useState(false)
- * const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
- *
- * <EditLeadDialog
- *   open={open}
- *   onOpenChange={setOpen}
- *   lead={selectedLead}
- *   onSubmit={(leadId, data) => {
- *     console.log('Updating lead:', leadId, data)
- *     setOpen(false)
- *   }}
- *   partners={[
- *     { id: '1', name: 'Acme Partners' },
- *     { id: '2', name: 'Global Solutions' },
- *   ]}
- * />
- * ```
+ * <EditLeadDialog open={open} onOpenChange={setOpen} lead={selectedLead}
+ *   onSubmit={(leadId, data) => handleUpdate(leadId, data)} partners={partners} />
  */
 export function EditLeadDialog({
   open,
@@ -140,54 +135,19 @@ export function EditLeadDialog({
 
   // Validate all required fields and return errors
   const validateForm = useCallback((): FormErrors => {
-    const newErrors: FormErrors = {}
+    const companyNameError = validateCompanyName(formData.companyName)
+    const contactNameError = validateContactName(formData.contactName)
+    const contactEmailError = validateEmail(formData.contactEmail)
+    const contactPhoneError = validatePhone(formData.contactPhone)
+    const notesError = validateNotes(formData.notes)
 
-    // Company name: 2-150 chars
-    const companyTrimmed = formData.companyName.trim()
-    if (!companyTrimmed) {
-      newErrors.companyName = 'Company name is required.'
-    } else if (companyTrimmed.length < 2) {
-      newErrors.companyName = 'Company name must be at least 2 characters.'
-    } else if (companyTrimmed.length > 150) {
-      newErrors.companyName = 'Company name must be 150 characters or less.'
+    return {
+      ...(companyNameError && { companyName: companyNameError }),
+      ...(contactNameError && { contactName: contactNameError }),
+      ...(contactEmailError && { contactEmail: contactEmailError }),
+      ...(contactPhoneError && { contactPhone: contactPhoneError }),
+      ...(notesError && { notes: notesError }),
     }
-
-    // Contact name: must have 2+ words (first + last)
-    const nameTrimmed = formData.contactName.trim()
-    if (!nameTrimmed) {
-      newErrors.contactName = 'Contact name is required.'
-    } else {
-      const words = nameTrimmed.split(/\s+/).filter(w => w.length > 0)
-      if (words.length < 2) {
-        newErrors.contactName = 'Enter first and last name (e.g., John Smith).'
-      }
-    }
-
-    // Email: required, valid format, max 254
-    const emailTrimmed = formData.contactEmail.trim()
-    if (!emailTrimmed) {
-      newErrors.contactEmail = 'Email is required.'
-    } else if (emailTrimmed.length > 254) {
-      newErrors.contactEmail = 'Email must be 254 characters or less.'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
-      newErrors.contactEmail = 'Enter a valid email address.'
-    }
-
-    // Phone: optional, but if provided must have min 7 digits
-    const phoneTrimmed = formData.contactPhone.trim()
-    if (phoneTrimmed) {
-      const digitCount = (phoneTrimmed.match(/\d/g) || []).length
-      if (digitCount < 7) {
-        newErrors.contactPhone = 'Enter a valid phone number.'
-      }
-    }
-
-    // Notes: max 2000 chars
-    if (formData.notes.length > 2000) {
-      newErrors.notes = 'Notes must be 2000 characters or less.'
-    }
-
-    return newErrors
   }, [formData])
 
   // Handle input change
@@ -250,10 +210,7 @@ export function EditLeadDialog({
             <h3 className="text-sm font-semibold text-primary">Lead Information</h3>
 
             {/* Company Name */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="companyName" className="text-primary">
-                Company Name <span className="text-error">*</span>
-              </Label>
+            <FormField id="companyName" label="Company Name" required error={errors.companyName}>
               <Input
                 ref={companyNameRef}
                 id="companyName"
@@ -264,18 +221,10 @@ export function EditLeadDialog({
                 aria-invalid={!!errors.companyName}
                 aria-describedby={errors.companyName ? 'companyName-error' : undefined}
               />
-              {errors.companyName && (
-                <p id="companyName-error" className="text-sm text-error">
-                  {errors.companyName}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Contact Name */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="contactName" className="text-primary">
-                Contact Name <span className="text-error">*</span>
-              </Label>
+            <FormField id="contactName" label="Contact Name" required error={errors.contactName}>
               <Input
                 ref={contactNameRef}
                 id="contactName"
@@ -286,18 +235,10 @@ export function EditLeadDialog({
                 aria-invalid={!!errors.contactName}
                 aria-describedby={errors.contactName ? 'contactName-error' : undefined}
               />
-              {errors.contactName && (
-                <p id="contactName-error" className="text-sm text-error">
-                  {errors.contactName}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Contact Email */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="contactEmail" className="text-primary">
-                Contact Email <span className="text-error">*</span>
-              </Label>
+            <FormField id="contactEmail" label="Contact Email" required error={errors.contactEmail}>
               <Input
                 ref={contactEmailRef}
                 id="contactEmail"
@@ -309,18 +250,10 @@ export function EditLeadDialog({
                 aria-invalid={!!errors.contactEmail}
                 aria-describedby={errors.contactEmail ? 'contactEmail-error' : undefined}
               />
-              {errors.contactEmail && (
-                <p id="contactEmail-error" className="text-sm text-error">
-                  {errors.contactEmail}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Contact Phone */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="contactPhone" className="text-primary">
-                Contact Phone
-              </Label>
+            <FormField id="contactPhone" label="Contact Phone" error={errors.contactPhone}>
               <Input
                 id="contactPhone"
                 name="contactPhone"
@@ -331,20 +264,11 @@ export function EditLeadDialog({
                 aria-invalid={!!errors.contactPhone}
                 aria-describedby={errors.contactPhone ? 'contactPhone-error' : undefined}
               />
-              {errors.contactPhone && (
-                <p id="contactPhone-error" className="text-sm text-error">
-                  {errors.contactPhone}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Priority and Source Row */}
             <div className="grid grid-cols-2 gap-4">
-              {/* Priority */}
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="priority" className="text-primary">
-                  Priority
-                </Label>
+              <FormField id="priority" label="Priority">
                 <Select
                   value={formData.priority}
                   onValueChange={(value) => handleSelectChange('priority', value)}
@@ -358,13 +282,9 @@ export function EditLeadDialog({
                     <SelectItem value="high">High</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </FormField>
 
-              {/* Lead Source */}
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="source" className="text-primary">
-                  Lead Source
-                </Label>
+              <FormField id="source" label="Lead Source">
                 <Select
                   value={formData.source}
                   onValueChange={(value) => handleSelectChange('source', value)}
@@ -380,7 +300,7 @@ export function EditLeadDialog({
                     <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </FormField>
             </div>
           </div>
 
@@ -390,10 +310,7 @@ export function EditLeadDialog({
               Partner Assignment <span className="text-muted font-normal">(Optional)</span>
             </h3>
 
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="assignedPartnerId" className="text-primary">
-                Assign to Partner
-              </Label>
+            <FormField id="assignedPartnerId" label="Assign to Partner">
               <Select
                 value={formData.assignedPartnerId ?? 'none'}
                 onValueChange={(value) => handleSelectChange('assignedPartnerId', value)}
@@ -410,7 +327,7 @@ export function EditLeadDialog({
                   ))}
                 </SelectContent>
               </Select>
-            </div>
+            </FormField>
           </div>
 
           {/* Notes Section */}
@@ -421,9 +338,9 @@ export function EditLeadDialog({
               </Label>
               <span className={cn(
                 "text-xs",
-                formData.notes.length > 2000 ? "text-error" : "text-muted"
+                formData.notes.length > LEAD_VALIDATION.NOTES_MAX ? "text-error" : "text-muted"
               )}>
-                {formData.notes.length}/2000
+                {formData.notes.length}/{LEAD_VALIDATION.NOTES_MAX}
               </span>
             </div>
             <Textarea

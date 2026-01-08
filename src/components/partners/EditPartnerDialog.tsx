@@ -24,6 +24,7 @@ import {
 } from "../ui/dialog"
 import { Separator } from "../ui/separator"
 import { Partner, PartnerTier } from "./PartnersPage"
+import { COMPANY_SIZES, COUNTRIES } from "../../constants/form-options"
 
 // =============================================================================
 // TYPES
@@ -69,31 +70,6 @@ export interface EditPartnerDialogProps {
   /** Mode: 'edit' or 'create' */
   mode?: "edit" | "create"
 }
-
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-
-const COMPANY_SIZES = [
-  { value: "1-10", label: "1-10 employees" },
-  { value: "11-50", label: "11-50 employees" },
-  { value: "51-200", label: "51-200 employees" },
-  { value: "201-500", label: "201-500 employees" },
-  { value: "501-1000", label: "501-1000 employees" },
-  { value: "1001-5000", label: "1001-5000 employees" },
-  { value: "5000+", label: "5000+ employees" },
-]
-
-const COUNTRIES = [
-  { value: "US", label: "United States", flag: "🇺🇸" },
-  { value: "CA", label: "Canada", flag: "🇨🇦" },
-  { value: "UK", label: "United Kingdom", flag: "🇬🇧" },
-  { value: "AU", label: "Australia", flag: "🇦🇺" },
-  { value: "DE", label: "Germany", flag: "🇩🇪" },
-  { value: "FR", label: "France", flag: "🇫🇷" },
-  { value: "JP", label: "Japan", flag: "🇯🇵" },
-  { value: "SG", label: "Singapore", flag: "🇸🇬" },
-]
 
 // =============================================================================
 // COMPONENT

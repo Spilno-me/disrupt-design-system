@@ -15,9 +15,10 @@ import {
   FileText,
 } from "lucide-react"
 import { cn } from "../../../lib/utils"
-import { Button } from "../../ui/button"
+import { formatCurrency } from "../../../lib/format"
 import { ActionTile } from "../../ui/ActionTile"
-import { StatusIndicator } from "./StatusIndicator"
+import { DataTableStatusDot, PARTNER_DOT_STATUS_MAP } from "../../ui/table"
+import { Tooltip, TooltipTrigger, TooltipContent } from "../../ui/tooltip"
 import { PartnerMetricsCard } from "./PartnerMetricsCard"
 import { expandedContentVariants } from "../constants"
 import { BASE_PADDING_PX, INDENT_PADDING_PX } from "../constants"
@@ -35,13 +36,6 @@ interface PartnerRowProps extends BasePartnerRowProps {
 interface PartnerRowWrapperProps extends BasePartnerRowWrapperProps {
   /** Optional test ID for automated testing */
   "data-testid"?: string
-}
-
-/**
- * Formats a number as currency string
- */
-function formatCurrency(value: number): string {
-  return `$${value.toLocaleString()}`
 }
 
 /**
@@ -120,7 +114,21 @@ export function PartnerRow({
 
         {/* Status */}
         <div className="w-12 flex-shrink-0 flex justify-center">
-          <StatusIndicator status={partner.status} />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>
+                <DataTableStatusDot
+                  status={partner.status}
+                  mapping={PARTNER_DOT_STATUS_MAP}
+                  showLabel={false}
+                  size="md"
+                />
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side="top" sideOffset={4}>
+              {PARTNER_DOT_STATUS_MAP[partner.status]?.label || partner.status}
+            </TooltipContent>
+          </Tooltip>
         </div>
 
         {/* Monthly Revenue */}

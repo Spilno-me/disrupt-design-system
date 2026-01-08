@@ -23,6 +23,7 @@ import {
 } from "../ui/dialog"
 import { Separator } from "../ui/separator"
 import type { NetworkPartner, SubPartnerFormData } from "./types"
+import { COMPANY_SIZES, COUNTRIES } from "../../constants/form-options"
 
 // Re-export for backwards compatibility
 export type { SubPartnerFormData }
@@ -39,31 +40,6 @@ export interface CreateSubPartnerDialogProps {
   /** Whether the form is currently submitting */
   isSubmitting?: boolean
 }
-
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-
-const COMPANY_SIZES = [
-  { value: "1-10", label: "1-10 employees" },
-  { value: "11-50", label: "11-50 employees" },
-  { value: "51-200", label: "51-200 employees" },
-  { value: "201-500", label: "201-500 employees" },
-  { value: "501-1000", label: "501-1000 employees" },
-  { value: "1001-5000", label: "1001-5000 employees" },
-  { value: "5000+", label: "5000+ employees" },
-]
-
-const COUNTRIES = [
-  { value: "US", label: "United States", flag: "US" },
-  { value: "CA", label: "Canada", flag: "CA" },
-  { value: "UK", label: "United Kingdom", flag: "UK" },
-  { value: "AU", label: "Australia", flag: "AU" },
-  { value: "DE", label: "Germany", flag: "DE" },
-  { value: "FR", label: "France", flag: "FR" },
-  { value: "JP", label: "Japan", flag: "JP" },
-  { value: "SG", label: "Singapore", flag: "SG" },
-]
 
 // =============================================================================
 // COMPONENT

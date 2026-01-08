@@ -12,6 +12,7 @@
 import { useMemo } from 'react'
 import { DollarSign, Users, ClipboardList, UserPlus, Zap } from 'lucide-react'
 import type { KPICardData, QuickActionData, ActivityItemData } from '../../../../templates/pages/DashboardPage'
+import { formatCurrency } from '../../../../lib/format'
 import type { UserRole, DashboardHandlers, DashboardMockData } from '../types/dashboard.types'
 
 // =============================================================================
@@ -20,16 +21,6 @@ import type { UserRole, DashboardHandlers, DashboardMockData } from '../types/da
 
 /** Lead statuses considered "in progress" - MVP uses single 'in_progress' status */
 const LEAD_PROGRESS_STATUSES: string[] = ['in_progress']
-
-/** Format currency for display */
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value)
-}
 
 // =============================================================================
 // HOOK

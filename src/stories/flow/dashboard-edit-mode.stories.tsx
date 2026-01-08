@@ -53,7 +53,7 @@ import {
   type WorkloadItem,
   type UpcomingTask,
 } from '../../flow/components/dashboard'
-import { StatsCard } from '../../components/leads/StatsCard'
+import { StatsCard } from '../../components/shared/StatsCard'
 
 // =============================================================================
 // META

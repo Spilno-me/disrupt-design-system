@@ -37,8 +37,6 @@ export interface InvoicesDataTableProps {
   onSortChange?: (column: string, direction: SortDirection) => void
   /** Loading state */
   loading?: boolean
-  /** Additional className */
-  className?: string
   // Pagination props (forwarded to DataTable)
   /** Enable embedded pagination in table footer */
   pagination?: boolean
@@ -76,7 +74,6 @@ export function InvoicesDataTable({
   sortDirection,
   onSortChange,
   loading = false,
-  className,
   // Pagination props
   pagination,
   currentPage,
@@ -299,7 +296,6 @@ export function InvoicesDataTable({
       loading={loading}
       hoverable
       bordered
-      className={className}
       // Pagination props (forwarded)
       pagination={pagination}
       currentPage={currentPage}

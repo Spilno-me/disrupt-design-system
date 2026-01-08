@@ -8,6 +8,7 @@ import {
   TrendingUp,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
+import { formatCurrency } from "../../lib/format"
 
 // Extracted modules
 import type { Earning, EarningsSummary, MyEarningsPageProps } from "./types"
@@ -18,7 +19,7 @@ import { Badge } from "../ui/badge"
 import { DataTable, type ColumnDef } from "../ui/DataTable"
 import { DataTableStatusDot, type DotStatusMapping } from "../ui/table"
 import { PageActionPanel } from "../ui/PageActionPanel"
-import { StatsCard } from "../leads/StatsCard"
+import { StatsCard } from "../shared/StatsCard"
 
 // Re-export types and data for external consumers
 export type { Earning, EarningsSummary, MyEarningsPageProps }
@@ -44,15 +45,6 @@ const formatDate = (date: Date) => {
     month: "short",
     day: "numeric",
   }).format(date)
-}
-
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
 }
 
 const getTypeVariant = (type: Earning["type"]) => {

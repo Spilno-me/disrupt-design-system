@@ -11,6 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "../ui/dialog"
+import { formatCurrency } from "../../lib/format"
 import type { Tenant } from "./types"
 
 // =============================================================================
@@ -28,19 +29,6 @@ export interface SuspendTenantDialogProps {
   onConfirm: (tenant: Tenant) => void | Promise<void>
   /** Whether the suspend is currently in progress */
   isSuspending?: boolean
-}
-
-// =============================================================================
-// HELPERS
-// =============================================================================
-
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
 }
 
 // =============================================================================

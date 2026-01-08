@@ -19,6 +19,8 @@ import {
 } from "../../ui/select"
 import { PageActionPanel } from "../../ui/PageActionPanel"
 import type { Partner, PartnerTier } from "../PartnersPage"
+import { COMPANY_SIZES, COUNTRIES } from "../../../constants/form-options"
+import { GLASS_CARD_CLASSES } from "../constants"
 
 // =============================================================================
 // TYPES
@@ -62,31 +64,6 @@ export interface EditPartnerPageProps {
   /** Whether the form is currently submitting */
   isSubmitting?: boolean
 }
-
-// =============================================================================
-// CONSTANTS
-// =============================================================================
-
-const COMPANY_SIZES = [
-  { value: "1-10", label: "1-10 employees" },
-  { value: "11-50", label: "11-50 employees" },
-  { value: "51-200", label: "51-200 employees" },
-  { value: "201-500", label: "201-500 employees" },
-  { value: "501-1000", label: "501-1000 employees" },
-  { value: "1001-5000", label: "1001-5000 employees" },
-  { value: "5000+", label: "5000+ employees" },
-]
-
-const COUNTRIES = [
-  { value: "US", label: "United States" },
-  { value: "CA", label: "Canada" },
-  { value: "UK", label: "United Kingdom" },
-  { value: "AU", label: "Australia" },
-  { value: "DE", label: "Germany" },
-  { value: "FR", label: "France" },
-  { value: "JP", label: "Japan" },
-  { value: "SG", label: "Singapore" },
-]
 
 // =============================================================================
 // COMPONENT
@@ -246,7 +223,7 @@ export function EditPartnerPage({
 
       <form id="partner-form" onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6" data-testid="partners-edit-partner-page-form">
         {/* Glass wrapper for all form sections */}
-        <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
+        <section className={cn("rounded-xl", GLASS_CARD_CLASSES)}>
           <div className="p-4 md:p-6 space-y-6">
             {/* Row 1: Company Information + Contact Information */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

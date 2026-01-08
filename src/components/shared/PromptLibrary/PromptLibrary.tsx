@@ -31,6 +31,7 @@ import {
   Grid3X3,
   Package,
   Plug,
+  TestTube2,
 } from 'lucide-react'
 import { cn } from '../../../lib/utils'
 
@@ -59,6 +60,7 @@ export type PromptCategory =
   | 'icons'
   | 'documentation'
   | 'review'
+  | 'testing'
   | 'delivery'
   | 'mcp'
 
@@ -117,6 +119,13 @@ const CATEGORY_CONFIG: Record<
     badgeClass: 'bg-warning-subtle text-warning',
     activeClass: 'bg-warning-strong text-inverse',
     headerClass: 'text-warning',
+  },
+  testing: {
+    label: 'Testing',
+    icon: <TestTube2 className="w-4 h-4" />,
+    badgeClass: 'bg-success-subtle text-success',
+    activeClass: 'bg-success-strong text-inverse',
+    headerClass: 'text-success',
   },
   styling: {
     label: 'Styling',

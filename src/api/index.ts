@@ -43,6 +43,8 @@ export {
   incidentsApi,
   stepsApi,
   dictionaryApi,
+  workspacesApi,
+  resetWorkspaceData,
 } from './services'
 
 // =============================================================================
@@ -300,6 +302,17 @@ export {
   getKpiThreshold,
   getSparklineData,
 } from './data/seed/flow-config.seed'
+
+// Workspace seed data
+export {
+  seedWorkspaceNodes,
+  getWorkspacesByProduct,
+  getRootFolders,
+  getWorkspaceById,
+  getNodeChildren,
+  getDescendantIds,
+  getWorkspaceStats,
+} from './data/seed/workspaces.seed'
 
 // EHS Dashboard seed data
 export {

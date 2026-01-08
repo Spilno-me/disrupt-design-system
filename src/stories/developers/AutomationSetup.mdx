@@ -512,3 +512,287 @@ jobs:
 ────────────────────────────────────────────────────────────
 TOTAL TIME: ~15 minutes, ZERO human intervention`}</pre>
 </div>
+
+---
+
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>Internal DDS Validation</h2>
+
+<SectionHeader
+  icon={<Shield size={20} />}
+  title="Local Development Automation"
+  description="Scripts that enforce DDS standards before code leaves your machine."
+/>
+
+<InfoBox variant="info">
+  <strong>Pre-commit protection.</strong> These scripts run automatically on every commit,
+  catching drift, token violations, and context inconsistencies before they reach the repo.
+</InfoBox>
+
+{/* Pre-commit Hook */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    Pre-Commit Hook Flow
+  </h4>
+  <div style={{
+    background: ABYSS[600],
+    borderRadius: RADIUS.md,
+    padding: '16px',
+    fontFamily: '"JetBrains Mono", monospace',
+    fontSize: '12px',
+    color: SLATE[200],
+    lineHeight: 1.8,
+    overflow: 'auto',
+  }}>
+    <pre style={{ margin: 0 }}>{`git commit -m "feat: add new component"
+│
+├─► npm run mcp:detect     # Check MCP registry drift
+│   └── ❌ Blocks if new components not registered
+│
+├─► npm run sync:all       # Regenerate prompts, colors, docs
+│
+├─► npm run health         # Full validation suite
+│   ├── typecheck          # TypeScript errors
+│   ├── lint               # ESLint violations
+│   ├── validate:tokens    # Token drift
+│   ├── validate:readme    # Export documentation
+│   ├── validate-context   # agent-context.json validity
+│   ├── validate:agents    # Agent instruction files
+│   ├── validate:version   # Version consistency
+│   └── validate:prompts   # Prompt path references
+│
+└─► lint-staged            # ESLint on changed files only`}</pre>
+  </div>
+</div>
+
+{/* MCP Drift Detection */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: '16px',
+}}>
+  <h4 style={{ margin: '0 0 8px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    MCP Drift Detection
+  </h4>
+  <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: DUSK_REEF[500], marginBottom: '12px' }}>
+    Ensures MCP registry stays in sync with actual component files.
+  </div>
+  <CodeBlock
+    language="bash"
+    code={`# Check for drift (exits with error if found)
+npm run mcp:detect
+
+# Auto-fix drift (adds missing components)
+npm run mcp:sync`}
+  />
+  <div style={{ marginTop: '16px' }}>
+    <div style={{ fontSize: '13px', fontFamily: '"Fixel", sans-serif', color: ABYSS[500], marginBottom: '8px', fontWeight: 600 }}>
+      What it detects:
+    </div>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+      <div style={{
+        background: CORAL[50],
+        borderRadius: RADIUS.sm,
+        padding: '12px',
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <div style={{ fontWeight: 600, color: CORAL[700], marginBottom: '4px' }}>Missing</div>
+        <div style={{ color: CORAL[600] }}>Files exist but not in registry</div>
+        <div style={{ color: SLATE[500], fontSize: '11px', marginTop: '4px' }}>→ Auto-fixable with --sync</div>
+      </div>
+      <div style={{
+        background: DUSK_REEF[50],
+        borderRadius: RADIUS.sm,
+        padding: '12px',
+        fontSize: '12px',
+        fontFamily: '"Fixel", sans-serif',
+      }}>
+        <div style={{ fontWeight: 600, color: DUSK_REEF[700], marginBottom: '4px' }}>Orphaned</div>
+        <div style={{ color: DUSK_REEF[600] }}>Registry entries with no file</div>
+        <div style={{ color: SLATE[500], fontSize: '11px', marginTop: '4px' }}>→ Requires manual removal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* All Validation Commands */}
+<div style={{
+  background: PRIMITIVES.white,
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${SLATE[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: ABYSS[500] }}>
+    All Validation Commands
+  </h4>
+  <table style={{
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontSize: '13px',
+    fontFamily: '"Fixel", sans-serif',
+  }}>
+    <thead>
+      <tr style={{ borderBottom: `2px solid ${SLATE[200]}` }}>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Command</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Purpose</th>
+        <th style={{ padding: '12px 16px', textAlign: 'left', color: ABYSS[500], fontWeight: 600 }}>Fails On</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run health</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Full validation suite</td>
+        <td style={{ padding: '12px 16px', color: CORAL[600] }}>Any sub-check failure</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run mcp:detect</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>MCP registry drift</td>
+        <td style={{ padding: '12px 16px', color: CORAL[600] }}>Unregistered components</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run mcp:sync</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Auto-add missing to MCP</td>
+        <td style={{ padding: '12px 16px', color: SLATE[400] }}>Never (fixes drift)</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run validate:tokens</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Token file consistency</td>
+        <td style={{ padding: '12px 16px', color: CORAL[600] }}>TS/CSS/preset mismatch</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run validate:prompts</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Prompt path references</td>
+        <td style={{ padding: '12px 16px', color: CORAL[600] }}>Broken file paths</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run validate-context</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>agent-context.json validity</td>
+        <td style={{ padding: '12px 16px', color: CORAL[600] }}>Invalid status/type</td>
+      </tr>
+      <tr style={{ borderBottom: `1px solid ${SLATE[100]}` }}>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run validate:readme</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Export documentation</td>
+        <td style={{ padding: '12px 16px', color: CORAL[600] }}>Undocumented exports</td>
+      </tr>
+      <tr>
+        <td style={{ padding: '12px 16px' }}>
+          <code style={{ background: SLATE[100], padding: '2px 6px', borderRadius: '4px' }}>npm run sync:all</code>
+        </td>
+        <td style={{ padding: '12px 16px', color: DUSK_REEF[500] }}>Regenerate all derived files</td>
+        <td style={{ padding: '12px 16px', color: SLATE[400] }}>Never (generation)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{/* What Gets Synced */}
+<div style={{
+  background: DEEP_CURRENT[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${DEEP_CURRENT[200]}`,
+  marginBottom: SPACING.px.section,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: DEEP_CURRENT[700] }}>
+    What Gets Synced (npm run sync:all)
+  </h4>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '16px',
+  }}>
+    <div>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: DEEP_CURRENT[600], marginBottom: '8px' }}>
+        Prompts → Skills
+      </div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[600], lineHeight: 1.6 }}>
+        <code>prompts.ts</code> → <code>.claude/skills/*.md</code><br />
+        48 prompts → 48 skill files
+      </div>
+    </div>
+    <div>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: DEEP_CURRENT[600], marginBottom: '8px' }}>
+        Color Intelligence
+      </div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[600], lineHeight: 1.6 }}>
+        <code>color-intelligence.json</code> → <code>.toon</code> + types<br />
+        28KB JSON → 2.7KB summary
+      </div>
+    </div>
+    <div>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: DEEP_CURRENT[600], marginBottom: '8px' }}>
+        Color Matrix
+      </div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[600], lineHeight: 1.6 }}>
+        Regenerates contrast matrix<br />
+        for MCP color validation
+      </div>
+    </div>
+    <div>
+      <div style={{ fontSize: '13px', fontWeight: 600, color: DEEP_CURRENT[600], marginBottom: '8px' }}>
+        Documentation
+      </div>
+      <div style={{ fontSize: '12px', color: DUSK_REEF[600], lineHeight: 1.6 }}>
+        Updates <code>CLAUDE.md</code><br />
+        and derived agent docs
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Troubleshooting */}
+<div style={{
+  background: CORAL[50],
+  borderRadius: RADIUS.lg,
+  padding: '24px',
+  border: `1px solid ${CORAL[200]}`,
+}}>
+  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 600, fontFamily: '"Fixel", sans-serif', color: CORAL[700] }}>
+    Pre-Commit Blocked? Quick Fixes
+  </h4>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <div style={{ fontWeight: 600, color: CORAL[700], minWidth: '180px' }}>MCP drift detected:</div>
+      <div style={{ color: ABYSS[500] }}><code>npm run mcp:sync</code> then commit again</div>
+    </div>
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <div style={{ fontWeight: 600, color: CORAL[700], minWidth: '180px' }}>Token validation failed:</div>
+      <div style={{ color: ABYSS[500] }}>Update all 3 token files (TS, CSS, preset)</div>
+    </div>
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <div style={{ fontWeight: 600, color: CORAL[700], minWidth: '180px' }}>Prompt path broken:</div>
+      <div style={{ color: ABYSS[500] }}>Check file references in <code>prompts.ts</code></div>
+    </div>
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <div style={{ fontWeight: 600, color: CORAL[700], minWidth: '180px' }}>Context invalid:</div>
+      <div style={{ color: ABYSS[500] }}>Check <code>agent-context.json</code> status/type values</div>
+    </div>
+    <div style={{ display: 'flex', gap: '12px' }}>
+      <div style={{ fontWeight: 600, color: CORAL[700], minWidth: '180px' }}>Emergency bypass:</div>
+      <div style={{ color: SLATE[500] }}><code>git commit --no-verify</code> (not recommended)</div>
+    </div>
+  </div>
+</div>

@@ -12,7 +12,7 @@ import {
 import { cn } from "../../lib/utils"
 
 // Extracted modules
-import { PARTNER_NETWORK_FILTER_GROUPS } from "./constants"
+import { PARTNER_NETWORK_FILTER_GROUPS, GLASS_CARD_CLASSES } from "./constants"
 import type {
   NetworkPartner,
   NetworkPartnerStatus,
@@ -212,7 +212,7 @@ export function PartnerNetworkPage({
         />
 
         {/* Glass container for main content */}
-        <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
+        <section className={cn("rounded-xl", GLASS_CARD_CLASSES)}>
           <div className="flex flex-col gap-4 p-4 md:p-6">
             {/* Search Bar */}
             <SearchFilter

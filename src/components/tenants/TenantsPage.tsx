@@ -9,6 +9,7 @@ import {
   Building2,
 } from "lucide-react"
 import { cn } from "../../lib/utils"
+import { formatCurrency } from "../../lib/format"
 
 // Extracted modules
 import { TENANT_FILTER_GROUPS } from "./constants/filter.constants"
@@ -54,15 +55,6 @@ const formatDate = (date: Date) => {
     month: "short",
     day: "numeric",
   }).format(date)
-}
-
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
 }
 
 const getPackageVariant = (pkg: SubscriptionPackage) => {

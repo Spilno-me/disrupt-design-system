@@ -164,6 +164,17 @@ export {
   getSparklineData,
 } from './flow-config.seed'
 
+// Workspace seed data
+export {
+  seedWorkspaceNodes,
+  getWorkspacesByProduct,
+  getRootFolders,
+  getWorkspaceById,
+  getNodeChildren,
+  getDescendantIds,
+  getWorkspaceStats,
+} from './workspaces.seed'
+
 // EHS Dashboard seed data
 export {
   // Types

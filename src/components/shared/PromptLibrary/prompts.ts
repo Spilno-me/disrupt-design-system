@@ -198,6 +198,241 @@ Structure:
 
 Use withStoryContainer('{LEVEL}') decorator where LEVEL is atom, molecule, or organism.`,
   },
+  {
+    id: 'story-api-simulation',
+    title: 'Use API Simulation in Stories',
+    description:
+      'Configure stories with proper API simulation using seed data factories. No hardcoded data in stories or components.',
+    category: 'stories',
+    variables: ['COMPONENT_OR_PAGE'],
+    tags: ['storybook', 'api', 'simulation', 'seed-data', 'msw', 'zustand', 'qoe'],
+    prompt: `Configure {COMPONENT_OR_PAGE} story with proper API simulation.
+
+## Core Principle: Component Purity
+
+**Components are PURE. Data is INJECTED.**
+
+\`\`\`
+❌ FORBIDDEN: Hardcoded data anywhere
+   - No seed data in components
+   - No inline mock arrays in stories
+   - No "sampleData" or "dummyData" constants
+
+✅ REQUIRED: Data from seed layer
+   - Import from src/api/data/seed/
+   - Use seed factories for dynamic data
+   - Configure via props or store initialization
+\`\`\`
+
+## DDS API Simulation Architecture
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│ src/flow/data/             │ Raw mock data (58 users)  │
+├─────────────────────────────────────────────────────────┤
+│ src/api/data/seed/         │ Seed factories + exports  │
+├─────────────────────────────────────────────────────────┤
+│ src/api/core/store.ts      │ Zustand in-memory store   │
+├─────────────────────────────────────────────────────────┤
+│ src/api/services/*.api.ts  │ REST-like operations      │
+├─────────────────────────────────────────────────────────┤
+│ Stories                    │ Import seed, pass to props│
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Step 1: Identify Data Needs
+
+What data does {COMPONENT_OR_PAGE} require?
+
+| Data Type | Seed Source |
+|-----------|-------------|
+| Users | \`seedUsers\` (58 pre-configured) |
+| Incidents | \`seedIncidents\`, \`generateManyIncidents(n)\` |
+| Locations | \`seedLocations\` (27 hierarchical) |
+| Steps/Tasks | \`seedSteps\` |
+| Roles | \`seedRoles\` |
+| KPIs/Metrics | \`seedEhsKpis\`, \`seedEhsAnalyticsKpis\` |
+
+## Step 2: Import from Seed Layer
+
+\`\`\`tsx
+// ✅ CORRECT: Import from centralized seed layer
+import {
+  seedUsers,
+  seedIncidents,
+  seedLocations,
+  generateManyIncidents,
+  getIncidentsByStatus,
+} from '../../api/data/seed'
+
+// ❌ WRONG: Hardcoded inline data
+const users = [
+  { id: '1', name: 'John Doe' },  // NEVER DO THIS
+]
+\`\`\`
+
+## Step 3: Story Configuration Patterns
+
+### Pattern A: Props Injection (Preferred for Pages/Organisms)
+\`\`\`tsx
+import { seedIncidents, seedUsers } from '../../api/data/seed'
+import { PAGE_META } from '../_infrastructure'
+
+const meta: Meta<typeof DashboardPage> = {
+  title: 'Pages/Dashboard',
+  component: DashboardPage,
+  ...PAGE_META,
+}
+
+export const Default: Story = {
+  render: () => (
+    <DashboardPage
+      incidents={seedIncidents}
+      users={seedUsers}
+    />
+  ),
+}
+
+// With filtered data
+export const EmptyState: Story = {
+  render: () => (
+    <DashboardPage
+      incidents={[]}
+      users={seedUsers}
+    />
+  ),
+}
+
+// With factory-generated data
+export const HighVolume: Story = {
+  render: () => (
+    <DashboardPage
+      incidents={generateManyIncidents(500)}
+      users={seedUsers}
+    />
+  ),
+}
+\`\`\`
+
+### Pattern B: Store Initialization (For Components Using Hooks)
+\`\`\`tsx
+import { useApiStore } from '../../api/core/store'
+import { seedUsers, seedIncidents } from '../../api/data/seed'
+
+// Decorator to initialize store
+const withApiStore = (Story: StoryFn) => {
+  useApiStore.getState().initialize({
+    users: seedUsers,
+    incidents: seedIncidents,
+  })
+  return <Story />
+}
+
+export const Default: Story = {
+  decorators: [withApiStore],
+}
+\`\`\`
+
+### Pattern C: API Config Override (For Testing Edge Cases)
+\`\`\`tsx
+import { setApiConfig } from '../../api/core/config'
+
+// Disable delays for faster story rendering
+const withFastApi = (Story: StoryFn) => {
+  setApiConfig({
+    delays: { enabled: false },
+    errors: { enabled: false },
+  })
+  return <Story />
+}
+
+// Enable high failure rate for error state testing
+const withUnstableApi = (Story: StoryFn) => {
+  setApiConfig({
+    errors: { networkFailureRate: 0.5, enabled: true },
+  })
+  return <Story />
+}
+\`\`\`
+
+## Step 4: Seed Data Factories Reference
+
+\`\`\`tsx
+// Available in src/api/data/seed/index.ts
+
+// Static data
+seedUsers           // 58 users with roles, departments
+seedIncidents       // Pre-defined incident scenarios
+seedLocations       // 27 hierarchical locations
+seedRoles           // Role definitions
+seedSteps           // Task/step data
+
+// Factory functions
+generateManyIncidents(count)    // Generate N incidents
+getIncidentsByStatus(status)    // Filter by status
+getSeedDepartments()            // List departments
+getSeedJobTitles()              // List job titles
+getIncidentStats()              // Aggregated stats
+
+// Dashboard-specific
+seedEhsKpis
+seedEhsAnalyticsKpis
+seedEhsTrends
+\`\`\`
+
+## FORBIDDEN
+
+\`\`\`tsx
+// ❌ Inline mock data
+const mockData = [{ id: 1, name: 'Test' }]
+
+// ❌ Data defined in component files
+// In Component.tsx:
+const DEFAULT_ITEMS = [...]  // NEVER
+
+// ❌ "sample" or "dummy" prefixes
+const sampleUsers = [...]
+const dummyIncidents = [...]
+
+// ❌ Random data generation in stories
+const randomUser = { id: Math.random(), ... }
+
+// ❌ Importing from flow/data directly in stories
+import { mockUsers } from '../../flow/data/mockUsers'  // Go through seed layer
+\`\`\`
+
+## REQUIRED
+
+\`\`\`tsx
+// ✅ Import from seed layer
+import { seedUsers } from '../../api/data/seed'
+
+// ✅ Use factories for dynamic needs
+import { generateManyIncidents } from '../../api/data/seed'
+
+// ✅ Components receive data as props
+<DataTable data={seedIncidents} />
+
+// ✅ Use store for hook-based components
+useApiStore.getState().initialize({ users: seedUsers })
+
+// ✅ Clear naming in stories
+export const WithManyIncidents: Story = { ... }
+export const EmptyState: Story = { ... }
+export const LoadingState: Story = { ... }
+\`\`\`
+
+## QoE Checklist
+
+Before committing:
+- [ ] Zero hardcoded data in story file?
+- [ ] Zero hardcoded data in component file?
+- [ ] All data imported from \`src/api/data/seed/\`?
+- [ ] Story names describe the DATA scenario, not the component?
+- [ ] Seed factories used for large datasets?
+
+OUTPUT: Story file using proper API simulation patterns with seed data injection.`,
+  },
 
   // =============================================================================
   // COMPONENTS
@@ -510,18 +745,130 @@ Run \`npm run health\` to verify docs sync.`,
 
 ---
 
+## MODEL ROUTING: Three-Tier Intelligence
+
+> **MCP first** (instant, free) → **Haiku second** (fast, cheap) → **Opus last** (reasoning only)
+
+### Tier 1: MCP Tools ⚡ (ALWAYS TRY FIRST)
+Instant, zero cost, deterministic. Use before ANY model call:
+
+| Query Type | MCP Tool | Response Time |
+|------------|----------|---------------|
+| Component exists? | \`mcp__dds__search_components\` | ~50ms |
+| Component details | \`mcp__dds__get_component\` | ~50ms |
+| Token valid? | \`mcp__dds__check_token_usage\` | ~50ms |
+| Contrast check | \`mcp__dds__check_contrast\` | ~50ms |
+| Accessible colors | \`mcp__dds__get_accessible_colors\` | ~50ms |
+| Color for context | \`mcp__dds__get_color_recommendation\` | ~50ms |
+| Color harmony | \`mcp__dds__get_color_harmony\` | ~50ms |
+| Glass/depth rules | \`mcp__dds__get_glass_rules\` | ~50ms |
+| Design philosophy | \`mcp__dds__get_design_philosophy\` | ~50ms |
+
+**MCP Decision Flow:**
+\`\`\`
+"Does Button component exist?"     → mcp__dds__search_components ⚡
+"What variants does Card have?"    → mcp__dds__get_component ⚡
+"Is CORAL[200] on ABYSS[900] ok?"  → mcp__dds__check_contrast ⚡
+"What colors work on dark bg?"     → mcp__dds__get_accessible_colors ⚡
+\`\`\`
+
+### Tier 2: Haiku 🐦 (For scans MCP can't do)
+Fast, cheap (~60x less than Opus). Use for codebase exploration:
+
+| Task Type | Haiku Prompt Pattern |
+|-----------|---------------------|
+| **File pattern scan** | "List all files matching X pattern. Return paths only." |
+| **Usage search** | "Find all imports of X. Return file:line list." |
+| **Custom grep** | "Search for pattern Y in src/. Return matches." |
+| **Checklist validation** | "Does plan mention X? Y? Z? Return yes/no each." |
+| **Naming audit** | "Do these files follow kebab-case? Return violations." |
+| **Dependency trace** | "What does file X import? List all." |
+| **Impact count** | "How many files import X? Return count." |
+
+**Haiku Delegation Syntax:**
+\`\`\`
+Task tool with:
+- model: "haiku"
+- subagent_type: "Explore"
+- prompt: "[Scan/list/count/check task - NO reasoning]"
+\`\`\`
+
+### Tier 3: Opus 🧠 (Reasoning only)
+Expensive but necessary for judgment. Use ONLY when MCP + Haiku insufficient:
+
+| Task Type | Why Opus Required |
+|-----------|-------------------|
+| **Architectural decisions** | Trade-offs require judgment |
+| **Kernel identification** | "What's essential?" needs understanding |
+| **Risk assessment** | Reasoning about failure modes |
+| **Plan synthesis** | Creative integration of findings |
+| **Requirement interpretation** | Understanding nuance and intent |
+| **Edge case analysis** | "What could go wrong?" |
+
+### Decision Tree
+\`\`\`
+Before ANY task, ask in order:
+
+1. Can MCP answer this? (component/token/color queries)
+   └─ YES → Use MCP tool ⚡ (instant, free)
+
+2. Is this a SCAN/COUNT/CHECK of the codebase?
+   └─ YES → Delegate to Haiku 🐦 (fast, cheap)
+
+3. Does this require REASONING/SYNTHESIS/JUDGMENT?
+   └─ YES → Use Opus 🧠 (expensive but necessary)
+\`\`\`
+
+### Cost Comparison
+| Tier | Cost | Speed | Use For |
+|------|------|-------|---------|
+| MCP ⚡ | FREE | ~50ms | DDS queries, tokens, colors |
+| Haiku 🐦 | $0.25/1M | ~2s | File scans, greps, counts |
+| Opus 🧠 | $15/1M | ~10s | Reasoning, synthesis |
+
+**Savings Example (Large Plan):**
+\`\`\`
+Before: All Opus                    → $0.45
+After:  MCP (40%) + Haiku (30%) + Opus (30%) → $0.14
+        60% cost reduction
+\`\`\`
+
+---
+
 ## PHASE 1: DISCOVERY (QoE: Find the Living Question)
 
 > "A 'living question' has energy and specificity. Dead questions are abstract."
 
-### 1.1 What Already Exists?
+### 1.1 What Already Exists? ⚡🐦 MCP + HAIKU
+
+**Step 1: MCP Instant Queries ⚡** (run these first, parallel)
 \`\`\`
 mcp__dds__search_components({ query: "{FEATURE_OR_TASK}" })
+mcp__dds__search_components({ type: "MOLECULE" })  // if building molecule
+mcp__dds__get_design_tokens({ category: "colors" }) // if color-related
 \`\`\`
 
-- Similar patterns in codebase?
-- Prior art we can build on?
-- What would we reinvent?
+**Step 2: Haiku Codebase Scan 🐦** (only for what MCP can't answer)
+\`\`\`
+Task tool with:
+- model: "haiku"
+- subagent_type: "Explore"
+- prompt: "Find all files related to '{FEATURE_OR_TASK}'. Return:
+  1. Existing implementations (paths only)
+  2. Similar patterns (file:line)
+  3. Related utilities
+  Format: bullet list, no explanations"
+\`\`\`
+
+**Step 3: Opus Synthesis 🧠** (you do this)
+- "What would we reinvent?" (reasoning)
+- "What patterns should we follow?" (judgment)
+
+| Source | Returns | Cost |
+|--------|---------|------|
+| MCP ⚡ | Component metadata, tokens | FREE |
+| Haiku 🐦 | File paths, grep results | ~$0.001 |
+| Opus 🧠 | "Should we build or reuse?" | ~$0.01 |
 
 ### 1.2 Ask Offering Questions (not Extracting)
 
@@ -602,23 +949,38 @@ For each requirement:
 
 ## PHASE 4: SELF-REVIEW ROUNDS
 
-### Round A: Gaps & Assumptions
+### Round A: Gaps & Assumptions 🧠 OPUS
 - [ ] What assumptions am I making?
 - [ ] What information is missing?
 - [ ] Are there unstated requirements?
 - [ ] What dependencies haven't I identified?
 
-### Round B: Edge Cases & Failures
+### Round B: Edge Cases & Failures 🧠 OPUS
 - [ ] What could go wrong?
 - [ ] What edge cases exist?
 - [ ] What's the failure mode?
 - [ ] How do we handle errors?
 
-### Round C: Consistency
-- [ ] Does this match existing codebase patterns?
-- [ ] Am I reinventing something that exists?
-- [ ] Does this integrate cleanly with current architecture?
-- [ ] Will this cause breaking changes?
+### Round C: Consistency 🐦 HAIKU SCAN + 🧠 OPUS REASON
+\`\`\`
+// Delegate pattern scan to Haiku:
+Task tool with:
+- model: "haiku"
+- subagent_type: "Explore"
+- prompt: "For plan affecting files: [list files from plan]
+  1. Find existing patterns for similar functionality
+  2. Check if any listed imports already exist
+  3. Verify naming follows conventions
+  Return: findings list, no recommendations"
+\`\`\`
+
+**Haiku returns:** Pattern matches, naming check results
+**Opus reasons about:** "Does this integrate cleanly?" "Breaking changes?"
+
+- [ ] Does this match existing codebase patterns? (Haiku scan → Opus interpret)
+- [ ] Am I reinventing something that exists? (Haiku scan)
+- [ ] Does this integrate cleanly with current architecture? (Opus reasoning)
+- [ ] Will this cause breaking changes? (Opus reasoning)
 
 ### Continue rounds until:
 1. ✅ Zero critical blockers or risks
@@ -644,14 +1006,38 @@ For each requirement:
 | **Completeness** | Missing files to modify, unclear success criteria |
 | **Consistency** | Breaks existing patterns, reinvents existing solution |
 
-### Agent Iteration
+### Two-Model Validation Strategy
+
+**Step 1: Haiku Quick Scan 🐦** (run first, parallel)
 \`\`\`
 Task tool with:
+- model: "haiku"
+- subagent_type: "Explore"
+- run_in_background: true
+- prompt: "Validate plan completeness. Check:
+  □ All files listed exist or have valid parent dirs?
+  □ All imports mentioned are real packages?
+  □ Naming follows kebab-case files, PascalCase exports?
+  □ No duplicate component names in codebase?
+  Return: PASS/FAIL for each + file paths if FAIL"
+\`\`\`
+
+**Step 2: Opus Deep Review 🧠** (after Haiku returns)
+\`\`\`
+Task tool with:
+- model: "sonnet" (or default Opus)
 - subagent_type: "Plan"
 - run_in_background: true
-- prompt: Review plan for critical issues...
+- prompt: "Review plan for CRITICAL issues only:
+  [Include Haiku's findings]
+  Focus on: architectural trade-offs, risk assessment,
+  integration complexity, unstated assumptions.
+  Return: CRITICAL issues only (not style nits)"
 \`\`\`
-Repeat until ZERO critical issues (max 5 iterations).
+
+### Agent Iteration
+Repeat Opus review until ZERO critical issues (max 5 iterations).
+Haiku scan runs ONCE (it's deterministic).
 
 ---
 
@@ -736,314 +1122,10 @@ Repeat until ZERO critical issues (max 5 iterations).
 | Validation | Follow irritation |
 | Execution | Stop at the peak, Invite resistant part |`,
   },
-  {
-    id: 'plan-bulletproof',
-    title: 'Bulletproof Planning Protocol',
-    description:
-      'Multi-round self-review planning process that continues until plan has zero critical issues.',
-    category: 'planning',
-    variables: ['FEATURE_OR_TASK'],
-    tags: ['planning', 'architecture', 'review', 'bulletproof'],
-    prompt: `Create a bulletproof plan for: {FEATURE_OR_TASK}
-
-## PROCESS (MANDATORY - DO NOT SHORTCUT)
-
-### Round 1: Initial Draft
-Create comprehensive plan covering:
-- Requirements and acceptance criteria
-- Technical approach
-- Files to create/modify
-- Dependencies and integration points
-- Risk areas
-
-### Round 2: Self-Review - Gaps & Assumptions
-Ask yourself:
-- What assumptions am I making?
-- What information is missing?
-- Are there unstated requirements?
-- What dependencies haven't I identified?
-
-### Round 3: Self-Review - Edge Cases & Failures
-Ask yourself:
-- What could go wrong?
-- What edge cases exist?
-- What's the failure mode?
-- How do we handle errors?
-
-### Round 4: Self-Review - Consistency
-Ask yourself:
-- Does this match existing patterns in the codebase?
-- Am I reinventing something that exists?
-- Does this integrate cleanly with current architecture?
-- Will this cause breaking changes?
-
-### Continue rounds until ALL conditions are met:
-1. Zero critical blockers or risks
-2. All dependencies identified
-3. All integration points specified
-4. Clear success criteria defined
-5. YOU have zero open questions about requirements
-
-## OUTPUT FORMAT
-
-\`\`\`
-## Plan: {FEATURE_OR_TASK}
-
-### Status: [DRAFT | NEEDS_REVIEW | APPROVED]
-### Confidence: [LOW | MEDIUM | HIGH]
-### Review Rounds Completed: [N]
-
-### Critical Requirements (Must Have)
-- [ ] Requirement 1
-- [ ] Requirement 2
-
-### Technical Approach
-[Detailed approach]
-
-### Files to Modify
-| File | Action | Description |
-|------|--------|-------------|
-| path/to/file.tsx | CREATE/MODIFY | What changes |
-
-### Dependencies
-- Dependency 1
-- Dependency 2
-
-### Risk Areas
-| Risk | Mitigation |
-|------|------------|
-| Risk 1 | How to handle |
-
-### Nice-to-Haves (User decides)
-- [ ] Optional enhancement 1 (cost: low/medium/high)
-- [ ] Optional enhancement 2 (cost: low/medium/high)
-
-### Out of Scope (Future Roadmap)
-- Item 1
-- Item 2
-
-### Open Questions (if any)
-[If this section is not empty, plan is NOT APPROVED]
-\`\`\`
-
-## FORBIDDEN
-- Saying "looks good" or "production ready" without completing all review rounds
-- Skipping self-review rounds
-- Proceeding with open questions
-- Assuming requirements without clarification
-
-## STOP CRITERIA
-The plan is APPROVED only when:
-1. All review rounds complete
-2. Open Questions section is EMPTY
-3. You can confidently say "I have no concerns about this plan"`,
-  },
-  {
-    id: 'plan-iterate',
-    title: 'Iterate Plan with Background Agents',
-    description:
-      'Launch background agents to iteratively review and polish a plan until zero critical issues remain.',
-    category: 'planning',
-    variables: ['PLAN_FILE'],
-    tags: ['planning', 'iteration', 'agents', 'review', 'automation', 'background'],
-    prompt: `Iterate plan in {PLAN_FILE} using background agents until bulletproof.
-
-## CONCEPT
-
-Each iteration spawns a FRESH agent that:
-1. Reviews the plan with fresh eyes (no confirmation bias)
-2. Identifies critical issues
-3. Updates the plan
-4. Reports findings
-
-Loop continues until an agent finds ZERO critical issues.
-
-## CRITICAL ISSUE CRITERIA
-
-An issue is CRITICAL if ANY of these apply:
-| Category | Critical Issue |
-|----------|---------------|
-| **Requirements** | Missing acceptance criteria, unstated assumptions |
-| **Technical** | Missing dependencies, unclear integration points |
-| **Risk** | Unmitigated high-severity risk, no failure handling |
-| **Completeness** | Missing files to modify, unclear success criteria |
-| **Consistency** | Breaks existing patterns, reinvents existing solution |
-
-Non-critical (can proceed): Nice-to-haves, minor wording, future enhancements
-
-## AGENT ITERATION PROTOCOL
-
-### Step 1: Launch Review Agent (Background)
-\`\`\`
-Task tool with:
-- subagent_type: "Plan"
-- run_in_background: true
-- prompt: Review plan at {PLAN_FILE} against critical issue criteria...
-\`\`\`
-
-### Step 2: Poll for Completion
-\`\`\`
-TaskOutput tool with:
-- task_id: [from Step 1]
-- block: true
-\`\`\`
-
-### Step 3: Check Result
-If agent reports critical issues:
-1. Read updated plan from agent output
-2. Write updates to {PLAN_FILE}
-3. Launch NEW agent (back to Step 1)
-4. Increment iteration counter
-
-If agent reports ZERO critical issues:
-→ STOP iteration, proceed to output
-
-### Step 4: Present Final Plan
-Show user:
-- Final plan content
-- Iteration count
-- Summary of all issues found/fixed across iterations
-
-## AGENT PROMPT TEMPLATE
-
-Each spawned agent receives:
-\`\`\`
-You are reviewing a plan for critical issues. Be STRICT but FAIR.
-
-PLAN FILE: {PLAN_FILE}
-
-YOUR TASK:
-1. Read the plan file
-2. Check against critical issue criteria (requirements, technical, risk, completeness, consistency)
-3. For EACH critical issue found:
-   - Describe the issue clearly
-   - Provide the FIX (concrete, not vague)
-4. Output format:
-
-   ## ITERATION REVIEW
-
-   ### Critical Issues Found: [N]
-
-   | # | Category | Issue | Fix |
-   |---|----------|-------|-----|
-   | 1 | [cat] | [issue] | [fix] |
-
-   ### Updated Plan Section
-   [If fixes needed, provide the corrected plan sections]
-
-   ### Verdict
-   - PASS (0 critical issues) or FAIL (N critical issues)
-
-IMPORTANT:
-- Be thorough but not pedantic
-- Missing info = critical, wording preferences = not critical
-- If unsure whether something is critical, ask: "Would this block implementation?"
-\`\`\`
-
-## ITERATION LIMITS
-
-| Limit | Value | Action if Exceeded |
-|-------|-------|-------------------|
-| Max iterations | 5 | Stop, report remaining issues to user |
-| Single agent timeout | 2 min | Retry once, then fail |
-
-## OUTPUT FORMAT
-
-After iterations complete:
-
-\`\`\`
-## Plan Iteration Summary
-
-**File:** {PLAN_FILE}
-**Iterations:** [N]
-**Final Status:** [APPROVED | MAX_ITERATIONS_REACHED]
-
-### Issues Resolved by Iteration
-
-| Iteration | Issues Found | Categories |
-|-----------|--------------|------------|
-| 1 | 4 | Requirements, Technical |
-| 2 | 2 | Risk, Completeness |
-| 3 | 0 | — |
-
-### Final Plan
-[Show full plan content]
-
-### Confidence
-[HIGH if 0 issues, MEDIUM if max iterations reached with remaining issues]
-\`\`\`
-
-## FORBIDDEN
-
-- Running agents synchronously (use background for parallelism potential)
-- Same agent reviewing its own output (always spawn FRESH agent)
-- Infinite loops (max 5 iterations enforced)
-- Skipping iteration count reporting
-- Marking plan approved with any critical issues remaining
-
-## USAGE EXAMPLE
-
-\`\`\`
-User: "Iterate this plan until it's bulletproof"
-Agent: Launches background Plan agent #1
-Agent: [polls for completion]
-Agent: Agent #1 found 3 critical issues, updating plan...
-Agent: Launches background Plan agent #2
-Agent: [polls for completion]
-Agent: Agent #2 found 1 critical issue, updating plan...
-Agent: Launches background Plan agent #3
-Agent: [polls for completion]
-Agent: Agent #3 found 0 critical issues!
-Agent: [presents final plan with summary]
-\`\`\``,
-  },
 
   // =============================================================================
   // PROCESS & ENGAGEMENT (QoE-Aligned)
   // =============================================================================
-  {
-    id: 'explore-patterns',
-    title: 'Explore Existing Patterns',
-    description: 'Discover what exists before building. QoE: Find the living question.',
-    category: 'planning',
-    variables: ['AREA'],
-    tags: ['exploration', 'discovery', 'qoe', 'patterns'],
-    prompt: `Explore patterns in {AREA}. Don't build anything yet.
-
-## QoE Principle: Find the Living Question
-
-A "living question" has energy and specificity. Dead questions are abstract.
-
-**Your task:** Discover, don't create.
-
-## Questions to Answer
-
-1. **What already exists?**
-   - Search for similar patterns in codebase
-   - Check MCP for existing components
-   \`\`\`
-   mcp__dds__search_components({ query: "{AREA}" })
-   \`\`\`
-
-2. **What's working well?**
-   - Which patterns feel natural?
-   - What do users praise?
-
-3. **What's missing or awkward?**
-   - Where do patterns break down?
-   - What requires workarounds?
-
-4. **What questions emerged?**
-   - List specific, energized questions
-   - Avoid vague "should we..." questions
-
-## FORBIDDEN
-- Writing code
-- Making decisions
-- Proposing solutions
-
-OUTPUT: Observations and living questions, NOT actions.`,
-  },
   {
     id: 'unblock-task',
     title: 'Get Unstuck on Task',
@@ -1131,112 +1213,6 @@ After ugly draft works:
 - Checking if pattern exists
 
 OUTPUT: Working ugly code. Refactor comes LATER.`,
-  },
-  {
-    id: 'question-before-build',
-    title: 'Ask Questions Before Building',
-    description: 'Frame work as offering, not extracting. QoE: The offer.',
-    category: 'planning',
-    variables: ['FEATURE'],
-    tags: ['questions', 'discovery', 'qoe', 'offering'],
-    prompt: `Before building {FEATURE}, let's ask better questions.
-
-## QoE Principle: The Offer
-
-> "Come to give: attention, confusion, willingness. Don't come only to extract results."
-
-## Offering Questions (vs Extracting)
-
-| Extracting (avoid) | Offering (prefer) |
-|-------------------|-------------------|
-| "What do you want?" | "What problem are you solving?" |
-| "Which option?" | "What does success look like?" |
-| "Can I start?" | "What would make this delightful?" |
-
-## Questions to Ask
-
-### 1. Purpose Questions
-- What problem does {FEATURE} solve?
-- Who benefits and how?
-- What happens if we don't build this?
-
-### 2. Scope Questions
-- What's the minimum that would be useful?
-- What can we explicitly exclude?
-- What's v2 vs v1?
-
-### 3. Success Questions
-- How will we know it works?
-- What would make users love this?
-- What would make this embarrassingly simple?
-
-### 4. Risk Questions
-- What could go wrong?
-- What don't we know yet?
-- What assumptions are we making?
-
-## FORBIDDEN
-- Jumping to implementation
-- Assuming you know the answer
-- Skipping to "how" before "why"
-
-OUTPUT: List of answered questions, THEN proceed to planning.`,
-  },
-  {
-    id: 'scope-smaller',
-    title: 'Make Scope Smaller',
-    description: 'Shrink until interesting. QoE: Make it smaller.',
-    category: 'planning',
-    variables: ['TASK'],
-    tags: ['scope', 'smaller', 'qoe', 'focus'],
-    prompt: `Shrink {TASK} until it becomes interesting.
-
-## QoE Principle: Make It Smaller
-
-> "Shrink scope until it becomes interesting. Boredom often means scope is too large."
-
-## Shrinking Techniques
-
-### 1. Time-box
-| Original | Smaller |
-|----------|---------|
-| "Build feature" | "What can I ship in 30 minutes?" |
-| "Fix all bugs" | "Fix one bug completely" |
-| "Refactor system" | "Refactor one function" |
-
-### 2. Slice Vertically
-| Original | Smaller |
-|----------|---------|
-| "User authentication" | "User can log in (no signup, no reset)" |
-| "Dashboard" | "One metric, one chart" |
-| "Form builder" | "One field type, no validation" |
-
-### 3. Remove Requirements
-Ask for each requirement:
-- [ ] Is this essential for v1?
-- [ ] Can this be hardcoded?
-- [ ] Can this be a follow-up?
-
-### 4. Find the Kernel
-What's the ONE thing that makes {TASK} valuable?
-Everything else is decoration.
-
-## Output Format
-
-\`\`\`
-Original scope: {TASK}
-
-Shrunk to: [minimal valuable version]
-
-Removed:
-- [thing 1] → future
-- [thing 2] → unnecessary
-- [thing 3] → can hardcode
-
-Kernel: [the one essential thing]
-\`\`\`
-
-OUTPUT: Smallest interesting scope, ready to build.`,
   },
   {
     id: 'stop-at-peak',
@@ -1511,7 +1487,7 @@ OUTPUT FORMAT:
     id: 'testing-attributes-add',
     title: 'Add Foundation Testing Attributes',
     description: 'Add data-testid attributes to components following DDS three-layer testing strategy.',
-    category: 'review',
+    category: 'testing',
     variables: ['COMPONENT'],
     tags: ['testing', 'testid', 'automation', 'quality'],
     prompt: `Add data-testid attributes to {COMPONENT}.
@@ -1565,6 +1541,264 @@ Examples:
 - Skipping form inputs or action buttons
 
 OUTPUT: Component with testIds + JSDoc documentation.`,
+  },
+  {
+    id: 'testing-unit-create',
+    title: 'Create Unit Tests for Component',
+    description: 'Create unit tests for component utilities, transformations, and pure functions.',
+    category: 'testing',
+    variables: ['COMPONENT_OR_FEATURE'],
+    tags: ['testing', 'unit', 'vitest', 'quality'],
+    prompt: `Create unit tests for {COMPONENT_OR_FEATURE}.
+
+## DDS Testing Ownership
+
+DDS owns: Unit, Interaction, E2E, Visual Regression
+Consumer owns: Integration (API + routing)
+
+READ FIRST: \`.claude/testing-quick-ref.md\`
+
+## What to Test (Unit Tests)
+
+| Test | Example |
+|------|---------|
+| Pure transformations | \`formData → API\`, \`API → formData\` |
+| Constants/mappings | Enum lookups, config objects |
+| Utility functions | Formatters, validators, calculators |
+| NO React dependencies | Test in Node environment |
+
+## File Location
+
+\`\`\`
+src/components/{feature}/__tests__/
+├── {feature}.utils.test.ts      # Transformation tests
+├── {feature}.constants.test.ts  # Mapping tests
+└── hooks/
+    └── use{Feature}.test.ts     # Hook logic tests (if pure)
+\`\`\`
+
+## Test Pattern
+
+\`\`\`typescript
+import { describe, it, expect, beforeEach } from 'vitest'
+import { transformToApiRequest, transformFromApiResponse } from '../{feature}.utils'
+
+describe('{featureName} transformations', () => {
+  describe('transformToApiRequest', () => {
+    it('should map form fields to API format', () => {
+      const input = { companyName: 'Acme Corp', tier: 'pro' }
+      const result = transformToApiRequest(input)
+
+      expect(result.company_name).toBe('Acme Corp')
+      expect(result.pricing_tier).toBe('professional')
+    })
+
+    it('should handle empty optional fields', () => {
+      const input = { companyName: 'Acme Corp' }
+      const result = transformToApiRequest(input)
+
+      expect(result.pricing_tier).toBeUndefined()
+    })
+  })
+})
+\`\`\`
+
+## Run Commands
+
+\`\`\`bash
+npm run test:unit           # Watch mode
+npm run test:unit:run       # Single run
+npm run test:unit -- {file} # Specific file
+\`\`\`
+
+## FORBIDDEN
+
+- Testing React rendering (use interaction tests)
+- Testing API calls (use integration tests)
+- Mocking too much (test real logic)
+- Testing implementation details (test behavior)
+
+OUTPUT: Test file(s) following DDS pattern with describe blocks.`,
+  },
+  {
+    id: 'testing-interaction-create',
+    title: 'Create Storybook Interaction Tests',
+    description: 'Create Storybook play() function tests for user flows and interactions.',
+    category: 'testing',
+    variables: ['STORY_OR_COMPONENT'],
+    tags: ['testing', 'storybook', 'interaction', 'play', 'quality'],
+    prompt: `Create Storybook interaction tests for {STORY_OR_COMPONENT}.
+
+## DDS Testing Ownership
+
+DDS owns: Unit, Interaction, E2E, Visual Regression
+Consumer owns: Integration (API + routing)
+
+READ FIRST: \`.claude/testing-quick-ref.md\`
+
+## What to Test (Interaction Tests)
+
+| Test | Example |
+|------|---------|
+| User flows | Click button → dialog opens |
+| Form interactions | Type → validate → submit |
+| State changes | Tab switch, filter select |
+| Error states | Invalid input → error message |
+
+## Import Pattern
+
+\`\`\`typescript
+import type { Meta, StoryObj } from '@storybook/react'
+import { within, userEvent, expect, waitFor } from 'storybook/test'
+\`\`\`
+
+## Test Pattern
+
+\`\`\`typescript
+export const HappyPath: Story = {
+  args: { /* initial state */ },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Wait for async elements (ALWAYS use findBy for initial queries)
+    const input = await canvas.findByTestId('company-info-company-name')
+
+    // Interact with elements
+    await userEvent.clear(input)
+    await userEvent.type(input, 'Acme Corp')
+
+    // Click actions
+    await userEvent.click(canvas.getByTestId('wizard-nav-next'))
+
+    // Assert state changes
+    await expect(canvas.getByTestId('contact-billing-step')).toBeVisible()
+  },
+}
+
+export const ValidationError: Story = {
+  args: { /* state that triggers validation */ },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    // Submit without required field
+    await userEvent.click(await canvas.findByTestId('form-submit'))
+
+    // Expect error message
+    await waitFor(() => {
+      expect(canvas.getByText(/required/i)).toBeVisible()
+    })
+  },
+}
+\`\`\`
+
+## Query Priority
+
+| Priority | Method | Use When |
+|----------|--------|----------|
+| 1 | \`findByTestId\` | Initial async queries |
+| 2 | \`getByRole\` | Accessible elements |
+| 3 | \`getByLabelText\` | Form fields |
+| 4 | \`getByText\` | Visible text |
+| 5 | \`getByTestId\` | Sync queries |
+
+## Run Commands
+
+\`\`\`bash
+npm run test:storybook      # Watch mode (browser)
+npm run test:storybook:run  # Single run
+\`\`\`
+
+## FORBIDDEN
+
+- Using \`getBy\` for elements that load async (use \`findBy\`)
+- Testing API responses (use mocks in story args)
+- Skipping \`await\` on userEvent calls
+- Hard-coded waits (\`sleep\`) instead of \`waitFor\`
+
+OUTPUT: Story with play() function following DDS interaction pattern.`,
+  },
+  {
+    id: 'testing-coverage-audit',
+    title: 'Audit Testing Coverage',
+    description: 'Audit test coverage for a component: testId attributes, unit tests, and interaction tests.',
+    category: 'testing',
+    variables: ['COMPONENT_OR_FEATURE'],
+    tags: ['testing', 'audit', 'coverage', 'quality'],
+    prompt: `Audit testing coverage for {COMPONENT_OR_FEATURE}.
+
+## DDS Testing Ownership
+
+| Owner | Test Type |
+|-------|-----------|
+| **DDS** | Unit, Interaction, E2E, Visual Regression |
+| **Consumer** | Integration (API + routing) |
+
+READ FIRST: \`.claude/testing-quick-ref.md\`
+
+## Audit Checklist
+
+### 1. testId Coverage
+
+Check for data-testid on:
+- [ ] All form inputs (input, select, checkbox)
+- [ ] All action buttons (submit, cancel, close)
+- [ ] Navigation controls (next, back, tabs)
+- [ ] Interactive cards/rows with entity IDs
+- [ ] Container sections (for test scoping)
+
+Naming convention: \`{context}-{component}-{identifier}\`
+
+### 2. Unit Test Coverage
+
+Check for \`__tests__/\` directory with:
+- [ ] Transformation functions (\`.utils.test.ts\`)
+- [ ] Constants/mappings (\`.constants.test.ts\`)
+- [ ] Custom hooks logic (\`use*.test.ts\`)
+
+### 3. Interaction Test Coverage
+
+Check story files for \`play()\` functions:
+- [ ] Happy path flow
+- [ ] Validation errors
+- [ ] Edge cases (empty, loading, error states)
+- [ ] User interactions (clicks, typing, selections)
+
+## Output Format
+
+\`\`\`
+## Testing Coverage Audit: {COMPONENT_OR_FEATURE}
+
+### testId Coverage: [X/Y] items
+| Element | Has testId | testId Value |
+|---------|------------|--------------|
+| Submit button | ✅ | form-submit |
+| Company input | ❌ | MISSING |
+
+### Unit Test Coverage: [X/Y] functions
+| Function | Has Test | File |
+|----------|----------|------|
+| transformToApi | ✅ | utils.test.ts |
+| validateForm | ❌ | MISSING |
+
+### Interaction Test Coverage: [X/Y] stories
+| Story | Has play() | Tests |
+|-------|------------|-------|
+| Default | ✅ | Basic render |
+| HappyPath | ❌ | MISSING |
+
+### Recommendations
+1. Add testId to: [list]
+2. Add unit test for: [list]
+3. Add interaction test for: [list]
+\`\`\`
+
+## FORBIDDEN
+
+- Marking coverage as "good enough" without checking all items
+- Skipping testId audit (consumers depend on these)
+- Ignoring error/edge case stories
+
+OUTPUT: Coverage audit report with specific recommendations.`,
   },
 
   // =============================================================================
@@ -2314,6 +2548,130 @@ mcp__dds__get_accessible_colors({ background: "CREAM", minLevel: "AA" })
 | ABYSS[900] | SLATE[400] | 4.1:1 | AA ✗ |
 
 OUTPUT: Full contrast matrix for category.`,
+  },
+  {
+    id: 'mcp-sync-audit',
+    title: 'Audit & Sync MCP Server Data',
+    description: 'Audit MCP server data files for drift and sync with actual codebase.',
+    category: 'mcp',
+    variables: [],
+    tags: ['mcp', 'sync', 'audit', 'maintenance', 'drift'],
+    prompt: `Audit MCP server data for drift from actual codebase.
+
+## MCP Data Architecture
+
+The MCP server reads from these data files:
+
+| File | Content | Location |
+|------|---------|----------|
+| \`agent-context.json\` | Component registry, tokens, philosophy | \`.claude/\` |
+| \`color-matrix.json\` | Color categories and rules | \`.claude/\` |
+| \`contrast-matrix.json\` | WCAG contrast data | \`.claude/\` |
+| \`color-intelligence.json\` | Color harmony, contexts | \`src/data/\` |
+
+## Step 1: Component Registry Drift Check
+
+\`\`\`bash
+# Count actual components (no stories)
+ls src/components/ui/*.tsx | grep -v stories | wc -l
+
+# Count registered components
+cat .claude/agent-context.json | jq '.components.registry.ui | keys | length'
+
+# List unregistered components
+ls src/components/ui/*.tsx | grep -v stories | xargs -I{} basename {} .tsx | sort > /tmp/actual.txt
+cat .claude/agent-context.json | jq -r '.components.registry.ui | keys[]' | sort > /tmp/registered.txt
+comm -23 /tmp/actual.txt /tmp/registered.txt
+\`\`\`
+
+## Step 2: For Each Unregistered Component
+
+Read the component file and extract:
+1. **Type**: Look for ATOM/MOLECULE/ORGANISM in JSDoc
+2. **Status**: Look for @status tag or STABILIZED/FROZEN/TODO
+3. **Variants**: Look for CVA variants or union types
+4. **Subs**: Look for compound component pattern (ComponentName.Sub)
+5. **Features**: Key capabilities from JSDoc
+
+Template for new component entry:
+\`\`\`json
+"{ComponentName}": {
+  "path": "ui/{filename}.tsx",
+  "type": "ATOM|MOLECULE|ORGANISM",
+  "status": "TODO|STABILIZED|FROZEN",
+  "testId": "TODO|ready|N/A",
+  "variants": ["variant1", "variant2"],
+  "subs": ["Sub1", "Sub2"],
+  "features": ["feature1", "feature2"],
+  "for": "Brief description of use case"
+}
+\`\`\`
+
+## Step 3: Add to agent-context.json
+
+Location: \`.claude/agent-context.json\` → \`components.registry.ui\`
+
+\`\`\`bash
+# After manual edits, validate
+npm run health  # Runs all validators
+\`\`\`
+
+## Step 4: Color Data Sync
+
+\`\`\`bash
+# Regenerate color matrix from tokens
+npm run sync:colors
+
+# Regenerate contrast matrix
+npm run sync:colors  # Same command
+
+# Regenerate color intelligence types
+npm run sync:color-intelligence
+\`\`\`
+
+## Step 5: Full Sync
+
+\`\`\`bash
+# Sync everything
+npm run sync:all
+
+# Validate
+npm run health
+\`\`\`
+
+## Sync Scripts Reference
+
+| Command | What It Syncs |
+|---------|---------------|
+| \`npm run sync-components\` | Component status from JSDoc (UPDATE only) |
+| \`npm run sync:colors\` | Color matrix + contrast matrix |
+| \`npm run sync:color-intelligence\` | color-intelligence.toon + types |
+| \`npm run sync:prompts\` | Prompt library → skill files |
+| \`npm run sync:all\` | All of the above |
+
+## KNOWN LIMITATION
+
+⚠️ \`sync-components\` only UPDATES existing entries - it does NOT add new components.
+New components must be manually added to \`.claude/agent-context.json\`.
+
+## Drift Prevention Checklist
+
+When adding a new component:
+- [ ] Create component file in \`src/components/ui/\`
+- [ ] Add JSDoc with @component type and @status
+- [ ] **MANUALLY** add entry to \`.claude/agent-context.json\`
+- [ ] Run \`npm run sync-components\` to sync status
+- [ ] Run \`npm run health\` to validate
+
+## Expected Coverage
+
+| Metric | Healthy | Warning | Critical |
+|--------|---------|---------|----------|
+| Registry coverage | >90% | 70-90% | <70% |
+| Status accuracy | 100% | >95% | <95% |
+| Last sync | <7 days | 7-14 days | >14 days |
+
+OUTPUT: Drift report + sync actions taken.`,
   },
 
   // =============================================================================

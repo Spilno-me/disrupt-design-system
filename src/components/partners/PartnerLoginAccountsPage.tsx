@@ -22,6 +22,7 @@ import type {
 } from "./types"
 import { MOCK_LOGIN_ACCOUNTS } from "./data"
 import { formatDate } from "./utils"
+import { GLASS_CARD_CLASSES } from "./constants"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 
 // UI components
@@ -304,7 +305,7 @@ export function PartnerLoginAccountsPage({
         />
 
         {/* Glass container for main content */}
-        <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
+        <section className={cn("rounded-xl", GLASS_CARD_CLASSES)}>
           <div className="flex flex-col gap-4 p-4 md:p-6">
             {/* Search Bar */}
             <div className="relative">

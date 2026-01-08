@@ -57,7 +57,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../../components/ui/select'
-import { StatsCard } from '../../../components/leads/StatsCard'
+import { StatsCard } from '../../../components/shared/StatsCard'
 import { cn } from '../../../lib/utils'
 
 import { SectionHeader } from './SectionHeader'

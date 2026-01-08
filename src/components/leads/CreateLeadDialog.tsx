@@ -20,49 +20,46 @@ import {
   SelectValue,
 } from '../ui/select'
 import type { LeadPriority, LeadSource } from './LeadCard'
+import {
+  LEAD_VALIDATION,
+  validateCompanyName,
+  validateContactName,
+  validateEmail,
+  validatePhone,
+  validateNotes,
+} from './constants'
 
-// =============================================================================
-// TYPES
-// =============================================================================
+/** Form field placeholders */
+const PLACEHOLDERS = {
+  COMPANY_NAME: 'Enter company name',
+  CONTACT_NAME: 'Enter contact name',
+  CONTACT_EMAIL: 'Enter email address',
+  CONTACT_PHONE: 'Enter phone number',
+  NOTES: 'Add any additional notes about this lead...',
+} as const
 
-export interface Partner {
-  /** Unique identifier */
-  id: string
-  /** Partner name */
-  name: string
-}
+/** Partner type for assignment dropdown */
+export interface Partner { id: string; name: string }
 
+/** Form data for creating a lead */
 export interface CreateLeadFormData {
-  /** Company name (required) */
   companyName: string
-  /** Contact name (required) */
   contactName: string
-  /** Contact email (required) */
   contactEmail: string
-  /** Contact phone (optional) */
   contactPhone: string
-  /** Lead priority */
   priority: LeadPriority
-  /** Lead source */
   source: LeadSource
-  /** Assigned partner ID (optional) */
   assignedPartnerId?: string
-  /** Notes (optional) */
   notes: string
 }
 
+/** Props for CreateLeadDialog */
 export interface CreateLeadDialogProps {
-  /** Whether the dialog is open */
   open: boolean
-  /** Callback when dialog open state changes */
   onOpenChange: (open: boolean) => void
-  /** Callback when form is submitted successfully */
   onSubmit: (data: CreateLeadFormData) => void | Promise<void>
-  /** List of available partners for assignment */
   partners?: Partner[]
-  /** Whether the form is in a submitting state */
   isSubmitting?: boolean
-  /** Additional className for the dialog */
   className?: string
 }
 
@@ -73,10 +70,6 @@ interface FormErrors {
   contactPhone?: string
   notes?: string
 }
-
-// =============================================================================
-// INITIAL STATE
-// =============================================================================
 
 const initialFormData: CreateLeadFormData = {
   companyName: '',
@@ -89,38 +82,26 @@ const initialFormData: CreateLeadFormData = {
   notes: '',
 }
 
-// =============================================================================
-// CREATE LEAD DIALOG COMPONENT
-// =============================================================================
+interface FormFieldProps { id: string; label: string; required?: boolean; error?: string; children: React.ReactNode }
 
-/**
- * CreateLeadDialog - Modal dialog for creating a new lead
- *
- * Features:
- * - Required field validation (Company Name, Contact Name, Contact Email)
- * - Email format validation
- * - Priority and Source dropdowns
- * - Optional Partner assignment
- * - Notes textarea
- *
- * @example
- * ```tsx
- * const [open, setOpen] = useState(false)
- *
- * <CreateLeadDialog
- *   open={open}
- *   onOpenChange={setOpen}
- *   onSubmit={(data) => {
- *     console.log('Creating lead:', data)
- *     setOpen(false)
- *   }}
- *   partners={[
- *     { id: '1', name: 'Acme Partners' },
- *     { id: '2', name: 'Global Solutions' },
- *   ]}
- * />
- * ```
- */
+/** Form field wrapper with label and error display */
+function FormField({ id, label, required, error, children }: FormFieldProps) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label htmlFor={id} className="text-primary">
+        {label} {required && <span className="text-error">*</span>}
+      </Label>
+      {children}
+      {error && (
+        <p id={`${id}-error`} className="text-sm text-error">
+          {error}
+        </p>
+      )}
+    </div>
+  )
+}
+
+/** CreateLeadDialog - Modal dialog for creating a new lead with validation */
 export function CreateLeadDialog({
   open,
   onOpenChange,
@@ -147,56 +128,15 @@ export function CreateLeadDialog({
     onOpenChange(newOpen)
   }, [onOpenChange])
 
-  // Validate all required fields and return errors
+  // Validate all fields using individual validators
   const validateForm = useCallback((): FormErrors => {
-    const newErrors: FormErrors = {}
-
-    // Company name: 2-150 chars
-    const companyTrimmed = formData.companyName.trim()
-    if (!companyTrimmed) {
-      newErrors.companyName = 'Company name is required.'
-    } else if (companyTrimmed.length < 2) {
-      newErrors.companyName = 'Company name must be at least 2 characters.'
-    } else if (companyTrimmed.length > 150) {
-      newErrors.companyName = 'Company name must be 150 characters or less.'
+    return {
+      companyName: validateCompanyName(formData.companyName),
+      contactName: validateContactName(formData.contactName),
+      contactEmail: validateEmail(formData.contactEmail),
+      contactPhone: validatePhone(formData.contactPhone),
+      notes: validateNotes(formData.notes),
     }
-
-    // Contact name: must have 2+ words (first + last)
-    const nameTrimmed = formData.contactName.trim()
-    if (!nameTrimmed) {
-      newErrors.contactName = 'Contact name is required.'
-    } else {
-      const words = nameTrimmed.split(/\s+/).filter(w => w.length > 0)
-      if (words.length < 2) {
-        newErrors.contactName = 'Enter first and last name (e.g., John Smith).'
-      }
-    }
-
-    // Email: required, valid format, max 254
-    const emailTrimmed = formData.contactEmail.trim()
-    if (!emailTrimmed) {
-      newErrors.contactEmail = 'Email is required.'
-    } else if (emailTrimmed.length > 254) {
-      newErrors.contactEmail = 'Email must be 254 characters or less.'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
-      newErrors.contactEmail = 'Enter a valid email address.'
-    }
-
-    // Phone: optional, but if provided must have min 7 digits
-    const phoneTrimmed = formData.contactPhone.trim()
-    if (phoneTrimmed) {
-      const digitCount = (phoneTrimmed.match(/\d/g) || []).length
-      if (digitCount < 7) {
-        newErrors.contactPhone = 'Enter a valid phone number.'
-      }
-    }
-
-    // Notes: max 2000 chars
-    if (formData.notes.length > 2000) {
-      newErrors.notes = 'Notes must be 2000 characters or less.'
-    }
-
-    return newErrors
   }, [formData])
 
   // Handle input change
@@ -228,20 +168,22 @@ export function CreateLeadDialog({
     const validationErrors = validateForm()
     setErrors(validationErrors)
 
-    // If there are errors, focus the first invalid field
-    if (Object.keys(validationErrors).length > 0) {
-      if (validationErrors.companyName) {
-        companyNameRef.current?.focus()
-      } else if (validationErrors.contactName) {
-        contactNameRef.current?.focus()
-      } else if (validationErrors.contactEmail) {
-        contactEmailRef.current?.focus()
-      }
+    // Check if any field has an error
+    const hasErrors = Object.values(validationErrors).some(Boolean)
+    if (hasErrors) {
+      focusFirstInvalidField(validationErrors)
       return
     }
 
     await onSubmit(formData)
   }, [formData, validateForm, onSubmit])
+
+  // Focus the first field that has an error
+  const focusFirstInvalidField = (errors: FormErrors) => {
+    if (errors.companyName) companyNameRef.current?.focus()
+    else if (errors.contactName) contactNameRef.current?.focus()
+    else if (errors.contactEmail) contactEmailRef.current?.focus()
+  }
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -256,54 +198,35 @@ export function CreateLeadDialog({
             <h3 className="text-sm font-semibold text-primary">Lead Information</h3>
 
             {/* Company Name */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="companyName" className="text-primary">
-                Company Name <span className="text-error">*</span>
-              </Label>
+            <FormField id="companyName" label="Company Name" required error={errors.companyName}>
               <Input
                 ref={companyNameRef}
                 id="companyName"
                 name="companyName"
                 value={formData.companyName}
                 onChange={handleChange}
-                placeholder="Enter company name"
+                placeholder={PLACEHOLDERS.COMPANY_NAME}
                 aria-invalid={!!errors.companyName}
                 aria-describedby={errors.companyName ? 'companyName-error' : undefined}
               />
-              {errors.companyName && (
-                <p id="companyName-error" className="text-sm text-error">
-                  {errors.companyName}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Contact Name */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="contactName" className="text-primary">
-                Contact Name <span className="text-error">*</span>
-              </Label>
+            <FormField id="contactName" label="Contact Name" required error={errors.contactName}>
               <Input
                 ref={contactNameRef}
                 id="contactName"
                 name="contactName"
                 value={formData.contactName}
                 onChange={handleChange}
-                placeholder="Enter contact name"
+                placeholder={PLACEHOLDERS.CONTACT_NAME}
                 aria-invalid={!!errors.contactName}
                 aria-describedby={errors.contactName ? 'contactName-error' : undefined}
               />
-              {errors.contactName && (
-                <p id="contactName-error" className="text-sm text-error">
-                  {errors.contactName}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Contact Email */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="contactEmail" className="text-primary">
-                Contact Email <span className="text-error">*</span>
-              </Label>
+            <FormField id="contactEmail" label="Contact Email" required error={errors.contactEmail}>
               <Input
                 ref={contactEmailRef}
                 id="contactEmail"
@@ -311,46 +234,29 @@ export function CreateLeadDialog({
                 type="email"
                 value={formData.contactEmail}
                 onChange={handleChange}
-                placeholder="Enter email address"
+                placeholder={PLACEHOLDERS.CONTACT_EMAIL}
                 aria-invalid={!!errors.contactEmail}
                 aria-describedby={errors.contactEmail ? 'contactEmail-error' : undefined}
               />
-              {errors.contactEmail && (
-                <p id="contactEmail-error" className="text-sm text-error">
-                  {errors.contactEmail}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Contact Phone */}
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="contactPhone" className="text-primary">
-                Contact Phone
-              </Label>
+            <FormField id="contactPhone" label="Contact Phone" error={errors.contactPhone}>
               <Input
                 id="contactPhone"
                 name="contactPhone"
                 type="tel"
                 value={formData.contactPhone}
                 onChange={handleChange}
-                placeholder="Enter phone number"
+                placeholder={PLACEHOLDERS.CONTACT_PHONE}
                 aria-invalid={!!errors.contactPhone}
                 aria-describedby={errors.contactPhone ? 'contactPhone-error' : undefined}
               />
-              {errors.contactPhone && (
-                <p id="contactPhone-error" className="text-sm text-error">
-                  {errors.contactPhone}
-                </p>
-              )}
-            </div>
+            </FormField>
 
             {/* Priority and Source Row */}
             <div className="grid grid-cols-2 gap-4">
-              {/* Priority */}
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="priority" className="text-primary">
-                  Priority
-                </Label>
+              <FormField id="priority" label="Priority">
                 <Select
                   value={formData.priority}
                   onValueChange={(value) => handleSelectChange('priority', value)}
@@ -364,13 +270,9 @@ export function CreateLeadDialog({
                     <SelectItem value="high">High</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </FormField>
 
-              {/* Lead Source */}
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="source" className="text-primary">
-                  Lead Source
-                </Label>
+              <FormField id="source" label="Lead Source">
                 <Select
                   value={formData.source}
                   onValueChange={(value) => handleSelectChange('source', value)}
@@ -386,7 +288,7 @@ export function CreateLeadDialog({
                     <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </FormField>
             </div>
           </div>
 
@@ -406,9 +308,9 @@ export function CreateLeadDialog({
               </Label>
               <span className={cn(
                 "text-xs",
-                formData.notes.length > 2000 ? "text-error" : "text-muted"
+                formData.notes.length > LEAD_VALIDATION.NOTES_MAX ? "text-error" : "text-muted"
               )}>
-                {formData.notes.length}/2000
+                {formData.notes.length}/{LEAD_VALIDATION.NOTES_MAX}
               </span>
             </div>
             <Textarea
@@ -416,7 +318,7 @@ export function CreateLeadDialog({
               name="notes"
               value={formData.notes}
               onChange={handleChange}
-              placeholder="Add any additional notes about this lead..."
+              placeholder={PLACEHOLDERS.NOTES}
               rows={3}
               aria-invalid={!!errors.notes}
               aria-describedby={errors.notes ? 'notes-error' : undefined}

@@ -22,8 +22,6 @@ export interface InvoicePreviewSheetProps {
   onOpenChange: (open: boolean) => void
   /** Invoice to display */
   invoice: Invoice | null
-  /** Additional className */
-  className?: string
 }
 
 // =============================================================================
@@ -35,12 +33,28 @@ export interface InvoicePreviewSheetProps {
  *
  * Displays invoice details in a sliding panel from the right side.
  * Shows company info, line items, totals, and metadata.
+ *
+ * @deprecated Use InvoiceDetailPage instead. This sheet will be removed in v3.
+ * The page-based component provides better UX for complex invoice data.
+ *
+ * Migration:
+ * ```tsx
+ * // Before (deprecated)
+ * <InvoicePreviewSheet invoice={invoice} open={open} onOpenChange={setOpen} />
+ *
+ * // After (recommended)
+ * <InvoiceDetailPage
+ *   invoice={invoice}
+ *   mode="view"
+ *   onSubmit={handleSubmit}
+ *   onBack={handleBack}
+ * />
+ * ```
  */
 export function InvoicePreviewSheet({
   open,
   onOpenChange,
   invoice,
-  className,
 }: InvoicePreviewSheetProps) {
   if (!invoice) return null
 
@@ -48,7 +62,7 @@ export function InvoicePreviewSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className={cn('w-full sm:max-w-2xl overflow-y-auto', className)}
+        className="w-full sm:max-w-2xl overflow-y-auto"
         hideCloseButton
       >
         {/* Header */}

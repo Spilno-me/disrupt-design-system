@@ -192,6 +192,9 @@ export interface ChatPricingSummaryProps {
   isCalculating?: boolean
 }
 
+/** Available steps in the pricing wizard flow */
+export type PricingStep = "employees" | "package" | "licenses" | "summary"
+
 export interface PricingCardProps {
   /** Current pricing state */
   pricingState: PricingState
@@ -200,7 +203,7 @@ export interface PricingCardProps {
   /** Handler for section completion */
   onSubmit: () => void
   /** Current pricing step */
-  step: "employees" | "package" | "licenses" | "summary"
+  step: PricingStep
   /** Validation errors */
   errors?: Partial<Record<string, string>>
 }
