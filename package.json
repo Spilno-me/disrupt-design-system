@@ -27,6 +27,18 @@
       "import": "./dist/market/index.js",
       "types": "./dist/market/index.d.ts"
     },
+    "./ui": {
+      "import": "./dist/ui/index.js",
+      "types": "./dist/ui/index.d.ts"
+    },
+    "./sections": {
+      "import": "./dist/sections/index.js",
+      "types": "./dist/sections/index.d.ts"
+    },
+    "./forms": {
+      "import": "./dist/forms/index.js",
+      "types": "./dist/forms/index.d.ts"
+    },
     "./tokens": {
       "import": "./dist/constants/designTokens.js",
       "types": "./dist/constants/designTokens.d.ts"
@@ -188,6 +200,7 @@
     "lint-staged": "^16.2.7",
     "playwright": "^1.57.0",
     "react-hook-form": "^7.70.0",
+    "rollup-plugin-visualizer": "^6.0.5",
     "simple-git-hooks": "^2.13.1",
     "storybook": "^10.1.4",
     "tailwindcss": "^4.1.13",

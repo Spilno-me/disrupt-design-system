@@ -30,3 +30,10 @@ export {
   type UseIOSScrollLockOptions,
   type UseIOSScrollLockReturn,
 } from './useIOSScrollLock'
+
+// Generic pagination hook
+export {
+  usePagination,
+  type UsePaginationOptions,
+  type UsePaginationReturn,
+} from './usePagination'

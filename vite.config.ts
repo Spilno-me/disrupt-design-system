@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { copyFileSync, mkdirSync, existsSync } from 'fs'
 
 // Plugin to copy CSS files to dist
@@ -49,7 +50,14 @@ export default defineConfig({
       include: ['src/**/*'],
     }),
     copyCSSFilesPlugin(),
-  ],
+    // Bundle analyzer - run with ANALYZE=true npm run build
+    process.env.ANALYZE === 'true' &&
+      visualizer({
+        filename: 'dist/stats.html',
+        open: true,
+        gzipSize: true,
+      }),
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -63,6 +71,10 @@ export default defineConfig({
         'flow/index': resolve(__dirname, 'src/flow/index.ts'),
         'partner/index': resolve(__dirname, 'src/partner/index.ts'),
         'market/index': resolve(__dirname, 'src/market/index.ts'),
+        // Granular subpath exports for better tree-shaking
+        'ui/index': resolve(__dirname, 'src/ui/index.ts'),
+        'sections/index': resolve(__dirname, 'src/sections/index.ts'),
+        'forms/index': resolve(__dirname, 'src/forms/index.ts'),
       },
       name: 'DisruptDesignSystem',
       formats: ['es'],
