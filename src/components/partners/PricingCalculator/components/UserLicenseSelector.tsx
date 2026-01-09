@@ -28,6 +28,8 @@ export interface ConfigurationPanelProps extends UserLicenseSelectorProps {
   employeeCount?: number
   /** Callback when employee count changes */
   onEmployeeCountChange?: (count: number) => void
+  /** Hide employee count row (when using OrganizationSizeSelector instead) */
+  hideEmployeeCount?: boolean
 }
 
 /**
@@ -41,6 +43,7 @@ export function UserLicenseSelector({
   disabled,
   employeeCount,
   onEmployeeCountChange,
+  hideEmployeeCount = false,
 }: ConfigurationPanelProps) {
   const getQuantity = (tier: UserLicenseTier): number => {
     return licenses.find((l) => l.tier === tier)?.quantity ?? 0
@@ -78,8 +81,8 @@ export function UserLicenseSelector({
         </AppCardTitle>
       </AppCardHeader>
       <AppCardContent className="space-y-3">
-        {/* Employee Count Row (if props provided) */}
-        {employeeCount !== undefined && onEmployeeCountChange && (
+        {/* Employee Count Row (if props provided and not hidden) */}
+        {!hideEmployeeCount && employeeCount !== undefined && onEmployeeCountChange && (
           <div className="flex items-center justify-between gap-3 py-2 border-b border-subtle">
             <div className="flex-1 min-w-0">
               <span className="text-sm font-medium text-primary">Employee Count</span>

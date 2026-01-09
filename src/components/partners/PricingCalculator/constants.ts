@@ -11,6 +11,8 @@ import type {
   ProcessTier,
   UserLicenseTier,
   PricingConfig,
+  OrganizationSizeTier,
+  OrganizationSizeConfig,
 } from '../types/pricing.types'
 
 // =============================================================================
@@ -32,6 +34,88 @@ export const LICENSE_TIER_ORDER: UserLicenseTier[] = [
   'power_user',
   'creator',
 ]
+
+/** Organization size tier display order */
+export const ORG_SIZE_TIER_ORDER: OrganizationSizeTier[] = [
+  'micro',
+  'small',
+  'mid_market',
+  'upper_mid',
+  'enterprise',
+  'large_enterprise',
+]
+
+// =============================================================================
+// ORGANIZATION SIZE TIERS (for TenantRequestWizard)
+// =============================================================================
+
+/**
+ * Organization size tier configuration
+ * 6 tiers with fixed platform base prices per spec
+ */
+export const ORG_SIZE_TIERS: Record<OrganizationSizeTier, OrganizationSizeConfig> = {
+  micro: {
+    label: 'Micro',
+    userRange: '1-10 users',
+    minEmployees: 1,
+    maxEmployees: 10,
+    annualPrice: 3000,
+  },
+  small: {
+    label: 'Small',
+    userRange: '11-50 users',
+    minEmployees: 11,
+    maxEmployees: 50,
+    annualPrice: 5000,
+  },
+  mid_market: {
+    label: 'Mid-Market',
+    userRange: '51-100 users',
+    minEmployees: 51,
+    maxEmployees: 100,
+    annualPrice: 7000,
+  },
+  upper_mid: {
+    label: 'Upper Mid-Market',
+    userRange: '101-250 users',
+    minEmployees: 101,
+    maxEmployees: 250,
+    annualPrice: 10000,
+  },
+  enterprise: {
+    label: 'Enterprise',
+    userRange: '251-500 users',
+    minEmployees: 251,
+    maxEmployees: 500,
+    annualPrice: 13000,
+  },
+  large_enterprise: {
+    label: 'Large Enterprise',
+    userRange: '500+ users',
+    minEmployees: 501,
+    maxEmployees: null,
+    annualPrice: 18000,
+  },
+}
+
+// =============================================================================
+// INDUSTRIES (for TenantRequestWizard)
+// =============================================================================
+
+/** Industry options for dropdown selection */
+export const INDUSTRIES = [
+  'Technology',
+  'Healthcare',
+  'Finance',
+  'Retail',
+  'Manufacturing',
+  'Education',
+  'Government',
+  'Non-Profit',
+  'Other',
+] as const
+
+export type Industry = (typeof INDUSTRIES)[number]
 
 // =============================================================================
 // DEFAULT PRICING CONFIG

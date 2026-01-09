@@ -29,8 +29,14 @@
  */
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
-import { Calculator, AlertCircle, FileText } from 'lucide-react'
+import { Calculator, AlertCircle, FileText, Eye, EyeOff } from 'lucide-react'
 import { Button } from '../../ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../ui/tooltip'
 import type {
   ProcessSelection,
   UserLicenseSelection,
@@ -39,8 +45,9 @@ import type {
   CommissionPreviewResult,
   PartnerCommissionStatus,
   CalculateRequest,
+  OrganizationSizeTier,
 } from '../types/pricing.types'
-import { DEFAULT_PRICING_CONFIG } from './constants'
+import { DEFAULT_PRICING_CONFIG, ORG_SIZE_TIERS } from './constants'
 import {
   calculatePricingResult,
   calculateCommission,
@@ -50,11 +57,15 @@ import {
   UserLicenseSelector,
   PricingSummary,
   CommissionPreview,
+  OrganizationSizeSelector,
 } from './components'
 
 // =============================================================================
 // COMPONENT PROPS
 // =============================================================================
+
+/** Commission visibility mode for sharing screens */
+export type CommissionVisibilityMode = 'personal' | 'presentation'
 
 export interface PricingCalculatorProps {
   /** Pricing configuration from API (uses defaults if not provided) */
@@ -79,6 +90,14 @@ export interface PricingCalculatorProps {
   debounceMs?: number
   /** Show commission preview section (default: true). Set to false to hide for Partners. */
   showCommission?: boolean
+  /** Use organization size selector instead of employee count (default: false) */
+  useOrganizationSize?: boolean
+  /** Initial organization size tier when useOrganizationSize is true */
+  initialOrganizationSize?: OrganizationSizeTier | ''
+  /** Show commission visibility toggle button (default: false) */
+  showCommissionToggle?: boolean
+  /** Default commission visibility mode (default: 'personal') */
+  defaultCommissionVisibility?: CommissionVisibilityMode
 }
 
 // =============================================================================
@@ -97,20 +116,41 @@ export function PricingCalculator({
   autoCalculate = true,
   debounceMs = 300,
   showCommission = true,
+  useOrganizationSize = false,
+  initialOrganizationSize = '',
+  showCommissionToggle = false,
+  defaultCommissionVisibility = 'personal',
 }: PricingCalculatorProps) {
   // Form state
   const [employeeCount, setEmployeeCount] = useState(100)
+  const [organizationSize, setOrganizationSize] = useState<OrganizationSizeTier | ''>(initialOrganizationSize)
   const [processes, setProcesses] = useState<ProcessSelection[]>([])
   const [licenses, setLicenses] = useState<UserLicenseSelection[]>([])
+
+  // Commission visibility toggle state
+  const [commissionVisibility, setCommissionVisibility] = useState<CommissionVisibilityMode>(defaultCommissionVisibility)
+
+  // Derive employee count from organization size when in org size mode
+  const effectiveEmployeeCount = useMemo(() => {
+    if (useOrganizationSize && organizationSize) {
+      return ORG_SIZE_TIERS[organizationSize].minEmployees
+    }
+    return employeeCount
+  }, [useOrganizationSize, organizationSize, employeeCount])
+
+  // Toggle commission visibility handler
+  const toggleCommissionVisibility = useCallback(() => {
+    setCommissionVisibility((prev) => (prev === 'personal' ? 'presentation' : 'personal'))
+  }, [])
 
   // Build calculate request
   const calculateRequest = useMemo<CalculateRequest>(
     () => ({
-      employeeCount,
+      employeeCount: effectiveEmployeeCount,
       processes,
       userLicenses: licenses,
     }),
-    [employeeCount, processes, licenses]
+    [effectiveEmployeeCount, processes, licenses]
   )
 
   // Check if we have inputs
@@ -118,10 +158,27 @@ export function PricingCalculator({
 
   // Local calculations - ALWAYS compute for immediate feedback
   // This provides instant UI updates while API call is in flight
-  const localResult = useMemo(
-    () => calculatePricingResult(employeeCount, processes, licenses, pricingConfig),
-    [employeeCount, processes, licenses, pricingConfig]
-  )
+  // When using org size mode, override platform base with org size tier price
+  const localResult = useMemo((): PricingCalculationResult | null => {
+    const baseResult = calculatePricingResult(effectiveEmployeeCount, processes, licenses, pricingConfig)
+
+    // If no result (no inputs), return null
+    if (!baseResult) return null
+
+    // Override platform base price when using org size mode
+    if (useOrganizationSize && organizationSize) {
+      const orgTier = ORG_SIZE_TIERS[organizationSize]
+      const adjustedPlatformBase = orgTier.annualPrice
+      const adjustedDealTotal = baseResult.dealTotal - baseResult.platformBase + adjustedPlatformBase
+      return {
+        ...baseResult,
+        platformBase: adjustedPlatformBase,
+        dealTotal: adjustedDealTotal,
+      }
+    }
+
+    return baseResult
+  }, [effectiveEmployeeCount, processes, licenses, pricingConfig, useOrganizationSize, organizationSize])
 
   const localCommission = useMemo(
     () => calculateCommission(localResult, commissionStatus),
@@ -183,6 +240,38 @@ export function PricingCalculator({
             Build a custom quote for your customer and see your commission
           </p>
         </div>
+
+        {/* Commission Visibility Toggle */}
+        {showCommissionToggle && showCommission && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleCommissionVisibility}
+                  aria-label={
+                    commissionVisibility === 'personal'
+                      ? 'Hide commission (presentation mode)'
+                      : 'Show commission (personal mode)'
+                  }
+                  data-testid="commission-visibility-toggle"
+                >
+                  {commissionVisibility === 'personal' ? (
+                    <Eye className="h-5 w-5" />
+                  ) : (
+                    <EyeOff className="h-5 w-5" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {commissionVisibility === 'personal'
+                  ? 'Switch to Presentation mode (hide commission)'
+                  : 'Switch to Personal mode (show commission)'}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
       </header>
 
       {/* Error Display */}
@@ -199,6 +288,14 @@ export function PricingCalculator({
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left Column - Configuration */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Organization Size Selector (when in org size mode) */}
+          {useOrganizationSize && (
+            <OrganizationSizeSelector
+              value={organizationSize}
+              onChange={setOrganizationSize}
+            />
+          )}
+
           {/* 1. PRIMARY: Package selection - what they're buying */}
           {/* Note: Never disable inputs during recalculation - better UX to let users keep interacting */}
           <ProcessSelector
@@ -214,6 +311,7 @@ export function PricingCalculator({
             licenses={licenses}
             onChange={setLicenses}
             pricingConfig={pricingConfig}
+            hideEmployeeCount={useOrganizationSize}
           />
 
           {/* Action Button - only show when autoCalculate is false */}
@@ -236,9 +334,14 @@ export function PricingCalculator({
         {/* Note: Only show loading skeleton on INITIAL load (no data yet) */}
         {/* During recalculation, keep showing old values - better UX */}
         <aside className="space-y-6" data-slot="pricing-summary">
-          <PricingSummary result={result} loading={loading && !result} />
+          <PricingSummary
+            result={result}
+            loading={loading && !result}
+            organizationSize={useOrganizationSize ? organizationSize : undefined}
+          />
 
-          {showCommission && (
+          {/* Commission - hidden in presentation mode */}
+          {showCommission && commissionVisibility === 'personal' && (
             <CommissionPreview
               commission={commission}
               tierStatus={commissionStatus}
