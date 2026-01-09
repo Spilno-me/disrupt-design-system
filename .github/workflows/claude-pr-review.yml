@@ -1,0 +1,127 @@
+# Claude Code PR Review - Automated code review for Devin PRs
+# Docs: https://code.claude.com/docs/en/github-actions
+
+name: Claude PR Review
+
+on:
+  # Auto-review on PR open/update
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+  # Interactive reviews via @claude mention
+  issue_comment:
+    types: [created]
+
+  # Direct PR comment triggers
+  pull_request_review_comment:
+    types: [created]
+
+# Configure Devin's GitHub username here
+env:
+  DEVIN_USERNAME: devin-ai-integration[bot]
+
+jobs:
+  # Auto-review for new/updated PRs
+  auto-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Claude Code Review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # Devin-aware review prompt
+          prompt: |
+            You are reviewing a PR, possibly created by Devin AI.
+
+            ## CRITICAL: Read Project Rules First
+            Read these files before reviewing:
+            - .claude/clean-code-rules.md
+            - .claude/component-dev-rules.md
+            - .claude/css-styling-rules.md
+
+            ## Review Checklist
+
+            ### 1. AI-Generated Code Patterns (PRIORITY)
+            - [ ] **Over-engineering**: Unnecessary abstractions, premature optimization
+            - [ ] **Unused code**: Dead imports, unused variables, commented-out code
+            - [ ] **Verbose patterns**: Could be simpler? 3 lines > 1 abstraction
+            - [ ] **Copy-paste drift**: Similar code that should use existing utilities
+            - [ ] **Missing context**: Does it follow existing codebase patterns?
+
+            ### 2. DDS Design System Compliance
+            - [ ] Uses semantic tokens (text-primary, bg-surface) NOT primitives
+            - [ ] Uses existing components from src/components/ui/
+            - [ ] Follows token hierarchy: semantic > contextual > primitive
+            - [ ] No hardcoded colors, spacing, or typography values
+            - [ ] Uses Tooltip component, never native title=""
+
+            ### 3. TypeScript & Code Quality
+            - [ ] Proper typing (no `any`, explicit return types on exports)
+            - [ ] No eslint-disable without justification
+            - [ ] Follows existing naming conventions
+            - [ ] Error handling where appropriate
+
+            ### 4. Accessibility (WCAG)
+            - [ ] Interactive elements are keyboard accessible
+            - [ ] Proper ARIA labels where needed
+            - [ ] Color contrast meets AA standard (use mcp__dds__check_contrast)
+
+            ### 5. Security
+            - [ ] No secrets, tokens, or credentials
+            - [ ] Safe handling of user input
+            - [ ] No dangerous patterns (eval, innerHTML with user data)
+
+            ## Output Format
+
+            Start with a summary line:
+            ✅ **APPROVE** - Ready to merge (minor suggestions only)
+            ⚠️ **CHANGES REQUESTED** - Issues must be fixed (@devin-ai-integration[bot] please address)
+            ❌ **BLOCK** - Critical issues, needs human review
+
+            Then list issues by severity:
+            🔴 Critical | 🟡 Should Fix | 🟢 Suggestion
+
+            Be concise. No praise filler. Direct feedback only.
+
+          # Post as PR review (not just comment)
+          output_type: comment
+
+  # Interactive mode - respond to @claude mentions
+  interactive:
+    if: |
+      (github.event_name == 'issue_comment' ||
+       github.event_name == 'pull_request_review_comment') &&
+      contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Claude Interactive Response
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          trigger_phrase: "@claude"
+          allowed_operations: |
+            read
+            comment
+            suggest

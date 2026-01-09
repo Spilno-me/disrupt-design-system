@@ -4,6 +4,18 @@
       "command": "node",
       "args": ["./mcp/dist/index.js"],
       "description": "Disrupt Design System MCP - Component, token, and color guidance for AI assistants"
+    },
+    "github": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-e", "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      },
+      "description": "GitHub MCP - PR, issue, and repo management"
     }
   }
 }
