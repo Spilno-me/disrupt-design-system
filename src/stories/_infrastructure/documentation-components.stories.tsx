@@ -7,8 +7,14 @@
  * - For: Foundation docs, developer guides, conceptual explanations
  *
  * PATTERN B: Component Documentation (Button, Card, Dialog)
- * - Uses: ComponentName, SectionName, ComponentRules, CompositionGuide, RelatedComponents
- * - For: Component API docs, usage guidelines, live examples
+ * Two parts:
+ * 1. Story Structure (.stories.tsx files):
+ *    - Meta with atomic level preset (ATOM_META, MOLECULE_META, etc.)
+ *    - Default story, feature stories, AllStates comprehensive matrix
+ *    - Uses: StorySection, StoryFlex, StoryGrid, StoryInfoBox
+ * 2. MDX Building Blocks (for component docs pages):
+ *    - Uses: ComponentName, SectionName, ComponentRules, CompositionGuide, RelatedComponents
+ *    - For: Component API docs, usage guidelines, live examples
  */
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../../components/ui/button';
@@ -69,7 +75,154 @@ export default meta;
 
 // =============================================================================
 // PATTERN B: COMPONENT DOCUMENTATION
-// For component API docs (Button, Dialog, etc.)
+// Two parts: (1) Story Structure and (2) MDX Building Blocks
+// =============================================================================
+
+// =============================================================================
+// PATTERN B PART 1: STORY STRUCTURE
+// How component .stories.tsx files are organized (extracted from Button, Dialog, ActionSheet)
+// =============================================================================
+
+/**
+ * Pattern B Story Structure - The standard structure for component .stories.tsx files
+ *
+ * This demonstrates the actual pattern used in component stories like:
+ * - button.stories.tsx
+ * - dialog.stories.tsx
+ * - action-sheet.stories.tsx
+ *
+ * Structure:
+ * 1. Meta configuration with atomic level preset
+ * 2. Default story (basic usage with controls)
+ * 3. Feature-specific stories (Variants, Sizes, WithIcon, etc.)
+ * 4. AllStates story (comprehensive visual matrix)
+ */
+export const PatternBStoryStructure: StoryObj = {
+  name: 'Pattern B: Story Structure',
+  render: () => (
+    <div className="max-w-4xl space-y-8">
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Pattern B: Component Story Structure</h2>
+        <p className="text-slate-600 mb-6">
+          This is the standard structure for component .stories.tsx files. Every component
+          story follows this pattern for consistency across the design system.
+        </p>
+      </div>
+
+      {/* Meta Configuration */}
+      <div className="p-6 bg-slate-50 rounded-xl border border-slate-200">
+        <h3 className="text-base font-semibold mb-3 text-slate-800">1. Meta Configuration</h3>
+        <pre className="text-sm bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
+{`const meta: Meta<typeof Button> = {
+  title: 'Core/Button',
+  component: Button,
+  ...ATOM_META,  // or MOLECULE_META, ORGANISM_META
+  parameters: {
+    docs: {
+      description: {
+        component: atomDescription(
+          'The primary interactive element for user actions.'
+        ),
+      },
+    },
+  },
+  argTypes: {
+    variant: { control: 'select', options: [...] },
+    size: { control: 'select', options: [...] },
+  },
+}`}
+        </pre>
+        <p className="text-sm text-slate-600 mt-3">
+          Use atomic level presets (ATOM_META, MOLECULE_META, etc.) and description helpers
+          (atomDescription, moleculeDescription) for consistent categorization.
+        </p>
+      </div>
+
+      {/* Story Organization */}
+      <div className="p-6 bg-slate-50 rounded-xl border border-slate-200">
+        <h3 className="text-base font-semibold mb-3 text-slate-800">2. Story Organization</h3>
+        <div className="space-y-4">
+          <div className="p-4 bg-white rounded-lg border border-slate-200">
+            <code className="text-sm font-mono text-deep-current-600">Default</code>
+            <p className="text-sm text-slate-600 mt-1">Basic usage with controls enabled</p>
+          </div>
+          <div className="p-4 bg-white rounded-lg border border-slate-200">
+            <code className="text-sm font-mono text-deep-current-600">Variants</code>
+            <p className="text-sm text-slate-600 mt-1">All visual style variants in a row</p>
+          </div>
+          <div className="p-4 bg-white rounded-lg border border-slate-200">
+            <code className="text-sm font-mono text-deep-current-600">Sizes</code>
+            <p className="text-sm text-slate-600 mt-1">All size options</p>
+          </div>
+          <div className="p-4 bg-white rounded-lg border border-slate-200">
+            <code className="text-sm font-mono text-deep-current-600">Feature Stories</code>
+            <p className="text-sm text-slate-600 mt-1">WithIcon, FullWidth, Disabled, etc.</p>
+          </div>
+          <div className="p-4 bg-white rounded-lg border border-slate-200">
+            <code className="text-sm font-mono text-deep-current-600 font-bold">AllStates</code>
+            <p className="text-sm text-slate-600 mt-1">
+              <strong>Required:</strong> Comprehensive visual matrix showing all states
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Infrastructure Components */}
+      <div className="p-6 bg-slate-50 rounded-xl border border-slate-200">
+        <h3 className="text-base font-semibold mb-3 text-slate-800">3. Infrastructure Components</h3>
+        <pre className="text-sm bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
+{`import {
+  ATOM_META,
+  atomDescription,
+  StoryFlex,        // Horizontal flex layout
+  StorySection,     // Titled section with description
+  StoryGrid,        // Grid layout for comparisons
+  StoryInfoBox,     // Keyboard/accessibility info
+  STORY_SPACING,    // Consistent spacing
+  STORY_WIDTHS,     // Consistent widths
+} from '@/stories/_infrastructure'`}
+        </pre>
+      </div>
+
+      {/* AllStates Example */}
+      <div className="p-6 bg-slate-50 rounded-xl border border-slate-200">
+        <h3 className="text-base font-semibold mb-3 text-slate-800">4. AllStates Pattern</h3>
+        <pre className="text-sm bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto">
+{`export const AllStates: Story = {
+  render: () => (
+    <div className={STORY_SPACING.sections}>
+      <StorySection title="Variants" description="All visual styles">
+        <StoryFlex>
+          <Button variant="default">Default</Button>
+          <Button variant="accent">Accent</Button>
+          {/* ... all variants */}
+        </StoryFlex>
+      </StorySection>
+
+      <StorySection title="Sizes" description="Size options">
+        <StoryFlex align="center">
+          <Button size="sm">Small</Button>
+          <Button size="default">Default</Button>
+          <Button size="lg">Large</Button>
+        </StoryFlex>
+      </StorySection>
+
+      <StoryInfoBox>
+        <strong>Keyboard Navigation:</strong>
+        {/* Accessibility notes */}
+      </StoryInfoBox>
+    </div>
+  ),
+}`}
+        </pre>
+      </div>
+    </div>
+  ),
+};
+
+// =============================================================================
+// PATTERN B PART 2: MDX BUILDING BLOCKS
+// Components for writing component documentation in MDX
 // =============================================================================
 
 // -----------------------------------------------------------------------------
@@ -77,7 +230,7 @@ export default meta;
 // -----------------------------------------------------------------------------
 
 export const ComponentRulesDemo: StoryObj = {
-  name: 'Pattern B: ComponentRules',
+  name: 'Pattern B: MDX ComponentRules',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">ComponentRules</h2>
@@ -120,7 +273,7 @@ export const ComponentRulesDemo: StoryObj = {
 // -----------------------------------------------------------------------------
 
 export const RelatedComponentsDemo: StoryObj = {
-  name: 'Pattern B: RelatedComponents',
+  name: 'Pattern B: MDX RelatedComponents',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">RelatedComponents</h2>
@@ -144,7 +297,7 @@ export const RelatedComponentsDemo: StoryObj = {
 // -----------------------------------------------------------------------------
 
 export const StatusWarningsDemo: StoryObj = {
-  name: 'Pattern B: Status Warnings',
+  name: 'Pattern B: MDX Status Warnings',
   render: () => (
     <div className="max-w-4xl space-y-8">
       <div>
@@ -187,7 +340,7 @@ export const StatusWarningsDemo: StoryObj = {
 // -----------------------------------------------------------------------------
 
 export const CompositionGuideDemo: StoryObj = {
-  name: 'Pattern B: CompositionGuide',
+  name: 'Pattern B: MDX CompositionGuide',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">CompositionGuide</h2>
@@ -234,7 +387,7 @@ export const CompositionGuideDemo: StoryObj = {
 // -----------------------------------------------------------------------------
 
 export const MDXHeadingsDemo: StoryObj = {
-  name: 'Pattern B: MDX Headings',
+  name: 'Pattern B: MDX Headings (Auto-Mapped)',
   render: () => (
     <div className="max-w-4xl">
       <h2 className="text-xl font-semibold mb-4">MDX Headings (Auto-Mapped)</h2>
@@ -273,7 +426,7 @@ export const MDXHeadingsDemo: StoryObj = {
 // -----------------------------------------------------------------------------
 
 export const FullDocumentationExample: StoryObj = {
-  name: 'Pattern B: Full Component Page',
+  name: 'Pattern B: Full MDX Component Page',
   render: () => (
     <div className="max-w-4xl">
       <AlphaWarning />
