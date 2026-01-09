@@ -12,7 +12,7 @@
 // =============================================================================
 
 export { PricingCalculator } from './PricingCalculator'
-export type { PricingCalculatorProps } from './PricingCalculator'
+export type { PricingCalculatorProps, CommissionVisibilityMode } from './PricingCalculator'
 
 // =============================================================================
 // SUB-COMPONENTS (for composition)
@@ -24,9 +24,10 @@ export {
   CompanyInfoForm,
   PricingSummary,
   CommissionPreview,
+  OrganizationSizeSelector,
 } from './components'
 
-export type { CompanyInfoFormProps } from './components'
+export type { CompanyInfoFormProps, OrganizationSizeSelectorProps } from './components'
 
 // =============================================================================
 // UTILITIES
@@ -46,11 +47,16 @@ export {
 export {
   PROCESS_TIER_ORDER,
   LICENSE_TIER_ORDER,
+  ORG_SIZE_TIER_ORDER,
+  ORG_SIZE_TIERS,
+  INDUSTRIES,
   DEFAULT_PRICING_CONFIG,
   PACKAGE_STYLES,
   LICENSE_DESCRIPTIONS,
   GLASS_DEPTH_2,
 } from './constants'
+
+export type { Industry } from './constants'
 
 // =============================================================================
 // TYPES (re-export from pricing.types.ts for convenience)
@@ -67,6 +73,9 @@ export type {
   CommissionPreviewResult,
   PartnerCommissionStatus,
   CalculateRequest,
+  // Organization size types (NEW)
+  OrganizationSizeTier,
+  OrganizationSizeConfig,
   // Additional types
   CompanySize,
   ProcessBreakdown,

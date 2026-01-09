@@ -17,6 +17,7 @@ import {
 } from '../../../ui/app-card'
 import type { PricingSummaryProps } from '../../types/pricing.types'
 import { formatCurrency } from '../utils/pricing-calculations'
+import { ORG_SIZE_TIERS } from '../constants'
 
 /**
  * Pricing summary display with glass card styling.
@@ -24,8 +25,9 @@ import { formatCurrency } from '../utils/pricing-calculations'
  *
  * Uses consistent wrapper to prevent layout shift/flicker on state changes.
  */
-export function PricingSummary({ result, loading }: PricingSummaryProps) {
+export function PricingSummary({ result, loading, organizationSize }: PricingSummaryProps) {
   const hasData = !loading && result
+  const orgSizeTier = organizationSize ? ORG_SIZE_TIERS[organizationSize] : null
 
   // Consistent wrapper - same structure for all states to prevent remount
   return (
@@ -63,7 +65,12 @@ export function PricingSummary({ result, loading }: PricingSummaryProps) {
           <div className="space-y-4">
             {/* Platform Base */}
             <div className="flex justify-between text-sm">
-              <span className="text-secondary">Platform Base</span>
+              <span className="text-secondary">
+                Platform Base
+                {orgSizeTier && (
+                  <span className="text-xs ml-1">({orgSizeTier.label})</span>
+                )}
+              </span>
               <span className="text-primary font-medium">
                 {formatCurrency(result.platformBase)}
               </span>
