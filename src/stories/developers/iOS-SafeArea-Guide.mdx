@@ -2,13 +2,26 @@
 {/* @jsxImportSource react */}
 import { Meta } from '@storybook/addon-docs/blocks';
 import { IPhoneFrame, IPHONE_SPECS } from '../_infrastructure';
-import { Home, Bell, Settings, Menu, User, Search } from 'lucide-react';
+import { Home, Bell, Settings, Menu, User, Search, Smartphone } from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  PRIMITIVES,
+} from '../brand/BrandComponents';
 
 <Meta title="Developers/iOS Safe Area Guide" />
 
-# iOS Safe Area & Dynamic Island Design Guide
+{/* Hero Header */}
+<BrandHero
+  title="iOS Safe Area Guide"
+  description="Best practices for designing UI that respects iOS safe areas, particularly the Dynamic Island introduced with iPhone 14 Pro. Updated for iOS 26 / Safari 26 (WWDC25)."
+  gradient="purple"
+  decorativeIcon={<Smartphone size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
-This guide covers best practices for designing UI that respects iOS safe areas, particularly the **Dynamic Island** introduced with iPhone 14 Pro. Updated for **iOS 26 / Safari 26** (WWDC25).
+<InfoBox variant="warning">
+  <strong>iOS 26 Breaking Change.</strong> Every website added to the Home Screen now opens as a web app by default, making safe area handling more critical than ever.
+</InfoBox>
 
 ---
 

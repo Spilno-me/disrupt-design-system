@@ -26,7 +26,7 @@ import {
   Box,
 } from 'lucide-react';
 import {
-  HeroHeader,
+  BrandHero,
   FeatureCard,
   NavCard,
   InfoBox,
@@ -40,7 +40,6 @@ import {
   SLATE,
   SPACING,
 } from '../brand/BrandComponents';
-import { HeroParticles } from '../brand/HeroParticles';
 
 <Meta title="Foundation/Core Components" />
 
@@ -64,135 +63,16 @@ import { HeroParticles } from '../brand/HeroParticles';
 </style>
 
 {/* Hero Header */}
-<div style={{
-  background: `linear-gradient(135deg, ${DEEP_CURRENT[600]} 0%, ${ABYSS[700]} 100%)`,
-  borderRadius: RADIUS.xl,
-  padding: '48px',
-  marginBottom: '48px',
-  position: 'relative',
-  overflow: 'hidden',
-}}>
-  {/* Animated particles */}
-  <HeroParticles gradient="teal" particleCount={25} />
+<BrandHero
+  title="Core Components"
+  description="Production-ready UI components built with React, TypeScript, and Radix UI primitives. Fully accessible, customizable, and designed for consistency across all Disrupt products."
+  gradient="teal"
+  decorativeIcon={<Component size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
-  {/* Decorative elements */}
-  <div style={{
-    position: 'absolute',
-    top: '-20%',
-    right: '-5%',
-    width: '350px',
-    height: '350px',
-    background: `radial-gradient(circle, ${DEEP_CURRENT[400]}30 0%, transparent 70%)`,
-    borderRadius: '50%',
-    zIndex: 0,
-  }} />
-  <div style={{
-    position: 'absolute',
-    bottom: '-25%',
-    left: '15%',
-    width: '250px',
-    height: '250px',
-    background: `radial-gradient(circle, ${DUSK_REEF[500]}20 0%, transparent 70%)`,
-    borderRadius: '50%',
-    zIndex: 0,
-  }} />
-
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '12px',
-      marginBottom: '16px',
-    }}>
-      <div style={{
-        width: '48px',
-        height: '48px',
-        borderRadius: RADIUS.md,
-        background: 'rgba(255,255,255,0.15)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <Component size={28} color={PRIMITIVES.white} />
-      </div>
-      <span style={{
-        background: 'rgba(255,255,255,0.15)',
-        padding: '4px 12px',
-        borderRadius: RADIUS.sm,
-        fontSize: '12px',
-        fontFamily: '"Fixel", sans-serif',
-        fontWeight: 500,
-        color: DEEP_CURRENT[200],
-      }}>
-        19 Components
-      </span>
-    </div>
-
-    <h1 style={{
-      margin: '0 0 12px 0',
-      fontSize: '36px',
-      fontWeight: 700,
-      fontFamily: '"Pilat Extended", sans-serif',
-      lineHeight: 1.2,
-      color: PRIMITIVES.white,
-    }}>
-      <span>Core Components</span>
-    </h1>
-
-    <div style={{
-      margin: '0 0 32px 0',
-      fontSize: '16px',
-      fontFamily: '"Fixel", sans-serif',
-      lineHeight: 1.6,
-      maxWidth: '550px',
-      color: SLATE[200],
-    }}>
-      <span>Production-ready UI components built with React, TypeScript, and Radix UI primitives. Fully accessible, customizable, and designed for consistency across all Disrupt products.</span>
-    </div>
-
-    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-      <StoryLink
-        to="/docs/core-button--docs"
-        className="dds-btn-primary"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: PRIMITIVES.white,
-          color: ABYSS[500],
-          padding: '12px 24px',
-          borderRadius: RADIUS.md,
-          fontSize: '14px',
-          fontWeight: 600,
-          fontFamily: '"Fixel", sans-serif',
-          textDecoration: 'none',
-        }}
-      >
-        <span>Start with Button</span>
-        <ArrowRight size={16} />
-      </StoryLink>
-      <StoryLink
-        to="/docs/foundation-design-tokens-overview--docs"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: 'rgba(255,255,255,0.1)',
-          color: PRIMITIVES.white,
-          padding: '12px 24px',
-          borderRadius: RADIUS.md,
-          fontSize: '14px',
-          fontWeight: 500,
-          fontFamily: '"Fixel", sans-serif',
-          textDecoration: 'none',
-          border: '1px solid rgba(255,255,255,0.2)',
-        }}
-      >
-        <span>View Design Tokens</span>
-      </StoryLink>
-    </div>
-  </div>
-</div>
+<InfoBox variant="tip">
+  <strong>19 Components.</strong> From form controls to overlays, all components follow DDS design tokens and accessibility standards.
+</InfoBox>
 
 ---
 
