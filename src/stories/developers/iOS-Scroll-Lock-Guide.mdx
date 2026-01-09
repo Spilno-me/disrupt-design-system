@@ -14,17 +14,46 @@ import {
   Home,
   Search,
   User,
+  Lock,
+  AlertTriangle,
 } from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
 
 <Meta title="Developers/iOS Scroll Lock Guide" />
 
-# iOS Safari Scroll Lock Guide
+{/* Hero Header */}
+<BrandHero
+  title="iOS Scroll Lock Guide"
+  description="Prevent body scroll leaking through modals and overlays on iOS Safari. Implementation of the proven StripeArmy technique for complete scroll isolation."
+  gradient="teal"
+  decorativeIcon={<Lock size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
-Prevent body scroll leaking through modals and overlays on iOS Safari. Implementation of the proven **StripeArmy technique** for complete scroll isolation.
+<InfoBox variant="tip">
+  <strong>iOS Safari Challenge.</strong> Standard CSS solutions like <code>overflow: hidden</code> don't work reliably on iOS Safari due to "rubber band" scrolling. This guide provides a battle-tested solution.
+</InfoBox>
 
 ---
 
-## The Problem
+<h2 style={{ marginTop: SPACING.px.sectionHeadingTop, marginBottom: SPACING.px.sectionHeadingBottom }}>The Problem</h2>
+
+<SectionHeader
+  icon={<AlertTriangle size={20} />}
+  title="iOS Safari Scroll Leaking"
+  description="Why standard CSS solutions fail on iOS Safari."
+/>
 
 <div className="p-4 bg-warning/10 border border-warning/30 rounded-lg my-6">
   <h4 className="font-semibold text-warning mb-2">iOS Safari Scroll Leaking</h4>

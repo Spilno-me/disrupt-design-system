@@ -1,25 +1,37 @@
 {/* Introduction.mdx - Agentic UI Fusion Documentation */}
+{/* @jsxRuntime automatic */}
+{/* @jsxImportSource react */}
 
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Sparkles, Cpu, Layers, Zap } from 'lucide-react';
+import {
+  BrandHero,
+  InfoBox,
+  SectionHeader,
+  FeatureCard,
+  ABYSS,
+  DEEP_CURRENT,
+  DUSK_REEF,
+  PRIMITIVES,
+  RADIUS,
+  SLATE,
+  SPACING,
+  TYPOGRAPHY,
+} from '../brand/BrandComponents';
 
 <Meta title="Agentic UI/Introduction" />
 
-# Agentic UI Fusion
+{/* Hero Header */}
+<BrandHero
+  title="Agentic UI Fusion"
+  description="A next-generation UI paradigm where AI agents express intentions, and the system resolves them into concrete forms based on constraints. The Component is Dead. Long Live the Intention."
+  gradient="purple"
+  decorativeIcon={<Sparkles size={180} color={PRIMITIVES.white} strokeWidth={1} />}
+/>
 
-<div style={{
-  padding: '24px',
-  background: 'linear-gradient(135deg, #E6F7FA 0%, #CCEFF5 100%)',
-  borderRadius: '12px',
-  marginBottom: '24px',
-  border: '1px solid #08A4BD'
-}}>
-  <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#056271', marginBottom: '8px' }}>
-    The Component is Dead. Long Live the Intention.
-  </div>
-  <div style={{ color: '#5E4F7E' }}>
-    A next-generation UI paradigm where AI agents express intentions, and the system resolves them into concrete forms based on constraints.
-  </div>
-</div>
+<InfoBox variant="tip">
+  <strong>Paradigm Shift.</strong> The agent never says "RadioGroup" or "Select". It expresses what the user needs to DO, and the system resolves the appropriate form based on constraints.
+</InfoBox>
 
 ## The Paradigm Shift
 
