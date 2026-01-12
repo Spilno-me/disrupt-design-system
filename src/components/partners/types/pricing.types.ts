@@ -9,8 +9,34 @@
 // ENUMS & BASIC TYPES
 // =============================================================================
 
-/** Company size classification */
+/** Company size classification (legacy - used by existing PricingCalculator) */
 export type CompanySize = 'smb' | 'mid_market' | 'enterprise'
+
+/**
+ * Organization size tier for TenantRequestWizard
+ * 6-tier system with fixed platform base prices
+ */
+export type OrganizationSizeTier =
+  | 'micro'
+  | 'small'
+  | 'mid_market'
+  | 'upper_mid'
+  | 'enterprise'
+  | 'large_enterprise'
+
+/** Configuration for an organization size tier */
+export interface OrganizationSizeConfig {
+  /** Display label (e.g., "Mid-Market") */
+  label: string
+  /** User range description (e.g., "51-100 users") */
+  userRange: string
+  /** Minimum employees in this tier */
+  minEmployees: number
+  /** Maximum employees (null = unlimited) */
+  maxEmployees: number | null
+  /** Annual platform base price */
+  annualPrice: number
+}
 
 /** Process package tier */
 export type ProcessTier = 'standard' | 'premium' | 'advanced' | 'industry'
@@ -213,6 +239,8 @@ export interface PricingSummaryProps {
   result: PricingCalculationResult | null
   /** Loading state */
   loading?: boolean
+  /** Organization size tier (optional - shows tier name when provided) */
+  organizationSize?: OrganizationSizeTier | ''
 }
 
 /** Props for CompanyInfoForm component */

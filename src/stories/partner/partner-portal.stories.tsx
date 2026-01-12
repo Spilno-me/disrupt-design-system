@@ -286,13 +286,8 @@ const _defaultPartnerPortalProps = {
     leads: leadsStats,
     invoices: invoicesStats,
   },
-  badges: {
-    leads: 6,
-    'tenant-requests': 3,
-    invoices: mockInvoices.filter(i => i.status === 'draft').length,
-    partners: 9,
-  },
-  notificationCount: 4,
+  badges: {},
+  notificationCount: 0,
   leadPartners: [
     { id: '1', name: 'Acme Partners' },
     { id: '2', name: 'Global Solutions' },
@@ -447,13 +442,8 @@ export const Default: Story = {
       leads: leadsStats,
       invoices: invoicesStats,
     },
-    badges: {
-      leads: 6,
-      'tenant-requests': 3,
-      invoices: mockInvoices.filter(i => i.status === 'draft').length,
-      partners: 9,
-    },
-    notificationCount: 4,
+    badges: {},
+    notificationCount: 0,
     leadPartners: [
       { id: '1', name: 'Acme Partners' },
       { id: '2', name: 'Global Solutions' },
