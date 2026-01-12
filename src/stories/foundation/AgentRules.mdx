@@ -68,8 +68,8 @@ import {
   marginBottom: SPACING.px.section,
   border: `1px solid ${ABYSS[200]}`,
 }}>
-  <h3 style={{ marginTop: 0, marginBottom: SPACING.px.base, color: ABYSS[800] }}>
-    📑 Table of Contents
+  <h3 style={{ marginTop: 0, marginBottom: SPACING.px.base, color: ABYSS[800], display: 'flex', alignItems: 'center', gap: SPACING.px.tight }}>
+    <BookOpen size={18} color={ABYSS[600]} /> Table of Contents
   </h3>
   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: SPACING.px.tight }}>
     <span>• <a href="#clean-code">Clean Code Rules</a></span>
@@ -96,7 +96,7 @@ import {
   description="Functions that do one thing. No surprises."
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/clean-code-rules.md</code>
 </InfoBox>
 
@@ -207,7 +207,7 @@ import {
   description="Work WITH the system, not against it."
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/component-dev-rules.md</code>
 </InfoBox>
 
@@ -308,7 +308,7 @@ import {
   description="Evidence-based UX patterns from lawsofux.com"
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/ux-laws-rules.md</code>
 </InfoBox>
 
@@ -390,7 +390,7 @@ import {
   description="Components that gracefully handle broken adapters."
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/defensive-component-rules.md</code>
 </InfoBox>
 
@@ -470,7 +470,7 @@ import {
   description="Semantic tokens first. Always prefer tokens that convey meaning."
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/css-styling-rules.md</code>
 </InfoBox>
 
@@ -546,7 +546,7 @@ import {
   description="ALWAYS use tokens for consistent spacing."
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/spacing-rules.md</code>
 </InfoBox>
 
@@ -621,7 +621,7 @@ import {
   description="ALWAYS import from src/stories/_infrastructure"
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/storybook-rules.md</code>
 </InfoBox>
 
@@ -766,7 +766,7 @@ decorators: [
   description="Rules automatically enforced during AI-assisted development."
 />
 
-<InfoBox variant="warning">
+<InfoBox variant="tip">
   <strong>Source:</strong> <code>.claude/hookify.*.local.md</code> files
 </InfoBox>
 
