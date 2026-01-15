@@ -1,37 +1,22 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: no-arbitrary-values
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.465Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: no-arbitrary-values
 enabled: true
 event: file
-action: warn
+action: block
 conditions:
   - field: file_path
     operator: regex_match
-    pattern: src/components/.*\.tsx$
+    pattern: src/.*\.tsx$
   - field: content
     operator: regex_match
-    pattern: (className="[^"]*\[[\d]+(px|rem|em|%)\][^"]*"|className="[^"]*\[#[0-9A-Fa-f]+\][^"]*"|w-\[\d|h-\[\d|p-\[\d|m-\[\d|gap-\[\d|text-\[\d|z-\[\d)
+    pattern: (w-\[|h-\[|p-\[|m-\[|gap-\[|text-\[|top-\[|left-\[|right-\[|bottom-\[)
 ---
 
-## Warning: Arbitrary Tailwind Value
-
-**Use design tokens instead of arbitrary values.**
-
-| Detected | Token Alternative |
-|----------|-------------------|
-| `w-[200px]` | `w-48`, `w-52`, `w-56` |
-| `h-[100px]` | `h-24`, `h-28`, `h-32` |
-| `p-[10px]` | `p-2`, `p-2.5`, `p-3` |
-| `gap-[12px]` | `gap-3` |
-| `text-[14px]` | `text-sm` |
-| `z-[999]` | `z-50`, `z-modal` |
-| `[#FF0000]` | Use semantic token |
-
-```tsx
-// ❌ Arbitrary values
-<div className="w-[200px] h-[100px] p-[10px] text-[14px]">
-
-// ✅ Design tokens
-<div className="w-52 h-24 p-2.5 text-sm">
-```
-
-**Exception:** One-off values with documented reason.
+🚫 **Arbitrary value blocked.** Use tokens: `w-48` not `w-[200px]`, `gap-4` not `gap-[15px]`.

@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: semantic-html
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.464Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: semantic-html
 enabled: true
 event: file
@@ -9,31 +16,7 @@ conditions:
     pattern: src/components/.*\.tsx$
   - field: content
     operator: regex_match
-    pattern: (<div[^>]*>\s*(Copyright|©|Footer|Header|Navigation|Nav|Menu|Main|Article|Section|Aside|Search)|<div[^>]*role=["'](navigation|banner|main|contentinfo|search)["'])
+    pattern: (<div\s+onClick(?!=)|<span\s+onClick(?!=))
 ---
 
-## Warning: Use Semantic HTML Element
-
-**Content suggests semantic element, not `<div>`.**
-
-| Content/Role | Use Instead |
-|--------------|-------------|
-| Navigation, Menu | `<nav>` |
-| Header, Banner | `<header>` |
-| Footer, Copyright | `<footer>` |
-| Main content | `<main>` |
-| Article | `<article>` |
-| Sidebar | `<aside>` |
-| Section | `<section>` |
-
-```tsx
-// ❌ Div with role
-<div role="navigation">...</div>
-<div>© 2024 Company</div>
-
-// ✅ Semantic HTML
-<nav>...</nav>
-<footer>© 2024 Company</footer>
-```
-
-**Why:** Better accessibility, SEO, and code readability.
+⚠️ **A11y:** Use `<button>` instead of `<div onClick>`. Semantic HTML provides keyboard support.

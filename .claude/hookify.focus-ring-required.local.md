@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: focus-ring-required
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.464Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: focus-ring-required
 enabled: true
 event: file
@@ -9,27 +16,10 @@ conditions:
     pattern: src/components/ui/.*\.tsx$
   - field: content
     operator: regex_match
-    pattern: (<button|<Button|onClick=)[^>]*className="(?![^"]*focus:)[^"]*"
+    pattern: (<button|<Button|<a\s+href)
+  - field: content
+    operator: not_regex_match
+    pattern: (focus:ring|focus-visible:ring|focus:outline)
 ---
 
-## Warning: Missing Focus Ring
-
-**A11y Rule:** Interactive elements need visible focus indicators.
-
-```tsx
-// ❌ No focus styles
-<button className="p-2 bg-surface">
-
-// ✅ With focus ring
-<button className="p-2 bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
-
-// ✅ Using focus-visible (better)
-<button className="p-2 bg-surface focus-visible:ring-2 focus-visible:ring-accent">
-```
-
-**Standard focus classes:**
-```
-focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
-```
-
-**Why:** Keyboard users need to see which element is focused.
+⚠️ **A11y:** Add focus ring for keyboard navigation: `focus:ring-2 focus:ring-accent focus:ring-offset-2`

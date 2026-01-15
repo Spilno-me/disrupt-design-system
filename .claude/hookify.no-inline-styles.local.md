@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: no-inline-styles
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.465Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: no-inline-styles
 enabled: true
 event: file
@@ -15,27 +22,4 @@ conditions:
     pattern: style=\{\{[^}]*(padding|margin|width|height|fontSize|color|background)[^}]*\}\}
 ---
 
-## Warning: Inline Style Detected
-
-**Use Tailwind classes instead of inline styles.**
-
-| Detected | Tailwind Alternative |
-|----------|---------------------|
-| `style={{ padding: '16px' }}` | `className="p-4"` |
-| `style={{ margin: '8px' }}` | `className="m-2"` |
-| `style={{ width: '100%' }}` | `className="w-full"` |
-| `style={{ fontSize: '14px' }}` | `className="text-sm"` |
-| `style={{ color: '...' }}` | `className="text-primary"` |
-| `style={{ background: '...' }}` | `className="bg-surface"` |
-
-```tsx
-// ❌ Inline styles
-<div style={{ padding: '16px', marginTop: '8px' }}>
-
-// ✅ Tailwind
-<div className="p-4 mt-2">
-```
-
-**Exceptions:**
-- Dynamic values from JS: `style={{ '--progress': percent }}`
-- Stories for demos
+⚠️ **Inline style detected.** Use Tailwind: `p-4` not `style={{ padding: '16px' }}`. Exception: CSS variables.

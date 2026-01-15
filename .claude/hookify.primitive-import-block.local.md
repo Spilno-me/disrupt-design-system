@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/enforcement.yaml
+# Rule: primitive-import-block
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.455Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: primitive-import-block
 enabled: true
 event: file
@@ -12,32 +19,7 @@ conditions:
     pattern: (tailwind-preset\.js|designTokens\.ts|ColorPalette\.stories\.tsx|tokens\.css)
   - field: content
     operator: regex_match
-    pattern: import\s+\{[^}]*(ABYSS|CORAL|SAGE|TEAL|DEEP_CURRENT|DUSK_REEF|WAVE|SUNRISE|ORANGE|HARBOR|SLATE|PRIMITIVES)[^}]*\}\s+from\s+['"]@
+    pattern: import\s+\{[^}]*(PRIMARY|ERROR|SAGE|TEAL|SECONDARY|TERTIARY|INFO|WARNING|ACCENT|SUCCESS|NEUTRAL|PRIMITIVES)[^}]*\}\s+from\s+['"]@
 ---
 
-## Blocked: Primitive Token Import
-
-**Token hierarchy:**
-```
-PRIMITIVES → ALIAS → Tailwind → Components
-(Tier 1)     (Tier 2)  (semantic)
-     ↑          ↑          ↑
-  BLOCKED    Dynamic    Preferred
-```
-
-### Instead use:
-
-```tsx
-// ❌ Blocked - direct primitive
-import { ABYSS, CORAL } from '@/constants/designTokens'
-<div style={{ color: ABYSS[500] }}>
-
-// ✅ Preferred - Tailwind semantic
-<div className="text-primary bg-surface border-default">
-
-// ✅ Dynamic only - use ALIAS
-import { ALIAS } from '@/constants/designTokens'
-<div style={{ backgroundColor: ALIAS.background.surface }}>
-```
-
-**Exceptions:** Token definition files, ColorPalette story
+🚫 **Primitive import blocked.** Use Tailwind classes (`text-primary`) or `ALIAS` for dynamic values. Never import PRIMITIVES directly.

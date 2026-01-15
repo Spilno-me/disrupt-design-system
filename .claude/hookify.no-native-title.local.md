@@ -1,42 +1,25 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/enforcement.yaml
+# Rule: no-native-title
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.456Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: no-native-title
 enabled: true
 event: file
-action: warn  # Changed from block to warn - too many false positives
+action: block
 conditions:
   - field: file_path
     operator: regex_match
-    pattern: src/.*\.tsx$
-  - field: file_path
-    operator: not_contains
-    pattern: .stories.tsx
+    pattern: \.(tsx?|jsx?)$
   - field: content
     operator: regex_match
-    pattern: <(button|div|span|a|td|th)[^>]*\stitle=["'][^"']+["']
+    pattern: \s+title=["'][^"']+["']
+  - field: content
+    operator: not_regex_match
+    pattern: (<title>|DialogTitle|AlertDialogTitle)
 ---
 
-## Warning: Prefer Tooltip Over Native title
-
-**CLAUDE.md Rule:** Always use shadcn Tooltip, never native `title`.
-
-| Detected | Problem | Fix |
-|----------|---------|-----|
-| `title="..."` | Poor UX, no styling | Use `<Tooltip>` |
-
-```tsx
-// ❌ Blocked - native title
-<button title="Delete item">X</button>
-<Icon title="Settings" />
-
-// ✅ Use Tooltip component
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-
-<Tooltip>
-  <TooltipTrigger asChild>
-    <button>X</button>
-  </TooltipTrigger>
-  <TooltipContent>Delete item</TooltipContent>
-</Tooltip>
-```
-
-**Why:** Native title has poor UX (delayed, unstyled, no touch support).
+🚫 **Native title blocked.** Use `<Tooltip>` component for accessibility. Native title fails on touch devices and screen readers.

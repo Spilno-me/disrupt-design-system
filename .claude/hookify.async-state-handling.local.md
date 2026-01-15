@@ -1,34 +1,25 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: async-state-handling
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.465Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: async-state-handling
-enabled: false  # DEPRECATED: No action defined, was just info spam
+enabled: true
 event: file
+action: warn
 conditions:
   - field: file_path
     operator: regex_match
-    pattern: src/components/.*\.tsx$
+    pattern: src/.*\.tsx$
   - field: content
     operator: regex_match
-    pattern: (isLoading|async\s+function|await\s+fetch|useMutation|useQuery)
+    pattern: (useQuery|useMutation|fetch\(|await\s+)
+  - field: content
+    operator: not_regex_match
+    pattern: (isLoading|isPending|isError|error|loading|LoadingSpinner|Skeleton)
 ---
 
-## Async: Handle All States
-
-| State | Required UI |
-|-------|-------------|
-| Loading | Skeleton or `<Spinner />` |
-| Error | Message + retry action |
-| Empty | Guidance message |
-| Success | Data render |
-
-**Doherty:** <100ms none | 100-400ms subtle | >400ms spinner | >1s progress
-
-```tsx
-// ❌ Missing states
-return <div>{data}</div>;
-
-// ✅ Complete
-if (isLoading) return <Skeleton />;
-if (error) return <ErrorState onRetry={refetch} />;
-if (!data?.length) return <EmptyState />;
-return <DataList items={data} />;
-```
+⚠️ **Handle all async states:** loading (`<Skeleton>`), error (`<ErrorMessage>`), empty (`<EmptyState>`), success.

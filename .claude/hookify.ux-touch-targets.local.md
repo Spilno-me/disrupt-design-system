@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: ux-touch-targets
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.464Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: ux-touch-targets
 enabled: true
 event: file
@@ -12,26 +19,4 @@ conditions:
     pattern: (<button[^>]*className="[^"]*(?:p-1|p-2|h-6|h-7|h-8|w-6|w-7|w-8)[^"]*"[^>]*>|className="[^"]*(?:p-1|p-2)[^"]*"[^>]*onClick)
 ---
 
-## UX Warning: Small Touch Target
-
-**Fitts's Law:** Interactive elements need minimum 44x44px touch area.
-
-| Detected | Problem | Fix |
-|----------|---------|-----|
-| `p-1`, `p-2` on button | Too small | Add `min-h-11 min-w-11` |
-| `h-8 w-8` button | 32px only | Use `h-11 w-11` (44px) |
-| `p-1` with onClick | Tiny target | Use `p-3` minimum |
-
-```tsx
-// ❌ Detected - tiny touch target
-<button className="p-1">X</button>
-<button className="h-8 w-8">+</button>
-<div className="p-2" onClick={fn}>
-
-// ✅ Accessible touch targets
-<button className="p-1 min-h-11 min-w-11">X</button>
-<button className="h-11 w-11">+</button>
-<button className="p-3" onClick={fn}>
-```
-
-**Ref:** `.claude/ux-laws-rules.md`
+⚠️ **Fitts's Law:** Touch targets need min 44x44px. Add `min-h-11 min-w-11` to small interactive elements.

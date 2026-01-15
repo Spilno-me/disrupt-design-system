@@ -1,45 +1,22 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: warn-new-ui-component
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.467Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: warn-new-ui-component
-enabled: false  # DEPRECATED: old_text condition doesn't work properly
+enabled: true
 event: file
+action: warn
 conditions:
   - field: file_path
     operator: regex_match
-    pattern: ^src/components/ui/[^/]+\.tsx$
-  - field: old_text
-    operator: equals
-    pattern: ""
-action: warn
+    pattern: src/components/ui/[A-Z].*\.tsx$
+  - field: content
+    operator: regex_match
+    pattern: export\s+(const|function)\s+[A-Z]
 ---
 
-## Warning: New UI Component
-
-**Pre-check:** Exists already? | Truly reusable?
-
-**Component type → testId strategy:**
-
-| Type | Example | testId |
-|------|---------|--------|
-| ATOM | Button, Badge | Accept via props spread |
-| MOLECULE | LeadCard | Auto-generate from data |
-| PAGE | Dashboard | Hardcode regions |
-
-**Implementation checklist:**
-
-```tsx
-// 1. Use Radix for interactive
-import * as Dialog from '@radix-ui/react-dialog'
-
-// 2. Tokens only
-className="bg-surface text-primary border-default rounded-lg"
-
-// 3. Props spread for testId (ATOM)
-interface Props extends React.HTMLAttributes<HTMLDivElement> {}
-const Component = ({ ...props }: Props) => <div {...props} />
-
-// 4. Variants via cva(), max 3-5
-```
-
-**Variant limits:** sizes ≤3, states ≤5, animations =1
-
-**After:** Add story + update `agent-context.json` registry
+⚠️ **New UI component.** Did you check for existing components? Search `src/components/ui/` first.

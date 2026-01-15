@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: cva-for-variants
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.465Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: cva-for-variants
 enabled: true
 event: file
@@ -12,44 +19,4 @@ conditions:
     pattern: (variant|size)\s*===?\s*['"][^'"]+['"].*className
 ---
 
-## Warning: Use CVA for Variants
-
-**Conditional className logic should use class-variance-authority.**
-
-```tsx
-// ❌ Manual variant logic
-const Button = ({ variant }) => (
-  <button className={
-    variant === 'primary' ? 'bg-accent text-white' :
-    variant === 'secondary' ? 'bg-surface text-primary' :
-    'bg-transparent'
-  }>
-)
-
-// ✅ Use CVA
-import { cva } from 'class-variance-authority'
-
-const buttonVariants = cva(
-  'inline-flex items-center rounded-lg font-medium',
-  {
-    variants: {
-      variant: {
-        primary: 'bg-accent text-white',
-        secondary: 'bg-surface text-primary',
-        ghost: 'bg-transparent hover:bg-muted-bg',
-      },
-      size: {
-        sm: 'h-9 px-3 text-sm',
-        md: 'h-11 px-4',
-        lg: 'h-12 px-6 text-lg',
-      },
-    },
-    defaultVariants: {
-      variant: 'primary',
-      size: 'md',
-    },
-  }
-)
-```
-
-**Why:** Type-safe, composable, consistent pattern across DDS.
+⚠️ **Use CVA for variants.** Replace `variant === 'x' ? ...` with `cva()` from class-variance-authority.

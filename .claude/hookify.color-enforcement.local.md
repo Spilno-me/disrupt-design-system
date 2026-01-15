@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/enforcement.yaml
+# Rule: color-enforcement
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.455Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: color-enforcement
 enabled: true
 event: file
@@ -9,36 +16,10 @@ conditions:
     pattern: \.(tsx?|jsx?|css)$
   - field: file_path
     operator: not_regex_match
-    pattern: (designTokens\.ts|tailwind-preset\.js|generate-tokens|ColorPalette\.stories\.tsx|tokens\.css|styles\.css)
+    pattern: (designTokens\.ts|tailwind-preset\.js|generate-tokens|ColorPalette\.stories\.tsx|tokens\.css|styles\.css|project-registry\.ts|token-resolver\.ts|persistence\.ts)
   - field: content
     operator: regex_match
-    pattern: (#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}(?![0-9A-Fa-f])|rgb\(|rgba\(|(bg|text|border)-(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d)
+    pattern: (#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}(?![0-9A-Fa-f])|rgb\(|rgba\(|(bg|text|border)-(neutral|gray|zinc|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d)
 ---
 
-## Blocked: Non-Token Color
-
-**What was detected:** Raw hex, rgb(), or standard Tailwind color
-
-### Use DDS Tokens Instead:
-
-| Need | Semantic Token |
-|------|----------------|
-| Text | `text-primary`, `text-secondary`, `text-muted`, `text-error`, `text-success` |
-| Background | `bg-surface`, `bg-page`, `bg-muted-bg`, `bg-accent-strong`, `bg-error-light` |
-| Border | `border-default`, `border-subtle`, `border-accent`, `border-error` |
-
-### Color Decision Flow:
-```
-1. Semantic first  → text-error, bg-warning (conveys meaning)
-2. Contextual      → text-primary, bg-surface (UI structure)
-3. Primitive last  → text-abyss-500 (only when no semantic fit)
-```
-
-### Dynamic Colors (JS only):
-```tsx
-import { ALIAS } from '@/constants/designTokens'
-<div style={{ backgroundColor: ALIAS.background.surface }}>
-```
-
-**Ref:** `src/data/color-intelligence.json`, `.claude/color-intelligence.toon`, `.claude/css-styling-rules.md`
-**MCP:** `mcp__dds__get_color_recommendation`, `mcp__dds__check_contrast`
+🚫 **Raw color blocked.** Use tokens: `text-primary`, `bg-surface`, `border-default`. Priority: semantic → contextual → primitive.

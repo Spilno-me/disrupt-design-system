@@ -1,40 +1,22 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: enforce-design-tokens-in-stories
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.468Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: enforce-design-tokens-in-stories
-enabled: false  # DEPRECATED: Use color-enforcement instead
+enabled: true
 event: file
+action: warn
 conditions:
   - field: file_path
     operator: regex_match
-    pattern: \.stories\.tsx?$
+    pattern: \.stories\.tsx$
   - field: content
     operator: regex_match
-    pattern: (?:['"`]#[0-9A-Fa-f]{3,8}['"`]|:\s*#[0-9A-Fa-f]{3,8})
-action: block
+    pattern: (bg|text|border)-(red|blue|green|gray|slate|zinc)-\d
 ---
 
-## Blocked: Raw Color in Story
-
-Stories model best practices. Use semantic classes only.
-
-```tsx
-// ❌ Blocked - raw hex
-<div style={{ color: "#08A4BD" }}>
-
-// ❌ Blocked - primitive import
-import { DEEP_CURRENT } from '@/constants/designTokens'
-<div style={{ color: DEEP_CURRENT[500] }}>
-```
-
-```tsx
-// ✅ Semantic classes
-<div className="text-accent bg-surface border-default">
-<div className="text-error bg-error-light">
-```
-
-| Category | Classes |
-|----------|---------|
-| Text | `text-primary`, `text-secondary`, `text-accent`, `text-error` |
-| Background | `bg-surface`, `bg-page`, `bg-muted-bg`, `bg-accent-strong` |
-| Border | `border-default`, `border-accent`, `border-error` |
-
-**Exception:** `ColorPalette.stories.tsx` (displays palette values)
+⚠️ **Raw Tailwind color in story.** Use semantic tokens: `bg-surface`, `text-primary`. Stories should demonstrate token usage.

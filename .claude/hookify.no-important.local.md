@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/enforcement.yaml
+# Rule: no-important
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.456Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: no-important
 enabled: true
 event: file
@@ -6,34 +13,10 @@ action: block
 conditions:
   - field: file_path
     operator: regex_match
-    pattern: \.(tsx?|css)$
-  - field: file_path
-    operator: not_contains
-    pattern: node_modules
+    pattern: \.(tsx?|jsx?|css)$
   - field: content
     operator: regex_match
-    pattern: !important
+    pattern: "!important"
 ---
 
-## Blocked: !important Flag
-
-**CSS Rule:** Fix specificity at source, never use !important.
-
-| Problem | Real Fix |
-|---------|----------|
-| Style being overridden | Increase selector specificity |
-| Tailwind not applying | Check class order, use `!` prefix |
-| Third-party conflict | Use `@layer` or scoped styles |
-
-```css
-/* ❌ Blocked */
-.button { color: white !important; }
-
-/* ✅ Fix specificity */
-.card .button { color: white; }
-
-/* ✅ Tailwind override syntax */
-<div className="!text-white">
-```
-
-**If truly needed:** Document WHY in a comment and ask for review.
+🚫 **!important blocked.** Fix specificity instead. Use Tailwind `!` prefix (`!text-error`) only if needed.

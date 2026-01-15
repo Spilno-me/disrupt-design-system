@@ -1,4 +1,11 @@
 ---
+# AUTO-GENERATED from Salvador Vault
+# Source: chains/rules/projects/quality.yaml
+# Rule: story-infrastructure
+# Scope: projects
+# Generated: 2026-01-15T11:58:39.467Z
+#
+# Do NOT edit manually - regenerate with: npm run sync-hooks
 name: story-infrastructure
 enabled: true
 event: file
@@ -8,39 +15,8 @@ conditions:
     operator: regex_match
     pattern: \.stories\.tsx$
   - field: content
-    operator: regex_match
-    pattern: const meta.*Meta<
-  - field: content
-    operator: not_contains
-    pattern: _infrastructure
+    operator: not_regex_match
+    pattern: (ATOM_META|MOLECULE_META|ORGANISM_META|PAGE_META|satisfies\s+Meta)
 ---
 
-## Warning: Story Missing Infrastructure Import
-
-**Stories should use shared meta configurations.**
-
-```tsx
-// ❌ Manual meta setup
-const meta: Meta<typeof Button> = {
-  title: 'UI/Button',
-  component: Button,
-  parameters: { ... },  // Duplicated everywhere
-};
-
-// ✅ Use infrastructure
-import { ATOM_META } from '../../stories/_infrastructure';
-// or MOLECULE_META, PAGE_META
-
-const meta: Meta<typeof Button> = {
-  ...ATOM_META,
-  title: 'UI/Button',
-  component: Button,
-};
-```
-
-**Available metas:**
-- `ATOM_META` - Small UI primitives (Button, Badge, Input)
-- `MOLECULE_META` - Composed components (Card, Dialog)
-- `PAGE_META` - Full page stories
-
-**Ref:** `src/stories/_infrastructure/`
+⚠️ **Use story meta pattern.** Import `ATOM_META` from `@/test/storybook-helpers` and use `satisfies Meta`.

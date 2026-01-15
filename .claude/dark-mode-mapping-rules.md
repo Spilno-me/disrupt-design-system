@@ -64,6 +64,48 @@ Collection: "Colors"
 | Status | Shift 1 step lighter |
 | Border | Invert (300↔600) |
 
+## Status Tinted Backgrounds (Banners, Alerts)
+
+**Problem:** Solid inverted colors for "light" backgrounds feel heavy in dark mode.
+
+| Component | Light Mode | Dark Mode |
+|-----------|------------|-----------|
+| Background | `bg-success-light` (solid #F0FDF4) | `bg-success/10` (10% opacity) |
+| Text | `text-success-dark` (harbor-800) | `text-success` (harbor-400) |
+| Border | `border-success/20` | `border-success/20` (same) |
+
+**Pattern:**
+```tsx
+// ✅ Correct - airy feel in both modes
+className="bg-success-light dark:bg-success/10 text-success-dark dark:text-success"
+
+// ❌ Wrong - solid dark block, oppressive
+className="bg-success-light text-success-dark"  // dark mode uses harbor-900, harbor-800
+```
+
+**Why opacity?** Preserves visual "weight" relationship - a subtle tint should feel subtle in both themes.
+
+## Theme-Aware Assets (Logos, Icons)
+
+**Naming convention is counterintuitive:**
+- `*-dark.svg` = Dark-colored content → for **light** backgrounds (light mode)
+- `*-light.svg` = Light-colored content → for **dark** backgrounds (dark mode)
+
+**Dark mode detection must check BOTH locations:**
+```tsx
+// Tailwind standard applies .dark to <html>
+// Storybook addon-themes applies .dark to <body>
+const isDark = document.documentElement.classList.contains('dark')
+            || document.body.classList.contains('dark')
+```
+
+**Pattern:**
+```tsx
+const logoSrc = isDarkMode
+  ? LOGOS.partner.light   // light logo for dark backgrounds
+  : LOGOS.partner.dark    // dark logo for light backgrounds
+```
+
 ## Anti-Pattern
 
 ```tsx
