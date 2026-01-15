@@ -63,6 +63,8 @@ export function ExecutingAnimation({ className, variant = "light" }: ExecutingAn
       <motion.circle
         fill={colors.large}
         r={dotSize / 2}
+        cx={centerX + orbitRadius}
+        cy={centerY}
         animate={{
           cx: [
             centerX + orbitRadius,
@@ -89,6 +91,8 @@ export function ExecutingAnimation({ className, variant = "light" }: ExecutingAn
       <motion.circle
         fill={colors.medium}
         r={dotSize / 2}
+        cx={centerX - orbitRadius * 0.5}
+        cy={centerY - orbitRadius * 0.866}
         animate={{
           cx: [
             centerX - orbitRadius * 0.5,
@@ -115,6 +119,8 @@ export function ExecutingAnimation({ className, variant = "light" }: ExecutingAn
       <motion.circle
         fill={colors.small}
         r={dotSize / 2}
+        cx={centerX - orbitRadius * 0.5}
+        cy={centerY + orbitRadius * 0.866}
         animate={{
           cx: [
             centerX - orbitRadius * 0.5,

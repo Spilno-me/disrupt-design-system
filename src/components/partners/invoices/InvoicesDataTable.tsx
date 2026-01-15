@@ -173,11 +173,15 @@ export function InvoicesDataTable({
       accessor: (invoice) => {
         const isDraft = invoice.status === 'draft'
 
-        // Rule: >3 actions = show 2 inline + "..." menu
-        // Draft: 4 actions (Preview, Download, Edit, Mark as Sent) → 2 inline + menu
-        // Non-draft: 2 actions (Preview, Download) → both inline
+        // Salvador UX Rule (action-overflow):
+        // ≤3 actions = All visible buttons (no menu)
+        // ≥4 actions = 3 visible buttons + overflow menu
+        //
+        // Draft: 4 actions (Preview, Edit, Download, Mark as Sent) → 3 inline + menu
+        // Non-draft: 3 actions (Preview, Download, Copy) → ALL 3 inline, no menu
 
         if (isDraft) {
+          // 4 actions → 3 inline + overflow menu
           return (
             <div className="flex items-center justify-end gap-1">
               <ActionTile
@@ -202,6 +206,17 @@ export function InvoicesDataTable({
               >
                 <Pencil className="h-4 w-4" />
               </ActionTile>
+              <ActionTile
+                variant="neutral"
+                size="xs"
+                aria-label="Download PDF"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onActionClick?.(invoice, 'download')
+                }}
+              >
+                <Download className="h-4 w-4" />
+              </ActionTile>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -214,10 +229,6 @@ export function InvoicesDataTable({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                  <DropdownMenuItem onClick={() => onActionClick?.(invoice, 'download')}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Download PDF
-                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onActionClick?.(invoice, 'mark_sent')}>
                     <Send className="h-4 w-4 mr-2" />
                     Mark as Sent
@@ -228,7 +239,7 @@ export function InvoicesDataTable({
           )
         }
 
-        // Non-draft: 3 actions (Preview, Download, Copy) → 2 inline + menu
+        // Non-draft: 3 actions → ALL visible, no overflow menu (per Salvador rule)
         return (
           <div className="flex items-center justify-end gap-1">
             <ActionTile
@@ -253,28 +264,21 @@ export function InvoicesDataTable({
             >
               <Download className="h-4 w-4" />
             </ActionTile>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                <DropdownMenuItem onClick={() => onActionClick?.(invoice, 'copy')}>
-                  <Copy className="h-4 w-4 mr-2" />
-                  Copy Invoice Number
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <ActionTile
+              variant="neutral"
+              size="xs"
+              aria-label="Copy Invoice Number"
+              onClick={(e) => {
+                e.stopPropagation()
+                onActionClick?.(invoice, 'copy')
+              }}
+            >
+              <Copy className="h-4 w-4" />
+            </ActionTile>
           </div>
         )
       },
-      width: "110px",
+      width: "130px",
       align: "right",
       sticky: "right",
     },

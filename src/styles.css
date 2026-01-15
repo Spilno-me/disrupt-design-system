@@ -298,6 +298,8 @@
   .border-success-strong { border-color: var(--color-success-strong); }
   /* WCAG AA-compliant success text for colored backgrounds (5.6:1 on success/25) */
   .text-success-dark { color: var(--brand-harbor-800); }
+  /* Dark mode: light green text on dark green backgrounds (harbor-100 on harbor-900) */
+  .dark\:text-success-dark:is(.dark *) { color: var(--brand-harbor-100); }
 
   /* Accent dark variant (for WCAG AA contrast on light tinted backgrounds) */
   .text-accent-dark { color: var(--color-accent-dark); }

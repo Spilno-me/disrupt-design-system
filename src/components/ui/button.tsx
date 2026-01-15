@@ -17,7 +17,7 @@ const INNER_RADIUS = '11px'
 const GLOW_RADIUS = '10px'
 
 /** Variants that skip glass effect */
-const SKIP_EFFECT_VARIANTS = new Set(['link', 'ghost'])
+const SKIP_EFFECT_VARIANTS = new Set(['link', 'ghost', 'accent-soft'])
 
 /** CSS mask for border-only gradient effect (white = show through) */
 const GLASS_MASK = 'linear-gradient(white 0 0) padding-box, linear-gradient(white 0 0)'
@@ -32,6 +32,7 @@ const VARIANT_GRADIENTS = {
   link: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
   contact: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
   accent: { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
+  'accent-soft': { gradient: GLASS_GRADIENTS.teal, glow: GLASS_GRADIENTS.tealGlow },
 } as const
 
 // =============================================================================
@@ -63,9 +64,12 @@ const buttonVariants = cva(
         // Contact - Specific CTA button
         contact:
           "h-10 bg-inverse-bg text-inverse hover:bg-inverse-bg/90 px-6 py-2 font-medium",
-        // Accent - Teal/brand secondary
+        // Accent - Teal/brand secondary (solid)
         accent:
           "bg-accent-strong text-inverse shadow-sm hover:bg-accent-strong/90",
+        // Accent Soft - Tinted accent with transparency (for quick actions, highlights)
+        "accent-soft":
+          "bg-accent/50 text-accent-strong border border-accent/60 hover:bg-accent/90 dark:bg-accent/50 dark:border-accent/60 dark:text-primary dark:hover:bg-accent/90",
       },
       size: {
         default: "h-12 md:h-10 px-6 py-3 md:py-2 has-[>svg]:px-4",

@@ -186,7 +186,7 @@ export const PACKAGE_STYLES: Record<
   advanced: {
     description: 'Enterprise-grade with AI-powered insights',
     accentClass: 'border-l-accent-strong',
-    bgClass: 'bg-accent/60', // Higher opacity for better visibility
+    bgClass: 'bg-accent-bg', // Solid DEEP_CURRENT[50] - 17.61:1 contrast with text-primary (WCAG AAA)
     borderClass: 'border-accent',
   },
   industry: {
