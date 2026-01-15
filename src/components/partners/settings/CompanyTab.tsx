@@ -28,7 +28,7 @@ export function CompanyTab({
   }
 
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6 mt-6" data-testid="settings-company-tab">
       <Card className="bg-surface border-default">
         <CardHeader>
           <CardTitle>Company Information</CardTitle>
@@ -45,6 +45,7 @@ export function CompanyTab({
                 className="pl-10"
                 value={company.name}
                 onChange={(e) => setCompany({ ...company, name: e.target.value })}
+                data-testid="settings-company-name"
               />
             </div>
           </div>
@@ -59,6 +60,7 @@ export function CompanyTab({
                 className="pl-10"
                 value={company.address}
                 onChange={(e) => setCompany({ ...company, address: e.target.value })}
+                data-testid="settings-company-address"
               />
             </div>
           </div>
@@ -70,7 +72,7 @@ export function CompanyTab({
           <ContactFields company={company} setCompany={setCompany} />
 
           <div className="flex justify-end pt-4">
-            <Button variant="accent" onClick={handleSaveCompany} disabled={loading}>
+            <Button variant="accent" onClick={handleSaveCompany} disabled={loading} data-testid="settings-company-save-btn">
               <Save className="w-4 h-4 mr-2" />
               Save Changes
             </Button>
@@ -99,6 +101,7 @@ function AddressFields({ company, setCompany }: AddressFieldsProps) {
           id="city"
           value={company.city}
           onChange={(e) => setCompany({ ...company, city: e.target.value })}
+          data-testid="settings-company-city"
         />
       </div>
       <div className="space-y-2">
@@ -107,6 +110,7 @@ function AddressFields({ company, setCompany }: AddressFieldsProps) {
           id="state"
           value={company.state}
           onChange={(e) => setCompany({ ...company, state: e.target.value })}
+          data-testid="settings-company-state"
         />
       </div>
       <div className="space-y-2">
@@ -115,6 +119,7 @@ function AddressFields({ company, setCompany }: AddressFieldsProps) {
           id="zip"
           value={company.zip}
           onChange={(e) => setCompany({ ...company, zip: e.target.value })}
+          data-testid="settings-company-zip"
         />
       </div>
       <div className="space-y-2">
@@ -123,6 +128,7 @@ function AddressFields({ company, setCompany }: AddressFieldsProps) {
           id="country"
           value={company.country}
           onChange={(e) => setCompany({ ...company, country: e.target.value })}
+          data-testid="settings-company-country"
         />
       </div>
     </div>
@@ -148,6 +154,7 @@ function ContactFields({ company, setCompany }: ContactFieldsProps) {
             placeholder="https://"
             value={company.website || ''}
             onChange={(e) => setCompany({ ...company, website: e.target.value })}
+            data-testid="settings-company-website"
           />
         </div>
       </div>
@@ -161,6 +168,7 @@ function ContactFields({ company, setCompany }: ContactFieldsProps) {
             className="pl-10"
             value={company.phone || ''}
             onChange={(e) => setCompany({ ...company, phone: e.target.value })}
+            data-testid="settings-company-phone"
           />
         </div>
       </div>

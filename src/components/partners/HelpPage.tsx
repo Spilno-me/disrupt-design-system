@@ -159,7 +159,7 @@ export function HelpPage({
   }
 
   return (
-    <div className={cn('flex flex-col gap-6 p-6', className)}>
+    <div className={cn('flex flex-col gap-6 p-6', className)} data-testid="help-page">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
         <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-4">
@@ -180,6 +180,7 @@ export function HelpPage({
               className="pl-10 pr-4 h-11"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              data-testid="help-page-search-input"
             />
           </div>
         </form>
@@ -197,6 +198,7 @@ export function HelpPage({
               category: 'Docs',
             })
           }
+          data-testid="help-page-docs-card"
         >
           <CardContent className="p-4 flex items-center gap-4">
             <div className="w-12 h-12 rounded-lg bg-info-light flex items-center justify-center flex-shrink-0">
@@ -220,6 +222,7 @@ export function HelpPage({
               category: 'Videos',
             })
           }
+          data-testid="help-page-videos-card"
         >
           <CardContent className="p-4 flex items-center gap-4">
             <div className="w-12 h-12 rounded-lg bg-info-light flex items-center justify-center flex-shrink-0">
@@ -236,6 +239,7 @@ export function HelpPage({
         <Card
           className="bg-surface border-default hover:border-accent hover:shadow-md transition-all cursor-pointer"
           onClick={onContactSupport}
+          data-testid="help-page-support-card"
         >
           <CardContent className="p-4 flex items-center gap-4">
             <div className="w-12 h-12 rounded-lg bg-warning-light flex items-center justify-center flex-shrink-0">
@@ -266,6 +270,7 @@ export function HelpPage({
                 key={article.id}
                 className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-accent/5 transition-colors text-left group"
                 onClick={() => onArticleClick?.(article)}
+                data-testid={`help-page-article-${article.id}`}
               >
                 <div className="w-10 h-10 rounded-lg bg-muted-bg group-hover:bg-info-light flex items-center justify-center flex-shrink-0 text-muted group-hover:text-info transition-colors">
                   {article.icon}
@@ -322,7 +327,7 @@ export function HelpPage({
               </div>
             </div>
 
-            <Button variant="accent" onClick={onContactSupport}>
+            <Button variant="accent" onClick={onContactSupport} data-testid="help-page-contact-btn">
               <MessageSquare className="w-4 h-4 mr-2" />
               Contact Support
             </Button>

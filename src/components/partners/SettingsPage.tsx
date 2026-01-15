@@ -59,12 +59,12 @@ export function SettingsPage({
   className,
 }: SettingsPageProps) {
   return (
-    <div className={cn('flex flex-col gap-6 p-6', className)}>
+    <div className={cn('flex flex-col gap-6 p-6', className)} data-testid="settings-page">
       {/* Header */}
       <SettingsHeader />
 
       {/* Tabs */}
-      <Tabs defaultValue="profile" className="w-full">
+      <Tabs defaultValue="profile" className="w-full" data-testid="settings-tabs">
         <SettingsTabsList />
 
         <TabsContent value="profile">
@@ -121,7 +121,7 @@ function SettingsTabsList() {
       className="grid w-full grid-cols-4 lg:w-auto lg:inline-flex"
     >
       {SETTINGS_TABS.map((tab) => (
-        <TabsTrigger key={tab.value} variant="accent" value={tab.value} className="gap-2">
+        <TabsTrigger key={tab.value} variant="accent" value={tab.value} className="gap-2" data-testid={`settings-tab-${tab.value}`}>
           <tab.icon className="w-4 h-4" />
           <span className="hidden sm:inline">{tab.label}</span>
         </TabsTrigger>

@@ -66,6 +66,7 @@ export function InvoiceCard({
           handleClick()
         }
       }}
+      data-testid={`invoice-card-${invoice.id}`}
     >
       {/* Header: Invoice Number, Status, Actions */}
       <div className="flex items-start justify-between gap-2">

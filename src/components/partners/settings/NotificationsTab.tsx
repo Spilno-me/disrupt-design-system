@@ -33,7 +33,7 @@ export function NotificationsTab({
   }
 
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6 mt-6" data-testid="settings-notifications-tab">
       {/* Email Notifications */}
       <Card className="bg-surface border-default">
         <CardHeader>
@@ -46,6 +46,7 @@ export function NotificationsTab({
             onChange={(checked) => updateNotification('emailNewLeads', checked)}
             label="New Leads"
             description="Get notified when a new lead is created"
+            testId="settings-notifications-email-leads"
           />
           <Separator />
           <NotificationToggle
@@ -53,6 +54,7 @@ export function NotificationsTab({
             onChange={(checked) => updateNotification('emailInvoices', checked)}
             label="Invoice Updates"
             description="Receive updates on invoice status changes"
+            testId="settings-notifications-email-invoices"
           />
           <Separator />
           <NotificationToggle
@@ -60,6 +62,7 @@ export function NotificationsTab({
             onChange={(checked) => updateNotification('emailTenantRequests', checked)}
             label="Tenant Requests"
             description="Get notified about new tenant requests"
+            testId="settings-notifications-email-tenants"
           />
           <Separator />
           <NotificationToggle
@@ -67,6 +70,7 @@ export function NotificationsTab({
             onChange={(checked) => updateNotification('emailWeeklyDigest', checked)}
             label="Weekly Digest"
             description="Receive a weekly summary of your activity"
+            testId="settings-notifications-email-digest"
           />
         </CardContent>
       </Card>
@@ -84,6 +88,7 @@ export function NotificationsTab({
             icon={<Smartphone className="w-5 h-5 text-secondary" />}
             label="Push Notifications"
             description="Enable browser push notifications"
+            testId="settings-notifications-push"
           />
           <Separator />
           <NotificationToggleWithIcon
@@ -92,12 +97,13 @@ export function NotificationsTab({
             icon={<Phone className="w-5 h-5 text-secondary" />}
             label="SMS Alerts"
             description="Receive critical alerts via SMS"
+            testId="settings-notifications-sms"
           />
         </CardContent>
       </Card>
 
       <div className="flex justify-end">
-        <Button variant="accent" onClick={handleSaveNotifications} disabled={loading}>
+        <Button variant="accent" onClick={handleSaveNotifications} disabled={loading} data-testid="settings-notifications-save-btn">
           <Save className="w-4 h-4 mr-2" />
           Save Preferences
         </Button>
@@ -115,6 +121,7 @@ interface NotificationToggleProps {
   onChange: (checked: boolean) => void
   label: string
   description: string
+  testId?: string
 }
 
 function NotificationToggle({
@@ -122,6 +129,7 @@ function NotificationToggle({
   onChange,
   label,
   description,
+  testId,
 }: NotificationToggleProps) {
   return (
     <div className="flex items-center justify-between">
@@ -129,7 +137,7 @@ function NotificationToggle({
         <Label>{label}</Label>
         <p className="text-sm text-muted">{description}</p>
       </div>
-      <Checkbox checked={checked} onCheckedChange={(c) => onChange(!!c)} />
+      <Checkbox checked={checked} onCheckedChange={(c) => onChange(!!c)} data-testid={testId} />
     </div>
   )
 }
@@ -144,6 +152,7 @@ function NotificationToggleWithIcon({
   icon,
   label,
   description,
+  testId,
 }: NotificationToggleWithIconProps) {
   return (
     <div className="flex items-center justify-between">
@@ -154,7 +163,7 @@ function NotificationToggleWithIcon({
           <p className="text-sm text-secondary">{description}</p>
         </div>
       </div>
-      <Checkbox checked={checked} onCheckedChange={(c) => onChange(!!c)} />
+      <Checkbox checked={checked} onCheckedChange={(c) => onChange(!!c)} data-testid={testId} />
     </div>
   )
 }

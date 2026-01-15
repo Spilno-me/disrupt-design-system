@@ -86,13 +86,22 @@ export function MyEarningsPage({
     return earnings.slice(startIndex, startIndex + pageSize)
   }, [earnings, currentPage, pageSize])
 
-  // Column definitions
+  // Column definitions with optimized widths
+  // Column widths for earnings table (using string values for DataTable compatibility)
+  const COLUMN_WIDTHS = {
+    date: "120px",
+    type: "100px",
+    amount: "120px",
+    status: "110px",
+  } as const
+
   const columns: ColumnDef<Earning>[] = [
     {
       id: "date",
       header: "Date",
       sortable: true,
       sortValue: (row) => row.date,
+      width: COLUMN_WIDTHS.date,
       accessor: (row) => (
         <span className="text-sm text-primary">{formatDate(row.date)}</span>
       ),
@@ -102,6 +111,7 @@ export function MyEarningsPage({
       header: "Tenant",
       sortable: true,
       sortValue: (row) => row.tenantName,
+      // No width - flexible column takes remaining space
       accessor: (row) => (
         <span className="font-medium text-primary">{row.tenantName}</span>
       ),
@@ -111,6 +121,7 @@ export function MyEarningsPage({
       header: "Type",
       sortable: true,
       sortValue: (row) => row.type,
+      width: COLUMN_WIDTHS.type,
       accessor: (row) => (
         <Badge variant={getTypeVariant(row.type)} className="capitalize">
           {row.type}
@@ -122,6 +133,7 @@ export function MyEarningsPage({
       header: "Amount",
       sortable: true,
       sortValue: (row) => row.amount,
+      width: COLUMN_WIDTHS.amount,
       align: "right",
       accessor: (row) => (
         <span className="text-sm font-semibold text-primary">
@@ -134,6 +146,7 @@ export function MyEarningsPage({
       header: "Status",
       sortable: true,
       sortValue: (row) => row.status,
+      width: COLUMN_WIDTHS.status,
       accessor: (row) => <DataTableStatusDot status={row.status} mapping={EARNING_DOT_STATUS_MAP} />,
     },
   ]

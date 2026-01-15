@@ -45,7 +45,7 @@ export function SecurityTab({ loading = false, onChangePassword }: SecurityTabPr
     loading || !currentPassword || !newPassword || !confirmPassword
 
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6 mt-6" data-testid="settings-security-tab">
       {/* Change Password */}
       <Card className="bg-surface border-default">
         <CardHeader>
@@ -70,6 +70,7 @@ export function SecurityTab({ loading = false, onChangePassword }: SecurityTabPr
             onChange={setCurrentPassword}
             showPassword={showCurrentPassword}
             onToggleVisibility={() => setShowCurrentPassword(!showCurrentPassword)}
+            testId="settings-security-current-password"
           />
 
           {/* New Password */}
@@ -81,6 +82,7 @@ export function SecurityTab({ loading = false, onChangePassword }: SecurityTabPr
               onChange={setNewPassword}
               showPassword={showNewPassword}
               onToggleVisibility={() => setShowNewPassword(!showNewPassword)}
+              testId="settings-security-new-password"
             />
             <p className="text-xs text-muted">
               Minimum {PASSWORD_MIN_LENGTH} characters
@@ -95,6 +97,7 @@ export function SecurityTab({ loading = false, onChangePassword }: SecurityTabPr
             onChange={setConfirmPassword}
             showPassword={showNewPassword}
             showToggle={false}
+            testId="settings-security-confirm-password"
           />
 
           <div className="flex justify-end pt-4">
@@ -102,6 +105,7 @@ export function SecurityTab({ loading = false, onChangePassword }: SecurityTabPr
               variant="accent"
               onClick={handleChangePassword}
               disabled={isSubmitDisabled}
+              data-testid="settings-security-update-btn"
             >
               <Key className="w-4 h-4 mr-2" />
               Update Password
@@ -128,6 +132,7 @@ interface PasswordFieldProps {
   showPassword: boolean
   onToggleVisibility?: () => void
   showToggle?: boolean
+  testId?: string
 }
 
 function PasswordField({
@@ -138,6 +143,7 @@ function PasswordField({
   showPassword,
   onToggleVisibility,
   showToggle = true,
+  testId,
 }: PasswordFieldProps) {
   return (
     <div className="space-y-2">
@@ -150,6 +156,7 @@ function PasswordField({
           className={showToggle ? 'pl-10 pr-10' : 'pl-10'}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          data-testid={testId}
         />
         {showToggle && onToggleVisibility && (
           <button
@@ -191,7 +198,7 @@ function TwoFactorCard() {
               </p>
             </div>
           </div>
-          <Button variant="secondary">Enable 2FA</Button>
+          <Button variant="secondary" data-testid="settings-security-2fa-btn">Enable 2FA</Button>
         </div>
       </CardContent>
     </Card>

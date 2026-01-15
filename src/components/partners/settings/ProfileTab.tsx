@@ -52,7 +52,7 @@ export function ProfileTab({
   }
 
   return (
-    <div className="space-y-6 mt-6">
+    <div className="space-y-6 mt-6" data-testid="settings-profile-tab">
       <Card className="bg-surface border-default">
         <CardHeader>
           <CardTitle>Personal Information</CardTitle>
@@ -72,7 +72,7 @@ export function ProfileTab({
           <ProfileFormFields user={user} setUser={setUser} />
 
           <div className="flex justify-end">
-            <Button variant="accent" onClick={handleSaveProfile} disabled={loading}>
+            <Button variant="accent" onClick={handleSaveProfile} disabled={loading} data-testid="settings-profile-save-btn">
               <Save className="w-4 h-4 mr-2" />
               Save Changes
             </Button>
@@ -111,6 +111,7 @@ function AvatarSection({ user, initials, onAvatarClick }: AvatarSectionProps) {
         <button
           className="absolute bottom-0 right-0 w-8 h-8 bg-inverse-bg text-inverse rounded-full flex items-center justify-center hover:bg-accent transition-colors"
           onClick={onAvatarClick}
+          data-testid="settings-profile-avatar-btn"
         >
           <Camera className="w-4 h-4" />
         </button>
@@ -139,6 +140,7 @@ function ProfileFormFields({ user, setUser }: ProfileFormFieldsProps) {
           id="firstName"
           value={user.firstName}
           onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+          data-testid="settings-profile-first-name"
         />
       </div>
       <div className="space-y-2">
@@ -147,6 +149,7 @@ function ProfileFormFields({ user, setUser }: ProfileFormFieldsProps) {
           id="lastName"
           value={user.lastName}
           onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+          data-testid="settings-profile-last-name"
         />
       </div>
       <div className="space-y-2">
@@ -159,6 +162,7 @@ function ProfileFormFields({ user, setUser }: ProfileFormFieldsProps) {
             className="pl-10"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
+            data-testid="settings-profile-email"
           />
         </div>
       </div>
@@ -172,6 +176,7 @@ function ProfileFormFields({ user, setUser }: ProfileFormFieldsProps) {
             className="pl-10"
             value={user.phone || ''}
             onChange={(e) => setUser({ ...user, phone: e.target.value })}
+            data-testid="settings-profile-phone"
           />
         </div>
       </div>
@@ -181,7 +186,7 @@ function ProfileFormFields({ user, setUser }: ProfileFormFieldsProps) {
           value={user.timezone}
           onValueChange={(v) => setUser({ ...user, timezone: v })}
         >
-          <SelectTrigger>
+          <SelectTrigger data-testid="settings-profile-timezone">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

@@ -205,7 +205,7 @@ export function InvoicesPage({
 
   // Render list view
   return (
-    <div className={cn('min-h-full', className)}>
+    <div className={cn('min-h-full', className)} data-testid="invoices-page">
       <div className="flex flex-col gap-6 p-6">
         {/* Page Header */}
         <PageHeader
