@@ -17,3 +17,6 @@ CLAUDE.md.backup
 
 # Delivery artifacts (duplicated components for distribution)
 delivery/
+
+# Hookify rules (generated from vault, never commit)
+.claude/hookify.*.local.md

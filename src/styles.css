@@ -19,15 +19,33 @@
 @import "./components/ui/HeroParticles.css";
 
 /* ============================================================ */
+/* BEACON ANIMATION COLORS                                       */
+/* Semi-transparent colors for button pulse animation effect     */
+/* These use rgba for alpha channel control in keyframe animation */
+/* ============================================================ */
+:root {
+  /* Beacon colors per button variant (color = visible, fade = transparent) */
+  --beacon-abyss: rgba(45, 49, 66, 0.5);
+  --beacon-abyss-fade: rgba(45, 49, 66, 0);
+  --beacon-ember: rgba(220, 38, 38, 0.5);
+  --beacon-ember-fade: rgba(220, 38, 38, 0);
+  --beacon-lagoon: rgba(8, 164, 189, 0.5);
+  --beacon-lagoon-fade: rgba(8, 164, 189, 0);
+  --beacon-lagoon-soft: rgba(8, 164, 189, 0.3);
+  --beacon-velvet: rgba(94, 79, 126, 0.5);
+  --beacon-velvet-fade: rgba(94, 79, 126, 0);
+}
+
+/* ============================================================ */
 /* SAFELIST - Force generation of button and component classes  */
 /* These classes are used by components but need to be pre-gen   */
 /* ============================================================ */
 @layer utilities {
   /* Beacon animation for attention-grabbing buttons (outer pulse) */
   @keyframes beacon-ping {
-    0% { box-shadow: 0 0 0 0 var(--beacon-color, rgba(220, 38, 38, 0.5)); }
-    70% { box-shadow: 0 0 0 10px var(--beacon-color-fade, rgba(220, 38, 38, 0)); }
-    100% { box-shadow: 0 0 0 10px var(--beacon-color-fade, rgba(220, 38, 38, 0)); }
+    0% { box-shadow: 0 0 0 0 var(--beacon-color, var(--beacon-ember)); }
+    70% { box-shadow: 0 0 0 10px var(--beacon-color-fade, var(--beacon-ember-fade)); }
+    100% { box-shadow: 0 0 0 10px var(--beacon-color-fade, var(--beacon-ember-fade)); }
   }
 
   .animate-beacon {
