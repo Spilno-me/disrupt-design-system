@@ -103,21 +103,20 @@ interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeo
 
 /**
  * Beacon pulse colors per variant.
- * Uses rgba with specific alpha values for pulse animation keyframes.
- * Cannot use ALIAS tokens as they don't support dynamic alpha.
+ * References CSS custom properties defined in styles.css for alpha-channel colors.
+ * The actual rgba values live in :root CSS variables (--beacon-*).
  */
-/* eslint-disable no-restricted-syntax -- Beacon animation requires rgba for pulse effect */
 const BEACON_COLORS = {
-  default: { color: 'rgba(45, 49, 66, 0.5)', fade: 'rgba(45, 49, 66, 0)' },       // ABYSS[700]
-  destructive: { color: 'rgba(220, 38, 38, 0.5)', fade: 'rgba(220, 38, 38, 0)' }, // EMBER[600]
-  outline: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },     // LAGOON[500]
-  secondary: { color: 'rgba(94, 79, 126, 0.5)', fade: 'rgba(94, 79, 126, 0)' },   // VELVET[500]
-  ghost: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },       // LAGOON[500]
-  link: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },        // LAGOON[500]
-  contact: { color: 'rgba(45, 49, 66, 0.5)', fade: 'rgba(45, 49, 66, 0)' },       // ABYSS[700]
-  accent: { color: 'rgba(8, 164, 189, 0.5)', fade: 'rgba(8, 164, 189, 0)' },      // LAGOON[500]
+  default: { color: 'var(--beacon-abyss)', fade: 'var(--beacon-abyss-fade)' },
+  destructive: { color: 'var(--beacon-ember)', fade: 'var(--beacon-ember-fade)' },
+  outline: { color: 'var(--beacon-lagoon)', fade: 'var(--beacon-lagoon-fade)' },
+  secondary: { color: 'var(--beacon-velvet)', fade: 'var(--beacon-velvet-fade)' },
+  ghost: { color: 'var(--beacon-lagoon)', fade: 'var(--beacon-lagoon-fade)' },
+  link: { color: 'var(--beacon-lagoon)', fade: 'var(--beacon-lagoon-fade)' },
+  contact: { color: 'var(--beacon-abyss)', fade: 'var(--beacon-abyss-fade)' },
+  accent: { color: 'var(--beacon-lagoon)', fade: 'var(--beacon-lagoon-fade)' },
+  'accent-soft': { color: 'var(--beacon-lagoon-soft)', fade: 'var(--beacon-lagoon-fade)' },
 } as const
-/* eslint-enable no-restricted-syntax */
 
 type ButtonVariant = keyof typeof VARIANT_GRADIENTS
 
