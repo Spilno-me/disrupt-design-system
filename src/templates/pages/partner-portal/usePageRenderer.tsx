@@ -51,6 +51,8 @@ export interface PageRendererConfig {
   leadPartners: Array<{ id: string; name: string }>
   leadsInitialFilters?: FilterState
   tenants: NonNullable<PartnerPortalPageProps['tenants']>
+  passiveIncomeData?: PartnerPortalPageProps['passiveIncomeData']
+  tenantsStats?: PartnerPortalPageProps['tenantsStats']
   invoices: NonNullable<PartnerPortalPageProps['invoices']>
   earningsSummary: NonNullable<PartnerPortalPageProps['earningsSummary']>
   earnings: NonNullable<PartnerPortalPageProps['earnings']>
@@ -73,8 +75,12 @@ export interface PageRendererConfig {
   onLeadAction?: PartnerPortalPageProps['onLeadAction']
   onCreateLead?: PartnerPortalPageProps['onCreateLead']
   onViewTenant?: PartnerPortalPageProps['onViewTenant']
+  onChangeStatus?: PartnerPortalPageProps['onChangeStatus']
+  /** @deprecated Use onChangeStatus instead */
   onEditTenant?: PartnerPortalPageProps['onEditTenant']
+  /** @deprecated Use onChangeStatus instead */
   onSuspendTenant?: PartnerPortalPageProps['onSuspendTenant']
+  /** @deprecated Use onChangeStatus instead */
   onActivateTenant?: PartnerPortalPageProps['onActivateTenant']
   onInvoiceClick?: PartnerPortalPageProps['onInvoiceClick']
   onInvoiceAction?: PartnerPortalPageProps['onInvoiceAction']
@@ -112,6 +118,8 @@ export function usePageRenderer(config: PageRendererConfig): ReactNode {
     leadPartners,
     leadsInitialFilters,
     tenants,
+    passiveIncomeData,
+    tenantsStats,
     invoices,
     earningsSummary,
     earnings,
@@ -128,9 +136,10 @@ export function usePageRenderer(config: PageRendererConfig): ReactNode {
     onLeadAction,
     onCreateLead,
     onViewTenant,
-    onEditTenant,
-    onSuspendTenant,
-    onActivateTenant,
+    onChangeStatus,
+    onEditTenant: _onEditTenant,
+    onSuspendTenant: _onSuspendTenant,
+    onActivateTenant: _onActivateTenant,
     onInvoiceClick,
     onInvoiceAction,
     onUpdateInvoice,
@@ -192,10 +201,11 @@ export function usePageRenderer(config: PageRendererConfig): ReactNode {
       return (
         <TenantsContent
           tenants={tenants}
+          passiveIncomeData={passiveIncomeData}
+          stats={tenantsStats}
+          userRole={userRole === 'system_admin' ? 'system-admin' : userRole === 'sub_partner' ? 'sub-partner' : 'partner-admin'}
           onViewTenant={onViewTenant}
-          onEditTenant={onEditTenant}
-          onSuspendTenant={onSuspendTenant}
-          onActivateTenant={onActivateTenant}
+          onChangeStatus={onChangeStatus}
         />
       )
 

@@ -224,15 +224,15 @@ function ActivitySkeleton() {
 function QuickActionButton({ action }: { action: QuickActionData }) {
   return (
     <Button
-      variant={action.variant === 'primary' ? 'accent' : 'secondary'}
-      className="w-full justify-between"
+      variant="accent-soft"
+      className="w-full justify-between group"
       onClick={action.onClick}
     >
       <span className="flex items-center gap-2">
         {action.icon}
         {action.label}
       </span>
-      <ArrowRight className="w-4 h-4" />
+      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-2" />
     </Button>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "../../lib/utils"
 import { GridBlobBackground } from "../ui/GridBlobCanvas"
 import { HeroParticles } from "../ui/HeroParticles"
@@ -27,7 +27,10 @@ export type ProductType = "flow" | "market" | "partner"
 
 /** Product configuration with logo and display name */
 interface ProductConfig {
-  logo: string
+  /** Logo for light mode (dark text on light background) */
+  logoLight: string
+  /** Logo for dark mode (light text on dark background) */
+  logoDark: string
   name: string
   tagline: string
 }
@@ -35,17 +38,20 @@ interface ProductConfig {
 /** Product configurations - matching AppHeader */
 const PRODUCT_CONFIGS: Record<ProductType, ProductConfig> = {
   flow: {
-    logo: LOGOS.flow.dark,
+    logoLight: LOGOS.flow.dark,  // dark text for light backgrounds
+    logoDark: LOGOS.flow.light,  // light text for dark backgrounds
     name: "Disrupt Flow",
     tagline: "Smart EHS Automation",
   },
   market: {
-    logo: LOGOS.market.dark,
+    logoLight: LOGOS.market.dark,
+    logoDark: LOGOS.market.light,
     name: "Disrupt Market",
     tagline: "EHS Marketplace",
   },
   partner: {
-    logo: LOGOS.partner.dark,
+    logoLight: LOGOS.partner.dark,
+    logoDark: LOGOS.partner.light,
     name: "Disrupt Partner",
     tagline: "Partner Portal",
   },
@@ -100,6 +106,45 @@ export interface LoginPageProps {
 }
 
 // =============================================================================
+// DARK MODE DETECTION HOOK
+// =============================================================================
+
+/**
+ * Hook to detect if dark mode is active
+ * Checks for .dark class on both html and body (Tailwind + Storybook conventions)
+ */
+function useIsDarkMode(): boolean {
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    // Check both html and body for .dark class (Storybook uses body, Tailwind uses html)
+    const checkDarkMode = () => {
+      const htmlHasDark = document.documentElement.classList.contains('dark')
+      const bodyHasDark = document.body.classList.contains('dark')
+      setIsDark(htmlHasDark || bodyHasDark)
+    }
+
+    checkDarkMode()
+
+    // Watch for class changes on both html and body elements
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === 'class') {
+          checkDarkMode()
+        }
+      }
+    })
+
+    observer.observe(document.documentElement, { attributes: true })
+    observer.observe(document.body, { attributes: true })
+
+    return () => observer.disconnect()
+  }, [])
+
+  return isDark
+}
+
+// =============================================================================
 // PRODUCT LOGO COMPONENT
 // =============================================================================
 
@@ -111,7 +156,12 @@ interface ProductLogoProps {
 }
 
 function ProductLogo({ product, customLogo, alt, onClick }: ProductLogoProps) {
-  const logoSrc = customLogo || (product ? PRODUCT_CONFIGS[product].logo : null)
+  const isDarkMode = useIsDarkMode()
+
+  // Custom logo takes precedence, otherwise select based on theme
+  const logoSrc = customLogo || (product
+    ? (isDarkMode ? PRODUCT_CONFIGS[product].logoDark : PRODUCT_CONFIGS[product].logoLight)
+    : null)
   const logoAlt = alt || (product ? PRODUCT_CONFIGS[product].name : "Logo")
 
   if (!logoSrc) return null
@@ -142,7 +192,12 @@ interface SuccessStateProps {
 }
 
 function SuccessState({ message, product, customLogo }: SuccessStateProps) {
-  const logoSrc = customLogo || (product ? PRODUCT_CONFIGS[product].logo : null)
+  const isDarkMode = useIsDarkMode()
+
+  // Custom logo takes precedence, otherwise select based on theme
+  const logoSrc = customLogo || (product
+    ? (isDarkMode ? PRODUCT_CONFIGS[product].logoDark : PRODUCT_CONFIGS[product].logoLight)
+    : null)
 
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">

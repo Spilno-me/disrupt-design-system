@@ -21,7 +21,13 @@ import type {
 } from '../../../components/partners/SettingsPage'
 import type { HelpArticle } from '../../../components/partners/HelpPage'
 import type { CalculateRequest } from '../../../components/partners/PricingCalculator'
-import type { Tenant, TenantFormData } from '../../../components/tenants'
+import type {
+  Tenant,
+  TenantFormData,
+  PassiveIncomeTenant,
+  ChangeStatusFormData,
+  TenantsStatsV2,
+} from '../../../components/tenants'
 import type { Earning, EarningsSummary } from '../../../components/earnings'
 import type { AppNavItem } from '../../layout/AppLayoutShell'
 import type { TenantChatFormData } from '../../../components/provisioning/TenantProvisioningChat'
@@ -165,16 +171,22 @@ export interface PartnerPortalPageProps {
   /** Callback when quote generation is requested */
   onGenerateQuote?: (request: CalculateRequest) => void
 
-  // === Tenants Data & Callbacks ===
+  // === Tenants Data & Callbacks (V2) ===
   /** Tenants data */
   tenants?: Tenant[]
+  /** Passive income data (sub-partner earnings) */
+  passiveIncomeData?: PassiveIncomeTenant[]
+  /** V2 Stats for tenants KPI widgets */
+  tenantsStats?: TenantsStatsV2
   /** Callback when viewing tenant details */
   onViewTenant?: (tenant: Tenant) => void
-  /** Callback when editing a tenant */
+  /** Callback when tenant status is changed (V2 unified) */
+  onChangeStatus?: (tenant: Tenant, data: ChangeStatusFormData) => void | Promise<void>
+  /** @deprecated Use onChangeStatus instead - Callback when editing a tenant */
   onEditTenant?: (tenant: Tenant, data: TenantFormData) => void
-  /** Callback when suspending a tenant */
+  /** @deprecated Use onChangeStatus instead - Callback when suspending a tenant */
   onSuspendTenant?: (tenant: Tenant) => void
-  /** Callback when activating a suspended tenant */
+  /** @deprecated Use onChangeStatus instead - Callback when activating a suspended tenant */
   onActivateTenant?: (tenant: Tenant) => void
 
   // === Earnings Data ===

@@ -35,6 +35,18 @@ import {
 import type { FilterState } from '../../components/shared/SearchFilter/types'
 import { MOCK_TENANTS } from '../../components/tenants'
 import { MOCK_EARNINGS, MOCK_EARNINGS_SUMMARY } from '../../components/earnings'
+// Quick Action Dialog imports
+import { CreateLeadDialog } from '../../components/leads/CreateLeadDialog'
+import { CreateSubPartnerDialog } from '../../components/partners/CreateSubPartnerDialog'
+import type { NetworkPartner, SubPartnerFormData } from '../../components/partners/types/partner-network.types'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '../../components/ui/sheet'
+import { TenantRequestWizard } from '../../components/partners/TenantRequest/TenantRequestWizard'
 
 // Import from partner-portal module
 import {
@@ -116,7 +128,10 @@ export function PartnerPortalPage(props: PartnerPortalPageProps) {
     onCalculatePricing,
     onGenerateQuote,
     tenants = MOCK_TENANTS,
+    passiveIncomeData,
+    tenantsStats,
     onViewTenant,
+    onChangeStatus,
     onEditTenant,
     onSuspendTenant,
     onActivateTenant,
@@ -138,6 +153,11 @@ export function PartnerPortalPage(props: PartnerPortalPageProps) {
   const [pageFilters, setPageFilters] = useState<NavigationFilter | undefined>()
   const [editingPartner, setEditingPartner] = useState<Partner | null>(null)
   const [partnerPageMode, setPartnerPageMode] = useState<'edit' | 'create'>('edit')
+
+  // Quick Action Dialog states
+  const [createLeadDialogOpen, setCreateLeadDialogOpen] = useState(false)
+  const [createSubPartnerDialogOpen, setCreateSubPartnerDialogOpen] = useState(false)
+  const [tenantRequestSheetOpen, setTenantRequestSheetOpen] = useState(false)
 
   const activePage = currentPageId ?? internalPage
   const userRole: UserRole = user.role ?? 'partner'
@@ -162,13 +182,40 @@ export function PartnerPortalPage(props: PartnerPortalPageProps) {
     ? { status: pageFilters.status ?? [], priority: pageFilters.priority ?? [], source: [] }
     : undefined
 
-  // Dashboard handlers
+  // Dashboard handlers - open dialogs directly for immediate action
   const dashboardHandlers: DashboardHandlers = {
     onNavigate: handleNavigateWithFilter,
-    onCreateLead: () => handlePageChange('leads'),
-    onCreateTenantRequest: () => handlePageChange('tenant-provisioning'),
-    onAddPartner: () => handlePageChange('partners'),
+    onCreateLead: () => setCreateLeadDialogOpen(true),
+    onCreateTenantRequest: () => setTenantRequestSheetOpen(true),
+    onAddPartner: () => setCreateSubPartnerDialogOpen(true),
   }
+
+  // Get the current user's partner for sub-partner creation (first network partner or mock)
+  const currentUserPartner: NetworkPartner = _networkPartners[0] ?? MOCK_NETWORK_PARTNERS[0]
+
+  // Quick Action dialog handlers
+  const handleCreateLeadSubmit = useCallback(
+    async (data: Parameters<NonNullable<typeof onCreateLead>>[0]) => {
+      await onCreateLead?.(data)
+      setCreateLeadDialogOpen(false)
+    },
+    [onCreateLead]
+  )
+
+  const handleCreateSubPartnerSubmit = useCallback(
+    async (_data: SubPartnerFormData, parentPartner: NetworkPartner) => {
+      // Call the parent callback if provided
+      // Note: _onAddSubPartner expects to receive the parentPartner for context
+      // The form data (_data) can be handled by the consumer's onAddSubPartner implementation
+      _onAddSubPartner?.(parentPartner)
+      setCreateSubPartnerDialogOpen(false)
+    },
+    [_onAddSubPartner]
+  )
+
+  const handleTenantRequestCancel = useCallback(() => {
+    setTenantRequestSheetOpen(false)
+  }, [])
 
   const { kpis: roleKpis, quickActions: roleQuickActions } = useRoleDashboardConfig({
     userRole,
@@ -193,6 +240,8 @@ export function PartnerPortalPage(props: PartnerPortalPageProps) {
     leadPartners,
     leadsInitialFilters,
     tenants,
+    passiveIncomeData,
+    tenantsStats,
     invoices,
     earningsSummary,
     earnings,
@@ -209,6 +258,7 @@ export function PartnerPortalPage(props: PartnerPortalPageProps) {
     onLeadAction,
     onCreateLead,
     onViewTenant,
+    onChangeStatus,
     onEditTenant,
     onSuspendTenant,
     onActivateTenant,
@@ -246,24 +296,64 @@ export function PartnerPortalPage(props: PartnerPortalPageProps) {
   )
 
   return (
-    <AppLayoutShell
-      product="partner"
-      navItems={navItemsWithBadges}
-      initialPage={initialPage}
-      currentPageId={activePage}
-      onPageChange={handlePageChange}
-      user={user}
-      userMenuItems={userMenuItems}
-      notificationCount={notificationCount}
-      onNavigate={onNavigate}
-      onNotificationClick={onNotificationClick}
-      onMenuItemClick={handleMenuItemClick}
-      onHelpClick={handleHelpClick}
-      onLogoClick={onLogoClick}
-      showHelpItem={true}
-    >
-      {pageContent}
-    </AppLayoutShell>
+    <>
+      <AppLayoutShell
+        product="partner"
+        navItems={navItemsWithBadges}
+        initialPage={initialPage}
+        currentPageId={activePage}
+        onPageChange={handlePageChange}
+        user={user}
+        userMenuItems={userMenuItems}
+        notificationCount={notificationCount}
+        onNavigate={onNavigate}
+        onNotificationClick={onNotificationClick}
+        onMenuItemClick={handleMenuItemClick}
+        onHelpClick={handleHelpClick}
+        onLogoClick={onLogoClick}
+        showHelpItem={true}
+      >
+        {pageContent}
+      </AppLayoutShell>
+
+      {/* Quick Action Dialogs */}
+      <CreateLeadDialog
+        open={createLeadDialogOpen}
+        onOpenChange={setCreateLeadDialogOpen}
+        onSubmit={handleCreateLeadSubmit}
+        partners={leadPartners}
+      />
+
+      <CreateSubPartnerDialog
+        open={createSubPartnerDialogOpen}
+        onOpenChange={setCreateSubPartnerDialogOpen}
+        parentPartner={currentUserPartner}
+        onSubmit={handleCreateSubPartnerSubmit}
+      />
+
+      {/* Tenant Request Sheet (for wizard) */}
+      <Sheet open={tenantRequestSheetOpen} onOpenChange={setTenantRequestSheetOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl p-0 overflow-hidden">
+          <SheetHeader className="sr-only">
+            <SheetTitle>Create Tenant Request</SheetTitle>
+            <SheetDescription>Create a new tenant request for your customer</SheetDescription>
+          </SheetHeader>
+          <div className="h-full overflow-auto">
+            <TenantRequestWizard
+              onCancel={handleTenantRequestCancel}
+              onSubmit={async (data) => {
+                // Handle submission - close sheet after success
+                setTenantRequestSheetOpen(false)
+              }}
+              onSaveDraft={async (data) => {
+                // Handle draft save - close sheet after success
+                setTenantRequestSheetOpen(false)
+              }}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   )
 }
 
