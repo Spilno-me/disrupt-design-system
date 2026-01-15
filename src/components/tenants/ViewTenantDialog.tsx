@@ -144,10 +144,10 @@ export function ViewTenantDialog({
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 text-xs text-muted">
                   <DollarSign className="h-3.5 w-3.5" />
-                  Monthly Revenue
+                  Monthly Payment
                 </div>
                 <div className="text-sm font-medium text-primary">
-                  {formatCurrency(tenant.monthlyRevenue)}
+                  {formatCurrency(tenant.monthlyPayment)}
                 </div>
               </div>
               <div className="space-y-1">

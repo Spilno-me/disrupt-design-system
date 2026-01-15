@@ -92,8 +92,8 @@ export function ActivateTenantDialog({
             <span className="font-medium text-primary capitalize">{tenant.subscriptionPackage}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted">Previous Revenue</span>
-            <span className="text-primary">{formatCurrency(tenant.monthlyRevenue)}</span>
+            <span className="text-muted">Monthly Payment</span>
+            <span className="text-primary">{formatCurrency(tenant.monthlyPayment)}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted">Users to Restore</span>

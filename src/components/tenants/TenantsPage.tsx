@@ -1,156 +1,147 @@
 "use client"
 
+/**
+ * TenantsPage - Operational list of active customers
+ * @module tenants/TenantsPage
+ *
+ * Per spec (05_tenants_page.md):
+ * - KPI widgets (Total, Active, Overdue, Suspended)
+ * - Search by company name + contact person
+ * - Status filter
+ * - Table with: Company/Tenant, Contact, Status, Tier, Licenses, Monthly Payment, Active Since, Actions
+ * - Actions: View, Change Status
+ * - Change Status modal with dropdown + notes
+ */
+
 import * as React from "react"
-import { useState, useMemo } from "react"
-import {
-  Eye,
-  Pencil,
-  PauseCircle,
-  PlayCircle,
-  Building2,
-} from "lucide-react"
+import { useState, useMemo, useCallback, useEffect } from "react"
+import { Building2 } from "lucide-react"
 import { cn } from "../../lib/utils"
-import { formatCurrency } from "../../lib/format"
 
-// Extracted modules
+// Types
+import type {
+  Tenant,
+  TenantStatus,
+  OrganizationTier,
+  SubscriptionPackage,
+  TenantsPageProps,
+  TenantFormData,
+  ChangeStatusFormData,
+  TenantsStats,
+} from "./types"
+
+// Data
+import { MOCK_TENANTS, MOCK_TENANTS_STATS, generateTenantsStats } from "./data/mock-tenants"
+
+// Constants
 import { TENANT_FILTER_GROUPS } from "./constants/filter.constants"
-import type { Tenant, TenantStatus, SubscriptionPackage, TenantsPageProps, TenantFormData } from "./types"
-import { MOCK_TENANTS } from "./data/mock-tenants"
 
-// UI components
-import { Badge } from "../ui/badge"
-import { DataTable, type ColumnDef } from "../ui/DataTable"
+// UI Components
+import { DataTable } from "../ui/DataTable"
 import { SearchFilter } from "../shared/SearchFilter/SearchFilter"
 import type { FilterState } from "../shared/SearchFilter/types"
-import { DataTableStatusDot, type DotStatusMapping } from "../ui/table"
-import { ActionTile } from "../ui/ActionTile"
-import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip"
 import { PageActionPanel } from "../ui/PageActionPanel"
+
+// Page Sub-Components
+import { TenantsStatsCardsRow, ActiveFilterBanner } from "./components"
+
+// Hooks
+import { useTenantsWidgetFilter, useTenantsDialogs, useTenantsTableColumns } from "./hooks"
+
+// Constants (extracted)
+import { EMPTY_FILTER_STATE } from "./constants"
 
 // Dialogs
 import { ViewTenantDialog } from "./ViewTenantDialog"
 import { EditTenantDialog } from "./EditTenantDialog"
-import { SuspendTenantDialog } from "./SuspendTenantDialog"
-import { ActivateTenantDialog } from "./ActivateTenantDialog"
+import { ChangeStatusDialog } from "./ChangeStatusDialog"
 
 // Re-export types for external consumers
-export type { TenantStatus, SubscriptionPackage, Tenant, TenantsPageProps, TenantFormData }
-export { MOCK_TENANTS }
-
-// =============================================================================
-// STATUS MAPPING
-// =============================================================================
-
-export const TENANT_DOT_STATUS_MAP: DotStatusMapping = {
-  active: { label: "Active", variant: "success" },
-  suspended: { label: "Suspended", variant: "destructive" },
-  overdue: { label: "Overdue", variant: "warning" },
-}
-
-// =============================================================================
-// HELPERS
-// =============================================================================
-
-const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  }).format(date)
-}
-
-const getPackageVariant = (pkg: SubscriptionPackage) => {
-  switch (pkg) {
-    case "enterprise":
-      return "default" as const
-    case "professional":
-      return "info" as const
-    case "starter":
-      return "secondary" as const
-    default:
-      return "secondary" as const
-  }
-}
+export type { TenantStatus, OrganizationTier, SubscriptionPackage, Tenant, TenantsPageProps, TenantFormData }
+export { MOCK_TENANTS, MOCK_TENANTS_STATS }
 
 // =============================================================================
 // MAIN COMPONENT
 // =============================================================================
+// Note: Constants and helpers extracted to ./constants/ and ./utils/
+// Column definitions extracted to ./hooks/useTenantsTableColumns.tsx
 
 /**
- * TenantsPage - A complete tenants management page
+ * TenantsPage - Full page layout for managing tenants
  *
  * Features:
- * - Header with title, subtitle
- * - Search input and status/package filters
- * - Data table with tenant information
- * - Action buttons for view, edit, and suspend
+ * - KPI widgets row (Total, Active, Overdue, Suspended)
+ * - Search and status filters
+ * - Data table with spec-compliant columns
+ * - Actions dropdown menu
  * - Pagination
  */
 export function TenantsPage({
   tenants: initialTenants = MOCK_TENANTS,
+  stats: initialStats,
   onViewTenant,
   onEditTenant,
-  onSuspendTenant,
-  onActivateTenant,
+  onChangeStatus,
+  onSuspendTenant, // deprecated
+  onActivateTenant, // deprecated
   loading = false,
   className,
 }: TenantsPageProps) {
   // Internal tenant state - allows UI updates after actions
   const [tenants, setTenants] = useState<Tenant[]>(initialTenants)
 
-  // Sync internal state when prop changes (for controlled usage)
-  React.useEffect(() => {
+  // Sync internal state when prop changes
+  useEffect(() => {
     setTenants(initialTenants)
   }, [initialTenants])
 
-  // State
+  // Compute stats from tenants (or use provided stats)
+  const stats: TenantsStats = useMemo(() => {
+    return initialStats ?? generateTenantsStats(tenants)
+  }, [initialStats, tenants])
+
+  // Filter state
   const [searchQuery, setSearchQuery] = useState("")
-  const [filters, setFilters] = useState<FilterState>({
-    status: [],
-    subscriptionPackage: [],
-  })
+  const [filters, setFilters] = useState<FilterState>(EMPTY_FILTER_STATE)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
 
-  // View Dialog state
-  const [viewDialogOpen, setViewDialogOpen] = useState(false)
-  const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null)
+  // Widget filter hook
+  const widgetFilter = useTenantsWidgetFilter({
+    setFilters,
+    resetPage: () => setCurrentPage(1),
+  })
 
-  // Edit Dialog state
-  const [editDialogOpen, setEditDialogOpen] = useState(false)
-  const [tenantToEdit, setTenantToEdit] = useState<Tenant | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  // Dialog management hook (extracted state + handlers)
+  const dialogs = useTenantsDialogs({
+    onViewTenant,
+    onEditTenant,
+    onChangeStatus,
+    setTenants,
+    onSuspendTenant,
+    onActivateTenant,
+  })
 
-  // Suspend Dialog state
-  const [suspendDialogOpen, setSuspendDialogOpen] = useState(false)
-  const [tenantToSuspend, setTenantToSuspend] = useState<Tenant | null>(null)
-  const [isSuspending, setIsSuspending] = useState(false)
-
-  // Activate Dialog state
-  const [activateDialogOpen, setActivateDialogOpen] = useState(false)
-  const [tenantToActivate, setTenantToActivate] = useState<Tenant | null>(null)
-  const [isActivating, setIsActivating] = useState(false)
+  // Table columns hook (extracted column definitions)
+  const { columns } = useTenantsTableColumns({
+    onViewTenant: dialogs.handleViewTenantClick,
+    onChangeStatus: dialogs.handleChangeStatusClick,
+  })
 
   // Filter tenants based on search and filters
   const filteredTenants = useMemo(() => {
     return tenants.filter((tenant) => {
-      // Search filter
+      // Search filter - company name + contact person (per spec)
       const matchesSearch =
         searchQuery === "" ||
         tenant.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tenant.contactName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tenant.contactEmail.toLowerCase().includes(searchQuery.toLowerCase())
+        tenant.contactName.toLowerCase().includes(searchQuery.toLowerCase())
 
-      // Status filter (if any selected)
+      // Status filter
       const matchesStatus =
-        filters.status.length === 0 || filters.status.includes(tenant.status)
+        filters.status?.length === 0 || filters.status?.includes(tenant.status)
 
-      // Package filter (if any selected)
-      const matchesPackage =
-        filters.subscriptionPackage.length === 0 ||
-        filters.subscriptionPackage.includes(tenant.subscriptionPackage)
-
-      return matchesSearch && matchesStatus && matchesPackage
+      return matchesSearch && matchesStatus
     })
   }, [tenants, searchQuery, filters])
 
@@ -160,263 +151,23 @@ export function TenantsPage({
     return filteredTenants.slice(startIndex, startIndex + pageSize)
   }, [filteredTenants, currentPage, pageSize])
 
-  // Handle filter changes
-  const handleFiltersChange = React.useCallback((newFilters: FilterState) => {
+  // Handle filter changes (clears widget filter)
+  const handleFiltersChange = useCallback((newFilters: FilterState) => {
     setFilters(newFilters)
+    setCurrentPage(1)
+    widgetFilter.clearActiveWidget()
+  }, [widgetFilter])
+
+  // Handle search change
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchQuery(value)
     setCurrentPage(1)
   }, [])
 
-  // Handle view tenant click
-  const handleViewTenantClick = React.useCallback((tenant: Tenant) => {
-    if (onViewTenant) {
-      onViewTenant(tenant)
-    } else {
-      setSelectedTenant(tenant)
-      setTimeout(() => setViewDialogOpen(true), 150)
-    }
-  }, [onViewTenant])
-
-  // Handle edit tenant click
-  const handleEditTenantClick = React.useCallback((tenant: Tenant) => {
-    setTenantToEdit(tenant)
-    setTimeout(() => setEditDialogOpen(true), 150)
-  }, [])
-
-  // Handle edit dialog submit
-  const handleEditSubmit = React.useCallback(async (data: TenantFormData) => {
-    setIsSubmitting(true)
-    try {
-      if (tenantToEdit && onEditTenant) {
-        await onEditTenant(tenantToEdit, data)
-      }
-      setEditDialogOpen(false)
-    } finally {
-      setIsSubmitting(false)
-    }
-  }, [tenantToEdit, onEditTenant])
-
-  // Handle suspend tenant click
-  const handleSuspendTenantClick = React.useCallback((tenant: Tenant) => {
-    setTenantToSuspend(tenant)
-    setTimeout(() => setSuspendDialogOpen(true), 150)
-  }, [])
-
-  // Handle suspend confirmation
-  const handleSuspendConfirm = React.useCallback(async (tenant: Tenant) => {
-    setIsSuspending(true)
-    try {
-      if (onSuspendTenant) {
-        await onSuspendTenant(tenant)
-      }
-      // Update internal state to reflect suspension
-      setTenants((prev) =>
-        prev.map((t) =>
-          t.id === tenant.id ? { ...t, status: "suspended" as TenantStatus, monthlyRevenue: 0 } : t
-        )
-      )
-      // Update selected tenant if viewing
-      if (selectedTenant?.id === tenant.id) {
-        setSelectedTenant({ ...tenant, status: "suspended", monthlyRevenue: 0 })
-      }
-      setSuspendDialogOpen(false)
-    } finally {
-      setIsSuspending(false)
-    }
-  }, [onSuspendTenant, selectedTenant])
-
-  // Handle activate tenant click - opens confirmation dialog
-  const handleActivateTenantClick = React.useCallback((tenant: Tenant) => {
-    setTenantToActivate(tenant)
-    setTimeout(() => setActivateDialogOpen(true), 150)
-  }, [])
-
-  // Handle activate confirmation
-  const handleActivateConfirm = React.useCallback(async (tenant: Tenant) => {
-    setIsActivating(true)
-    try {
-      if (onActivateTenant) {
-        await onActivateTenant(tenant)
-      }
-      // Update internal state to reflect activation
-      setTenants((prev) =>
-        prev.map((t) =>
-          t.id === tenant.id ? { ...t, status: "active" as TenantStatus } : t
-        )
-      )
-      // Update selected tenant if viewing
-      if (selectedTenant?.id === tenant.id) {
-        setSelectedTenant({ ...tenant, status: "active" })
-      }
-      setActivateDialogOpen(false)
-      setViewDialogOpen(false)
-    } finally {
-      setIsActivating(false)
-    }
-  }, [onActivateTenant, selectedTenant])
-
-  // Render tenant actions using ActionTile pattern (≤3 actions = visible buttons)
-  const renderTenantActions = React.useCallback((tenant: Tenant) => (
-    <div className="flex items-center gap-1">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <ActionTile
-            variant="neutral"
-            appearance="filled"
-            size="xs"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleViewTenantClick(tenant)
-            }}
-            aria-label="View tenant"
-          >
-            <Eye className="size-4" />
-          </ActionTile>
-        </TooltipTrigger>
-        <TooltipContent side="top" sideOffset={4}>
-          View Tenant
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <ActionTile
-            variant="info"
-            appearance="filled"
-            size="xs"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleEditTenantClick(tenant)
-            }}
-            aria-label="Edit tenant"
-          >
-            <Pencil className="size-4" />
-          </ActionTile>
-        </TooltipTrigger>
-        <TooltipContent side="top" sideOffset={4}>
-          Edit Tenant
-        </TooltipContent>
-      </Tooltip>
-      {tenant.status === "active" && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <ActionTile
-              variant="destructive"
-              appearance="filled"
-              size="xs"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleSuspendTenantClick(tenant)
-              }}
-              aria-label="Suspend tenant"
-            >
-              <PauseCircle className="size-4" />
-            </ActionTile>
-          </TooltipTrigger>
-          <TooltipContent side="top" sideOffset={4}>
-            Suspend Tenant
-          </TooltipContent>
-        </Tooltip>
-      )}
-      {tenant.status === "suspended" && (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <ActionTile
-              variant="success"
-              appearance="filled"
-              size="xs"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleActivateTenantClick(tenant)
-              }}
-              aria-label="Activate tenant"
-            >
-              <PlayCircle className="size-4" />
-            </ActionTile>
-          </TooltipTrigger>
-          <TooltipContent side="top" sideOffset={4}>
-            Activate Tenant
-          </TooltipContent>
-        </Tooltip>
-      )}
-    </div>
-  ), [handleViewTenantClick, handleEditTenantClick, handleSuspendTenantClick, handleActivateTenantClick])
-
-  // Column definitions
-  /* eslint-disable no-restricted-syntax */
-  const columns: ColumnDef<Tenant>[] = [
-    {
-      id: "tenant",
-      header: "Tenant",
-      sortable: true,
-      sortValue: (row) => row.companyName,
-      accessor: (row) => (
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-muted-bg">
-            <Building2 className="h-4 w-4 text-muted" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-medium text-primary">{row.companyName}</span>
-            <span className="text-xs text-muted">{row.contactEmail}</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      id: "status",
-      header: "Status",
-      sortable: true,
-      sortValue: (row) => row.status,
-      accessor: (row) => <DataTableStatusDot status={row.status} mapping={TENANT_DOT_STATUS_MAP} />,
-    },
-    {
-      id: "package",
-      header: "Package",
-      sortable: true,
-      sortValue: (row) => row.subscriptionPackage,
-      accessor: (row) => (
-        <Badge variant={getPackageVariant(row.subscriptionPackage)} className="capitalize">
-          {row.subscriptionPackage}
-        </Badge>
-      ),
-    },
-    {
-      id: "revenue",
-      header: "Monthly Revenue",
-      sortable: true,
-      sortValue: (row) => row.monthlyRevenue,
-      accessor: (row) => (
-        <span className="text-sm font-medium text-primary">
-          {formatCurrency(row.monthlyRevenue)}
-        </span>
-      ),
-    },
-    {
-      id: "users",
-      header: "Users",
-      sortable: true,
-      sortValue: (row) => row.userCount,
-      accessor: (row) => (
-        <span className="text-sm text-primary">{row.userCount}</span>
-      ),
-    },
-    {
-      id: "created",
-      header: "Created",
-      sortable: true,
-      sortValue: (row) => row.createdAt,
-      accessor: (row) => (
-        <span className="text-sm text-primary">{formatDate(row.createdAt)}</span>
-      ),
-    },
-    {
-      id: "actions",
-      header: "Actions",
-      align: "right",
-      width: "100px",
-      sticky: "right",
-      accessor: (row) => renderTenantActions(row),
-    },
-  ]
-  /* eslint-enable no-restricted-syntax */
+  // Row click handler (delegates to dialogs hook)
+  const handleRowClick = useCallback((tenant: Tenant) => {
+    dialogs.handleViewTenantClick(tenant)
+  }, [dialogs])
 
   return (
     <main
@@ -424,27 +175,40 @@ export function TenantsPage({
       data-testid="tenants-page"
       className={cn("min-h-screen", className)}
     >
-      {/* Content - no extra background, page background comes from shell */}
       <div className="flex flex-col gap-6 p-4 md:p-6">
-        {/* Page Action Panel - replaces manual header */}
+        {/* Page Header */}
         <PageActionPanel
           icon={<Building2 className="w-6 h-6 md:w-8 md:h-8" />}
           iconClassName="text-accent"
           title="Tenants"
-          subtitle="Manage active customers and subscriptions"
+          subtitle="Manage active customers and monitor account status."
         />
+
+        {/* KPI Widgets */}
+        <TenantsStatsCardsRow
+          stats={stats}
+          activeWidget={widgetFilter.activeWidget}
+          onWidgetClick={widgetFilter.handleWidgetClick}
+        />
+
+        {/* Active Filter Banner */}
+        {widgetFilter.activeWidget && widgetFilter.activeWidget !== "all" && (
+          <ActiveFilterBanner
+            activeWidget={widgetFilter.activeWidget}
+            filteredCount={filteredTenants.length}
+            totalCount={tenants.length}
+            onClear={() => widgetFilter.handleWidgetClick("all")}
+          />
+        )}
 
         {/* Glass container for main content */}
         <section className="rounded-xl border-2 border-accent bg-white/40 dark:bg-black/40 backdrop-blur-[4px] shadow-md">
           <div className="flex flex-col gap-4 p-4 md:p-6">
             {/* Search and Filter Bar */}
             <SearchFilter
-              placeholder="Search tenants..."
+              placeholder="Search by company or contact name"
               value={searchQuery}
-              onChange={(value) => {
-                setSearchQuery(value)
-                setCurrentPage(1)
-              }}
+              onChange={handleSearchChange}
               filterGroups={TENANT_FILTER_GROUPS}
               filters={filters}
               onFiltersChange={handleFiltersChange}
@@ -460,7 +224,7 @@ export function TenantsPage({
               loading={loading}
               hoverable
               bordered
-              // Pagination embedded in table footer
+              onRowClick={handleRowClick}
               pagination
               currentPage={currentPage}
               totalItems={filteredTenants.length}
@@ -478,12 +242,12 @@ export function TenantsPage({
                     <Building2 className="h-8 w-8 text-muted" />
                   </div>
                   <h3 className="text-lg font-semibold text-primary mb-2">
-                    {searchQuery || filters.status.length > 0 || filters.subscriptionPackage.length > 0
+                    {searchQuery || (filters.status?.length ?? 0) > 0
                       ? "No tenants found"
                       : "No tenants yet"}
                   </h3>
                   <p className="text-muted text-sm max-w-sm text-center">
-                    {searchQuery || filters.status.length > 0 || filters.subscriptionPackage.length > 0
+                    {searchQuery || (filters.status?.length ?? 0) > 0
                       ? "No tenants match your search criteria. Try adjusting your filters."
                       : "Tenants will appear here once they complete the onboarding process."}
                   </p>
@@ -496,39 +260,30 @@ export function TenantsPage({
 
       {/* View Tenant Dialog */}
       <ViewTenantDialog
-        open={viewDialogOpen}
-        onOpenChange={setViewDialogOpen}
-        tenant={selectedTenant}
-        onEdit={handleEditTenantClick}
-        onSuspend={handleSuspendTenantClick}
-        onActivate={handleActivateTenantClick}
+        open={dialogs.viewDialogOpen}
+        onOpenChange={dialogs.setViewDialogOpen}
+        tenant={dialogs.selectedTenant}
+        onEdit={dialogs.handleEditTenantClick}
+        onSuspend={dialogs.handleChangeStatusClick}
+        onActivate={dialogs.handleChangeStatusClick}
       />
 
       {/* Edit Tenant Dialog */}
       <EditTenantDialog
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        tenant={tenantToEdit}
-        onSubmit={handleEditSubmit}
-        isSubmitting={isSubmitting}
+        open={dialogs.editDialogOpen}
+        onOpenChange={dialogs.setEditDialogOpen}
+        tenant={dialogs.tenantToEdit}
+        onSubmit={dialogs.handleEditSubmit}
+        isSubmitting={dialogs.isSubmitting}
       />
 
-      {/* Suspend Tenant Dialog */}
-      <SuspendTenantDialog
-        open={suspendDialogOpen}
-        onOpenChange={setSuspendDialogOpen}
-        tenant={tenantToSuspend}
-        onConfirm={handleSuspendConfirm}
-        isSuspending={isSuspending}
-      />
-
-      {/* Activate Tenant Dialog */}
-      <ActivateTenantDialog
-        open={activateDialogOpen}
-        onOpenChange={setActivateDialogOpen}
-        tenant={tenantToActivate}
-        onConfirm={handleActivateConfirm}
-        isActivating={isActivating}
+      {/* Change Status Dialog */}
+      <ChangeStatusDialog
+        open={dialogs.changeStatusDialogOpen}
+        onOpenChange={dialogs.setChangeStatusDialogOpen}
+        tenant={dialogs.tenantToChangeStatus}
+        onConfirm={dialogs.handleChangeStatusConfirm}
+        isSubmitting={dialogs.isChangingStatus}
       />
     </main>
   )
