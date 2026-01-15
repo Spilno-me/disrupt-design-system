@@ -5,6 +5,9 @@ import { cn } from '../../lib/utils'
 // UI Components
 import { LeadsDataTable } from './LeadsDataTable'
 import { CreateLeadDialog } from './CreateLeadDialog'
+import { EditLeadDialog } from './EditLeadDialog'
+import { DeleteLeadDialog } from './DeleteLeadDialog'
+import { ViewLeadDialog } from './ViewLeadDialog'
 import { BulkActionsToolbar } from './BulkActionsToolbar'
 import { SearchFilter } from '../shared/SearchFilter/SearchFilter'
 import { Pagination } from '../ui/Pagination'
@@ -70,6 +73,8 @@ export function LeadsPage({
   onLeadClick,
   onLeadAction,
   onCreateLead,
+  onEditLead,
+  onDeleteLead,
   partners = [],
   title = 'Leads',
   defaultPageSize = 10,
@@ -100,8 +105,12 @@ export function LeadsPage({
   // Selection hook
   const selection = useLeadsSelection({ onBulkAction })
 
-  // Dialog hook
-  const dialogs = useLeadsDialogs({ onCreateLead })
+  // Dialog hook - manages Create, Edit, Delete, View dialogs internally
+  const dialogs = useLeadsDialogs({
+    onCreateLead,
+    onEditLead,
+    onDeleteLead,
+  })
 
   // Derived data: filter -> sort -> paginate
   const filteredLeads = useMemo(
@@ -131,10 +140,30 @@ export function LeadsPage({
     pagination.resetPage()
   }, [filtering, pagination])
 
-  // Handle card action
-  const handleCardAction = useCallback((lead: Lead, action: LeadAction) => {
-    onLeadAction?.(lead, action)
-  }, [onLeadAction])
+  // Handle action from table/card - routes to dialogs or external handler
+  const handleLeadAction = useCallback((lead: Lead, action: LeadAction) => {
+    // If external handler provided, use it
+    if (onLeadAction) {
+      onLeadAction(lead, action)
+      return
+    }
+
+    // Otherwise, use internal dialog management
+    switch (action) {
+      case 'view':
+        dialogs.openViewDialog(lead)
+        break
+      case 'edit':
+        dialogs.openEditDialog(lead)
+        break
+      case 'delete':
+        dialogs.openDeleteDialog(lead)
+        break
+      default:
+        // For other actions (assign, convert, etc.), do nothing internally
+        break
+    }
+  }, [onLeadAction, dialogs])
 
   // Handle export
   const handleExport = useCallback(async (options: ExportOptions) => {
@@ -204,7 +233,7 @@ export function LeadsPage({
             selectedLeads={selection.selectedLeads}
             onSelectionChange={selection.setSelectedLeads}
             onLeadClick={onLeadClick}
-            onActionClick={onLeadAction}
+            onActionClick={handleLeadAction}
             sortColumn={sorting.sortColumn}
             sortDirection={sorting.sortDirection}
             onSortChange={sorting.handleSortChange}
@@ -226,7 +255,7 @@ export function LeadsPage({
             loading={loading}
             searchValue={filtering.searchValue}
             onLeadClick={onLeadClick}
-            onCardAction={handleCardAction}
+            onCardAction={handleLeadAction}
           />
         </div>
 
@@ -257,6 +286,42 @@ export function LeadsPage({
           isSubmitting={dialogs.isCreating}
         />
       )}
+
+      {/* Edit Lead Dialog */}
+      {dialogs.leadToEdit && (
+        <EditLeadDialog
+          open={dialogs.editDialogOpen}
+          onOpenChange={dialogs.setEditDialogOpen}
+          lead={dialogs.leadToEdit}
+          onSubmit={dialogs.handleEditLead}
+          partners={partners}
+          isSubmitting={dialogs.isEditing}
+        />
+      )}
+
+      {/* Delete Lead Dialog */}
+      <DeleteLeadDialog
+        open={dialogs.deleteDialogOpen}
+        onOpenChange={dialogs.setDeleteDialogOpen}
+        lead={dialogs.leadToDelete}
+        onConfirm={dialogs.handleDeleteLead}
+        isDeleting={dialogs.isDeleting}
+      />
+
+      {/* View Lead Dialog */}
+      <ViewLeadDialog
+        open={dialogs.viewDialogOpen}
+        onOpenChange={dialogs.setViewDialogOpen}
+        lead={dialogs.leadToView}
+        onEdit={(lead) => {
+          dialogs.setViewDialogOpen(false)
+          dialogs.openEditDialog(lead)
+        }}
+        onDelete={(lead) => {
+          dialogs.setViewDialogOpen(false)
+          dialogs.openDeleteDialog(lead)
+        }}
+      />
     </div>
   )
 }

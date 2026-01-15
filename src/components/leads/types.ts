@@ -48,10 +48,14 @@ export interface LeadsPageProps {
   stats?: LeadsStats
   /** Callback when a lead is clicked */
   onLeadClick?: (lead: Lead) => void
-  /** Callback when lead action is clicked (from table or card) */
+  /** Callback when lead action is clicked (from table or card) - if not provided, internal dialogs handle it */
   onLeadAction?: (lead: Lead, action: LeadAction) => void
   /** Callback when a new lead is created */
   onCreateLead?: (data: CreateLeadFormData) => void | Promise<void>
+  /** Callback when a lead is edited */
+  onEditLead?: (leadId: string, data: CreateLeadFormData) => void | Promise<void>
+  /** Callback when a lead is deleted */
+  onDeleteLead?: (lead: Lead) => void | Promise<void>
   /** List of partners for assignment dropdown */
   partners?: Partner[]
   /** Page title */
